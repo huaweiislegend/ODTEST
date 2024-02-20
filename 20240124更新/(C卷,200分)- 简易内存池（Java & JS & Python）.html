@@ -1,0 +1,330 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 简易内存池（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<ul><li>请实现一个简易内存池,根据请求命令完成内存分配和释放。</li><li>内存池支持两种操作命令&#xff0c;REQUEST和RELEASE&#xff0c;其格式为&#xff1a;</li><li>REQUEST&#61;请求的内存大小 表示请求分配指定大小内存&#xff0c;如果分配成功&#xff0c;返回分配到的内存首地址&#xff1b;如果内存不足&#xff0c;或指定的大小为0&#xff0c;则输出error。</li><li>RELEASE&#61;释放的内存首地址 表示释放掉之前分配的内存&#xff0c;释放成功无需输出&#xff0c;如果释放不存在的首地址则输出error。</li></ul> 
+<p></p> 
+<p><strong>注意&#xff1a;</strong></p> 
+<ol><li>内存池总大小为100字节。</li><li>内存池地址分配必须是连续内存&#xff0c;并优先从低地址分配。</li><li>内存释放后可被再次分配&#xff0c;已释放的内存在空闲时不能被二次释放。</li><li>不会释放已申请的内存块的中间地址。</li><li>释放操作只是针对首地址所对应的单个内存块进行操作&#xff0c;不会影响其它内存块。</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>首行为整数 N , 表示操作命令的个数&#xff0c;取值范围&#xff1a;0 &lt; N &lt;&#61; 100。</p> 
+<p>接下来的N行, 每行将给出一个操作命令&#xff0c;操作命令和参数之间用 “&#61;”分割。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>请求分配指定大小内存时&#xff0c;如果分配成功&#xff0c;返回分配到的内存首地址&#xff1b;如果内存不足&#xff0c;或指定的大小为0&#xff0c;则输出error</p> 
+<p>释放掉之前分配的内存时&#xff0c;释放成功无需输出&#xff0c;如果释放不存在的首地址则输出error。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> REQUEST&#61;10<br /> REQUEST&#61;20</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0<br /> 10</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:410px;">5<br /> REQUEST&#61;10<br /> REQUEST&#61;20<br /> RELEASE&#61;0<br /> REQUEST&#61;20<br /> REQUEST&#61;10</td></tr><tr><td style="width:86px;">输出</td><td style="width:410px;">0<br /> 10<br /> 30<br /> 0</td></tr><tr><td style="width:86px;">说明</td><td style="width:410px;"> <p>第一条指令&#xff0c;申请地址0~9的10个字节内存&#xff0c;返回首地址0</p> <p>第二条指令&#xff0c;申请地址10~29的20字节内存&#xff0c;返回首地址10</p> <p>第三条指令&#xff0c;释放首地址为0的内存申请&#xff0c;0~9地址内存被释放&#xff0c;变为空闲&#xff0c;释放成功&#xff0c;无需输出</p> <p>第四条指令&#xff0c;申请20字节内存&#xff0c;09地址内存连续空间不足20字节&#xff0c;往后查找到3049地址&#xff0c;返回首地址30</p> <p>第五条指令&#xff0c;申请10字节&#xff0c;0~9地址内存空间足够&#xff0c;返回首地址0</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>定义一个used数组&#xff0c;用来存储已被占用的内存区间&#xff0c;即[起始位置&#xff0c;结束位置]。</p> 
+<p>初始化给used数组一个 [100,101]&#xff0c;表示存在一个已占有内存区间[100,101]&#xff0c;这个内存区间将作为尾边界使用。</p> 
+<p></p> 
+<p>当REQUEST申请size大小的内存时&#xff0c;我们从start&#61;0位置开始申请&#xff0c;即申请[start, start&#43;size-1]区间&#xff0c;接下来看该区间是否和used[i]区间存在交叉&#xff0c;如果存在交xian叉&#xff0c;则说明申请的内存区间中部分内存已被使用&#xff0c;因此我们应该更新 start &#61; used[i][1] &#43; 1位置&#xff0c;重新申请一个区间&#xff0c;这样就必然不和used[i]区间交叉了&#xff0c;但是要继续和used[i&#43;1]区间比较。</p> 
+<p>直到找到一个不存在交叉的内存区间&#xff0c;打印此时的start&#xff0c;并将申请到的内存区间插入到used数组中&#xff0c;注意插入位置是 i 。</p> 
+<p>如果一直都找不到不存在交叉的内存区间&#xff0c;则打印error。</p> 
+<p></p> 
+<p>当RELEASE释放起始位置addr的内存时&#xff0c;我们只需要遍历每一个used[i]&#xff0c;比较used[i][0]和addr是否相同&#xff0c;若相同&#xff0c;则表示找到了要释放的内存&#xff0c;此时只要将used[i]从used中删除即可。</p> 
+<p>如果没有找到&#xff0c;则打印error。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    getResult(lines.map((line) &#61;&gt; line.split(&#34;&#61;&#34;)));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(commands) {
+  // used保存被占用的内存 [起始地址&#xff0c;结束地址]&#xff0c;初始时有一个[100,101]作为尾边界限定
+  const used &#61; [[100, 101]];
+
+  for (let [key, val] of commands) {
+    // 申请内存
+    if (key &#61;&#61;&#61; &#34;REQUEST&#34;) {
+      // 当指令为REQUEST时&#xff0c;对应值为要申请的内存的大小&#xff0c;即size
+      const size &#61; val - 0;
+
+      // 我们默认从start&#61;0位置开始检查可用内存区间
+      let start &#61; 0;
+      let flag &#61; true;
+
+      for (let i &#61; 0; i &lt; used.length; i&#43;&#43;) {
+        let end &#61; start &#43; size - 1;
+        // 要申请的内存区间
+        const range &#61; [start, end];
+        // 检查要申请的内存区间和已占有的内存区间是否交叉
+        if (!hasIntersection(used[i], range)) {
+          // 若不存在交叉&#xff0c;则将申请区间加入used中
+          used.splice(i, 0, range);
+          flag &#61; false;
+          // 并打印此时申请区间的起始位置
+          console.log(start);
+          break;
+        } else {
+          // 若存在交叉&#xff0c;则将变更要申请的内存区间的起始位置
+          start &#61; used[i][1] &#43; 1;
+        }
+      }
+
+      // 一旦申请到内存&#xff0c;那么flag就会被赋值为false&#xff0c;否则就保持true&#xff0c;意味着每申请到内存&#xff0c;则打印error
+      if (flag) console.log(&#34;error&#34;);
+    }
+    // 释放内存
+    else {
+      //  当指令为RELEASE时&#xff0c;值为要释放内存的起始地址addr
+      const addr &#61; val - 0;
+      let flag &#61; true;
+
+      for (let i &#61; 0; i &lt; used.length; i&#43;&#43;) {
+        // 到已占有内存中找起始位置是addr的&#xff0c;找到则将该区间从used中删除&#xff0c;表示解除占用
+        if (used[i][0] &#61;&#61;&#61; addr) {
+          used.splice(i, 1);
+          flag &#61; false;
+          break;
+        }
+      }
+
+      // 一旦释放成功&#xff0c;则flag就会被置为false&#xff0c;否则就保持True,意味着没有内存释放&#xff0c;则打印error
+      if (flag) console.log(&#34;error&#34;);
+    }
+  }
+}
+
+// 判断两个区间是否存在交集
+function hasIntersection(area1, area2) {
+  const [s1, e1] &#61; area1;
+  const [s2, e2] &#61; area2;
+
+  if (s1 &#61;&#61;&#61; s2) return true;
+  else if (s1 &lt; s2) return e1 &gt;&#61; s2;
+  else return e2 &gt;&#61; s1;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    String[][] cmds &#61; new String[n][2];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) cmds[i] &#61; sc.next().split(&#34;&#61;&#34;);
+
+    getResult(n, cmds);
+  }
+
+  // 算法入口
+  public static void getResult(int n, String[][] cmds) {
+    // used保存被占用的内存 [起始地址&#xff0c;结束地址]&#xff0c;初始时有一个[100,101]作为尾边界限定
+    LinkedList&lt;Integer[]&gt; used &#61; new LinkedList&lt;&gt;();
+    used.add(new Integer[] {100, 101});
+
+    for (String[] cmd : cmds) {
+      String key &#61; cmd[0];
+      String val &#61; cmd[1];
+
+      // 申请内存
+      if (&#34;REQUEST&#34;.equals(key)) {
+        // 当指令为REQUEST时&#xff0c;对应值为要申请的内存的大小&#xff0c;即size
+        int size &#61; Integer.parseInt(val);
+
+        // 我们默认从start&#61;0位置开始检查可用内存区间
+        int start &#61; 0;
+        boolean flag &#61; true;
+
+        for (int i &#61; 0; i &lt; used.size(); i&#43;&#43;) {
+          int end &#61; start &#43; size - 1;
+          // 要申请的内存区间
+          Integer[] range &#61; {start, end};
+
+          // 检查要申请的内存区间和已占有的内存区间是否交叉
+          if (!hasIntersection(used.get(i), range)) {
+            // 若不存在交叉&#xff0c;则将申请区间加入used中
+            used.add(i, range);
+            flag &#61; false;
+            // 并打印此时申请区间的起始位置
+            System.out.println(start);
+            break;
+          } else {
+            // 若存在交叉&#xff0c;则将变更要申请的内存区间的起始位置
+            start &#61; used.get(i)[1] &#43; 1;
+          }
+        }
+
+        // 一旦申请到内存&#xff0c;那么flag就会被赋值为false&#xff0c;否则就保持true&#xff0c;意味着每申请到内存&#xff0c;则打印error
+        if (flag) System.out.println(&#34;error&#34;);
+      }
+      // 释放内存
+      else {
+        //  当指令为RELEASE时&#xff0c;值为要释放内存的起始地址addr
+        int addr &#61; Integer.parseInt(val);
+        boolean flag &#61; true;
+
+        for (int i &#61; 0; i &lt; used.size(); i&#43;&#43;) {
+          // 到已占有内存中找起始位置是addr的&#xff0c;找到则将该区间从used中删除&#xff0c;表示解除占用
+          if (used.get(i)[0] &#61;&#61; addr) {
+            used.remove(i);
+            flag &#61; false;
+            break;
+          }
+        }
+
+        // 一旦释放成功&#xff0c;则flag就会被置为false&#xff0c;否则就保持True,意味着没有内存释放&#xff0c;则打印error
+        if (flag) System.out.println(&#34;error&#34;);
+      }
+    }
+  }
+
+  // 判断两个区间是否存在交集
+  public static boolean hasIntersection(Integer[] range1, Integer[] range2) {
+    int s1 &#61; range1[0];
+    int e1 &#61; range1[1];
+
+    int s2 &#61; range2[0];
+    int e2 &#61; range2[1];
+
+    if (s1 &#61;&#61; s2) return true;
+    else if (s1 &lt; s2) return e1 &gt;&#61; s2;
+    else return e2 &gt;&#61; s1;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+cmds &#61; [input().split(&#34;&#61;&#34;) for _ in range(n)]
+
+
+# 判断两个区间是否存在交集
+def hasIntersection(a1, a2):
+    s1, e1 &#61; a1
+    s2, e2 &#61; a2
+
+    if s1 &#61;&#61; s2:
+        return True
+    elif s1 &lt; s2:
+        return e1 &gt;&#61; s2
+    else:
+        return e2 &gt;&#61; s1
+
+
+# 算法入口
+def getResult():
+    # used保存被占用的内存 [起始地址&#xff0c;结束地址]&#xff0c;初始时有一个[100,101]作为尾边界限定
+    used &#61; [[100, 101]]
+
+    for key, val in cmds:
+        # 申请内存
+        if key &#61;&#61; &#34;REQUEST&#34;:
+            # 当指令为REQUEST时&#xff0c;对应值为要申请的内存的大小&#xff0c;即size
+            size &#61; int(val)
+
+            #  我们默认从start&#61;0位置开始检查可用内存区间
+            start &#61; 0
+            flag &#61; True
+
+            for i in range(len(used)):
+                end &#61; start &#43; size - 1
+
+                # 要申请的内存区间
+                ran &#61; [start, end]
+
+                # 检查要申请的内存区间和已占有的内存区间是否交叉
+                if not hasIntersection(used[i], ran):
+                    # 若不存在交叉&#xff0c;则将申请区间加入used中
+                    used.insert(i, ran)
+                    flag &#61; False
+                    # 并打印此时申请区间的起始位置
+                    print(start)
+                    break
+                else:
+                    #  若存在交叉&#xff0c;则将变更要申请的内存区间的起始位置
+                    start &#61; used[i][1] &#43; 1
+
+            # 一旦申请到内存&#xff0c;那么flag就会被赋值为false&#xff0c;否则就保持true&#xff0c;意味着每申请到内存&#xff0c;则打印error
+            if flag:
+                print(&#34;error&#34;)
+        # 释放内存
+        else:
+            # 当指令为RELEASE时&#xff0c;值为要释放内存的起始地址addr
+            addr &#61; int(val)
+            flag &#61; True
+
+            for i in range(len(used)):
+                # 到已占有内存中找起始位置是addr的&#xff0c;找到则将该区间从used中删除&#xff0c;表示解除占用
+                if used[i][0] &#61;&#61; addr:
+                    used.pop(i)
+                    flag &#61; False
+                    break
+
+            # 一旦释放成功&#xff0c;则flag就会被置为false&#xff0c;否则就保持True,意味着没有内存释放&#xff0c;则打印error
+            if flag:
+                print(&#34;error&#34;)
+
+
+# 算法调用
+getResult()
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

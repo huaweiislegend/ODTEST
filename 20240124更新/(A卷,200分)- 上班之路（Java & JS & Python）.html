@@ -1,0 +1,382 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 上班之路（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p><em>Jungle </em>生活在美丽的蓝鲸城&#xff0c;大马路都是方方正正&#xff0c;但是每天马路的封闭情况都不一样。<br /> 地图由以下元素组成&#xff1a;<br /> 1&#xff09;”.” — 空地&#xff0c;可以达到;<br /> 2&#xff09;”*” — 路障&#xff0c;不可达到;<br /> 3&#xff09;”S” — Jungle的家;<br /> 4&#xff09;”T” — 公司.<br /> 其中我们会限制<em>Jungle</em>拐弯的次数&#xff0c;同时<em>Jungle</em>可以清除给定个数的路障&#xff0c;现在你的任务是计算<em>Jungle</em>是否可以从家里出发到达公司。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的第一行为两个整数t,c&#xff08;0 ≤ t,c ≤ 100&#xff09;,t代表可以拐弯的次数&#xff0c;c代表可以清除的路障个数。</p> 
+<p>输入的第二行为两个整数n,m&#xff08;1 ≤ n,m ≤ 100&#xff09;,代表地图的大小。</p> 
+<p>接下来是n行包含m个字符的地图。n和m可能不一样大。</p> 
+<p>我们保证地图里有S和T。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出是否可以从家里出发到达公司&#xff0c;是则输出YES&#xff0c;不能则输出NO。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 0<br /> 5 5<br /> ..S..<br /> ****.<br /> T....<br /> ****.<br /> .....</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">YES</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">1 2<br /> 5 5<br /> .*S*.<br /> *****<br /> ..*..<br /> *****<br /> T....</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">NO</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">该用例中&#xff0c;至少需要拐弯1次&#xff0c;清除3个路障&#xff0c;所以无法到达</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1图示</p> 
+<p><img alt="" height="317" src="https://img-blog.csdnimg.cn/8af082027f424b729cbae97b2989a74b.png" width="360" /></p> 
+<p>用例2图示</p> 
+<p><img alt="" height="315" src="https://img-blog.csdnimg.cn/8f487181bef44e4c8f930e5096966421.png" width="361" /></p> 
+<p></p> 
+<p>本题和迷宫问题很像&#xff0c;都可以使用深度优先搜索来做&#xff0c;相较于其他迷宫问题&#xff0c;本题对找终点的运动路径做了如下限制&#xff1a;</p> 
+<p>1、最多只能变更t次数运动方向</p> 
+<p>2、支持破壁&#xff0c;即清除障碍&#xff0c;但是最多只能破壁c次数。</p> 
+<p>因此&#xff0c;我们在深度优先搜索之前&#xff0c;需要定义两个变量&#xff1a;</p> 
+<ul><li>ut&#xff1a;已变更了几次运动方向</li><li>uc&#xff1a;已破壁几次</li></ul> 
+<p>如果深度优先搜索的下一步的代价是ut &gt; t&#xff0c;或者uc &gt; c&#xff0c;则说明下一步无法继续走了。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<p>可以debug看下path中运动位置变化帮助理解</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let t, c, n, m;
+let matrix;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    [t, c] &#61; lines[0].split(&#34; &#34;).map(Number);
+    [n, m] &#61; lines[1].split(&#34; &#34;).map(Number);
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 2) {
+    matrix &#61; lines.slice(2).map((line) &#61;&gt; line.split(&#34;&#34;));
+    console.log(getResult());
+    lines.length &#61; 0;
+  }
+});
+
+function getResult() {
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; m; j&#43;&#43;) {
+      if (matrix[i][j] &#61;&#61; &#34;S&#34;) {
+        return dfs(i, j, 0, 0, undefined, new Set([&#96;${i}-${j}&#96;]))
+          ? &#34;YES&#34;
+          : &#34;NO&#34;;
+      }
+    }
+  }
+}
+
+const offsets &#61; [
+  [-1, 0, &#34;up&#34;],
+  [1, 0, &#34;down&#34;],
+  [0, -1, &#34;left&#34;],
+  [0, 1, &#34;right&#34;],
+];
+
+/**
+ * &#64;param {*} si 当前位置横坐标
+ * &#64;param {*} sj 当前位置纵坐标
+ * &#64;param {*} ut 已拐弯次数
+ * &#64;param {*} uc 已破壁次数
+ * &#64;param {*} lastDirect 上一次运动方向&#xff0c;初始为undefined&#xff0c;表示第一次运动不会造成拐弯
+ * &#64;param {*} path 行动路径&#xff0c;用于记录走过的位置&#xff0c;避免走老路
+ * &#64;returns
+ */
+function dfs(si, sj, ut, uc, lastDirect, path) {
+  // 如果当前位置就是目的地&#xff0c;则返回true
+  if (matrix[si][sj] &#61;&#61; &#34;T&#34;) {
+    return true;
+  }
+
+  // 有四个方向选择走下一步
+  for (let offset of offsets) {
+    const [offsetX, offsetY, direct] &#61; offset;
+    const newI &#61; si &#43; offsetX;
+    const newJ &#61; sj &#43; offsetY;
+
+    // flag1记录是否拐弯
+    let flag1 &#61; false;
+    // flag2记录是否破壁
+    let flag2 &#61; false;
+
+    // 如果下一步位置没有越界&#xff0c;则进一步检查
+    if (newI &gt;&#61; 0 &amp;&amp; newI &lt; n &amp;&amp; newJ &gt;&#61; 0 &amp;&amp; newJ &lt; m) {
+      // 如果下一步位置已经走过了&#xff0c;则是老路&#xff0c;可以不走
+      const pos &#61; &#96;${newI}-${newJ}&#96;;
+      if (path.has(pos)) continue;
+
+      // 如果下一步位置需要拐弯
+      if (lastDirect &amp;&amp; lastDirect !&#61; direct) {
+        // 如果拐弯次数用完了&#xff0c;则不走
+        if (ut &#43; 1 &gt; t) continue;
+        // 否则就走
+        flag1 &#61; true;
+      }
+
+      // 如果下一步位置需要破壁
+      if (matrix[newI][newJ] &#61;&#61; &#34;*&#34;) {
+        // 如果破壁次数用完了&#xff0c;则不走
+        if (uc &#43; 1 &gt; c) continue;
+        // 否则就走
+        flag2 &#61; true;
+      }
+
+      // 记录已走过的位置
+      path.add(pos);
+
+      // 继续下一步递归
+      const res &#61; dfs(
+        newI,
+        newJ,
+        ut &#43; (flag1 ? 1 : 0), // 如果拐弯了&#xff0c;则已使用的拐弯次数&#43;&#43;
+        uc &#43; (flag2 ? 1 : 0), // 如果破壁了&#xff0c;则已使用的破壁次数&#43;&#43;
+        direct,
+        path
+      );
+
+      // 如果某路径可以在给定的t,c下&#xff0c;到达目的地T&#xff0c;则返回true
+      if (res) return true;
+
+      // 否则&#xff0c;回溯
+      path.delete(pos);
+    }
+  }
+
+  return false;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashSet;
+import java.util.Scanner;
+
+public class Main {
+  static int t, c, n, m;
+  static String[][] matrix;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    t &#61; sc.nextInt();
+    c &#61; sc.nextInt();
+
+    n &#61; sc.nextInt();
+    m &#61; sc.nextInt();
+
+    matrix &#61; new String[n][m];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      matrix[i] &#61; sc.next().split(&#34;&#34;);
+    }
+
+    System.out.println(getResult());
+  }
+
+  public static String getResult() {
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        if (&#34;S&#34;.equals(matrix[i][j])) {
+          HashSet&lt;Integer&gt; path &#61; new HashSet&lt;&gt;();
+          path.add(i * m &#43; j);
+          return dfs(i, j, 0, 0, 0, path) ? &#34;YES&#34; : &#34;NO&#34;;
+        }
+      }
+    }
+    return &#34;NO&#34;;
+  }
+
+  // 元素含义【行偏移&#xff0c;列偏移&#xff0c;运动方向】&#xff0c;运动方向&#xff1a;1上&#xff0c;2下&#xff0c;3左&#xff0c;4右
+  static int[][] offsets &#61; {<!-- -->{-1, 0, 1}, {1, 0, 2}, {0, -1, 3}, {0, 1, 4}};
+
+  /**
+   * &#64;param si 当前位置横坐标
+   * &#64;param sj 当前位置纵坐标
+   * &#64;param ut 已拐弯次数
+   * &#64;param uc 已破壁次数
+   * &#64;param lastDirect 上一次运动方向&#xff0c;初始为0&#xff0c;表示第一次运动不会造成拐弯
+   * &#64;param path 行动路径&#xff0c;用于记录走过的位置&#xff0c;避免走老路
+   * &#64;return 终点是否可达
+   */
+  public static boolean dfs(int si, int sj, int ut, int uc, int lastDirect, HashSet&lt;Integer&gt; path) {
+    // 如果当前位置就是目的地&#xff0c;则返回true
+    if (&#34;T&#34;.equals(matrix[si][sj])) {
+      return true;
+    }
+
+    // 有四个方向选择走下一步
+    for (int[] offset : offsets) {
+      int direct &#61; offset[2];
+      int newI &#61; si &#43; offset[0];
+      int newJ &#61; sj &#43; offset[1];
+
+      // flag1记录本次运动是否拐弯
+      boolean flag1 &#61; false;
+      // flag2记录本次运动是否破壁
+      boolean flag2 &#61; false;
+
+      // 如果下一步位置没有越界&#xff0c;则进一步检查
+      if (newI &gt;&#61; 0 &amp;&amp; newI &lt; n &amp;&amp; newJ &gt;&#61; 0 &amp;&amp; newJ &lt; m) {
+        // 如果下一步位置已经走过了&#xff0c;则是老路&#xff0c;可以不走
+        int pos &#61; newI * m &#43; newJ;
+        if (path.contains(pos)) continue;
+
+        // 如果下一步位置需要拐弯
+        if (lastDirect !&#61; 0 &amp;&amp; lastDirect !&#61; direct) {
+          // 如果拐弯次数用完了&#xff0c;则不走
+          if (ut &#43; 1 &gt; t) continue;
+          // 否则就走
+          flag1 &#61; true;
+        }
+
+        // 如果下一步位置需要破壁
+        if (&#34;*&#34;.equals(matrix[newI][newJ])) {
+          // 如果破壁次数用完了&#xff0c;则不走
+          if (uc &#43; 1 &gt; c) continue;
+          // 否则就走
+          flag2 &#61; true;
+        }
+
+        // 记录已走过的位置
+        path.add(pos);
+
+        // 继续下一步递归
+        boolean res &#61; dfs(newI, newJ, ut &#43; (flag1 ? 1 : 0), uc &#43; (flag2 ? 1 : 0), direct, path);
+
+        // 如果某路径可以在给定的t,c下&#xff0c;到达目的地T&#xff0c;则返回true
+        if (res) return true;
+
+        // 否则&#xff0c;回溯
+        path.remove(pos);
+      }
+    }
+    return false;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">t, c &#61; map(int, input().split())
+n, m &#61; map(int, input().split())
+matrix &#61; []
+for i in range(n):
+    matrix.append(input())
+
+offsets &#61; ((-1, 0, &#34;up&#34;), (1, 0, &#34;down&#34;), (0, -1, &#34;left&#34;), (0, 1, &#34;right&#34;))
+
+
+def dfs(si, sj, ut, uc, lastDirect, path):
+    &#34;&#34;&#34;
+    :param si: 当前位置横坐标
+    :param sj: 当前位置纵坐标
+    :param ut: 已拐弯次数
+    :param uc: 已破壁次数
+    :param lastDirect: 上一次运动方向&#xff0c;初始为undefined&#xff0c;表示第一次运动不会造成拐弯
+    :param path: 行动路径&#xff0c;用于记录走过的位置&#xff0c;避免走老路
+    :return:
+    &#34;&#34;&#34;
+
+    # 如果当前位置就是目的地&#xff0c;则返回true
+    if matrix[si][sj] &#61;&#61; &#34;T&#34;:
+        return True
+
+    # 有四个方向选择走下一步
+    for offset in offsets:
+        offsetX, offsetY, direct &#61; offset
+        newI &#61; si &#43; offsetX
+        newJ &#61; sj &#43; offsetY
+
+        # flag1记录是否拐弯
+        flag1 &#61; False
+        # flag2记录是否破壁
+        flag2 &#61; False
+
+        # 如果下一步位置没有越界&#xff0c;则进一步检查
+        if 0 &lt;&#61; newI &lt; n and 0 &lt;&#61; newJ &lt; m:
+            # 如果下一步位置已经走过了&#xff0c;则是老路&#xff0c;可以不走
+            pos &#61; f&#39;{newI}-{newJ}&#39;
+
+            if pos in path:
+                continue
+
+            # 如果下一步位置需要拐弯
+            if lastDirect is not None and lastDirect !&#61; direct:
+                # 如果拐弯次数用完了&#xff0c;则不走
+                if ut &#43; 1 &gt; t:
+                    continue
+                # 否则就走
+                flag1 &#61; True
+
+            # 如果下一步位置需要破壁
+            if matrix[newI][newJ] &#61;&#61; &#34;*&#34;:
+                # 如果破壁次数用完了&#xff0c;则不走
+                if uc &#43; 1 &gt; c:
+                    continue
+                # 否则就走
+                flag2 &#61; True
+
+            # 记录已走过的位置
+            path.add(pos)
+
+            # 继续下一步递归
+            # 如果拐弯了&#xff0c;则已使用的拐弯次数ut&#43;&#43;
+            # 如果破壁了&#xff0c;则已使用的破壁次数uc&#43;&#43;
+            res &#61; dfs(newI, newJ, ut &#43; (1 if flag1 else 0), uc &#43; (1 if flag2 else 0), direct, path)
+
+            # 如果某路径可以在给定的t,c下&#xff0c;到达目的地T&#xff0c;则返回true
+            if res:
+                return True
+
+            # 否则&#xff0c;回溯
+            path.remove(pos)
+
+    return False
+
+
+def getResult():
+    for i in range(n):
+        for j in range(m):
+            if matrix[i][j] &#61;&#61; &#34;S&#34;:
+                return &#34;YES&#34; if dfs(i, j, 0, 0, None, {f&#39;{i}-{j}&#39;}) else &#34;NO&#34;
+
+
+print(getResult())
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

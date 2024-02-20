@@ -1,0 +1,382 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 数据单元的变化替换（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p><span style="color:#0d0016;">将一个 csv 格式的数据文件中包含有单元格引用的内容替换为对应单元格内容的实际值。</span></p> 
+<p><span style="color:#0d0016;">comma separated values(CSV) 逗号分隔值&#xff0c;csv 格式的数据文件使用逗号 &#34;,&#34; 作为分隔符将各单元的内容进行分隔。</span></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<ol><li>输入只有一行数据&#xff0c;用逗号分隔每个单元格&#xff0c;行尾没有逗号。最多26个单元格&#xff0c;对应编号A~Z。<br />  </li><li>每个单元格的内容包含字母和数字&#xff0c;以及使用 &#39;&lt;&gt;&#39; 分隔的单元格引用&#xff0c;例如&#xff1a;&lt;A&gt;表示引用第一个单元的值。<br />  </li><li>每个单元格的内容&#xff0c;在替换前和替换后均不超过100个字符。<br />  </li><li>引用单元格的位置不受限制&#xff0c;允许排在后面的单元格被排在前面的单元格引用。<br />  </li><li>不存在循环引用的情况&#xff0c;比如下面这种场景是不存在的&#xff1a;<br /><br /> A单元恪&#xff1a;aCd&lt;B&gt;8U<br /><br /> B单元格&#xff1a;KAy&lt;A&gt;uZq0<br />  </li><li>不存在多重 &#39;&lt;&gt;&#39; 的情况&#xff0c;一个单元只能引用一个其他单元格。比如下面这种场景是不存在的&#xff1a;<br /><br /> A单元格&#xff1a;aCdOu<br /><br /> B单元格&#xff1a;kAydzco<br /><br /> C单元格&#xff1a;y&lt;&lt;A&gt;&lt;B&gt;&gt;d</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p><span style="color:#0d0016;">输出替换后的结果</span></p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1,2&lt;A&gt;00</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1,2100</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第二个单元中有对A单元的引用&#xff0c;A单元格的值为1&#xff0c;替换时&#xff0c;将A单元的内容替代&lt;A&gt;的位置&#xff0c;并和其他内容合并。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1&lt;B&gt;2,1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">112,1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第一个单元中有对B单元的引用&#xff0c;B单元格的值为1&#xff0c;耆换时&#xff0c;将第二个数据第单元的内容替代&lt;B&gt;的位置&#xff0c;并和其他内容合并</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">&lt;A&gt;</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第一个单元中有错误的单元格引用方式&#xff0c;输出字符串&#34;-1&#34;表示错误</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题应该主要是考察递归。</p> 
+<p></p> 
+<p>因为单元格内含有&#34;引用1&#34;&#xff0c;我们需要根据&#34;引用1&#34;&#xff0c;去找引用的单元格1内容&#xff0c;而被引用的单元格1中也可能存在&#34;引用2&#34;&#xff0c;我们需要根据&#34;引用2&#34;&#xff0c;去找引用的单元格2内容&#xff0c;....&#xff0c;因此需要不停地根据&#34;引用&#34;找下去&#xff0c;直到某个引用的单元格内容中不存在&#34;引用&#34;&#xff0c;然后开始回溯。</p> 
+<p></p> 
+<p>这个逻辑很容易想到用递归去完成。而且本题已经说明了&#xff1a;</p> 
+<ul><li>不存在循环引用的情况</li><li>不存在多重 &#39;&lt;&gt;&#39; 的情况&#xff08;嵌套引用&#xff09;</li></ul> 
+<p>因此&#xff0c;递归的逻辑非常简单。</p> 
+<p></p> 
+<p>本题用例3给出了一个异常情况&#xff1a;</p> 
+<ul><li>&lt;A&gt;</li></ul> 
+<p>即发生了自引用&#xff0c;我理解其实也算是循环引用。对于异常情况&#xff0c;要输出-1。</p> 
+<p></p> 
+<p>本题的主要难点应该在于异常情况的发掘。我觉得&#xff0c;还可能会存在如下异常用例&#xff1a;</p> 
+<ul><li>A,B,12<span style="color:#fe2c24;">&lt;AB&gt;</span>3,D,E,F</li><li>A,B,12<span style="color:#fe2c24;">&lt;1&gt;</span>3,D,E,F</li><li>A,B,12<span style="color:#fe2c24;">&lt;Z&gt;</span>3,D,E,F</li></ul> 
+<p>即</p> 
+<ul><li>&lt;&gt;中可能有多个字母&#xff08;也可能是多个字母&#xff0c;数字&#xff09;</li><li>&lt;&gt;中的字符不是字母</li><li>&lt;&gt;中的单个字母超出给出的单元格长度范围</li></ul> 
+<p>这些都算是异常情况。</p> 
+<p></p> 
+<p>即我们应该对&lt;&gt;中的内容做如下判断&#xff1a;</p> 
+<ul><li>内容长度只能是1</li><li>内容只能是A~Z字母</li><li>内容的单个字母对应的索引&#xff0c;不能超出输入单元格数量</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入处理
+void (async function () {
+  const cells &#61; (await readline()).split(&#34;,&#34;);
+
+  const regexp &#61; /(&lt;.*?&gt;)/;
+
+  function changeCell(index) {
+    // 通过正则匹配出单元格内容中&#34;引用字符串&#34;
+    let matchers &#61; regexp.exec(cells[index]);
+
+    while (matchers !&#61; undefined) {
+      // reference记录引用字符串
+      const reference &#61; matchers[0];
+
+      // 引用单元格编号只能是A~Z的字母&#xff0c;即引用引用字符串长度只能是3&#xff0c;比如&#34;&lt;A&gt;&#34;
+      if (reference.length !&#61; 3) {
+        return false;
+      }
+
+      // 引用单元格的编号
+      const reference_cellNum &#61; reference[1];
+      // 当前单元格的编号
+      const self_cellNum &#61; String.fromCharCode(65 &#43; index);
+
+      // 引用单元格编号只能是A~Z的字母&#xff0c;且不能自引用
+      if (
+        reference_cellNum &lt; &#34;A&#34; ||
+        reference_cellNum &gt; &#34;Z&#34; ||
+        reference_cellNum &#61;&#61; self_cellNum
+      ) {
+        return false;
+      }
+
+      // 引用单元格的数组索引&#xff0c; &#39;A&#39; -&gt; 0  ... &#39;Z&#39; -&gt; 25
+      const reference_index &#61; reference_cellNum.charCodeAt() - 65;
+
+      // 引用单元格编号不存在
+      if (reference_index &gt;&#61; cells.length) {
+        return false;
+      }
+
+      if (!changeCell(reference_index)) return false;
+
+      // 将单元格内容中的引用部分&#xff0c;替换为被引用的单元格的内容
+      cells[index] &#61; cells[index].replace(reference, cells[reference_index]);
+
+      matchers &#61; regexp.exec(cells[index]);
+    }
+
+    return true;
+  }
+
+  for (let i &#61; 0; i &lt; cells.length; i&#43;&#43;) {
+    // 替换单元格中的引用&#xff0c;替换失败&#xff0c;则返回-1
+    if (!changeCell(i)) {
+      return console.log(&#34;-1&#34;);
+    }
+  }
+
+  // 替换成功&#xff0c;则记录单元格内容
+  console.log(cells.join(&#34;,&#34;));
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.StringJoiner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+  static String[] cells;
+  static Pattern p &#61; Pattern.compile(&#34;(&lt;.*?&gt;)&#34;);
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    cells &#61; sc.nextLine().split(&#34;,&#34;);
+    System.out.println(getResult());
+  }
+
+  public static String getResult() {
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+
+    for (int i &#61; 0; i &lt; cells.length; i&#43;&#43;) {
+      // 替换单元格中的引用&#xff0c;替换失败&#xff0c;则返回-1
+      if (!changeCell(i)) return &#34;-1&#34;;
+      // 替换成功&#xff0c;则记录单元格内容
+      sj.add(cells[i]);
+    }
+
+    return sj.toString();
+  }
+
+  public static boolean changeCell(int index) {
+    // 通过正则匹配出单元格内容中&#34;引用字符串&#34;
+    Matcher m &#61; p.matcher(cells[index]);
+
+    while (m.find()) {
+      // reference记录引用字符串
+      String reference &#61; m.group(0);
+
+      // 引用单元格编号只能是A~Z的字母&#xff0c;即引用引用字符串长度只能是3&#xff0c;比如&#34;&lt;A&gt;&#34;
+      if (reference.length() !&#61; 3) {
+        return false;
+      }
+
+      // 引用单元格的编号
+      char reference_cellNum &#61; reference.charAt(1);
+      // 当前单元格的编号
+      char self_cellNum &#61; (char) (&#39;A&#39; &#43; index);
+
+      // 引用单元格编号只能是A~Z的字母&#xff0c;且不能自引用
+      if (reference_cellNum &lt; &#39;A&#39; || reference_cellNum &gt; &#39;Z&#39; || reference_cellNum &#61;&#61; self_cellNum) {
+        return false;
+      }
+
+      // 引用单元格的数组索引&#xff0c; &#39;A&#39; -&gt; 0  ... &#39;Z&#39; -&gt; 25
+      int reference_index &#61; reference_cellNum - &#39;A&#39;;
+
+      // 引用单元格编号不存在
+      if (reference_index &gt;&#61; cells.length) {
+        return false;
+      }
+
+      if (!changeCell(reference_index)) return false;
+
+      // 将单元格内容中的引用部分&#xff0c;替换为被引用的单元格的内容
+      cells[index] &#61; cells[index].replaceAll(reference, cells[reference_index]);
+      // 重新正则匹配
+      m &#61; p.matcher(cells[index]);
+    }
+
+    return true;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+regexp &#61; re.compile(r&#34;(&lt;.*?&gt;)&#34;)
+
+# 输入获取
+cells &#61; input().split(&#34;,&#34;)
+
+
+def changeCell(index):
+    # 通过正则匹配出单元格内容中&#34;引用字符串&#34;
+    matchers &#61; regexp.findall(cells[index])
+
+    # reference记录引用字符串
+    for reference in matchers:
+        # 引用单元格编号只能是A~Z的字母&#xff0c;即引用引用字符串长度只能是3&#xff0c;比如&#34;&lt;A&gt;&#34;
+        if len(reference) !&#61; 3:
+            return False
+
+        # 引用单元格的编号
+        reference_cellNum &#61; reference[1]
+        # 当前单元格的编号
+        self_cellNum &#61; chr(65 &#43; index)
+
+        # 引用单元格编号只能是A~Z的字母&#xff0c;且不能自引用
+        if reference_cellNum &lt; &#39;A&#39; or reference_cellNum &gt; &#39;Z&#39; or reference_cellNum &#61;&#61; self_cellNum:
+            return False
+
+        # 引用单元格的数组索引&#xff0c; &#39;A&#39; -&gt; 0  ... &#39;Z&#39; -&gt; 25
+        reference_index &#61; ord(reference_cellNum) - 65
+
+        # 引用单元格编号不存在
+        if reference_index &gt;&#61; len(cells):
+            return False
+
+        if not changeCell(reference_index):
+            return False
+
+        # 将单元格内容中的引用部分&#xff0c;替换为被引用的单元格的内容
+        cells[index] &#61; cells[index].replace(reference, cells[reference_index])
+
+    return True
+
+
+# 算法入口
+def getResult():
+    for i in range(len(cells)):
+        # 替换单元格中的引用&#xff0c;替换失败&#xff0c;则返回-1
+        if not changeCell(i):
+            return &#34;-1&#34;
+
+    # 替换成功&#xff0c;则记录单元格内容
+    return &#34;,&#34;.join(cells)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define TRUE 1
+#define FALSE 0
+
+#define MAX_SIZE 26
+#define MAX_CELL_CONTENT_LENGTH 110
+
+// cells[i]记录每个单元格的内容
+char cells[MAX_SIZE][MAX_CELL_CONTENT_LENGTH];
+int cells_size &#61; 0;
+
+// res记录最后打印结果
+char res[MAX_SIZE * MAX_CELL_CONTENT_LENGTH] &#61; {&#39;\0&#39;};
+
+int changeCell(int index) {
+    // 原始单元格内容
+    char *cell &#61; cells[index];
+    unsigned long long cell_length &#61; strlen(cell);
+
+    // 替换引用后的单元格内容
+    char cell_changed[MAX_CELL_CONTENT_LENGTH] &#61; {&#39;\0&#39;};
+    unsigned long long cell_changed_length &#61; 0;
+
+    int l &#61; 0;
+    while (cell[l] !&#61; &#39;\0&#39;) {
+        if (cell[l] !&#61; &#39;&lt;&#39;) {
+            // 非&lt;&gt;中的内容直接记录到cell_changed
+            cell_changed[cell_changed_length&#43;&#43;] &#61; cell[l&#43;&#43;];
+            continue;
+        }
+
+        // 引用单元格编号只能是A~Z的字母&#xff0c;即引用引用字符串长度只能是3&#xff0c;比如&#34;&lt;A&gt;&#34;
+        // 因此 l ~ l&#43;2 是引用范围&#xff0c;l指向&#39;&lt;&#39;&#xff0c; l&#43;2指向&#39;&gt;&#39;&#xff0c; l&#43;1指向单元格编号
+        if (cell[l &#43; 2] !&#61; &#39;&gt;&#39;) {
+            return FALSE;
+        }
+
+        // 引用单元格的编号
+        char reference_cell_num &#61; cell[l &#43; 1];
+        // 当前单元格的编号
+        char self_cell_num &#61; (char) (&#39;A&#39; &#43; index);
+
+        // 引用单元格编号只能是A~Z的字母&#xff0c;且不能自引用
+        if (reference_cell_num &lt; &#39;A&#39; || reference_cell_num &gt; &#39;Z&#39; || reference_cell_num &#61;&#61; self_cell_num) {
+            return FALSE;
+        }
+
+        // 引用单元格的数组索引&#xff0c; &#39;A&#39; -&gt; 0  ... &#39;Z&#39; -&gt; 25
+        int reference_index &#61; reference_cell_num - &#39;A&#39;;
+
+        // 引用单元格编号不存在
+        if (reference_index &gt;&#61; cells_size) {
+            return FALSE;
+        }
+
+        if (!changeCell(reference_index)) return FALSE;
+
+        // 将单元格内容中的引用部分&#xff0c;替换为被引用的单元格的内容
+        strcat(cell_changed, cells[reference_index]);
+        // 将 “引用” 替换为 “单元格内容”后&#xff0c;更新cell_changed的长度
+        cell_changed_length &#61; strlen(cell_changed);
+
+        // 将 l 移动到 l&#43;2指向的&#39;&gt;&#39; 后面
+        l &#43;&#61; 3;
+    }
+
+    strcpy(cells[index], cell_changed);
+
+    return TRUE;
+}
+
+int main() {
+    char s[MAX_SIZE * MAX_CELL_CONTENT_LENGTH];
+    scanf(&#34;%s&#34;, s);
+
+    // 按照分隔符&#34;,&#34;截取输入字符串
+    char *token &#61; strtok(s, &#34;,&#34;);
+    while (token !&#61; NULL) {
+        strcpy(cells[cells_size&#43;&#43;], token);
+        token &#61; strtok(NULL, &#34;,&#34;);
+    }
+
+    // 对每个单元格内容进行“引用”替换
+    for (int i &#61; 0; i &lt; cells_size; i&#43;&#43;) {
+        if (!changeCell(i)) {
+            // 如果某个单元格&#34;引用&#34;替换失败&#xff0c;则返回&#34;-1&#34;
+            puts(&#34;-1&#34;);
+            return 0;
+        } else {
+            // 否则记录该单元格内容到结果字符串
+            strcat(res, cells[i]);
+
+            if (i !&#61; cells_size - 1) {
+                strcat(res, &#34;,&#34;);
+            }
+        }
+    }
+
+    puts(res);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

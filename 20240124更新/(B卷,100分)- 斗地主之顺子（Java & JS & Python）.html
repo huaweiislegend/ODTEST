@@ -1,0 +1,604 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 斗地主之顺子（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>在斗地主扑克牌游戏中&#xff0c; 扑克牌由小到大的顺序为&#xff1a;3,4,5,6,7,8,9,10,J,Q,K,A,2&#xff0c;玩家可以出的扑克牌阵型有&#xff1a;单张、对子、顺子、飞机、炸弹等。</p> 
+<p>其中顺子的出牌规则为&#xff1a;由至少5张由小到大连续递增的扑克牌组成&#xff0c;且不能包含2。</p> 
+<p>例如&#xff1a;{3,4,5,6,7}、{3,4,5,6,7,8,9,10,J,Q,K,A}都是有效的顺子&#xff1b;而{J,Q,K,A,2}、 {2,3,4,5,6}、{3,4,5,6}、{3,4,5,6,8}等都不是顺子。</p> 
+<p>给定一个包含13张牌的数组&#xff0c;如果有满足出牌规则的顺子&#xff0c;请输出顺子。</p> 
+<p>如果存在多个顺子&#xff0c;请每行输出一个顺子&#xff0c;且需要按顺子的第一张牌的大小&#xff08;必须从小到大&#xff09;依次输出。</p> 
+<p>如果没有满足出牌规则的顺子&#xff0c;请输出No。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>13张任意顺序的扑克牌&#xff0c;每张扑克牌数字用空格隔开&#xff0c;每张扑克牌的数字都是合法的&#xff0c;并且不包括大小王&#xff1a;2 9 J 2 3 4 K A 7 9 A 5 6</p> 
+<p>不需要考虑输入为异常字符的情况</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>组成的顺子&#xff0c;每张扑克牌数字用空格隔开&#xff1a;3 4 5 6 7</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 9 J 2 3 4 K A 7 9 A 5 6</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3 4 5 6 7</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">13张牌中&#xff0c;可以组成的顺子只有1组&#xff1a;3 4 5 6 7。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 9 J 10 3 4 K A 7 Q A 5 6</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"> <p>3 4 5 6 7<br /> 9 10 J Q K A</p> </td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">13张牌中&#xff0c;可以组成2组顺子&#xff0c;从小到大分别为&#xff1a;3 4 5 6 7 和 9 10 J Q K A</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 9 9 9 3 4 K A 10 Q A 5 6</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">No</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">13张牌中&#xff0c;无法组成顺子。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>先看一个例子&#xff1a;</p> 
+<blockquote> 
+ <p>3 4 5 6 6 7 7 8 9 10</p> 
+</blockquote> 
+<p>这个例子该输出什么呢&#xff1f;</p> 
+<p>如果是优先最长顺子的话&#xff0c;那么应该输出&#xff1a;</p> 
+<blockquote> 
+ <p>3 4 5 6 7 8 9 10</p> 
+</blockquote> 
+<p>如果是优先最多顺子的话&#xff0c;那么应该输出&#xff1a;</p> 
+<blockquote> 
+ <p>3 4 5 6 7</p> 
+ <p>6 7 8 9 10</p> 
+</blockquote> 
+<p>下面提供两种解法&#xff0c;分别实现优先最长顺子解法&#xff0c;和优先最多顺子解法。</p> 
+<hr /> 
+<p>2023.07.10</p> 
+<p>之前有考友在评论区反馈 优先最长顺子解法的通过率是80%&#xff0c;今天评论区又有一个考友提供了一个用例&#xff1a;</p> 
+<blockquote> 
+ <p>3 4 5 6 7 3 4 5 6 7 A A A</p> 
+</blockquote> 
+<p>之前&#xff0c;优先最长顺子解法是基于栈结构实现的&#xff0c;在测试该用例时&#xff0c;产生死循环。因此我怀疑20%未通过的用例就是类似于这个。</p> 
+<p>现在我对优先最长顺子解法做了更新优化&#xff0c;已支持该类型用例&#xff0c;大家考试时可以尝试使用优先最长顺子解法。</p> 
+<p></p> 
+<p></p> 
+<h3>优先最长顺子解法</h3> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先定义一个mapToNum方法&#xff0c;即将字符串牌面 映射为 数值。具体映射关系可看代码中mapToNum方法的实现。</p> 
+<p>然后&#xff0c;将输入的牌数组&#xff0c;按照mapToNum映射的数值&#xff0c;进行升序排序。</p> 
+<p>之后&#xff0c;我创建多个顺子容器&#xff0c;外层遍历牌数组&#xff0c;内层遍历顺子容器&#xff1a;</p> 
+<ul><li>如果顺子容器是空的&#xff0c;则直接将当前牌加入该顺子容器</li><li>如果顺子容器不是空的&#xff0c;则比较当前牌cur 和 顺子容器尾牌tail</li></ul> 
+<ol><li>如果cur - tail &#61; 1&#xff0c;则当前牌cur可以加入当前顺子尾部。</li><li>如果cur - tail !&#61; 1&#xff0c;则当前牌cur不能加入当前顺子尾部&#xff0c;我们应该继续尝试将cur拼接到下一个顺子容器的尾部。</li></ol> 
+<p>按照上面逻辑&#xff0c;我们最后可以得到多个顺子容器&#xff0c;我们需要过滤掉其中长度小于5的顺子&#xff0c;如果过滤完后没有了&#xff0c;则打印输出“No”&#xff0c;如果过滤完后还有&#xff0c;则剩余顺子容器按照 第一张牌数值 从小到大排序后&#xff0c;依次打印。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+import java.util.stream.Collectors;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String[] cards &#61; sc.nextLine().split(&#34; &#34;);
+    getResult(cards);
+  }
+
+  public static void getResult(String[] cards) {
+    Arrays.sort(cards, (a, b) -&gt; mapToNum(a) - mapToNum(b));
+
+    ArrayList&lt;LinkedList&lt;String&gt;&gt; straights &#61; new ArrayList&lt;&gt;();
+    straights.add(creatStraight(cards[0]));
+
+    outer:
+    for (int i &#61; 1; i &lt; cards.length; i&#43;&#43;) {
+      String card &#61; cards[i];
+
+      for (LinkedList&lt;String&gt; s : straights) {
+        if (mapToNum(card) - mapToNum(s.getLast()) &#61;&#61; 1) {
+          s.add(card);
+          continue outer;
+        }
+      }
+
+      straights.add(creatStraight(card));
+    }
+
+    List&lt;LinkedList&lt;String&gt;&gt; collect &#61;
+        straights.stream().filter(straight -&gt; straight.size() &gt;&#61; 5).collect(Collectors.toList());
+
+    if (collect.size() &#61;&#61; 0) {
+      System.out.println(&#34;No&#34;);
+      return;
+    }
+
+    collect.stream()
+        .sorted((a, b) -&gt; mapToNum(a.getFirst()) - mapToNum(b.getFirst()))
+        .forEach(straight -&gt; System.out.println(String.join(&#34; &#34;, straight)));
+  }
+
+  public static LinkedList&lt;String&gt; creatStraight(String card) {
+    LinkedList&lt;String&gt; straight &#61; new LinkedList&lt;&gt;();
+    straight.add(card);
+    return straight;
+  }
+
+  public static int mapToNum(String card) {
+    switch (card) {
+      case &#34;J&#34;:
+        return 11;
+      case &#34;Q&#34;:
+        return 12;
+      case &#34;K&#34;:
+        return 13;
+      case &#34;A&#34;:
+        return 14;
+      case &#34;2&#34;:
+        return 16;
+      default:
+        return Integer.parseInt(card);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const cards &#61; line.split(&#34; &#34;);
+  getResult(cards);
+});
+
+function getResult(cards) {
+  cards.sort((a, b) &#61;&gt; mapToNum(a) - mapToNum(b));
+
+  let staights &#61; [[cards[0]]];
+
+  outer: for (let i &#61; 1; i &lt; cards.length; i&#43;&#43;) {
+    const card &#61; cards[i];
+
+    for (let s of staights) {
+      if (mapToNum(card) - mapToNum(s.at(-1)) &#61;&#61; 1) {
+        s.push(card);
+        continue outer;
+      }
+    }
+
+    staights.push([card]);
+  }
+
+  staights &#61; staights.filter((staight) &#61;&gt; staight.length &gt;&#61; 5);
+
+  if (staights.length &#61;&#61; 0) return console.log(&#34;No&#34;);
+
+  staights
+    .sort((a, b) &#61;&gt; mapToNum(a[0]) - mapToNum(b[0]))
+    .forEach((s) &#61;&gt; console.log(s.join(&#34; &#34;)));
+}
+
+function mapToNum(card) {
+  switch (card) {
+    case &#34;J&#34;:
+      return 11;
+    case &#34;Q&#34;:
+      return 12;
+    case &#34;K&#34;:
+      return 13;
+    case &#34;A&#34;:
+      return 14;
+    case &#34;2&#34;:
+      return 16;
+    default:
+      return parseInt(card);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+cards &#61; input().split()
+
+
+def mapToNum(card):
+    if card &#61;&#61; &#34;J&#34;:
+        return 11
+    elif card &#61;&#61; &#34;Q&#34;:
+        return 12
+    elif card &#61;&#61; &#34;K&#34;:
+        return 13
+    elif card &#61;&#61; &#34;A&#34;:
+        return 14
+    elif card &#61;&#61; &#34;2&#34;:
+        return 16
+    else:
+        return int(card)
+
+
+# 算法入口
+def getResult():
+    cards.sort(key&#61;lambda x: mapToNum(x))
+
+    straights &#61; [[cards[0]]]
+
+    for i in range(1, len(cards)):
+        card &#61; cards[i]
+
+        flag &#61; True
+
+        for straight in straights:
+            if mapToNum(card) - mapToNum(straight[-1]) &#61;&#61; 1:
+                straight.append(card)
+                flag &#61; False
+                break
+
+        if flag:
+            straights.append([card])
+
+    straights &#61; list(filter(lambda x: len(x) &gt;&#61; 5, straights))
+
+    if len(straights) &#61;&#61; 0:
+        print(&#34;No&#34;)
+        return
+
+    straights.sort(key&#61;lambda x: mapToNum(x[0]))
+
+    for straight in straights:
+        print(&#34; &#34;.join(straight))
+
+
+# 调用算法
+getResult()
+</code></pre> 
+<p></p> 
+<p></p> 
+<h3>优先最多顺子解法</h3> 
+<p>我的解题策略如下&#xff1a;</p> 
+<p>首先定义一个长度为15的数组count&#xff0c;分别记录2~A扑克牌的数量&#xff0c;其中2~A扑克牌分别对应索引2~14。</p> 
+<p>再定义一个total变量&#xff0c;记录总牌数。</p> 
+<p></p> 
+<p>然后&#xff0c;开始找五张顺子&#xff0c;查找索引 i 范围依次是&#xff1a;3~7&#xff0c;4~8&#xff0c;5~9&#xff0c;6~10&#xff0c;...&#xff0c;10~14</p> 
+<p>如果对应范围的每一个count[i] 都大于 0&#xff0c;则对应范围可以形成五张顺子&#xff0c;只要形成五张顺子&#xff0c;则</p> 
+<ul><li>total -&#61; 5</li><li>范围内每一个 count[i] -&#61; 1</li></ul> 
+<p></p> 
+<p>当把五张顺子找完后&#xff0c;继续检查total 是否大于 0&#xff0c;若total &gt; 0&#xff0c;则说明还有剩余牌&#xff0c;此时我们外层遍历每一个顺子&#xff0c;内层遍历每一个剩余牌&#xff0c;如果剩余牌可以追加到顺子尾巴&#xff0c;形成新顺子&#xff0c;则更新顺子尾巴。</p> 
+<p></p> 
+<p>最后&#xff0c;打印每一个顺子即可。</p> 
+<p>注意&#xff0c;由于我们找五张顺子时&#xff0c;是按照从左到右查找的&#xff0c;因此顺子找出来后就是符合要求顺序的&#xff0c;因此不需要额外排序。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String[] cards &#61; sc.nextLine().split(&#34; &#34;);
+    getResult(cards);
+  }
+
+  public static void getResult(String[] cards) {
+    // 总牌数
+    int total &#61; cards.length;
+
+    // 记录每张牌的数量
+    int[] count &#61; new int[15];
+    for (String card : cards) {
+      int num &#61; mapToNum(card);
+      count[num]&#43;&#43;;
+    }
+
+    // 记录顺子&#xff0c;顺子表示为数组&#xff0c;数组含义&#xff1a;[起始牌&#xff0c;结束牌]
+    ArrayList&lt;int[]&gt; straights &#61; new ArrayList&lt;&gt;();
+
+    int from &#61; 3;
+    while (from &lt;&#61; 10) {
+      // 先求五张的顺子
+      if (isStraight(count, from, from &#43; 4)) {
+        // 如果可以组成五张顺子&#xff0c;则记录该顺子
+        straights.add(new int[] {from, from &#43; 4});
+        // 总牌数减5
+        total -&#61; 5;
+        // 对应的牌的数量减1
+        for (int j &#61; from; j &lt;&#61; from &#43; 4; j&#43;&#43;) count[j]--;
+      } else {
+        from&#43;&#43;;
+      }
+    }
+
+    // 如果五张的顺子求解完后&#xff0c;还有剩余牌
+    if (total &gt; 0) {
+      // 则尝试将剩余牌追加到五张顺子后面
+      for (int[] straight : straights) {
+        for (int i &#61; 3; i &lt;&#61; 14; i&#43;&#43;) {
+          if (count[i] &gt; 0 &amp;&amp; i - straight[1] &#61;&#61; 1) {
+            straight[1] &#61; i;
+            count[i]--;
+          }
+        }
+      }
+    }
+
+    // 如果没有顺子&#xff0c;则返回No
+    if (straights.size() &#61;&#61; 0) {
+      System.out.println(&#34;No&#34;);
+      return;
+    }
+
+    // 如果有顺子&#xff0c;则打印顺子
+    for (int[] straight : straights) {
+      int start &#61; straight[0];
+      int end &#61; straight[1];
+
+      StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+      for (int i &#61; start; i &lt;&#61; end; i&#43;&#43;) sj.add(mapToCard(i));
+      System.out.println(sj);
+    }
+  }
+
+  public static boolean isStraight(int[] count, int start, int end) {
+    int i &#61; start;
+    for (; i &lt;&#61; end; i&#43;&#43;) {
+      if (count[i] &#61;&#61; 0) break;
+    }
+    return i &gt; end;
+  }
+
+  public static int mapToNum(String card) {
+    switch (card) {
+      case &#34;J&#34;:
+        return 11;
+      case &#34;Q&#34;:
+        return 12;
+      case &#34;K&#34;:
+        return 13;
+      case &#34;A&#34;:
+        return 14;
+      default:
+        return Integer.parseInt(card);
+    }
+  }
+
+  public static String mapToCard(int num) {
+    switch (num) {
+      case 11:
+        return &#34;J&#34;;
+      case 12:
+        return &#34;Q&#34;;
+      case 13:
+        return &#34;K&#34;;
+      case 14:
+        return &#34;A&#34;;
+      default:
+        return num &#43; &#34;&#34;;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const cards &#61; line.split(&#34; &#34;);
+  getResult(cards);
+});
+
+function getResult(cards) {
+  // 总牌数
+  let total &#61; cards.length;
+
+  // 记录每张牌的数量
+  const count &#61; new Array(15).fill(0);
+  for (let card of cards) {
+    const num &#61; mapToNum(card);
+    count[num]&#43;&#43;;
+  }
+
+  // straights记录顺子&#xff0c;其元素是顺子&#xff0c;顺子表示为数组&#xff1a;[起始牌&#xff0c;结束牌]
+  const straights &#61; [];
+
+  let from &#61; 3;
+  while (from &lt;&#61; 10) {
+    // 先求五张的顺子
+    if (isStraights(count, from, from &#43; 4)) {
+      // 如果可以组成五张顺子&#xff0c;则记录该顺子
+      straights.push([from, from &#43; 4]);
+      // 总牌数减5
+      total -&#61; 5;
+      // 对应的牌的数量减1
+      for (let j &#61; from; j &lt;&#61; from &#43; 4; j&#43;&#43;) count[j]--;
+    } else {
+      from&#43;&#43;;
+    }
+  }
+
+  // 如果五张的顺子求解完后&#xff0c;还有剩余牌
+  if (total &gt; 0) {
+    // 则尝试将剩余牌追加到五张顺子后面
+    for (let straight of straights) {
+      for (let i &#61; 3; i &lt;&#61; 14; i&#43;&#43;) {
+        if (count[i] &gt; 0 &amp;&amp; i - straight[1] &#61;&#61; 1) {
+          straight[1] &#61; i;
+          count[i]--;
+        }
+      }
+    }
+  }
+
+  // 如果没有顺子&#xff0c;则返回No
+  if (straights.length &#61;&#61; 0) {
+    console.log(&#34;No&#34;);
+    return;
+  }
+
+  // 如果有顺子&#xff0c;则打印顺子
+  for (let [start, end] of straights) {
+    const ans &#61; [];
+    for (let i &#61; start; i &lt;&#61; end; i&#43;&#43;) ans.push(mapToCard(i));
+    console.log(ans.join(&#34; &#34;));
+  }
+}
+
+function isStraights(count, start, end) {
+  let i &#61; start;
+  for (; i &lt;&#61; end; i&#43;&#43;) {
+    if (count[i] &#61;&#61; 0) break;
+  }
+  return i &gt; end;
+}
+
+function mapToNum(card) {
+  switch (card) {
+    case &#34;J&#34;:
+      return 11;
+    case &#34;Q&#34;:
+      return 12;
+    case &#34;K&#34;:
+      return 13;
+    case &#34;A&#34;:
+      return 14;
+    default:
+      return parseInt(card);
+  }
+}
+
+function mapToCard(num) {
+  switch (num) {
+    case 11:
+      return &#34;J&#34;;
+    case 12:
+      return &#34;Q&#34;;
+    case 13:
+      return &#34;K&#34;;
+    case 14:
+      return &#34;A&#34;;
+    default:
+      return num &#43; &#34;&#34;;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+cards &#61; input().split()
+
+
+def mapToCard(num):
+    if num &#61;&#61; 11:
+        return &#34;J&#34;
+    elif num &#61;&#61; 12:
+        return &#34;Q&#34;
+    elif num &#61;&#61; 13:
+        return &#34;K&#34;
+    elif num &#61;&#61; 14:
+        return &#34;A&#34;
+    else:
+        return str(num)
+
+
+def mapToNum(card):
+    if card &#61;&#61; &#34;J&#34;:
+        return 11
+    elif card &#61;&#61; &#34;Q&#34;:
+        return 12
+    elif card &#61;&#61; &#34;K&#34;:
+        return 13
+    elif card &#61;&#61; &#34;A&#34;:
+        return 14
+    else:
+        return int(card)
+
+
+def isStraights(count, start, end):
+    i &#61; start
+    while i &lt;&#61; end:
+        if count[i] &#61;&#61; 0:
+            break
+        else:
+            i &#43;&#61; 1
+    return i &gt; end
+
+
+# 算法入口
+def getResult():
+    # 总牌数
+    total &#61; len(cards)
+
+    # 记录每张牌的数量
+    count &#61; [0] * 15
+    for card in cards:
+        num &#61; mapToNum(card)
+        count[num] &#43;&#61; 1
+
+    # 记录顺子&#xff0c;顺子表示为数组&#xff0c;数组含义&#xff1a;[起始牌&#xff0c;结束牌]
+    straights &#61; []
+
+    s &#61; 3
+    while s &lt; 11:
+        # 先求五张的顺子
+        if isStraights(count, s, s &#43; 4):
+            # 如果可以组成五张顺子&#xff0c;则记录该顺子
+            straights.append([s, s &#43; 4])
+            # 总牌数减5
+            total -&#61; 5
+            # 对应的牌的数量减1
+            for j in range(s, s &#43; 5):
+                count[j] -&#61; 1
+        else:
+            s &#43;&#61; 1
+
+    # 如果五张的顺子求解完后&#xff0c;还有剩余牌
+    if total &gt; 0:
+        # 则尝试将剩余牌追加到五张顺子后面
+        for straight in straights:
+            for i in range(3, 15):
+                if count[i] &gt; 0 and i - straight[1] &#61;&#61; 1:
+                    straight[1] &#61; i
+                    count[i] -&#61; 1
+
+    # 如果没有顺子&#xff0c;则返回No
+    if len(straights) &#61;&#61; 0:
+        print(&#34;No&#34;)
+        return
+
+    # 如果有顺子&#xff0c;则打印顺子
+    for start, end in straights:
+        ans &#61; [mapToCard(num) for num in range(start, end &#43; 1)]
+        print(&#34; &#34;.join(ans))
+
+
+# 调用算法
+getResult()</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

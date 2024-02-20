@@ -1,0 +1,329 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 跳格子3（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4>在线OJ刷题</h4> 
+<p><a href="https://hydro.ac/d/HWOD2023/p/OD394" rel="nofollow" title="题目详情 - 跳格子3 - Hydro">题目详情 - 跳格子3 - Hydro</a></p> 
+<p></p> 
+<h4 id="main-toc">题目描述</h4> 
+<p>小明和朋友们一起玩跳格子游戏&#xff0c;</p> 
+<p>每个格子上有特定的分数 score &#61; [1, -1, -6, 7, -17, 7]&#xff0c;</p> 
+<p>从起点score[0]开始&#xff0c;每次最大的步长为k&#xff0c;请你返回小明跳到终点 score[n-1] 时&#xff0c;能得到的最大得分。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入总的格子数量 n</p> 
+<p>第二行输入每个格子的分数 score[i]</p> 
+<p>第三行输入最大跳的步长 k</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出最大得分</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>格子的总长度 n 和步长 k 的区间在 [1, 100000]</li><li>每个格子的分数 score[i] 在 [-10000, 10000] 区间中</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6<br /> 1 -1 -6 7 -17 7<br /> 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">14</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>假设第 i 个格子的最大得分为 dp[i]&#xff0c;那么存在如下递推公式&#xff1a;</p> 
+<blockquote> 
+ <p>dp[i] &#61; <span style="color:#fe2c24;">max(</span>dp[i-k], dp[i-k&#43;1], ...., dp[i-2], dp[i-1]<span style="color:#fe2c24;">)</span> &#43; score[i]</p> 
+</blockquote> 
+<p>可以发现&#xff0c;dp[i]的状态取决于 dp数组的 i-k ~ i-1 范围内的最大值状态。即第 i 个格子想要最大得分&#xff0c;可以从第 i-k 到 第 i-1 个格子中选择一个最大得分的格子起跳。</p> 
+<p></p> 
+<p>因此本题难点就变成了&#xff1a;求一个数组的任意长度为k的子区间内的最大值。</p> 
+<p>高效的求解办法是利用单调队列&#xff0c;具体可以看&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/130474096?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522170290536316800227491535%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;170290536316800227491535&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-4-130474096-null-null.nonecase&amp;utm_term&#61;%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97&amp;spm&#61;1018.2226.3001.4450" title="LeetCode - 239 滑动窗口最大值-CSDN博客">LeetCode - 239 滑动窗口最大值-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入输出处理
+void (async function () {
+  const n &#61; parseInt(await readline());
+  const scores &#61; (await readline()).split(&#34; &#34;).map(Number);
+  const k &#61; parseInt(await readline());
+
+  console.log(getResult(n, scores, k));
+})();
+
+function getResult(n, scores, k) {
+  // 第i个格子&#xff0c;可以从第i-k个格子~第i-1个格子调过来&#xff0c;因此本题滑窗的长度相当于k&#43;1
+  k&#43;&#43;;
+
+  // dp[i]表示跳到第i个格子能得到的最大分数
+  const dp &#61; new Array(n).fill(0);
+  dp[0] &#61; scores[0];
+
+  // 单调队列&#xff08;单调递减&#xff0c;队首是滑窗最大值&#xff09;
+  const queue &#61; [];
+  queue.push(dp[0]);
+
+  // 初始滑窗的形成过程&#xff08;即只有新增尾部元素的过程&#xff09;
+  // 注意当k &gt; n时, 需要取n, 此时只有滑窗形成过程&#xff0c;没有滑窗移动过程
+  for (let i &#61; 1; i &lt; Math.min(k, n); i&#43;&#43;) {
+    // dp[i] &#61; max(dp[0]~dp[i-1]) &#43; scores[i]
+    // 即单调队列队首保存的是max(dp[0]~dp[i-1])
+    dp[i] &#61; queue[0] &#43; scores[i];
+
+    // 保持单调队列的单调递减性&#xff0c;即如果后入队的dp[i] 大于 队尾元素&#xff0c;则队尾元素出队
+    while (queue.length &gt; 0 &amp;&amp; dp[i] &gt; queue.at(-1)) {
+      queue.pop();
+    }
+
+    // 当队尾没有比dp[i]更小的元素后&#xff0c;dp[i]才能入队
+    queue.push(dp[i]);
+  }
+
+  // 滑窗的右移过程&#xff08;即相较于老滑窗失去一个首元素&#xff0c;新增一个尾元素&#xff09;
+  for (let i &#61; k; i &lt; n; i&#43;&#43;) {
+    // 如果滑窗失去的元素dp[i - k]&#xff0c;和单调队列的队首元素queue[0]相同&#xff0c;则单调队列需要弹出头部元素
+    if (dp[i - k] &#61;&#61; queue[0]) {
+      queue.shift();
+    }
+
+    // 下面逻辑同之前
+    dp[i] &#61; queue[0] &#43; scores[i];
+
+    while (queue.length &gt; 0 &amp;&amp; dp[i] &gt; queue.at(-1)) {
+      queue.pop();
+    }
+
+    queue.push(dp[i]);
+  }
+
+  return dp[n - 1];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+    int[] scores &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int k &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(n, scores, k));
+  }
+
+  public static int getResult(int n, int[] scores, int k) {
+    // 第i个格子&#xff0c;可以从第i-k个格子~第i-1个格子调过来&#xff0c;因此本题滑窗的长度相当于k&#43;1
+    k&#43;&#43;;
+
+    // dp[i]表示跳到第i个格子能得到的最大分数
+    int[] dp &#61; new int[n];
+    dp[0] &#61; scores[0];
+
+    // 单调队列&#xff08;单调递减&#xff0c;队首是滑窗最大值&#xff09;
+    LinkedList&lt;Integer&gt; queue &#61; new LinkedList&lt;&gt;();
+    queue.addLast(dp[0]);
+
+    // 初始滑窗的形成过程&#xff08;即只有新增尾部元素的过程&#xff09;
+    for (int i &#61; 1; i &lt; Math.min(k, n); i&#43;&#43;) { // 注意当k &gt; n时, 需要取n, 此时只有滑窗形成过程&#xff0c;没有滑窗移动过程
+      // dp[i] &#61; max(dp[0]~dp[i-1]) &#43; scores[i]
+      // 即单调队列队首保存的是max(dp[0]~dp[i-1])
+      dp[i] &#61; queue.getFirst() &#43; scores[i];
+
+      // 保持单调队列的单调递减性&#xff0c;即如果后入队的dp[i] 大于 队尾元素&#xff0c;则队尾元素出队
+      while (queue.size() &gt; 0 &amp;&amp; dp[i] &gt; queue.getLast()) {
+        queue.removeLast();
+      }
+
+      // 当队尾没有比dp[i]更小的元素后&#xff0c;dp[i]才能入队
+      queue.addLast(dp[i]);
+    }
+
+    // 滑窗的右移过程&#xff08;即相较于老滑窗失去一个首元素&#xff0c;新增一个尾元素&#xff09;
+    for (int i &#61; k; i &lt; n; i&#43;&#43;) {
+      // 如果滑窗失去的元素dp[i - k]&#xff0c;和单调队列的队首元素queue[0]相同&#xff0c;则单调队列需要弹出头部元素
+      if (dp[i - k] &#61;&#61; queue.getFirst()) {
+        queue.removeFirst();
+      }
+
+      // 下面逻辑同之前
+      dp[i] &#61; queue.getFirst() &#43; scores[i];
+
+      while (queue.size() &gt; 0 &amp;&amp; dp[i] &gt; queue.getLast()) {
+        queue.removeLast();
+      }
+
+      queue.addLast(dp[i]);
+    }
+
+    return dp[n - 1];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+scores &#61; list(map(int, input().split()))
+k &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    global k
+
+    # 第i个格子&#xff0c;可以从第i-k个格子~第i-1个格子调过来&#xff0c;因此本题滑窗的长度相当于k&#43;1
+    k &#43;&#61; 1
+
+    # dp[i]表示跳到第i个格子能得到的最大分数
+    dp &#61; [0] * n
+    dp[0] &#61; scores[0]
+
+    # 单调队列&#xff08;单调递减&#xff0c;队首是滑窗最大值&#xff09;
+    queue &#61; [dp[0]]
+
+    # 初始滑窗的形成过程&#xff08;即只有新增尾部元素的过程&#xff09;
+    for i in range(1, min(k, n)):  # 注意当k &gt; n时, 需要取n, 此时只有滑窗形成过程&#xff0c;没有滑窗移动过程
+        # dp[i] &#61; max(dp[0]~dp[i-1]) &#43; scores[i]
+        # 即单调队列队首保存的是max(dp[0]~dp[i-1])
+        dp[i] &#61; queue[0] &#43; scores[i]
+
+        # 保持单调队列的单调递减性&#xff0c;即如果后入队的dp[i] 大于 队尾元素&#xff0c;则队尾元素出队
+        while len(queue) &gt; 0 and dp[i] &gt; queue[-1]:
+            queue.pop()
+
+        # 当队尾没有比dp[i]更小的元素后&#xff0c;dp[i]才能入队
+        queue.append(dp[i])
+
+    # 滑窗的右移过程&#xff08;即相较于老滑窗失去一个首元素&#xff0c;新增一个尾元素&#xff09;
+    for i in range(k, n):
+        # 如果滑窗失去的元素dp[i - k]&#xff0c;和单调队列的队首元素queue[0]相同&#xff0c;则单调队列需要弹出头部元素
+        if dp[i - k] &#61;&#61; queue[0]:
+            queue.pop(0)
+
+        # 下面逻辑同之前
+        dp[i] &#61; queue[0] &#43; scores[i]
+
+        while len(queue) &gt; 0 and dp[i] &gt; queue[-1]:
+            queue.pop()
+
+        queue.append(dp[i])
+
+    return dp[n - 1]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+#define MAX_SIZE 100000
+
+int main() {
+    // 输入获取
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int scores[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;scores[i]);
+    }
+
+    int k;
+    scanf(&#34;%d&#34;, &amp;k);
+
+    // 核心代码
+    // 第i个格子&#xff0c;可以从第i-k个格子~第i-1个格子调过来&#xff0c;因此本题滑窗的长度相当于k&#43;1
+    k&#43;&#43;;
+
+    // dp[i]表示跳到第i个格子能得到的最大分数
+    int dp[n];
+    dp[0] &#61; scores[0];
+
+    // 单调队列&#xff08;单调递减&#xff0c;队首是滑窗最大值&#xff09;
+    int queue[MAX_SIZE];
+    int queue_size &#61; 0;
+
+    queue[queue_size&#43;&#43;] &#61; scores[0];
+    int queue_first_idx &#61; 0;
+
+    // 初始滑窗的形成过程&#xff08;即只有新增尾部元素的过程&#xff09;
+    for (int i &#61; 1; i &lt; fmin(k, n); i&#43;&#43;) { // 注意当k &gt; n时, 需要取n, 此时只有滑窗形成过程&#xff0c;没有滑窗移动过程
+        // dp[i] &#61; max(dp[0]~dp[i-1]) &#43; scores[i]
+        // 即单调队列队首保存的是max(dp[0]~dp[i-1])
+        dp[i] &#61; queue[queue_first_idx] &#43; scores[i];
+
+        // 保持单调队列的单调递减性&#xff0c;即如果后入队的dp[i] 大于 队尾元素&#xff0c;则队尾元素出队
+        while (queue_size &gt; 0 &amp;&amp; dp[i] &gt; queue[queue_first_idx &#43; queue_size - 1]) {
+            queue_size--;
+        }
+
+        // 当队尾没有比dp[i]更小的元素后&#xff0c;dp[i]才能入队
+        queue[queue_first_idx &#43; queue_size] &#61; dp[i];
+        queue_size&#43;&#43;;
+    }
+
+    // 滑窗的右移过程&#xff08;即相较于老滑窗失去一个首元素&#xff0c;新增一个尾元素&#xff09;
+    for (int i &#61; k; i &lt; n; i&#43;&#43;) {
+        // 如果滑窗失去的元素dp[i - k]&#xff0c;和单调队列的队首元素queue[0]相同&#xff0c;则单调队列需要弹出头部元素
+        if (dp[i - k] &#61;&#61; queue[queue_first_idx]) {
+            queue_first_idx&#43;&#43;;
+            queue_size--;
+        }
+
+        // 下面逻辑同之前
+        dp[i] &#61; queue[queue_first_idx] &#43; scores[i];
+
+        while (queue_size &gt; 0 &amp;&amp; dp[i] &gt; queue[queue_first_idx &#43; queue_size - 1]) {
+            queue_size--;
+        }
+
+        queue[queue_first_idx &#43; queue_size] &#61; dp[i];
+        queue_size&#43;&#43;;
+    }
+
+    printf(&#34;%d\n&#34;, dp[n - 1]);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

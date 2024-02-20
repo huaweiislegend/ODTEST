@@ -1,0 +1,274 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 解密犯罪时间（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>警察在侦破一个案件时&#xff0c;得到了线人给出的可能犯罪时间&#xff0c;形如 “HH:MM” 表示的时刻。</p> 
+<p>根据警察和线人的约定&#xff0c;为了隐蔽&#xff0c;该时间是修改过的&#xff0c;</p> 
+<p>解密规则为&#xff1a;利用当前出现过的数字&#xff0c;构造下一个距离当前时间最近的时刻&#xff0c;则该时间为可能的犯罪时间。</p> 
+<p>每个出现数字都可以被无限次使用。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>形如HH:SS字符串&#xff0c;表示原始输入。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>形如HH:SS的字符串&#xff0c;表示推理处理的犯罪时间。</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>1.可以保证现任给定的字符串一定是合法的。</p> 
+<p>例如&#xff0c;“01:35”和“11:08”是合法的&#xff0c;“1:35”和“11:8”是不合法的。</p> 
+<p>2.最近的时刻可能在第二天。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>输出</td></tr><tr><td>20:12</td><td>20:20</td></tr><tr><td>23:59</td><td>22:22</td></tr><tr><td>12:58</td><td>15:11</td></tr><tr><td>18:52</td><td>18:55</td></tr><tr><td>23:52</td><td>23:53</td></tr><tr><td>09:17</td><td>09:19</td></tr><tr><td>07:08</td><td>08:00</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<blockquote> 
+ <p>解密规则为&#xff1a;利用当前出现过的数字&#xff0c;构造<span style="color:#fe2c24;"><strong>下一个</strong></span>距离当前时间最近的时刻&#xff0c;则该时间为可能的犯罪时间。</p> 
+</blockquote> 
+<p>本题重在理解“<span style="color:#fe2c24;"><strong>下一个</strong></span>”最近时间&#xff0c;这里是“下一个”&#xff0c;而不是“上一个”&#xff0c;因此要求的时间在当前时间之后。但是备注中又说&#xff1a;“最近的时刻可能在第二天。”</p> 
+<p>也就是说&#xff0c;要求的时间  并不是严格 比当前时间 小的。</p> 
+<p></p> 
+<p>这题其实用dfs求全排列的话&#xff0c;就很简单。</p> 
+<p>我们基于dfs求得输入“20:12”的全部排列&#xff0c;</p> 
+<p>即由0&#xff0c;1&#xff0c;2构成的四层排列&#xff0c;题目说“每个出现数字都可以被无限次使用”&#xff0c;因此每层多可以使用相同的数字。</p> 
+<p>当然&#xff0c;求得的全排列中必然含有不合法的时间&#xff0c;我们需要利用正则来过滤掉非法的时间&#xff0c;正则如下</p> 
+<pre><code class="language-javascript">const regExp &#61; /(([01][0-9])|([2][0-3]))[0-5][0-9]/;</code></pre> 
+<p>剩余的全排列如下</p> 
+<pre><code class="language-javascript">[
+  &#39;2222&#39;, &#39;2220&#39;, &#39;2221&#39;, &#39;2202&#39;, &#39;2200&#39;, &#39;2201&#39;,
+  &#39;2212&#39;, &#39;2210&#39;, &#39;2211&#39;, &#39;2022&#39;, &#39;2020&#39;, &#39;2021&#39;,
+  &#39;2002&#39;, &#39;2000&#39;, &#39;2001&#39;, &#39;2012&#39;, &#39;2010&#39;, &#39;2011&#39;,
+  &#39;2122&#39;, &#39;2120&#39;, &#39;2121&#39;, &#39;2102&#39;, &#39;2100&#39;, &#39;2101&#39;,
+  &#39;2112&#39;, &#39;2110&#39;, &#39;2111&#39;, &#39;0222&#39;, &#39;0220&#39;, &#39;0221&#39;,
+  &#39;0202&#39;, &#39;0200&#39;, &#39;0201&#39;, &#39;0212&#39;, &#39;0210&#39;, &#39;0211&#39;,
+  &#39;0022&#39;, &#39;0020&#39;, &#39;0021&#39;, &#39;0002&#39;, &#39;0000&#39;, &#39;0001&#39;,
+  &#39;0012&#39;, &#39;0010&#39;, &#39;0011&#39;, &#39;0122&#39;, &#39;0120&#39;, &#39;0121&#39;,
+  &#39;0102&#39;, &#39;0100&#39;, &#39;0101&#39;, &#39;0112&#39;, &#39;0110&#39;, &#39;0111&#39;,
+  &#39;1222&#39;, &#39;1220&#39;, &#39;1221&#39;, &#39;1202&#39;, &#39;1200&#39;, &#39;1201&#39;,
+  &#39;1212&#39;, &#39;1210&#39;, &#39;1211&#39;, &#39;1022&#39;, &#39;1020&#39;, &#39;1021&#39;,
+  &#39;1002&#39;, &#39;1000&#39;, &#39;1001&#39;, &#39;1012&#39;, &#39;1010&#39;, &#39;1011&#39;,
+  &#39;1122&#39;, &#39;1120&#39;, &#39;1121&#39;, &#39;1102&#39;, &#39;1100&#39;, &#39;1101&#39;,
+  &#39;1112&#39;, &#39;1110&#39;, &#39;1111&#39;
+]</code></pre> 
+<p>我们将其按字典序升序</p> 
+<pre><code class="language-javascript">[
+  &#39;0000&#39;, &#39;0001&#39;, &#39;0002&#39;, &#39;0010&#39;, &#39;0011&#39;, &#39;0012&#39;,
+  &#39;0020&#39;, &#39;0021&#39;, &#39;0022&#39;, &#39;0100&#39;, &#39;0101&#39;, &#39;0102&#39;,
+  &#39;0110&#39;, &#39;0111&#39;, &#39;0112&#39;, &#39;0120&#39;, &#39;0121&#39;, &#39;0122&#39;,
+  &#39;0200&#39;, &#39;0201&#39;, &#39;0202&#39;, &#39;0210&#39;, &#39;0211&#39;, &#39;0212&#39;,
+  &#39;0220&#39;, &#39;0221&#39;, &#39;0222&#39;, &#39;1000&#39;, &#39;1001&#39;, &#39;1002&#39;,
+  &#39;1010&#39;, &#39;1011&#39;, &#39;1012&#39;, &#39;1020&#39;, &#39;1021&#39;, &#39;1022&#39;,
+  &#39;1100&#39;, &#39;1101&#39;, &#39;1102&#39;, &#39;1110&#39;, &#39;1111&#39;, &#39;1112&#39;,
+  &#39;1120&#39;, &#39;1121&#39;, &#39;1122&#39;, &#39;1200&#39;, &#39;1201&#39;, &#39;1202&#39;,
+  &#39;1210&#39;, &#39;1211&#39;, &#39;1212&#39;, &#39;1220&#39;, &#39;1221&#39;, &#39;1222&#39;,
+  &#39;2000&#39;, &#39;2001&#39;, &#39;2002&#39;, &#39;2010&#39;, &#39;2011&#39;, &#39;2012&#39;,
+  &#39;2020&#39;, &#39;2021&#39;, &#39;2022&#39;, &#39;2100&#39;, &#39;2101&#39;, &#39;2102&#39;,
+  &#39;2110&#39;, &#39;2111&#39;, &#39;2112&#39;, &#39;2120&#39;, &#39;2121&#39;, &#39;2122&#39;,
+  &#39;2200&#39;, &#39;2201&#39;, &#39;2202&#39;, &#39;2210&#39;, &#39;2211&#39;, &#39;2212&#39;,
+  &#39;2220&#39;, &#39;2221&#39;, &#39;2222&#39;
+]</code></pre> 
+<p>找到输入的20:12对应2012之后的一个时间2020&#xff0c;就是所求的&#xff0c;我们只要给2020中间加一个&#34;:&#34;,就是题解。</p> 
+<p></p> 
+<p>另外如果输入的时间对应的时间字符串刚好是排序后全排列最后一个&#xff0c;则此时我们需要取第二天的第一个时间&#xff0c;即排序后全排列第一个。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] tmp &#61; sc.nextLine().split(&#34;:&#34;);
+    String hour &#61; tmp[0];
+    String minute &#61; tmp[1];
+
+    System.out.println(getResult(hour, minute));
+  }
+
+  public static String getResult(String hour, String minute) {
+    HashSet&lt;Character&gt; set &#61; new HashSet&lt;&gt;();
+    for (int i &#61; 0; i &lt; hour.length(); i&#43;&#43;) set.add(hour.charAt(i));
+    for (int i &#61; 0; i &lt; minute.length(); i&#43;&#43;) set.add(minute.charAt(i));
+    Character[] arr &#61; set.toArray(new Character[0]);
+
+    ArrayList&lt;String&gt; res &#61; new ArrayList&lt;&gt;();
+    dfs(arr, new LinkedList&lt;&gt;(), res);
+
+    res.sort(String::compareTo);
+    int index &#61; res.indexOf(hour &#43; minute);
+
+    String recentTime;
+    if (index &#61;&#61; res.size() - 1) {
+      recentTime &#61; res.get(0);
+    } else {
+      recentTime &#61; res.get(index &#43; 1);
+    }
+
+    String[] split &#61; recentTime.split(&#34;&#34;);
+    split[1] &#43;&#61; &#34;:&#34;;
+    return String.join(&#34;&#34;, split);
+  }
+
+  static Pattern p &#61; Pattern.compile(&#34;(([01][0-9])|([2][0-3]))[0-5][0-9]&#34;);
+
+  public static void dfs(Character[] arr, LinkedList&lt;Character&gt; path, ArrayList&lt;String&gt; res) {
+    if (path.size() &#61;&#61; 4) {
+      StringBuilder sb &#61; new StringBuilder();
+      for (Character c : path) sb.append(c);
+      String timeStr &#61; sb.toString();
+
+      if (p.matcher(timeStr).find()) {
+        res.add(timeStr);
+      }
+
+      return;
+    }
+
+    for (Character c : arr) {
+      path.add(c);
+      dfs(arr, path, res);
+      path.removeLast();
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [hour, minute] &#61; line.split(&#34;:&#34;);
+  console.log(getResult(hour, minute));
+});
+
+function getResult(hour, minute) {
+  const arr &#61; [...new Set([...hour, ...minute])];
+
+  const res &#61; [];
+  dfs(arr, [], res);
+  res.sort();
+
+  let index &#61; res.indexOf(&#96;${hour}${minute}&#96;);
+
+  let recentTime;
+  if (index &#61;&#61;&#61; res.length - 1) {
+    recentTime &#61; [...res[0]];
+  } else {
+    recentTime &#61; [...res[index &#43; 1]];
+  }
+
+  recentTime.splice(2, 0, &#34;:&#34;);
+
+  return recentTime.join(&#34;&#34;);
+}
+
+function dfs(arr, path, res) {
+  if (path.length &#61;&#61;&#61; 4) {
+    const timeStr &#61; path.join(&#34;&#34;);
+    const regExp &#61; /(([01][0-9])|([2][0-3]))[0-5][0-9]/;
+    if (regExp.test(timeStr)) res.push(timeStr);
+    return;
+  }
+
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    path.push(arr[i]);
+    dfs(arr, path, res);
+    path.pop();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+reg &#61; re.compile(&#34;(([01][0-9])|([2][0-3]))[0-5][0-9]&#34;)
+
+# 输入获取
+hour, minute &#61; input().split(&#34;:&#34;)
+
+
+def dfs(arr, path, res):
+    if len(path) &#61;&#61; 4:
+        timeStr &#61; &#34;&#34;.join(path)
+        if reg.search(timeStr) is not None:
+            res.append(timeStr)
+        return
+
+    for i in range(len(arr)):
+        path.append(arr[i])
+        dfs(arr, path, res)
+        path.pop()
+
+
+# 算法入口
+def getResult():
+    arr &#61; list(hour)
+    arr.extend(list(minute))
+
+    arr &#61; list(set(arr))
+
+    res &#61; []
+    dfs(arr, [], res)
+    res.sort()
+
+    index &#61; res.index(hour &#43; minute)
+
+    if index &#61;&#61; len(res) - 1:
+        recentTime &#61; res[0]
+    else:
+        recentTime &#61; res[index &#43; 1]
+
+    ans &#61; list(recentTime)
+    ans[1] &#43;&#61; &#34;:&#34;
+    return &#34;&#34;.join(ans)
+
+
+# 调用算法
+print(getResult())
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,721 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 采样过滤（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>在做物理实验时&#xff0c;为了计算物体移动的速率&#xff0c;通过相机等工具周期性的采样物体移动距离。</p> 
+<p>由于工具故障&#xff0c;采样数据存在误差甚至错误的情况。</p> 
+<p>需要通过一个算法过滤掉不正确的采样值。</p> 
+<p>不同工具的故障模式存在差异&#xff0c;算法的各类门限会根据工具类型做相应的调整。</p> 
+<p>请实现一个算法&#xff0c;计算出给定一组采样值中正常值的最长连续周期。</p> 
+<p>判断第 i 个周期的采样数据 S[i] 是否正确的规则如下&#xff08;假定物体移动速率不超过10个单元&#xff0c;前一个采样周期 S[i-1] )&#xff1a;</p> 
+<ul><li>S[i] &lt;&#61; 0&#xff0c;即为错误值</li><li>S[i] &lt; S[i-1]&#xff0c;即为错误值</li><li>S[i] - S[i-1] &gt;&#61; 10&#xff0c;即为错误值</li><li>其它情况为正常值</li></ul> 
+<p>判断工具是否故障的规则如下&#xff1a;</p> 
+<ul><li>在M个周期内&#xff0c;采样数据为错误值的次数为T&#xff08;次数可以不连续&#xff09;&#xff0c;则工具故障。</li></ul> 
+<p>判断故障恢复的条件如下&#xff1a;</p> 
+<ul><li>产生故障后的P个周期内&#xff0c;采样数据一直为正常值&#xff0c;则故障恢复。</li></ul> 
+<p>错误采样数据的处理方式&#xff1a;</p> 
+<ul><li>检测到故障后&#xff0c;丢弃从故障开始到故障恢复的采样数据。</li><li>在检测到工具故障之前&#xff0c;错误的采样数据&#xff0c;则由最近一个正常值代替&#xff1b;如果前面没有正常的采样值&#xff0c;则丢弃此采样数据。</li></ul> 
+<p>给定一段周期的采样数据列表S&#xff0c;计算正常值的最长连续周期。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>故障确认周期数和故障次数门限分别为M和T&#xff0c;故障恢复周期数为P。</p> 
+<p>第 i 个周期&#xff0c;检测点的状态为Si</p> 
+<p>输入为两行&#xff0c;格式如下&#xff1a;</p> 
+<blockquote> 
+ <p>M T P<br /> S1 S2 S3 ...</p> 
+</blockquote> 
+<p>M、T和P的取值范围为[1, 100000]<br /> Si取值范围为[0, 100000]&#xff0c;i 从0开始编号</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>一行输出正常值的最长连续周期</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1"><tbody><tr><td style="width:56px;">输入</td><td style="width:632px;">10 6 3<br /> -1 1 2 3 100 10 13 9 10</td></tr><tr><td style="width:56px;">输出</td><td style="width:632px;">8</td></tr><tr><td style="width:56px;">说明</td><td style="width:632px;">S[0]&#xff0c;S[4]&#xff0c;S[7]&#xff0c;S[8]为错误值。S[0]之前没有正常的采样数据&#xff0c;丢弃S[0]。S[4]和S[7]不满足故障条件&#xff0c;此值分别由S[3]和S[6]代替&#xff0c;即S[4]为3&#xff0c;S[7]为13。替换后&#xff0c;S[8]小于S[7]&#xff0c;也是错误值。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1"><tbody><tr><td style="width:57px;">输入</td><td style="width:631px;">5 3 3<br /> 0 1 2 -1 4 3 6 7 6 6 10 11 12</td></tr><tr><td style="width:57px;">输出</td><td style="width:631px;">9</td></tr><tr><td style="width:57px;">说明</td><td style="width:631px;">S[3]&#xff0c;S[5]&#xff0c;S[8]&#xff0c;S[9]为错误值。从S[3]到S[7]的5个周期内只有两个错误值S[3]和S[5]。从S[5]到S[9]的5个周期内有三个错误值S[5]、S[8]和S[9]&#xff0c;工具故障。丢弃S[9]到S[12]的值。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1"><tbody><tr><td style="width:58px;">输入</td><td style="width:630px;">5 3 3<br /> 1 2 -1 -2 -3 6 7 8 9 10 11 12</td></tr><tr><td style="width:58px;">输出</td><td style="width:630px;">5</td></tr><tr><td style="width:58px;">说明</td><td style="width:630px;">S[2]&#xff0c;S[3]&#xff0c;S[4]为错误值。从S[2]到S[6]的5个周期内有三个错误值&#xff0c;工具故障。丢弃S[4]到S[6]的值。有两段正常连续周期&#xff0c;S[0]到S[3]&#xff08;周期数为4&#xff09;和S[7]到S[11]&#xff08;周期数为5&#xff09;。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1图示&#xff08;图示按照用例说明设计&#xff09;</p> 
+<blockquote> 
+ <p>M &#61; 10&#xff0c;T &#61; 6&#xff0c;P &#61; 3</p> 
+</blockquote> 
+<blockquote> 
+ <p>S[0]&#xff0c;S[4]&#xff0c;S[7]&#xff0c;S[8]为错误值。</p> 
+ <p>S[0]之前没有正常的采样数据&#xff0c;丢弃S[0]。</p> 
+ <p>S[4]和S[7]不满足故障条件&#xff0c;此值分别由S[3]和S[6]代替&#xff0c;即S[4]为3&#xff0c;S[7]为13。</p> 
+ <p>替换后&#xff0c;S[8]小于S[7]&#xff0c;也是错误值。</p> 
+</blockquote> 
+<p><img alt="" height="200" src="https://img-blog.csdnimg.cn/94af75b9ffee4309a2fda84baf9eb2e7.png" width="460" /></p> 
+<p></p> 
+<hr /> 
+<p>用例2图示&#xff08;图示按照用例说明设计&#xff09;</p> 
+<blockquote> 
+ <p>M &#61; 5&#xff0c;T &#61; 3&#xff0c;P &#61; 3</p> 
+</blockquote> 
+<blockquote> 
+ <p>S[3]&#xff0c;S[5]&#xff0c;S[8]&#xff0c;S[9]为错误值。</p> 
+ <p>从S[3]到S[7]的5个周期内只有两个错误值S[3]和S[5]。</p> 
+ <p>从S[5]到S[9]的5个周期内有三个错误值S[5]、S[8]和S[9]&#xff0c;工具故障。丢弃S[9]到S[12]的值。</p> 
+</blockquote> 
+<p> <img alt="" height="222" src="https://img-blog.csdnimg.cn/ac1942e1b0e54499844066bb2e237858.png" width="625" /></p> 
+<blockquote> 
+ <p><strong>个人疑惑&#xff1a;</strong></p> 
+ <p>s[0]  ≤ 0&#xff0c;我理解应该记作错误值吧&#xff1f;因为题目说&#xff1a;S[i] &lt;&#61; 0&#xff0c;即为错误值。</p> 
+ <p>按照题目意思&#xff0c;s[0]前面没有其他值&#xff0c;因此s[0]应该被丢弃&#xff0c;那么该用例的最长连续周期应该是1~8&#xff0c;长度为8。</p> 
+</blockquote> 
+<p></p> 
+<hr /> 
+<p>用例3图示&#xff08;图示按照用例说明设计&#xff09;</p> 
+<blockquote> 
+ <p>M &#61; 5&#xff0c;T &#61; 3&#xff0c;P &#61; 3</p> 
+</blockquote> 
+<blockquote> 
+ <p>S[2]&#xff0c;S[3]&#xff0c;S[4]为错误值。</p> 
+ <p>从S[2]到S[6]的5个周期内有三个错误值&#xff0c;工具故障。丢弃S[4]到S[6]的值。有两段正常连续周期&#xff0c;S[0]到S[3]&#xff08;周期数为4&#xff09;和S[7]到S[11]&#xff08;周期数为5&#xff09;。</p> 
+</blockquote> 
+<p><img alt="" height="215" src="https://img-blog.csdnimg.cn/ef4512bad152448c90b407844950836f.png" width="590" /></p> 
+<blockquote> 
+ <p><strong>个人疑惑&#xff1a;</strong></p> 
+ <p>s[4]是故障开始点&#xff0c;而当前用例P&#61;3&#xff0c;那么s[5]~s[7]应该是故障恢复检查时期&#xff0c;</p> 
+ <p>按照题目意思&#xff1a;检测到故障后&#xff0c;丢弃从故障开始到故障恢复的采样数据。</p> 
+ <p>那应该丢弃的是s[4]~s[7]吧&#xff1f;但是用例说明是&#xff1a;丢弃S[4]到S[6]的值。为什么s[7]不丢弃呢&#xff1f;</p> 
+ <p></p> 
+ <p>如果按照题目意思&#xff0c;应该要丢弃S[4]到S[7]&#xff0c;因此该用例的最长连续周期应该是4。</p> 
+</blockquote> 
+<p></p> 
+<p>经过上面分析&#xff0c;这题的用例说明和题目描述简直就是自相矛盾......</p> 
+<p>我这里按照题目描述来实现。具体逻辑请看代码注释&#xff08;主要是文字描述太复杂了&#xff09;</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 故障确认周期数m, 故障次数门限t, 故障恢复周期数p
+  const [m, t, p] &#61; (await readline()).split(&#34; &#34;).map(Number);
+  // 一段周期的采样数据列表
+  const s &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const NORMAL &#61; 1; // 正常数据的状态
+  const FAULT &#61; 2; // 错误数据的状态
+  const ABORT &#61; 3; // 丢弃的状态
+  const RECOVERY_NORMAL &#61; 4; // 故障恢复检查期间的正常数据的状态
+  const RECOVERY_FAULT &#61; 5; // 故障恢复检查期间的错误数据的状态
+
+  // 记录每个采样数据的状态
+  const status &#61; new Array(s.length).fill(0);
+
+  console.log(getResult());
+
+  function getResult() {
+    // M个周期可以当成滑窗&#xff0c;l是滑窗的左边界
+    let l &#61; 0;
+    // 滑窗内错误数据的个数
+    let window_fault_count &#61; 0;
+
+    // 滑窗右边界纳入新数据
+    for (let r &#61; 0; r &lt; s.length; r&#43;&#43;) {
+      // 如果滑窗长度超过了m&#xff0c;那么滑窗的左边界需要右移
+      if (r - l &#43; 1 &gt; m) {
+        // 如果右移前的&#xff0c;滑窗左边界对于的数据状态是FAULT&#xff0c;则右移后的滑窗内错误数据个数-1
+        if (status[l&#43;&#43;] &#61;&#61; FAULT) window_fault_count--;
+      }
+
+      // 检查数据状态
+      if (check_normal(r)) {
+        // 如果数据正常&#xff0c;则标记status[r]为正常状态
+        status[r] &#61; NORMAL;
+      } else {
+        // 如果数据异常&#xff0c;则需要检查当前数据前面一个数据的状态
+        if (r &lt; 1 || status[r - 1] &#61;&#61; ABORT) {
+          // 如果当前数据前面一个数据的状态是丢弃的&#xff0c;则当前数据没有代替值&#xff0c;也需要被丢弃
+          status[r] &#61; ABORT;
+          // 一旦出现丢弃数据&#xff0c;则滑窗中断&#xff0c;此时需要重置滑窗
+          window_fault_count &#61; 0;
+          l &#61; r &#43; 1;
+        } else {
+          // 如果当前数据前面一个数据的状态不是丢弃状态&#xff0c;那么滑窗内错误数据个数&#43;1
+          if (&#43;&#43;window_fault_count &lt; t) {
+            // 如果滑窗内错误数据个数没有超过阈值t&#xff0c;那么可以用前面一个数据代替
+            status[r] &#61; FAULT;
+            s[r] &#61; s[r - 1];
+          } else {
+            // 如果滑窗内错误数据个数超过了阈值t&#xff0c;那么 r 位置就是故障开始的位置
+            // 此时 r 位置数据需要被丢弃&#xff0c;此时滑窗中断&#xff0c;需要重置滑窗
+            status[r] &#61; ABORT;
+            window_fault_count &#61; 0;
+
+            // i 位置就是 故障恢复检查期开始位置
+            let i &#61; r &#43; 1;
+
+            // 故障恢复检查期内连续正确数据个数
+            let recovery_correct_count &#61; 0;
+
+            while (i &lt; s.length) {
+              if (check_recovery(i)) {
+                recovery_correct_count&#43;&#43;;
+                status[i] &#61; RECOVERY_NORMAL;
+
+                // 当故障恢复期间&#xff0c;连续正确数据个数达到p&#xff0c;则故障解除
+                if (recovery_correct_count &#61;&#61; p) break;
+              } else {
+                recovery_correct_count &#61; 0;
+                status[i] &#61; RECOVERY_FAULT;
+              }
+
+              i&#43;&#43;;
+            }
+
+            // i 位置是故障解除的位置&#xff0c;则下一次&#xff0c;我们应该从 i&#43;1 位置开始重新判断&#xff0c;即滑窗的左、右边界都要更新为i&#43;1
+            if (i &lt; s.length) {
+              l &#61; i &#43; 1;
+              r &#61; i; // 这里r没有等于 i&#43;1&#xff0c;是因为for循环会给r&#43;&#43;
+            }
+          }
+        }
+      }
+    }
+
+    // 最后只需要找到 status 数组中最长的连续NORMAL和FAULT即可
+    let maxLen &#61; 0;
+    let len &#61; 0;
+
+    for (let sta of status) {
+      if (sta &#61;&#61; NORMAL || sta &#61;&#61; FAULT) {
+        len&#43;&#43;;
+      } else {
+        maxLen &#61; Math.max(maxLen, len);
+        len &#61; 0;
+      }
+    }
+
+    return Math.max(maxLen, len);
+  }
+
+  // 正常期间检查
+  function check_normal(i) {
+    if (s[i] &lt;&#61; 0) return false; //S[i] &lt;&#61; 0&#xff0c;即为错误值
+
+    // 和前面采样数据比较的前提条件是&#xff1a;前面的采样数据必须是正常状态&#xff0c;或者正常期错误状态
+    if (i &gt;&#61; 1 &amp;&amp; (status[i - 1] &#61;&#61; NORMAL || status[i - 1] &#61;&#61; FAULT)) {
+      if (s[i] &lt; s[i - 1]) return false; // S[i] &lt; S[i-1]&#xff0c;即为错误值
+      if (s[i] - s[i - 1] &gt;&#61; 10) return false; // S[i] - S[i-1] &gt;&#61; 10&#xff0c;即为错误值
+    }
+
+    return true; // 其它情况为正常值
+  }
+
+  // 故障恢复期检查
+  function check_recovery(i) {
+    if (s[i] &lt;&#61; 0) return false; // S[i] &lt;&#61; 0&#xff0c;即为错误值
+
+    // 和前面采样数据比较的前提条件是&#xff1a;前面的采样数据不能时丢弃状态&#xff0c;以及恢复期错误状态
+    if (i &gt;&#61; 1 &amp;&amp; status !&#61; ABORT &amp;&amp; status !&#61; RECOVERY_FAULT) {
+      if (s[i] &lt; s[i - 1]) return false; // S[i] &lt; S[i-1]&#xff0c;即为错误值
+      if (s[i] - s[i - 1] &gt;&#61; 10) return false; // S[i] - S[i-1] &gt;&#61; 10&#xff0c;即为错误值
+    }
+
+    return true; // 其它情况为正常值
+  }
+})();
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  // 故障确认周期数m, 故障次数门限t, 故障恢复周期数p
+  static int m, t, p;
+  // 一段周期的采样数据列表
+  static int[] s;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] tmp &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    m &#61; tmp[0];
+    t &#61; tmp[1];
+    p &#61; tmp[2];
+
+    s &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult());
+  }
+
+  static int[] status;
+
+  static final int NORMAL &#61; 1; // 正常数据的状态
+  static final int FAULT &#61; 2; // 错误数据的状态
+  static final int ABORT &#61; 3; // 丢弃的状态
+  static final int RECOVERY_NORMAL &#61; 4; // 故障恢复检查期间的正常数据的状态
+  static final int RECOVERY_FAULT &#61; 5; // 故障恢复检查期间的错误数据的状态
+
+  public static int getResult() {
+    // 记录每个采样数据的状态
+    status &#61; new int[s.length];
+
+    // M个周期可以当成滑窗&#xff0c;l是滑窗的左边界
+    int l &#61; 0;
+    // 滑窗内错误数据的个数
+    int window_fault_count &#61; 0;
+
+    // 滑窗右边界纳入新数据
+    for (int r &#61; 0; r &lt; s.length; r&#43;&#43;) {
+
+      // 如果滑窗长度超过了m&#xff0c;那么滑窗的左边界需要右移
+      if (r - l &#43; 1 &gt; m) {
+        // 如果右移前的&#xff0c;滑窗左边界对于的数据状态是FAULT&#xff0c;则右移后的滑窗内错误数据个数-1
+        if (status[l&#43;&#43;] &#61;&#61; FAULT) window_fault_count--;
+      }
+
+      // 检查数据状态
+      if (check_normal(r)) {
+        // 如果数据正常&#xff0c;则标记status[r]为正常状态
+        status[r] &#61; NORMAL;
+      } else {
+        // 如果数据异常&#xff0c;则需要检查当前数据前面一个数据的状态
+        if (r &lt; 1 || status[r - 1] &#61;&#61; ABORT) {
+          // 如果当前数据前面一个数据的状态是丢弃的&#xff0c;则当前数据没有代替值&#xff0c;也需要被丢弃
+          status[r] &#61; ABORT;
+          // 一旦出现丢弃数据&#xff0c;则滑窗中断&#xff0c;此时需要重置滑窗
+          window_fault_count &#61; 0;
+          l &#61; r &#43; 1;
+        } else {
+          // 如果当前数据前面一个数据的状态不是丢弃状态&#xff0c;那么滑窗内错误数据个数&#43;1
+          if (&#43;&#43;window_fault_count &lt; t) {
+            // 如果滑窗内错误数据个数没有超过阈值t&#xff0c;那么可以用前面一个数据代替
+            status[r] &#61; FAULT;
+            s[r] &#61; s[r - 1];
+          } else {
+            // 如果滑窗内错误数据个数超过了阈值t&#xff0c;那么 r 位置就是故障开始的位置
+            // 此时 r 位置数据需要被丢弃&#xff0c;此时滑窗中断&#xff0c;需要重置滑窗
+            status[r] &#61; ABORT;
+            window_fault_count &#61; 0;
+
+            // i 位置就是 故障恢复检查期开始位置
+            int i &#61; r &#43; 1;
+
+            // 故障恢复检查期内连续正确数据个数
+            int recovery_correct_count &#61; 0;
+
+            while (i &lt; s.length) {
+              if (check_recovery(i)) {
+                recovery_correct_count&#43;&#43;;
+                status[i] &#61; RECOVERY_NORMAL;
+
+                // 当故障恢复期间&#xff0c;连续正确数据个数达到p&#xff0c;则故障解除
+                if (recovery_correct_count &#61;&#61; p) break;
+              } else {
+                recovery_correct_count &#61; 0;
+                status[i] &#61; RECOVERY_FAULT;
+              }
+
+              i&#43;&#43;;
+            }
+
+            // i 位置是故障解除的位置&#xff0c;则下一次&#xff0c;我们应该从 i&#43;1 位置开始重新判断&#xff0c;即滑窗的左、右边界都要更新为i&#43;1
+            if (i &lt; s.length) {
+              l &#61; i &#43; 1;
+              r &#61; i; // 这里r没有等于 i&#43;1&#xff0c;是因为for循环会给r&#43;&#43;
+            }
+          }
+        }
+      }
+    }
+
+    // 最后只需要找到 status 数组中最长的连续NORMAL和FAULT即可
+    int maxLen &#61; 0;
+    int len &#61; 0;
+
+    for (int sta : status) {
+      if (sta &#61;&#61; NORMAL || sta &#61;&#61; FAULT) {
+        len&#43;&#43;;
+      } else {
+        maxLen &#61; Math.max(maxLen, len);
+        len &#61; 0;
+      }
+    }
+
+    return Math.max(maxLen, len);
+  }
+
+  // 正常期间检查
+  public static boolean check_normal(int i) {
+    if (s[i] &lt;&#61; 0) return false; // S[i] &lt;&#61; 0&#xff0c;即为错误值
+
+    // 和前面采样数据比较的前提条件是&#xff1a;前面的采样数据必须是正常状态&#xff0c;或者正常期错误状态
+    if (i &gt;&#61; 1 &amp;&amp; (status[i - 1] &#61;&#61; NORMAL || status[i - 1] &#61;&#61; FAULT)) {
+      if (s[i] &lt; s[i - 1]) return false; // S[i] &lt; S[i-1]&#xff0c;即为错误值
+      if (s[i] - s[i - 1] &gt;&#61; 10) return false; // S[i] - S[i-1] &gt;&#61; 10&#xff0c;即为错误值
+    }
+
+    return true; // 其它情况为正常值
+  }
+
+  // 故障恢复期检查
+  public static boolean check_recovery(int i) {
+    if (s[i] &lt;&#61; 0) return false; // S[i] &lt;&#61; 0&#xff0c;即为错误值
+
+    // 和前面采样数据比较的前提条件是&#xff1a;前面的采样数据不能时丢弃状态&#xff0c;以及恢复期错误状态
+    if (i &gt;&#61; 1 &amp;&amp; status[i - 1] !&#61; ABORT &amp;&amp; status[i - 1] !&#61; RECOVERY_FAULT) {
+      if (s[i] &lt; s[i - 1]) return false; // S[i] &lt; S[i-1]&#xff0c;即为错误值
+      if (s[i] - s[i - 1] &gt;&#61; 10) return false; // S[i] - S[i-1] &gt;&#61; 10&#xff0c;即为错误值
+    }
+
+    return true; // 其它情况为正常值
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, t, p &#61; map(int, input().split())  # 故障确认周期数m, 故障次数门限t, 故障恢复周期数p
+s &#61; list(map(int, input().split()))  # 一段周期的采样数据列表
+
+# 全局变量
+NORMAL &#61; 1  # 正常数据的状态
+FAULT &#61; 2  # 错误数据的状态
+ABORT &#61; 3  # 丢弃的状态
+RECOVERY_NORMAL &#61; 4  # 故障恢复检查期间的正常数据的状态
+RECOVERY_FAULT &#61; 5  # 故障恢复检查期间的错误数据的状态
+
+# 记录每个采样数据的状态
+status &#61; [0] * (len(s))
+
+
+# 正常期间检查
+def check_normal(i):
+    if s[i] &lt;&#61; 0:
+        return False
+
+    # 和前面采样数据比较的前提条件是&#xff1a;前面的采样数据必须是正常状态&#xff0c;或者正常期错误状态
+    if i &gt;&#61; 1 and (status[i-1] &#61;&#61; NORMAL or status[i-1] &#61;&#61; FAULT):
+        if s[i] &lt; s[i-1]:
+            return False
+        if s[i] - s[i-1] &gt;&#61; 10:
+            return False
+
+    return True
+
+
+# 故障恢复期间检查
+def check_recovery(i):
+    if s[i] &lt;&#61; 0:
+        return False
+
+    # 和前面采样数据比较的前提条件是&#xff1a;前面的采样数据不能时丢弃状态&#xff0c;以及恢复期错误状态
+    if i &gt;&#61; 1 and status[i-1] !&#61; ABORT and status[i-1] !&#61; RECOVERY_FAULT:
+        if s[i] &lt; s[i - 1]:
+            return False
+        if s[i] - s[i - 1] &gt;&#61; 10:
+            return False
+
+    return True
+
+
+# 算法入口
+def getResult():
+    # M个周期可以当成滑窗&#xff0c;l是滑窗的左边界, r是滑窗的右边界
+    l, r &#61; 0, 0
+
+    # 滑窗内错误数据的个数
+    window_fault_count &#61; 0
+
+    # 滑窗右边界纳入新数据
+    while r &lt; len(s):
+        # 如果滑窗长度超过了m&#xff0c;那么滑窗的左边界需要右移
+        if r - l &#43; 1 &gt; m:
+            # 如果右移前的&#xff0c;滑窗左边界对于的数据状态是FAULT&#xff0c;则右移后的滑窗内错误数据个数-1
+            if status[l] &#61;&#61; FAULT:
+                window_fault_count -&#61; 1
+            l &#43;&#61; 1
+
+        # 检查数据状态
+        if check_normal(r):
+            # 如果数据正常&#xff0c;则标记status[r]为正常状态
+            status[r] &#61; NORMAL
+        else:
+            # 如果数据异常&#xff0c;则需要检查当前数据前面一个数据的状态
+            if r &lt; 1 or status[r-1] &#61;&#61; ABORT:
+                # 如果当前数据前面一个数据的状态是丢弃的&#xff0c;则当前数据没有代替值&#xff0c;也需要被丢弃
+                status[r] &#61; ABORT
+                # 一旦出现丢弃数据&#xff0c;则滑窗中断&#xff0c;此时需要重置滑窗
+                window_fault_count &#61; 0
+                l &#61; r &#43; 1
+            else:
+                # 如果当前数据前面一个数据的状态不是丢弃状态&#xff0c;那么滑窗内错误数据个数&#43;1
+                window_fault_count &#43;&#61; 1
+
+                if window_fault_count &lt; t:
+                    # 如果滑窗内错误数据个数没有超过阈值t&#xff0c;那么可以用前面一个数据代替
+                    status[r] &#61; FAULT
+                    s[r] &#61; s[r-1]
+                else:
+                    # 如果滑窗内错误数据个数超过了阈值t&#xff0c;那么 r 位置就是故障开始的位置
+                    # 此时 r 位置数据需要被丢弃&#xff0c;此时滑窗中断&#xff0c;需要重置滑窗
+                    status[r] &#61; ABORT
+                    window_fault_count &#61; 0
+
+                    # i 位置就是 故障恢复检查期开始位置
+                    i &#61; r &#43; 1
+
+                    # 故障恢复检查期内连续正确数据个数
+                    recovery_correct_count &#61; 0
+
+                    while i &lt; len(s):
+                        if check_recovery(i):
+                            recovery_correct_count &#43;&#61; 1
+                            status[i] &#61; RECOVERY_NORMAL
+
+                            # 当故障恢复期间&#xff0c;连续正确数据个数达到p&#xff0c;则故障解除
+                            if recovery_correct_count &#61;&#61; p:
+                                break
+                        else:
+                            recovery_correct_count &#61; 0
+                            status[i] &#61; RECOVERY_FAULT
+
+                        i &#43;&#61; 1
+
+                    # i 位置是故障解除的位置&#xff0c;则下一次&#xff0c;我们应该从 i&#43;1 位置开始重新判断&#xff0c;即滑窗的左、右边界都要更新为i&#43;1
+                    if i &lt; len(s):
+                        l &#61; i &#43; 1
+                        r &#61; i  # 这里r没有等于 i&#43;1&#xff0c;是后面有while循环的r&#43;&#61;1
+
+        r &#43;&#61; 1
+
+    # 最后只需要找到 status 数组中最长的连续NORMAL和FAULT即可
+    maxLength &#61; 0
+    length &#61; 0
+
+    for sta in status:
+        if sta &#61;&#61; NORMAL or sta &#61;&#61; FAULT:
+            length &#43;&#61; 1
+        else:
+            maxLength &#61; max(maxLength, length)
+            length &#61; 0
+
+    return max(maxLength, length)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a,b) a &gt; b ? a : b
+#define TRUE 1
+#define FALSE 0
+#define MAX_SIZE 100000
+
+// 采样数据状态
+#define NORMAL 1 // 正常数据的状态
+#define FAULT 2 // 错误数据的状态
+#define ABORT 3 // 丢弃的状态
+#define RECOVERY_NORMAL 4 // 故障恢复检查期间的正常数据的状态
+#define RECOVERY_FAULT 5 // 故障恢复检查期间的错误数据的状态
+
+// 故障确认周期数m, 故障次数门限t, 故障恢复周期数p
+int m, t, p;
+
+// 采样数据列表
+int s[MAX_SIZE];
+int s_size &#61; 0;
+
+// 采样数据列表中各个数据的状态
+int status[MAX_SIZE] &#61; { 0 };
+
+// 函数声明
+int getResult();
+int check_normal(int i);
+int check_recovery(int i);
+
+int main()
+{
+	// 输入获取
+	scanf(&#34;%d %d %d&#34;, &amp;m, &amp;t, &amp;p);
+
+	while (scanf(&#34;%d&#34;, &amp;s[s_size&#43;&#43;]))
+	{
+		if (getchar() !&#61; &#39; &#39;) break;
+	}
+
+	printf(&#34;%d\n&#34;, getResult());
+
+	return 0;
+}
+
+
+int getResult()
+{
+	// M个周期可以当成滑窗&#xff0c;l是滑窗的左边界
+	int l &#61; 0;
+	// 滑窗内错误数据的个数
+	int window_fault_count &#61; 0;
+
+	// 滑窗右边界纳入新数据
+	for (int r &#61; 0; r &lt; s_size; r&#43;&#43;)
+	{
+		// 如果滑窗长度超过了m&#xff0c;那么滑窗的左边界需要右移
+		if (r - l &#43; 1 &gt; m)
+		{
+			// 如果右移前的&#xff0c;滑窗左边界对于的数据状态是FAULT&#xff0c;则右移后的滑窗内错误数据个数-1
+			if (status[l&#43;&#43;] &#61;&#61; FAULT) window_fault_count--;
+		}
+
+		// 检查数据状态
+		if (check_normal(r))
+		{
+			// 如果数据正常&#xff0c;则标记status[r]为正常状态
+			status[r] &#61; NORMAL;
+		}
+		else
+		{
+			// 如果数据异常&#xff0c;则需要检查当前数据前面一个数据的状态
+			if (r &lt; 1 || status[r - 1] &#61;&#61; ABORT)
+			{
+				// 如果当前数据前面一个数据的状态是丢弃的&#xff0c;则当前数据没有代替值&#xff0c;也需要被丢弃
+				status[r] &#61; ABORT;
+				// 一旦出现丢弃数据&#xff0c;则滑窗中断&#xff0c;此时需要重置滑窗
+				window_fault_count &#61; 0;
+				l &#61; r &#43; 1;
+			}
+			else
+			{
+				// 如果当前数据前面一个数据的状态不是丢弃状态&#xff0c;那么滑窗内错误数据个数&#43;1
+				if (&#43;&#43;window_fault_count &lt; t)
+				{
+					// 如果滑窗内错误数据个数没有超过阈值t&#xff0c;那么可以用前面一个数据代替
+					status[r] &#61; FAULT;
+					s[r] &#61; s[r - 1];
+				}
+				else {
+					// 如果滑窗内错误数据个数超过了阈值t&#xff0c;那么 r 位置就是故障开始的位置
+					// 此时 r 位置数据需要被丢弃&#xff0c;此时滑窗中断&#xff0c;需要重置滑窗
+					status[r] &#61; ABORT;
+					window_fault_count &#61; 0;
+
+					// i 位置就是 故障恢复检查期开始位置
+					int i &#61; r &#43; 1;
+
+					// 故障恢复检查期内连续正确数据个数
+					int recovery_correct_count &#61; 0;
+
+					while (i &lt; s_size)
+					{
+						if (check_recovery(i))
+						{
+							recovery_correct_count&#43;&#43;;
+							status[i] &#61; RECOVERY_NORMAL;
+							
+							// 当故障恢复期间&#xff0c;连续正确数据个数达到p&#xff0c;则故障解除
+							if (recovery_correct_count &#61;&#61; p) break;
+						}
+						else
+						{
+							recovery_correct_count &#61; 0;
+							status[i] &#61; RECOVERY_FAULT;
+						}
+
+						i&#43;&#43;;
+					}
+
+					// i 位置是故障解除的位置&#xff0c;则下一次&#xff0c;我们应该从 i&#43;1 位置开始重新判断&#xff0c;即滑窗的左、右边界都要更新为i&#43;1
+					if (i &lt; s_size)
+					{
+						l &#61; i &#43; 1;
+						r &#61; i; // 这里r没有等于 i&#43;1&#xff0c;是因为for循环会给r&#43;&#43;
+					}
+				}
+			}
+		}
+	}
+
+	// 最后只需要找到 status 数组中最长的连续NORMAL和FAULT即可
+	int maxLen &#61; 0;
+	int len &#61; 0;
+
+	for (int i &#61; 0; i &lt; s_size; i&#43;&#43;)
+	{
+		if (status[i] &#61;&#61; NORMAL || status[i] &#61;&#61; FAULT)
+		{
+			len&#43;&#43;;
+		}
+		else
+		{
+			maxLen &#61; MAX(maxLen, len);
+			len &#61; 0;
+		}
+	}
+
+	return MAX(maxLen, len);
+}
+
+// 正常期间检查
+int check_normal(int i)
+{
+	// S[i] &lt;&#61; 0&#xff0c;即为错误值
+	if (s[i] &lt;&#61; 0) return FALSE;
+
+	// 和前面采样数据比较的前提条件是&#xff1a;前面的采样数据必须是正常状态&#xff0c;或者正常期错误状态
+	if (i &gt;&#61; 1 &amp;&amp; (status[i - 1] &#61;&#61; NORMAL || status[i - 1] &#61;&#61; FAULT))
+	{
+		if (s[i] &lt; s[i - 1]) return FALSE; // S[i] &lt; S[i-1]&#xff0c;即为错误值
+		if (s[i] - s[i - 1] &gt;&#61; 10) return FALSE; // S[i] - S[i-1] &gt;&#61; 10&#xff0c;即为错误值
+	}
+
+	return TRUE; // 其它情况为正常值
+}
+
+// 故障恢复期检查
+int check_recovery(int i)
+{
+	// S[i] &lt;&#61; 0&#xff0c;即为错误值
+	if (s[i] &lt;&#61; 0) return FALSE;
+
+	// 和前面采样数据比较的前提条件是&#xff1a;前面的采样数据不能时丢弃状态&#xff0c;以及恢复期错误状态
+	if (i &gt;&#61; 1 &amp;&amp; status[i - 1] !&#61; ABORT &amp;&amp; status[i - 1] !&#61; RECOVERY_FAULT)
+	{
+		if (s[i] &lt; s[i - 1]) return FALSE; // S[i] &lt; S[i-1]&#xff0c;即为错误值
+		if (s[i] - s[i - 1] &gt;&#61; 10) return FALSE; // S[i] - S[i-1] &gt;&#61; 10&#xff0c;即为错误值
+	}
+
+	return TRUE; // 其它情况为正常值
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,362 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 最小循环子数组（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个由若干整数组成的数组nums&#xff0c;请检查数组是否是由某个子数组重复循环拼接而成&#xff0c;请输出这个最小的子数组。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入数组中元素个数n&#xff0c;1 ≤ n ≤ 100000</p> 
+<p>第二行输入数组的数字序列nums&#xff0c;以空格分割&#xff0c;0 ≤ nums[i] &lt; 10</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出最小的子数组的数字序列&#xff0c;以空格分割&#xff1b;</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>数组本身是其最大的子数组&#xff0c;循环1次可生成的自身&#xff1b;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">9<br /> 1 2 1 1 2 1 1 2 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1 2 1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">数组[1,2,1,1,2,1,1,2,1] 可由子数组[1,2,1]重复循环3次拼接而成</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以转化为最小重复子串问题&#xff0c;利用KMP算法求解。</p> 
+<p></p> 
+<p>比如&#xff0c;有一个字符串&#34;abababab&#34;&#xff0c;该字符串可以看成是某个子串重复多次产生的&#xff0c;比如这个重复子串可以是&#34;ab&#34;&#xff0c;也可以是&#34;abab&#34;。其中&#34;ab&#34;就是最小重复子串。</p> 
+<p></p> 
+<p>而求解最小重复子串问题&#xff0c;具有一定的技巧&#xff1a;</p> 
+<blockquote> 
+ <p>字符串S&#xff0c;长度为n&#xff0c;如果确定了S是由某子串重复产生的&#xff0c;则我们可以求解求解出字符串S的<span style="color:#fe2c24;">最长相同前后缀</span>的长度m&#xff0c;则n-m就是最小重复子串的长度&#xff0c;而字符串S的0~n-m范围的子串就是其最小重复子串。</p> 
+</blockquote> 
+<p></p> 
+<p>上面逻辑中&#xff0c;由一个“最长相同前后缀”的概念&#xff0c;首先大家需要知道字符串s的前缀、后缀的定义&#xff1a;</p> 
+<ul><li>前缀&#xff0c;即起始索引必须为0&#xff0c;结束索引必须 &lt; s.length - 1 的所有子串</li><li>后缀&#xff0c;即结束所有必须为s.length - 1&#xff0c;起始索引必须 &gt; 0 的所有子串</li><li>前缀、后缀的长度 必须 &lt; s.length&#xff0c;即前后缀不能是s本身&#xff0c;当然也不能为空</li></ul> 
+<p>比如我们可以列出字符串&#34;abababab&#34;的所有前、后缀&#xff1a;</p> 
+<p>先画图看下几个例子&#xff1a;</p> 
+<p>长度为1的前缀&#xff08;绿色部分&#xff09;、后缀&#xff08;橙色部分&#xff09;</p> 
+<p><img alt="" height="89" src="https://img-blog.csdnimg.cn/98bf7bb46186488b98452726db505a7d.png" width="344" /></p> 
+<p> 长度为2的前缀&#xff08;绿色部分&#xff09;、后缀&#xff08;橙色部分&#xff09;</p> 
+<p><img alt="" height="102" src="https://img-blog.csdnimg.cn/af7c33c7b2a74ae582b5b5c9a09ee7f1.png" width="378" /></p> 
+<p>长度为3的前缀&#xff08;绿色部分&#xff09;、后缀&#xff08;橙色部分&#xff09;</p> 
+<p><img alt="" height="103" src="https://img-blog.csdnimg.cn/61a203cda7114ec68819ca130d0f50d8.png" width="321" /></p> 
+<p> 长度为6的前缀&#xff08;绿色部分&#xff09;&#xff0c;后缀&#xff08;橙色部分&#xff09;</p> 
+<p><img alt="" height="144" src="https://img-blog.csdnimg.cn/e8f39e9e3034478ca0dc257e72cfa623.png" width="350" /></p> 
+<p>所有的前后缀情况如下表&#xff1a;</p> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>长度</td><td>前缀</td><td>后缀</td></tr><tr><td>1</td><td>a</td><td>b</td></tr><tr><td>2</td><td>ab</td><td>ab</td></tr><tr><td>3</td><td>aba</td><td>bab</td></tr><tr><td>4</td><td>abab</td><td>abab</td></tr><tr><td>5</td><td>ababa</td><td>babab</td></tr><tr><td style="background-color:#ffff66;">6</td><td style="background-color:#ffff66;">ababab</td><td style="background-color:#ffff66;">ababab</td></tr><tr><td>7</td><td>abababa</td><td>bababab</td></tr></tbody></table> 
+<p>根据上面表&#xff0c;我们可以知道&#xff0c;</p> 
+<blockquote> 
+ <p>最长且相同的前、后缀是&#xff0c;长度为6的&#34;ababab&#34; </p> 
+</blockquote> 
+<p></p> 
+<p>那么根据前面的技巧&#xff0c;</p> 
+<blockquote> 
+ <p>如果字符串s是由最小重复子串x重复产生的&#xff0c;则最小重复子串x的长度 &#61; s.length - 最长相同前后缀.length</p> 
+</blockquote> 
+<p>即字符串&#34;abababab&#34;的最小重复子串长度为2。</p> 
+<p></p> 
+<p>下面我们来推导下&#xff0c;为什么&#xff1a;最小重复子串的长度 &#61; s.length - 最长相同前后缀.length</p> 
+<p>假设&#xff0c;字符串S的最小重复子串为x&#xff0c;且字符串S一共由k个最小重复子串x组成</p> 
+<p><img alt="" height="145" src="https://img-blog.csdnimg.cn/66351a7f0c104eeb927963730b6e3776.png" width="353" /></p> 
+<p>那么字符串S的最长相同前、后缀必然是(k-1)个x</p> 
+<p><img alt="" height="136" src="https://img-blog.csdnimg.cn/ef524527b3e340fd9997c58c5b3d798d.png" width="392" /></p> 
+<p>这里&#xff0c;大家推导一下&#xff0c;</p> 
+<p>假设上面&#xff1a;</p> 
+<p>前缀&#xff08;绿色部分&#xff09;再扩展一点&#xff0c;即侵入最后一个x串的左边部分&#xff0c;那么为了保持相同的前后缀&#xff0c;则后缀部分&#xff08;橙色部分&#xff09;必然需要再侵入第一个x的右边部分</p> 
+<p>那么有没有办法将x分为左L、右R两部分&#xff0c;使得下面等式成立呢&#xff1f;</p> 
+<blockquote> 
+ <p>( k - 1) * x &#43; L &#61;&#61; R &#43; ( k - 1)  * x&#xff1b;其中L &#43; R &#61;&#61; x</p> 
+</blockquote> 
+<p>我们再简化下上面等式&#xff0c;即将(k-1) * x 替换为Y</p> 
+<blockquote> 
+ <p>Y &#43; L &#61;&#61; R &#43; Y&#xff1b;其中L &#43; R &#61;&#61; x</p> 
+</blockquote> 
+<p>其实上面等式的唯一成立条件就是&#xff1a;L &#61; R</p> 
+<p>但是这是不可能的&#xff0c;因为x本身已经是最小重复子串了&#xff0c;因此本身不可能是由两个重复部分组成的。</p> 
+<p></p> 
+<p>现在&#xff0c;我们已经验证了&#xff1a;</p> 
+<blockquote> 
+ <p>如果字符串s是由最小重复子串x重复产生的&#xff0c;则最小重复子串x的长度 &#61; s.length - 最长相同前后缀.length</p> 
+</blockquote> 
+<p></p> 
+<p>那么&#xff0c;接下来&#xff0c;还有两个难点要解决&#xff1a;</p> 
+<p>1、如何求解字符串的最长相同前后缀的长度</p> 
+<blockquote> 
+ <p>关于最长相同前后缀的长度求解&#xff0c;我们可以基于KMP算法求解&#xff0c;具体请看&#xff1a;</p> 
+ <p><a href="https://blog.csdn.net/qfc_128220/article/details/131311563?spm&#61;1001.2014.3001.5501" title="算法设计 - KMP算法_伏城之外的博客-CSDN博客">算法设计 - KMP算法_伏城之外的博客-CSDN博客</a></p> 
+ <p>中前缀表生成逻辑&#xff0c;以及getNext代码实现的逻辑。</p> 
+</blockquote> 
+<p>2、如何证明一个字符串s是重复子串x生成的</p> 
+<blockquote> 
+ <p><strong>假设字符串S是重复子串产生的&#xff0c;字符串S的长度为n&#xff0c;其最长相同前后缀长度为m&#xff0c;则 n - m 就是最小重复子串的长度&#xff0c;则这个最小重复字符串长度一定可以被字符串长度整除。</strong></p> 
+ <p><strong>因此&#xff0c;我们只需要验证 n % (n - m) &#61;&#61; 0 即可判断字符串S是否是重复的。</strong></p> 
+</blockquote> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    const n &#61; parseInt(lines[0]);
+    const nums &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(n, nums));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, nums) {
+  // KMP算法 前缀表求解
+  const next &#61; getNext(n, nums);
+
+  // 最长相同前后缀长度
+  const m &#61; next[n - 1];
+
+  // 最小重复子串的长度
+  const len &#61; n % (n - m) &#61;&#61; 0 ? n - m : n;
+
+  return nums.slice(0, len).join(&#34; &#34;);
+}
+
+function getNext(n, nums) {
+  const next &#61; new Array(n).fill(0);
+
+  let j &#61; 1;
+  let k &#61; 0;
+
+  while (j &lt; n) {
+    if (nums[j] &#61;&#61; nums[k]) {
+      next[j] &#61; k &#43; 1;
+      j&#43;&#43;;
+      k&#43;&#43;;
+    } else {
+      if (k &gt; 0) {
+        k &#61; next[k - 1];
+      } else {
+        j&#43;&#43;;
+      }
+    }
+  }
+
+  return next;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int n &#61; Integer.parseInt(sc.nextLine());
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    System.out.println(getResult(n, nums));
+  }
+
+  public static String getResult(int n, int[] nums) {
+    // KMP算法 前缀表求解
+    int[] next &#61; getNext(n, nums);
+
+    // 最长相同前后缀长度
+    int m &#61; next[n - 1];
+
+    // 最小重复子串的长度
+    int len &#61; n % (n - m) &#61;&#61; 0 ? n - m : n;
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (int i &#61; 0; i &lt; len; i&#43;&#43;) sj.add(nums[i] &#43; &#34;&#34;);
+    return sj.toString();
+  }
+
+  public static int[] getNext(int n, int[] nums) {
+    int[] next &#61; new int[n];
+
+    int j &#61; 1;
+    int k &#61; 0;
+
+    while (j &lt; n) {
+      if (nums[j] &#61;&#61; nums[k]) {
+        next[j] &#61; k &#43; 1;
+        j&#43;&#43;;
+        k&#43;&#43;;
+      } else {
+        if (k &gt; 0) {
+          k &#61; next[k - 1];
+        } else {
+          j&#43;&#43;;
+        }
+      }
+    }
+
+    return next;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+nums &#61; list(map(int, input().split()))
+
+
+def getNext():
+    nxt &#61; [0] * n
+
+    j &#61; 1
+    k &#61; 0
+
+    while j &lt; n:
+        if nums[j] &#61;&#61; nums[k]:
+            nxt[j] &#61; k &#43; 1
+            j &#43;&#61; 1
+            k &#43;&#61; 1
+        else:
+            if k &gt; 0:
+                k &#61; nxt[k - 1]
+            else:
+                j &#43;&#61; 1
+
+    return nxt
+
+
+# 算法入口
+def getResult():
+    # KMP算法 前缀表求解
+    nxt &#61; getNext()
+
+    # 最长相同前后缀长度
+    m &#61; nxt[n-1]
+
+    # 最小重复子串的长度
+    length &#61; n - m if n % (n - m) &#61;&#61; 0 else n
+
+    return &#34; &#34;.join(map(str, nums[0:length]))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_SIZE 100000
+
+char* getResult(int n, int* nums);
+int* getNext(int n, int* nums);
+void join(int* arr, int arr_size, char delimiter[], char tmp_str[], char result_str[]);
+
+
+int nums[MAX_SIZE];
+int main()
+{
+	int n;
+	scanf(&#34;%d&#34;, &amp;n);
+
+	for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+		scanf(&#34;%d&#34;, &amp;nums[i]);
+	}
+
+	printf(getResult(n, nums));
+
+	return 0;
+}
+
+char result_str[MAX_SIZE * 3];
+char* getResult(int n, int* nums)
+{
+	// KMP算法 前缀表求解
+	int* next &#61; getNext(n, nums);
+
+	// 最长相同前后缀长度
+	int m &#61; next[n - 1];
+
+	// 最小重复子串的长度
+	int len &#61; n % (n - m) &#61;&#61; 0 ? n - m : n;
+
+	char tmp_str[2];
+	join(nums, len, &#34; &#34;, tmp_str, result_str);
+
+	return result_str;
+}
+
+// KMP算法 前缀表求解
+int next[MAX_SIZE] &#61; { 0 };
+int* getNext(int n, int* nums)
+{
+	int j &#61; 1;
+	int k &#61; 0;
+
+	while (j &lt; n) {
+		if (nums[j] &#61;&#61; nums[k]) {
+			next[j] &#61; k &#43; 1;
+			j&#43;&#43;;
+			k&#43;&#43;;
+		}
+		else {
+			if (k &gt; 0) {
+				k &#61; next[k - 1];
+			}
+			else {
+				j&#43;&#43;;
+			}
+		}
+	}
+
+	return next;
+}
+
+// 整型数组arr按照指定连接符delimiter进行拼接得到字符串result_str
+void join(int* arr, int arr_size, char delimiter[], char tmp_str[], char result_str[])
+{
+	for (int i &#61; 0; i &lt; arr_size; i&#43;&#43;) {
+		sprintf(tmp_str, &#34;%d&#34;, arr[i]);
+		strcat(result_str, tmp_str);
+		if (i !&#61; arr_size - 1) {
+			strcat(result_str, delimiter);
+		}
+	}
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

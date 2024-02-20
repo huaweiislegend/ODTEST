@@ -1,0 +1,296 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 阿里巴巴找黄金宝箱(IV)（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>一贫如洗的樵夫阿里巴巴在去砍柴的路上&#xff0c;无意中发现了强盗集团的藏宝地&#xff0c;藏宝地有编号从0-N的箱子&#xff0c;每个箱子上面有一个数字&#xff0c;箱子排列成一个环&#xff0c;编号最大的箱子的下一个是编号为0的箱子。</p> 
+<p>请输出每个箱了贴的数字之后的第一个比它大的数&#xff0c;如果不存在则输出-1。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入一个数字字串&#xff0c;数字之间使用逗号分隔&#xff0c;例如: 1,2,3,1</p> 
+<ul><li>1 ≤ 字串中数字个数 ≤ 10000:</li><li>-100000 ≤ 每个数字值 ≤ 100000</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>下一个大的数列表&#xff0c;以逗号分隔&#xff0c;例如: 2,3,6,-1,6</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2,5,2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5,-1,5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>第一个2的下一个更大的数是5;</p> <p>数字5找不到下一个更大的数;</p> <p>第二个2的下一个最大的数需要循环搜索&#xff0c;结果也是 5</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3,4,5,6,3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4,5,6,-1,4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p> </p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题就是<a href="https://blog.csdn.net/qfc_128220/article/details/127397884" title="LeetCode - 503 下一个更大元素 II_正整数组nums 下一个更大元素 没有 输出0_伏城之外的博客-CSDN博客">LeetCode - 503 下一个更大元素 II_正整数组nums 下一个更大元素 没有 输出0_伏城之外的博客-CSDN博客</a></p> 
+<p>的换皮题&#xff0c;解析可以参考链接博客。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int[] arr &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    System.out.println(getResult(arr));
+  }
+
+  public static String getResult(int[] arr) {
+    LinkedList&lt;int[]&gt; stack &#61; new LinkedList&lt;&gt;();
+
+    int[] res &#61; new int[arr.length];
+    Arrays.fill(res, -1);
+
+    findNextBig(arr, stack, res);
+
+    if (stack.size() !&#61; 1) findNextBig(arr, stack, res);
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+    for (int v : res) {
+      sj.add(v &#43; &#34;&#34;);
+    }
+    return sj.toString();
+  }
+
+  public static void findNextBig(int[] arr, LinkedList&lt;int[]&gt; stack, int[] res) {
+    for (int i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+      int ele &#61; arr[i];
+      while (true) {
+        if (stack.size() &#61;&#61; 0) {
+          stack.add(new int[] {ele, i});
+          break;
+        } else {
+          int[] peek &#61; stack.get(stack.size() - 1);
+          int peekEle &#61; peek[0];
+          int peekIdx &#61; peek[1];
+
+          if (ele &gt; peekEle) {
+            res[peekIdx] &#61; ele;
+            stack.removeLast();
+          } else {
+            stack.add(new int[] {ele, i});
+            break;
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34;,&#34;).map(Number);
+  console.log(getResult(arr));
+});
+
+function getResult(arr) {
+  const stack &#61; [];
+  const res &#61; new Array(arr.length).fill(-1);
+
+  findNextBig(arr, stack, res);
+
+  if (stack.length !&#61; 1) findNextBig(arr, stack, res);
+
+  return res.join(&#34;,&#34;);
+}
+
+function findNextBig(arr, stack, res) {
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    const ele &#61; arr[i];
+
+    while (true) {
+      if (stack.length &#61;&#61; 0) {
+        stack.push([ele, i]);
+        break;
+      } else {
+        const [peekEle, peekIdx] &#61; stack.at(-1);
+
+        if (ele &gt; peekEle) {
+          res[peekIdx] &#61; ele;
+          stack.pop();
+        } else {
+          stack.push([ele, i]);
+          break;
+        }
+      }
+    }
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+def findNextBig(arr, stack, res):
+    for i in range(len(arr)):
+        ele &#61; arr[i]
+
+        while True:
+            if len(stack) &#61;&#61; 0:
+                stack.append([ele, i])
+                break
+            else:
+                peekEle, peekIdx &#61; stack[-1]
+
+                if ele &gt; peekEle:
+                    res[peekIdx] &#61; ele
+                    stack.pop()
+                else:
+                    stack.append([ele, i])
+                    break
+
+
+# 算法入口
+def getResult():
+    stack &#61; []
+    res &#61; [-1] * len(arr)
+
+    findNextBig(arr, stack, res)
+
+    if len(stack) !&#61; 1:
+        findNextBig(arr, stack, res)
+
+    return &#34;,&#34;.join(map(str, res))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 10000
+
+/**
+ * 栈结构定义
+ * 容器 stack 数组&#xff0c;容量上限MAX_SIZE
+ * 栈中元素个数 stack_size
+ * 压栈操作 stack_push
+ * 弹栈操作 stack_pop
+ */
+int *stack[MAX_SIZE];
+int stack_size &#61; 0;
+
+void stack_push(int *ele) {
+    if (stack_size &lt; MAX_SIZE) {
+        stack[stack_size&#43;&#43;] &#61; ele;
+    }
+}
+
+int *stack_pop() {
+    if (stack_size &gt; 0) {
+        return stack[--stack_size];
+    }
+    return NULL;
+}
+
+
+/**
+ * 算法逻辑
+ */
+int nums[MAX_SIZE];
+int nums_size &#61; 0;
+
+char *getResult();
+
+void findNextBig(int *res);
+
+int main() {
+    // 输入获取
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    // res[i]记录的是比nums[i]大的下一个值
+    int res[MAX_SIZE];
+    for (int i &#61; 0; i &lt; nums_size; i&#43;&#43;) {
+        res[i] &#61; -1;
+    }
+
+    findNextBig(res);
+    if (stack_size !&#61; 1) findNextBig(res);
+
+    // 输出打印
+    for (int i &#61; 0; i &lt; nums_size - 1; i&#43;&#43;) {
+        printf(&#34;%d,&#34;, res[i]);
+    }
+    printf(&#34;%d\n&#34;, res[nums_size - 1]);
+
+    return 0;
+}
+
+void findNextBig(int *res) {
+    for (int i &#61; 0; i &lt; nums_size; i&#43;&#43;) {
+        int num &#61; nums[i];
+
+        int *p &#61; (int *) malloc(sizeof(int) * 2);
+        p[0] &#61; num;
+        p[1] &#61; i;
+
+        while (1) {
+            if (stack_size &#61;&#61; 0) {
+                stack_push(p);
+                break;
+            }
+
+            int *peek &#61; stack[stack_size - 1];
+            int peekNum &#61; peek[0];
+            int peekIdx &#61; peek[1];
+
+            if (num &gt; peekNum) {
+                res[peekIdx] &#61; num;
+                // stack_pop出来的就是前面动态申请的p指针指向的内存&#xff0c;此时pop出来后&#xff0c;需要注意释放p指针指向的内存
+                free(stack_pop());
+            } else {
+                stack_push(p);
+                break;
+            }
+        }
+    }
+}
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

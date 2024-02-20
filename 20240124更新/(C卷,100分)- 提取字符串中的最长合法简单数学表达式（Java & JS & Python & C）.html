@@ -1,0 +1,569 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 提取字符串中的最长合法简单数学表达式（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>提取字符串中的最长合法简单数学表达式&#xff0c;字符串长度最长的&#xff0c;并计算表达式的值。如果没有&#xff0c;则返回 0 。</p> 
+<p>简单数学表达式只能包含以下内容&#xff1a;</p> 
+<ul><li>0-9数字&#xff0c;符号&#43;-*</li></ul> 
+<p>说明&#xff1a;</p> 
+<ol><li>所有数字&#xff0c;计算结果都不超过long</li><li>如果有多个长度一样的&#xff0c;请返回第一个表达式的结果</li><li>数学表达式&#xff0c;必须是最长的&#xff0c;合法的</li><li>操作符不能连续出现&#xff0c;如 &#43;--&#43;1 是不合法的</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>字符串</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>表达式值</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">1-2abcd</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">-1</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">最长合法简单数学表达式是&#34;1-2&#34;&#xff0c;结果是-1</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>注意&#xff01;&#xff01;&#xff01;本题原题描述中没有 / 除号</p> 
+<p><img alt="" height="622" src="https://img-blog.csdnimg.cn/direct/8b3411f1b5c64bfb84430ecd6a70b626.png" width="579" /></p> 
+<p>因此&#xff0c;本题的合法表达式不需要考虑 &#39;/&#39; 号&#xff0c;也就不用考虑除0&#xff0c;以及除法是整除还是小数除的问题。</p> 
+<p>另外&#xff0c;本题的 &#43;、-号仅作为运算符号&#xff0c;不作为正负号。因此 &#34;&#43;1&#34;&#xff0c;&#34;-1&#34; 这种不能理解为合法的表达式。</p> 
+<hr /> 
+<p>本题可以分为两步求解&#xff1a;</p> 
+<ol><li>找出输入串中最长合法的表达式</li><li>计算最长合法表达式的结果</li></ol> 
+<hr /> 
+<p>关于1的求解&#xff0c;有两种思路&#xff1a;</p> 
+<ul><li>双指针</li><li>正则匹配</li></ul> 
+<p>其中正则匹配实现起来比较简单&#xff0c;用于匹配合法表达式的正则也不是很难写&#xff0c;对应正则解析如下&#xff1a;</p> 
+<p><img alt="" height="259" src="https://img-blog.csdnimg.cn/direct/a494a5ab25b3465b8337c6bc1856b815.png" width="614" /></p> 
+<p>对于python而言&#xff0c;为了更好地适配findall方法&#xff0c;我们可以对上面正则表达式中内层括号使用到非捕获组</p> 
+<p><img alt="" height="254" src="https://img-blog.csdnimg.cn/direct/9f3d6c0b12334219ba6f98671111d987.png" width="645" /></p> 
+<p></p> 
+<hr /> 
+<p>关于2的求解</p> 
+<p><span style="color:#fe2c24;"><strong>对于JS和Python而言&#xff0c;可以使用内置的eval函数计算字符串表达式的结果。</strong></span></p> 
+<p>更常规的思路是利用栈结构&#xff1a;</p> 
+<blockquote> 
+ <p>找出最长合法表达式子串后&#xff0c;比如 &#34;1-2*3&#43;10&#43;2&#34;&#xff0c;我们需要注意表达式运算符优先级问题&#xff0c;即先乘&#xff0c;后加减&#xff0c;相同优先级的运算从左到右进行。</p> 
+ <p></p> 
+ <p>这里我的思路是将 合法表达式串 进行分块&#xff0c;比如上面表达式可以分为&#xff1a;</p> 
+ <ul><li>1</li><li>-2*3</li><li>10</li><li>2</li></ul> 
+ <p>我们可以发现&#xff1a;</p> 
+ <ul><li>&#43;、-运算符前面的操作数都是独立成块&#xff0c;比如上面表达式的操作数1&#xff0c;10</li><li>* 运算符前面的操作数则需要组合成块&#xff0c;比如上面表达式的操作数2后面是 * 运算符&#xff0c;因此 2 需要和 3 进行组合。</li></ul> 
+ <p>分块之后&#xff0c;我们只需要求各块结果之和即可。</p> 
+ <p></p> 
+ <p>具体逻辑实现如下&#xff1a;</p> 
+ <ul><li>首先定义一个栈stack&#xff0c;用于保存各个块的结果&#xff1b;</li><li>其次定义一个块的值容器numStr&#xff0c;用于临时缓存分块的值&#xff1b;</li><li>最后定义一个块的系数变量numCoef&#xff0c;用于临时缓存分块的系数&#xff1b;</li></ul> 
+ <p>扫描合法表达式串&#xff0c;如果当前扫描的字符c是&#xff1a;</p> 
+ <ul><li>c 是数字&#xff0c;则直接缓存进块的值容器numStr中</li><li>c 是 &#43; 号&#xff0c;则打断前一个操作数的收集&#xff0c;此时我们应该将前一个操作数计算结果后加入到stack中&#xff0c;操作数 &#61; int(numStr) * numCoef&#xff0c;同时更新numCoef &#61; 1&#xff0c;因为c是&#43;号&#xff0c;所以后一个操作数的系数为1</li><li>c 是 - 号&#xff0c;则打断前一个操作数的收集&#xff0c;此时我们应该将前一个操作数计算结果后加入到stack中&#xff0c;操作数 &#61; int(numStr) * numCoef&#xff0c;同时更新numCoef &#61; -1&#xff0c;因为c是-号&#xff0c;所以后一个操作数的系数为-1</li><li>c 是 * 号&#xff0c;则打断前一个操作数的收集&#xff0c;并且 * 前后的两个操作数需要组合&#xff0c;而 * 前面的操作数记录在stack栈顶中&#xff0c;我们可以取出stack栈顶值 记录到 numCoef 中&#xff0c;即 * 前面的操作数&#xff0c;可以当初 * 后面操作数的系数</li></ul> 
+ <p>这块实现的更详细解析&#xff0c;可以参考&#xff1a;</p> 
+ <p><a href="https://blog.csdn.net/qfc_128220/article/details/135005092?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522170507394016800225547489%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;170507394016800225547489&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-1-135005092-null-null.nonecase&amp;utm_term&#61;%E7%AC%A6%E5%8F%B7%E8%BF%90%E7%AE%97&amp;spm&#61;1018.2226.3001.4450" title="华为OD机试 - 符号运算&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;_java 华为od机试,符号运算-CSDN博客">华为OD机试 - 符号运算&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;_java 华为od机试,符号运算-CSDN博客</a></p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<h5>正则&#43;栈解法</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const s &#61; await readline();
+  console.log(getResult(s));
+})();
+
+function getResult(s) {
+  const maxLenExp &#61; getMaxLenExp(s);
+
+  if (maxLenExp.length &#61;&#61; 0) {
+    return 0;
+  } else {
+    return calcExpStr(maxLenExp);
+  }
+}
+
+function getMaxLenExp(s) {
+  const reg &#61; /((\d&#43;[&#43;*-])*\d&#43;)/g;
+
+  let maxLenExp &#61; &#34;&#34;;
+
+  let res;
+  while ((res &#61; reg.exec(s)) !&#61; null) {
+    const exp &#61; res[0];
+
+    if (exp.length &gt; maxLenExp.length) {
+      maxLenExp &#61; exp;
+    }
+  }
+
+  return maxLenExp;
+}
+
+function calcExpStr(exp) {
+  // 这里在表达式结尾追加&#34;&#43;0&#34;是为了避免后面收尾操作&#xff0c;不理解的话&#xff0c;可以去掉此步&#xff0c;测试下&#34;1-2&#34;
+  exp &#43;&#61; &#34;&#43;0&#34;;
+
+  // 记录表达式中各块的操作数
+  const stack &#61; [];
+  // 各块操作数的&#34;值&#34;部分的缓存容器
+  let numStr &#61; [];
+  // 各块操作数的&#34;系数&#34;部分&#xff0c;默认为1
+  let num_coef &#61; 1;
+
+  for (let c of exp) {
+    if (c &gt;&#61; &#34;0&#34; &amp;&amp; c &lt;&#61; &#34;9&#34;) {
+      numStr.push(c);
+      continue;
+    }
+
+    // 如果扫描到的字符c是运算符&#xff0c;那么该运算符打断了前面操作数的扫描&#xff0c;前面操作数 &#61; 系数 * 值
+    const num &#61; num_coef * parseInt(numStr.join(&#34;&#34;));
+    stack.push(num);
+
+    // 清空缓存容器&#xff0c;用于下一个操作数的”值“记录
+    numStr &#61; [];
+
+    switch (c) {
+      case &#34;&#43;&#34;:
+        // 如果运算符是加法&#xff0c;则后一个操作数的系数为1
+        num_coef &#61; 1;
+        break;
+      case &#34;-&#34;:
+        // 如果运算符是减法&#xff0c;则后一个操作数的系数为-1
+        num_coef &#61; -1;
+        break;
+      case &#34;*&#34;:
+        // 如果运算符是乘法&#xff0c;则后一个操作数的系数为栈顶值&#xff0c;比如2*3&#xff0c;其中2可以当作3的系数
+        num_coef &#61; stack.pop();
+        break;
+    }
+  }
+
+  // 表达式分块后&#xff0c;每一块独立计算&#xff0c;所有块的和就是表达式的结果
+  let res &#61; 0;
+  for (let num of stack) {
+    res &#43;&#61; num;
+  }
+
+  return res;
+}
+</code></pre> 
+<h5>正则&#43;eval解法</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const s &#61; await readline();
+  console.log(getResult(s));
+})();
+
+function getResult(s) {
+  const maxLenExp &#61; getMaxLenExp(s);
+
+  if (maxLenExp.length &#61;&#61; 0) {
+    return 0;
+  } else {
+    return calcExpStr(maxLenExp);
+  }
+}
+
+function getMaxLenExp(s) {
+  const reg &#61; /((\d&#43;[&#43;*-])*\d&#43;)/g;
+
+  let maxLenExp &#61; &#34;&#34;;
+
+  let res;
+  while ((res &#61; reg.exec(s)) !&#61; null) {
+    const exp &#61; res[0];
+
+    if (exp.length &gt; maxLenExp.length) {
+      maxLenExp &#61; exp;
+    }
+  }
+
+  return maxLenExp;
+}
+
+function calcExpStr(exp) {
+  return eval(exp);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<h5 style="background-color:transparent;">正则&#43;栈解法</h5> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  public static long getResult(String s) {
+    String maxLenExp &#61; getMaxLenExp(s);
+
+    if (maxLenExp.length() &#61;&#61; 0) {
+      return 0;
+    } else {
+      return calcExpStr(maxLenExp);
+    }
+  }
+
+  public static String getMaxLenExp(String s) {
+    Matcher matcher &#61; Pattern.compile(&#34;((\\d&#43;[&#43;*-])*\\d&#43;)&#34;).matcher(s);
+
+    String maxLenExp &#61; &#34;&#34;;
+
+    while (matcher.find()) {
+      String exp &#61; matcher.group(0);
+
+      if (exp.length() &gt; maxLenExp.length()) {
+        maxLenExp &#61; exp;
+      }
+    }
+
+    return maxLenExp;
+  }
+
+  public static long calcExpStr(String exp) {
+    // 这里在表达式结尾追加&#34;&#43;0&#34;是为了避免后面收尾操作&#xff0c;不理解的话&#xff0c;可以去掉此步&#xff0c;测试下&#34;1-2&#34;
+    exp &#43;&#61; &#34;&#43;0&#34;;
+
+    // 记录表达式中各块的操作数
+    LinkedList&lt;Long&gt; stack &#61; new LinkedList&lt;&gt;();
+    // 各块操作数的&#34;值&#34;部分的缓存容器
+    StringBuilder numStr &#61; new StringBuilder();
+    // 各块操作数的&#34;系数&#34;部分&#xff0c;默认为1
+    long num_coef &#61; 1;
+
+    for (int i &#61; 0; i &lt; exp.length(); i&#43;&#43;) {
+      char c &#61; exp.charAt(i);
+
+      if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+        numStr.append(c);
+        continue;
+      }
+
+      // 如果扫描到的字符c是运算符&#xff0c;那么该运算符打断了前面操作数的扫描&#xff0c;前面操作数 &#61; 系数 * 值
+      long num &#61; num_coef * Long.parseLong(numStr.toString());
+      stack.add(num);
+
+      // 清空缓存容器&#xff0c;用于下一个操作数的”值“记录
+      numStr &#61; new StringBuilder();
+
+      switch (c) {
+        case &#39;&#43;&#39;:
+          // 如果运算符是加法&#xff0c;则后一个操作数的系数为1
+          num_coef &#61; 1;
+          break;
+        case &#39;-&#39;:
+          // 如果运算符是减法&#xff0c;则后一个操作数的系数为-1
+          num_coef &#61; -1;
+          break;
+        case &#39;*&#39;:
+          // 如果运算符是乘法&#xff0c;则后一个操作数的系数为栈顶值&#xff0c;比如2*3&#xff0c;其中2可以当作3的系数
+          num_coef &#61; stack.removeLast();
+          break;
+      }
+    }
+
+    // 表达式分块后&#xff0c;每一块独立计算&#xff0c;所有块的和就是表达式的结果
+    long res &#61; 0;
+    for (long num : stack) {
+      res &#43;&#61; num;
+    }
+
+    return res;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<h5>正则&#43;栈解法</h5> 
+<pre><code class="language-python"># 输入获取
+import re
+
+s &#61; input()
+
+
+# 计算合法表达式的结果
+def calcExpStr(exp):
+    # 这里在表达式结尾追加&#34;&#43;0&#34;是为了避免后面收尾操作&#xff0c;不理解的话&#xff0c;可以去掉此步&#xff0c;测试下&#34;1-2&#34;
+    exp &#43;&#61; &#39;&#43;0&#39;
+
+    # 记录表达式中各块的操作数
+    stack &#61; []
+    # 各块操作数的&#34;值&#34;部分的缓存容器
+    numStr &#61; []
+    # 各块操作数的&#34;系数&#34;部分&#xff0c;默认为1
+    num_coef &#61; 1
+
+    for c in exp:
+        if &#39;9&#39; &gt;&#61; c &gt;&#61; &#39;0&#39;:
+            numStr.append(c)
+            continue
+
+        # 如果扫描到的字符c是运算符&#xff0c;那么该运算符打断了前面操作数的扫描&#xff0c;前面操作数 &#61; 系数 * 值
+        num &#61; num_coef * int(&#34;&#34;.join(numStr))
+        stack.append(num)
+
+        # 清空缓存容器&#xff0c;用于下一个操作数的”值“记录
+        numStr.clear()
+
+        if c &#61;&#61; &#39;&#43;&#39;:
+            # 如果运算符是加法&#xff0c;则后一个操作数的系数为1
+            num_coef &#61; 1
+        elif c &#61;&#61; &#39;-&#39;:
+            # 如果运算符是减法&#xff0c;则后一个操作数的系数为-1
+            num_coef &#61; -1
+        elif c &#61;&#61; &#39;*&#39;:
+            # 如果运算符是乘法&#xff0c;则后一个操作数的系数为栈顶值&#xff0c;比如2*3&#xff0c;其中2可以当作3的系数
+            num_coef &#61; stack.pop()
+
+    # 表达式分块后&#xff0c;每一块独立计算&#xff0c;所有块的和就是表达式的结果
+    return sum(stack)
+
+
+# 获取最长合法表达式
+def getMaxLenExp():
+    lst &#61; re.compile(r&#34;((?:\d&#43;[&#43;*-])*\d&#43;)&#34;).findall(s)
+
+    maxLenExp &#61; &#34;&#34;
+
+    for exp in lst:
+        if len(exp) &gt; len(maxLenExp):
+            maxLenExp &#61; exp
+
+    return maxLenExp
+
+
+# 算法入口
+def getResult():
+    maxLenExp &#61; getMaxLenExp()
+
+    if len(maxLenExp) &#61;&#61; 0:
+        return 0
+    else:
+        return calcExpStr(maxLenExp)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<h5>正则&#43;eval解法</h5> 
+<pre><code class="language-python"># 输入获取
+import re
+
+s &#61; input()
+
+
+# 计算合法表达式的结果
+def calcExpStr(exp):
+    return eval(exp)
+
+
+# 获取最长合法表达式
+def getMaxLenExp():
+    lst &#61; re.compile(r&#34;((?:\d&#43;[&#43;*-])*\d&#43;)&#34;).findall(s)
+
+    maxLenExp &#61; &#34;&#34;
+
+    for exp in lst:
+        if len(exp) &gt; len(maxLenExp):
+            maxLenExp &#61; exp
+
+    return maxLenExp
+
+
+# 算法入口
+def getResult():
+    maxLenExp &#61; getMaxLenExp()
+
+    if len(maxLenExp) &#61;&#61; 0:
+        return 0
+    else:
+        return calcExpStr(maxLenExp)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<h5 style="background-color:transparent;">双指针&#43;栈解法</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 10000
+#define OPERATOR_NUM_LEN 100
+#define OPERATOR_NUM_SIZE 1000
+
+char s[MAX_SIZE] &#61; {&#39;\0&#39;};
+
+long calcExpStr(const char *exp) {
+    // 记录表达式中各块的操作数
+    long stack[OPERATOR_NUM_SIZE];
+    int stack_size &#61; 0;
+
+    // 各块操作数的&#34;值&#34;部分的缓存容器
+    char numStr[OPERATOR_NUM_LEN] &#61; {&#39;\0&#39;};
+    int numStr_size &#61; 0;
+
+    // 各块操作数的&#34;系数&#34;部分&#xff0c;默认为1
+    long num_coef &#61; 1;
+
+    int i &#61; 0;
+    while (exp[i] !&#61; &#39;\0&#39;) {
+        char c &#61; exp[i];
+
+        if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+            numStr[numStr_size&#43;&#43;] &#61; c;
+        } else {
+            // 如果扫描到的字符c是运算符&#xff0c;那么该运算符打断了前面操作数的扫描&#xff0c;前面操作数 &#61; 系数 * 值
+            long num &#61; num_coef * atol(numStr);
+            stack[stack_size&#43;&#43;] &#61; num;
+
+            // 清空缓存容器&#xff0c;用于下一个操作数的”值“记录
+            numStr_size &#61; 0;
+            memset(numStr, &#39;\0&#39;, OPERATOR_NUM_LEN);
+
+            if (c &#61;&#61; &#39;&#43;&#39;) {
+                // 如果运算符是加法&#xff0c;则后一个操作数的系数为1
+                num_coef &#61; 1;
+            } else if (c &#61;&#61; &#39;-&#39;) {
+                // 如果运算符是减法&#xff0c;则后一个操作数的系数为-1
+                num_coef &#61; -1;
+            } else if (c &#61;&#61; &#39;*&#39;) {
+                // 如果运算符是乘法&#xff0c;则后一个操作数的系数为栈顶值&#xff0c;比如2*3&#xff0c;其中2可以当作3的系数
+                num_coef &#61; stack[--stack_size];
+            }
+        }
+
+        i&#43;&#43;;
+    }
+
+    // 收尾处理
+    if (numStr_size &gt; 0) {
+        long num &#61; num_coef * atol(numStr);
+        stack[stack_size&#43;&#43;] &#61; num;
+    }
+
+    // 表达式分块后&#xff0c;每一块独立计算&#xff0c;所有块的和就是表达式的结果
+    long res &#61; 0;
+    for (int j &#61; 0; j &lt; stack_size; j&#43;&#43;) {
+        res &#43;&#61; stack[j];
+    }
+
+    return res;
+}
+
+int isDigit(char c) {
+    return c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;;
+}
+
+int isOperator(char c) {
+    return c &#61;&#61; &#39;&#43;&#39; || c &#61;&#61; &#39;-&#39; || c &#61;&#61; &#39;*&#39;;
+}
+
+int main() {
+    gets(s);
+
+    // 记录最长合法表达式的长度
+    int maxLen &#61; 0;
+    // 记录最长合法表达式的起始位置
+    int start &#61; -1;
+
+    // 双指针找最长合法表达式
+    int l &#61; 0;
+    int r &#61; 0;
+
+    while (s[r] !&#61; &#39;\0&#39;) {
+        // 合法表达式必须以数字开头
+        while (s[l] !&#61; &#39;\0&#39; &amp;&amp; !isDigit(s[l])) {
+            l&#43;&#43;;
+        }
+
+        if (s[l] &#61;&#61; &#39;\0&#39;) {
+            break;
+        }
+
+        // l找到合法表达式的开头后&#xff0c;r指针扫开始描合法表达式剩余部门
+        r &#61; l &#43; 1;
+
+        while (s[r] !&#61; &#39;\0&#39;) {
+            // 如果r指针扫描到的是数字字符&#xff0c;则继续扫描
+            // 如果r指针扫描到的是&#43;-*符号&#xff0c;则需要看r-1字符是不是&#43;-*符号&#xff0c;如果不是则继续扫描
+            if (isDigit(s[r]) || (isOperator(s[r]) &amp;&amp; !isOperator(s[r - 1]))) {
+                r&#43;&#43;;
+            } else {
+                // 其他情况中断r扫描
+                break;
+            }
+        }
+
+        // 此时 [l, r) 左闭右开范围就是合法表达式
+        int len &#61; r - l;
+
+        // 注意如果r-1位置是&#43;-*符号&#xff0c;则不能包含
+        if (isOperator(s[r - 1])) {
+            len -&#61; 1;
+        }
+
+        // 记录最长的合法表达式长度&#xff0c;以及起始位置
+        if (len &gt; maxLen) {
+            maxLen &#61; len;
+            start &#61; l;
+        }
+
+        // 找到一个合法表达式后&#xff0c;继续找下一个合法表达式
+        l &#61; r &#43; 1;
+    }
+
+    if (start &#61;&#61; -1) {
+        // 如果没找到合法表达式&#xff0c;则直接打印0
+        puts(&#34;0&#34;);
+    } else {
+        // 找到最长合法表达式&#xff0c;则计算其结果打印
+        s[start &#43; maxLen] &#61; &#39;\0&#39;;
+        printf(&#34;%ld\n&#34;, calcExpStr(s &#43; start));
+    }
+
+    return 0;
+}
+
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

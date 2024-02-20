@@ -1,0 +1,214 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 数据分类（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>对一个数据a进行分类&#xff0c;<strong>分类方法</strong>为&#xff1a;</p> 
+<p>此数据a&#xff08;四个字节大小&#xff09;的四个字节相加对一个给定的值b取模&#xff0c;如果得到的结果小于一个给定的值c&#xff0c;则数据a为有效类型&#xff0c;其类型为取模的值&#xff1b;如果得到的结果大于或者等于c&#xff0c;则数据a为无效类型。</p> 
+<p>比如一个数据a&#61;0x01010101&#xff0c;b&#61;3&#xff0c;按照分类方法计算&#xff08;0x01&#43;0x01&#43;0x01&#43;0x01&#xff09;%3&#61;1&#xff0c;</p> 
+<p>所以如果c&#61;2&#xff0c;则此a为有效类型&#xff0c;其类型为1&#xff0c;如果c&#61;1&#xff0c;则此a为无效类型&#xff1b;</p> 
+<p>又比如一个数据a&#61;0x01010103&#xff0c;b&#61;3&#xff0c;按照分类方法计算&#xff08;0x01&#43;0x01&#43;0x01&#43;0x03&#xff09;%3&#61;0&#xff0c;</p> 
+<p>所以如果c&#61;2&#xff0c;则此a为有效类型&#xff0c;其类型为0&#xff0c;如果c&#61;0&#xff0c;则此a为无效类型。</p> 
+<p>输入12个数据&#xff0c;第一个数据为c&#xff0c;第二个数据为b&#xff0c;剩余10个数据为需要分类的数据&#xff0c;</p> 
+<p>请找到有效类型中包含数据最多的类型&#xff0c;并输出该类型含有多少个数据。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入12个数据&#xff0c;用空格分隔&#xff0c;第一个数据为c&#xff0c;第二个数据为b&#xff0c;剩余10个数据为需要分类的数据。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出最多数据的有效类型有多少个数据。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 4 256 257 258 259 260 261 262 263 264 265</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>10个数据4个字节相加后的结果分别为1 2 3 4 5 6 7 8 9 10&#xff0c;</p> <p>故对4取模的结果为1 2 3 0 1 2 3 0 1 2&#xff0c;c为3&#xff0c;所以0 1 2都是有效类型&#xff0c;类型为1和2的有3个数据&#xff0c;类型为0的只有2个数据&#xff0c;故输出3。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 4 256 257 258 259 260 261 262 263 264 265</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>10个数据4个字节相加后的结果分别为1 2 3 4 5 6 7 8 9 10&#xff0c;</p> <p>故对4取模的结果为1 2 3 0 1 2 3 0 1 2&#xff0c;c为1&#xff0c;</p> <p>所以只有0是有效类型&#xff0c;类型为0的有2个数据&#xff0c;故输出2。</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>逻辑题&#xff0c;按照题目意思写过程即可。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  let arr &#61; line.split(&#34; &#34;);
+
+  const c &#61; arr.shift() - 0;
+  const b &#61; arr.shift() - 0;
+
+  console.log(getResult(arr, c, b));
+});
+
+function getResult(arr, c, b) {
+  const count &#61; {};
+
+  arr
+    .map((a) &#61;&gt; {
+      let str &#61; Number(a).toString(16);
+
+      if (str.length % 2 !&#61;&#61; 0) {
+        str &#61; &#34;0&#34; &#43; str;
+      }
+
+      let sum &#61; 0;
+      for (let i &#61; 0; i &lt; str.length - 1; i &#43;&#61; 2) {
+        sum &#43;&#61; parseInt(str.slice(i, i &#43; 2), 16);
+      }
+
+      const type &#61; sum % b;
+
+      if (type &lt; c) {
+        return type;
+      } else {
+        return -1;
+      }
+    })
+    .forEach((type) &#61;&gt; {
+      if (type !&#61;&#61; -1) {
+        count[type] ? count[type]&#43;&#43; : (count[type] &#61; 1);
+      }
+    });
+
+  return Object.values(count).sort((a, b) &#61;&gt; b - a)[0];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int c &#61; sc.nextInt();
+    int b &#61; sc.nextInt();
+
+    int[] arr &#61; new int[10];
+    for (int i &#61; 0; i &lt; 10; i&#43;&#43;) arr[i] &#61; sc.nextInt();
+
+    System.out.println(getResult(c, b, arr));
+  }
+
+  // 算法入口
+  public static int getResult(int c, int b, int[] arr) {
+    HashMap&lt;Integer, Integer&gt; count &#61; new HashMap&lt;&gt;();
+
+    Arrays.stream(arr)
+        .map(
+            a -&gt; {
+              String str &#61; Integer.toHexString(a);
+
+              if (str.length() % 2 !&#61; 0) {
+                str &#61; &#34;0&#34; &#43; str;
+              }
+
+              int sum &#61; 0;
+              for (int i &#61; 0; i &lt; str.length() - 1; i &#43;&#61; 2) {
+                sum &#43;&#61; Integer.parseInt(str.substring(i, i &#43; 2), 16);
+              }
+
+              int t &#61; sum % b;
+              if (t &lt; c) {
+                return t;
+              } else {
+                return -1;
+              }
+            })
+        .forEach(
+            t -&gt; {
+              if (t !&#61; -1) {
+                count.put(t, count.getOrDefault(t, 0) &#43; 1);
+              }
+            });
+
+    return count.values().stream().max((x, y) -&gt; x - y).orElse(0);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+tmp &#61; list(map(int, input().split()))
+c &#61; tmp[0]
+b &#61; tmp[1]
+arr &#61; tmp[2:]
+
+
+# 判断是否有效
+def classify(a):
+    s &#61; hex(a)[2:]  # hex方法会将十进制转为0x开头的16进制数&#xff0c;这里去除0x前缀
+
+    if len(s) % 2 !&#61; 0:
+        s &#61; &#34;0&#34; &#43; s  # 补足0
+
+    sumV &#61; 0
+    for i in range(0, len(s) - 1, 2):
+        sumV &#43;&#61; int(s[i:i &#43; 2], 16)
+
+    t &#61; sumV % b
+
+    if t &lt; c:
+        return t
+    else:
+        return -1
+
+
+# 算法入口
+def getResult():
+    count &#61; {}
+
+    for t in map(classify, arr):
+        if t !&#61; -1:
+            if count.get(t) is None:
+                count[t] &#61; 1
+            else:
+                count[t] &#43;&#61; 1
+
+    return max(count.values())
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,151 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 单词加密（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>1、输入一个英文句子&#xff0c;句子中包含若干个单词&#xff0c;每个单词间有一个空格&#xff1b;</p> 
+<p>2、需要将句子中的每个单词按照要求加密输出。</p> 
+<p></p> 
+<p>要求&#xff1a;</p> 
+<p>1&#xff09;单词中包括元音字符&#xff08;‘aeuio’、‘AEUIO’&#xff0c;大小写都算&#xff09;&#xff0c;则将元音字符替换成‘*’</p> 
+<p>2&#xff09;单词中不包括元音字符&#xff0c;将单词首尾字符进行对换</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入只有一行&#xff0c;包含一个长度都不超过100的字符串&#xff0c;表示英文句子。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出只有一行&#xff0c;即按要求输出加密处理后的英文句子</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">Hello world</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">H*ll* w*rld</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的正则应用。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  const words &#61; s.split(&#34; &#34;);
+
+  for (let i &#61; 0; i &lt; words.length; i&#43;&#43;) {
+    if (/[aeiouAEIOU]/.test(words[i])) {
+      words[i] &#61; words[i].replaceAll(/[aeiouAEIOU]/g, &#34;*&#34;);
+    } else {
+      const arr &#61; [...words[i]];
+
+      const tmp &#61; arr[0];
+      arr[0] &#61; arr[arr.length - 1];
+      arr[arr.length - 1] &#61; tmp;
+
+      words[i] &#61; arr.join(&#34;&#34;);
+    }
+  }
+
+  return words.join(&#34; &#34;);
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String s &#61; sc.nextLine();
+    System.out.println(getResult(s));
+  }
+
+  public static String getResult(String s) {
+    String[] words &#61; s.split(&#34; &#34;);
+
+    for (int i &#61; 0; i &lt; words.length; i&#43;&#43;) {
+      Matcher matcher &#61; Pattern.compile(&#34;[aeiouAEIOU]&#34;).matcher(words[i]);
+      if (matcher.find()) {
+        words[i] &#61; matcher.replaceAll(&#34;*&#34;);
+      } else {
+        char[] cArr &#61; words[i].toCharArray();
+        char tmp &#61; cArr[0];
+        cArr[0] &#61; cArr[cArr.length - 1];
+        cArr[cArr.length - 1] &#61; tmp;
+        words[i] &#61; new String(cArr);
+      }
+    }
+
+    return String.join(&#34; &#34;, words);
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    words &#61; s.split()
+
+    letter &#61; &#34;[aeiouAEIOU]&#34;
+
+    for i in range(len(words)):
+        if re.search(letter, words[i]):
+            words[i] &#61; re.sub(letter, &#34;*&#34;, words[i])
+        else:
+            lst &#61; list(words[i])
+            lst[0], lst[-1] &#61; lst[-1], lst[0]
+            words[i] &#61; &#34;&#34;.join(lst)
+
+    return &#34; &#34;.join(words)
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

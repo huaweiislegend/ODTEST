@@ -1,0 +1,405 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 篮球游戏（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>幼儿园里有一个放倒的圆桶&#xff0c;它是一个线性结构&#xff0c;允许在桶的右边将篮球放入&#xff0c;可以在桶的左边和右边将篮球取出。</p> 
+<p>每个篮球有单独的编号&#xff0c;老师可以连续放入一个或多个篮球&#xff0c;小朋友可以在桶左边或右边将篮球取出&#xff0c;当桶只有一个篮球的情况下&#xff0c;必须从左边取出。</p> 
+<p>如老师按顺序放入1、2、3、4、5 共有 5 个编号的篮球&#xff0c;那么小朋友可以依次取出编号为1、2、3、4、5 或者 3、1、2、4、5 编号的篮球&#xff0c;无法取出 5、1、3、2、4 编号的篮球。</p> 
+<p>其中 3、1、2、4、5 的取出场景为&#xff1a;</p> 
+<ul><li>连续放入1、2、3号</li><li><span style="color:#0d0016;">从右边取出3号 </span></li><li><span style="color:#0d0016;">从左边取出1号 </span></li><li><span style="color:#0d0016;">从左边取出2号</span></li><li><span style="color:#0d0016;">放入4号</span></li><li><span style="color:#0d0016;">从左边取出4号</span></li><li><span style="color:#0d0016;">放入5号</span></li><li><span style="color:#0d0016;">从左边取出5号</span></li></ul> 
+<p>简答起见&#xff0c;我们以 L 表示左&#xff0c;R表示右&#xff0c;此时取出篮球的依次取出序列为“RLLLL”。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>每次输入包含一个测试用例&#xff1a;</p> 
+<ol><li>第一行的数字作为老师依次放入的篮球编号</li><li>第二行的数字作为要检查是否能够按照放入的顺序取出给定的篮球的编号&#xff0c;其中篮球的编号用逗号进行分隔。</li></ol> 
+<p>其中篮球编号用逗号进行分隔。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>对于每个篮球的取出序列&#xff0c;如果确实可以获取&#xff0c;请打印出其按照左右方向的操作取出顺序&#xff0c;如果无法获取则打印“NO”。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 ≤ 篮球编号&#xff0c;篮球个数 ≤ 200</li><li>篮球上的数字不重复</li><li>输出的结果中 LR 必须为大写</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4,5,6,7,0,1,2<br /> 6,4,0,1,2,5,7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">RLRRRLL</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">篮球的取出顺序依次为“右、左、右、右、右、左、左”</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4,5,6,7,0,1,2<br /> 6,0,5,1,2,4,7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">NO</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无法取出对应序列的篮球</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1,2,3,4<br /> 1,2,3,5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">NO</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">不存在编号为5的篮球&#xff0c;所以无法取出对应编号的数据</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用双端队列dque来模拟圆桶。</p> 
+<blockquote> 
+ <p>假设</p> 
+ <p>第一行给定放入顺序是inputs</p> 
+ <p>第二行给定取出顺序是outputs</p> 
+</blockquote> 
+<p>由于需要按照outputs顺序取出&#xff0c;因此我们定义一个index指向当前outputs要被取出的元素&#xff0c;</p> 
+<blockquote> 
+ <p>初始时index &#61; 0</p> 
+</blockquote> 
+<p></p> 
+<p>按照inputs顺序依次放入&#xff08;篮球编号&#xff09;到dque&#xff08;圆桶&#xff09;右边&#xff08;addLast操作&#xff09;&#xff0c;每当放入一个后&#xff0c;则需要进行多次取出检查&#xff0c;即一次放入后&#xff0c;可以进行多次取出行为&#xff1a;</p> 
+<blockquote> 
+ <p>假设</p> 
+ <p>圆桶左边篮球编号是left&#xff0c;则 left &#61; dque.getFirst</p> 
+ <p>圆桶右边篮球编号是right&#xff0c;则 right &#61; dque.getLast</p> 
+</blockquote> 
+<p>当前要取出的篮球编号是outputs[index]</p> 
+<ul><li>优先检查 outputs[index] 编号的篮球是不是left&#xff0c;若是&#xff0c;则取出左边&#xff0c;然后index&#43;&#43;&#xff0c;继续循环判断下一个要取出的篮球</li><li>否则继续检查 outputs[index] 编号的篮球是不是right&#xff0c;若是则取出右边&#xff0c;然后index&#43;&#43;&#xff0c;继续循环判断下一个要取出的篮球</li><li>否则&#xff0c;本轮无法取出篮球&#xff0c;结束本轮取出操作</li></ul> 
+<blockquote> 
+ <p>优先检查 outputs[index] 编号的篮球是不是left 的原因是&#xff1a;题目说当桶只有一个篮球的情况下&#xff0c;必须从左边取出</p> 
+</blockquote> 
+<p></p> 
+<p>最后&#xff0c;完成上面逻辑&#xff0c;检查圆桶中是否有剩余篮球</p> 
+<ul><li>若有&#xff0c;则说明无法按照当前放入顺序和取出顺序&#xff0c;取完所有篮球&#xff0c;打印“NO”&#xff0c;</li><li>若没有&#xff0c;则打印前面的取出顺序</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const inputs &#61; (await readline()).split(&#34;,&#34;).map(Number);
+  const outputs &#61; (await readline()).split(&#34;,&#34;).map(Number);
+
+  // 利用队列结构模拟圆桶
+  const queue &#61; [];
+  // outputs[index]是要被取出的篮球的编号
+  let index &#61; 0;
+
+  // 记录题解
+  const res &#61; [];
+
+  for (let input of inputs) {
+    // 按照放入顺序&#xff0c;从圆桶右边放入
+    queue.push(input);
+
+    // 然后开始尝试取出
+    while (queue.length &gt; 0) {
+      // 圆桶左边的篮球的编号
+      const left &#61; queue[0];
+      // 圆桶右边的篮球的编号
+      const right &#61; queue.at(-1);
+
+      if (left &#61;&#61; outputs[index]) {
+        // 优先比较圆桶左边的篮球是不是当前要取出的篮球&#xff0c;优先左边的原因是&#xff1a;当桶只有一个篮球的情况下&#xff0c;必须从左边取出
+        res.push(&#34;L&#34;);
+        queue.shift();
+        index&#43;&#43;;
+      } else if (right &#61;&#61; outputs[index]) {
+        // 比较圆桶右边的篮球是不是当前要取出的篮球
+        res.push(&#34;R&#34;);
+        queue.pop();
+        index&#43;&#43;;
+      } else {
+        // 如果圆桶左右两边都不是要取出的球&#xff0c;则本轮取出流程结束
+        break;
+      }
+    }
+  }
+
+  // 最终如果圆桶空了&#xff0c;则说明所有球都取出了&#xff0c;否则按照给定要求无法取出所有球
+  if (queue.length !&#61; 0) {
+    console.log(&#34;NO&#34;);
+  } else {
+    console.log(res.join(&#34;&#34;));
+  }
+})();
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] inputs &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int[] outputs &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+
+    // 利用队列结构模拟圆桶
+    LinkedList&lt;Integer&gt; queue &#61; new LinkedList&lt;&gt;();
+
+    // outputs[index]是要被取出的篮球的编号
+    int index &#61; 0;
+
+    // 记录题解
+    StringBuilder sb &#61; new StringBuilder();
+
+    for (int input : inputs) {
+      // 按照放入顺序&#xff0c;从圆桶右边放入
+      queue.addLast(input);
+
+      // 然后开始尝试取出
+      while (queue.size() &gt; 0) {
+        // 圆桶左边的篮球的编号
+        int left &#61; queue.getFirst();
+        // 圆桶右边的篮球的编号
+        int right &#61; queue.getLast();
+
+        if (left &#61;&#61; outputs[index]) {
+          // 优先比较圆桶左边的篮球是不是当前要取出的篮球&#xff0c;优先左边的原因是&#xff1a;当桶只有一个篮球的情况下&#xff0c;必须从左边取出
+          sb.append(&#34;L&#34;);
+          queue.removeFirst();
+          index&#43;&#43;;
+        } else if (right &#61;&#61; outputs[index]) {
+          // 比较圆桶右边的篮球是不是当前要取出的篮球
+          sb.append(&#34;R&#34;);
+          queue.removeLast();
+          index&#43;&#43;;
+        } else {
+          // 如果圆桶左右两边都不是要取出的球&#xff0c;则本轮取出流程结束
+          break;
+        }
+      }
+    }
+
+    // 最终如果圆桶空了&#xff0c;则说明所有球都取出了&#xff0c;否则按照给定要求无法取出所有球
+    if (queue.size() !&#61; 0) {
+      System.out.println(&#34;NO&#34;);
+    } else {
+      System.out.println(sb);
+    }
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+ipts &#61; list(map(int, input().split(&#34;,&#34;)))
+opts &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+# 算法入口
+def getResult():
+    # 利用队列结构模拟圆桶
+    queue &#61; []
+    # outputs[index]是要被取出的篮球的编号
+    index &#61; 0
+
+    # 记录题解
+    res &#61; []
+
+    for ipt in ipts:
+        # 按照放入顺序&#xff0c;从圆桶右边放入
+        queue.append(ipt)
+
+        # 然后开始尝试取出
+        while len(queue) &gt; 0:
+            # 圆桶左边的篮球的编号
+            left &#61; queue[0]
+            # 圆桶右边的篮球的编号
+            right &#61; queue[-1]
+
+            if left &#61;&#61; opts[index]:
+                # 优先比较圆桶左边的篮球是不是当前要取出的篮球&#xff0c;优先左边的原因是&#xff1a;当桶只有一个篮球的情况下&#xff0c;必须从左边取出
+                res.append(&#34;L&#34;)
+                queue.pop(0)
+                index &#43;&#61; 1
+            elif right &#61;&#61; opts[index]:
+                # 比较圆桶右边的篮球是不是当前要取出的篮球
+                res.append(&#34;R&#34;)
+                queue.pop()
+                index &#43;&#61; 1
+            else:
+                # 如果圆桶左右两边都不是要取出的球&#xff0c;则本轮取出流程结束
+                break
+
+    # 最终如果圆桶空了&#xff0c;则说明所有球都取出了&#xff0c;否则按照给定要求无法取出所有球
+    if len(queue) !&#61; 0:
+        return &#34;NO&#34;
+    else:
+        return &#34;&#34;.join(map(str, res))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 200
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode *prev;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+    node-&gt;ele &#61; ele;
+    node-&gt;prev &#61; NULL;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        node-&gt;prev &#61; link-&gt;tail;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+int removeFirst_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;head;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+        link-&gt;head-&gt;prev &#61; NULL;
+    }
+
+    link-&gt;size--;
+
+    int res &#61; removed-&gt;ele;
+
+    free(removed);
+
+    return res;
+}
+
+int removeLast_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;tail;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;tail &#61; link-&gt;tail-&gt;prev;
+        link-&gt;tail-&gt;next &#61; NULL;
+    }
+
+    link-&gt;size--;
+
+    int res &#61; removed-&gt;ele;
+
+    free(removed);
+
+    return res;
+}
+
+int main() {
+    int inputs[MAX_SIZE];
+    int inputs_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;inputs[inputs_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    int outputs[MAX_SIZE];
+    int outputs_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;outputs[outputs_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    // 利用队列结构模拟圆桶
+    LinkedList *queue &#61; new_LinkedList();
+    // outputs[index]是要被取出的篮球的编号
+    int index &#61; 0;
+
+    // 记录题解
+    char res[MAX_SIZE] &#61; {&#39;\0&#39;};
+    int res_size &#61; 0;
+
+    for (int i &#61; 0; i &lt; inputs_size; i&#43;&#43;) {
+        // 按照放入顺序&#xff0c;从圆桶右边放入
+        addLast_LinkedList(queue, inputs[i]);
+
+        // 然后开始尝试取出
+        while (queue-&gt;size &gt; 0) {
+            // 圆桶左边的篮球的编号
+            int left &#61; queue-&gt;head-&gt;ele;
+            // 圆桶右边的篮球的编号
+            int right &#61; queue-&gt;tail-&gt;ele;
+
+            if (left &#61;&#61; outputs[index]) {
+                // 优先比较圆桶左边的篮球是不是当前要取出的篮球&#xff0c;优先左边的原因是&#xff1a;当桶只有一个篮球的情况下&#xff0c;必须从左边取出
+                res[res_size&#43;&#43;] &#61; &#39;L&#39;;
+                removeFirst_LinkedList(queue);
+                index&#43;&#43;;
+            } else if (right &#61;&#61; outputs[index]) {
+                // 比较圆桶右边的篮球是不是当前要取出的篮球
+                res[res_size&#43;&#43;] &#61; &#39;R&#39;;
+                removeLast_LinkedList(queue);
+                index&#43;&#43;;
+            } else {
+                // 如果圆桶左右两边都不是要取出的球&#xff0c;则本轮取出流程结束
+                break;
+            }
+        }
+    }
+
+    // 最终如果圆桶空了&#xff0c;则说明所有球都取出了&#xff0c;否则按照给定要求无法取出所有球
+    if (queue-&gt;size !&#61; 0) {
+        puts(&#34;NO&#34;);
+    } else {
+        puts(res);
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,230 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 整数对最小和（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定两个整数数组array1、array2&#xff0c;数组元素按升序排列。</p> 
+<p>假设从array1、array2中分别取出一个元素可构成一对元素&#xff0c;现在需要取出k对元素&#xff0c;</p> 
+<p>并对取出的所有元素求和&#xff0c;计算和的最小值。</p> 
+<p></p> 
+<p>注意&#xff1a;</p> 
+<p>两对元素如果对应于array1、array2中的两个下标均相同&#xff0c;则视为同一对元素。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入两行数组array1、array2&#xff0c;每行首个数字为数组大小size(0 &lt; size &lt;&#61; 100);</p> 
+<p>0 &lt; array1[i] &lt;&#61; 1000</p> 
+<p>0 &lt; array2[i] &lt;&#61; 1000</p> 
+<p>接下来一行为正整数k</p> 
+<p>0 &lt; k &lt;&#61; array1.size() * array2.size()</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>满足要求的最小和</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>3 1 1 2<br /> 3 1 2 3<br /> 2</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>用例中&#xff0c;需要取2对元素</p> <p>取第一个数组第0个元素与第二个数组第0个元素组成1对元素[1,1];</p> <p>取第一个数组第1个元素与第二个数组第0个元素组成1对元素[1,1];</p> <p>求和为1&#43;1&#43;1&#43;1&#61;4&#xff0c;为满足要求的最小和。</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题很简单&#xff0c;双重for找出所有整数对&#xff0c;并记录整数对之和&#xff0c;然后排序整数对之和&#xff0c;取出前k个求和&#xff0c;就是题解。</p> 
+<p>输入的两个数组的长度均不大于100&#xff0c;因此双重for的O(n^2)复杂度也可以接受。</p> 
+<p></p> 
+<p>到网上找了一下&#xff0c;本题好像还有O(nlogn)时间复杂度的算法&#xff0c;是基于最小堆实现的&#xff0c;后面有机会实现一下。最小堆其实就是优先队列&#xff0c;基于完全二叉树&#xff0c;实现上浮&#xff0c;下沉操作即可。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const arr1 &#61; lines[0].split(&#34; &#34;).map(Number);
+    const n &#61; arr1.shift();
+
+    const arr2 &#61; lines[1].split(&#34; &#34;).map(Number);
+    const m &#61; arr2.shift();
+
+    const k &#61; parseInt(lines[2]);
+
+    console.log(getMaxSumofK(arr1.slice(0, n), arr2.slice(0, m), k));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getMaxSumofK(arr1, arr2, k) {
+  const pairs &#61; [];
+  for (let i &#61; 0; i &lt; arr1.length; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; arr2.length; j&#43;&#43;) {
+      pairs.push(arr1[i] &#43; arr2[j]);
+    }
+  }
+
+  pairs.sort((a, b) &#61;&gt; a - b);
+
+  let sum &#61; 0;
+  for (let i &#61; 0; i &lt; k; i&#43;&#43;) {
+    sum &#43;&#61; pairs[i];
+  }
+
+  return sum;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n1 &#61; sc.nextInt();
+    int[] arr1 &#61; new int[n1];
+    for (int i &#61; 0; i &lt; n1; i&#43;&#43;) arr1[i] &#61; sc.nextInt();
+
+    int n2 &#61; sc.nextInt();
+    int[] arr2 &#61; new int[n2];
+    for (int i &#61; 0; i &lt; n2; i&#43;&#43;) arr2[i] &#61; sc.nextInt();
+
+    int k &#61; sc.nextInt();
+
+    System.out.println(getResult(arr1, arr2, k));
+  }
+
+  public static int getResult(int[] arr1, int[] arr2, int k) {
+    ArrayList&lt;Integer&gt; pairs &#61; new ArrayList&lt;&gt;();
+
+    for (int v1 : arr1) {
+      for (int v2 : arr2) {
+        pairs.add(v1 &#43; v2);
+      }
+    }
+
+    pairs.sort((a, b) -&gt; a - b);
+
+    int sum &#61; 0;
+    for (int i &#61; 0; i &lt; k; i&#43;&#43;) sum &#43;&#61; pairs.get(i);
+
+    return sum;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr1 &#61; list(map(int, input().split()))[1:]
+arr2 &#61; list(map(int, input().split()))[1:]
+k &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    pairs &#61; []
+    for v1 in arr1:
+        for v2 in arr2:
+            pairs.append(v1 &#43; v2)
+
+    pairs.sort()
+
+    sumV &#61; 0
+    for i in range(k):
+        sumV &#43;&#61; pairs[i]
+
+    return sumV
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int cmp(const void *a, const void *b) {
+    return *((int *) a) - *((int *) b);
+}
+
+int main() {
+    int size1;
+    scanf(&#34;%d&#34;, &amp;size1);
+
+    int nums1[size1];
+    for (int i &#61; 0; i &lt; size1; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;nums1[i]);
+    }
+
+    int size2;
+    scanf(&#34;%d&#34;, &amp;size2);
+
+    int nums2[size2];
+    for (int i &#61; 0; i &lt; size2; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;nums2[i]);
+    }
+
+    int k;
+    scanf(&#34;%d&#34;, &amp;k);
+
+    int size &#61; size1 * size2;
+
+    int pairs[size];
+    int pairs_size &#61; 0;
+
+    for (int i &#61; 0; i &lt; size1; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; size2; j&#43;&#43;) {
+            pairs[pairs_size&#43;&#43;] &#61; nums1[i] &#43; nums2[j];
+        }
+    }
+
+    qsort(pairs, pairs_size, sizeof(int), cmp);
+
+    int sum &#61; 0;
+    for (int i &#61; 0; i &lt; k; i&#43;&#43;) {
+        sum &#43;&#61; pairs[i];
+    }
+
+    printf(&#34;%d\n&#34;, sum);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

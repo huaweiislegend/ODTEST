@@ -1,0 +1,323 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 最少交换次数（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <p id="main-toc"><strong>目录</strong></p> 
+<p id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-toc" style="margin-left:80px;"><a href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0" rel="nofollow">题目描述</a></p> 
+<p id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0-toc" style="margin-left:80px;"><a href="#%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0" rel="nofollow">输入描述</a></p> 
+<p id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0-toc" style="margin-left:80px;"><a href="#%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0" rel="nofollow">输出描述</a></p> 
+<p id="%E7%94%A8%E4%BE%8B-toc" style="margin-left:80px;"><a href="#%E7%94%A8%E4%BE%8B" rel="nofollow">用例</a></p> 
+<p id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90-toc" style="margin-left:80px;"><a href="#%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90" rel="nofollow">题目解析</a></p> 
+<p id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">算法源码</a></p> 
+<hr id="hr-toc" /> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0">题目描述</h4> 
+<p>给出数字K,请输出所有结果小于K的整数组合到一起的最少交换次数。</p> 
+<p>组合一起是指满足条件的数字相邻&#xff0c;不要求相邻后在数组中的位置。</p> 
+<p>数据范围&#xff1a;</p> 
+<p>-100 &lt;&#61; K &lt;&#61; 100</p> 
+<p>-100 &lt;&#61; 数组中数值 &lt;&#61; 100</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入数组&#xff1a;1 3 1 4 0</p> 
+<p>第二行输入K数值&#xff1a;2</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>第一行输出最少交换次数&#xff1a;1</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>1 3 1 4 0<br /> 2</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">小于2的表达式是1 1 0, 共三种可能将所有符合要求数字组合一起&#xff0c;最少交换1次。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这题是<a href="https://leetcode.cn/problems/minimum-swaps-to-group-all-1s-together/" rel="nofollow" title="1151. 最少交换次数来组合所有的 1 - 力扣&#xff08;LeetCode&#xff09;">1151. 最少交换次数来组合所有的 1 - 力扣&#xff08;LeetCode&#xff09;</a></p> 
+<p>的变种题。解题可以使用滑动窗口。</p> 
+<p></p> 
+<p>我们首先需要统计 输入字符串<code>1 3 1 4 0中</code> 求出小于K的 整数的个数count&#xff0c;将其作为滑动窗口的长度。</p> 
+<p>滑动窗口的从左向右移动&#xff0c;每次移动一格&#xff0c;滑窗起点的移动范围是 [0 , arr.len - count]&#xff0c;这样才能保证滑窗不越界。</p> 
+<p>每次移动后&#xff0c;统计滑动窗口内部 <span style="color:#fe2c24;">大于等于K</span>的 元素的个数tmpSwapCount&#xff0c;而tmpSwapCount就是小于K的整数组合到一起需要交换次数。</p> 
+<p>比较每次移动的tmpSwapCount&#xff0c;求出最小的就是题解。</p> 
+<p>我们可以参考下面图示来理解上面逻辑&#xff0c;程序输入如下</p> 
+<p>1 6 3 9 8 4 2 5 7<br /> 6</p> 
+<p>含义是求解输入字符串中小于6的整数组合到一起需要的最少交换次数。</p> 
+<p>首先&#xff0c;我们求出输入字符串中有多少个小于6的整数&#xff0c;一共是5个&#xff0c;因此滑动窗口的长度就是5。</p> 
+<p>然后滑动窗口的起点移动范围是 [0, 4]</p> 
+<p><img alt="" height="648" src="https://img-blog.csdnimg.cn/57dbdf3d30eb48f683591f286f8e4eda.png" width="704" /></p> 
+<p> 因此我们可以总结算法如下</p> 
+<pre><code class="language-javascript">function getMinSwapCount(arr, k) {
+  // 统计小于k的数组元素个数
+  let count &#61; arr.reduce((pre, cur) &#61;&gt; (cur &lt; k ? pre &#43; 1 : pre), 0);
+
+  let minSwapCount &#61; count - 1; // 至多需要交换count-1次&#xff0c;就可以使小于k的整数组合在一起
+
+  let len &#61; arr.length;
+  // 滑动窗口起始位置索引 i
+  for (let i &#61; 0; i &lt;&#61; len - count; i&#43;&#43;) {
+    // 当前滑动窗口内小于k的元素的个数&#xff0c;等价于使小于k的整数组合在一起需要的交换次数
+    let tmpSwapCount &#61; 0;
+
+    // 滑动窗口长度为count&#xff0c;j 指向滑动窗口内每一个元素
+    for (let j &#61; i; j &lt; i &#43; count; j&#43;&#43;) {
+      if (arr[j] &gt;&#61; k) tmpSwapCount&#43;&#43;;
+    }
+
+    // 比较谁是最少交换次数
+    minSwapCount &#61; Math.min(minSwapCount, tmpSwapCount);
+  }
+
+  return minSwapCount;
+}
+
+console.log(getMinSwapCount([1, 6, 3, 9, 8, 4, 2, 5, 7], 6));
+</code></pre> 
+<p>但是这种算法的时间复杂度差不多O(n^2)&#xff0c;很容易超时&#xff0c;那么是不是存在可以优化的地方呢&#xff1f;</p> 
+<p>我们看下面图示</p> 
+<p><img alt="" height="621" src="https://img-blog.csdnimg.cn/f776077a332b44bda537a35ff04bf35b.png" width="658" /></p> 
+<p>我们可以发现&#xff0c;上面那种算法&#xff0c;滑动窗口每次只移动一格&#xff0c;因此统计滑动窗口内部大于等于k的元素时&#xff0c;会和上次滑动窗口位置存在重复统计区域&#xff0c;如上图绿色框所示。</p> 
+<p>对于绿色框区域的元素&#xff0c;我们完全没有统计两次的必要&#xff0c;我们只需要统计滑动窗口每次移动后&#xff0c;失去的元素和新增的元素即可</p> 
+<p><img alt="" height="255" src="https://img-blog.csdnimg.cn/c725f608e3e3470cba4414e791b18ab8.png" width="570" /></p> 
+<p> 如上图中&#xff0c;当滑动窗口向右移动一格后&#xff0c;失去了元素1&#xff0c;新增了元素4&#xff0c;由于元素1&lt;k&#xff0c;而元素4也&lt;k&#xff0c;因此本次滑动窗口和上次滑动窗口需要的交换次数是相同的。即tmpSwapCount相同。</p> 
+<p><img alt="" height="239" src="https://img-blog.csdnimg.cn/b4dbcf20d98f4ccd9f70f7b8e83a04a2.png" width="600" /></p> 
+<p>再看上图&#xff0c;滑动窗口移动一格后&#xff0c;失去了元素6&#xff0c;新增了元素2&#xff0c;而6&gt;&#61;k&#xff0c;2&lt;k&#xff0c;因此本轮滑动窗口的tmpSwapCount--&#xff0c;比上一轮少了一次。</p> 
+<p> 这种算法逻辑&#xff0c;我们只需要讲滑动窗口从左移动到右即可&#xff0c;即时间复杂度为O(n)&#xff0c;算法源码如下</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] arr &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int k &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(arr, k));
+  }
+
+  public static int getResult(int[] arr, int k) {
+    // 统计小于k的数组元素个数
+    int count &#61; 0;
+    for (int v : arr) if (v &lt; k) count&#43;&#43;;
+
+    // 如果只有1个小于k的元素&#xff0c;则不需要交换就能使小于k的元素组合在一起
+    if (count &#61;&#61; 1) return 0;
+
+    // 先统计起点在0位置&#xff08;即left&#61;0&#xff09;的滑动窗口的交换次数&#xff0c;得到一个minSwapCount初始值
+    int minSwapCount &#61; 0;
+    for (int i &#61; 0; i &lt; count; i&#43;&#43;) {
+      if (arr[i] &gt;&#61; k) minSwapCount&#43;&#43;;
+    }
+
+    // 然后统计起点&#xff08;left&#xff09;在1~arr.length-count位置的滑动窗口的交换次数
+    // 可以转化为求解终点&#xff08;right&#xff09;在count~arr.length位置的滑动窗口的交换次数
+    int tmpSwapCount &#61; minSwapCount;
+    for (int j &#61; count; j &lt; arr.length; j&#43;&#43;) {
+      // 上一轮的left&#xff0c;即滑窗失去的元素的索引
+      int preLeft &#61; j - count;
+      // j为滑窗新增的元素的索引
+      if (arr[preLeft] &gt;&#61; k &amp;&amp; arr[j] &lt; k) {
+        tmpSwapCount--;
+      } else if (arr[preLeft] &lt; k &amp;&amp; arr[j] &gt;&#61; k) {
+        tmpSwapCount&#43;&#43;;
+      }
+      minSwapCount &#61; Math.min(minSwapCount, tmpSwapCount);
+    }
+
+    return minSwapCount;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    let arr &#61; lines[0].split(&#34; &#34;).map(Number);
+    let k &#61; parseInt(lines[1]);
+
+    console.log(getResult(arr, k));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, k) {
+  // 统计小于k的数组元素个数
+  let count &#61; arr.reduce((pre, cur) &#61;&gt; (cur &lt; k ? pre &#43; 1 : pre), 0);
+
+  // 如果只有1个小于k的元素&#xff0c;则不需要交换就能使小于k的元素组合在一起
+  if (count &#61;&#61;&#61; 1) return 0;
+
+  // 先统计起点在0位置&#xff08;即left&#61;0&#xff09;的滑动窗口的交换次数&#xff0c;得到一个minSwapCount初始值
+  let minSwapCount &#61; 0;
+  for (let i &#61; 0; i &lt; count; i&#43;&#43;) {
+    if (arr[i] &gt;&#61; k) {
+      minSwapCount&#43;&#43;;
+    }
+  }
+
+  // 然后统计起点&#xff08;left&#xff09;在1~arr.length-count位置的滑动窗口的交换次数
+  // 可以转化为求解终点&#xff08;right&#xff09;在count~arr.length位置的滑动窗口的交换次数
+  let tmpSwapCount &#61; minSwapCount;
+  for (let j &#61; count; j &lt; arr.length; j&#43;&#43;) {
+    // 上一轮的left&#xff0c;即滑窗失去的元素的索引
+    let preLeft &#61; j - count;
+    // 本轮的right&#xff0c;即滑窗新增的元素的索引
+    let curRight &#61; j;
+    if (arr[preLeft] &gt;&#61; k &amp;&amp; arr[curRight] &lt; k) {
+      tmpSwapCount--;
+    } else if (arr[preLeft] &lt; k &amp;&amp; arr[curRight] &gt;&#61; k) {
+      tmpSwapCount&#43;&#43;;
+    }
+    minSwapCount &#61; Math.min(minSwapCount, tmpSwapCount);
+  }
+
+  return minSwapCount;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(int, input().split()))
+k &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    # 统计小于k的数组元素个数
+    count &#61; 0
+    for num in arr:
+        if num &lt; k:
+            count &#43;&#61; 1
+
+    # 如果只有1个小于k的元素&#xff0c;则不需要交换就能使小于k的元素组合在一起
+    if count &#61;&#61; 1:
+        return 0
+
+    # 先统计起点在0位置&#xff08;即left&#61;0&#xff09;的滑动窗口的交换次数&#xff0c;得到一个minSwapCount初始值
+    minSwapCount &#61; 0
+    for i in range(count):
+        if arr[i] &gt;&#61; k:
+            minSwapCount &#43;&#61; 1
+
+    # 然后统计起点&#xff08;left&#xff09;在1~arr.length-count位置的滑动窗口的交换次数
+    # 可以转化为求解终点&#xff08;right&#xff09;在count~arr.length位置的滑动窗口的交换次数
+    tmpSwapCount &#61; minSwapCount
+    for j in range(count, len(arr)):
+        # 上一轮的left&#xff0c;即滑窗失去的元素的索引
+        preLeft &#61; j - count
+        # j 为本轮滑窗新增的元素的索引
+        if arr[preLeft] &gt;&#61; k &gt; arr[j]:
+            tmpSwapCount -&#61; 1
+        elif arr[preLeft] &lt; k &lt;&#61; arr[j]:
+            tmpSwapCount &#43;&#61; 1
+        minSwapCount &#61; min(minSwapCount, tmpSwapCount)
+
+    return minSwapCount
+
+
+# 调用算法
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MIN(a,b) (a) &lt; (b) ? (a) : (b)
+
+#define MAX_SIZE 10000
+
+int getResult(int arr[], int arr_size, int k);
+
+int main() {
+    int arr[MAX_SIZE];
+    int arr_size &#61; 0;
+
+    while(scanf(&#34;%d&#34;, &amp;arr[arr_size&#43;&#43;])) {
+        if(getchar() !&#61; &#39; &#39;) break;
+    }
+
+    int k;
+    scanf(&#34;%d&#34;, &amp;k);
+
+    printf(&#34;%d\n&#34;, getResult(arr, arr_size, k));
+
+    return 0;
+}
+
+int getResult(int arr[], int arr_size, int k) {
+    int count &#61; 0;
+    for(int i &#61; 0; i &lt; arr_size; i&#43;&#43;) {
+        if(arr[i] &lt; k) {
+            count&#43;&#43;;
+        }
+    }
+
+    if(count &#61;&#61; 1) return 0;
+
+    int minSwapCount &#61; 0;
+    for(int i&#61;0; i&lt;count; i&#43;&#43;) {
+        if(arr[i] &gt;&#61; k) minSwapCount&#43;&#43;;
+    }
+
+    int tmpSwapCount &#61; minSwapCount;
+    for(int j&#61;count; j&lt;arr_size; j&#43;&#43;) {
+        int preLeft &#61; j - count;
+
+        if(arr[preLeft] &gt;&#61; k &amp;&amp; arr[j] &lt; k) {
+            tmpSwapCount--;
+        } else if(arr[preLeft] &lt; k &amp;&amp; arr[j] &gt;&#61; k) {
+            tmpSwapCount&#43;&#43;;
+        }
+        minSwapCount &#61; MIN(minSwapCount, tmpSwapCount);
+    }
+
+    return minSwapCount;
+}
+</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

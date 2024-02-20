@@ -1,0 +1,429 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 推荐多样性（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>推荐多样性需要从多个列表中选择元素&#xff0c;一次性要返回 N 屏数据&#xff08;窗口数量&#xff09;&#xff0c;每屏展示 K 个元素&#xff08;窗口大小&#xff09;&#xff0c;选择策略&#xff1a;</p> 
+<ol><li>各个列表元素需要做穿插处理&#xff0c;即先从第一个列表中为每屏选择一个元素&#xff0c;再从第二个列表中为每屏选择一个元素&#xff0c;依次类推</li><li>每个列表的元素尽量均分为 N 份&#xff0c;如果不够 N 个&#xff0c;也要全部分配完&#xff0c;参考样例图&#xff1a;<br /><br /> &#xff08;1&#xff09;从第一个列表中选择 4 条 0 1 2 3&#xff0c;分别放到 4 个窗口中<br /><br /> &#xff08;2&#xff09;从第二个列表中选择 4 条 10 11 12 13&#xff0c;分别放到 4 个窗口中<br /><br /> &#xff08;3&#xff09;从第三个列表中选择 4 条 20 21 22 23&#xff0c;分别放到 4 个窗口中<br /><br /> &#xff08;4&#xff09;再从第一个列表中选择 4 条 4 5 6 7&#xff0c;分别放到 4 个窗口中<br /><br />    ...<br /><br /> &#xff08;5&#xff09;再从第一个列表中选择&#xff0c;由于数量不足 4 条&#xff0c;取剩下的 2 条&#xff0c;放到 窗口1 和 窗口2<br /><br /> &#xff08;6&#xff09;再从第二个列表中选择&#xff0c;由于数量不足 4 条并且总的元素数达到窗口要求&#xff0c;取 18 19 放到 窗口3 和 窗口4<br />  </li></ol> 
+<p><img alt="" height="476" src="https://img-blog.csdnimg.cn/direct/d6f3ed6a118746da9b4bda25d47c0a4f.png" width="882" /></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为 N&#xff0c;表示需要输出的窗口数量&#xff0c;取值范围 [1, 10]</p> 
+<p>第二行输入为 K&#xff0c;表示每个窗口需要的元素数量&#xff0c;取值范围 [1, 100]</p> 
+<p>之后的行数不定&#xff08;行数取值范围 [1, 10]&#xff09;&#xff0c;表示每个列表输出的元素列表。元素之间以空格隔开&#xff0c;已经过排序处理&#xff0c;每个列表输出的元素数量取值范围 [1, 100]</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出元素列表&#xff0c;元素数量 &#61; 窗口数量 * 窗口大小&#xff0c;元素之间以空格分隔&#xff0c;多个窗口合并为一个列表输出&#xff0c;参考样例&#xff1a;</p> 
+<p>先输出窗口1的元素列表&#xff0c;再输出窗口2的元素列表&#xff0c;再输出窗口3的元素列表&#xff0c;最后输出窗口4的元素列表</p> 
+<p></p> 
+<h4>备注</h4> 
+<ol><li>每个列表会保证元素数量满足窗口要求&#xff0c;不需要考虑元素不足情况</li><li>每个列表的元素已去重&#xff0c;不需要考虑元素重复情况</li><li>每个列表的元素列表均不为空&#xff0c;不需要考虑列表为空的情况</li><li>每个列表的元素列表已经过排序处理&#xff0c;输出结果要保证不改变同一个列表的元素顺序</li><li>每个列表的元素数量可能是不同的</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:600px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 7<br /> 0 1 2 3 4 5 6 7 8 9<br /> 10 11 12 13 14 15 16 17 18 19<br /> 20 21 22 23 24 25 26 27 28 29</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0 10 20 4 14 24 8 1 11 21 5 15 25 9 2 12 22 6 16 26 18 3 13 23 7 17 27 19</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我们可以将最终的窗口集当成一个矩阵windows&#xff0c;该矩阵有 k 行 n 列&#xff0c;矩阵的每一列对应一个窗口。最终按列打印该矩阵&#xff0c;即为题解。</p> 
+<p><img alt="" height="176" src="https://img-blog.csdnimg.cn/direct/153b8c303d1947f2b902e062602f2689.png" width="418" /></p> 
+<p></p> 
+<p>之后就是根据题目给定规则&#xff0c;往这个windos矩阵中填值即可。</p> 
+<p><img alt="" height="349" src="https://img-blog.csdnimg.cn/direct/bc9931646ff446e4a15fd9fd5b2cd2c0.png" width="292" /></p> 
+<p></p> 
+<p>由于填值过程是顺序的&#xff0c;即从左往右&#xff0c;从上往下地向windows矩阵中填值&#xff0c;因此我们可以将windows矩阵一维化&#xff0c;即定义为一维数组&#xff0c;数组长度为 k * n。</p> 
+<p>这样的话&#xff0c;只需要定义一个指针idx&#xff0c;就可以直到当前该往矩阵的哪个位置填值。</p> 
+<p></p> 
+<p>读取列表集的规则是&#xff1a;</p> 
+<p>从列表集的第一个列表开始读&#xff0c;每次读取n个值填到windows中&#xff0c;</p> 
+<ul><li>如果当前列表的剩余元素个数 &gt;&#61; n&#xff0c;那么该列表读取完n个后&#xff0c;列表中还有剩余元素&#xff0c;即不需要像后面的列表借。</li><li>如果当前列表剩余元素个数 &lt; n&#xff0c;那么该列表读取完后&#xff0c;还需要像后面的列表借。</li></ul> 
+<p>需要注意的是&#xff0c;如果发生了“借”的动作&#xff0c;比如下面例子&#xff1a;</p> 
+<blockquote> 
+ <p>5<br /> 4<br /> 0 1 2 3 4 <br /> 5 6 7 8  <br /> 9 10 11 12 13 14<br /> 15 16 17 18 19 </p> 
+</blockquote> 
+<p><img alt="" height="228" src="https://img-blog.csdnimg.cn/direct/ffc24124c71d49c9adc0acba52d9cb01.png" width="375" /></p> 
+<p>填充windows矩阵第二行时&#xff0c;由于第二个列表元素不足&#xff0c;因此&#34;借&#34;了第三个列表的元素&#xff0c;</p> 
+<p>那么下一轮填充windows矩阵第三行时&#xff0c;应该从列表集的第几个列表开始&#xff1f;</p> 
+<p>我理解应该是从第三个列表开始读&#xff0c;即最终读取出来的windows矩阵如下&#xff1a;</p> 
+<p><img alt="" height="265" src="https://img-blog.csdnimg.cn/direct/a98461f83223498db204c0b9a47c8ec9.png" width="831" /></p> 
+<p>因此&#xff0c;在代码实现时&#xff0c;我们需要注意&#xff1a;</p> 
+<p>假设我们使用level指针指向当前轮次读取的列表的序号</p> 
+<ul><li>当没有发生“借”动作时&#xff0c;当前列表读取完&#xff0c;我们需要level&#43;&#43;</li><li>当发生了&#34;借&#34;动作时&#xff0c;由于当前列表元素不足&#xff0c;我们需要在读取过程中进行一次level&#43;&#43;切到下一个列表借元素&#xff0c;当借完填到windows后&#xff0c;此时我们就不需要再次level&#43;&#43;&#xff0c;因为当前已经处于了下一轮要读取的列表上。</li></ul> 
+<hr /> 
+<p>2024.01.12 </p> 
+<p>修复一个问题&#xff0c;即发生&#34;借&#34;动作时&#xff0c;即当前level列表的元素已用完&#xff0c;需要向下一个列表借&#xff0c;此时需要保证存在下一个列表&#xff0c;否则无法借。对应代码为&#xff1a;</p> 
+<p>JS&#xff1a;40行</p> 
+<p>Java&#xff1a;41行</p> 
+<p>Python&#xff1a;33行</p> 
+<p>C&#xff1a;111行</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+  const k &#61; parseInt(await readline());
+
+  const lists &#61; [];
+
+  while (true) {
+    try {
+      const s &#61; await readline();
+
+      if (s.length &#61;&#61; 0) break;
+
+      lists.push(s.split(&#34; &#34;).map(Number));
+    } catch (e) {
+      break;
+    }
+  }
+
+  // 窗口矩阵&#xff0c;k行n列&#xff0c;每一列对应一个窗口&#xff0c;这里将二维矩阵一维化&#xff0c;方便后面赋值
+  const windows &#61; new Array(k * n);
+  // 窗口矩阵中正在赋值的索引位置
+  let idx &#61; 0;
+  // 正在从第level个列表中取值
+  let level &#61; 0;
+
+  // 当窗口矩阵填满后&#xff0c;结束循环
+  while (idx &lt; windows.length) {
+    // 当前轮次是否发生了&#34;借&#34;动作
+    let flag &#61; false;
+
+    // 从第level个列表中取前n个元素
+    for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+      windows[idx&#43;&#43;] &#61; lists[level].shift();
+
+      // 如果第level个列表没有元素了&#xff0c;则继续切到下一个列表中&#34;借&#34;
+      if (lists[level].length &#61;&#61; 0 &amp;&amp; lists.length &gt; 1) {
+        lists.splice(level, 1); // 删除空列表
+        level %&#61; lists.length; // 防止越界
+        flag &#61; true; // 发生了&#34;借&#34;动作
+      }
+    }
+
+    // 如果没有发生&#34;借&#34;动作&#xff0c;则需要切到下一行
+    if (!flag) {
+      level &#61; (level &#43; 1) % lists.length; // 防止越界
+    }
+  }
+
+  const ans &#61; [];
+
+  // 遍历列号
+  for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+    // 遍历行号
+    for (let i &#61; 0; i &lt; k; i&#43;&#43;) {
+      // 按列收集元素
+      ans.push(windows[i * n &#43; j]);
+    }
+  }
+
+  console.log(ans.join(&#34; &#34;));
+})();
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+    int k &#61; Integer.parseInt(sc.nextLine());
+
+    ArrayList&lt;LinkedList&lt;Integer&gt;&gt; lists &#61; new ArrayList&lt;&gt;();
+
+    while (sc.hasNextLine()) {
+      String line &#61; sc.nextLine();
+
+      // 本地测试&#xff0c;以空行作为输入截止条件
+      if (line.length() &#61;&#61; 0) break;
+
+      Integer[] nums &#61;
+          Arrays.stream(line.split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+      lists.add(new LinkedList&lt;&gt;(Arrays.asList(nums)));
+    }
+
+    // 窗口矩阵&#xff0c;k行n列&#xff0c;每一列对应一个窗口&#xff0c;这里将二维矩阵一维化&#xff0c;方便后面赋值
+    int[] windows &#61; new int[k * n];
+    // 窗口矩阵中正在赋值的索引位置
+    int idx &#61; 0;
+    // 正在从第level个列表中取值
+    int level &#61; 0;
+
+    // 当窗口矩阵填满后&#xff0c;结束循环
+    while (idx &lt; windows.length) {
+      // 当前轮次是否发生了&#34;借&#34;动作
+      boolean flag &#61; false;
+
+      // 从第level个列表中取前n个元素
+      for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        windows[idx&#43;&#43;] &#61; lists.get(level).removeFirst();
+
+        // 如果第level个列表没有元素了&#xff0c;则继续切到下一个列表中&#34;借&#34;
+        if (lists.get(level).size() &#61;&#61; 0 &amp;&amp; lists.size() &gt; 1) {
+          lists.remove(level); // 删除空列表
+          level %&#61; lists.size(); // 防止越界
+          flag &#61; true; // 发生了&#34;借&#34;动作
+        }
+      }
+
+      // 如果没有发生&#34;借&#34;动作&#xff0c;则需要切到下一行
+      if (!flag) {
+        level &#61; (level &#43; 1) % lists.size(); // 防止越界
+      }
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+
+    // 遍历窗口矩阵的每一列
+    for (int j &#61; 0; j &lt; n; j&#43;&#43;) { // 遍历列号
+      for (int i &#61; 0; i &lt; k; i&#43;&#43;) { // 遍历行号
+        sj.add(windows[i * n &#43; j] &#43; &#34;&#34;); // 将每一列的元素进行拼接
+      }
+    }
+
+    System.out.println(sj);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+k &#61; int(input())
+
+lists &#61; []
+while True:
+    try:
+        lists.append(list(map(int, input().split())))
+    except:
+        break
+
+
+# 算法入口
+def getResult():
+    # 窗口矩阵&#xff0c;k行n列&#xff0c;每一列对应一个窗口&#xff0c;这里将二维矩阵一维化&#xff0c;方便后面赋值
+    windows &#61; [0] * (k * n)
+    # 窗口矩阵中正在赋值的索引位置
+    idx &#61; 0
+    # 正在从第level个列表中取值
+    level &#61; 0
+
+    # 当窗口矩阵填满后&#xff0c;结束循环
+    while idx &lt; len(windows):
+        # 当前轮次是否发生了&#34;借&#34;动作
+        flag &#61; False
+
+        # 从第level个列表中取前n个元素
+        for _ in range(n):
+            windows[idx] &#61; lists[level].pop(0)
+            idx &#43;&#61; 1
+
+            # 如果第level个列表没有元素了&#xff0c;则继续切到下一个列表中&#34;借&#34;
+            if len(lists[level]) &#61;&#61; 0 and len(lists) &gt; 1:
+                lists.pop(level)  # 删除空列表
+                level %&#61; len(lists)  # 防止越界
+                flag &#61; True  # 发生了&#34;借&#34;动作
+
+        #  如果没有发生&#34;借&#34;动作&#xff0c;则需要切到下一行
+        if not flag:
+            level &#61; (level &#43; 1) % len(lists)  # 防止越界
+
+    ans &#61; []
+
+    # 遍历列号
+    for j in range(n):
+        # 遍历行号
+        for i in range(k):
+            # 按列收集元素
+            ans.append(windows[i * n &#43; j])
+
+    return &#34; &#34;.join(map(str, ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_ROWS 100
+#define MAX_ROW_LEN 10000
+
+/* 链表节点 */
+typedef struct Node {
+    int val;
+    struct Node *next;
+} Node;
+
+/* 链表 */
+typedef struct Link {
+    int size;
+    Node *head;
+    Node *tail;
+} Link;
+
+// 创建链表
+Link *new_Link() {
+    Link *link &#61; (Link *) malloc(sizeof(Link));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+// 尾插
+void addLast_Link(Link *link, int val) {
+    Node *node &#61; (Node *) malloc(sizeof(Node));
+    node-&gt;val &#61; val;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+// 头删
+int removeFirst_Link(Link *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    Node *removed &#61; link-&gt;head;
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+    }
+
+    link-&gt;size--;
+
+    int val &#61; removed-&gt;val;
+    free(removed);
+
+    return val;
+}
+
+int main() {
+    int n, k;
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;k);
+
+    getchar();
+
+    Link *lists[MAX_ROWS];
+    int lists_size &#61; 0;
+
+    char s[MAX_ROW_LEN];
+    while (gets(s)) {
+        // 本地测试&#xff0c;以空行作为输入截止条件
+        if (strlen(s) &#61;&#61; 0) break;
+
+        Link *link &#61; new_Link();
+
+        char *token &#61; strtok(s, &#34; &#34;);
+        while (token !&#61; NULL) {
+            addLast_Link(link, atoi(token));
+            token &#61; strtok(NULL, &#34; &#34;);
+        }
+
+        lists[lists_size&#43;&#43;] &#61; link;
+    }
+
+    // 窗口矩阵&#xff0c;k行n列&#xff0c;每一列对应一个窗口&#xff0c;这里将二维矩阵一维化&#xff0c;方便后面赋值
+    int windows[k * n];
+    // 窗口矩阵中正在赋值的索引位置
+    int idx &#61; 0;
+    // 正在从第level个列表中取值
+    int level &#61; 0;
+
+    // 当窗口矩阵填满后&#xff0c;结束循环
+    while (idx &lt; k * n) {
+        // 当前轮次是否发生了&#34;借&#34;动作
+        int flag &#61; 0;
+
+        // 从第level个列表中取前n个元素
+        for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+            windows[idx&#43;&#43;] &#61; removeFirst_Link(lists[level]);
+
+            // 如果第level个列表没有元素了&#xff0c;则继续切到下一个列表中&#34;借&#34;
+            if (lists[level]-&gt;size &#61;&#61; 0 &amp;&amp; lists_size &gt; 1) {
+                // 删除第level个空列表
+                for (int j &#61; level &#43; 1; j &lt; lists_size; j&#43;&#43;) {
+                    lists[j - 1] &#61; lists[j];
+                }
+                lists_size--;
+                level %&#61; lists_size; // 防止越界
+                flag &#61; 1;   // 发生了&#34;借&#34;动作
+            }
+        }
+
+        // 如果没有发生&#34;借&#34;动作&#xff0c;则需要切到下一行
+        if (!flag) {
+            level &#61; (level &#43; 1) % lists_size; // 防止越界
+        }
+    }
+
+    // 遍历列号
+    for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        // 遍历行号
+        for (int i &#61; 0; i &lt; k; i&#43;&#43;) {
+            // 按列打印
+            printf(&#34;%d&#34;, windows[i * n &#43; j]);
+            if (j !&#61; n - 1 || i !&#61; k - 1) {
+                printf(&#34; &#34;);
+            }
+        }
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

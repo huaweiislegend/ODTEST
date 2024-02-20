@@ -1,0 +1,232 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- IPv4地址转换成整数（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>存在一种虚拟IPv4地址&#xff0c;由4小节组成&#xff0c;每节的范围为0~255&#xff0c;以#号间隔&#xff0c;虚拟IPv4地址可以转换为一个32位的整数&#xff0c;例如&#xff1a;</p> 
+<ul><li>128#0#255#255&#xff0c;转换为32位整数的结果为2147549183&#xff08;0x8000FFFF&#xff09;</li><li>1#0#0#0&#xff0c;转换为32位整数的结果为16777216&#xff08;0x01000000&#xff09;</li></ul> 
+<p>现以字符串形式给出一个虚拟IPv4地址&#xff0c;限制第1小节的范围为1~128&#xff0c;即每一节范围分别为(1~128)#(0~255)#(0~255)#(0~255)&#xff0c;要求每个IPv4地址只能对应到唯一的整数上。</p> 
+<p>如果是非法IPv4&#xff0c;返回invalid IP</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入一行&#xff0c;虚拟IPv4地址格式字符串</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一行&#xff0c;按照要求输出整型或者特定字符</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>输入不能确保是合法的IPv4地址&#xff0c;需要对非法IPv4&#xff08;空串&#xff0c;含有IP地址中不存在的字符&#xff0c;非合法的#分十进制&#xff0c;十进制整数不在合法区间内&#xff09;进行识别&#xff0c;返回特定错误</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">100#101#1#5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1684340997</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1#2#3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">invalid IP</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题主要注意异常情况的处理&#xff0c;有如下几种异常情况&#xff1a;</p> 
+<ul><li>IPv4存在空串&#xff0c;比如1##3#4</li><li>IPv4存在非法字符&#xff0c;比如a#b#c#d</li><li>IPv4组成部分不足&#xff0c;比如1#2#3</li><li>IPv4组成部分的十进制整数&#xff0c;不再合法区间内&#xff0c;比如255#255#255#255</li></ul> 
+<p></p> 
+<p>其中&#xff0c;对于存在非法字符的情况&#xff0c;可以转整型时抛出异常的捕获流程中处理。</p> 
+<hr /> 
+<p>2023.05.24</p> 
+<p>本题的Java语言需要注意&#xff0c;最后输出的数可能会超出int类型&#xff0c;因此需要使用Long.parseLong</p> 
+<hr /> 
+<p>2023.06.06</p> 
+<p>如果ip地址如下&#xff1a;</p> 
+<p>01#01#01#01</p> 
+<p>应该也要算作非法</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  public static String getResult(String s) {
+    String[] ip &#61; s.split(&#34;#&#34;);
+
+    // ip地址由四部分组成&#xff0c;少于或多于四部分都不合法
+    if (ip.length !&#61; 4) return &#34;invalid IP&#34;;
+
+    // 如果ip地址四部分某部分不合法&#xff0c;则ip不合法
+    if (!isValid(ip[0], 1, 128)
+        || !isValid(ip[1], 0, 255)
+        || !isValid(ip[2], 0, 255)
+        || !isValid(ip[3], 0, 255)) {
+      return &#34;invalid IP&#34;;
+    }
+
+    // 这里需要转为long&#xff0c;某些情况使用int会整型溢出
+    return Long.parseLong(
+            getHexString(ip[0]) &#43; getHexString(ip[1]) &#43; getHexString(ip[2]) &#43; getHexString(ip[3]),
+            16)
+        &#43; &#34;&#34;;
+  }
+
+  // ip组成是否合法
+  public static boolean isValid(String s, int from, int to) {
+    // 如果包含非数字字符&#xff0c;则不合法
+    if (!s.matches(&#34;^\\d&#43;$&#34;)) return false;
+
+    // 如果包含前导0&#xff0c;则不和法&#xff0c;如012
+    int num &#61; Integer.parseInt(s);
+    if (!s.equals(num &#43; &#34;&#34;)) return false;
+
+    // 如果不是规定范围&#xff0c;则不合法
+    return num &gt;&#61; from &amp;&amp; num &lt;&#61; to;
+  }
+
+  // 获取十进制数字符串对应的十六进制数字符串
+  public static String getHexString(String num) {
+    String hexStr &#61; Integer.toHexString(Integer.parseInt(num));
+    // 补足前导0
+    if (hexStr.length() &lt; 2) hexStr &#61; &#34;0&#34; &#43; hexStr;
+    return hexStr;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  const ip &#61; s.split(&#34;#&#34;);
+
+  // ip地址由四部分组成&#xff0c;少于或多于四部分都不合法
+  if (ip.length !&#61; 4) {
+    return &#34;invalid IP&#34;;
+  }
+
+  // 如果ip地址四部分某部分不合法&#xff0c;则ip不合法
+  if (
+    !isValid(ip[0], 1, 128) ||
+    !isValid(ip[1], 0, 255) ||
+    !isValid(ip[2], 0, 255) ||
+    !isValid(ip[3], 0, 255)
+  ) {
+    return &#34;invalid IP&#34;;
+  }
+
+  // JS的数值安全范围最大时2^53&#xff0c;因此不用担心整型溢出问题
+  return parseInt(
+    getHexStr(ip[0]) &#43; getHexStr(ip[1]) &#43; getHexStr(ip[2]) &#43; getHexStr(ip[3]),
+    16
+  );
+}
+
+// ip组成是否合法
+function isValid(s, from, to) {
+  // 如果包含非数字字符&#xff0c;则不合法
+  if (/[^0-9]/.test(s)) return false;
+
+  // 如果包含前导0&#xff0c;则不和法&#xff0c;如012
+  const num &#61; parseInt(s);
+  if (num &#43; &#34;&#34; !&#61; s) return false;
+
+  // 如果不是规定范围&#xff0c;则不合法
+  return num &gt;&#61; from &amp;&amp; num &lt;&#61; to;
+}
+
+// 获取十进制数字符串对应的十六进制数字符串
+function getHexStr(s) {
+  let hexStr &#61; parseInt(s).toString(16);
+  // 补足前导0
+  if (hexStr.length &lt; 2) hexStr &#61; &#34;0&#34; &#43; hexStr;
+  return hexStr;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 获取十进制数字符串对应的十六进制数字符串
+def getHexString(num):
+    tmp &#61; hex(int(num))[2:]
+    # 补足前导0
+    if len(tmp) &#61;&#61; 1:
+        tmp &#61; &#34;0&#34; &#43; tmp
+    return tmp
+
+
+# ip组成是否合法
+def isValid(ipSub, start, end):
+    # 如果包含非数字字符&#xff0c;则不合法
+    if not ipSub.isdigit():
+        return False
+
+    # 如果包含前导0&#xff0c;则不和法&#xff0c;如012
+    num &#61; int(ipSub)
+    if str(num) !&#61; ipSub:
+        return False
+
+    # 如果不是规定范围&#xff0c;则不合法
+    return start &lt;&#61; num &lt;&#61; end
+
+
+# 算法入口
+def getResult():
+    ip &#61; s.split(&#34;#&#34;)
+
+    # ip地址由四部分组成&#xff0c;少于或多于四部分都不合法
+    if len(ip) !&#61; 4:
+        return &#34;invalid IP&#34;
+
+    # 如果ip地址四部分某部分不合法&#xff0c;则ip不合法
+    if not isValid(ip[0], 1, 128) or not isValid(ip[1], 0, 255) or not isValid(ip[2], 0, 255) or not isValid(ip[3], 0, 255):
+        return &#34;invalid IP&#34;
+
+    # python支持大数&#xff0c;不需要担心整型溢出
+    return str(int(getHexString(ip[0]) &#43; getHexString(ip[1]) &#43; getHexString(ip[2]) &#43; getHexString(ip[3]), 16))
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

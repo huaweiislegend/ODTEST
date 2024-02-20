@@ -1,0 +1,320 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 九宫格按键输入（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>九宫格按键输入&#xff0c;输出显示内容&#xff0c;有英文和数字两个模式&#xff0c;默认是数字模式&#xff0c;数字模式直接输出数字&#xff0c;英文模式连续按同一个按键会依次出现这个按键上的字母&#xff0c;如果输入”/”或者其他字符&#xff0c;则循环中断。</p> 
+<p>字符对应关系如图&#xff1a;</p> 
+<p><img alt="" src="https://img-blog.csdnimg.cn/e7873586a0b9470c9bf8fe2617e2e728.png" /></p> 
+<p>要求输入一串按键&#xff0c;输出屏幕显示。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入范围为数字 0~9 和字符’#’、’/’&#xff0c;输出屏幕显示&#xff0c;例如&#xff0c;</p> 
+<p>在数字模式下&#xff0c;输入 1234&#xff0c;显示 1234</p> 
+<p>在英文模式下&#xff0c;输入 1234&#xff0c;显示,adg</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>#用于切换模式&#xff0c;默认是数字模式&#xff0c;执行#后切换为英文模式&#xff1b;</p> 
+<p>/表示延迟&#xff0c;例如在英文模式下&#xff0c;输入 22/222&#xff0c;显示为 bc&#xff1b;</p> 
+<p>英文模式下&#xff0c;多次按同一键&#xff0c;例如输入 22222&#xff0c;显示为 b&#xff1b;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">123#222235/56</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">123adjjm</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题主要考察逻辑分析&#xff0c;和栈结构使用。</p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先&#xff0c;定义一个栈stack&#xff0c;用于缓存结果。再定义一个isEng标识来记录当前模式&#xff0c;true代表英文模式&#xff0c;false代表数字模式。isEng初始化为false。</p> 
+<p>然后&#xff0c;遍历输入的字符串s&#xff0c;将s的每一个字符c遍历出来&#xff1a;</p> 
+<ul><li>如果 c &#61;&#61; &#39;#&#39;&#xff0c;则表示要切换模式&#xff0c;即让 isEng &#61; !isEng&#xff0c;但是在切换模式之前&#xff0c;需要先检查isEng是否为英文模式&#xff0c;如果是英文模式&#xff0c;则切换前&#xff0c;需要先将栈顶数字的循环中断&#xff0c;并转化为对应的字母。</li><li>如果 c &#61;&#61; &#39;/&#39;&#xff0c;则表示要循环中断&#xff0c;此时先检查isEng是否为英文模式&#xff0c;若是&#xff0c;则再将栈顶数字转化为对应字母&#xff0c;若不是&#xff0c;则不做处理</li><li>如果 c 为其他字符&#xff0c;则&#xff1a;</li></ul> 
+<ol><li>如果isEng为数字模式&#xff0c;则c直接压入stack中</li><li>如果isEng为英文模式&#xff0c;则需要检查stack栈顶元素是否和c相同&#xff0c;若不同&#xff0c;则需要循环中断&#xff0c;即将栈顶数字转化为字母&#xff0c;若相同&#xff0c;则栈顶数字重复次数&#43;&#43;</li></ol> 
+<p></p> 
+<p>本题循环中断的逻辑&#xff0c;需要做好预检查&#xff0c;即</p> 
+<ul><li>当前必须是英文模式</li><li>栈不能为空</li></ul> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  static String[] dict &#61; {&#34; &#34;, &#34;,.&#34;, &#34;abc&#34;, &#34;def&#34;, &#34;ghi&#34;, &#34;jkl&#34;, &#34;mno&#34;, &#34;pqrs&#34;, &#34;tuv&#34;, &#34;wxyz&#34;};
+
+  static LinkedList&lt;Character&gt; stack &#61; new LinkedList&lt;&gt;();
+  static int topRepeat &#61; 0;
+  static boolean isEng &#61; false;
+
+  public static String getResult(String s) {
+    s &#43;&#61; &#34; &#34;;
+
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+
+      switch (c) {
+        case &#39;#&#39;:
+          // 如果输入”/”或者其他字符&#xff0c;则循环中断
+          interrupt();
+          // #用于切换模式
+          isEng &#61; !isEng;
+          break;
+        case &#39;/&#39;:
+          // 如果输入”/”或者其他字符&#xff0c;则循环中断
+          interrupt();
+          break;
+        default:
+          // 数字模式
+          // 直接输出数字
+          if (!isEng) {
+            stack.add(c);
+            break;
+          }
+
+          // 英文模式&#xff0c;需要检查栈顶
+          // 如果栈顶不是英文模式字符&#xff08;这里可以基于topRepeat判断&#xff0c;topRepeat是英文模式下对应按键的重复次数&#xff0c;如果为0&#xff0c;则说明栈顶存储的不是英文模式字符&#xff09;&#xff0c;则缓存对应字符c&#xff0c;并记录重复次数
+          if (topRepeat &#61;&#61; 0) {
+            stack.add(c);
+            topRepeat&#43;&#43;;
+            break;
+          }
+
+          // 如果栈顶字符有重复次数&#xff0c;则此时需要比较当前按键c和之前重复的按键stack.getLast是否相同
+          if (c !&#61; stack.getLast()) {
+            // 如果输入”/”或者其他字符&#xff0c;则循环中断
+            interrupt();
+            stack.add(c);
+          }
+          topRepeat&#43;&#43;;
+      }
+    }
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (int i &#61; 0; i &lt; stack.size() - 1; i&#43;&#43;) sb.append(stack.get(i));
+    return sb.toString();
+  }
+
+  // 英文模式连续按同一个按键会依次出现这个按键上的字母&#xff0c;如果输入”/”或者其他字符&#xff0c;则循环中断
+  // interrupt用于处理循环中断后的逻辑
+  public static void interrupt() {
+    if (!isEng || stack.size() &#61;&#61; 0 || topRepeat &#61;&#61; 0) return;
+    stack.add(map(stack.removeLast(), topRepeat));
+    topRepeat &#61; 0;
+  }
+
+  // 基于dict&#xff0c;获取一个数字c被重复repeat次后&#xff0c;对应的字符
+  public static char map(char c, int repeat) {
+    int num &#61; Integer.parseInt(c &#43; &#34;&#34;);
+    String s &#61; dict[num];
+    int i &#61; (repeat - 1) % s.length();
+    return s.charAt(i);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const stack &#61; [];
+let topRepeat &#61; 0;
+let isEng &#61; false;
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+
+  // 如果需要测试多组用例&#xff0c;这里需要将全局变量重置
+  stack.length &#61; 0;
+  topRepeat &#61; 0;
+  isEng &#61; false;
+});
+
+function getResult(s) {
+  s &#43;&#61; &#34; &#34;;
+
+  for (let c of s) {
+    switch (c) {
+      case &#34;#&#34;:
+        // 如果输入”/”或者其他字符&#xff0c;则循环中断
+        interrupt();
+        // #用于切换模式
+        isEng &#61; !isEng;
+        break;
+      case &#34;/&#34;:
+        // 如果输入”/”或者其他字符&#xff0c;则循环中断
+        interrupt();
+        break;
+      default:
+        // 数字模式直接输出数字
+        if (!isEng) {
+          stack.push(c);
+          break;
+        }
+
+        // 英文模式&#xff0c;需要检查栈顶
+        // 如果栈顶不是英文模式字符&#xff08;这里可以基于topRepeat判断&#xff0c;topRepeat是英文模式下对应按键的重复次数&#xff0c;如果为0&#xff0c;则说明栈顶存储的不是英文模式字符&#xff09;&#xff0c;则缓存对应字符c&#xff0c;并记录重复次数
+        if (topRepeat &#61;&#61; 0) {
+          stack.push(c);
+          topRepeat&#43;&#43;;
+          break;
+        }
+
+        // 如果栈顶字符有重复次数&#xff0c;则此时需要比较当前按键c和之前重复的按键stack.getLast是否相同
+        if (c !&#61; stack.at(-1)) {
+          // 如果输入”/”或者其他字符&#xff0c;则循环中断
+          interrupt();
+          stack.push(c);
+        }
+        topRepeat&#43;&#43;;
+    }
+  }
+
+  return stack.slice(0, stack.length - 1).join(&#34;&#34;);
+}
+
+// 英文模式连续按同一个按键会依次出现这个按键上的字母&#xff0c;如果输入”/”或者其他字符&#xff0c;则循环中断
+// interrupt用于处理循环中断后的逻辑
+function interrupt() {
+  if (!isEng || stack.length &#61;&#61; 0 || topRepeat &#61;&#61; 0) return;
+  stack.push(map(stack.pop(), topRepeat));
+  topRepeat &#61; 0;
+}
+
+const dict &#61; [
+  &#34; &#34;,
+  &#34;,.&#34;,
+  &#34;abc&#34;,
+  &#34;def&#34;,
+  &#34;ghi&#34;,
+  &#34;jkl&#34;,
+  &#34;mno&#34;,
+  &#34;pqrs&#34;,
+  &#34;tuv&#34;,
+  &#34;wxyz&#34;,
+];
+
+// 基于dict&#xff0c;获取一个数字c被重复repeat次后&#xff0c;对应的字符
+function map(c, repeat) {
+  const num &#61; parseInt(c);
+  const s &#61; dict[num];
+  const i &#61; (repeat - 1) % s.length;
+  return s[i];
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+# 全局变量
+stack &#61; []
+topRepeat &#61; 0
+isEng &#61; False
+
+dictionary &#61; (&#34; &#34;, &#34;,.&#34;, &#34;abc&#34;, &#34;def&#34;, &#34;ghi&#34;, &#34;jkl&#34;, &#34;mno&#34;, &#34;pqrs&#34;, &#34;tuv&#34;, &#34;wxyz&#34;)
+
+
+# 基于dictionary&#xff0c;获取一个数字c被重复repeat次后&#xff0c;对应的字符
+def mapping(c, repeat):
+    num &#61; int(c)
+    s1 &#61; dictionary[num]
+    i &#61; (repeat - 1) % len(s1)
+    return s1[i]
+
+
+# 英文模式连续按同一个按键会依次出现这个按键上的字母&#xff0c;如果输入”/”或者其他字符&#xff0c;则循环中断
+# interrupt用于处理循环中断后的逻辑
+def interrupt():
+    global topRepeat
+    if not isEng or len(stack) &#61;&#61; 0 or topRepeat &#61;&#61; 0:
+        return
+    stack.append(mapping(stack.pop(), topRepeat))
+    topRepeat &#61; 0
+
+
+# 算法入口
+def getResult():
+    global s
+    global isEng
+    global topRepeat
+
+    s &#43;&#61; &#34; &#34;
+
+    for c in s:
+        if c &#61;&#61; &#39;#&#39;:
+            # 如果输入”/”或者其他字符&#xff0c;则循环中断
+            interrupt()
+            # #用于切换模式
+            isEng &#61; not isEng
+        elif c &#61;&#61; &#39;/&#39;:
+            # 如果输入”/”或者其他字符&#xff0c;则循环中断
+            interrupt()
+        else:
+            # 数字模式直接输出数字
+            if not isEng:
+                stack.append(c)
+                continue
+
+            # 英文模式&#xff0c;需要检查栈顶
+            # 如果栈顶不是英文模式字符&#xff08;这里可以基于topRepeat判断&#xff0c;topRepeat是英文模式下对应按键的重复次数&#xff0c;如果为0&#xff0c;则说明栈顶存储的不是英文模式字符&#xff09;&#xff0c;则缓存对应字符c&#xff0c;并记录重复次数
+            if topRepeat &#61;&#61; 0:
+                stack.append(c)
+                topRepeat &#43;&#61; 1
+                continue
+
+            # 如果栈顶字符有重复次数&#xff0c;则此时需要比较当前按键c和之前重复的按键stack.getLast是否相同
+            if c !&#61; stack[-1]:
+                # 如果输入”/”或者其他字符&#xff0c;则循环中断
+                interrupt()
+                stack.append(c)
+
+            topRepeat &#43;&#61; 1
+
+    return &#34;&#34;.join(stack[:-1])
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

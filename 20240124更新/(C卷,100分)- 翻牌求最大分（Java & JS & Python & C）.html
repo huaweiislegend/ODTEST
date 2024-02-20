@@ -1,0 +1,192 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 翻牌求最大分（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给出n个牌数&#xff0c;在-100到100之间&#xff0c;求最大得分。</p> 
+<p>规则如下&#xff1a;连续翻牌&#xff0c;如果选当前牌&#xff0c;则总得分等于上一次翻牌总得分加上当前牌的数字&#xff0c;</p> 
+<p>如果当前总得分小于它前三次的总得分的话&#xff0c;那此次不翻牌&#xff0c;并且总得分就等于它前三次的得分。</p> 
+<p>1到3次翻牌数如果小于0的话就取0。</p> 
+<p>例子&#xff1a;<code>1&#xff0c;-5&#xff0c;-6&#xff0c;4&#xff0c;7&#xff0c;2&#xff0c;-2</code></p> 
+<p>&#xff08;1&#xff09;1大于零 翻牌<br /> &#xff08;2&#xff09;-5 加上1 小于0 不翻 结果为0<br /> &#xff08;3&#xff09;-6 加上0 小于0 不翻 结果为0<br /> &#xff08;4&#xff09;4 加上0 大于0&#xff08;1&#xff09;翻牌 结果为4<br /> &#xff08;5&#xff09;7 加上4 大于0&#xff08;2&#xff09; 翻牌 结果为11<br /> &#xff08;6&#xff09;2 加上11 大于0&#xff08;3&#xff09; 翻牌 结果为13<br /> &#xff08;7&#xff09;-2 加上14 大于4&#xff08;4&#xff09;翻牌 结果为11</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:73px;">输入</td><td style="width:425px;">1,-5,-6,4,7,2,-2</td></tr><tr><td style="width:73px;">输出</td><td style="width:425px;">11</td></tr><tr><td style="width:73px;">说明</td><td style="width:425px;">请看题目描述</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题其实就是<a href="https://blog.csdn.net/qfc_128220/article/details/127417904?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522166921632516782425656779%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;166921632516782425656779&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-1-127417904-null-null.nonecase&amp;utm_term&#61;%E7%8E%A9%E7%89%8C%E9%AB%98%E6%89%8B&amp;spm&#61;1018.2226.3001.4450" title="华为机试 - 玩牌高手_伏城之外的博客-CSDN博客">华为机试 - 玩牌高手_伏城之外的博客-CSDN博客</a></p> 
+<p>本题比较迷惑人的是</p> 
+<blockquote> 
+ <p>如果当前总得分小于它<span style="color:#fe2c24;">前三次</span>的总得分的话&#xff0c;那此次不翻牌&#xff0c;并且总得分就等于它<span style="color:#fe2c24;">前三次</span>的得分</p> 
+</blockquote> 
+<p>这里的前三次应该指的是三轮前&#xff0c;比如当前是第10轮&#xff0c;则前三轮是第7轮。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34;,&#34;).map(Number);
+
+  const dp &#61; [];
+
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    if (i &#61;&#61;&#61; 0) {
+      dp[0] &#61; Math.max(0, arr[0]);
+    } else if (i &lt; 3) {
+      dp[i] &#61; Math.max(0, dp[i - 1] &#43; arr[i]);
+    } else {
+      dp[i] &#61; Math.max(dp[i - 3], dp[i - 1] &#43; arr[i]);
+    }
+  }
+
+  console.log(dp.at(-1));
+});
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] arr &#61;
+        Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(arr));
+  }
+
+  // 算法入口
+  public static int getResult(Integer[] arr) {
+    int n &#61; arr.length;
+
+    int[] dp &#61; new int[n];
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (i &#61;&#61; 0) {
+        dp[0] &#61; Math.max(0, arr[0]);
+      } else if (i &lt; 3) {
+        dp[i] &#61; Math.max(0, dp[i - 1] &#43; arr[i]);
+      } else {
+        dp[i] &#61; Math.max(dp[i - 3], dp[i - 1] &#43; arr[i]);
+      }
+    }
+
+    return dp[n - 1];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+# 算法入口
+def getResult():
+    n &#61; len(arr)
+
+    dp &#61; [0] * n
+
+    for i in range(n):
+        if i &#61;&#61; 0:
+            dp[0] &#61; max(0, arr[0])
+        elif i &lt; 3:
+            dp[i] &#61; max(0, dp[i - 1] &#43; arr[i])
+        else:
+            dp[i] &#61; max(dp[i - 3], dp[i - 1] &#43; arr[i])
+
+    return dp[-1]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p> </p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+ 
+#define MAX(a,b) (a) &gt; (b) ? (a) : (b)
+ 
+#define MAX_SIZE 20
+ 
+int getResult(int nums[], int nums_size);
+ 
+int main() {
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+ 
+    while(scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if(getchar() !&#61; &#39;,&#39;) break;
+    }
+ 
+    printf(&#34;%d\n&#34;, getResult(nums, nums_size));
+ 
+    return 0;
+}
+ 
+int getResult(int nums[], int nums_size) {
+    int dp[nums_size];
+ 
+    for(int i&#61;0; i&lt;nums_size; i&#43;&#43;) {
+        if(i &#61;&#61; 0) {
+            dp[0] &#61; MAX(0, nums[0]);
+        } else if(i &lt; 3) {
+            dp[i] &#61; MAX(0, dp[i-1] &#43; nums[i]);
+        } else {
+            dp[i] &#61; MAX(dp[i-3], dp[i-1] &#43; nums[i]);
+        }
+    }
+ 
+    return dp[nums_size-1];
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

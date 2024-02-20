@@ -1,0 +1,151 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 判断字符串子序列（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定字符串 target和 source&#xff0c;判断 target是否为 source 的子序列。</p> 
+<p>你可以认为target和 source 中仅包含英文小写字母。</p> 
+<p>字符串 source 可能会很长&#xff08;长度~&#61;500,000&#xff09;&#xff0c;而 target是个短字符串&#xff08;长度&lt;&#61;100)。</p> 
+<p>字符串的一个子序列是原始字符串删除一些&#xff08;也可以不删除&#xff09;字符而不改变剩余字符相对位置形成的新字符串。</p> 
+<p>&#xff08;例如&#xff0c;”abc”是”aebycd”的一个子序列&#xff0c;而”ayb”不是&#xff09;。</p> 
+<p>请找出最后一个子序列的起始位置。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为target&#xff0c;短字符串&#xff08;长度 &lt;&#61;100&#xff09;<br /> 第二行为source&#xff0c;长字符串&#xff08;长度 ~&#61; 500,000&#xff09;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最后一个子序列的起始位置&#xff0c;即最后一个子序列首字母的下标</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>若在source中找不到target&#xff0c;则输出-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc<br /> abcaybec</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">这里有两个abc的子序列满足&#xff0c;取下标较大的&#xff0c;故返回3。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>此题是<a href="https://blog.csdn.net/qfc_128220/article/details/127228559" title="华为机试 - 字符串序列判定_伏城之外的博客-CSDN博客">华为机试 - 字符串序列判定_伏城之外的博客-CSDN博客</a></p> 
+<p>的进阶题。</p> 
+<p>此题不再好用正则来投机取巧了&#xff0c;因为source串中可能存在多个target子串&#xff0c;此时使用/a.*b.*c.*/正则就无法正确匹配了&#xff0c;因为此正则会直接匹配出<span style="color:#fe2c24;">ab</span>caybe<span style="color:#fe2c24;">c</span>整个字符串&#xff0c;而不是某个子串。而想要构造一个只匹配子串&#xff0c;而不匹配整串的正则非常难&#xff0c;不适合机试。</p> 
+<p>因此&#xff0c;本题我们还可以使用指针来做。</p> 
+<p>创建一个指针cursor&#xff0c;来指向target的尾部target.length-1位置&#xff0c;而不是指向target的0位置</p> 
+<p>因为题目要求<span style="color:#fe2c24;">最后一个子序列</span>首字母的下标&#xff0c;因此我们反向遍历target串&#xff0c;以及source串&#xff0c;这样的话&#xff0c;匹配到的第一个序列就是符合要求的。</p> 
+<p><img alt="" height="638" src="https://img-blog.csdnimg.cn/2224ff0ba06042d1a777bced9362583f.png" width="1200" /></p> 
+<p> 反向遍历source字符串的每一个字符&#xff0c;与当前cursor指针指向的taget串的字符比较&#xff0c;若相同&#xff0c;则cursor--&#xff0c;若不同&#xff0c;则cursor不变。</p> 
+<p>当cursor指向0位置时&#xff0c;此时若有source[i]的字符与target[cursor]相同&#xff0c;则i就是题解。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    System.out.println(getResult(sc.nextLine(), sc.nextLine()));
+  }
+
+  public static int getResult(String target, String source) {
+    int cursor &#61; target.length() - 1;
+    for (int i &#61; source.length() - 1; i &gt;&#61; 0; i--) {
+      if (source.charAt(i) &#61;&#61; target.charAt(cursor)) {
+        cursor--;
+        if (cursor &lt; 0) return i;
+      }
+    }
+
+    return -1;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    let target &#61; lines[0];
+    let source &#61; lines[1];
+    console.log(getValidSubStrIndex(target, source));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getValidSubStrIndex(target, source) {
+  let cursor &#61; target.length - 1;
+  for (let i &#61; source.length - 1; i &gt;&#61; 0; i--) {
+    if (source[i] &#61;&#61;&#61; target[cursor]) {
+      cursor--;
+      if (cursor &lt; 0) {
+        return i;
+      }
+    }
+  }
+  return -1;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+target &#61; input()
+source &#61; input()
+
+
+# 算法入口
+def getResult():
+    cursor &#61; len(target) - 1
+    for i in range(len(source)-1, -1, -1):
+        if source[i] &#61;&#61; target[cursor]:
+            cursor -&#61; 1
+            if cursor &lt; 0:
+                return i
+
+    return -1
+
+
+# 调用算法
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

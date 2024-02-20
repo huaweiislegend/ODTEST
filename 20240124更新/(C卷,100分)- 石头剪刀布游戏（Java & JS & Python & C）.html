@@ -1,0 +1,321 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 石头剪刀布游戏（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>石头剪刀布游戏有 3 种出拳形状&#xff1a;石头、剪刀、布。分别用字母A、B、C表示。</p> 
+<p>游戏规则&#xff1a;</p> 
+<ol><li>出拳形状之间的胜负规则如下&#xff1a;<br /><br /> A &gt; B&#xff1b;<br /> B &gt; C&#xff1b;<br /> C &gt; A&#xff1b;<br /><br /> &#34;&gt;&#34; 左边一个字母&#xff0c;表示相对优势形状。右边一个字母&#xff0c;表示相对劣势形状。<br />  </li><li>当本场次中有且仅有一种出拳形状优于其他出拳形状&#xff0c;则该形状的玩家是胜利者。否则认为是平局。<br /><br /> 例如1&#xff1a;三个玩家出拳分别是A&#xff0c;B&#xff0c;C。由于三方优势循环&#xff08;即没有任何一方优于其他出拳者&#xff09;&#xff0c;判断为平局。<br /><br /> 例如2&#xff1a;三个玩家出拳分别是A&#xff0c;B&#xff0c;B。出拳A的获胜。<br /><br /> 例如3&#xff1a;三个玩家出拳全部是A。判为平局。<br />  </li><li>当发生平局&#xff0c;没有赢家。有多个胜利者时&#xff0c;同为赢家。</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>在一场游戏中&#xff0c;每个玩家的信息为一行。玩家数量不超过1000。每个玩家信息有2个字段&#xff0c;用空格隔开&#xff1b;</p> 
+<ol><li>玩家ID&#xff1a;一个仅由英文字母和数字组成的字符串</li><li>出拳形状&#xff1a;以英文大写字母表示&#xff0c;A、B、C形状。</li><li><s>出拳时间&#xff1a;正整数&#xff0c;越小表示时间越早</s></li></ol> 
+<p>例如&#xff1a;</p> 
+<blockquote> 
+ <p>abc1 A<br /> xyz B</p> 
+</blockquote> 
+<p>解释&#xff1a;玩家abc1出拳为石头&#xff08;A&#xff09;。玩家xyz出拳为剪刀&#xff08;B&#xff09;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出为赢家的玩家ID列表&#xff08;一个或多个&#xff09;&#xff0c;每个ID一行&#xff0c;按字符串升序排列。如果没有赢家&#xff0c;输出为”NULL“字符串。</p> 
+<p>例如&#xff1a;</p> 
+<blockquote> 
+ <p>abc1</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc1 A<br /> xyz B</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">abc1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">A比B有优势&#xff0c;abc1胜出</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc1 A<br /> xyz A</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">NULL</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">没有优胜的出拳形状&#xff0c;平局</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc1 A<br /> def A<br /> alic A<br /> xyz B</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">abc1<br /> alic<br /> def</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">A为优胜方&#xff0c;有三个赢家</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以定义三个数组&#xff0c;分别统计出手势A、B、C的人名。</p> 
+<p>统计完后&#xff0c;再计数下非空数组的个数&#xff1a;</p> 
+<ul><li>如果有三个&#xff0c;则说明三个手势都存在&#xff0c;平局</li><li>如果有一个&#xff0c;则说明只有一个手势&#xff0c;平局</li><li>如果有两个&#xff0c;则需要继续检查&#xff1a;</li></ul> 
+<ol><li>如果只有手势A&#xff0c;B&#xff0c;那么赢家就是手势A的玩家</li><li>如果只有手势A&#xff0c;C&#xff0c;那么赢家就是手势C的玩家</li><li>如果只有手势B&#xff0c;C&#xff0c;那么赢家就是手势B的玩家</li></ol> 
+<p>最后将赢家人名进行字典序升序即可。</p> 
+<hr /> 
+<p>2023.12.19</p> 
+<p>对于Java&#xff0c;JS&#xff0c;Python这类自带字典结构的编程语言&#xff0c;我们可以用字典来统计出某个手势&#xff08;key&#xff09;的所有人名&#xff08;ele&#xff09;。</p> 
+<p>这样最后字典key的数量就是手势数量&#xff0c;如果key只有2个&#xff0c;那么就判断&#xff1a;</p> 
+<p>字典没有&#39;A&#39;的key  &#61;&gt; 只有手势B&#xff0c;C&#xff0c;那么赢家就是手势B的玩家</p> 
+<p>字典没有&#39;B&#39;的key  &#61;&gt; 只有手势A&#xff0c;C&#xff0c;那么赢家就是手势C的玩家</p> 
+<p>字典没有&#39;C&#39;的key  &#61;&gt; 只有手势A&#xff0c;B&#xff0c;那么赢家就是手势A的玩家</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入输出处理
+void (async function () {
+  const map &#61; new Map();
+
+  while (true) {
+    try {
+      const [player, gesture] &#61; (await readline()).split(&#34; &#34;);
+
+      // 如果有人不按套路出&#xff0c;则此局作废
+      if (gesture &lt; &#34;A&#34; &amp;&amp; gesture &gt; &#34;C&#34;) {
+        console.log(&#34;NULL&#34;);
+        return;
+      }
+
+      // 统计各个手势的人名
+      if (!map.has(gesture)) {
+        map.set(gesture, []);
+      }
+
+      map.get(gesture).push(player);
+    } catch (e) {
+      break;
+    }
+  }
+
+  switch (map.size) {
+    case 1:
+    case 3:
+      // 只有一种手势&#xff0c;或者三种手势都有&#xff0c;则平局
+      console.log(&#34;NULL&#34;);
+      break;
+    case 2:
+      let ans;
+
+      if (!map.has(&#34;A&#34;)) {
+        // 没有A手势&#xff0c;只有B、C手势&#xff0c;则B赢
+        ans &#61; map.get(&#34;B&#34;);
+      } else if (!map.has(&#34;B&#34;)) {
+        // 没有B手势&#xff0c;只有A、C手势&#xff0c;则C赢
+        ans &#61; map.get(&#34;C&#34;);
+      } else {
+        // 没有C手势&#xff0c;只有A、B手势&#xff0c;则A赢
+        ans &#61; map.get(&#34;A&#34;);
+      }
+
+      ans.sort().forEach((a) &#61;&gt; console.log(a));
+      break;
+  }
+})();
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  // 输入输出处理
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    HashMap&lt;Character, ArrayList&lt;String&gt;&gt; map &#61; new HashMap&lt;&gt;();
+
+    while (sc.hasNext()) {
+      String player &#61; sc.next();
+      char gesture &#61; sc.next().charAt(0);
+
+      // 如果有人不按套路出&#xff0c;则此局作废
+      if (gesture &lt; &#39;A&#39; || gesture &gt; &#39;C&#39;) {
+        System.out.println(&#34;NULL&#34;);
+        return;
+      }
+
+      // 统计各个手势的出派人
+      map.putIfAbsent(gesture, new ArrayList&lt;&gt;());
+      map.get(gesture).add(player);
+    }
+
+    switch (map.size()) {
+      case 1:
+      case 3:
+        // 只有一种手势&#xff0c;或者三种手势都有&#xff0c;则平局
+        System.out.println(&#34;NULL&#34;);
+        break;
+      case 2:
+        ArrayList&lt;String&gt; ans;
+
+        if (!map.containsKey(&#39;A&#39;)) {
+          // 没有A手势&#xff0c;只有B、C手势&#xff0c;则B赢
+          ans &#61; map.get(&#39;B&#39;);
+        } else if (!map.containsKey(&#39;B&#39;)) {
+          // 没有B手势&#xff0c;只有A、C手势&#xff0c;则C赢
+          ans &#61; map.get(&#39;C&#39;);
+        } else {
+          // 没有C手势&#xff0c;只有A、B手势&#xff0c;则A赢
+          ans &#61; map.get(&#39;A&#39;);
+        }
+
+        ans.sort(String::compareTo);
+        ans.forEach(System.out::println);
+
+        break;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">def getResult():
+    dic &#61; {}
+
+    while True:
+        try:
+            player, gesture &#61; input().split()
+
+            # 如果有人不按套路出&#xff0c;则此局作废
+            if gesture &lt; &#39;A&#39; or gesture &gt; &#39;C&#39;:
+                print(&#34;NULL&#34;)
+                return
+
+            # 统计各个手势的人名
+            dic.setdefault(gesture, [])
+            dic[gesture].append(player)
+
+        except:
+            break
+
+    kinds &#61; len(dic)
+
+    if kinds &#61;&#61; 1 or kinds &#61;&#61; 3:
+        # 只有一种手势&#xff0c;或者三种手势都有&#xff0c;则平局
+        print(&#34;NULL&#34;)
+    else:
+        ans &#61; None
+
+        if &#39;A&#39; not in dic:
+            # 没有A手势&#xff0c;只有B、C手势&#xff0c;则B赢
+            ans &#61; dic[&#39;B&#39;]
+        elif &#39;B&#39; not in dic:
+            # 没有B手势&#xff0c;只有A、C手势&#xff0c;则C赢
+            ans &#61; dic[&#39;C&#39;]
+        else:
+            # 没有C手势&#xff0c;只有A、B手势&#xff0c;则A赢
+            ans &#61; dic[&#39;A&#39;]
+
+        ans.sort()
+
+        for an in ans:
+            print(an)
+
+
+# 算法调用
+getResult()
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 1000
+#define MAX_NAME_LENGTH 100
+
+int cmp(const void *a, const void *b) {
+    return strcmp(((char *) a), ((char *) b));
+}
+
+int main() {
+    char A[MAX_SIZE][MAX_NAME_LENGTH];
+    int A_size &#61; 0;
+
+    char B[MAX_SIZE][MAX_NAME_LENGTH];
+    int B_size &#61; 0;
+
+    char C[MAX_SIZE][MAX_NAME_LENGTH];
+    int C_size &#61; 0;
+
+    while (1) {
+        char s[MAX_NAME_LENGTH * 2] &#61; {&#39;\0&#39;};
+        gets(s);
+
+        if (strlen(s) &#61;&#61; 0) {
+            break;
+        }
+
+        char name[MAX_NAME_LENGTH];
+        char gesture[2];
+
+        sscanf(s, &#34;%s %s&#34;, name, gesture);
+
+        if (gesture[0] &#61;&#61; &#39;A&#39;) {
+            strcpy(A[A_size&#43;&#43;], name);
+        } else if (gesture[0] &#61;&#61; &#39;B&#39;) {
+            strcpy(B[B_size&#43;&#43;], name);
+        } else if (gesture[0] &#61;&#61; &#39;C&#39;) {
+            strcpy(C[C_size&#43;&#43;], name);
+        } else {
+            puts(&#34;NULL&#34;);
+            return 0;
+        }
+    }
+
+    int kinds &#61; 0;
+    if (A_size &gt; 0) kinds&#43;&#43;;
+    if (B_size &gt; 0) kinds&#43;&#43;;
+    if (C_size &gt; 0) kinds&#43;&#43;;
+
+    if (kinds &#61;&#61; 1 || kinds &#61;&#61; 3) {
+        puts(&#34;NULL&#34;);
+    } else {
+        if (A_size &gt; 0) {
+            if (B_size &gt; 0) {
+                qsort(A, A_size, sizeof(A[0]), cmp);
+
+                for (int i &#61; 0; i &lt; A_size; i&#43;&#43;) {
+                    puts(A[i]);
+                }
+
+            } else {
+                qsort(C, C_size, sizeof(C[0]), cmp);
+
+                for (int i &#61; 0; i &lt; C_size; i&#43;&#43;) {
+                    puts(C[i]);
+                }
+            }
+        } else {
+            qsort(B, B_size, sizeof(B[0]), cmp);
+
+            for (int i &#61; 0; i &lt; B_size; i&#43;&#43;) {
+                puts(B[i]);
+            }
+        }
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

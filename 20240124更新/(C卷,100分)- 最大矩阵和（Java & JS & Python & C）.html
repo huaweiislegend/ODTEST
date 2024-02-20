@@ -1,0 +1,350 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 最大矩阵和（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个二维整数矩阵&#xff0c;要在这个矩阵中选出一个子矩阵&#xff0c;使得这个子矩阵内所有的<span style="color:#fe2c24;">数字和</span>尽量大&#xff0c;我们把这个子矩阵称为<span style="color:#fe2c24;">和最大</span>子矩阵&#xff0c;子矩阵的选取原则是原矩阵中一块相互连续的矩形区域。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的第一行包含2个整数n, m(1 &lt;&#61; n, m &lt;&#61; 10)&#xff0c;表示一个n行m列的矩阵&#xff0c;下面有n行&#xff0c;每行有m个整数&#xff0c;同一行中&#xff0c;每2个数字之间有1个空格&#xff0c;最后一个数字后面没有空格&#xff0c;所有的数字的在[-1000, 1000]之间。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一行一个数字&#xff0c;表示选出的和最大子矩阵内所有的数字和。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td> <p>3 4<br /> -3 5 -1 5<br /> 2 4 -2 4<br /> -1 3 -1 3</p> </td></tr><tr><td>输出</td><td>20</td></tr><tr><td>说明</td><td>一个3*4的矩阵中&#xff0c;后面3列的子矩阵求和加起来等于20&#xff0c;和最大。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90">题目分析</h4> 
+<p>看到这个题目标题&#xff0c;我很容易就联想到了最大子数组和&#xff0c;关于最大子数组和可以参考&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/126024267" title="LeetCode - 53 最大子数组和-CSDN博客">LeetCode - 53 最大子数组和-CSDN博客</a></p> 
+<p></p> 
+<p>区别在于最大子数组和是一维的&#xff0c;而最大子矩阵和是二维的。</p> 
+<p>那么是不是有可能将最大子矩阵和的求解转成一维的呢&#xff1f;</p> 
+<p>下面是子矩阵可能存在的区域&#xff0c;即一行子矩阵&#xff0c;两行子矩阵&#xff0c;三行子矩阵</p> 
+<p><img alt="" height="724" src="https://img-blog.csdnimg.cn/cc4525abb0e24914a9000579b95ed69e.png" width="983" /></p> 
+<p> 进一步简化&#xff0c;可得下图&#xff0c;即对求解下面每个区域的最大子矩阵</p> 
+<p><img alt="" height="456" src="https://img-blog.csdnimg.cn/568bfc4c53074e1286e1b7e39da1e3f3.png" width="822" /></p> 
+<p>此时因为子矩阵的行数已经确定&#xff0c;因此我们可以将多行压缩为一行</p> 
+<p><img alt="" height="479" src="https://img-blog.csdnimg.cn/72f32444c4fd4e678769f3452e1f889c.png" width="847" /></p> 
+<p>此时对于最大子矩阵和的求解&#xff0c;就变为了最大子数组和的求解。</p> 
+<p>而最大子数组和的求解的状态转移方程我们已经在前一小结总结出来了&#xff1a;</p> 
+<p>dp[i] &#61; max(dp[i-1], 0) &#43; nums[i]。</p> 
+<p></p> 
+<p>还有一个难点就是二维数组压缩为一维数组的问题&#xff0c;解决思路如下&#xff0c;获取二维数组的行数rows、列数cols&#xff0c;创建一个长度为cols的一维数组&#xff0c;然后将二维数组双重for循环&#xff0c;外层遍历cols&#xff0c;内层遍历rows&#xff0c;这样每次循环就可以得到二维数组一个列上的所有元素&#xff0c;然后求和存入一维数组中&#xff0c;实现如下</p> 
+<pre><code class="language-javascript">function matrixZip(matrix) {
+  let cols &#61; matrix[0].length;
+  let rows &#61; matrix.length;
+  let zip &#61; new Array(cols).fill(0);
+
+  for (let c &#61; 0; c &lt; cols; c&#43;&#43;) {
+    for (let r &#61; 0; r &lt; rows; r&#43;&#43;) {
+      zip[c] &#43;&#61; matrix[r][c];
+    }
+  }
+
+  return zip;
+}</code></pre> 
+<p></p> 
+<h4 id="%E6%BA%90%E7%A0%81%E5%88%86%E4%BA%AB">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+let lines &#61; [];
+let n, m;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  // 输入第一行时&#xff0c;提取出m、n
+  if (lines.length &#61;&#61;&#61; 1) {
+    [n, m] &#61; lines[0].split(&#34; &#34;).map((ele) &#61;&gt; parseInt(ele));
+  }
+
+  // 输入第一行后&#xff0c;再输入n行时&#xff0c;则开始启动算法程序
+  if (lines.length - 1 &#61;&#61;&#61; n) {
+    // 干掉第一行输入&#xff0c;即lines中存储的全是就是matrix要素
+    lines.shift();
+
+    // matrix是算法程序的入参二维数组
+    let matrix &#61; [];
+    // 将多行输入的matrix要素提取出来存到二维数组中
+    lines.forEach((line) &#61;&gt; {
+      matrix.push(
+        line
+          .split(&#34; &#34;)
+          .map((ele) &#61;&gt; parseInt(ele))
+          .slice(0, m)
+      );
+    });
+
+    // 调用算法程序
+    console.log(maxSubMatrixSum(matrix));
+
+    // 将输入归0&#xff0c;重新接收下一轮
+    lines.length &#61; 0;
+  }
+});
+
+function maxSubMatrixSum(matrix) {
+  let dp &#61; [];
+  for (let i &#61; 0; i &lt; matrix.length; i&#43;&#43;) {
+    dp.push(maxSubArraySum(matrix[i]));
+
+    for (let j &#61; i &#43; 1; j &lt; matrix.length; j&#43;&#43;) {
+      dp.push(maxSubArraySum(matrixZip(matrix.slice(i, j &#43; 1))));
+    }
+  }
+
+  return dp.sort((a, b) &#61;&gt; b - a)[0];
+}
+
+function maxSubArraySum(nums) {
+  let dp &#61; new Array(nums.length);
+
+  let result &#61; (dp[0] &#61; nums[0]);
+
+  for (let i &#61; 1; i &lt; nums.length; i&#43;&#43;) {
+    dp[i] &#61; Math.max(dp[i - 1], 0) &#43; nums[i];
+    result &#61; Math.max(result, dp[i]);
+  }
+
+  return result;
+}
+
+function matrixZip(matrix) {
+  let cols &#61; matrix[0].length;
+  let rows &#61; matrix.length;
+  let zip &#61; new Array(cols).fill(0);
+
+  for (let c &#61; 0; c &lt; cols; c&#43;&#43;) {
+    for (let r &#61; 0; r &lt; rows; r&#43;&#43;) {
+      zip[c] &#43;&#61; matrix[r][c];
+    }
+  }
+
+  return zip;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int m &#61; sc.nextInt();
+
+    int[][] matrix &#61; new int[n][m];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    System.out.println(getResult(n, m, matrix));
+  }
+
+  public static int getResult(int n, int m, int[][] matrix) {
+    ArrayList&lt;Integer&gt; dp &#61; new ArrayList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      dp.add(maxSubArraySum(matrix[i])); // 一行子矩阵最大和
+
+      for (int j &#61; i &#43; 1; j &lt; n; j&#43;&#43;) {
+        dp.add(maxSubArraySum(matrixZip(Arrays.copyOfRange(matrix, i, j &#43; 1)))); // 多行子矩阵最大和
+      }
+    }
+
+    return dp.stream().max((a, b) -&gt; a - b).orElse(0); // 求出最大和
+  }
+
+  // 最大子数组和求解
+  public static int maxSubArraySum(int[] nums) {
+    int[] dp &#61; new int[nums.length];
+
+    int res &#61; dp[0] &#61; nums[0];
+
+    for (int i &#61; 1; i &lt; nums.length; i&#43;&#43;) {
+      dp[i] &#61; Math.max(dp[i - 1], 0) &#43; nums[i];
+      res &#61; Math.max(res, dp[i]);
+    }
+
+    return res;
+  }
+
+  // 多行子矩阵&#xff0c;压缩为一行子数组
+  public static int[] matrixZip(int[][] matrix) {
+    int cols &#61; matrix[0].length;
+    int rows &#61; matrix.length;
+    int[] zip &#61; new int[cols];
+
+    for (int c &#61; 0; c &lt; cols; c&#43;&#43;) {
+      for (int r &#61; 0; r &lt; rows; r&#43;&#43;) {
+        zip[c] &#43;&#61; matrix[r][c];
+      }
+    }
+
+    return zip;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n, m &#61; map(int, input().split())
+matrix &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+# 最大子数组和求解
+def maxSubArraySum(nums):
+    dp &#61; [0 for i in range(len(nums))]
+    res &#61; dp[0] &#61; nums[0]
+
+    for i in range(1, len(nums)):
+        dp[i] &#61; max(dp[i - 1], 0) &#43; nums[i]
+        res &#61; max(res, dp[i])
+
+    return res
+
+
+# 将多行子矩阵&#xff0c;压缩为一维数组
+def matrixZip(matrix):
+    cols &#61; len(matrix[0])
+    rows &#61; len(matrix)
+    zip &#61; [0 for i in range(cols)]
+
+    for c in range(cols):
+        for r in range(rows):
+            zip[c] &#43;&#61; matrix[r][c]
+
+    return zip
+
+
+# 算法入口
+def getResult(n, m, matrix):
+    dp &#61; []
+
+    for i in range(n):
+        dp.append(maxSubArraySum(matrix[i]))
+        for j in range(i &#43; 1, n):
+            dp.append(maxSubArraySum(matrixZip(matrix[i:j &#43; 1])))
+
+    dp.sort()
+
+    return dp[-1]
+
+
+# 算法调用
+print(getResult(n, m, matrix))
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
+
+#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
+
+int getResult(int n, int m, int matrix[n][m]);
+int maxSubArraySum(int nums[], int nums_size);
+int* matrixZip(int rowFrom, int rowTo, int rows, int cols, int matrix[rows][cols]);
+
+int main() {
+    int n, m;
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    int matrix[n][m];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            scanf(&#34;%d&#34;, &amp;matrix[i][j]);
+        }
+    }
+
+    printf(&#34;%d\n&#34;, getResult(n, m, matrix));
+
+    return 0;
+}
+
+int getResult(int n, int m, int matrix[n][m]) {
+    int ans &#61; INT_MIN;
+
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        ans &#61; MAX(ans, maxSubArraySum(matrix[i], m)); // 一行子矩阵最大和
+
+        for(int j&#61;i&#43;1; j&lt;n; j&#43;&#43;) {
+            ans &#61; MAX(ans, maxSubArraySum(matrixZip(i, j, n, m, matrix), m)); // 多行子矩阵最大和
+        }
+    }
+
+    return ans;
+}
+
+// 最大子数组和求解
+int maxSubArraySum(int nums[], int nums_size) {
+    int dp[nums_size];
+
+    int res &#61; dp[0] &#61; nums[0];
+
+    for(int i&#61;1; i&lt;nums_size; i&#43;&#43;) {
+        dp[i] &#61; MAX(dp[i-1], 0) &#43; nums[i];
+        res &#61; MAX(res, dp[i]);
+    }
+
+    return res;
+}
+
+// 多行子矩阵&#xff0c;压缩为一行子数组
+int* matrixZip(int rowFrom, int rowTo, int rows, int cols, int matrix[rows][cols]) {
+    int* zip &#61; (int*) calloc(cols, sizeof(int));
+
+    for(int c &#61; 0; c &lt; cols; c&#43;&#43;) {
+        for(int r &#61; rowFrom; r &lt;&#61; rowTo; r&#43;&#43;) {
+            zip[c] &#43;&#61; matrix[r][c];
+        }
+    }
+
+    return zip;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

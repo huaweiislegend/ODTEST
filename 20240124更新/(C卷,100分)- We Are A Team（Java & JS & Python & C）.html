@@ -1,0 +1,663 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- We Are A Team（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>总共有 n 个人在机房&#xff0c;每个人有一个标号&#xff08;1&lt;&#61;标号&lt;&#61;n&#xff09;&#xff0c;他们分成了多个团队&#xff0c;需要你根据收到的 m 条消息判定指定的两个人是否在一个团队中&#xff0c;具体的&#xff1a;</p> 
+<ol><li>消息构成为 a b c&#xff0c;整数 a、b 分别代表两个人的标号&#xff0c;整数 c 代表指令</li><li>c &#61;&#61; 0 代表 a 和 b 在一个团队内</li><li>c &#61;&#61; 1 代表需要判定 a 和 b 的关系&#xff0c;如果 a 和 b 是一个团队&#xff0c;输出一行’we are a team’,如果不是&#xff0c;输出一行’we are not a team’</li><li>c 为其他值&#xff0c;或当前行 a 或 b 超出 1~n 的范围&#xff0c;输出‘da pian zi’</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<ol><li>第一行包含两个整数 n&#xff0c;m(1&lt;&#61;n,m&lt;100000),分别表示有 n 个人和 m 条消息</li><li>随后的 m 行&#xff0c;每行一条消息&#xff0c;消息格式为&#xff1a;a b c(1&lt;&#61;a,b&lt;&#61;n,0&lt;&#61;c&lt;&#61;1)</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<ol><li>c &#61;&#61;1,根据 a 和 b 是否在一个团队中输出一行字符串&#xff0c;在一个团队中输出‘we are a team‘,不在一个团队中输出’we are not a team’</li><li>c 为其他值&#xff0c;或当前行 a 或 b 的标号小于 1 或者大于 n 时&#xff0c;输出字符串‘da pian zi‘</li><li>如果第一行 n 和 m 的值超出约定的范围时&#xff0c;输出字符串”NULL“。</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 7<br /> 1 2 0<br /> 4 5 0<br /> 2 3 0<br /> 1 2 1<br /> 2 3 1<br /> 4 5 1<br /> 1 5 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">we are a team<br /> we are a team<br /> we are a team<br /> we are not a team</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 6<br /> 1 2 0<br /> 1 2 1<br /> 1 5 0<br /> 2 3 1<br /> 2 5 1<br /> 1 3 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">we are a team<br /> we are not a team<br /> we are a team<br /> da pian zi</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用 并查集 建立 a,b 的关联关系。</p> 
+<p>关于并查集的知识&#xff0c;请看<a href="https://blog.csdn.net/qfc_128220/article/details/127588130?csdn_share_tail&#61;%7B%22type%22%3A%22blog%22%2C%22rType%22%3A%22article%22%2C%22rId%22%3A%22127588130%22%2C%22source%22%3A%22qfc_128220%22%7D" title="华为机试 - 发广播_伏城之外的博客-CSDN博客">华为机试 - 发广播_伏城之外的博客-CSDN博客</a></p> 
+<p>其余逻辑&#xff0c;按照题目描述写就行&#xff0c;具体可以看代码注释。</p> 
+<hr /> 
+<p>2023.09.19</p> 
+<p>本题c &#61;&#61; 1判断a,b是否处于一个团队时&#xff0c;本题判断范围存在歧义&#xff0c;当前有两种思路&#xff1a;</p> 
+<p>1、仅限判断前面行中建立的关系中&#xff0c;a,b是否处于同一团队</p> 
+<p>2、不限于前面行&#xff0c;而是等所有行输入完后&#xff0c;才判断a,b是否处于同一团队</p> 
+<p>下面对这两种思路都进行实现下&#xff0c;代码上差别不大&#xff0c;考试时可以都试下</p> 
+<p></p> 
+<h3>c&#61;&#61;1时 仅在当前行前面建立的关系中&#xff0c;判断a,b是否处于同一团队</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [n, m] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const msgs &#61; [];
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    msgs.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  getResult(msgs, n, m);
+})();
+
+function getResult(msgs, n, m) {
+  // 如果第一行 n 和 m 的值超出约定的范围时&#xff0c;输出字符串”Null“。
+  // 1&lt;&#61;n,m&lt;100000
+  if (n &lt; 1 || n &gt;&#61; 100000 || m &lt; 1 || m &gt;&#61; 100000) return console.log(&#34;NULL&#34;);
+
+  const ufs &#61; new UnionFindSet(n &#43; 1);
+
+  msgs.forEach((msg) &#61;&gt; {
+    const [a, b, c] &#61; msg;
+
+    if (a &lt; 1 || a &gt; n || b &lt; 1 || b &gt; n) {
+      // 当前行 a 或 b 的标号小于 1 或者大于 n 时&#xff0c;输出字符串‘da pian zi‘
+      return console.log(&#34;da pian zi&#34;);
+    }
+
+    if (c &#61;&#61;&#61; 0) {
+      // c &#61;&#61; 0 代表 a 和 b 在一个团队内
+      ufs.union(a, b);
+    } else if (c &#61;&#61;&#61; 1) {
+      // c &#61;&#61; 1 代表需要判定 a 和 b 的关系&#xff0c;如果 a 和 b 是一个团队&#xff0c;输出一行’we are a team’,如果不是&#xff0c;输出一行’we are not a team’
+      console.log(
+        ufs.find(a) &#61;&#61;&#61; ufs.find(b) ? &#34;we are a team&#34; : &#34;we are not a team&#34;
+      );
+    } else {
+      // c 为其他值&#xff0c;输出字符串‘da pian zi‘
+      console.log(&#34;da pian zi&#34;);
+    }
+  });
+}
+
+// 并查集实现
+class UnionFindSet {
+  constructor(n) {
+    this.fa &#61; new Array(n).fill(0).map((_, idx) &#61;&gt; idx);
+  }
+
+  find(x) {
+    if (this.fa[x] !&#61;&#61; x) {
+      this.fa[x] &#61; this.find(this.fa[x]);
+      return this.fa[x];
+    }
+    return x;
+  }
+
+  union(x, y) {
+    let x_fa &#61; this.find(x);
+    let y_fa &#61; this.find(y);
+
+    if (x_fa !&#61;&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int m &#61; sc.nextInt();
+
+    int[][] msgs &#61; new int[m][3];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      msgs[i][0] &#61; sc.nextInt();
+      msgs[i][1] &#61; sc.nextInt();
+      msgs[i][2] &#61; sc.nextInt();
+    }
+
+    getResult(msgs, n, m);
+  }
+
+  public static void getResult(int[][] msgs, int n, int m) {
+    // 如果第一行 n 和 m 的值超出约定的范围时&#xff0c;输出字符串”Null“。
+    // 1&lt;&#61;n,m&lt;100000
+    if (n &lt; 1 || n &gt;&#61; 100000 || m &lt; 1 || m &gt;&#61; 100000) {
+      System.out.println(&#34;NULL&#34;);
+      return;
+    }
+
+    UnionFindSet ufs &#61; new UnionFindSet(n &#43; 1);
+
+    for (int[] msg : msgs) {
+      int a &#61; msg[0], b &#61; msg[1], c &#61; msg[2];
+
+      if (a &lt; 1 || a &gt; n || b &lt; 1 || b &gt; n) {
+        // 当前行 a 或 b 的标号小于 1 或者大于 n 时&#xff0c;输出字符串‘da pian zi‘
+        System.out.println(&#34;da pian zi&#34;);
+        continue;
+      }
+
+      if (c &#61;&#61; 0) {
+        // c &#61;&#61; 0 代表 a 和 b 在一个团队内
+        ufs.union(a, b);
+      } else if (c &#61;&#61; 1) {
+        // c &#61;&#61; 1 代表需要判定 a 和 b 的关系&#xff0c;如果 a 和 b 是一个团队&#xff0c;输出一行’we are a team’,如果不是&#xff0c;输出一行’we are not a team’
+        System.out.println(ufs.find(a) &#61;&#61; ufs.find(b) ? &#34;we are a team&#34; : &#34;we are not a team&#34;);
+      } else {
+        // c 为其他值&#xff0c;输出字符串‘da pian zi‘
+        System.out.println(&#34;da pian zi&#34;);
+      }
+    }
+  }
+}
+
+// 并查集实现
+class UnionFindSet {
+  int[] fa;
+
+  public UnionFindSet(int n) {
+    this.fa &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) fa[i] &#61; i;
+  }
+
+  public int find(int x) {
+    if (this.fa[x] !&#61; x) {
+      return this.fa[x] &#61; this.find(this.fa[x]);
+    }
+    return x;
+  }
+
+  public void union(int x, int y) {
+    int x_fa &#61; this.find(x);
+    int y_fa &#61; this.find(y);
+
+    if (x_fa !&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n, m &#61; map(int, input().split())
+msgs &#61; [list(map(int, input().split())) for _ in range(m)]
+
+
+# 并查集实现
+class UnionFindSet:
+    def __init__(self, n):
+        self.fa &#61; [i for i in range(n)]
+
+    def find(self, x):
+        if self.fa[x] !&#61; x:
+            self.fa[x] &#61; self.find(self.fa[x])
+            return self.fa[x]
+        return x
+
+    def union(self, x, y):
+        x_fa &#61; self.find(x)
+        y_fa &#61; self.find(y)
+
+        if x_fa !&#61; y_fa:
+            self.fa[y_fa] &#61; x_fa
+
+
+# 算法入口
+def getResult():
+    # 如果第一行 n 和 m 的值超出约定的范围时&#xff0c;输出字符串”Null“。
+    # 1&lt;&#61;n,m&lt;100000
+    if n &lt; 1 or n &gt;&#61; 100000 or m &lt; 1 or m &gt;&#61; 100000:
+        print(&#34;NULL&#34;)
+        return
+
+    ufs &#61; UnionFindSet(n &#43; 1)
+
+    for a, b, c in msgs:
+        if a &lt; 1 or a &gt; n or b &lt; 1 or b &gt; n:
+            # 当前行 a 或 b 的标号小于 1 或者大于 n 时&#xff0c;输出字符串‘da pian zi‘
+            print(&#34;da pian zi&#34;)
+            continue
+
+        if c &#61;&#61; 0:
+            # c &#61;&#61; 0 代表 a 和 b 在一个团队内
+            ufs.union(a, b)
+        elif c &#61;&#61; 1:
+            # c &#61;&#61; 1 代表需要判定 a 和 b 的关系&#xff0c;如果 a 和 b 是一个团队&#xff0c;输出一行’we are a team’,如果不是&#xff0c;输出一行’we are not a team’
+            print(&#34;we are a team&#34; if ufs.find(a) &#61;&#61; ufs.find(b) else &#34;we are not a team&#34;)
+        else:
+            # c 为其他值&#xff0c;输出字符串‘da pian zi‘
+            print(&#34;da pian zi&#34;)
+
+
+# 算法调用
+getResult()
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/** 并查集定义 **/
+typedef struct {
+    int *fa;
+    int count;
+} UFS;
+
+UFS *new_UFS(int n) {
+    UFS *ufs &#61; (UFS *) malloc(sizeof(UFS));
+
+    ufs-&gt;fa &#61; (int *) malloc(sizeof(int) * n);
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        ufs-&gt;fa[i] &#61; i;
+    }
+
+    ufs-&gt;count &#61; n;
+
+    return ufs;
+}
+
+int find_UFS(UFS *ufs, int x) {
+    if (x !&#61; ufs-&gt;fa[x]) {
+        ufs-&gt;fa[x] &#61; find_UFS(ufs, ufs-&gt;fa[x]);
+        return ufs-&gt;fa[x];
+    }
+    return x;
+}
+
+void union_UFS(UFS *ufs, int x, int y) {
+    int x_fa &#61; find_UFS(ufs, x);
+    int y_fa &#61; find_UFS(ufs, y);
+
+    if (x_fa !&#61; y_fa) {
+        ufs-&gt;fa[y_fa] &#61; x_fa;
+        ufs-&gt;count--;
+    }
+}
+
+int main() {
+    int n, m;
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    int msgs[m][3];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        scanf(&#34;%d %d %d&#34;, &amp;msgs[i][0], &amp;msgs[i][1], &amp;msgs[i][2]);
+    }
+
+    // 如果第一行 n 和 m 的值超出约定的范围时&#xff0c;输出字符串”Null“。
+    // 1&lt;&#61;n,m&lt;100000
+    if (n &lt; 1 || n &gt;&#61; 100000 || m &lt; 1 || m &gt;&#61; 100000) {
+        puts(&#34;NULL&#34;);
+        return 0;
+    }
+
+    UFS *ufs &#61; new_UFS(n &#43; 1);
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        int a &#61; msgs[i][0], b &#61; msgs[i][1], c &#61; msgs[i][2];
+
+        if(a &lt; 1 || a &gt; n || b &lt; 1 || b &gt; n) {
+            // 当前行 a 或 b 的标号小于 1 或者大于 n 时&#xff0c;输出字符串‘da pian zi‘
+            puts(&#34;da pian zi&#34;);
+            continue;
+        }
+
+        if(c &#61;&#61; 0) {
+            // c &#61;&#61; 0 代表 a 和 b 在一个团队内
+            union_UFS(ufs, a, b);
+        } else if(c &#61;&#61; 1) {
+            // c &#61;&#61; 1 代表需要判定 a 和 b 的关系&#xff0c;如果 a 和 b 是一个团队&#xff0c;输出一行’we are a team’,如果不是&#xff0c;输出一行’we are not a team’
+            puts(find_UFS(ufs, a) &#61;&#61; find_UFS(ufs, b) ? &#34;we are a team&#34; : &#34;we are not a team&#34;);
+        } else {
+            // c 为其他值&#xff0c;输出字符串‘da pian zi‘
+            puts(&#34;da pian zi&#34;);
+        }
+    }
+
+    return 0;
+}</code></pre> 
+<p></p> 
+<h3>c&#61;&#61;1时 等所有行建立的关系都完成后&#xff0c;再判断a,b是否处于同一团队</h3> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [n, m] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const msgs &#61; [];
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    msgs.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  getResult(msgs, n, m);
+})();
+
+function getResult(msgs, n, m) {
+  // 如果第一行 n 和 m 的值超出约定的范围时&#xff0c;输出字符串”Null“。
+  // 1&lt;&#61;n,m&lt;100000
+  if (n &lt; 1 || n &gt;&#61; 100000 || m &lt; 1 || m &gt;&#61; 100000) return console.log(&#34;NULL&#34;);
+
+  const ufs &#61; new UnionFindSet(n &#43; 1);
+
+  // 过滤出 c &#61;&#61; 0 的&#xff0c;且非异常的行&#xff0c;提前构建出所有关系
+  msgs
+    .filter(([a, b, c]) &#61;&gt; c &#61;&#61; 0 &amp;&amp; a &gt;&#61; 1 &amp;&amp; a &lt;&#61; n &amp;&amp; b &gt;&#61; 1 &amp;&amp; b &lt;&#61; n)
+    .forEach(([a, b]) &#61;&gt; ufs.union(a, b));
+
+  // 处理 c 不为0的其他情况
+  msgs.forEach((msg) &#61;&gt; {
+    const [a, b, c] &#61; msg;
+
+    if (a &lt; 1 || a &gt; n || b &lt; 1 || b &gt; n) {
+      // 当前行 a 或 b 的标号小于 1 或者大于 n 时&#xff0c;输出字符串‘da pian zi‘
+      return console.log(&#34;da pian zi&#34;);
+    }
+
+    if (c &#61;&#61;&#61; 0) {
+    } else if (c &#61;&#61;&#61; 1) {
+      // c &#61;&#61; 1 代表需要判定 a 和 b 的关系&#xff0c;如果 a 和 b 是一个团队&#xff0c;输出一行’we are a team’,如果不是&#xff0c;输出一行’we are not a team’
+      console.log(
+        ufs.find(a) &#61;&#61;&#61; ufs.find(b) ? &#34;we are a team&#34; : &#34;we are not a team&#34;
+      );
+    } else {
+      // c 为其他值&#xff0c;输出字符串‘da pian zi‘
+      console.log(&#34;da pian zi&#34;);
+    }
+  });
+}
+
+// 并查集实现
+class UnionFindSet {
+  constructor(n) {
+    this.fa &#61; new Array(n).fill(0).map((_, idx) &#61;&gt; idx);
+  }
+
+  find(x) {
+    if (this.fa[x] !&#61;&#61; x) {
+      this.fa[x] &#61; this.find(this.fa[x]);
+      return this.fa[x];
+    }
+    return x;
+  }
+
+  union(x, y) {
+    let x_fa &#61; this.find(x);
+    let y_fa &#61; this.find(y);
+
+    if (x_fa !&#61;&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+    }
+  }
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int m &#61; sc.nextInt();
+
+    int[][] msgs &#61; new int[m][3];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      msgs[i][0] &#61; sc.nextInt();
+      msgs[i][1] &#61; sc.nextInt();
+      msgs[i][2] &#61; sc.nextInt();
+    }
+
+    getResult(msgs, n, m);
+  }
+
+  public static void getResult(int[][] msgs, int n, int m) {
+    // 如果第一行 n 和 m 的值超出约定的范围时&#xff0c;输出字符串”Null“。
+    // 1&lt;&#61;n,m&lt;100000
+    if (n &lt; 1 || n &gt;&#61; 100000 || m &lt; 1 || m &gt;&#61; 100000) {
+      System.out.println(&#34;NULL&#34;);
+      return;
+    }
+
+    UnionFindSet ufs &#61; new UnionFindSet(n &#43; 1);
+
+    // 过滤出 c &#61;&#61; 0 的&#xff0c;且非异常的行&#xff0c;提前构建出所有关系
+    Arrays.stream(msgs)
+        .filter(msg -&gt; msg[2] &#61;&#61; 0 &amp;&amp; msg[0] &gt;&#61; 1 &amp;&amp; msg[0] &lt;&#61; n &amp;&amp; msg[1] &gt;&#61; 1 &amp;&amp; msg[1] &lt;&#61; n)
+        .forEach(msg -&gt; ufs.union(msg[0], msg[1]));
+
+    // 处理 c 不为0的其他情况
+    for (int[] msg : msgs) {
+      int a &#61; msg[0], b &#61; msg[1], c &#61; msg[2];
+
+      if (a &lt; 1 || a &gt; n || b &lt; 1 || b &gt; n) {
+        // 当前行 a 或 b 的标号小于 1 或者大于 n 时&#xff0c;输出字符串‘da pian zi‘
+        System.out.println(&#34;da pian zi&#34;);
+        continue;
+      }
+
+      if (c &#61;&#61; 0) {
+      } else if (c &#61;&#61; 1) {
+        // c &#61;&#61; 1 代表需要判定 a 和 b 的关系&#xff0c;如果 a 和 b 是一个团队&#xff0c;输出一行’we are a team’,如果不是&#xff0c;输出一行’we are not a team’
+        System.out.println(ufs.find(a) &#61;&#61; ufs.find(b) ? &#34;we are a team&#34; : &#34;we are not a team&#34;);
+      } else {
+        // c 为其他值&#xff0c;输出字符串‘da pian zi‘
+        System.out.println(&#34;da pian zi&#34;);
+      }
+    }
+  }
+}
+
+// 并查集实现
+class UnionFindSet {
+  int[] fa;
+
+  public UnionFindSet(int n) {
+    this.fa &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) fa[i] &#61; i;
+  }
+
+  public int find(int x) {
+    if (this.fa[x] !&#61; x) {
+      return this.fa[x] &#61; this.find(this.fa[x]);
+    }
+    return x;
+  }
+
+  public void union(int x, int y) {
+    int x_fa &#61; this.find(x);
+    int y_fa &#61; this.find(y);
+
+    if (x_fa !&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+    }
+  }
+}
+</code></pre> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n, m &#61; map(int, input().split())
+msgs &#61; [list(map(int, input().split())) for _ in range(m)]
+
+
+# 并查集实现
+class UnionFindSet:
+    def __init__(self, n):
+        self.fa &#61; [i for i in range(n)]
+
+    def find(self, x):
+        if self.fa[x] !&#61; x:
+            self.fa[x] &#61; self.find(self.fa[x])
+            return self.fa[x]
+        return x
+
+    def union(self, x, y):
+        x_fa &#61; self.find(x)
+        y_fa &#61; self.find(y)
+
+        if x_fa !&#61; y_fa:
+            self.fa[y_fa] &#61; x_fa
+
+
+# 算法入口
+def getResult():
+    # 如果第一行 n 和 m 的值超出约定的范围时&#xff0c;输出字符串”Null“。
+    # 1&lt;&#61;n,m&lt;100000
+    if n &lt; 1 or n &gt;&#61; 100000 or m &lt; 1 or m &gt;&#61; 100000:
+        print(&#34;NULL&#34;)
+        return
+
+    ufs &#61; UnionFindSet(n &#43; 1)
+
+    for a, b, c in filter(lambda msg: msg[2] &#61;&#61; 0 and 1 &lt;&#61; msg[0] &lt;&#61; n and 1 &lt;&#61; msg[1] &lt;&#61; n, msgs):
+        ufs.union(a, b)
+
+    for a, b, c in msgs:
+        if a &lt; 1 or a &gt; n or b &lt; 1 or b &gt; n:
+            # 当前行 a 或 b 的标号小于 1 或者大于 n 时&#xff0c;输出字符串‘da pian zi‘
+            print(&#34;da pian zi&#34;)
+            continue
+
+        if c &#61;&#61; 0:
+            pass
+        elif c &#61;&#61; 1:
+            # c &#61;&#61; 1 代表需要判定 a 和 b 的关系&#xff0c;如果 a 和 b 是一个团队&#xff0c;输出一行’we are a team’,如果不是&#xff0c;输出一行’we are not a team’
+            print(&#34;we are a team&#34; if ufs.find(a) &#61;&#61; ufs.find(b) else &#34;we are not a team&#34;)
+        else:
+            # c 为其他值&#xff0c;输出字符串‘da pian zi‘
+            print(&#34;da pian zi&#34;)
+
+
+# 算法调用
+getResult()
+</code></pre> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/** 并查集定义 **/
+typedef struct {
+    int *fa;
+    int count;
+} UFS;
+
+UFS *new_UFS(int n) {
+    UFS *ufs &#61; (UFS *) malloc(sizeof(UFS));
+
+    ufs-&gt;fa &#61; (int *) malloc(sizeof(int) * n);
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        ufs-&gt;fa[i] &#61; i;
+    }
+
+    ufs-&gt;count &#61; n;
+
+    return ufs;
+}
+
+int find_UFS(UFS *ufs, int x) {
+    if (x !&#61; ufs-&gt;fa[x]) {
+        ufs-&gt;fa[x] &#61; find_UFS(ufs, ufs-&gt;fa[x]);
+        return ufs-&gt;fa[x];
+    }
+    return x;
+}
+
+void union_UFS(UFS *ufs, int x, int y) {
+    int x_fa &#61; find_UFS(ufs, x);
+    int y_fa &#61; find_UFS(ufs, y);
+
+    if (x_fa !&#61; y_fa) {
+        ufs-&gt;fa[y_fa] &#61; x_fa;
+        ufs-&gt;count--;
+    }
+}
+
+int main() {
+    int n, m;
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    int msgs[m][3];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        scanf(&#34;%d %d %d&#34;, &amp;msgs[i][0], &amp;msgs[i][1], &amp;msgs[i][2]);
+    }
+
+    // 如果第一行 n 和 m 的值超出约定的范围时&#xff0c;输出字符串”Null“。
+    // 1&lt;&#61;n,m&lt;100000
+    if (n &lt; 1 || n &gt;&#61; 100000 || m &lt; 1 || m &gt;&#61; 100000) {
+        puts(&#34;NULL&#34;);
+        return 0;
+    }
+
+    UFS *ufs &#61; new_UFS(n &#43; 1);
+
+    // 过滤出 c &#61;&#61; 0 的&#xff0c;且非异常的行&#xff0c;提前构建出所有关系
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        int a &#61; msgs[i][0], b &#61; msgs[i][1], c &#61; msgs[i][2];
+
+        if (c &#61;&#61; 0 &amp;&amp; a &gt;&#61; 1 &amp;&amp; a &lt;&#61; n &amp;&amp; b &gt;&#61; 1 &amp;&amp; b &lt;&#61; n) {
+            union_UFS(ufs, a, b);
+        }
+    }
+
+    // 处理 c 不为0的其他情况
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        int a &#61; msgs[i][0], b &#61; msgs[i][1], c &#61; msgs[i][2];
+
+        if (a &lt; 1 || a &gt; n || b &lt; 1 || b &gt; n) {
+            // 当前行 a 或 b 的标号小于 1 或者大于 n 时&#xff0c;输出字符串‘da pian zi‘
+            puts(&#34;da pian zi&#34;);
+            continue;
+        }
+
+        if(c &#61;&#61; 0) continue;
+
+        if (c &#61;&#61; 1) {
+            // c &#61;&#61; 1 代表需要判定 a 和 b 的关系&#xff0c;如果 a 和 b 是一个团队&#xff0c;输出一行’we are a team’,如果不是&#xff0c;输出一行’we are not a team’
+            puts(find_UFS(ufs, a) &#61;&#61; find_UFS(ufs, b) ? &#34;we are a team&#34; : &#34;we are not a team&#34;);
+        } else {
+            // c 为其他值&#xff0c;输出字符串‘da pian zi‘
+            puts(&#34;da pian zi&#34;);
+        }
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

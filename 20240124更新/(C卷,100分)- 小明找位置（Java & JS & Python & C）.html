@@ -1,0 +1,218 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 小明找位置（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小朋友出操&#xff0c;按学号从小到大排成一列&#xff1b;</p> 
+<p>小明来迟了&#xff0c;请你给小明出个主意&#xff0c;让他尽快找到他应该排的位置。</p> 
+<p>算法复杂度要求不高于nLog(n)&#xff1b;学号为整数类型&#xff0c;队列规模 ≤ 10000&#xff1b;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行&#xff1a;输入已排成队列的小朋友的学号&#xff08;正整数&#xff09;&#xff0c;以&#34;,&#34;隔开&#xff1b;例如&#xff1a;</p> 
+<blockquote> 
+ <p>93,95,97,100,102,123,155</p> 
+</blockquote> 
+<p>第二行&#xff1a;小明学号&#xff0c;如&#xff1a;</p> 
+<blockquote> 
+ <p>110</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个数字&#xff0c;代表队列位置&#xff08;从1开始&#xff09;。例如&#xff1a;</p> 
+<blockquote> 
+ <p>6</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">93,95,97,100,102,123,155<br /> 110</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">6</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题应该不会存在重复学号问题&#xff0c;因此本题其实就是在一个有序数组中寻找目标值的有序插入位置&#xff0c;可以使用二分法。</p> 
+<p>关于二分法在有序数组中查找目标值有序插入位置的实现&#xff0c;可以参考&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/130097676" rel="nofollow" title="算法设计 - 二分法和三分法&#xff0c;洛谷P3382_二分法与三分法_伏城之外的博客-CSDN博客">算法设计 - 二分法和三分法&#xff0c;洛谷P3382_二分法与三分法_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const nums &#61; (await readline()).split(&#34;,&#34;).map(Number);
+  const target &#61; parseInt(await readline());
+
+  let idx &#61; binarySearch(nums, target);
+
+  if (idx &lt; 0) {
+    idx &#61; -idx - 1;
+  }
+
+  // 队列位置&#xff08;从1开始&#xff09;&#xff0c;因此索引&#43;1
+  console.log(idx &#43; 1);
+})();
+
+// 参照Java的Arrays.binarySearch实现
+function binarySearch(nums, target) {
+  let low &#61; 0;
+  let high &#61; nums.length - 1;
+
+  while (low &lt;&#61; high) {
+    const mid &#61; (low &#43; high) &gt;&gt; 1;
+    const midVal &#61; nums[mid];
+
+    if (midVal &gt; target) {
+      high &#61; mid - 1;
+    } else if (midVal &lt; target) {
+      low &#61; mid &#43; 1;
+    } else {
+      return mid; // 如果nums中存在target&#xff0c;则返回target的位置
+    }
+  }
+
+  return -low - 1; // 如果nums中不存在target&#xff0c;则low就是target在nums中的有序插入位置&#xff0c;为了避免冲突&#xff0c;这里设计为负数返回
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int target &#61; Integer.parseInt(sc.nextLine());
+
+    // 这里Arrays.binarySearch找不到目标值时&#xff0c;就会返回-low-1&#xff0c;其中low就是目标值的有序插入位置&#xff0c;为什么这么设计返回值&#xff0c;请看解析中外链的博客说明
+    int idx &#61; Arrays.binarySearch(nums, target);
+
+    if (idx &lt; 0) {
+      idx &#61; -idx - 1;
+    }
+
+    // 队列位置&#xff08;从1开始&#xff09;&#xff0c;因此索引&#43;1
+    System.out.println(idx &#43; 1);
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+nums &#61; list(map(int, input().split(&#34;,&#34;)))
+target &#61; int(input())
+
+
+# 算法入口
+def binarySearch():
+    # 参照Java的Arrays.binarySearch实现
+    low &#61; 0
+    high &#61; len(nums) - 1
+
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) &gt;&gt; 1
+        midVal &#61; nums[mid]
+
+        if midVal &gt; target:
+            high &#61; mid - 1
+        elif midVal &lt; target:
+            low &#61; mid &#43; 1
+        else:
+            return mid  # 如果nums中存在target&#xff0c;则返回target的位置
+
+    return -low - 1  # 如果nums中不存在target&#xff0c;则low就是target在nums中的有序插入位置&#xff0c;为了避免冲突&#xff0c;这里设计为负数返回
+
+
+# 算法调用
+idx &#61; binarySearch()
+
+if idx &lt; 0:
+    idx &#61; -idx - 1
+
+# 队列位置&#xff08;从1开始&#xff09;&#xff0c;因此索引&#43;1
+print(idx &#43; 1)
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 10000
+
+// 参照Java的Arrays.binarySearch实现
+int binarySearch(const int *nums, int nums_size, int target) {
+    int low &#61; 0;
+    int high &#61; nums_size - 1;
+
+    while (low &lt;&#61; high) {
+        int mid &#61; (low &#43; high) &gt;&gt; 1;
+        int midVal &#61; nums[mid];
+
+        if (midVal &gt; target) {
+            high &#61; mid - 1;
+        } else if (midVal &lt; target) {
+            low &#61; mid &#43; 1;
+        } else {
+            return mid; // 如果nums中存在target&#xff0c;则返回target的位置
+        }
+    }
+
+    return -low - 1; // 如果nums中不存在target&#xff0c;则low就是target在nums中的有序插入位置&#xff0c;为了避免冲突&#xff0c;这里设计为负数返回
+}
+
+int main() {
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    int target;
+    scanf(&#34;%d&#34;, &amp;target);
+
+    int idx &#61; binarySearch(nums, nums_size, target);
+
+    if (idx &lt; 0) {
+        idx &#61; -idx - 1;
+    }
+
+    // 队列位置&#xff08;从1开始&#xff09;&#xff0c;因此索引&#43;1
+    printf(&#34;%d\n&#34;, idx &#43; 1);
+}
+
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

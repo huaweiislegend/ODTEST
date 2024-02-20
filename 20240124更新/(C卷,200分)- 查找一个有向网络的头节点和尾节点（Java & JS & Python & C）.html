@@ -1,0 +1,537 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 查找一个有向网络的头节点和尾节点（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个有向图&#xff0c;图中可能包含有环&#xff0c;图使用二维矩阵表示&#xff0c;每一行的第一列表示起始节点&#xff0c;第二列表示终止节点&#xff0c;如 [0, 1] 表示从 0 到 1 的路径。</p> 
+<p>每个节点用正整数表示。</p> 
+<p>求这个数据的首节点与尾节点&#xff0c;题目给的用例会是一个首节点&#xff0c;但可能存在多个尾节点。同时图中可能含有环。如果图中含有环&#xff0c;返回 [-1]。</p> 
+<p>说明&#xff1a;入度为0是首节点&#xff0c;出度为0是尾节点。</p> 
+<p class="img-center"><img alt="" height="194" src="https://img-blog.csdnimg.cn/direct/643a4e9d9f954ea1a01826bc9fe52fe3.png" width="356" /></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为后续输入的键值对数量N&#xff08;N ≥ 0&#xff09;</p> 
+<p>第二行为2N个数字。每两个为一个起点&#xff0c;一个终点&#xff0c;如&#xff1a;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一行头节点和尾节点。如果有多个尾节点&#xff0c;按从大到小的顺序输出。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>如果图有环&#xff0c;输出为 -1</li><li>所有输入均合法&#xff0c;不会出现不配对的数据</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 0 1 0 2 1 2 2 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0 3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 0 1 0 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0 1 2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1图示</p> 
+<p><img alt="" height="219" src="https://img-blog.csdnimg.cn/direct/bc462fc37be645b896ee4024eb692a47.png" width="314" /></p> 
+<p>用例2图示</p> 
+<p><img alt="" height="221" src="https://img-blog.csdnimg.cn/direct/61a85870653b4df4b696ad28da9c1adb.png" width="270" /></p> 
+<p></p> 
+<p>本题可以通过拓扑排序解题。</p> 
+<p>关于拓扑排序的知识&#xff0c;大家如果不知道的话&#xff0c;可以先看下&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/127804547?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522170560031316800227417769%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;170560031316800227417769&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-3-127804547-null-null.nonecase&amp;utm_term&#61;%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F&amp;spm&#61;1018.2226.3001.4450" title="LeetCode - 207 课程表&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;_leetcode207课程表-CSDN博客">LeetCode - 207 课程表&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;_leetcode207课程表-CSDN博客</a></p> 
+<p></p> 
+<p>了解拓扑排序后&#xff0c;我们就可以按照拓扑排序的思路不停剥离图中入度为0的点&#xff0c;每当剥离一个入度为0的点A&#xff0c;我们都需要做如下判断&#xff1a;</p> 
+<ul><li>A点如果没有后继点&#xff0c;则说明A点的出度为0&#xff0c;因此A点为尾节点</li><li>A点如果有后继点&#xff0c;则A点的所有后继点的入度-1&#xff0c;如果后继点中-1后出现新的入度为0的节点&#xff0c;则加入度0点的队列&#xff0c;等待下次剥离</li></ul> 
+<p>在上面过程中&#xff0c;我们需要统计被剥离点的个数&#xff0c;使用count表示&#xff0c;如果图中节点总数为total&#xff0c;那么当拓扑排序完成后&#xff0c;count &lt; total 的话&#xff0c;则说明图中存在环。</p> 
+<p></p> 
+<p>本题的输出描述要求多个尾节点降序输出</p> 
+<blockquote> 
+ <p>如果有多个尾节点&#xff0c;按从大到小的顺序输出。</p> 
+</blockquote> 
+<p>而题目用例2输出的尾节点是升序输出的</p> 
+<blockquote> 
+ <p>0 <span style="color:#fe2c24;"><strong>1 2</strong></span></p> 
+</blockquote> 
+<p>这里互相矛盾&#xff0c;这里以用例输出为准来&#xff0c;即如果有多个尾节点&#xff0c;则升序输出。实际考试注意下。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+  const tmp &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 记录每个点的入度
+  const inDegree &#61; {};
+  // 记录每个点的后继点集合
+  const next &#61; {};
+
+  // 记录图中点
+  const set &#61; new Set();
+
+  for (let i &#61; 0; i &lt; 2 * n; i &#43;&#61; 2) {
+    // 从 a 到 b 的路径
+    const a &#61; tmp[i];
+    const b &#61; tmp[i &#43; 1];
+
+    // 收集图中所有节点
+    set.add(a);
+    set.add(b);
+
+    // b点入度&#43;1, 下面 ?? 是新特性语法&#xff0c;牛客平台可能不支持&#xff0c;a ?? b 的结果是&#xff1a;如果a是null或undefined&#xff0c;则返回b&#xff0c;否则返回a
+    inDegree[b] &#61; (inDegree[b] ?? 0) &#43; 1;
+
+    // a点的后继点集合纳入b
+    if (next[a]) {
+      next[a].push(b);
+    } else {
+      next[a] &#61; [b];
+    }
+  }
+
+  // 图中总共total个节点
+  const total &#61; set.size;
+
+  // head记录图的头节点
+  let head &#61; 0;
+  // 队列记录入度为0的点
+  const queue &#61; [];
+
+  for (let p of set) {
+    // 题目描述中说图中只有一个首节点&#xff0c;首节点是入度为0的节点&#xff0c;因此如果某节点p没有入度&#xff0c;则为头节点
+    if (inDegree[p] &#61;&#61; undefined) {
+      head &#61; p;
+      queue.push(p);
+      break;
+    }
+  }
+
+  // tails记录所有尾节点
+  const tails &#61; [];
+  // count记录已被剥去的点个数&#xff0c;如果图中存在环&#xff0c;则必然最终count &lt; total
+  let count &#61; 0;
+
+  while (queue.length &gt; 0) {
+    // 剥离入度为0的点
+    const fa &#61; queue.shift();
+    count&#43;&#43;;
+
+    // 如果fa没有后继点&#xff0c;即fa没有出度&#xff0c;则fa是尾节点
+    if (next[fa] &#61;&#61; undefined) {
+      tails.push(fa);
+      continue;
+    }
+
+    // 如果fa有后继点&#xff0c;则其所有后继点入度-1
+    for (let ch of next[fa]) {
+      inDegree[ch] -&#61; 1;
+
+      // 如果ch点入度变为0&#xff0c;则加入队列
+      if (inDegree[ch] &#61;&#61; 0) {
+        queue.push(ch);
+      }
+    }
+  }
+
+  if (count !&#61; total) {
+    // 如果存在环&#xff0c;则必然count &lt; total
+    console.log(-1);
+  } else {
+    // 如果不存在环&#xff0c;则打印头节点和尾节点
+    // 注意本题描述存在冲突&#xff08;用例2输出的尾节点是从小到大排序的&#xff0c;而题目输出描述是要求尾节点从大到小排序&#xff09;&#xff0c;这里以用例为准
+    console.log(head, tails.sort((a, b) &#61;&gt; a - b).join(&#34; &#34;));
+  }
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    // 记录每个点的入度
+    HashMap&lt;Integer, Integer&gt; inDegree &#61; new HashMap&lt;&gt;();
+    // 记录每个点的后继点集合
+    HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; next &#61; new HashMap&lt;&gt;();
+
+    // 记录图中点
+    HashSet&lt;Integer&gt; set &#61; new HashSet&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 从 a 到 b 的路径
+      int a &#61; sc.nextInt();
+      int b &#61; sc.nextInt();
+
+      // 收集图中所有节点
+      set.add(a);
+      set.add(b);
+
+      // b点入度&#43;1
+      inDegree.put(b, inDegree.getOrDefault(b, 0) &#43; 1);
+
+      // a点的后继点集合纳入b
+      next.putIfAbsent(a, new ArrayList&lt;&gt;());
+      next.get(a).add(b);
+    }
+
+    // 图中总共total个节点
+    int total &#61; set.size();
+
+    // head记录图的头节点
+    int head &#61; 0;
+
+    // 队列记录入度为0的点
+    LinkedList&lt;Integer&gt; queue &#61; new LinkedList&lt;&gt;();
+    for (int p : set) {
+      // 题目描述中说图中只有一个首节点&#xff0c;首节点是入度为0的节点&#xff0c;因此如果某节点p没有入度&#xff0c;则为头节点
+      if (!inDegree.containsKey(p)) {
+        head &#61; p;
+        queue.add(p);
+        break;
+      }
+    }
+
+    // tails记录所有尾节点
+    ArrayList&lt;Integer&gt; tails &#61; new ArrayList&lt;&gt;();
+
+    // count记录已被剥去的点个数&#xff0c;如果图中存在环&#xff0c;则必然最终count &lt; total
+    int count &#61; 0;
+
+    while (queue.size() &gt; 0) {
+      // 剥离入度为0的点
+      int fa &#61; queue.removeFirst();
+      count&#43;&#43;;
+
+      // 如果fa没有后继点&#xff0c;即fa没有出度&#xff0c;则fa是尾节点
+      if (!next.containsKey(fa)) {
+        tails.add(fa);
+        continue;
+      }
+
+      // 如果fa有后继点&#xff0c;则其所有后继点入度-1
+      for (int ch : next.get(fa)) {
+        inDegree.put(ch, inDegree.get(ch) - 1);
+
+        // 如果ch点入度变为0&#xff0c;则加入队列
+        if (inDegree.get(ch) &#61;&#61; 0) {
+          queue.add(ch);
+        }
+      }
+    }
+
+    if (count !&#61; total) {
+      // 如果存在环&#xff0c;则必然count &lt; total
+      System.out.println(-1);
+    } else {
+      // 如果不存在环&#xff0c;则打印头节点和尾节点
+      StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+
+      sj.add(head &#43; &#34;&#34;);
+      // 注意本题描述存在冲突&#xff08;用例2输出的尾节点是从小到大排序的&#xff0c;而题目输出描述是要求尾节点从大到小排序&#xff09;&#xff0c;这里以用例为准
+      tails.stream().sorted((a, b) -&gt; a - b).forEach(p -&gt; sj.add(p &#43; &#34;&#34;));
+
+      System.out.println(sj);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+tmp &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    # 记录每个点的入度
+    inDegree &#61; {}
+    # 记录每个点的后继点集合
+    nxt &#61; {}
+
+    # 记录图中点
+    points &#61; set()
+
+    for i in range(0, 2 * n, 2):
+        # 从 a 到 b 的路径
+        a &#61; tmp[i]
+        b &#61; tmp[i &#43; 1]
+
+        # 收集图中所有节点
+        points.add(a)
+        points.add(b)
+
+        # b点入度&#43;1
+        inDegree.setdefault(b, 0)
+        inDegree[b] &#43;&#61; 1
+
+        # a点的后继点集合纳入b
+        nxt.setdefault(a, [])
+        nxt[a].append(b)
+
+    # 图中总共total个节点
+    total &#61; len(points)
+
+    # head记录图的头节点
+    head &#61; 0
+    # 队列记录入度为0的点
+    queue &#61; []
+
+    for p in points:
+        # 题目描述中说图中只有一个首节点&#xff0c;首节点是入度为0的节点&#xff0c;因此如果某节点p没有入度&#xff0c;则为头节点
+        if p not in inDegree:
+            head &#61; p
+            queue.append(p)
+            break
+
+    # tails记录所有尾节点
+    tails &#61; []
+
+    # count记录已被剥去的点个数&#xff0c;如果图中存在环&#xff0c;则必然最终count &lt; total
+    count &#61; 0
+
+    while len(queue) &gt; 0:
+        # 剥离入度为0的点
+        fa &#61; queue.pop(0)
+        count &#43;&#61; 1
+
+        # 如果fa没有后继点&#xff0c;即fa没有出度&#xff0c;则fa是尾节点
+        if fa not in nxt:
+            tails.append(fa)
+            continue
+
+        # 如果fa有后继点&#xff0c;则其所有后继点入度-1
+        for ch in nxt[fa]:
+            inDegree[ch] -&#61; 1
+
+            # 如果ch点入度变为0&#xff0c;则加入队列
+            if inDegree[ch] &#61;&#61; 0:
+                queue.append(ch)
+
+    if count !&#61; total:
+        # 如果存在环&#xff0c;则必然count &lt; total
+        print(-1)
+    else:
+        # 如果不存在环&#xff0c;则打印头节点和尾节点
+        # 注意本题描述存在冲突&#xff08;用例2输出的尾节点是从小到大排序的&#xff0c;而题目输出描述是要求尾节点从大到小排序&#xff09;&#xff0c;这里以用例为准
+        tails.sort()
+        print(head, &#34; &#34;.join(map(str, tails)))
+
+
+# 算法调用
+getResult()
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 10000
+
+/** 基于链表实现队列 **/
+typedef struct ListNode {
+    int ele;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+    node-&gt;ele &#61; ele;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+int removeFirst_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;head;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+    }
+
+    link-&gt;size--;
+
+    return removed-&gt;ele;
+}
+
+int cmp(const void *a, const void *b) {
+    return *((int *) a) - *((int *) b);
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    // 记录每个点的入度
+    int inDegree[MAX_SIZE] &#61; {0};
+    // 记录每个点的后继点集合
+    LinkedList *next[MAX_SIZE] &#61; {NULL};
+
+    // 记录图中点
+    LinkedList *points &#61; new_LinkedList();
+    int occurs[MAX_SIZE] &#61; {0};
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        // 从 a 到 b 的路径
+        int a, b;
+        scanf(&#34;%d %d&#34;, &amp;a, &amp;b);
+
+        // 收集图中所有节点
+        if (!occurs[a]) {
+            addLast_LinkedList(points, a);
+            occurs[a] &#61; 1;
+        }
+
+        if (!occurs[b]) {
+            addLast_LinkedList(points, b);
+            occurs[b] &#61; 1;
+        }
+
+        // b点入度&#43;1
+        inDegree[b] &#43;&#61; 1;
+
+        if (next[a] &#61;&#61; NULL) {
+            next[a] &#61; new_LinkedList();
+        }
+        // a点的后继点集合纳入b
+        addLast_LinkedList(next[a], b);
+    }
+
+    // 图中总共total个节点
+    int total &#61; points-&gt;size;
+    // head记录图的头节点
+    int head &#61; 0;
+
+    // 队列记录入度为0的点
+    LinkedList *queue &#61; new_LinkedList();
+
+    ListNode *cur &#61; points-&gt;head;
+    while (cur !&#61; NULL) {
+        int p &#61; cur-&gt;ele;
+
+        // 题目描述中说图中只有一个首节点&#xff0c;首节点是入度为0的节点&#xff0c;因此如果某节点p没有入度&#xff0c;则为头节点
+        if (inDegree[p] &#61;&#61; 0) {
+            head &#61; p;
+            addLast_LinkedList(queue, p);
+            break;
+        }
+
+        cur &#61; cur-&gt;next;
+    }
+
+    // tails记录所有尾节点
+    int tails[MAX_SIZE];
+    int tails_size &#61; 0;
+
+    // count记录已被剥去的点个数&#xff0c;如果图中存在环&#xff0c;则必然最终count &lt; total
+    int count &#61; 0;
+
+    while (queue-&gt;size &gt; 0) {
+        // 剥离入度为0的点
+        int fa &#61; removeFirst_LinkedList(queue);
+        count&#43;&#43;;
+
+        // 如果fa没有后继点&#xff0c;即fa没有出度&#xff0c;则fa是尾节点
+        if (next[fa] &#61;&#61; NULL) {
+            tails[tails_size&#43;&#43;] &#61; fa;
+            continue;
+        }
+
+        // 如果fa有后继点&#xff0c;则其所有后继点入度-1
+        ListNode *cur &#61; next[fa]-&gt;head;
+        while (cur !&#61; NULL) {
+            int ch &#61; cur-&gt;ele;
+
+            inDegree[ch] -&#61; 1;
+
+            // 如果ch点入度变为0&#xff0c;则加入队列
+            if (inDegree[ch] &#61;&#61; 0) {
+                addLast_LinkedList(queue, ch);
+            }
+
+            cur &#61; cur-&gt;next;
+        }
+    }
+
+
+    if (count !&#61; total) {
+        // 如果存在环&#xff0c;则必然count &lt; total
+        printf(&#34;-1&#34;);
+    } else {
+        // 如果不存在环&#xff0c;则打印头节点和尾节点
+        printf(&#34;%d &#34;, head);
+
+        // 注意本题描述存在冲突&#xff08;用例2输出的尾节点是从小到大排序的&#xff0c;而题目输出描述是要求尾节点从大到小排序&#xff09;&#xff0c;这里以用例为准
+        qsort(tails, tails_size, sizeof(int), cmp);
+
+        for (int i &#61; 0; i &lt; tails_size; i&#43;&#43;) {
+            printf(&#34;%d&#34;, tails[i]);
+
+            if (i &lt; tails_size - 1) {
+                printf(&#34; &#34;);
+            }
+        }
+    }
+
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

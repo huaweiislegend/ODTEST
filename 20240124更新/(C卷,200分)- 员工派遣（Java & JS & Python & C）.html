@@ -1,0 +1,251 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 员工派遣（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某公司部门需要派遣员工去国外做项目。</p> 
+<p>现在&#xff0c;代号为 x 的国家和代号为 y 的国家分别需要 cntx 名和 cnty 名员工。</p> 
+<p>部门每个员工有一个员工号&#xff08;1,2,3,......&#xff09;&#xff0c;工号连续&#xff0c;从1开始。</p> 
+<p>部长派遣员工的规则&#xff1a;</p> 
+<ul><li>规则1&#xff1a;从 [1, k] 中选择员工派遣出去</li><li>规则2&#xff1a;编号为 x 的倍数的员工不能去 x 国&#xff0c;编号为 y 的倍数的员工不能去 y 国。</li></ul> 
+<p>问题&#xff1a;</p> 
+<p>找到最小的 k&#xff0c;使得可以将编号在 [1, k] 中的员工分配给 x 国和 y 国&#xff0c;且满足 x 国和 y 国的需求。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>四个整数 x&#xff0c;y&#xff0c;cntx&#xff0c;cnty。</p> 
+<ul><li>2 ≤ x &lt; y ≤ 30000</li><li>x 和 y 一定是质数</li><li>1 ≤ cntx, cnty &lt; 10^9</li><li>cntx &#43; cnty ≤ 10^9</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>满足条件的最小的k</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 3 3 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入说明&#xff1a;</p> <p>2 表示国家代号2</p> <p>3 表示国家代号3</p> <p>3 表示国家2需要3个人</p> <p>1 表示国家3需要1个人</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>首先&#xff0c;我们需要搞清楚一个数学问题&#xff0c;那么就是 1~k 范围内&#xff0c;x的倍数的数量该如何求解。</p> 
+<p>比如 1~10 范围内&#xff0c;2的倍数有&#xff1a;2,4,6,8,10&#xff0c;共计5个</p> 
+<p>比如 1~20 范围内&#xff0c;3的倍数有&#xff1a;3,6,9,12,15,18&#xff0c;共计6个</p> 
+<p>可以发现1~k范围内x的倍数的个数 &#61; k // x&#xff0c;其中//表示整除。</p> 
+<p>证明也很简单&#xff0c;大家可以自行验证。</p> 
+<p></p> 
+<p>因此&#xff0c;我们可以得出1~k范围内&#xff1a;</p> 
+<ul><li>x的倍数个数有&#xff1a;k // x 个&#xff0c;假设 A &#61; k // x</li><li>y的倍数个数有&#xff1a;k // y 个&#xff0c;假设 B &#61; k // y</li></ul> 
+<p>同时&#xff0c;我们还需要关注 1~k 范围内&#xff1a;</p> 
+<ul><li>x*y的倍数的个数有&#xff1a; k // (x*y) 个&#xff0c;假设  &#61; C // (x*y)</li></ul> 
+<p>即 1 ~ k 范围内&#xff1a;</p> 
+<ul><li>x倍数且非y倍数的个数有&#xff1a;A - C 个</li><li>y倍数且非x倍数的个数有&#xff1a;B - C 个</li></ul> 
+<p></p> 
+<p>我们可以让&#xff1a;</p> 
+<ul><li>“x倍数且非y倍数” 的数去 y 国</li><li>&#34;y倍数且非x倍数&#34; 的数去 x 国</li></ul> 
+<p>那么此时</p> 
+<ul><li>x 国还差&#xff1a;max(0, cntx - (B-C)) 个</li><li>y 国还差&#xff1a;max(0, cnty - (A-C)) 个</li></ul> 
+<p></p> 
+<p>而差的人可以从 1~k 范围内&#xff0c;非x倍数也非y倍数的数中选&#xff0c;而</p> 
+<ul><li>非x倍数也非y倍数的值得数量有&#xff1a;k - A - B &#43; C</li></ul> 
+<p></p> 
+<p>因此&#xff0c;只要k满足下面不等式即可&#xff1a;</p> 
+<p>max(0, cntx - (B-C)) &#43; max(0, cnty - (A-C))  ≤ k - A - B &#43; C</p> 
+<p></p> 
+<p>由于是不等式&#xff0c;因此我们无法直接计算出k的值&#xff0c;这里我们可以通过二分法取中间值作为k的可能值&#xff0c;带入上面不等式&#xff0c;</p> 
+<ul><li>如果满足&#xff0c;则对应k是一个可能解&#xff0c;我们继续尝试更小的k&#xff0c;即下一轮缩小二分右边界</li><li>如果不满足&#xff0c;则说明k值取小了&#xff0c;下一轮应该扩大二分左边界&#xff0c;尝试更大的k</li></ul> 
+<p></p> 
+<p>而k的二分范围&#xff0c;即k的可能取值范围是&#xff1a;</p> 
+<ul><li>k至少是 cntx&#43;cnty&#xff0c;即 1~k号员工可以分两拨&#xff0c;一波cntx个且保证非x倍数&#xff0c;一波cnty个且保证非y倍数</li><li>k至多是一个整型最大值&#xff08;想了几个最大值计算公式&#xff0c;感觉不保险&#xff0c;这里还是用一个Long.MAX_VALUE比较保险&#xff0c;反正这个上限往大了搞就行&#xff09;</li></ul> 
+<p></p> 
+<hr /> 
+<p>2024.01.04</p> 
+<p>根据考友反馈&#xff0c;本题 k上限 如果取Long.MAX_VALUE只能拿55%通过率&#xff0c;改成1e9的话就能满分。</p> 
+<p>理论上k上限取Long.MAX_VALUE才是正确的&#xff0c;比如下面用例</p> 
+<blockquote> 
+ <p>8090 5166 999896303 49598</p> 
+</blockquote> 
+<p>k上限取Long.MAX_VALUE的话&#xff0c;结果是&#xff1a;1000019914</p> 
+<p>k上限取1e9的话&#xff0c;结果是&#xff1a;1000000001</p> 
+<p>应该是机考系统用例有问题。考试时需要注意一下。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入输出处理
+void (async function () {
+  const [x, y, cntx, cnty] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  function check(k) {
+    const A &#61; Math.floor(k / x); // 1~k范围内x倍数的数量
+    const B &#61; Math.floor(k / y); // 1~k范围内y倍数的数量
+    const C &#61; Math.floor(k / (x * y)); // 1~k范围内x*y倍数的数量
+
+    return (
+      Math.max(0, cntx - (B - C)) &#43; Math.max(0, cnty - (A - C)) &lt;&#61; k - A - B &#43; C
+    );
+  }
+
+  let min &#61; cntx &#43; cnty;
+  // let max &#61; Number.MAX_VALUE; // 使用此上限&#xff0c;实际通过率55%
+  let max &#61; 1e9; // 使用此上限&#xff0c;实际通过率可以100%
+
+  while (min &lt;&#61; max) {
+    let mid &#61; min &#43; Math.floor((max - min) / 2);
+
+    if (check(mid)) {
+      max &#61; mid - 1;
+    } else {
+      min &#61; mid &#43; 1;
+    }
+  }
+
+  console.log(min);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  static long x;
+  static long y;
+  static long cntx;
+  static long cnty;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    x &#61; sc.nextInt();
+    y &#61; sc.nextInt();
+    cntx &#61; sc.nextInt();
+    cnty &#61; sc.nextInt();
+
+    long min &#61; cntx &#43; cnty;
+    //    long max &#61; Long.MAX_VALUE;  // 使用此上限&#xff0c;实际通过率55%
+    long max &#61; 1000000000L; // 使用此上限&#xff0c;实际通过率可以100%
+
+    while (min &lt;&#61; max) {
+      long mid &#61; min &#43; (max - min) / 2;
+
+      if (check(mid)) {
+        max &#61; mid - 1;
+      } else {
+        min &#61; mid &#43; 1;
+      }
+    }
+
+    System.out.println(min);
+  }
+
+  public static boolean check(long k) {
+    long A &#61; k / x; // 1~k范围内x倍数的数量
+    long B &#61; k / y; // 1~k范围内y倍数的数量
+    long C &#61; k / (x * y); // 1~k范围内x*y倍数的数量
+
+    return Math.max(0, cntx - (B - C)) &#43; Math.max(0, cnty - (A - C)) &lt;&#61; k - A - B &#43; C;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import sys
+
+x, y, cntx, cnty &#61; map(int, input().split())
+
+
+def check(k):
+    A &#61; k // x  # 1~k范围内x倍数的数量
+    B &#61; k // y  # 1~k范围内y倍数的数量
+    C &#61; k // (x * y)  # 1~k范围内x*y倍数的数量
+
+    return max(0, cntx - (B - C)) &#43; max(0, cnty - (A - C)) &lt;&#61; k - A - B &#43; C
+
+
+def getResult():
+    low &#61; cntx &#43; cnty
+    # high &#61; sys.maxsize  # 使用此上限&#xff0c;实际通过率55%
+    high &#61; 1000000000  # 使用此上限&#xff0c;实际通过率可以100%
+
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) // 2
+
+        if check(mid):
+            high &#61; mid - 1
+        else:
+            low &#61; mid &#43; 1
+
+    return low
+
+
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;math.h&gt;
+
+long x, y, cntx, cnty;
+
+int check(long k) {
+    long A &#61; k / x; // 1~k范围内x倍数的数量
+    long B &#61; k / y; // 1~k范围内y倍数的数量
+    long C &#61; k / (x * y); // 1~k范围内x*y倍数的数量
+    return fmaxl(0, cntx - (B - C)) &#43; fmaxl(0, cnty - (A - C)) &lt;&#61; k - A - B &#43; C;
+}
+
+int main() {
+    scanf(&#34;%ld %ld %ld %ld&#34;, &amp;x, &amp;y, &amp;cntx, &amp;cnty);
+
+    long min &#61; cntx &#43; cnty;
+//    long max &#61; LONG_MAX; // 使用此上限&#xff0c;实际通过率55%
+    long max &#61; 1000000000; // 使用此上限&#xff0c;实际通过率可以100%
+
+    while (min &lt;&#61; max) {
+        long mid &#61; min &#43; (max - min) / 2;
+
+        if (check(mid)) {
+            max &#61; mid - 1;
+        } else {
+            min &#61; mid &#43; 1;
+        }
+    }
+
+    printf(&#34;%ld\n&#34;, min);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

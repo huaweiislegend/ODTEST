@@ -1,0 +1,541 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 最多几个直角三角形（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有N条线段&#xff0c;长度分别为a[1]-a[n]。</p> 
+<p>现要求你计算这N条线段最多可以组合成几个直角三角形。</p> 
+<p>每条线段只能使用一次&#xff0c;每个三角形包含三条线段。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入一个正整数T&#xff08;1&lt;&#xff1d;T&lt;&#xff1d;100&#xff09;&#xff0c;表示有T组测试数据.</p> 
+<p>对于每组测试数据&#xff0c;接下来有T行&#xff0c;</p> 
+<p>每行第一个正整数N&#xff0c;表示线段个数&#xff08;3&lt;&#xff1d;N&lt;&#xff1d;20&#xff09;&#xff0c;接着是N个正整数&#xff0c;表示每条线段长度&#xff0c;&#xff08;0&lt;a[i]&lt;100&#xff09;。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>对于每组测试数据输出一行&#xff0c;每行包括一个整数&#xff0c;表示最多能组合的直角三角形个数</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> 7 3 4 5 6 5 12 13</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">可以组成2个直角三角形&#xff08;3&#xff0c;4&#xff0c;5&#xff09;、&#xff08;5&#xff0c;12&#xff0c;13&#xff09;</td></tr></tbody></table> 
+<p></p> 
+<h3>双回溯&#xff08;通过率80%&#xff09;</h3> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题并不是简单的全组合求解&#xff0c;比如我们看用例1&#xff1a;</p> 
+<blockquote> 
+ <p>1<br /> 7 <span style="color:#fe2c24;">3 4 5 6 5 12 13</span></p> 
+</blockquote> 
+<p>如果单纯以全组合角度来求解组成直角三角形的线段的话&#xff0c;有如下情况&#xff1a;</p> 
+<ul><li>3 4 5</li><li>3 4 5</li><li>5 12 13</li><li>5 12 13</li></ul> 
+<p>一共四组&#xff0c;造成重复的原因是&#xff0c;存在两个5。</p> 
+<p></p> 
+<p>现在要求的是&#xff0c;以给的的线段&#xff0c;能组合出来的最多直角三角形数量。这句话的意思是&#xff0c;我们能用<span style="color:#fe2c24;">3 4 5 6 5 12 13</span><span style="color:#0d0016;">组合出最多几个直角三角形&#xff1f;</span></p> 
+<p><span style="color:#0d0016;">比如&#xff0c;我们已经用了3 4 5组成一个直角三角形&#xff0c;那么给的线段还剩下6 5 12 13&#xff0c;而剩下的线段中&#xff0c;只能组合出一个直角三角形5 12 13。</span></p> 
+<p><span style="color:#0d0016;">那么该如何实现一种算法找出最多的呢&#xff1f;</span></p> 
+<p></p> 
+<p><span style="color:#0d0016;">我的解题思路如下&#xff0c;首先用全组合&#xff0c;求出所有直角三角形的组合可能&#xff1a;</span></p> 
+<ul><li>3 4 5</li><li>3 4 5</li><li>5 12 13</li><li>5 12 13</li></ul> 
+<p>然后统计出给的各种长度线段对应的数量&#xff0c;比如用例1可以统计如下&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />     3: 1, // 长度为3的线段有1个<br />     4: 1,<br />     5: 2,<br />     6: 1,<br />     12: 1,<br />     13: 1<br /> }</p> 
+</blockquote> 
+<p>然后我们通过回溯算法&#xff0c;比如遍历出&#xff08;前面全组合求解出来的&#xff09;第一个可能的直角三角形组合3 4 5&#xff0c;然后上面统计数量变为&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />     3: 0,<br />     4: 0,<br />     5: 1,<br />     6: 1,<br />     12: 1,<br />     13: 1<br /> }</p> 
+</blockquote> 
+<p>然后&#xff0c;继续遍历下一个可能直角三角形组合3 4 5&#xff0c;发现统计的3的数量已经为0了&#xff0c;因此这个三角形无法组合&#xff0c;继续遍历下一个可能直角三角形组合 5 12 13&#xff0c;然后统计数量变为</p> 
+<blockquote> 
+ <p>{<!-- --><br />     3: 0,<br />     4: 0,<br />     5: 0,<br />     6: 1,<br />     12: 0,<br />     13: 0<br /> }</p> 
+</blockquote> 
+<p>然后继续遍历下一个可能组合5 12 13&#xff0c;发现对应长度线段的数量都变为了0&#xff0c;因此无法组合。</p> 
+<p>继续遍历&#xff0c;发现没有下一个可能的组合了&#xff0c;因此&#xff0c;计算出该种情况可以得到2个直角三角形组合&#xff1a;3 4 5以及5 12 13</p> 
+<p>下面通过回溯算法&#xff0c;开始从第二个可能的组合开始向后遍历。</p> 
+<p>最终&#xff0c;最多的组合数就是题解。</p> 
+<p></p> 
+<p>我们可以尝试下这个自测用例&#xff1a;</p> 
+<blockquote> 
+ <p>1<br /> 7 3 4 5 12 13 84 85</p> 
+</blockquote> 
+<p>其中有三种可能得直角三角形组合&#xff0c;分别是&#xff1a;</p> 
+<ul><li>3 4 5</li><li>5 12 13</li><li>13 84 85</li></ul> 
+<p>如果我们选择组合3 4 5&#xff0c;则还可以组合一个13 84 85</p> 
+<p>如果我们选择组合5 12 13&#xff0c;则无法组合出其他直角三角形</p> 
+<p>因此&#xff0c;最终本用例返回2&#xff0c;最多可以组合出2个直角三角形&#xff0c;分别是3 4 5和13 84 85</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let t;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    t &#61; lines[0] - 0;
+  }
+
+  if (t &amp;&amp; lines.length &#61;&#61;&#61; t &#43; 1) {
+    const cases &#61; lines
+      .slice(1)
+      .map((line) &#61;&gt; line.split(&#34; &#34;).map(Number).slice(1));
+
+    getResult(cases);
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(cases) {
+  for (let arr of cases) {
+    // 对每组测试线段升序排序
+    arr.sort((a, b) &#61;&gt; a - b);
+
+    const res &#61; [];
+    dfs(arr, 0, [], res);
+
+    const count &#61; new Array(100).fill(0);
+    for (let i of arr) {
+      count[i]&#43;&#43;;
+    }
+
+    const ans &#61; [];
+    canCombine(res, 0, count, 0, ans);
+    console.log(Math.max.apply(null, ans));
+  }
+}
+
+// 全组合求解&#xff0c;即n个数中选3个
+function dfs(arr, index, path, res) {
+  if (path.length &#61;&#61;&#61; 3) {
+    if (isRightTriangle(path)) res.push([...path]);
+    return;
+  }
+
+  for (let i &#61; index; i &lt; arr.length; i&#43;&#43;) {
+    path.push(arr[i]);
+    dfs(arr, i &#43; 1, path, res);
+    path.pop();
+  }
+}
+
+// 判断三条边是否可以组成直角三角形
+function isRightTriangle(path) {
+  const [x, y, z] &#61; path;
+  return x * x &#43; y * y &#61;&#61;&#61; z * z;
+}
+
+// 求解当前直角三角形中不超用线段的最多组合数
+function canCombine(ts, index, count, num, ans) {
+  if (index &gt;&#61; ts.length) {
+    ans.push(num);
+    return;
+  }
+
+  for (let i &#61; index; i &lt; ts.length; i&#43;&#43;) {
+    const [a, b, c] &#61; ts[i];
+
+    if (count[a] &gt; 0 &amp;&amp; count[b] &gt; 0 &amp;&amp; count[c] &gt; 0) {
+      count[a]--;
+      count[b]--;
+      count[c]--;
+      num&#43;&#43;;
+      canCombine(ts, i &#43; 1, count, num, ans);
+      num--;
+      count[a]&#43;&#43;;
+      count[b]&#43;&#43;;
+      count[c]&#43;&#43;;
+    }
+  }
+
+  ans.push(num);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int t &#61; sc.nextInt();
+    int[][] cases &#61; new int[t][];
+
+    for (int i &#61; 0; i &lt; t; i&#43;&#43;) {
+      int n &#61; sc.nextInt();
+      int[] arr &#61; new int[n];
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        arr[j] &#61; sc.nextInt();
+      }
+      cases[i] &#61; arr;
+    }
+
+    getResult(cases);
+  }
+
+  public static void getResult(int[][] cases) {
+    for (int[] arr : cases) {
+      // 对每组测试线段升序排序
+      Arrays.sort(arr);
+
+      ArrayList&lt;Integer[]&gt; res &#61; new ArrayList&lt;&gt;();
+      dfs(arr, 0, new LinkedList&lt;&gt;(), res);
+
+      int[] count &#61; new int[100];
+      for (int i : arr) {
+        count[i]&#43;&#43;;
+      }
+
+      ArrayList&lt;Integer&gt; ans &#61; new ArrayList&lt;&gt;();
+      canCombine(res, 0, count, 0, ans);
+      System.out.println(ans.stream().max((a, b) -&gt; a - b).orElse(0));
+    }
+  }
+
+  // 全组合求解&#xff0c;即n个数中选3个
+  public static void dfs(int[] arr, int index, LinkedList&lt;Integer&gt; path, ArrayList&lt;Integer[]&gt; res) {
+    if (path.size() &#61;&#61; 3) {
+      if (isRightTriangle(path)) {
+        res.add(path.toArray(new Integer[3]));
+      }
+      return;
+    }
+
+    for (int i &#61; index; i &lt; arr.length; i&#43;&#43;) {
+      path.add(arr[i]);
+      dfs(arr, i &#43; 1, path, res);
+      path.removeLast();
+    }
+  }
+
+  // 判断三条边是否可以组成直角三角形
+  public static boolean isRightTriangle(LinkedList&lt;Integer&gt; path) {
+    // 注意&#xff0c;path中元素是升序的&#xff0c;因为path是取自arr的组合&#xff0c;而arr是升序的
+    int x &#61; path.get(0);
+    int y &#61; path.get(1);
+    int z &#61; path.get(2);
+
+    return x * x &#43; y * y &#61;&#61; z * z;
+  }
+
+  // 求解当前直角三角形中不超用线段的最多组合数
+  public static void canCombine(
+      ArrayList&lt;Integer[]&gt; ts, int index, int[] count, int num, ArrayList&lt;Integer&gt; ans) {
+    if (index &gt;&#61; ts.size()) {
+      ans.add(num);
+      return;
+    }
+
+    for (int i &#61; index; i &lt; ts.size(); i&#43;&#43;) {
+      Integer[] tri &#61; ts.get(i);
+      int a &#61; tri[0];
+      int b &#61; tri[1];
+      int c &#61; tri[2];
+
+      if (count[a] &gt; 0 &amp;&amp; count[b] &gt; 0 &amp;&amp; count[c] &gt; 0) {
+        count[a]--;
+        count[b]--;
+        count[c]--;
+        num&#43;&#43;;
+        canCombine(ts, i &#43; 1, count, num, ans);
+        num--;
+        count[a]&#43;&#43;;
+        count[b]&#43;&#43;;
+        count[c]&#43;&#43;;
+      }
+    }
+
+    ans.add(num);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+t &#61; int(input())
+cases &#61; [list(map(int, input().split()))[1:] for i in range(t)]
+
+
+# 算法入口
+def getResult(cases):
+    for case in cases:
+        # 对每组测试线段升序排序
+        case.sort()
+
+        res &#61; []
+        dfs(case, 0, [], res)
+
+        count &#61; [0 for i in range(100)]
+        for val in case:
+            count[val] &#43;&#61; 1
+
+        ans &#61; []
+        canCombine(res, 0, count, 0, ans)
+        print(max(ans))
+
+
+# 全组合求解&#xff0c;即n个数中选3个
+def dfs(arr, index, path, res):
+    if len(path) &#61;&#61; 3:
+        if isRightTriangle(path):
+            res.append(path[:])
+        return
+
+    for i in range(index, len(arr)):
+        path.append(arr[i])
+        dfs(arr, i &#43; 1, path, res)
+        path.pop()
+
+
+# 判断三条边是否可以组成直角三角形
+def isRightTriangle(path):
+    # 注意&#xff0c;path中元素是升序的&#xff0c;因为path是取自arr的组合&#xff0c;而arr是升序的
+    x, y, z &#61; path
+    return x ** 2 &#43; y ** 2 &#61;&#61; z ** 2
+
+
+# 求解当前直角三角形中不超用线段的最多组合数
+def canCombine(ts, index, count, num, ans):
+    if index &gt;&#61; len(ts):
+        ans.append(num)
+        return
+
+    for i in range(index, len(ts)):
+        a, b, c &#61; ts[i]
+
+        if count[a] &gt; 0 and count[b] &gt; 0 and count[c] &gt; 0:
+            count[a] -&#61; 1
+            count[b] -&#61; 1
+            count[c] -&#61; 1
+            num &#43;&#61; 1
+            canCombine(ts, i &#43; 1, count, num, ans)
+            num -&#61; 1
+            count[a] &#43;&#61; 1
+            count[b] &#43;&#61; 1
+            count[c] &#43;&#61; 1
+
+    ans.append(num)
+
+
+# 算法调用
+getResult(cases)
+</code></pre> 
+<p></p> 
+<p></p> 
+<h3>单回溯&#xff08;通过率可达100%&#xff09;</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int t &#61; sc.nextInt();
+    int[][] cases &#61; new int[t][];
+
+    for (int i &#61; 0; i &lt; t; i&#43;&#43;) {
+      int n &#61; sc.nextInt();
+      int[] arr &#61; new int[n];
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        arr[j] &#61; sc.nextInt();
+      }
+      cases[i] &#61; arr;
+    }
+
+    getResult(cases);
+  }
+
+  public static void getResult(int[][] cases) {
+    for (int[] arr : cases) {
+      // 对每组测试线段升序排序
+      Arrays.sort(arr);
+      System.out.println(dfs(arr, new boolean[arr.length], 0));
+    }
+  }
+
+  public static int dfs(int[] arr, boolean[] used, int index) {
+    int ans &#61; 0;
+
+    for (int i &#61; index; i &lt; arr.length; i&#43;&#43;) {
+      if (used[i]) continue;
+      for (int j &#61; i &#43; 1; j &lt; arr.length; j&#43;&#43;) {
+        if (used[j]) continue;
+        for (int k &#61; j &#43; 1; k &lt; arr.length; k&#43;&#43;) {
+          if (used[k]) continue;
+
+          if (arr[i] * arr[i] &#43; arr[j] * arr[j] &#61;&#61; arr[k] * arr[k]) {
+            used[i] &#61; true;
+            used[j] &#61; true;
+            used[k] &#61; true;
+
+            ans &#61; Math.max(ans, dfs(arr, used, i &#43; 1) &#43; 1);
+
+            used[i] &#61; false;
+            used[j] &#61; false;
+            used[k] &#61; false;
+          }
+        }
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let t;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    t &#61; lines[0] - 0;
+  }
+
+  if (t &amp;&amp; lines.length &#61;&#61;&#61; t &#43; 1) {
+    const cases &#61; lines
+      .slice(1)
+      .map((line) &#61;&gt; line.split(&#34; &#34;).map(Number).slice(1));
+
+    getResult(cases);
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(cases) {
+  for (let arr of cases) {
+    // 对每组测试线段升序排序
+    arr.sort((a, b) &#61;&gt; a - b);
+    console.log(dfs(arr, new Array(arr.length).fill(false), 0));
+  }
+}
+
+function dfs(arr, used, index) {
+  let ans &#61; 0;
+
+  for (let i &#61; index; i &lt; arr.length; i&#43;&#43;) {
+    if (used[i]) continue;
+
+    for (let j &#61; i &#43; 1; j &lt; arr.length; j&#43;&#43;) {
+      if (used[j]) continue;
+
+      for (let k &#61; j &#43; 1; k &lt; arr.length; k&#43;&#43;) {
+        if (used[k]) continue;
+
+        if (arr[i] * arr[i] &#43; arr[j] * arr[j] &#61;&#61; arr[k] * arr[k]) {
+          used[i] &#61; true;
+          used[j] &#61; true;
+          used[k] &#61; true;
+
+          ans &#61; Math.max(ans, dfs(arr, used, i &#43; 1) &#43; 1);
+
+          used[i] &#61; false;
+          used[j] &#61; false;
+          used[k] &#61; false;
+        }
+      }
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+t &#61; int(input())
+cases &#61; [list(map(int, input().split()))[1:] for i in range(t)]
+
+
+def dfs(case, used, index):
+    ans &#61; 0
+
+    for i in range(index, len(case)):
+        if used[i]:
+            continue
+
+        for j in range(i &#43; 1, len(case)):
+            if used[j]:
+                continue
+
+            for k in range(j &#43; 1, len(case)):
+                if used[k]:
+                    continue
+
+                if case[i] ** 2 &#43; case[j] ** 2 &#61;&#61; case[k] ** 2:
+                    used[i] &#61; True
+                    used[j] &#61; True
+                    used[k] &#61; True
+
+                    ans &#61; max(ans, dfs(case, used, i &#43; 1) &#43; 1)
+
+                    used[i] &#61; False
+                    used[j] &#61; False
+                    used[k] &#61; False
+
+    return ans
+
+
+# 算法入口
+def getResult(cases):
+    for case in cases:
+        # 对每组测试线段升序排序
+        case.sort()
+
+        print(dfs(case, [False]*len(case), 0))
+
+
+# 算法调用
+getResult(cases)
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

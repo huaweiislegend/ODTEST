@@ -1,0 +1,272 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 表达式括号匹配（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>(1&#43;(2&#43;3)*(3&#43;(8&#43;0))&#43;1-2)这是一个简单的数学表达式,今天不是计算它的值,而是比较它的括号匹配是否正确。</p> 
+<p>前面这个式子可以简化为(()(()))这样的括号我们认为它是匹配正确的,</p> 
+<p>而((())这样的我们就说他是错误的。注意括号里面的表达式可能是错的,也可能有多个空格&#xff0c;对于这些我们是不用去管的&#xff0c;</p> 
+<p>我们只关心括号是否使用正确。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>给出一行表达式(长度不超过 100)。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>如果匹配正确输出括号的对数&#xff0c;否则输出-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">(1&#43;(2&#43;3)*(3&#43;(8&#43;0))&#43;1-2)</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题就是括号匹配的变种题&#xff0c;只是加入了一些干扰字符&#xff0c;我们可以用正则去掉非()的字符&#xff0c;然后利用栈结构校验括号是否成对&#xff0c;可以参考<a href="https://blog.csdn.net/qfc_128220/article/details/127359042?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522166918658716782425631332%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;166918658716782425631332&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-2-127359042-null-null.nonecase&amp;utm_term&#61;%E6%8B%AC%E5%8F%B7&amp;spm&#61;1018.2226.3001.4450" title="LeetCode - 20 有效的括号_伏城之外的博客-CSDN博客">LeetCode - 20 有效的括号_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  let count &#61; 0;
+  const stack &#61; [];
+  for (let c of line) {
+    if (c !&#61; &#34;(&#34; &amp;&amp; c !&#61; &#34;)&#34;) continue;
+
+    if (stack.length &amp;&amp; c &#61;&#61;&#61; &#34;)&#34;) {
+      if (stack.at(-1) &#61;&#61;&#61; &#34;(&#34;) {
+        stack.pop();
+        count&#43;&#43;;
+        continue;
+      } else {
+        return console.log(-1);
+      }
+    }
+    stack.push(c);
+  }
+  if (stack.length) return console.log(-1);
+  return console.log(count);
+});
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String s &#61; sc.nextLine();
+    System.out.println(getResult(s));
+  }
+
+  public static int getResult(String s) {
+    int count &#61; 0;
+    LinkedList&lt;Character&gt; stack &#61; new LinkedList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+
+      if (c !&#61; &#39;)&#39; &amp;&amp; c !&#61; &#39;(&#39;) continue;
+
+      if (stack.size() &gt; 0 &amp;&amp; c &#61;&#61; &#39;)&#39;) {
+        if (stack.getLast() &#61;&#61; &#39;(&#39;) {
+          stack.removeLast();
+          count&#43;&#43;;
+          continue;
+        }
+        return -1;
+      }
+
+      stack.add(c);
+    }
+
+    if (stack.size() &gt; 0) return -1;
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    count &#61; 0
+
+    stack &#61; []
+    for c in s:
+        if c !&#61; &#39;(&#39; and c !&#61; &#39;)&#39;:
+            continue
+        
+        if len(stack) &gt; 0 and c &#61;&#61; &#39;)&#39;:
+            if stack[-1] &#61;&#61; &#39;(&#39;:
+                stack.pop()
+                count &#43;&#61; 1
+                continue
+            return -1
+
+        stack.append(c)
+
+    if len(stack) &gt; 0:
+        return -1
+
+    return count
+
+
+# 算法调用
+print(getResult(s))
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+typedef char E;
+
+typedef struct ListNode {
+    E ele;
+    struct ListNode *prev;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList();
+void addLast_LinkedList(LinkedList *link, E ele);
+E removeLast_LinkedList(LinkedList *link);
+E getLast_LinkedList(LinkedList* link);
+
+int main() {
+    char s[100];
+    gets(s);
+
+    int count &#61; 0;
+    LinkedList *stack &#61; new_LinkedList();
+
+    for (int i &#61; 0; i &lt; strlen(s); i&#43;&#43;) {
+        if(s[i] !&#61; &#39;)&#39; &amp;&amp; s[i] !&#61; &#39;(&#39;) continue;
+
+        if(stack-&gt;size &gt; 0 &amp;&amp; s[i] &#61;&#61; &#39;)&#39;) {
+            if(getLast_LinkedList(stack) &#61;&#61; &#39;(&#39;) {
+                removeLast_LinkedList(stack);
+                count&#43;&#43;;
+                continue;
+            }
+
+            puts(&#34;-1&#34;);
+            return 0;
+        }
+
+        addLast_LinkedList(stack,s[i]);
+    }
+
+    if(stack-&gt;size &gt; 0) {
+        puts(&#34;-1&#34;);
+    } else {
+        printf(&#34;%d\n&#34;, count);
+    }
+
+    return 0;
+}
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, E ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+
+    node-&gt;ele &#61; ele;
+    node-&gt;prev &#61; NULL;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        node-&gt;prev &#61; link-&gt;tail;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+E removeLast_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;tail;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;tail &#61; link-&gt;tail-&gt;prev;
+        link-&gt;tail-&gt;next &#61; NULL;
+    }
+
+    link-&gt;size--;
+
+    E res &#61; removed-&gt;ele;
+
+    free(removed);
+
+    return res;
+}
+
+E getLast_LinkedList(LinkedList* link) {
+    if(link-&gt;size &#61;&#61; 0) exit(-1);
+    return link-&gt;tail-&gt;ele;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

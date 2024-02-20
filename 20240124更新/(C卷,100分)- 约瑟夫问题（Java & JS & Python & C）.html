@@ -1,0 +1,418 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 约瑟夫问题（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>输入一个由随机数组成的数列&#xff08;数列中每个数均是大于 0 的整数&#xff0c;长度已知&#xff09;&#xff0c;和初始计数值 m。</p> 
+<p>从数列首位置开始计数&#xff0c;计数到 m 后&#xff0c;将数列该位置数值替换计数值 m&#xff0c;</p> 
+<p>并将数列该位置数值出列&#xff0c;然后从下一位置从新开始计数&#xff0c;直到数列所有数值出列为止。</p> 
+<p>如果计数到达数列尾段&#xff0c;则返回数列首位置继续计数。</p> 
+<p>请编程实现上述计数过程&#xff0c;同时输出数值出列的顺序。</p> 
+<p>比如&#xff1a;输入的随机数列为&#xff1a;3,1,2,4&#xff0c;初始计数值 m&#61;7&#xff0c;从数列首位置开始计数&#xff08;数值 3 所在位置&#xff09;</p> 
+<p>第一轮计数出列数字为 2&#xff0c;计数值更新 m&#61;2&#xff0c;出列后数列为 3,1,4&#xff0c;从数值 4 所在位置从新开始计数</p> 
+<p>第二轮计数出列数字为 3&#xff0c;计数值更新 m&#61;3&#xff0c;出列后数列为 1,4&#xff0c;从数值 1 所在位置开始计数</p> 
+<p>第三轮计数出列数字为 1&#xff0c;计数值更新 m&#61;1&#xff0c;出列后数列为 4&#xff0c;从数值 4 所在位置开始计数</p> 
+<p>最后一轮计数出列数字为 4&#xff0c;计数过程完成。输出数值出列顺序为&#xff1a;2,3,1,4。</p> 
+<p>要求实现函数&#xff1a;</p> 
+<p><em>void array_iterate(int len, int input_array[], int m, int output_array[])</em></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p> int len&#xff1a;输入数列的长度&#xff1b; int intput_array[]&#xff1a;输入的初始数列 int m&#xff1a;初始计数值</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p> int output_array[]&#xff1a;输出的数值出列顺序</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>3,1,2,4<br /> 4<br /> 7</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2,3,1,4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入</p> <p>第一行是初始数列intput_array</p> <p>第二行是初始数列的长度len</p> <p>第三行是初始计数值m</p> <p></p> <p>输出</p> <p>数值出列顺序</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题就是约瑟夫环的变种题。</p> 
+<p>约瑟夫环的解题有多种方式&#xff0c;比较容易理解和实现的可以使用双端队列。</p> 
+<p></p> 
+<p>即intput_array当成双端队列&#xff0c;从队头取出元素&#xff0c;判断此时计数是否为m&#xff1a;</p> 
+<ul><li>若是&#xff0c;则将取出的元素加入output_arr&#xff0c;并将取出的元素的值赋值给m&#xff0c;然后len--&#xff0c;计数重置为1</li><li>若不是&#xff0c;则将取出的元素塞回intput_array的队尾&#xff0c;仅计数&#43;&#43;</li></ul> 
+<p></p> 
+<p>但是本题JS是基于数组实现的双端队列&#xff0c;因此每次头部元素出队&#xff0c;都意味着一次O(n)复杂度的数组元素前移一位操作&#xff0c;这是非常影响性能的。</p> 
+<p>对于Java&#xff0c;Python都有内置的双端队列结构&#xff0c;因此可以直接复用&#xff0c;对于C&#xff0c;可以自己实现双端队列结构。</p> 
+<p></p> 
+<p>因此JS语言我们可以选择循环链表来模拟约瑟夫环。</p> 
+<p>循环链表本身就实现了环形结构&#xff0c;其head.prev &#61; tail&#xff0c;tail.next &#61; head。</p> 
+<p>且循环链表删除节点的复杂度是O(1)。</p> 
+<p>唯一的遗憾是&#xff0c;JS没有原生的循环链表结构&#xff0c;我们需要自己实现。但是我们只需要实现最简单的循环链表即可&#xff0c;即只实现循环链表的尾部新增节点操作即可。而删除操作可以在实际业务中完成。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<p>双端队列</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const input_arr &#61; lines[0].split(&#34;,&#34;);
+    const len &#61; lines[1];
+    const m &#61; lines[2];
+
+    const output_arr &#61; [];
+    array_iterate(len, input_arr, m, output_arr);
+    console.log(output_arr.join(&#34;,&#34;));
+    lines.length &#61; 0;
+  }
+});
+
+function array_iterate(len, input_arr, m, output_arr) {
+  let i &#61; 1;
+  while (len &gt; 0) {
+    const out &#61; input_arr.shift();
+    if (i &#61;&#61; m) {
+      output_arr.push(out);
+      m &#61; out;
+      i &#61; 1;
+      len--;
+    } else {
+      input_arr.push(out);
+      i&#43;&#43;;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<p>循环链表</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const input_arr &#61; lines[0].split(&#34;,&#34;);
+    const len &#61; lines[1];
+    const m &#61; lines[2];
+
+    const output_arr &#61; [];
+    array_iterate(len, input_arr, m, output_arr);
+    console.log(output_arr.join(&#34;,&#34;));
+    lines.length &#61; 0;
+  }
+});
+
+function array_iterate(len, input_arr, m, output_arr) {
+  const cll &#61; new CircularLinkedList();
+  cll.init(input_arr);
+
+  let cur &#61; cll.head;
+  let i &#61; 1;
+  while (cll.size) {
+    if (i &#61;&#61; m) {
+      const pre &#61; cur.prev;
+      const nxt &#61; cur.next;
+
+      pre.next &#61; nxt;
+      nxt.prev &#61; pre;
+
+      m &#61; cur.val;
+      output_arr.push(m);
+      cur.next &#61; cur.prev &#61; null;
+
+      cur &#61; nxt;
+
+      i &#61; 1;
+      cll.size--;
+    } else {
+      i&#43;&#43;;
+      cur &#61; cur.next;
+    }
+  }
+}
+
+class Node {
+  constructor(val) {
+    this.val &#61; val;
+    this.next &#61; null;
+    this.prev &#61; null;
+  }
+}
+
+class CircularLinkedList {
+  constructor() {
+    this.head &#61; null;
+    this.tail &#61; null;
+    this.size &#61; 0;
+  }
+
+  append(val) {
+    const node &#61; new Node(val);
+
+    if (this.size) {
+      this.tail.next &#61; node;
+      node.prev &#61; this.tail;
+      this.tail &#61; node;
+    } else {
+      this.head &#61; node;
+      this.tail &#61; node;
+    }
+
+    this.head.prev &#61; this.tail;
+    this.tail.next &#61; this.head;
+
+    this.size&#43;&#43;;
+  }
+
+  init(arr) {
+    arr.forEach((val) &#61;&gt; {
+      this.append(val);
+    });
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<p>Java可以使用LinkedList模拟双端队列</p> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] input_arr &#61;
+        Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    int len &#61; Integer.parseInt(sc.nextLine());
+
+    int m &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(input_arr, len, m));
+  }
+
+  public static String getResult(Integer[] input_arr, int len, int m) {
+    LinkedList&lt;Integer&gt; dq &#61; new LinkedList&lt;&gt;(Arrays.asList(input_arr));
+
+    ArrayList&lt;Integer&gt; output_arr &#61; new ArrayList&lt;&gt;();
+
+    int i &#61; 1;
+    while (len &gt; 0) {
+      Integer out &#61; dq.removeFirst();
+
+      if (i &#61;&#61; m) {
+        output_arr.add(out);
+        m &#61; out;
+        i &#61; 1;
+        len--;
+      } else {
+        dq.add(out);
+        i&#43;&#43;;
+      }
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+    for (Integer ele : output_arr) {
+      sj.add(ele &#43; &#34;&#34;);
+    }
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python">from collections import deque
+
+# 输入获取
+input_arr &#61; deque(list(map(int, input().split(&#34;,&#34;))))
+length &#61; int(input())
+m &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    global input_arr
+    global length
+    global m
+
+    output_arr &#61; []
+
+    i &#61; 1
+    while length &gt; 0:
+        out &#61; input_arr.popleft()
+        if i &#61;&#61; m:
+            output_arr.append(out)
+            m &#61; out
+            i &#61; 1
+            length -&#61; 1
+        else:
+            input_arr.append(out)
+            i &#43;&#61; 1
+
+    return &#34;,&#34;.join(map(str, output_arr))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode* next;
+} ListNode;
+
+typedef struct {
+    int size;
+    ListNode* head;
+    ListNode* tail;
+} LinkedList;
+
+LinkedList* new_LinkedList();
+void addLast_LinkedList(LinkedList* link, int ele);
+int removeFirst(LinkedList* link);
+
+int main() {
+    LinkedList* dq &#61; new_LinkedList();
+
+    int num;
+    while(scanf(&#34;%d&#34;, &amp;num)) {
+        addLast_LinkedList(dq,num);
+        if(getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    int len;
+    scanf(&#34;%d&#34;, &amp;len);
+
+    int m;
+    scanf(&#34;%d&#34;, &amp;m);
+
+    LinkedList* output_arr &#61; new_LinkedList();
+
+    int i &#61; 1;
+    while(len &gt; 0) {
+        int out &#61; removeFirst(dq);
+
+        if(i &#61;&#61; m) {
+            addLast_LinkedList(output_arr,out);
+            m &#61; out;
+            i &#61; 1;
+            len--;
+        } else {
+            addLast_LinkedList(dq,out);
+            i&#43;&#43;;
+        }
+    }
+
+    char res[100000];
+
+    ListNode* cur &#61; output_arr-&gt;head;
+    while(cur !&#61; NULL) {
+        char tmp[10];
+        sprintf(tmp, &#34;%d&#34;, cur-&gt;ele);
+        strcat(res, tmp);
+
+        cur &#61; cur-&gt;next;
+
+        if(cur !&#61; NULL) {
+            strcat(res, &#34;,&#34;);
+        }
+    }
+
+    puts(res);
+
+    return 0;
+}
+
+LinkedList* new_LinkedList() {
+    LinkedList* link &#61; (LinkedList*) malloc(sizeof(LinkedList));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void addLast_LinkedList(LinkedList* link, int ele) {
+    ListNode* node &#61; (ListNode*) malloc(sizeof(ListNode));
+
+    node-&gt;ele &#61; ele;
+    node-&gt;next &#61; NULL;
+
+    if(link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+int removeFirst(LinkedList* link) {
+    if(link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode* removed &#61; link-&gt;head;
+
+    if(link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+    }
+
+    link-&gt;size--;
+
+    int res &#61; removed-&gt;ele;
+
+    free(removed);
+
+    return res;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

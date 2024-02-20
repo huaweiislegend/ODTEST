@@ -1,0 +1,157 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 密钥格式化（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个非空字符串 S&#xff0c;其被 N 个’-‘分隔成 N&#43;1 的子串&#xff0c;给定正整数 K&#xff0c;要求除第一个子串外&#xff0c;其余的串每 K 个用’-‘分隔&#xff0c;并将小写字母转换为大写。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>正整数 K 和‘-’分割的字符串&#xff0c;如&#xff1a;</p> 
+<blockquote> 
+ <p>2<br /> 25G3C-abc-d</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>转换后的字符串</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>4<br /> 5F3Z-2e-9-w</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5F3Z-2E9W</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>字符串 S 被分成了两个部分&#xff0c;每部分 4 个字符&#xff1b;</p> <p>注意&#xff0c;两个额外的破折号需要删掉。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>2<br /> 2-5g-3-J</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2-5G-3J</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">字符串 S 被分成了 3 个部分&#xff0c;按照前面的规则描述&#xff0c;第一部分的字符可以少于给定的数量&#xff0c;其余部分皆为 2 个字符。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的字符串操作</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const k &#61; parseInt(lines[0]);
+    const s &#61; lines[1];
+
+    console.log(getResult(s, k));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(s, k) {
+  const sArr &#61; s.split(&#34;-&#34;);
+
+  const first &#61; sArr[0];
+
+  if (sArr.length &#61;&#61; 1) return first;
+
+  const tmp &#61; sArr.slice(1).join(&#34;&#34;).toUpperCase().split(&#34;&#34;);
+
+  for (let i &#61; 0; i &lt; tmp.length; i&#43;&#43;) {
+    if (i % k &#61;&#61; 0) tmp[i] &#61; &#34;-&#34; &#43; tmp[i];
+  }
+
+  return first &#43; tmp.join(&#34;&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int k &#61; sc.nextInt();
+    String str &#61; sc.next();
+
+    System.out.println(getResult(k, str));
+  }
+
+  public static String getResult(int k, String str) {
+    String[] sArr &#61; str.split(&#34;-&#34;);
+
+    String first &#61; sArr[0];
+
+    if (sArr.length &#61;&#61; 1) return first;
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (int i &#61; 1; i &lt; sArr.length; i&#43;&#43;) {
+      sb.append(sArr[i]);
+    }
+
+    String[] tmp &#61; sb.toString().toUpperCase().split(&#34;&#34;);
+    for (int i &#61; 0; i &lt; tmp.length; i&#43;&#43;) {
+      if (i % k &#61;&#61; 0) tmp[i] &#61; &#34;-&#34; &#43; tmp[i];
+    }
+
+    return first &#43; String.join(&#34;&#34;, tmp);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+k &#61; int(input())
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    sArr &#61; s.split(&#34;-&#34;)
+
+    first &#61; sArr[0]
+
+    if len(sArr) &#61;&#61; 1:
+        return first
+
+    tmp &#61; list(&#34;&#34;.join(sArr[1:]).upper())
+    for i in range(len(tmp)):
+        if i % k &#61;&#61; 0:
+            tmp[i] &#61; &#34;-&#34; &#43; tmp[i]
+
+    return first &#43; &#34;&#34;.join(tmp)
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

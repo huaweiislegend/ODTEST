@@ -1,0 +1,204 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 跳房子I（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>跳房子&#xff0c;也叫跳飞机&#xff0c;是一种世界性的儿童游戏。</p> 
+<p>游戏参与者需要分多个回合按顺序跳到第1格直到房子的最后一格。</p> 
+<p>跳房子的过程中&#xff0c;可以向前跳&#xff0c;也可以向后跳。</p> 
+<p>假设房子的总格数是count&#xff0c;小红每回合可能连续跳的步教都放在数组steps中&#xff0c;请问数组中是否有一种步数的组合&#xff0c;可以让小红两个回合跳到量后一格?</p> 
+<p>如果有&#xff0c;请输出索引和最小的步数组合。</p> 
+<p><br /> 注意&#xff1a;</p> 
+<ul><li>数组中的步数可以重复&#xff0c;但数组中的元素不能重复使用。</li><li>提供的数据保证存在满足题目要求的组合&#xff0c;且索引和最小的步数组合是唯一的。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为房子总格数count&#xff0c;它是int整数类型。<br /> 第二行输入为每回合可能连续跳的步数&#xff0c;它是int整数数组类型。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>返回索引和最小的满足要求的步数组合&#xff08;顺序保持steps中原有顺序&#xff09;</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>count ≤ 1000</li><li>0 ≤ steps.length ≤ 5000</li><li>-100000000 ≤ steps[i] ≤ 100000000</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">[1,4,5,2,2]<br /> 7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[5, 2]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">[-1,2,4,9,6]<br /> 8</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[-1, 9]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">此样例有多种组合满足两回合跳到最后&#xff0c;譬如&#xff1a;[-1,9]&#xff0c;[2,6]&#xff0c;其中[-1,9]的索引和为0&#43;3&#61;3&#xff0c;[2,6]的索和为1&#43;4&#61;5&#xff0c;所以索引和最小的步数组合[-1,9]</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题其实就是两数之和&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/131122020?spm&#61;1001.2014.3001.5501" title="LeetCode - 1 两数之和_伏城之外的博客-CSDN博客">LeetCode - 1 两数之和_伏城之外的博客-CSDN博客</a>的变种题。</p> 
+<p>即有一个数组steps&#xff0c;要在其中找到一个二元组&#xff0c;让其和等于count。</p> 
+<p>和leetcode两数之和的区别在于&#xff0c;本题最终解二元组可能有多个解&#xff0c;我们需要在这多个解中找到索引和最小的作为最终解&#xff0c;即我们不仅要求二元组元素之和&#xff0c;还要求二元组索引之和。</p> 
+<p></p> 
+<p>本题解析可以参考上面链接博客。</p> 
+<hr /> 
+<p>2023.08.24</p> 
+<p>新增一个用例</p> 
+<blockquote> 
+ <p>[<span style="color:#fe2c24;">1</span>,2,9,9,9,<span style="color:#fe2c24;">1</span>,9,9,3,2]</p> 
+ <p>4</p> 
+</blockquote> 
+<p>我们需要注意的是&#xff0c;第二个1的索引要大于第一个1的索引&#xff0c;因此后面遇到3时&#xff0c;我们应该让3和第一个1进行匹配&#xff0c;而不是第二个1。</p> 
+<p></p> 
+<p>对应逻辑在&#xff1a;</p> 
+<p>JS&#xff1a;41~43行</p> 
+<p>Java&#xff1a;39行</p> 
+<p>Python&#xff1a;19行</p> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const steps &#61; JSON.parse(await readline());
+  const count &#61; parseInt(await readline());
+
+  console.log(getResult(steps, count));
+})();
+
+function getResult(steps, count) {
+  const map &#61; {};
+
+  let minIdxSum &#61; Infinity;
+  let ans &#61; &#34;&#34;;
+
+  for (let idx1 &#61; 0; idx1 &lt; steps.length; idx1&#43;&#43;) {
+    const step1 &#61; steps[idx1];
+    const step2 &#61; count - step1;
+
+    if (map[step2] !&#61; undefined) {
+      const idx2 &#61; map[step2];
+      const idxSum &#61; idx1 &#43; idx2;
+      if (idxSum &lt; minIdxSum) {
+        minIdxSum &#61; idxSum;
+        ans &#61; &#96;[${step2}, ${step1}]&#96;;
+      }
+    } else {
+      if (map[step1] &#61;&#61; undefined) {
+        map[step1] &#61; idx1;
+      }
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String tmp &#61; sc.nextLine();
+    int[] steps &#61;
+        Arrays.stream(tmp.substring(1, tmp.length() - 1).split(&#34;,&#34;))
+            .mapToInt(Integer::parseInt)
+            .toArray();
+
+    int count &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(steps, count));
+  }
+
+  public static String getResult(int[] steps, int count) {
+    HashMap&lt;Integer, Integer&gt; map &#61; new HashMap&lt;&gt;();
+
+    int minIdxSum &#61; Integer.MAX_VALUE;
+    String ans &#61; &#34;&#34;;
+
+    for (int idx1 &#61; 0; idx1 &lt; steps.length; idx1&#43;&#43;) {
+      int step1 &#61; steps[idx1];
+      int step2 &#61; count - step1;
+
+      if (map.containsKey(step2)) {
+        int idx2 &#61; map.get(step2);
+        int idxSum &#61; idx1 &#43; idx2;
+        if (idxSum &lt; minIdxSum) {
+          minIdxSum &#61; idxSum;
+          ans &#61; &#34;[&#34; &#43; step2 &#43; &#34;, &#34; &#43; step1 &#43; &#34;]&#34;;
+        }
+
+      } else {
+        map.putIfAbsent(step1, idx1);
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import sys
+
+steps &#61; list(map(int, input()[1:-1].split(&#34;,&#34;)))
+count &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    dic &#61; {}
+
+    minIdxSum &#61; sys.maxsize
+    ans &#61; &#34;&#34;
+
+    for idx1 in range(len(steps)):
+        step1 &#61; steps[idx1]
+        step2 &#61; count - step1
+        if dic.get(step2) is None:
+            dic.setdefault(step1, idx1)
+        else:
+            idx2 &#61; dic[step2]
+            idxSum &#61; idx1 &#43; idx2
+            if idxSum &lt; minIdxSum:
+                minIdxSum &#61; idxSum
+                ans &#61; f&#34;[{step2}, {step1}]&#34;
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<p>C算法源码</p> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

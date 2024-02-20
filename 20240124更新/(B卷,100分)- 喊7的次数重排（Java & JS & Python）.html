@@ -1,0 +1,180 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 喊7的次数重排（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>喊7是一个传统的聚会游戏&#xff0c;N个人围成一圈&#xff0c;按顺时针从1到N编号。</p> 
+<p>编号为1的人从1开始喊数&#xff0c;下一个人喊的数字为上一个人的数字加1&#xff0c;但是当将要喊出来的数字是7的倍数或者数字本身含有7的话&#xff0c;不能把这个数字直接喊出来&#xff0c;而是要喊”过”。</p> 
+<p>假定玩这个游戏的N个人都没有失误地在正确的时机喊了”过”&#xff0c;当喊到数字K时&#xff0c;可以统计每个人喊”过”的次数。</p> 
+<p>现给定一个长度为N的数组&#xff0c;存储了打乱顺序的每个人喊”过”的次数&#xff0c;请把它还原成正确的顺序&#xff0c;即数组的第i个元素存储编号i的人喊”过”的次数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为一行&#xff0c;为空格分隔的喊”过”的次数&#xff0c;注意K并不提供&#xff0c;K不超过200&#xff0c;而数字的个数即为N。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出为一行&#xff0c;为顺序正确的喊”过”的次数&#xff0c;也由空格分隔。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:59px;">输入</td><td style="width:439px;">0 1 0</td></tr><tr><td style="width:59px;">输出</td><td style="width:439px;">1 0 0</td></tr><tr><td style="width:59px;">说明</td><td style="width:439px;"> <p>一共只有一次喊”过”&#xff0c;那只会发生在需要喊7时&#xff0c;按顺序&#xff0c;编号为1的人会遇到7&#xff0c;故输出1 0 0。</p> </td></tr><tr><td style="width:59px;">注意</td><td style="width:439px;"> <p>结束时的K不一定是7&#xff0c;也可以是8、9等&#xff0c;喊过的次数都是1 0 0。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:61px;">输入</td><td style="width:437px;">0 0 0 2 1</td></tr><tr><td style="width:61px;">输出</td><td style="width:437px;">0 2 0 1 0</td></tr><tr><td style="width:61px;">说明</td><td style="width:437px;">一共有三次喊”过”&#xff0c;发生在7 14 17&#xff0c;按顺序&#xff0c;编号为2的人会遇到7 17&#xff0c;编号为4的人会遇到14&#xff0c;故输出0 2 0 1 0。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是约瑟夫环问题&#xff0c;有多种解法&#xff0c;可以看下面博客&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/127215504" title="华为OD机试 - 报数游戏&#xff08;Java &amp; JS &amp; Python&#xff09;_华为od 机考 csdn 游戏里面_伏城之外的博客-CSDN博客">华为OD机试 - 报数游戏&#xff08;Java &amp; JS &amp; Python&#xff09;_华为od 机考 csdn 游戏里面_伏城之外的博客-CSDN博客</a></p> 
+<p>本题采用环形数组解法&#xff0c;所谓环形数组&#xff0c;即数组的尾部元素的下一个是数组头部元素</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] arr &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(arr));
+  }
+
+  public static String getResult(Integer[] arr) {
+    // totalGo表示一共喊了多少次过
+    int totalGo &#61; Arrays.stream(arr).reduce(Integer::sum).orElse(0);
+
+    // n表示一共几个人
+    int n &#61; arr.length;
+    // p[i]表示每个人喊了几次过&#xff0c;初始为0
+    int[] p &#61; new int[n];
+
+    // go保存含有7的数字&#xff0c;或者是7倍数的数字
+
+    int i &#61; 1;
+    int j &#61; 0;
+    while (totalGo &gt; 0) {
+      if (i % 7 &#61;&#61; 0 || (i &#43; &#34;&#34;).contains(&#34;7&#34;)) {
+        totalGo--;
+        p[j]&#43;&#43;;
+      }
+      i&#43;&#43;;
+      j&#43;&#43;;
+
+      if (j &gt;&#61; n) j &#61; 0;
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (int v : p) {
+      sj.add(v &#43; &#34;&#34;);
+    }
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34; &#34;).map(Number);
+
+  // n表示一共几个人
+  const n &#61; arr.length;
+  // p数组统计每个人喊过的次数
+  const p &#61; new Array(n).fill(0);
+
+  // totalGo表示一共喊了多少次过
+  let totalGo &#61; arr.reduce((p, c) &#61;&gt; p &#43; c);
+
+  // 每遇7喊过&#xff0c;比如7,14,17,21,27,28,35,37,42&#xff0c;即数字含有7&#xff0c;或者数字是7的倍数
+  let i &#61; 1;
+  let j &#61; 0;
+  while (totalGo) {
+    if (i % 7 &#61;&#61;&#61; 0 || String(i).indexOf(7) !&#61;&#61; -1) {
+      totalGo--;
+      p[j]&#43;&#43;;
+    }
+
+    i&#43;&#43;;
+    j&#43;&#43;;
+
+    if (j &gt;&#61; n) {
+      j &#61; 0;
+    }
+  }
+
+  console.log(p.join(&#34; &#34;));
+});
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    # totalGo表示一共喊了多少次过
+    totalGo &#61; sum(arr)
+
+    # n表示一共几个人
+    n &#61; len(arr)
+    # p[i]表示每个人喊了几次过&#xff0c;初始为0
+    p &#61; [0]*n
+
+    i &#61; 1
+    j &#61; 0
+    while totalGo &gt; 0:
+        if i % 7 &#61;&#61; 0 or str(i).find(&#34;7&#34;) !&#61; -1:
+            totalGo -&#61; 1
+            p[j] &#43;&#61; 1
+        i &#43;&#61; 1
+        j &#43;&#61; 1
+
+        if j &gt;&#61; n:
+            j &#61; 0
+
+    return &#34; &#34;.join(map(str, p))
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,249 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 找出两个整数数组中同时出现的整数（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>现有两个整数数组&#xff0c;需要你找出两个数组中同时出现的整数&#xff0c;并按照如下要求输出:</p> 
+<ol><li>有同时出现的整数时&#xff0c;先按照同时出现次数&#xff08;整数在两个数组中都出现并目出现次数较少的那个&#xff09;进行归类&#xff0c;然后按照出现次数从小到大依次按行输出。</li><li>没有同时出现的整数时&#xff0c;输出NULL。</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为第一个整数数组&#xff0c;第二行为第二个整数数组&#xff0c;每行数中整数与整数之间以英文号分&#xff0c;整数的取值范用为[-200, 200]&#xff0c;数组长度的范用为[1, 10000]之间的整数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>按照出现次数从小到大依次按行输出&#xff0c;每行输出的格式为&#xff1a;</p> 
+<blockquote> 
+ <p>出现次数:该出现次数下的整数升序排序的结果</p> 
+</blockquote> 
+<p>格式中的&#34;:&#34;为英文冒号&#xff0c;整数间以英文逗号分隔。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5,3,6,-8,0,11<br /> 2,8,8,8,-1,15</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">NULL</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> 两个整数数组没有同时出现的整数&#xff0c;输出NULL。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5,8,11,3,6,8,8,-1,11,2,11,11<br /> 11,2,11,8,6,8,8,-1,8,15,3,-9,11</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1:-1,2,3,6<br /> 3:8,11</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">两整数数组中同时出现的整数为-12、3、6、8、11,其中同时出现次数为1的整数为-1,2,3,6(升序排序),同时出现次数为3的整数为8,11(升序排序),先升序输出出现次数为1的整数&#xff0c;再升序输出出现次数为3的整数。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题应该只是考察逻辑处理&#xff0c;以及集合&#xff0c;字典的使用。</p> 
+<p>具体逻辑请看代码注释。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] arr1 &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int[] arr2 &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+
+    getResult(arr1, arr2);
+  }
+
+  public static void getResult(int[] arr1, int[] arr2) {
+    // 统计arr1中各数字出现次数
+    HashMap&lt;Integer, Integer&gt; countMap1 &#61; new HashMap&lt;&gt;();
+    for (int num : arr1) {
+      countMap1.put(num, countMap1.getOrDefault(num, 0) &#43; 1);
+    }
+
+    // 统计arr2中各数字出现次数
+    HashMap&lt;Integer, Integer&gt; countMap2 &#61; new HashMap&lt;&gt;();
+    for (int num : arr2) {
+      countMap2.put(num, countMap2.getOrDefault(num, 0) &#43; 1);
+    }
+
+    // arr1和arr2是否存在相同的数字&#xff0c;假设不存在&#xff0c;即noSameNum &#61; true
+    boolean noSameNum &#61; true;
+
+    // 统计arr1和arr2的相同的数字&#xff0c;并记录对于数字出现的次数&#xff0c;注意sameCountKeys中次数是键&#xff0c;相同数字是值
+    HashMap&lt;Integer, TreeSet&lt;Integer&gt;&gt; sameCountKeys &#61; new HashMap&lt;&gt;();
+    for (Integer num : countMap1.keySet()) {
+      if (countMap2.containsKey(num)) {
+        // 如果数字key在arr1和arr2中都有&#xff0c;则说明存在相同数字&#xff0c;此时noSameNum &#61; false
+        noSameNum &#61; false;
+        // 整数在两个数组中都出现并目出现次数较少的那个
+        int count &#61; Math.min(countMap1.get(num), countMap2.get(num));
+        // sameCountKeys中次数是键&#xff0c;相同数字是值
+        sameCountKeys.putIfAbsent(count, new TreeSet&lt;&gt;());
+        sameCountKeys.get(count).add(num);
+      }
+    }
+
+    // 如果两个数组之间没有相同数字&#xff0c;则输出&#34;NULL&#34;
+    if (noSameNum) {
+      System.out.println(&#34;NULL&#34;);
+      return;
+    }
+
+    // 否则&#xff0c;按照相同数字的出现次数升序&#xff0c;来打印对应次数下的相同数字列表&#xff0c;注意相同数字列表存入的是TreeSet&#xff0c;因此自然升序
+    sameCountKeys.keySet().stream()
+        .sorted()
+        .forEach(
+            count -&gt; {
+              StringJoiner sj &#61; new StringJoiner(&#34;,&#34;, count &#43; &#34;:&#34;, &#34;&#34;);
+              for (Integer num : sameCountKeys.get(count)) {
+                sj.add(num &#43; &#34;&#34;);
+              }
+              System.out.println(sj.toString());
+            });
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    const arr1 &#61; lines[0].split(&#34;,&#34;).map(Number);
+    const arr2 &#61; lines[1].split(&#34;,&#34;).map(Number);
+    getResult(arr1, arr2);
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr1, arr2) {
+  // 统计arr1中各数字出现次数
+  const count1 &#61; new Map();
+  for (let num of arr1) {
+    count1.set(num, (count1.get(num) ?? 0) &#43; 1);
+  }
+
+  // 统计arr2中各数字出现次数
+  const count2 &#61; new Map();
+  for (let num of arr2) {
+    count2.set(num, (count2.get(num) ?? 0) &#43; 1);
+  }
+
+  // arr1和arr2是否存在相同的数字&#xff0c;假设不存在&#xff0c;即noSameNum &#61; true
+  let noSameNum &#61; true;
+
+  // 统计arr1和arr2的相同的数字&#xff0c;并记录对于数字出现的次数&#xff0c;注意sameCountKeys中次数是键&#xff0c;相同数字是值
+  const sameCountNums &#61; new Map();
+
+  for (let num of count1.keys()) {
+    if (count2.get(num) !&#61;&#61; undefined) {
+      // 如果数字key在arr1和arr2中都有&#xff0c;则说明存在相同数字&#xff0c;此时noSameNum &#61; false
+      noSameNum &#61; false;
+      // 整数在两个数组中都出现并目出现次数较少的那个
+      const count &#61; Math.min(count1.get(num), count2.get(num));
+
+      // sameCountKeys中次数是键&#xff0c;相同数字是值
+      sameCountNums.set(count, sameCountNums.get(count) ?? []);
+      sameCountNums.get(count).push(num);
+    }
+  }
+
+  // 如果两个数组之间没有相同数字&#xff0c;则输出&#34;NULL&#34;
+  if (noSameNum) {
+    console.log(&#34;NULL&#34;);
+    return;
+  }
+
+  // 否则&#xff0c;按照相同数字的出现次数升序&#xff0c;来打印对应次数下的相同数字列表&#xff0c;注意相同数字列表也要进行升序
+  [...sameCountNums.keys()]
+    .sort((a, b) &#61;&gt; a - b)
+    .forEach((count) &#61;&gt; {
+      console.log(
+        &#96;${count}:${sameCountNums
+          .get(count)
+          .sort((a, b) &#61;&gt; a - b)
+          .join(&#34;,&#34;)}&#96;
+      );
+    });
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr1 &#61; list(map(int, input().split(&#34;,&#34;)))
+arr2 &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+# 算法入口
+def getResult():
+    # 统计arr1中各数字出现次数
+    count1 &#61; {}
+    for num in arr1:
+        count1[num] &#61; count1.get(num, 0) &#43; 1
+
+    # 统计arr2中各数字出现次数
+    count2 &#61; {}
+    for num in arr2:
+        count2[num] &#61; count2.get(num, 0) &#43; 1
+
+    # arr1和arr2是否存在相同的数字&#xff0c;假设不存在&#xff0c;即noSameNum &#61; true
+    noSameNum &#61; True
+
+    # 统计arr1和arr2的相同的数字&#xff0c;并记录对于数字出现的次数&#xff0c;注意sameCountKeys中次数是键&#xff0c;相同数字是值
+    sameCountNums &#61; {}
+
+    for num in count1.keys():
+        if num in count2.keys():
+            # 如果数字key在arr1和arr2中都有&#xff0c;则说明存在相同数字&#xff0c;此时noSameNum &#61; false
+            noSameNum &#61; False
+            # 整数在两个数组中都出现并目出现次数较少的那个
+            count &#61; min(count1[num], count2[num])
+
+            # sameCountKeys中次数是键&#xff0c;相同数字是值
+            if sameCountNums.get(count) is None:
+                sameCountNums[count] &#61; []
+            sameCountNums[count].append(num)
+
+    # 如果两个数组之间没有相同数字&#xff0c;则输出&#34;NULL&#34;
+    if noSameNum:
+        print(&#34;NULL&#34;)
+        return
+
+    # 否则&#xff0c;按照相同数字的出现次数升序&#xff0c;来打印对应次数下的相同数字列表
+    tmp &#61; list(sameCountNums.keys())
+    tmp.sort()
+
+    for count in tmp:
+        # 注意相同数字列表也要升序
+        sameCountNums[count].sort()
+        print(f&#34;{count}:{&#39;,&#39;.join(map(str, sameCountNums[count]))}&#34;)
+
+
+# 算法调用
+getResult()
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

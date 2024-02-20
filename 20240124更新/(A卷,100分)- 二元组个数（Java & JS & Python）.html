@@ -1,0 +1,221 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 二元组个数（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定两个数组a&#xff0c;b&#xff0c;若a[i] &#61;&#61; b[j] 则称 [i, j] 为一个二元组&#xff0c;求在给定的两个数组中&#xff0c;二元组的个数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入 m<br /> 第二行输入m个数&#xff0c;表示第一个数组</p> 
+<p>第三行输入 n<br /> 第四行输入n个数&#xff0c;表示第二个数组</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>二元组个数。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 1 2 3 4<br /> 1<br /> 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">二元组个数为 1个</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6<br /> 1 1 2 2 4 5<br /> 3<br /> 2 2 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">二元组个数为 5 个。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>很简单的双重for&#xff0c;</p> 
+<pre><code class="language-javascript">/**
+ *
+ * &#64;param {Array} arrM 第二行输入的数组
+ * &#64;param {Number} m 第一行输入的数字m
+ * &#64;param {Array} arrN 第四行输入的数组
+ * &#64;param {Number} n 第二行输入的数字n
+ * &#64;returns
+ */
+function getResult(arrM, m, arrN, n) {
+  let count &#61; 0;
+
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+      if (arrM[i] &#61;&#61;&#61; arrN[j]) {
+        count&#43;&#43;;
+      }
+    }
+  }
+
+  return count;
+}
+</code></pre> 
+<p>但是不知道数量级多少&#xff0c;如果数量级比较大的话&#xff0c;则O(n*m)可能罩不住。</p> 
+<p>因此&#xff0c;我们还需要考虑下大数量级的情况。</p> 
+<p>我的思路如下&#xff1a;</p> 
+<p>先找找出m数组中&#xff0c;在n数组中出现的数及个数&#xff0c;在找出n数组中&#xff0c;在m数组中出现的数及个数&#xff0c;比如&#xff1a;</p> 
+<p>用例2中</p> 
+<p>countM &#61; {2:2, 4:1}</p> 
+<p>countN &#61; {2:2, 4:1}</p> 
+<p>然后将相同数的个数相乘&#xff0c;最后求和即为题解&#xff0c;比如2*2 &#43; 1*1 &#61; 5</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 4) {
+    const m &#61; lines[0] - 0;
+    const arrM &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    const n &#61; lines[2] - 0;
+    const arrN &#61; lines[3].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(arrM, m, arrN, n));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arrM, m, arrN, n) {
+  const setM &#61; new Set(arrM);
+  const setN &#61; new Set(arrN);
+
+  const countM &#61; {};
+  for (let m of arrM) {
+    if (setN.has(m)) countM[m] ? countM[m]&#43;&#43; : (countM[m] &#61; 1);
+  }
+
+  const countN &#61; {};
+  for (let n of arrN) {
+    if (setM.has(n)) countN[n] ? countN[n]&#43;&#43; : (countN[n] &#61; 1);
+  }
+
+  let count &#61; 0;
+  for (let k in countM) {
+    count &#43;&#61; countM[k] * countN[k];
+  }
+
+  return count;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+import java.util.stream.Collectors;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; Integer.parseInt(sc.nextLine());
+    List&lt;Integer&gt; listM &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).collect(Collectors.toList());
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+    List&lt;Integer&gt; listN &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).collect(Collectors.toList());
+
+    System.out.println(getResult(listM, listN));
+  }
+
+  public static int getResult(List&lt;Integer&gt; listM, List&lt;Integer&gt; listN) {
+    HashSet&lt;Integer&gt; setM &#61; new HashSet&lt;Integer&gt;(listM);
+    HashSet&lt;Integer&gt; setN &#61; new HashSet&lt;Integer&gt;(listN);
+
+    HashMap&lt;Integer, Integer&gt; countM &#61; new HashMap&lt;&gt;();
+    for (Integer m : listM) {
+      if (setN.contains(m)) {
+        countM.put(m, countM.getOrDefault(m, 0) &#43; 1);
+      }
+    }
+
+    HashMap&lt;Integer, Integer&gt; countN &#61; new HashMap&lt;&gt;();
+    for (Integer n : listN) {
+      if (setM.contains(n)) {
+        countN.put(n, countN.getOrDefault(n, 0) &#43; 1);
+      }
+    }
+
+    int count &#61; 0;
+    for (Integer k : countM.keySet()) {
+      count &#43;&#61; countM.get(k) * countN.get(k);
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+arrM &#61; list(map(int, input().split()))
+
+n &#61; int(input())
+arrN &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(arrM, arrN):
+    setM &#61; set(arrM)
+    setN &#61; set(arrN)
+
+    countM &#61; {}
+    for m in arrM:
+        if m in setN:
+            if countM.get(m) is None:
+                countM[m] &#61; 1
+            else:
+                countM[m] &#43;&#61; 1
+
+    countN &#61; {}
+    for n in arrN:
+        if n in setM:
+            if countN.get(n) is None:
+                countN[n] &#61; 1
+            else:
+                countN[n] &#43;&#61; 1
+
+    count &#61; 0
+    for k in countM.keys():
+        count &#43;&#61; countM[k] * countN[k]
+
+    return count
+
+
+# 算法调用
+print(getResult(arrM, arrN))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

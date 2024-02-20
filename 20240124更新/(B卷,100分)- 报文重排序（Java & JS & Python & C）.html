@@ -1,0 +1,234 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 报文重排序（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>对报文进行重传和重排序是常用的可靠性机制&#xff0c;重传缓中区内有一定数量的子报文&#xff0c;每个子报文在原始报文中的顺序已知&#xff0c;现在需要恢复出原始报文。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入第一行为N&#xff0c;表示子报文的个数&#xff0c;0 &#xff1c;N ≤ 1000。<br /> 输入第二行为N个子报文&#xff0c;以空格分开&#xff0c;子报文格式为&#xff1a;</p> 
+<blockquote> 
+ <p>字符审报文内容&#43;后缀顺序索引</p> 
+</blockquote> 
+<p>字符串报文内容由[a-z,A-Z]组成&#xff0c;后缀为整型值&#xff0c;表示顺序。</p> 
+<p>顺序值唯一&#xff0c;不重复。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出恢复出的原始报文&#xff0c;按照每个子报文的顺序的升序排序恢复出原始报文&#xff0c;顺序后缀需要从恢复出的报文中删除掉</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> rolling3 stone4 like1 a2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">like a rolling stone</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">4个子报文的内容分别为 &#34;rolling&#34;&#xff0c;&#34;stone&#34;&#xff0c;&#34;like&#34;&#xff0c;&#34;a&#34;&#xff0c;顺序值分别为3&#xff0c;4&#xff0c;1&#xff0c;2&#xff0c;按照顺序值升序并删除顺序后缀&#xff0c;得到恢复的原始报文&#xff1a;&#34;like a rolling stone“</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">8<br /> gifts6 and7 Exchanging1 all2 precious5 things8 kinds3 of4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">Exchanging all kinds of precious gifts and things</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>考察字符串操作。</p> 
+<p>这题解析“字符审报文内容”、&#34;后缀顺序索引&#34;时&#xff0c;我使用了正则匹配的捕获组。</p> 
+<hr /> 
+<p>2023.06.04</p> 
+<p>本题需要考虑下后缀顺序索引不连续的情况&#xff0c;即不是严格的0~N-1序号</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+  static class Word {
+    int id;
+    String content;
+
+    public Word(int id, String content) {
+      this.id &#61; id;
+      this.content &#61; content;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+    String[] arr &#61; sc.nextLine().split(&#34; &#34;);
+
+    System.out.println(getResult(n, arr));
+  }
+
+  public static String getResult(int n, String[] arr) {
+    ArrayList&lt;Word&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    Pattern pattern &#61; Pattern.compile(&#34;([a-zA-Z]&#43;)(\\d&#43;)&#34;);
+
+    for (String s : arr) {
+      Matcher matcher &#61; pattern.matcher(s);
+      if (matcher.find()) {
+        String content &#61; matcher.group(1);
+        int i &#61; Integer.parseInt(matcher.group(2)) - 1;
+        ans.add(new Word(i, content));
+      }
+    }
+
+    ans.sort((a, b) -&gt; a.id - b.id);
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (Word an : ans) {
+      sj.add(an.content);
+    }
+    return sj.toString();
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const n &#61; parseInt(lines[0]);
+    const arr &#61; lines[1].split(&#34; &#34;);
+
+    console.log(getResult(n, arr));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, arr) {
+  const ans &#61; [];
+
+  const reg &#61; /([a-zA-Z]&#43;)(\d&#43;)/;
+
+  for (let s of arr) {
+    const res &#61; reg.exec(s);
+
+    if (res.length &lt; 3) continue;
+
+    const content &#61; res[1];
+    const i &#61; parseInt(res[2]) - 1;
+    ans.push([i, content]);
+  }
+
+  return ans
+    .sort((a, b) &#61;&gt; a[0] - b[0])
+    .map((x) &#61;&gt; x[1])
+    .join(&#34; &#34;);
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import re
+
+n &#61; int(input())
+arr &#61; input().split()
+
+
+# 算法入口
+def getResult():
+    ans &#61; []
+
+    reg &#61; re.compile(r&#34;([a-zA-Z]&#43;)(\d&#43;)&#34;)
+
+    for s in arr:
+        matcher &#61; reg.search(s)
+
+        if matcher is None:
+            continue
+
+        content &#61; matcher.group(1)
+        i &#61; int(matcher.group(2)) - 1
+
+        ans.append([i, content])
+
+    ans.sort(key&#61;lambda x: x[0])
+
+    return &#34; &#34;.join(map(lambda x: x[1], ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_LEN 100
+
+typedef struct {
+    int id;
+    char content[MAX_LEN];
+} Word;
+
+int cmp(const void *a, const void *b) {
+    return ((Word *) a)-&gt;id - ((Word *) b)-&gt;id;
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    getchar(); // 读取掉第一行结尾的换行符
+
+    Word *words &#61; (Word *) calloc(n, sizeof(Word));
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%[^0-9]%d&#34;, words[i].content, &amp;words[i].id);
+        getchar(); // 读取掉空格&#xff0c;换行符
+    }
+
+    qsort(words, n, sizeof(Word), cmp);
+
+    char res[100000];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        strcat(res, words[i].content);
+        strcat(res, &#34; &#34;);
+    }
+
+    // 上面逻辑会在res末尾多拼接一个空格&#xff0c;这里去掉该空格
+    res[strlen(res) - 1] &#61; &#39;\0&#39;;
+
+    puts(res);
+
+    return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

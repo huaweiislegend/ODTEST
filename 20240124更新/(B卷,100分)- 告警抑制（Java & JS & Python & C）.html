@@ -1,0 +1,280 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 告警抑制（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>告警抑制&#xff0c;是指高优先级告警抑制低优先级告警的规则。高优先级告警产生后&#xff0c;低优先级告警不再产生。请根据原始告警列表和告警抑制关系&#xff0c;给出实际产生的告警列表。</p> 
+<ul><li>不会出现循环抑制的情况。</li><li>告警不会传递&#xff0c;比如A-&gt;B,B-&gt;C&#xff0c;这种情况下A不会直接抑制C。但被抑制的告警仍然可以抑制其他低优先级告警。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为数字N&#xff0c;表示告警抑制关系个数&#xff0c;0 ≤ N ≤ 120<br /> 接下来N行&#xff0c;每行是由空格分隔的两个告警ID&#xff0c;例如: id1 id2&#xff0c;表示id1抑制id2&#xff0c;告警ID的格式为&#xff1a;</p> 
+<blockquote> 
+ <p>大写字母&#43;0个或者1个数字</p> 
+</blockquote> 
+<p>最后一行为告警产生列表&#xff0c;列表长度[1,100]</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>真实产生的告警列表</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>告警ID之间以单个空格分隔</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> A B<br /> B C<br /> A B C D E</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">A D E</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">A抑制了B&#xff0c;B抑制了C&#xff0c;最后实际的告警为A D E</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> F G<br /> C B<br /> A G<br /> A0 A<br /> A B C D E</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">A C D E</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我们基于用例2来说明下这题。</p> 
+<p>有一个告警列表alertList&#xff0c;A B C D E&#xff0c;我们逐一检查对应的告警是否可以正常发生&#xff1a;</p> 
+<ul><li>第一个告警A&#xff0c;能够抑制它的只有A0&#xff0c;而当前告警列表alertList中没有A0&#xff0c;因此告警A可以正常发生</li><li><span style="color:#fe2c24;">第二个告警B&#xff0c;能够抑制它的只有C&#xff0c;而当前告警列表alertList中有C&#xff0c;因此告警B被抑制&#xff0c;不可以发生</span></li><li>第三个告警C&#xff0c;没有能抑制它的告警&#xff0c;因此正常发生</li><li>第四个告警D&#xff0c;没有能抑制它的告警&#xff0c;因此正常发生</li><li>第五个告警E&#xff0c;没有能抑制它的告警&#xff0c;因此正常发生</li></ul> 
+<p></p> 
+<p>因此&#xff0c;本题的解题思路很简单&#xff0c;只需要记录每一个告警id2的所有抑制它的告警集合id1s&#xff0c;然后遍历告警列表alertList&#xff0c;遍历每一个告警id2&#xff1a;</p> 
+<ul><li>如果没有可以抑制id2的更高级的告警&#xff0c;则id2正常发生</li><li>如果有可以抑制id2的更告警的告警id1&#xff0c;但是id1没有出现在alertList中&#xff0c;则id2正常发生</li><li>其他情况&#xff0c;id2不可以发生</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+
+    HashMap&lt;String, HashSet&lt;String&gt;&gt; fa &#61; new HashMap&lt;&gt;();
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      String[] tmp &#61; sc.nextLine().split(&#34; &#34;);
+      // id1抑制id2
+      String id1 &#61; tmp[0], id2 &#61; tmp[1];
+      fa.putIfAbsent(id2, new HashSet&lt;&gt;());
+      // fa用于记录抑制id2的所有id1的集合
+      fa.get(id2).add(id1);
+    }
+
+    String[] alertList &#61; sc.nextLine().split(&#34; &#34;);
+
+    System.out.println(getResult(fa, alertList));
+  }
+
+  public static String getResult(HashMap&lt;String, HashSet&lt;String&gt;&gt; fa, String[] alertList) {
+    HashSet&lt;String&gt; alertSet &#61; new HashSet&lt;&gt;(Arrays.asList(alertList));
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+
+    for (String id2 : alertList) {
+      // 如果没有抑制id2的更高级的告警&#xff0c;或者有抑制id2的更高级的告警&#xff0c;但是此高级告警没有出现在alertList列表中
+      if (!fa.containsKey(id2) || Collections.disjoint(fa.get(id2), alertSet)) {
+        // 此时id2就可以正常告警
+        sj.add(id2);
+      }
+    }
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n !&#61;&#61; undefined &amp;&amp; lines.length &#61;&#61; n &#43; 2) {
+    lines.shift();
+    const alertList &#61; lines.pop().split(&#34; &#34;);
+    const relations &#61; lines.map((str) &#61;&gt; str.split(&#34; &#34;));
+    console.log(getResult(relations, alertList));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(relations, alertList) {
+  const fa &#61; {};
+
+  for (let [id1, id2] of relations) {
+    // id1抑制id2
+    if (!fa[id2]) fa[id2] &#61; new Set();
+    // fa用于记录抑制id2的所有id1的集合
+    fa[id2].add(id1);
+  }
+
+  const alertSet &#61; new Set(alertList);
+
+  const ans &#61; [];
+  for (let id2 of alertList) {
+    // 如果没有抑制id2的更高级的告警&#xff0c;或者有抑制id2的更高级的告警&#xff0c;但是此高级告警没有出现在alertList列表中
+    if (disjoint(alertSet, fa[id2])) {
+      // 此时id2就可以正常告警
+      ans.push(id2);
+    }
+  }
+
+  return ans.join(&#34; &#34;);
+}
+
+// 判断两个集合是否不相交&#xff0c;不相交返回true&#xff0c;相交返回false
+function disjoint(set1, set2) {
+  if (!set1 || !set2) return true;
+
+  for (let id1 of set1) {
+    if (set2.has(id1)) return false;
+  }
+  return true;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+relations &#61; [input().split() for _ in range(n)]
+alertList &#61; input().split()
+
+
+# 算法入口
+def getResult():
+    fa &#61; {}
+
+    # id1抑制id2
+    for id1, id2 in relations:
+        if fa.get(id2) is None:
+            fa[id2] &#61; set()
+        # fa用于记录抑制id2的所有id1的集合
+        fa[id2].add(id1)
+
+    alertSet &#61; set(alertList)
+
+    ans &#61; []
+
+    for id2 in alertList:
+        # 如果没有抑制id2的更高级的告警&#xff0c;或者有抑制id2的更高级的告警&#xff0c;但是此高级告警没有出现在alertList列表中
+        if fa.get(id2) is None or alertSet.isdisjoint(fa[id2]):
+            # 此时id2就可以正常告警
+            ans.append(id2)
+
+    return &#34; &#34;.join(ans)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+// 告警ID字符串的长度
+#define ALERT_ID_LEN 3
+// 告警产生列表的最大长度
+#define MAX_ALERT_LIST_SIZE 100
+
+typedef struct {
+    char id1[ALERT_ID_LEN];
+    char id2[ALERT_ID_LEN];
+} Relation;
+
+// 判断告警列表alertList中是否出现了告警alertId
+int has(char alertList[][ALERT_ID_LEN], int alertList_size, char *alertId) {
+    for (int i &#61; 0; i &lt; alertList_size; i&#43;&#43;) {
+        if (strcmp(alertList[i], alertId) &#61;&#61; 0) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int main() {
+    // 告警抑制关系个数
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    // 告警抑制关系
+    Relation *relations &#61; (Relation *) malloc(sizeof(Relation) * n);
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%s %s&#34;, relations[i].id1, relations[i].id2);
+    }
+
+    // 告警产生列表
+    char alertList[MAX_ALERT_LIST_SIZE][ALERT_ID_LEN] &#61; {&#39;\0&#39;};
+    int alertList_size &#61; 0;
+    while (scanf(&#34;%s&#34;, alertList[alertList_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    // 记录返回值
+    char res[10000];
+
+    for (int i &#61; 0; i &lt; alertList_size; i&#43;&#43;) {
+        // 当前产生的告警ID
+        char *alertId &#61; alertList[i];
+
+        // 该告警ID是否可以正常告警&#xff0c;默认可以
+        int canAlert &#61; 1;
+
+        // 遍历告警抑制关系
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            // 告警抑制关系中存在 alertId&#xff0c;且alertId是被抑制的哪个告警&#xff08;即relations[j].id2&#xff09;&#xff0c;那么如果告警产生列表中存在 relations[j].id1 的话&#xff0c;则当前alertId 告警被抑制&#xff0c;无法正常告警
+            if (strcmp(relations[j].id2, alertId) &#61;&#61; 0 &amp;&amp; has(alertList, alertList_size, relations[j].id1)) {
+                canAlert &#61; 0;
+                break;
+            }
+        }
+
+        // 如果当前告警ID未被抑制&#xff0c;则可以告警
+        if(canAlert) {
+            strcat(res, alertId);
+            strcat(res, &#34; &#34;);
+        }
+    }
+
+    res[strlen(res) - 1] &#61; &#39;\0&#39;; // 上面会产生一个尾部多余空格&#xff0c;这里将其去除
+    puts(res);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

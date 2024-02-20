@@ -1,0 +1,456 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 乘坐保密电梯（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一座保密大楼&#xff0c;你从0楼到达指定楼层m&#xff0c;必须这样的规则乘坐电梯&#xff1a;</p> 
+<p>给定一个数字序列&#xff0c;每次根据序列中的数字n&#xff0c;上升n层或者下降n层&#xff0c;前后两次的方向必须相反&#xff0c;规定首次的方向向上&#xff0c;自行组织序列的顺序按规定操作到达指定楼层。</p> 
+<p>求解到达楼层的序列组合&#xff0c;如果不能到达楼层&#xff0c;给出小于该楼层的最近序列组合。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行&#xff1a;期望的楼层&#xff0c;取值范围[1,50]; 序列总个数&#xff0c;取值范围[1,23]</p> 
+<p>第二行&#xff1a;序列&#xff0c;每个值取值范围[1,50]</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>能够达到楼层或者小于该楼层最近的序列</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>操作电梯时不限定楼层范围。</li><li>必须对序列中的每个项进行操作&#xff0c;不能只使用一部分。</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 3<br /> 1 2 6</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">6 2 1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">1 2 6&#xff0c;6 2 1均为可行解&#xff0c;按先处理大值的原则结果为6 2 1</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>由于题目说</p> 
+<blockquote> 
+ <p>给定一个数字序列&#xff0c;每次根据序列中的数字n&#xff0c;上升n层或者下降n层&#xff0c;前后两次的方向必须相反&#xff0c;规定首次的方向向上&#xff0c;自行组织序列的顺序按规定操作到达指定楼层</p> 
+</blockquote> 
+<p>因此&#xff0c;我们可以认为要从数字序列中选出两组数&#xff0c;一组是上升&#xff0c;一组是下降</p> 
+<p>假设数字序列总个数n&#xff0c;期望楼层是t</p> 
+<ul><li>如果n是偶数&#xff0c;则上升组要选n/2个&#xff0c;其余的都是下降组</li><li>如果n是奇数&#xff0c;则上升组要选n/2&#43;1个&#xff0c;其余的都是下降组</li></ul> 
+<p>假设数字序列所有元素之和是 sum&#xff0c;而上升组的和upSum&#xff0c;那么下降组的和就是sum - upSum&#xff0c;</p> 
+<p>如果 upSum - (sum - upSum) &lt;&#61; t&#xff0c;那么当前分组就是一个可能解&#xff0c;而其中sum&#xff0c;t都是已知的&#xff0c;因此可以转化为如下&#xff1a;</p> 
+<p>upSum  &lt;&#61; (sum &#43; t) / 2</p> 
+<p>即&#xff0c;我们要从给定的数字序列中选择固定数量&#xff08;n/2或者n/2&#43;1&#xff09;个&#xff0c;让他的和小于且最接近或等于 (sum &#43; t) / 2。</p> 
+<p>本题数量级不大&#xff0c;可以当成组合问题求解。</p> 
+<p></p> 
+<p>组合求解时&#xff0c;有个难点&#xff0c;那就是我们求解的组合是上升序列&#xff0c;而最终题目要求返回的是整体序列。因此如果求组合&#xff0c;我们只记录上升序列的话&#xff0c;则后期还要过滤剩余的下降序列&#xff0c;然后再将二者进行交叉合并&#xff0c;这就非常麻烦了。</p> 
+<p>我的思路是&#xff0c;定义一个boolean数组&#xff0c;名字是path&#xff0c;长度和nums相同&#xff0c;如果对应的nums[i]是上升序列的元素&#xff0c;则将path[i] &#61; true。</p> 
+<p>最后&#xff0c;我们只要根据path即可快速分类出nums中哪些元素是上升序列的&#xff0c;哪些元素是下降序列的。</p> 
+<p></p> 
+<p>另外&#xff0c;题目自带用例的说明中提到&#xff1a;</p> 
+<blockquote> 
+ <p>1 2 6&#xff0c;6 2 1均为可行解&#xff0c;按先处理大值的原则结果为6 2 1</p> 
+</blockquote> 
+<p>貌似是一个组合对应多个排列的情况&#xff0c;这个解决方案是&#xff0c;我们可以在求组合之前&#xff0c;就将nums进行降序&#xff0c;这样先被选进组合的元素必然是大值&#xff0c;因此最后交叉合并的目标序列肯定只会是6 2 1&#xff0c;而不会是1 2 6。</p> 
+<p>还有一个问题&#xff0c;那就是可能存在多个组合都是最优解的情况&#xff0c;此时我们依旧要按照先处理大值的原则&#xff0c;因此下面代码中我实现了compare方法来从多个最优解中选出先处理大值的。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+
+// 期望的楼层, 序列总个数, 序列
+let m, n, nums;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    [m, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+    nums &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(getResult());
+
+    lines.length &#61; 0;
+  }
+});
+
+let expectUpCount &#61; 0; // 上升序列组合的元素个数
+let limitUpSum &#61; 0; // 上升序列组合的元素之和的上限
+let maxUpSumBelowLimit &#61; 0; // 记录不超过limitUpSum的最大的上升序列的和&#xff0c;该变量用于帮助ans剔除不是最优解的上升序列
+const paths &#61; []; // paths记录求组合过程中发现的符合要求的序列
+
+function getResult() {
+  // 计算expectUpCount、limitUpSum
+  const sum &#61; nums.reduce((a, b) &#61;&gt; a &#43; b);
+  expectUpCount &#61; Math.ceil(n / 2);
+  limitUpSum &#61; Math.floor((sum &#43; m) / 2);
+
+  // 将原始序列降序
+  nums.sort((a, b) &#61;&gt; b - a);
+
+  // 求组合
+  dfs(0, new Array(n).fill(false), 0, 0);
+
+  // 本题没有说明异常处理&#xff0c;我理解应该不会存在paths.size &#61;&#61; 0的情况&#xff0c;但是为了保险&#xff0c;还是处理一下
+  if (paths.length &#61;&#61; 0) return &#34;-1&#34;;
+
+  // 首先将paths转化为结果序列&#xff0c;然后对结果序列进行排序&#xff0c;排序规则是&#xff1a;按先处理大值的原则, 最后取出最优解
+  return paths
+    .map((path) &#61;&gt; getSeq(path))
+    .sort((a, b) &#61;&gt; compare(a, b))[0]
+    .join(&#34; &#34;);
+}
+
+/**
+ * 该方法用于选取出上升序列的组合
+ * &#64;param {*} index 当前层级能选取的元素范围的起始索引
+ * &#64;param {*} path 记录上升序列组合&#xff0c;注意path这里采用的是nums.length长度的boolean[]数组&#xff0c;如果path[i]为true&#xff0c;则代表nums[i]是上升&#xff0c;否则nums[i]就是下降
+ * &#64;param {*} sum 上升序列组合的元素和
+ * &#64;param {*} count 上升序列组合的元素个数
+ * &#64;returns
+ */
+function dfs(index, path, sum, count) {
+  // 如果上升序列元素个数超过了expectUpCount, 则结束对应递归
+  if (count &gt; expectUpCount) return;
+
+  if (count &#61;&#61; expectUpCount) {
+    // 非更优解&#xff0c;直接剔除
+    if (sum &lt; maxUpSumBelowLimit) return;
+
+    // 发现更优解&#xff0c;则清空paths
+    if (sum &gt; maxUpSumBelowLimit) {
+      maxUpSumBelowLimit &#61; sum;
+      paths.length &#61; 0;
+    }
+
+    // 记录对应解
+    paths.push([...path]);
+    return;
+  }
+
+  for (let i &#61; index; i &lt; nums.length; i&#43;&#43;) {
+    const num &#61; nums[i];
+
+    if (sum &#43; num &gt; limitUpSum) continue;
+
+    path[i] &#61; true;
+    dfs(i &#43; 1, path, sum &#43; num, count &#43; 1);
+    path[i] &#61; false;
+  }
+}
+
+// 根据path解析出上升序列和下降序列&#xff0c;并对上升序列和下降序列进行交叉合并&#xff0c;形成目标序列
+function getSeq(path) {
+  // 上升序列
+  const up &#61; [];
+  // 下降序列
+  const down &#61; [];
+
+  // 根据path解析出上升序列、下降序列
+  for (let i &#61; 0; i &lt; nums.length; i&#43;&#43;) {
+    if (path[i]) up.push(nums[i]);
+    else down.push(nums[i]);
+  }
+
+  // 目标序列容器
+  const seq &#61; [];
+
+  // 交叉合并
+  for (let i &#61; 0; i &lt; nums.length / 2; i&#43;&#43;) {
+    seq.push(up.shift());
+    seq.push(down.shift());
+  }
+
+  if (up.length &gt; 0) {
+    seq.push(up.shift());
+  }
+
+  return seq;
+}
+
+// 比较相同长度的两个集合的大小, 按逐个元素比较
+function compare(arr1, arr2) {
+  for (let i &#61; 0; i &lt; arr1.length; i&#43;&#43;) {
+    if (arr1[i] &gt; arr2[i]) return -1;
+    if (arr1[i] &lt; arr2[i]) return 1;
+  }
+  return 0;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+import java.util.stream.Collectors;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    // 期望的楼层, 序列总个数
+    int m &#61; sc.nextInt(), n &#61; sc.nextInt();
+
+    // 序列
+    Integer[] nums &#61; new Integer[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) nums[i] &#61; sc.nextInt();
+
+    System.out.println(getResult(m, n, nums));
+  }
+
+  static int expectUpCount; // 上升序列组合的元素个数
+  static int limitUpSum; // 上升序列组合的元素之和的上限
+  static int maxUpSumBelowLimit &#61; 0; // 记录不超过limitUpSum的最大的上升序列的和&#xff0c;该变量用于帮助ans剔除不是最优解的上升序列
+  static ArrayList&lt;boolean[]&gt; paths &#61; new ArrayList&lt;&gt;(); // paths记录求组合过程中发现的符合要求的序列
+
+  public static String getResult(int m, int n, Integer[] nums) {
+    // 计算expectUpCount、limitUpSum
+    int sum &#61; Arrays.stream(nums).reduce(Integer::sum).orElse(0);
+    expectUpCount &#61; n / 2 &#43; n % 2;
+    limitUpSum &#61; (sum &#43; m) / 2;
+
+    // 将原始序列降序
+    Arrays.sort(nums, (a, b) -&gt; b - a);
+
+    // 求组合
+    dfs(nums, 0, new boolean[n], 0, 0);
+
+    // 本题没有说明异常处理&#xff0c;我理解应该不会存在paths.size &#61;&#61; 0的情况&#xff0c;但是为了保险&#xff0c;还是处理一下
+    if (paths.size() &#61;&#61; 0) {
+      return &#34;-1&#34;;
+    }
+
+    // 首先将paths转化为结果序列&#xff0c;然后对结果序列进行排序&#xff0c;排序规则是&#xff1a;按先处理大值的原则, 最后取出最优解
+    ArrayList&lt;Integer&gt; ans &#61;
+      paths.stream()
+        .map(path -&gt; getSeq(path, nums))
+        .sorted((seq1, seq2) -&gt; compare(seq1, seq2))
+        .collect(Collectors.toList())
+        .get(0);
+
+    // 打印最优序列
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (Integer v : ans) sj.add(v &#43; &#34;&#34;);
+    return sj.toString();
+  }
+
+  /**
+   * 该方法用于选取出上升序列的组合
+   *
+   * &#64;param nums 原始序列&#xff08;降序排序后&#xff09;
+   * &#64;param index 当前层级能选取的元素范围的起始索引
+   * &#64;param path
+   *     记录上升序列组合&#xff0c;注意path这里采用的是nums.length长度的boolean[]数组&#xff0c;如果path[i]为true&#xff0c;则代表nums[i]是上升&#xff0c;否则nums[i]就是下降
+   * &#64;param sum 上升序列组合的元素和
+   * &#64;param count 上升序列组合的元素个数
+   */
+  public static void dfs(Integer[] nums, int index, boolean[] path, int sum, int count) {
+    // 如果上升序列元素个数超过了expectUpCount, 则结束对应递归
+    if (count &gt; expectUpCount) return;
+
+    if (count &#61;&#61; expectUpCount) {
+      // 非更优解&#xff0c;直接剔除
+      if (sum &lt; maxUpSumBelowLimit) return;
+
+      // 发现更优解&#xff0c;则清空paths
+      if (sum &gt; maxUpSumBelowLimit) {
+        maxUpSumBelowLimit &#61; sum;
+        paths.clear();
+      }
+
+      // 记录对应解
+      paths.add(Arrays.copyOf(path, path.length));
+      return;
+    }
+
+    for (int i &#61; index; i &lt; nums.length; i&#43;&#43;) {
+      int num &#61; nums[i];
+
+      if (sum &#43; num &gt; limitUpSum) continue;
+
+      path[i] &#61; true;
+      dfs(nums, i &#43; 1, path, sum &#43; num, count &#43; 1);
+      path[i] &#61; false;
+    }
+  }
+
+  // 根据path解析出上升序列和下降序列&#xff0c;并对上升序列和下降序列进行交叉合并&#xff0c;形成目标序列
+  public static ArrayList&lt;Integer&gt; getSeq(boolean[] path, Integer[] nums) {
+    // 上升序列
+    LinkedList&lt;Integer&gt; up &#61; new LinkedList&lt;&gt;();
+    // 下降序列
+    LinkedList&lt;Integer&gt; down &#61; new LinkedList&lt;&gt;();
+
+    // 根据path解析出上升序列、下降序列
+    for (int i &#61; 0; i &lt; nums.length; i&#43;&#43;) {
+      if (path[i]) up.add(nums[i]);
+      else down.add(nums[i]);
+    }
+
+    // 目标序列容器
+    ArrayList&lt;Integer&gt; seq &#61; new ArrayList&lt;&gt;();
+
+    // 交叉合并
+    for (int i &#61; 0; i &lt; nums.length / 2; i&#43;&#43;) {
+      seq.add(up.removeFirst());
+      seq.add(down.removeFirst());
+    }
+
+    if (up.size() &gt; 0) {
+      seq.add(up.removeFirst());
+    }
+
+    return seq;
+  }
+
+  // 比较相同长度的两个集合的大小, 按逐个元素比较
+  public static int compare(ArrayList&lt;Integer&gt; list1, ArrayList&lt;Integer&gt; list2) {
+    for (int i &#61; 0; i &lt; list1.size(); i&#43;&#43;) {
+      int v1 &#61; list1.get(i);
+      int v2 &#61; list2.get(i);
+
+      if (v1 &gt; v2) return -1;
+      if (v1 &lt; v2) return 1;
+    }
+    return 0;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, n &#61; map(int, input().split())  # 期望的楼层, 序列总个数
+nums &#61; list(map(int, input().split()))  # 序列
+
+# 上升序列组合的元素个数
+expectUpCount &#61; 0
+# 上升序列组合的元素之和的上限
+limitUpSum &#61; 0
+# 记录不超过limitUpSum的最大的上升序列的和&#xff0c;该变量用于帮助ans剔除不是最优解的上升序列
+maxUpSumBelowLimit &#61; 0
+#  paths记录求组合过程中发现的符合要求的序列
+paths &#61; []
+
+
+# 根据path解析出上升序列和下降序列&#xff0c;并对上升序列和下降序列进行交叉合并&#xff0c;形成目标序列
+def getSeq(path):
+    # 上升序列
+    up &#61; []
+    # 下降序列
+    down &#61; []
+
+    # 根据path解析出上升序列、下降序列
+    for i in range(n):
+        if path[i]:
+            up.append(nums[i])
+        else:
+            down.append(nums[i])
+
+    # 目标序列容器
+    seq &#61; []
+
+    # 交叉合并
+    for i in range(n // 2):
+        seq.append(up.pop(0))
+        seq.append(down.pop(0))
+
+    if len(up) &gt; 0:
+        seq.append(up.pop(0))
+
+    return seq
+
+
+def dfs(index, path, total, count):
+    &#34;&#34;&#34;
+    该方法用于选取出上升序列的组合
+    :param index: 当前层级能选取的元素范围的起始索引
+    :param path: 记录上升序列组合&#xff0c;注意path这里采用的是nums.length长度的boolean[]数组&#xff0c;如果path[i]为true&#xff0c;则代表nums[i]是上升&#xff0c;否则nums[i]就是下降
+    :param total: 上升序列组合的元素和
+    :param count: 上升序列组合的元素个数
+    &#34;&#34;&#34;
+    global maxUpSumBelowLimit
+
+    # 如果上升序列元素个数超过了expectUpCount, 则结束对应递归
+    if count &gt; expectUpCount:
+        return
+
+    if count &#61;&#61; expectUpCount:
+        # 非更优解&#xff0c;直接剔除
+        if total &lt; maxUpSumBelowLimit:
+            return
+
+        # 发现更优解&#xff0c;则清空paths
+        if total &gt; maxUpSumBelowLimit:
+            maxUpSumBelowLimit &#61; total
+            paths.clear()
+
+        # 记录对应解
+        paths.append(path[:])
+        return
+
+    for i in range(index, n):
+        if total &#43; nums[i] &gt; limitUpSum:
+            continue
+
+        path[i] &#61; True
+        dfs(i &#43; 1, path, total &#43; nums[i], count &#43; 1)
+        path[i] &#61; False
+
+
+# 算法入口
+def getResult():
+    global expectUpCount
+    global limitUpSum
+
+    # 计算expectUpCount、limitUpSum
+    expectUpCount &#61; n // 2 &#43; n % 2
+    limitUpSum &#61; (sum(nums) &#43; m) // 2
+
+    # 将原始序列降序
+    nums.sort(reverse&#61;True)
+
+    # 求组合
+    dfs(0, [False] * n, 0, 0)
+
+    # 本题没有说明异常处理&#xff0c;我理解应该不会存在paths.size &#61;&#61; 0的情况&#xff0c;但是为了保险&#xff0c;还是处理一下
+    if len(paths) &#61;&#61; 0:
+        return &#34;-1&#34;
+
+    # 首先将paths转化为结果序列&#xff0c;然后对结果序列进行排序&#xff0c;排序规则是&#xff1a;按先处理大值的原则, 最后取出最优解
+    seqs &#61; list(map(lambda path: getSeq(path), paths))
+    seqs.sort(reverse&#61;True)
+    return &#34; &#34;.join(map(str, seqs[0]))
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

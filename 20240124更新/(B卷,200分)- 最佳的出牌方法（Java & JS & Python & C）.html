@@ -1,0 +1,518 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 最佳的出牌方法（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>手上有一副扑克牌&#xff0c;每张牌按牌面数字记分&#xff08;J&#61;11,Q&#61;12,K&#61;13&#xff0c;没有大小王)&#xff0c;出牌时按照以下规则记分&#xff1a;</p> 
+<ul><li>出单张&#xff0c;记牌面分数&#xff0c;例如出一张2&#xff0c;得分为2</li><li>出对或3张&#xff0c;记牌面分数总和再x2&#xff0c;例如出3张3&#xff0c;得分为(3&#43;3&#43;3)x2&#61;18</li><li>出5张顺&#xff0c;记牌面分数总和再x2&#xff0c;例如出34567顺&#xff0c;得分为(3&#43;4&#43;5&#43;6&#43;7)x2&#61;50</li><li>出4张炸弹&#xff0c;记牌面分数总和再x3&#xff0c;例如出4张4&#xff0c;得分为4x4x3&#61;48</li></ul> 
+<p>求出一副牌最高的得分数</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>按顺序排好的一副牌&#xff0c;最少1张&#xff0c;最多15张。<br /> 1-9输入为数字1-9&#xff0c;10输入为数字0&#xff0c;JQK输入为大写字母JQK.<br /> 无需考虑输入非法的情况&#xff0c;例如输入字符不在[0-9JQK]范围或某一张牌超过4张</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最高的得分数</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>积分规则中没有的出牌方式不支持&#xff0c;例如不支持3带1、4带2&#xff0c;不支持5张以上的顺&#xff0c;且10JQKA (0JQK1) 不算顺。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">33445677</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">67</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>出对3、对4、对7&#xff0c;单张5、6&#xff0c;得分为67;</p> <p>出34567顺&#xff0c;再出单张3、4、7&#xff0c;得分为64</p> <p>因此最高得分是按对出&#xff0c;可得到最高分67&#xff0c;输出结果67</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题数量级不大&#xff0c;可以考虑暴力破解。</p> 
+<p></p> 
+<p>首先定义一个数组card_count&#xff0c;数组索引就是牌分数&#xff0c;数组元素就是牌数量</p> 
+<blockquote> 
+ <p>因为本题中牌面是不连续的&#xff0c;比如0代表10&#xff0c;但是牌分数是连续的。</p> 
+ <p>因此&#xff0c;将牌分数作为数组索引来看的话&#xff0c;就可以用一个长度为5的滑窗来在card_count中找顺子。</p> 
+</blockquote> 
+<p>由于K牌面分数是13&#xff0c;因此我们只需要定义card_count数组长度为14即可&#xff0c;题目用例可得数组如下&#xff1a;</p> 
+<p><img alt="" height="150" src="https://img-blog.csdnimg.cn/bf0229cb145b4ecb9491fad83fc73f55.png" width="964" /></p> 
+<p></p> 
+<p>有了card_count之后&#xff0c;我们就可以开始遍历每一种牌&#xff08;即遍历card_count数组的索引 i &#xff09;&#xff1a;</p> 
+<ul><li>card_count[i] &gt;&#61; 1&#xff0c;则说明当前牌面 i 至少有1张&#xff0c;那么此时可以选择&#xff1a;</li></ul> 
+<ol><li>出单张&#xff0c;那么总牌数量 - 1&#xff0c;总分 &#43; i</li><li>出顺子&#xff0c;但是需要先检查 i&#43;1, i&#43;2, i&#43;3, i&#43;4 牌的数量是否至少有1张&#xff0c;如果有的话&#xff0c;才可以出顺子&#xff0c;那么总牌数了 - 5&#xff0c;总分&#43;  ( i &#43; (i&#43;1) &#43; (i&#43;2) &#43; (i&#43;3) &#43; (i&#43;4) ) * 2</li></ol> 
+<ul><li>card_count[i] &gt;&#61; 2&#xff0c;则说明当前牌面 i 至少有2张&#xff0c;那么此时可以选择出对子&#xff0c;总牌数量 - 2&#xff0c;总分 &#43; i * 2 * 2</li><li>card_count[i] &gt;&#61; 3&#xff0c;则说明当前牌面 i 至少有3张&#xff0c;那么此时可以选择出三张&#xff0c;总牌数量 - 3&#xff0c;总分 &#43; i * 3 * 2</li><li>card_count[i] &gt;&#61; 4&#xff0c;则说明当前牌面 i 至少有4张&#xff0c;那么此时可以选择出炸弹&#xff0c;总牌数量 - 4&#xff0c;总分 &#43; i * 4 * 3</li></ul> 
+<p>对于上面这些出牌策略&#xff0c;我们都可以选或者不选&#xff0c;</p> 
+<p>比如当前card_count[i] &gt;&#61; 2&#xff0c;那么我们可以选择出对子&#xff0c;也可以选择不出对子</p> 
+<p>只有这样&#xff0c;我们才能尝试出所有出牌的策略组合&#xff0c;这里明显需要用到递归和回溯。</p> 
+<p></p> 
+<hr /> 
+<p>2023.10.29</p> 
+<p>之前的代码逻辑中&#xff0c;如下&#xff08;C语言代码&#xff0c;其他语言的考友可以当成伪代码看&#xff09;</p> 
+<p><img alt="" height="922" src="https://img-blog.csdnimg.cn/eea0f68a6e9646cbb4d5748191bee88f.png" width="1200" /></p> 
+<p>上面代码逻辑是存在重复探索的。</p> 
+<p>startIdx 位置的牌&#xff0c;可以从 for 循环进入出牌逻辑&#xff0c;也可以从 递归进入出牌逻辑&#xff0c;这会产生冗余探索。</p> 
+<p>我们可以只基于递归来完成所有出牌策略的探索。只是需要增加 card_count[startIdx] &#61;&#61; 0 时&#xff0c;即 startIdx 位置没有牌时&#xff0c;自动递归到 startIdx &#43; 1 位置出牌的逻辑。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const cards &#61; await readline();
+
+  // 数组索引是牌面分数, 数组元素是牌面数量, 其中 0 索引不用
+  const card_count &#61; new Array(14).fill(0);
+
+  // 统计各种牌的数量
+  for (let card of cards) {
+    // 1-9输入为数字1-9&#xff0c;10输入为数字0&#xff0c;JQK输入为大写字母JQK
+    // 1-9 牌面分数就是 1-9, 0的牌面分数是 10, J&#61;11,Q&#61;12,K&#61;13, 可以发现牌面分数是连续的&#xff0c;可以和card_count数组的索引对应起来
+    if (card &#61;&#61; &#34;0&#34;) card_count[10]&#43;&#43;;
+    else if (card &#61;&#61; &#34;J&#34;) card_count[11]&#43;&#43;;
+    else if (card &#61;&#61; &#34;Q&#34;) card_count[12]&#43;&#43;;
+    else if (card &#61;&#61; &#34;K&#34;) card_count[13]&#43;&#43;;
+    else card_count[card - &#34;0&#34;]&#43;&#43;;
+  }
+
+  // 记录最大得分
+  let max_score &#61; 0;
+  getMaxScore(card_count, cards.length, 1, 0);
+
+  console.log(max_score);
+
+  /**
+   * 获取最大分数
+   * &#64;param {*} card_count 各种牌的数量
+   * &#64;param {*} unused_card_count 剩余牌的总数量
+   * &#64;param {*} i 从哪个位置开始选牌
+   * &#64;param {*} score 此时已获得的总分数
+   */
+  function getMaxScore(card_count, unused_card_count, i, score) {
+    if (unused_card_count &#61;&#61; 0) {
+      max_score &#61; Math.max(max_score, score);
+      return;
+    }
+
+    // 没有可以出的牌&#xff0c;则继续递归到i&#43;1开始出牌
+    if (card_count[i] &#61;&#61; 0) {
+      getMaxScore(card_count, unused_card_count, i &#43; 1, score);
+    }
+
+    // 还有可以出的牌&#xff0c;则从i开始出牌
+    // 如果当前牌的数量至少1张
+    if (card_count[i] &gt;&#61; 1) {
+      // 策略1、可以尝试出顺子&#xff0c;由于最大的顺子是9,10,J,Q,K,因此 i 作为顺子起始牌的话&#xff0c;不能超过9&#xff0c;且后续牌面 i&#43;1, i&#43;2, i&#43;3, i&#43;4 的数量都至少有1张
+      if (
+        i &lt;&#61; 9 &amp;&amp;
+        card_count[i &#43; 1] &gt;&#61; 1 &amp;&amp;
+        card_count[i &#43; 2] &gt;&#61; 1 &amp;&amp;
+        card_count[i &#43; 3] &gt;&#61; 1 &amp;&amp;
+        card_count[i &#43; 4] &gt;&#61; 1
+      ) {
+        card_count[i] -&#61; 1;
+        card_count[i &#43; 1] -&#61; 1;
+        card_count[i &#43; 2] -&#61; 1;
+        card_count[i &#43; 3] -&#61; 1;
+        card_count[i &#43; 4] -&#61; 1;
+        // 顺子是5张牌&#xff0c;因此出掉顺子后&#xff0c;可用牌数量减少5张&#xff0c;总分增加 (i &#43; (i&#43;1) &#43; (i&#43;2) &#43; (i&#43;3) &#43; (i&#43;4)) * 2
+        getMaxScore(
+          card_count,
+          unused_card_count - 5,
+          i,
+          score &#43; (5 * i &#43; 10) * 2
+        );
+        // 回溯
+        card_count[i] &#43;&#61; 1;
+        card_count[i &#43; 1] &#43;&#61; 1;
+        card_count[i &#43; 2] &#43;&#61; 1;
+        card_count[i &#43; 3] &#43;&#61; 1;
+        card_count[i &#43; 4] &#43;&#61; 1;
+      }
+
+      // 策略2、出单张
+      card_count[i] -&#61; 1;
+      getMaxScore(card_count, unused_card_count - 1, i, score &#43; i);
+      card_count[i] &#43;&#61; 1;
+    }
+
+    // 如果当前牌的数量至少2张&#xff0c;那么可以出对子
+    if (card_count[i] &gt;&#61; 2) {
+      card_count[i] -&#61; 2;
+      getMaxScore(card_count, unused_card_count - 2, i, score &#43; i * 2 * 2);
+      card_count[i] &#43;&#61; 2;
+    }
+
+    // 如果当前牌的数量至少3张&#xff0c;那么可以出三张
+    if (card_count[i] &gt;&#61; 3) {
+      card_count[i] -&#61; 3;
+      getMaxScore(card_count, unused_card_count - 3, i, score &#43; i * 3 * 2);
+      card_count[i] &#43;&#61; 3;
+    }
+
+    // 当前当前牌的数量至少4张&#xff0c;那么可以出炸弹
+    if (card_count[i] &gt;&#61; 4) {
+      card_count[i] -&#61; 4;
+      getMaxScore(card_count, unused_card_count - 4, i, score &#43; i * 4 * 3);
+      card_count[i] &#43;&#61; 4;
+    }
+  }
+})();
+</code></pre> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  // 保存最大分数
+  static int max_score &#61; 0;
+
+  public static int getResult(String cards) {
+    // 数组索引是牌面分数, 数组元素是牌面数量, 其中 0 索引不用
+    int[] card_count &#61; new int[14];
+
+    // 统计各种牌的数量
+    for (int i &#61; 0; i &lt; cards.length(); i&#43;&#43;) {
+      char card &#61; cards.charAt(i);
+
+      // 1-9输入为数字1-9&#xff0c;10输入为数字0&#xff0c;JQK输入为大写字母JQK
+      // 1-9 牌面分数就是 1-9, 0的牌面分数是 10, J&#61;11,Q&#61;12,K&#61;13, 可以发现牌面分数是连续的&#xff0c;可以和card_count数组的索引对应起来
+      if (card &#61;&#61; &#39;0&#39;) card_count[10]&#43;&#43;;
+      else if (card &#61;&#61; &#39;J&#39;) card_count[11]&#43;&#43;;
+      else if (card &#61;&#61; &#39;Q&#39;) card_count[12]&#43;&#43;;
+      else if (card &#61;&#61; &#39;K&#39;) card_count[13]&#43;&#43;;
+      else card_count[card - &#39;0&#39;]&#43;&#43;;
+    }
+
+    getMaxScore(card_count, cards.length(), 1, 0);
+
+    return max_score;
+  }
+
+  /**
+   * 获取最大分数
+   *
+   * &#64;param card_count 各种牌的数量
+   * &#64;param unused_card_count 剩余牌的总数量
+   * &#64;param startIdx 从哪个位置开始选牌
+   * &#64;param score 此时已获得的总分数
+   */
+  public static void getMaxScore(int[] card_count, int unused_card_count, int startIdx, int score) {
+    // 所有牌都打完了
+    if (unused_card_count &#61;&#61; 0) {
+      // 则比较此时出牌策略获得的总分score&#xff0c;和历史最高分max_score&#xff0c;保留较大者
+      max_score &#61; Math.max(score, max_score);
+      return;
+    }
+
+    // 没有可以出的牌&#xff0c;则继续递归到startIdx&#43;1开始出牌
+    if (card_count[startIdx] &#61;&#61; 0) {
+      getMaxScore(card_count, unused_card_count, startIdx &#43; 1, score);
+    }
+
+    // 还有可以出的牌&#xff0c;则从startIdx开始出牌
+    // 如果当前牌的数量至少1张
+    if (card_count[startIdx] &gt;&#61; 1) {
+      // 策略1、可以尝试出顺子&#xff0c;由于最大的顺子是9,10,J,Q,K,因此 i 作为顺子起始牌的话&#xff0c;不能超过9&#xff0c;且后续牌面 i&#43;1, i&#43;2, i&#43;3, i&#43;4 的数量都至少有1张
+      if (startIdx &lt;&#61; 9
+          &amp;&amp; card_count[startIdx &#43; 1] &gt;&#61; 1
+          &amp;&amp; card_count[startIdx &#43; 2] &gt;&#61; 1
+          &amp;&amp; card_count[startIdx &#43; 3] &gt;&#61; 1
+          &amp;&amp; card_count[startIdx &#43; 4] &gt;&#61; 1) {
+        card_count[startIdx] -&#61; 1;
+        card_count[startIdx &#43; 1] -&#61; 1;
+        card_count[startIdx &#43; 2] -&#61; 1;
+        card_count[startIdx &#43; 3] -&#61; 1;
+        card_count[startIdx &#43; 4] -&#61; 1;
+        // 顺子是5张牌&#xff0c;因此出掉顺子后&#xff0c;可用牌数量减少5张&#xff0c;总分增加 (i &#43; (i&#43;1) &#43; (i&#43;2) &#43; (i&#43;3) &#43; (i&#43;4)) * 2
+        getMaxScore(card_count, unused_card_count - 5, startIdx, score &#43; (5 * startIdx &#43; 10) * 2);
+        // 回溯
+        card_count[startIdx] &#43;&#61; 1;
+        card_count[startIdx &#43; 1] &#43;&#61; 1;
+        card_count[startIdx &#43; 2] &#43;&#61; 1;
+        card_count[startIdx &#43; 3] &#43;&#61; 1;
+        card_count[startIdx &#43; 4] &#43;&#61; 1;
+      }
+
+      // 策略2、出单张
+      card_count[startIdx] -&#61; 1;
+      getMaxScore(card_count, unused_card_count - 1, startIdx, score &#43; startIdx);
+      card_count[startIdx] &#43;&#61; 1;
+    }
+
+    // 如果当前牌的数量至少2张&#xff0c;那么可以出对子
+    if (card_count[startIdx] &gt;&#61; 2) {
+      card_count[startIdx] -&#61; 2;
+      getMaxScore(card_count, unused_card_count - 2, startIdx, score &#43; startIdx * 2 * 2);
+      card_count[startIdx] &#43;&#61; 2;
+    }
+
+    // 如果当前牌的数量至少3张&#xff0c;那么可以出三张
+    if (card_count[startIdx] &gt;&#61; 3) {
+      card_count[startIdx] -&#61; 3;
+      getMaxScore(card_count, unused_card_count - 3, startIdx, score &#43; startIdx * 3 * 2);
+      card_count[startIdx] &#43;&#61; 3;
+    }
+
+    // 当前当前牌的数量至少4张&#xff0c;那么可以出炸弹
+    if (card_count[startIdx] &gt;&#61; 4) {
+      card_count[startIdx] -&#61; 4;
+      getMaxScore(card_count, unused_card_count - 4, startIdx, score &#43; startIdx * 4 * 3);
+      card_count[startIdx] &#43;&#61; 4;
+    }
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+cards &#61; input()
+
+# 保存最大分数
+max_score &#61; 0
+
+
+# 获取牌的最大得分
+def getMaxScore(card_count, unused_card_count, i, score):
+    &#34;&#34;&#34;
+    获取最大分数
+    :param card_count: 各种牌的数量
+    :param unused_card_count: 剩余牌的总数量
+    :param i: 从哪个位置开始选牌
+    :param score: 此时已获得的总分数
+    &#34;&#34;&#34;
+    global max_score
+
+    # 所有牌都打完了
+    if unused_card_count &#61;&#61; 0:
+        # 则比较此时出牌策略获得的总分score&#xff0c;和历史最高分max_score&#xff0c;保留较大者
+        max_score &#61; max(max_score, score)
+        return
+
+    # 没有可以出的牌&#xff0c;则继续递归到i&#43;1开始出牌
+    if card_count[i] &#61;&#61; 0:
+        getMaxScore(card_count, unused_card_count, i &#43; 1, score);
+
+    # 还有可以出的牌&#xff0c;则从i开始出牌
+    # 如果当前牌的数量至少1张
+    if card_count[i] &gt;&#61; 1:
+        # 策略1、可以尝试出顺子&#xff0c;由于最大的顺子是9,10,J,Q,K,因此 i 作为顺子起始牌的话&#xff0c;不能超过9&#xff0c;且后续牌面 i&#43;1, i&#43;2, i&#43;3, i&#43;4 的数量都至少有1张
+        if i &lt;&#61; 9 and card_count[i &#43; 1] &gt;&#61; 1 and card_count[i &#43; 2] &gt;&#61; 1 and card_count[i &#43; 3] &gt;&#61; 1 and card_count[i &#43; 4] &gt;&#61; 1:
+            card_count[i] -&#61; 1
+            card_count[i &#43; 1] -&#61; 1
+            card_count[i &#43; 2] -&#61; 1
+            card_count[i &#43; 3] -&#61; 1
+            card_count[i &#43; 4] -&#61; 1
+            # 顺子是5张牌&#xff0c;因此出掉顺子后&#xff0c;可用牌数量减少5张&#xff0c;总分增加 (i &#43; (i&#43;1) &#43; (i&#43;2) &#43; (i&#43;3) &#43; (i&#43;4)) * 2
+            getMaxScore(card_count, unused_card_count - 5, i, score &#43; (5 * i &#43; 10) * 2)
+            # 回溯
+            card_count[i] &#43;&#61; 1
+            card_count[i &#43; 1] &#43;&#61; 1
+            card_count[i &#43; 2] &#43;&#61; 1
+            card_count[i &#43; 3] &#43;&#61; 1
+            card_count[i &#43; 4] &#43;&#61; 1
+
+        # 策略2、出单张
+        card_count[i] -&#61; 1
+        getMaxScore(card_count, unused_card_count - 1, i, score &#43; i)
+        card_count[i] &#43;&#61; 1
+
+    # 如果当前牌的数量至少2张&#xff0c;那么可以出对子
+    if card_count[i] &gt;&#61; 2:
+        card_count[i] -&#61; 2
+        getMaxScore(card_count, unused_card_count - 2, i, score &#43; i * 2 * 2)
+        card_count[i] &#43;&#61; 2
+
+    # 如果当前牌的数量至少3张&#xff0c;那么可以出三张
+    if card_count[i] &gt;&#61; 3:
+        card_count[i] -&#61; 3
+        getMaxScore(card_count, unused_card_count - 3, i, score &#43; i * 3 * 2)
+        card_count[i] &#43;&#61; 3
+
+    # 当前当前牌的数量至少4张&#xff0c;那么可以出炸弹
+    if card_count[i] &gt;&#61; 4:
+        card_count[i] -&#61; 4
+        getMaxScore(card_count, unused_card_count - 4, i, score &#43; i * 4 * 3)
+        card_count[i] &#43;&#61; 4
+
+
+# 算法入口
+def getResult():
+    # 数组索引是牌面分数, 数组元素是牌面数量, 其中 0 索引不用
+    card_count &#61; [0] * 14
+
+    # 统计各种牌的数量
+    for card in cards:
+        # 1-9输入为数字1-9&#xff0c;10输入为数字0&#xff0c;JQK输入为大写字母JQK
+        # 1-9 牌面分数就是 1-9, 0的牌面分数是 10, J&#61;11,Q&#61;12,K&#61;13, 可以发现牌面分数是连续的&#xff0c;可以和card_count数组的索引对应起来
+        if card &#61;&#61; &#39;0&#39;:
+            card_count[10] &#43;&#61; 1
+        elif card &#61;&#61; &#39;J&#39;:
+            card_count[11] &#43;&#61; 1
+        elif card &#61;&#61; &#39;Q&#39;:
+            card_count[12] &#43;&#61; 1
+        elif card &#61;&#61; &#39;K&#39;:
+            card_count[13] &#43;&#61; 1
+        else:
+            i &#61; ord(card) - ord(&#39;0&#39;)
+            card_count[i] &#43;&#61; 1
+
+    getMaxScore(card_count, len(cards), 1, 0)
+
+    return max_score
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_SIZE 15
+#define CARD_KINDS 14
+
+#define MAX(a, b) a &gt; b ? a : b
+
+void getMaxScore(int *card_count, int unused_card_count, int startIdx, int score);
+
+int max_score &#61; 0; // 保存最大分数
+int main() {
+    char cards[MAX_SIZE];
+    scanf(&#34;%s&#34;, cards);
+
+    // 数组索引是牌面分数, 数组元素是牌面数量, 其中 0 索引不用
+    int card_count[CARD_KINDS] &#61; {0};
+
+    // 统计各种牌的数量
+    for (int i &#61; 0; i &lt; strlen(cards); i&#43;&#43;) {
+        char card &#61; cards[i];
+
+        // 1-9输入为数字1-9&#xff0c;10输入为数字0&#xff0c;JQK输入为大写字母JQK
+        // 1-9 牌面分数就是 1-9, 0的牌面分数是 10, J&#61;11,Q&#61;12,K&#61;13, 可以发现牌面分数是连续的&#xff0c;可以和card_count数组的索引对应起来
+        switch (card) {
+            case &#39;0&#39;:
+                card_count[10]&#43;&#43;;
+                break;
+            case &#39;J&#39;:
+                card_count[11]&#43;&#43;;
+                break;
+            case &#39;Q&#39;:
+                card_count[12]&#43;&#43;;
+                break;
+            case &#39;K&#39;:
+                card_count[13]&#43;&#43;;
+                break;
+            default:
+                card_count[card - &#39;0&#39;]&#43;&#43;;
+        }
+    }
+
+    getMaxScore(card_count, strlen(cards), 1, 0);
+
+    printf(&#34;%d\n&#34;, max_score);
+
+    return 0;
+}
+
+/**
+ * 获取最大分数
+ *
+ * &#64;param card_count 各种牌的数量
+ * &#64;param unused_card_count 剩余牌的总数量
+ * &#64;param i 从哪个位置开始选牌
+ * &#64;param score 此时已获得的总分数
+ */
+void getMaxScore(int *card_count, int unused_card_count, int i, int score) {
+    // 所有牌都打完了
+    if (unused_card_count &#61;&#61; 0) {
+        // 则比较此时出牌策略获得的总分score&#xff0c;和历史最高分max_score&#xff0c;保留较大者
+        max_score &#61; MAX(score, max_score);
+        return;
+    }
+
+    // 没有可以出的牌&#xff0c;则继续递归到i&#43;1开始出牌
+    if(card_count[i] &#61;&#61; 0) {
+        getMaxScore(card_count, unused_card_count, i &#43; 1, score);
+    }
+
+    // 还有可以出的牌&#xff0c;则从i开始出牌
+    // 如果当前牌的数量至少1张
+    if (card_count[i] &gt;&#61; 1) {
+        // 策略1、可以尝试出顺子&#xff0c;由于最大的顺子是9,10,J,Q,K,因此 i 作为顺子起始牌的话&#xff0c;不能超过9&#xff0c;且后续牌面 i&#43;1, i&#43;2, i&#43;3, i&#43;4 的数量都至少有1张
+        if (i &lt;&#61; 9 &amp;&amp; card_count[i &#43; 1] &gt;&#61; 1 &amp;&amp; card_count[i &#43; 2] &gt;&#61; 1 &amp;&amp; card_count[i &#43; 3] &gt;&#61; 1 &amp;&amp;
+            card_count[i &#43; 4] &gt;&#61; 1) {
+            card_count[i] -&#61; 1;
+            card_count[i &#43; 1] -&#61; 1;
+            card_count[i &#43; 2] -&#61; 1;
+            card_count[i &#43; 3] -&#61; 1;
+            card_count[i &#43; 4] -&#61; 1;
+            // 顺子是5张牌&#xff0c;因此出掉顺子后&#xff0c;可用牌数量减少5张&#xff0c;总分增加 (i &#43; (i&#43;1) &#43; (i&#43;2) &#43; (i&#43;3) &#43; (i&#43;4)) * 2
+            getMaxScore(card_count, unused_card_count - 5, i, score &#43; (5 * i &#43; 10) * 2);
+            // 回溯
+            card_count[i] &#43;&#61; 1;
+            card_count[i &#43; 1] &#43;&#61; 1;
+            card_count[i &#43; 2] &#43;&#61; 1;
+            card_count[i &#43; 3] &#43;&#61; 1;
+            card_count[i &#43; 4] &#43;&#61; 1;
+        }
+
+        // 策略2、出单张
+        card_count[i] -&#61; 1;
+        getMaxScore(card_count, unused_card_count - 1, i, score &#43; i);
+        card_count[i] &#43;&#61; 1;
+    }
+
+    // 如果当前牌的数量至少2张&#xff0c;那么可以出对子
+    if (card_count[i] &gt;&#61; 2) {
+        card_count[i] -&#61; 2;
+        getMaxScore(card_count, unused_card_count - 2, i, score &#43; i * 2 * 2);
+        card_count[i] &#43;&#61; 2;
+    }
+
+    // 如果当前牌的数量至少3张&#xff0c;那么可以出三张
+    if (card_count[i] &gt;&#61; 3) {
+        card_count[i] -&#61; 3;
+        getMaxScore(card_count, unused_card_count - 3, i, score &#43; i * 3 * 2);
+        card_count[i] &#43;&#61; 3;
+    }
+
+    // 当前当前牌的数量至少4张&#xff0c;那么可以出炸弹
+    if (card_count[i] &gt;&#61; 4) {
+        card_count[i] -&#61; 4;
+        getMaxScore(card_count, unused_card_count - 4, i, score &#43; i * 4 * 3);
+        card_count[i] &#43;&#61; 4;
+    }
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

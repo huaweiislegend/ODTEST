@@ -1,0 +1,207 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 太阳能板最大面积（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给航天器一侧加装长方形或正方形的太阳能板&#xff08;图中的红色斜线区域&#xff09;&#xff0c;需要先安装两个支柱&#xff08;<strong>图中的黑色竖条</strong>&#xff09;&#xff0c;再在支柱的中间部分固定太阳能板。</p> 
+<p>但航天器不同位置的支柱长度不同&#xff0c;太阳能板的安装面积受限于<strong>最短一侧</strong>的那根支柱长度。如图&#xff1a;</p> 
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/4d7610cc951f9a34b290297c75a723ac.png" /></p> 
+<p> 现提供一组整形数组的支柱高度数据&#xff0c;假设每根支柱间距离相等为1个单位长度&#xff0c;计算如何选择两根支柱可以使太阳能板的面积最大。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>10,9,8,7,6,5,4,3,2,1</p> 
+<p>注&#xff1a;支柱至少有2根&#xff0c;最多10000根&#xff0c;能支持的高度范围1~10^9的整数。柱子的高度是无序的&#xff0c;例子中递减只是巧合。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>可以支持的最大太阳能板面积&#xff1a;&#xff08;10米高支柱和5米高支柱之间&#xff09;</p> 
+<p>25</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:668px;"><tbody><tr><td style="width:63px;">输入</td><td style="width:601px;">10,9,8,7,6,5,4,3,2,1</td></tr><tr><td style="width:63px;">输出</td><td style="width:601px;">25</td></tr><tr><td style="width:63px;">备注</td><td style="width:601px;"> <p>10米高支柱和5米高支柱之间宽度为5&#xff0c;高度取小的支柱高也是5&#xff0c;面积为25。</p> <p>任取其他两根支柱所能获得的面积都小于25。</p> <p>所以最大的太阳能板面积为25。</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>首先想到的依旧是暴力破解</p> 
+<pre><code class="language-javascript">function getMaxArea(arr) {
+  let max &#61; 0;
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    for (let j &#61; i &#43; 1; j &lt; arr.length; j&#43;&#43;) {
+      let x &#61; j - i;
+      let y &#61; Math.min(arr[i], arr[j]);
+      max &#61; Math.max(max, x * y);
+    }
+  }
+
+  return max;
+}
+</code></pre> 
+<p>但是暴力破解是O(n^2)复杂度&#xff0c;随着数量规模的增大&#xff0c;算法效率会急剧下降&#xff0c;但是好在题目限制了支柱最多10000根&#xff0c;我测试了下10000的性能&#xff0c;差不多在160ms~200ms之间</p> 
+<p></p> 
+<p></p> 
+<p>双指针解法&#xff1a;</p> 
+<p>一开始i指针指向0&#xff0c;j指针指向arr.length-1</p> 
+<p><img alt="" height="622" src="https://img-blog.csdnimg.cn/3857e73a34e34c38ae504268353495d6.png" width="1033" /></p> 
+<p>如果arr[]i  &lt; arr[j]&#xff0c;则此时arr[i]是矮柱&#xff0c;arr[j]是高柱&#xff0c;则对于arr[i]来说&#xff0c;它作为矮柱的最大面积就是(j-i) * arr[i]&#xff0c;然后移动i指针到下一位&#xff08;因为i&#61;0矮柱的最大面积已经求解出来了&#xff09;</p> 
+<p><img alt="" height="617" src="https://img-blog.csdnimg.cn/dc7902eca6f1406092dd81c2c7db4c78.png" width="979" /></p> 
+<p>此时arr[i] &gt; arr[j]&#xff0c;则arr[j]是矮柱&#xff0c;arr[i]是高柱&#xff0c;对于arr[j]来说&#xff0c;他作为矮柱的最大面积就是(j-i)* arr[j]&#xff0c;然后移动j指针到下一位&#xff08;因为j&#61;arr.length-1矮柱的最大面积已经求解出来了&#xff09; </p> 
+<p>以此逻辑往复&#xff0c;直到ij相遇。这个过程中&#xff0c;始终是寻找矮柱&#xff0c;求出固定矮柱的最大面积。</p> 
+<p>上面逻辑的时间复杂度是O(n)</p> 
+<p></p> 
+<hr /> 
+<p>2023.06.11</p> 
+<p>Java语言&#xff0c;本题最后要求的最大太阳能板面积可能发生整型溢出&#xff0c;因此建议选用long。</p> 
+<p></p> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34;,&#34;).map((ele) &#61;&gt; parseInt(ele));
+
+  console.log(getMaxArea(arr));
+});
+
+function getMaxArea(arr) {
+  let i &#61; 0;
+  let j &#61; arr.length - 1;
+  let maxArea &#61; 0;
+
+  while (i &lt; j) {
+    let x &#61; j - i; // 高柱~矮柱之间的距离
+    let y &#61; arr[i] &lt; arr[j] ? arr[i&#43;&#43;] : arr[j--]; // 矮柱高度&#xff0c;并移动柱子
+    maxArea &#61; Math.max(maxArea, x * y);
+  }
+
+  return maxArea;
+}</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] heights &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(heights));
+  }
+
+  public static long getResult(int[] heights) {
+    int l &#61; 0;
+    int r &#61; heights.length - 1;
+    long maxArea &#61; 0;
+
+    while (l &lt; r) {
+      long x &#61; r - l;
+      long y &#61; heights[l] &lt; heights[r] ? heights[l&#43;&#43;] : heights[r--];
+      maxArea &#61; Math.max(maxArea, x * y);
+    }
+
+    return maxArea;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+heights &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+# 算法入口
+def getResult():
+    l &#61; 0
+    r &#61; len(heights) - 1
+    maxArea &#61; 0
+
+    while l &lt; r:
+        x &#61; r - l
+
+        y &#61; 0
+        if heights[l] &lt; heights[r]:
+            y &#61; heights[l]
+            l &#43;&#61; 1
+        else:
+            y &#61; heights[r]
+            r -&#61; 1
+
+        maxArea &#61; max(maxArea, x * y)
+
+    return maxArea
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
+
+#define MAX_SIZE 10000
+
+int main() {
+    int heights[MAX_SIZE];
+    int heights_size &#61; 0;
+
+    while(scanf(&#34;%d&#34;, &amp;heights[heights_size&#43;&#43;])) {
+        if(getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    int l &#61; 0;
+    int r &#61; heights_size - 1;
+
+    long maxArea &#61; 0;
+
+    while(l &lt; r) {
+        long x &#61; r - l;
+        long y &#61; heights[l] &lt; heights[r] ? heights[l&#43;&#43;] : heights[r--];
+        maxArea &#61; MAX(maxArea, x * y);
+    }
+
+    printf(&#34;%ld\n&#34;, maxArea);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

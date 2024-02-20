@@ -1,0 +1,297 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 评论转换输出（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>在一个博客网站上&#xff0c;每篇博客都有评论。</p> 
+<p>每一条评论都是一个非空英文字母字符串。</p> 
+<p>评论具有树状结构&#xff0c;除了根评论外&#xff0c;每个评论都有一个父评论。</p> 
+<p>当评论保存时&#xff0c;使用以下格式&#xff1a;</p> 
+<ul><li>首先是评论的内容&#xff1b;</li><li>然后是回复当前评论的数量。</li><li>最后是当前评论的所有了评论。(子评论使用相同的格式嵌套存储)</li></ul> 
+<p>所有元素之间都用单个逗号分隔。</p> 
+<p>例如&#xff0c;如果评论如下&#xff1a;</p> 
+<p><img alt="" height="442" src="https://img-blog.csdnimg.cn/ce9d067156bf4136add18de1f8181398.png" width="372" /></p> 
+<p>第一条评论是&#34;helo,2,ok,0,bye,0&#34;&#xff0c;第二条评论是&#34;test,0&#34;&#xff0c;第三条评论是&#34;one,1,two,1,a,0&#34;。</p> 
+<p>所有评论被保存成&#34;hello,2,ok,0.bye,0,test,0,one,1,two,1,a,0&#34;。</p> 
+<p><br /> 对于上述格式的评论&#xff0c;请以另外一种格式打印&#xff1a;</p> 
+<ul><li>首先打印评论嵌套的最大深度。</li><li>然后是打印n行&#xff0c;第 i (1 ≤ i ≤ n) 行对应于嵌套级别为 i 的评论 (根评论的嵌套级别为1)。</li><li>对于第 i 行&#xff0c;嵌套级别为的评论按照它们出现的顺序打印&#xff0c;用空格分隔开。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>一行评论。由英文字母、数字和英文逗号组成。</p> 
+<p>保证每个评论都是由英文字符组成的非空字符串。</p> 
+<p>每个评论的数量都是整数 (至少由一个数字组成)。</p> 
+<p>整个字符串的长度不超过10^6。</p> 
+<p>给定的评论结构保证是合法的。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>按照给定的格式打印评论。对于每一级嵌套&#xff0c;评论应该按照输入中的顺序打印。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">hello,2,ok,0,bye,0,test,0,one,1,two,1,a,0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3<br /> hello test one<br /> ok bye two<br /> a</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">如题目描述中图所示&#xff0c;最大嵌套级别为3&#xff0c;嵌套级别为1的评论是&#34;hello test one&#34;&#xff0c;嵌套级别为2的评论是&#34;ok bye two&#34;&#xff0c;嵌套级别为3的评论为”a&#34;”。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">A,5,A,0,a,0,A,0,a,0,A,0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2<br /> A<br /> A a A a A</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>如下图所示&#xff0c;最大嵌套级别为2&#xff0c;嵌套级别为1的评论是&#34;A”&#xff0c;嵌套级别为2的评论是&#34;A a A a A&#34;</p> <p><img alt="" height="345" src="https://img-blog.csdnimg.cn/05cc7596cba54698b84ccb8bc0fd5a82.png" width="305" /></p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">A,3,B,2,C,0,D,1,E,0,F,1,G,0,H,1,I,1,J,0,K,1,L,0,M,2,N,0,O,1,P,0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4<br /> A K M<br /> B F H L N O<br /> C D G I P<br /> E J</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>如下图所示</p> <p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/66a20243f75945ad8754940c0c3b9dc8.png" /></p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题的评论嵌套其实就是一个树形结构。比如用例1&#xff1a;</p> 
+<p><img alt="" height="387" src="https://img-blog.csdnimg.cn/ff007e6039e04db7aa39291cb1f50b77.png" width="726" /></p> 
+<p></p> 
+<p>最终题目要求的&#xff1a;</p> 
+<ul><li>评论嵌套的最大深度 → 其实就是树的高度</li><li>嵌套级别为 i 的评论 → 其实就是树的第 i 层的所有节点</li></ul> 
+<p>因此&#xff0c;本题我们需要还原出一个树结构。</p> 
+<p></p> 
+<p>那么&#xff0c;我们如何从一个字符串数组&#xff0c;例如用例1&#xff1a;</p> 
+<blockquote> 
+ <p>hello,2,ok,0,bye,0,test,0,one,1,two,1,a,0</p> 
+</blockquote> 
+<p>中&#xff0c;还原出一颗树呢&#xff1f;</p> 
+<p></p> 
+<p>字符串的组成是多个评论&#xff0c;每一个评论包括两个部分&#xff1a;评论内容 &#43; 子评论数&#xff0c;比如用例1可以划分如下</p> 
+<blockquote> 
+ <p><span style="color:#fe2c24;"><strong>【hello,2】</strong></span>,<span style="color:#ff9900;">【ok,0】</span>,<span style="color:#ff9900;">【bye,0】,</span><span style="color:#fe2c24;"><strong>【test,0】</strong></span>,<span style="color:#fe2c24;"><strong>【one,1】</strong></span>,<span style="color:#ff9900;">【two,1】</span>,<span style="color:#a2e043;">【a,0】</span></p> 
+</blockquote> 
+<p>另外&#xff0c;每一个子评论都是紧跟着其父评论后面。如下面例子&#xff1a;</p> 
+<blockquote> 
+ <p><span style="color:#fe2c24;"><strong>根评论A</strong></span>&#xff0c;<span style="color:#ff9900;">子评论A1</span>&#xff0c;<span style="color:#ff9900;">子评论A2</span>&#xff0c;<strong><span style="color:#fe2c24;">根评论B</span></strong>&#xff0c;<span style="color:#ff9900;">子评论B1</span>&#xff0c;<span style="color:#ff9900;">子评论B2</span></p> 
+</blockquote> 
+<p>但是子评论本身也可以有子评论&#xff0c;因此完整的结构图应该是&#xff1a;</p> 
+<blockquote> 
+ <p><span style="color:#fe2c24;"><strong>根评论A</strong></span>&#xff0c;<span style="color:#ff9900;">子评论A1&#xff0c;</span><span style="color:#a2e043;">子子评论A11&#xff0c;子子评论A12</span>&#xff0c;<span style="color:#ff9900;">子评论A2</span>&#xff0c;<span style="color:#a2e043;">子子评论A21&#xff0c;子子评论A22</span>&#xff0c;<strong><span style="color:#fe2c24;">根评论B</span></strong>&#xff0c;<span style="color:#ff9900;">子评论B1</span>&#xff0c;<span style="color:#a2e043;">子子评论B11&#xff0c;子子评论B12, </span><span style="color:#ff9900;">子评论B2,</span><span style="color:#a2e043;">子子评论B21&#xff0c;子子评论B22</span></p> 
+</blockquote> 
+<p>这个时候&#xff0c;如果根据父评论的“子评论数”往后顺序遍历的话&#xff0c;得到的并不是该父评论的实际子评论信息。</p> 
+<p>正确的做法应该是递归的去遍历父评论的子评论。</p> 
+<blockquote> 
+ <p>比如&#xff0c;<strong><span style="color:#fe2c24;">根评论A</span></strong>有2个子评论&#xff0c;分别是<span style="color:#ff9900;">子评论A1</span>&#xff0c;<span style="color:#ff9900;">子评论A2</span>&#xff0c;</p> 
+ <p>因此&#xff0c;我们需要从<strong><span style="color:#fe2c24;">根评论A</span></strong><span style="color:#0d0016;">开始</span>往后遍历2个评论&#xff0c;但是每遍历一个评论&#xff0c;我们都需要检查被遍历的评论也有子评论&#xff0c;比如首先遍历到<span style="color:#ff9900;">子评论A1</span>&#xff0c;发现它也有2个子评论&#xff0c;分别是<span style="color:#a2e043;">子子评论A11</span>&#xff0c;<span style="color:#a2e043;">子子评论A12</span>&#xff0c;因此我们应该暂停<strong><span style="color:#fe2c24;">根评论A</span></strong>的子评论遍历过程&#xff0c;而是优先去遍历其<span style="color:#ff9900;">子评论A1</span>的子子评论。</p> 
+ <p>当然&#xff0c;如果子子评论也有子子子评论&#xff0c;则也需要按上面逻辑处理。</p> 
+ <p>由于评论嵌套的层级是不确定的&#xff0c;因此上面过程需要使用递归。</p> 
+</blockquote> 
+<p>在上面递归过程中&#xff0c;一个比较麻烦的问题是&#xff0c;递归处理完<span style="color:#ff9900;">子评论A1</span>后&#xff0c;如何反馈下一个<span style="color:#ff9900;">子评论A2</span>的位置给 → 重启遍历流程的<span style="color:#fe2c24;"><strong>根评论A</strong></span>。</p> 
+<p>因此&#xff0c;我们暂停<span style="color:#fe2c24;"><strong>根评论A</strong></span>的遍历流程时&#xff0c;对应的遍历指针指向的还是<span style="color:#ff9900;">子评论A1</span>的位置&#xff0c;而<span style="color:#ff9900;">子评论A1</span>递归结束后&#xff0c;重启遍历流程的<span style="color:#fe2c24;"><strong>根评论A</strong></span>的遍历流程指针还是指向<span style="color:#ff9900;">子评论A1</span>呢&#xff01;&#xff01;</p> 
+<p></p> 
+<p>这里为了避免繁琐的索引位置处理&#xff0c;我直接在一开始时&#xff0c;将所有的评论信息加入都队列中&#xff0c;每次都取出队头评论进行处理&#xff0c;这样的话&#xff0c;当前递归处理完<span style="color:#ff9900;">子评论A1</span>&#xff0c;那么队列头部自然而然就是<span style="color:#ff9900;">子评论A2</span>了。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const comments &#61; line.split(&#34;,&#34;);
+  getResult(comments);
+});
+
+function getResult(queue) {
+  // 树结构
+  const tree &#61; [];
+
+  // 根评论层级为1
+  const level &#61; 1;
+
+  // 该循环用于取出根评论
+  while (queue.length &gt; 0) {
+    // 根评论
+    const comment &#61; queue.shift();
+
+    // 如果树还没有对应层级&#xff0c;则初始化对应层级
+    if (tree.length &lt; level) {
+      tree.push([]);
+    }
+
+    // 将根评论加入树结构的第一层
+    tree[0].push(comment);
+
+    // 该根评论有几个直接子评论
+    const childCount &#61; parseInt(queue.shift());
+    // 按上面逻辑&#xff0c;递归处理子评论&#xff0c;子评论所处级别为level&#43;1
+    recursive(queue, level &#43; 1, childCount, tree);
+  }
+
+  // 树结构的高度&#xff0c;就是评论嵌套的最大深度
+  console.log(tree.length);
+  // 树结构的每一层&#xff0c;记录对应嵌套级别的评论
+  for (let levelNodes of tree) {
+    console.log(levelNodes.join(&#34; &#34;));
+  }
+}
+
+function recursive(queue, level, childCount, tree) {
+  for (let i &#61; 0; i &lt; childCount; i&#43;&#43;) {
+    const comment &#61; queue.shift();
+
+    if (tree.length &lt; level) {
+      tree.push([]);
+    }
+
+    tree[level - 1].push(comment);
+
+    const count &#61; parseInt(queue.shift());
+    if (count &gt; 0) {
+      recursive(queue, level &#43; 1, count, tree);
+    }
+  }
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String[] comments &#61; sc.nextLine().split(&#34;,&#34;);
+    getResult(comments);
+  }
+
+  public static void getResult(String[] comments) {
+    // 树结构
+    ArrayList&lt;ArrayList&lt;String&gt;&gt; tree &#61; new ArrayList&lt;&gt;();
+
+    // 将输入的评论信息&#xff0c;转化为队列结构
+    LinkedList&lt;String&gt; queue &#61; new LinkedList&lt;&gt;(Arrays.asList(comments));
+
+    // 根评论层级为1
+    int level &#61; 1;
+
+    // 该循环用于取出根评论
+    while (queue.size() &gt; 0) {
+      // 根评论
+      String comment &#61; queue.removeFirst();
+
+      // 如果树还没有对应层级&#xff0c;则初始化对应层级
+      if (tree.size() &lt; level) {
+        tree.add(new ArrayList&lt;&gt;());
+      }
+
+      // 将根评论加入树结构的第一层
+      tree.get(0).add(comment);
+
+      // 该根评论有几个直接子评论
+      int childCount &#61; Integer.parseInt(queue.removeFirst());
+      // 按上面逻辑&#xff0c;递归处理子评论&#xff0c;子评论所处级别为level&#43;1
+      recursive(queue, level &#43; 1, childCount, tree);
+    }
+
+    // 树结构的高度&#xff0c;就是评论嵌套的最大深度
+    System.out.println(tree.size());
+    // 树结构的每一层&#xff0c;记录对应嵌套级别的评论
+    for (ArrayList&lt;String&gt; levelNodes : tree) {
+      System.out.println(String.join(&#34; &#34;, levelNodes));
+    }
+  }
+
+  public static void recursive(
+      LinkedList&lt;String&gt; queue, int level, int childCount, ArrayList&lt;ArrayList&lt;String&gt;&gt; tree) {
+    for (int i &#61; 0; i &lt; childCount; i&#43;&#43;) {
+      String comment &#61; queue.removeFirst();
+
+      if (tree.size() &lt; level) {
+        tree.add(new ArrayList&lt;&gt;());
+      }
+
+      tree.get(level - 1).add(comment);
+
+      int count &#61; Integer.parseInt(queue.removeFirst());
+      if (count &gt; 0) {
+        recursive(queue, level &#43; 1, count, tree);
+      }
+    }
+  }
+}
+</code></pre> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 本题可能Python会maximum recursion depth exceeded in comparison, 因此这里可以将递归深度搞大点
+sys.setrecursionlimit(5000)
+
+# 输入获取
+queue &#61; input().split(&#34;,&#34;)
+
+
+def recursive(queue, level, childCount, tree):
+    for i in range(childCount):
+        comment &#61; queue.pop(0)
+
+        if len(tree) &lt; level:
+            tree.append([])
+
+        tree[level - 1].append(comment)
+
+        count &#61; int(queue.pop(0))
+        if count &gt; 0:
+            recursive(queue, level &#43; 1, count, tree)
+
+
+# 算法入口
+def getResult(queue):
+    # 树结构
+    tree &#61; []
+
+    # 根评论层级为1
+    level &#61; 1
+    while len(queue) &gt; 0:
+        # 根评论
+        comment &#61; queue.pop(0)
+
+        # 如果树还没有对应层级&#xff0c;则初始化对应层级
+        if len(tree) &lt; level:
+            tree.append([])
+
+        # 将根评论加入树结构的第一层
+        tree[0].append(comment)
+
+        # 该根评论有几个直接子评论
+        childCount &#61; int(queue.pop(0))
+        # 按上面逻辑&#xff0c;递归处理子评论&#xff0c;子评论所处级别为level&#43;1
+        recursive(queue, level &#43; 1, childCount, tree)
+
+    # 树结构的高度&#xff0c;就是评论嵌套的最大深度
+    print(len(tree))
+    # 树结构的每一层&#xff0c;记录对应嵌套级别的评论
+    for levelNodes in tree:
+        print(&#34; &#34;.join(levelNodes))
+
+
+# 算法调用
+getResult(queue)</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

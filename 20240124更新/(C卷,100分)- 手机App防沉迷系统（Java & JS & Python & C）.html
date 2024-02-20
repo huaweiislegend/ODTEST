@@ -1,0 +1,498 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 手机App防沉迷系统（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>智能手机方便了我们生活的同时&#xff0c;也侵占了我们不少的时间。“手机App防沉迷系统”能够让我们每天合理地规划手机App使用时间&#xff0c;在正确的时间做正确的事。</p> 
+<p>它的大概原理是这样的&#xff1a;</p> 
+<ol><li>在一天24小时内&#xff0c;可以注册每个App的允许使用时段</li><li>一个时间段只能使用一个App</li><li>App有优先级&#xff0c;数值越高&#xff0c;优先级越高。注册使用时段时&#xff0c;如果高优先级的App时间和低优先级的时段有冲突&#xff0c;则系统会自动注销低优先级的时段&#xff0c;如果App的优先级相同&#xff0c;则后添加的App不能注册。</li></ol> 
+<p>请编程实现&#xff0c;根据输入数据注册App&#xff0c;并根据输入的时间点&#xff0c;返回时间点使用的App名称&#xff0c;如果该时间点没有注册任何App&#xff0c;请返回字符串“NA”。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行表示注册的App数量 N&#xff08;N ≤ 100&#xff09;</p> 
+<p>第二部分包括 N 行&#xff0c;每行表示一条App注册数据</p> 
+<p>最后一行输入一个时间点&#xff0c;程序即返回该时间点使用的App</p> 
+<p></p> 
+<blockquote> 
+ <p>2<br /> App1 1 09:00 10:00<br /> App2 2 11:00 11:30<br /> 09:30</p> 
+</blockquote> 
+<p>数据说明如下&#xff1a;</p> 
+<ol><li>N行注册数据以空格分隔&#xff0c;四项数依次表示&#xff1a;App名称、优先级、起始时间、结束时间</li><li>优先级1~5&#xff0c;数字越大&#xff0c;优先级越高</li><li>时间格式 HH:MM&#xff0c;小时和分钟都是两位&#xff0c;不足两位前面补0</li><li>起始时间需小于结束时间&#xff0c;否则注册不上</li><li>注册信息中的时间段包含起始时间点&#xff0c;不包含结束时间点</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个字符串&#xff0c;表示App名称&#xff0c;或NA表示空闲时间</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> App1 1 09:00 10:00<br /> 09:30</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">App1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">App1注册在9点到10点间&#xff0c;9点半可用的应用名是App1</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> App1 1 09:00 10:00<br /> App2 2 09:10 09:30<br /> 09:20</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">App2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">App1和App2的时段有冲突&#xff0c;App2优先级高&#xff0c;注册App2之后&#xff0c;App1自动注销&#xff0c;因此输出App2。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> App1 1 09:00 10:00<br /> App2 2 09:10 09:30<br /> 09:50</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">NA</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题数量级较小&#xff0c;可以考虑暴力破解。</p> 
+<p></p> 
+<p>本题每注册一个App_registering前&#xff0c;都要去和已注册的所有App_registered进行比较&#xff1a;</p> 
+<ul><li>注册时段是否有冲突&#xff1f;</li></ul> 
+<ol><li>如果没有冲突&#xff0c;则继续和下一个App_registered比较</li><li>如果有冲突&#xff0c;则比较优先级<br /><br /> 2.1. App_registering 的优先级高于&#xff08;&gt;&#xff09;App_registered&#xff0c;则App_registered需要被注销&#xff0c;此时不能直接进行注销动作&#xff0c;因为我们需要确保 App_registering 可以注册后&#xff0c;才能进行注销。<br /><br /> 2.2. App_registering 的优先级不高于&#xff08;≤&#xff09;App_registered&#xff0c;则App_registering不能注册&#xff0c;即终止后续比较</li></ol> 
+<p></p> 
+<p>本题比较两个App注册时段冲突的方式&#xff0c;可以将App的注册时段的时间点信息&#xff0c;转化为分钟数数值&#xff0c;比如&#xff1a;</p> 
+<blockquote> 
+ <p>10:29</p> 
+</blockquote> 
+<p>可以转化为&#xff1a;</p> 
+<blockquote> 
+ <p>10 * 60 &#43; 29 &#61; 629</p> 
+</blockquote> 
+<p>这样两个App的时段比较&#xff0c;其实判断两个区间是否有交集&#xff0c;假设两个时段分别为</p> 
+<p>[s1, e1] 和 [s2, e2]</p> 
+<p>只要满足</p> 
+<p>s1 &gt;&#61; e2 或者 s2 &gt;&#61; e1 即可说明两个区间无交集&#xff0c;注意根据题目说明</p> 
+<blockquote> 
+ <p>注册信息中的时间段包含起始时间点&#xff0c;不包含结束时间点</p> 
+</blockquote> 
+<p>上面两个区间均为左闭右开区间。</p> 
+<p></p> 
+<p>且区间保证左边界&gt;右边界&#xff0c;因为题目说明</p> 
+<blockquote> 
+ <p>起始时间需小于结束时间&#xff0c;否则注册不上</p> 
+</blockquote> 
+<p>即&#xff0c;一个App是否可以注册需要先判断其左边界是否大于右边界</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+class App {
+  constructor(name, priority, start, end) {
+    this.name &#61; name;
+    this.priority &#61; priority;
+    this.start &#61; start;
+    this.end &#61; end;
+  }
+}
+
+function convert(time) {
+  // 时间格式 HH:MM&#xff0c;小时和分钟都是两位&#xff0c;不足两位前面补0
+  const [hours, minutes] &#61; time.split(&#34;:&#34;).map(Number);
+  return hours * 60 &#43; minutes;
+}
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+
+  // 需要注册的App
+  const apps &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    const [name, priority, startTime, endTime] &#61; (await readline()).split(&#34; &#34;);
+    apps.push(
+      new App(name, parseInt(priority), convert(startTime), convert(endTime))
+    );
+  }
+
+  // 需要查询的时间点
+  const queryTime &#61; convert(await readline());
+
+  console.log(getResult(apps, queryTime));
+})();
+
+function getResult(apps, queryTime) {
+  // 记录已注册的App
+  const registereds &#61; [];
+
+  outer: for (let app of apps) {
+    // 起始时间&gt;&#61;结束时间&#xff0c;则注册不上
+    if (app.start &gt;&#61; app.end) continue;
+
+    // 记录已注册的App中被注销的App的位置
+    const idxs &#61; [];
+
+    // 比较app_registering和它前面完成注册的所有app_registered
+    for (let j &#61; 0; j &lt; registereds.length; j&#43;&#43;) {
+      const registered &#61; registereds[j];
+
+      // 两个App的注册时间无冲突&#xff0c;则继续和下一个app_registered比较
+      if (registered.start &gt;&#61; app.end || app.start &gt;&#61; registered.end) {
+        continue;
+      }
+
+      // 两个App的注册时间有冲突&#xff0c;则比较优先级
+      if (app.priority &gt; registered.priority) {
+        // 这里不能直接注销低优先级的app_registered&#xff0c;我们要保证app_registering一定能注册后才能进行此操作&#xff0c;因此先记录要被注销的app_registered的位置
+        idxs.push(j);
+      } else {
+        // app_registering的优先级 &lt;&#61; app_registered的优先级时&#xff0c;则app_registering不能注册&#xff0c;终止比较
+        continue outer;
+      }
+    }
+
+    // idxs中索引是升序的&#xff0c;如果正序删除的话&#xff0c;那么每删除一个元素&#xff0c;都会改变后面元素的索引位置&#xff0c;因此这里采用倒序删除
+    for (let i &#61; idxs.length - 1; i &gt;&#61; 0; i--) {
+      const deleteIdx &#61; idxs[i];
+      registereds.splice(deleteIdx, 1);
+    }
+
+    registereds.push(app);
+  }
+
+  let ans &#61; &#34;NA&#34;;
+
+  for (let app of registereds) {
+    if (queryTime &gt;&#61; app.start &amp;&amp; queryTime &lt; app.end) {
+      ans &#61; app.name;
+      break;
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  static class App {
+    String name;
+    int priority;
+    int startTime;
+    int endTime;
+
+    public App(String name, int priority, int startTime, int endTime) {
+      this.name &#61; name;
+      this.priority &#61; priority;
+      this.startTime &#61; startTime;
+      this.endTime &#61; endTime;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    // 需要注册的App
+    ArrayList&lt;App&gt; apps &#61; new ArrayList&lt;&gt;();
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      apps.add(new App(sc.next(), sc.nextInt(), convert(sc.next()), convert(sc.next())));
+    }
+
+    // 需要查询的时间点
+    int queryTime &#61; convert(sc.next());
+
+    System.out.println(getResult(apps, queryTime));
+  }
+
+  public static String getResult(ArrayList&lt;App&gt; apps, int queryTime) {
+    // 记录已注册的App
+    ArrayList&lt;App&gt; registereds &#61; new ArrayList&lt;&gt;();
+
+    outer:
+    for (App app : apps) {
+      // 起始时间&gt;&#61;结束时间&#xff0c;则注册不上
+      if (app.startTime &gt;&#61; app.endTime) continue;
+
+      // 记录已注册的App中被注销的App的位置
+      ArrayList&lt;Integer&gt; idxs &#61; new ArrayList&lt;&gt;();
+
+      // 比较app_registering和它前面完成注册的所有app_registered
+      for (int j &#61; 0; j &lt; registereds.size(); j&#43;&#43;) {
+        App registered &#61; registereds.get(j);
+
+        // 两个App的注册时间无冲突&#xff0c;则继续和下一个app_registered比较
+        if (registered.startTime &gt;&#61; app.endTime || app.startTime &gt;&#61; registered.endTime) continue;
+
+        // 两个App的注册时间有冲突&#xff0c;则比较优先级
+        if (app.priority &gt; registered.priority) {
+          // 这里不能直接注销低优先级的app_registered&#xff0c;我们要保证app_registering一定能注册后才能进行此操作&#xff0c;因此先记录要被注销的app_registered的位置
+          idxs.add(j);
+        } else {
+          // app_registering的优先级 &lt;&#61; app_registered的优先级时&#xff0c;则app_registering不能注册&#xff0c;终止比较
+          continue outer;
+        }
+      }
+
+      // idxs中索引是升序的&#xff0c;如果正序删除的话&#xff0c;那么每删除一个元素&#xff0c;都会改变后面元素的索引位置&#xff0c;因此这里采用倒序删除
+      for (int j &#61; idxs.size() - 1; j &gt;&#61; 0; j--) {
+        int deleteIdx &#61; idxs.get(j);
+        registereds.remove(deleteIdx);
+      }
+
+      registereds.add(app);
+    }
+
+    String ans &#61; &#34;NA&#34;;
+
+    // 注册成功的App时段之间互不冲突&#xff0c;因此queryTime只会对应一个App
+    for (App app : registereds) {
+      if (queryTime &gt;&#61; app.startTime &amp;&amp; queryTime &lt; app.endTime) {
+        ans &#61; app.name;
+        break;
+      }
+    }
+
+    return ans;
+  }
+
+  public static int convert(String time) {
+    // 时间格式 HH:MM&#xff0c;小时和分钟都是两位&#xff0c;不足两位前面补0
+    String[] tmp &#61; time.split(&#34;:&#34;);
+
+    String hours &#61; tmp[0];
+    String minutes &#61; tmp[1];
+    return Integer.parseInt(hours) * 60 &#43; Integer.parseInt(minutes);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">class App:
+    def __init__(self, name, priority, start, end):
+        self.name &#61; name
+        self.priority &#61; priority
+        self.start &#61; start
+        self.end &#61; end
+
+
+def convert(time):
+    # 时间格式 HH:MM&#xff0c;小时和分钟都是两位&#xff0c;不足两位前面补0
+    hours, minutes &#61; map(int, time.split(&#34;:&#34;))
+    return hours * 60 &#43; minutes
+
+
+# 输入获取
+n &#61; int(input())
+
+# 需要注册的App
+apps &#61; []
+for _ in range(n):
+    name, priority, start, end &#61; input().split(&#34; &#34;)
+    apps.append(App(name, int(priority), convert(start), convert(end)))
+
+# 需要查询的时间点
+queryTime &#61; convert(input())
+
+
+# 算法入口
+def getResult():
+    registereds &#61; []
+
+    for app in apps:
+        # 起始时间&gt;&#61;结束时间&#xff0c;则注册不上
+        if app.start &gt;&#61; app.end:
+            continue
+
+        # 记录已注册的App中被注销的App的位置
+        idxs &#61; []
+
+        flag &#61; False
+
+        # 比较app_registering和它前面完成注册的所有app_registered
+        for j in range(len(registereds)):
+            registered &#61; registereds[j]
+
+            # 两个App的注册时间无冲突&#xff0c;则继续和下一个app_registered比较
+            if registered.start &gt;&#61; app.end or app.start &gt;&#61; registered.end:
+                continue
+
+            # 两个App的注册时间有冲突&#xff0c;则比较优先级
+            if app.priority &gt; registered.priority:
+                # 这里不能直接注销低优先级的app_registered&#xff0c;我们要保证app_registering一定能注册后才能进行此操作&#xff0c;因此先记录要被注销的app_registered的位置
+                idxs.append(j)
+            else:
+                # app_registering的优先级 &lt;&#61; app_registered的优先级时&#xff0c;则app_registering不能注册&#xff0c;终止比较
+                flag &#61; True
+                break
+
+        # 如果app_registering不能注册&#xff0c;则终止比较
+        if flag:
+            continue
+
+        # idxs中索引是升序的&#xff0c;如果正序删除的话&#xff0c;那么每删除一个元素&#xff0c;都会改变后面元素的索引位置&#xff0c;因此这里采用倒序删除
+        idxs.reverse()
+        for idx in idxs:
+            registereds.pop(idx)
+
+        registereds.append(app)
+
+    ans &#61; &#34;NA&#34;
+
+    # 注册成功的App时段之间互不冲突&#xff0c;因此queryTime只会对应一个App
+    for registered in registereds:
+        if registered.start &lt;&#61; queryTime &lt; registered.end:
+            ans &#61; registered.name
+            break
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_SIZE 100
+
+typedef struct App {
+    char name[100];
+    int priority;
+    int start;
+    int end;
+} App;
+
+App *new_App(char *name, int priority, int start, int end) {
+    App *app &#61; (App *) malloc(sizeof(App));
+
+    strcpy(app-&gt;name, name);
+    app-&gt;priority &#61; priority;
+    app-&gt;start &#61; start;
+    app-&gt;end &#61; end;
+
+    return app;
+}
+
+int convert(char *time) {
+    int hours;
+    int minutes;
+    // 时间格式 HH:MM&#xff0c;小时和分钟都是两位&#xff0c;不足两位前面补0
+    sscanf(time, &#34;%d:%d&#34;, &amp;hours, &amp;minutes);
+    return hours * 60 &#43; minutes;
+}
+
+App *apps[MAX_SIZE];
+int apps_size &#61; 0;
+
+void getResult(int query) {
+    // 记录已注册的App
+    App *registeds[MAX_SIZE];
+    int registeds_size &#61; 0;
+
+    for (int i &#61; 0; i &lt; apps_size; i&#43;&#43;) {
+        App *app &#61; apps[i];
+
+        // 起始时间&gt;&#61;结束时间&#xff0c;则注册不上
+        if (app-&gt;start &gt;&#61; app-&gt;end) continue;
+
+        // 记录已注册的App中被注销的App的位置
+        int idxs[MAX_SIZE];
+        int idxs_size &#61; 0;
+
+        int flag &#61; 0;
+
+        // 比较app_registering和它前面完成注册的所有app_registered
+        for (int j &#61; 0; j &lt; registeds_size; j&#43;&#43;) {
+            App *registerd &#61; registeds[j];
+
+            // 79~80行会产生NULL的情况
+            if(registerd &#61;&#61; NULL) continue;
+
+            // 两个App的注册时间无冲突&#xff0c;则继续和下一个app_registered比较
+            if (registerd-&gt;start &gt;&#61; app-&gt;end || app-&gt;start &gt;&#61; registerd-&gt;end) continue;
+
+            // 两个App的注册时间有冲突&#xff0c;则比较优先级
+            if (app-&gt;priority &gt; registerd-&gt;priority) {
+                // 这里不能直接注销低优先级的app_registered&#xff0c;我们要保证app_registering一定能注册后才能进行此操作&#xff0c;因此先记录要被注销的app_registered的位置
+                idxs[idxs_size&#43;&#43;] &#61; j;
+            } else {
+                // app_registering的优先级 &lt;&#61; app_registered的优先级时&#xff0c;则app_registering不能注册&#xff0c;终止比较
+                flag &#61; 1;
+                break;
+            }
+        }
+
+        // app_registering不能注册&#xff0c;终止比较
+        if (flag) continue;
+
+        // 将被注销的App赋值为NULL
+        for (int j &#61; 0; j &lt; idxs_size; j&#43;&#43;) {
+            int deleteIdx &#61; idxs[j];
+            registeds[deleteIdx] &#61; NULL;
+        }
+
+        registeds[registeds_size&#43;&#43;] &#61; app;
+    }
+
+    char *ans &#61; &#34;NA&#34;;
+
+    // 注册成功的App时段之间互不冲突&#xff0c;因此queryTime只会对应一个App
+    for (int i &#61; 0; i &lt; registeds_size; i&#43;&#43;) {
+        if (registeds[i] &#61;&#61; NULL) continue;
+
+        if(query &gt;&#61; registeds[i]-&gt;start &amp;&amp; query &lt; registeds[i]-&gt;end) {
+            ans &#61; registeds[i]-&gt;name;
+            break;
+        }
+    }
+
+    puts(ans);
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        // App名称、优先级、起始时间、结束时间
+        char name[100];
+        int priority;
+        char startTime[10];
+        char endTime[10];
+
+        scanf(&#34;%s %d %s %s&#34;, name, &amp;priority, startTime, endTime);
+
+        int start &#61; convert(startTime);
+        int end &#61; convert(endTime);
+
+        apps[apps_size&#43;&#43;] &#61; new_App(name, priority, start, end);
+    }
+
+    // 需要查询的时间点
+    char queryTime[10];
+    scanf(&#34;%s&#34;, queryTime);
+
+    int query &#61; convert(queryTime);
+
+    getResult(query);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

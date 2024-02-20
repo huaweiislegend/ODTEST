@@ -1,0 +1,426 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 数大雁（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>一群大雁往南飞&#xff0c;给定一个字符串记录地面上的游客听到的大雁叫声&#xff0c;请给出叫声最少由几只大雁发出。</p> 
+<p>具体的&#xff1a;</p> 
+<ol><li>大雁发出的完整叫声为”quack“&#xff0c;因为有多只大雁同一时间嘎嘎作响&#xff0c;所以字符串中可能会混合多个”quack”。</li><li>大雁会依次完整发出”quack”&#xff0c;即字符串中’q’ ,‘u’, ‘a’, ‘c’, ‘k’ 这5个字母按顺序完整存在才能计数为一只大雁。如果不完整或者没有按顺序则不予计数。</li><li>如果字符串不是由’q’, ‘u’, ‘a’, ‘c’, ‘k’ 字符组合而成&#xff0c;或者没有找到一只大雁&#xff0c;请返回-1。</li></ol> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>一个字符串&#xff0c;包含大雁quack的叫声。1 &lt;&#61; 字符串长度 &lt;&#61; 1000&#xff0c;字符串中的字符只有’q’, ‘u’, ‘a’, ‘c’, ‘k’。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>大雁的数量</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:73px;">输入</td><td style="width:425px;">quackquack</td></tr><tr><td style="width:73px;">输出</td><td style="width:425px;">1</td></tr><tr><td style="width:73px;">说明</td><td style="width:425px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:75px;">输入</td><td style="width:423px;">qaauucqckk</td></tr><tr><td style="width:75px;">输出</td><td style="width:423px;">-1</td></tr><tr><td style="width:75px;">说明</td><td style="width:423px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:73px;">输入</td><td style="width:425px;">quacqkuac</td></tr><tr><td style="width:73px;">输出</td><td style="width:425px;">1</td></tr><tr><td style="width:73px;">说明</td><td style="width:425px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:73px;">输入</td><td style="width:425px;">qququaauqccauqkkcauqqkcauuqkcaaukccakkck</td></tr><tr><td style="width:73px;">输出</td><td style="width:425px;">5</td></tr><tr><td style="width:73px;">说明</td><td style="width:425px;">无</td></tr></tbody></table> 
+<p></p> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h3> 
+<p>首先看一个例子&#xff1a;</p> 
+<p><img alt="" height="112" src="https://img-blog.csdnimg.cn/2d554080ee414d75809799ac1725dc11.png" width="504" /></p> 
+<p>对于标黄的&#34;uack&#34;&#xff0c;我们应该归属于哪一个绿色的&#34;q&#34;呢&#xff1f;</p> 
+<ul><li>如果归属于第一个绿色&#34;q&#34;&#xff0c;那么该例子就至少有两只大雁</li><li>如果归属于第二个绿色&#34;q&#34;&#xff0c;那么该例子就至少有一只大雁</li></ul> 
+<p>这里的两个&#34;q&#34;更准确的描述是&#xff1a;</p> 
+<ul><li>第一个&#34;q&#34;是前一次完整叫声<span style="color:#fe2c24;">中</span>的第一个&#34;q&#34;</li><li>第二个&#34;q&#34;是前一次完整叫声<span style="color:#fe2c24;">后</span>的第一个&#34;q&#34;</li></ul> 
+<p><img alt="" height="159" src="https://img-blog.csdnimg.cn/0d575a426de94b8192f50ef25e4d14d6.png" width="549" /></p> 
+<p>下面我对这两种理解都做了实现</p> 
+<p> </p> 
+<h3>归属于第一个&#34;q&#34;解法&#xff08;90%通过率&#xff09;</h3> 
+<p>此解法虽然看起来和<a href="https://blog.csdn.net/qfc_128220/article/details/128046193?spm&#61;1001.2014.3001.5501" title="LeetCode - 1419 数青蛙_伏城之外的博客-CSDN博客">LeetCode - 1419 数青蛙_伏城之外的博客-CSDN博客</a></p> 
+<p>很像&#xff0c;但是难度却要大于leetcode这道题&#xff0c;原因是</p> 
+<blockquote> 
+ <p>大雁会依次完整发出”quack”&#xff0c;即字符串中’q’ ,‘u’, ‘a’, ‘c’, ‘k’ 这5个字母按顺序完整存在才能计数为一只大雁。<span style="color:#fe2c24;">如果不完整或者没有按顺序则不予计数</span>。</p> 
+</blockquote> 
+<p>而leetcode数青蛙</p> 
+<blockquote> 
+ <p>如果字符串 croakOfFrogs 不是由若干有效的 &#34;croak&#34; 字符混合而成&#xff0c;请返回 -1 。</p> 
+</blockquote> 
+<p>leetcode这题&#xff0c;如果存在不完整或者不按顺序的叫声&#xff0c;则直接返回-1。结束程序。</p> 
+<p>而本题&#xff0c;则对于不完整或者不按顺序的叫声&#xff0c;只是不予计数&#xff0c;后面还要继续统计。</p> 
+<p>比如 quaquck</p> 
+<p>如果按照leetcode数青蛙逻辑来做的话&#xff0c;结果应该返回-1。</p> 
+<p>而本题逻辑却需要返回1。</p> 
+<p>leetcode难度小的原因是&#xff0c;不需要考虑剔除不完整或者不按顺序的叫声。</p> 
+<p>而本题难度大的原因是&#xff0c;需要考虑剔除不完整或者不按顺序的叫声。</p> 
+<p></p> 
+<p>我的解题思路是&#xff0c;求出每个叫声quack的区间范围&#xff0c;即一次叫声的&#xff1a;[q索引位置&#xff0c;k索引位置]。</p> 
+<p>实现是&#xff1a;从左到右遍历叫声字符串&#xff0c;遇到q&#xff0c;则将其索引位置加入缓存中&#xff0c;</p> 
+<p>遇到u&#xff0c;则判断u出现的次数是否超过了q出现的次数&#xff0c;若是则忽略本次u&#xff0c;否则u次数&#43;&#43;</p> 
+<p>遇到a&#xff0c;则判断a出现的次数是否超过了u出现的次数&#xff0c;若是则忽略本次a&#xff0c;否则a次数&#43;&#43;</p> 
+<p>遇到c&#xff0c;则判断c出现的次数是否超过了a出现的次数&#xff0c;若是则忽略本次c&#xff0c;否则c次数&#43;&#43;</p> 
+<p>遇到k&#xff0c;则判断c次数是否大于等于1&#xff0c;若否&#xff0c;则忽略本次k&#xff0c;否则出队第一个q出现索引和本次k的索引&#xff0c;组合成一个区间范围&#xff0c;然后u--,a--,c--&#xff0c;表示取出了一次叫声。</p> 
+<p></p> 
+<p>按照上面逻辑&#xff0c;我们可以剔除掉不完整或者不按顺序的叫声&#xff0c;并且获得每个合法叫声的区间范围。</p> 
+<p>接下来就是遍历每一个区间&#xff0c;和后面区间比较&#xff0c;看是否有交集&#xff0c;若有&#xff0c;则记录交集数。</p> 
+<p>最终最大的交集数就是最多大雁数。</p> 
+<p></p> 
+<p>下图是用例3&#xff1a;qququaauqccauqkkcauqqkcauuqkcaaukccakkck</p> 
+<p>各合法叫声区间的交集示意图</p> 
+<p><img alt="" height="412" src="https://img-blog.csdnimg.cn/85573cfbf03c48b88a75f32d306268ef.png" width="1200" /></p> 
+<p><img alt="" height="422" src="https://img-blog.csdnimg.cn/49f7dd7052e84cc4b14da9490acf64a2.png" width="1200" /></p> 
+<p> <img alt="" height="408" src="https://img-blog.csdnimg.cn/3b39e7091b4b4650868445e6fefc6eba.png" width="1200" /></p> 
+<p><img alt="" height="422" src="https://img-blog.csdnimg.cn/42295eefdc764508a777593769e21ffd.png" width="1200" /></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(quacks) {
+  let q, u, a, c, k;
+  q &#61; [];
+  u &#61; 0;
+  a &#61; 0;
+  c &#61; 0;
+
+  const range &#61; [];
+
+  for (let i &#61; 0; i &lt; quacks.length; i&#43;&#43;) {
+    switch (quacks[i]) {
+      case &#34;q&#34;:
+        q.push(i);
+        break;
+      case &#34;u&#34;:
+        if (u &#43; 1 &lt;&#61; q.length) u&#43;&#43;;
+        break;
+      case &#34;a&#34;:
+        if (a &#43; 1 &lt;&#61; u) a&#43;&#43;;
+        break;
+      case &#34;c&#34;:
+        if (c &#43; 1 &lt;&#61; a) c&#43;&#43;;
+        break;
+      case &#34;k&#34;:
+        if (1 &lt;&#61; c) {
+          range.push([q.shift(), i]);
+          u--;
+          a--;
+          c--;
+        }
+        break;
+      default:
+        return -1;
+    }
+  }
+
+  if (!range.length) return -1;
+
+  let max &#61; 1;
+  for (let i &#61; 0; i &lt; range.length; i&#43;&#43;) {
+    let count &#61; 1;
+    for (let j &#61; i &#43; 1; j &lt; range.length; j&#43;&#43;) {
+      if (range[i][1] &gt;&#61; range[j][0]) count&#43;&#43;;
+    }
+    max &#61; Math.max(max, count);
+  }
+
+  return max;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String quack &#61; sc.next();
+    System.out.println(getResult(quack));
+  }
+
+  public static int getResult(String quack) {
+    LinkedList&lt;Integer&gt; q &#61; new LinkedList&lt;&gt;();
+
+    int u &#61; 0, a &#61; 0, c &#61; 0;
+
+    ArrayList&lt;Integer[]&gt; ranges &#61; new ArrayList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; quack.length(); i&#43;&#43;) {
+      switch (quack.charAt(i)) {
+        case &#39;q&#39;:
+          q.add(i);
+          break;
+        case &#39;u&#39;:
+          if (u &#43; 1 &lt;&#61; q.size()) u&#43;&#43;;
+          break;
+        case &#39;a&#39;:
+          if (a &#43; 1 &lt;&#61; u) a&#43;&#43;;
+          break;
+        case &#39;c&#39;:
+          if (c &#43; 1 &lt;&#61; a) c&#43;&#43;;
+          break;
+        case &#39;k&#39;:
+          if (c &gt;&#61; 1) {
+            ranges.add(new Integer[] {q.removeFirst(), i});
+            u--;
+            a--;
+            c--;
+          }
+          break;
+        default:
+          return -1;
+      }
+    }
+
+    if (ranges.size() &#61;&#61; 0) return -1;
+
+    int ans &#61; 1;
+    for (int i &#61; 0; i &lt; ranges.size(); i&#43;&#43;) {
+      int count &#61; 1;
+      for (int j &#61; i &#43; 1; j &lt; ranges.size(); j&#43;&#43;) {
+        if (ranges.get(i)[1] &gt;&#61; ranges.get(j)[0]) {
+          count&#43;&#43;;
+        }
+      }
+      ans &#61; Math.max(ans, count);
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+quacks &#61; input()
+
+
+# 算法入口
+def getResult():
+    q &#61; []
+    u, a, c &#61; 0, 0, 0
+
+    rans &#61; []
+
+    for i in range(len(quacks)):
+        char &#61; quacks[i]
+
+        if char &#61;&#61; &#39;q&#39;:
+            q.append(i)
+        elif char &#61;&#61; &#39;u&#39;:
+            if u &#43; 1 &lt;&#61; len(q):
+                u &#43;&#61; 1
+        elif char &#61;&#61; &#39;a&#39;:
+            if a &#43; 1 &lt;&#61; u:
+                a &#43;&#61; 1
+        elif char &#61;&#61; &#39;c&#39;:
+            if c &#43; 1 &lt;&#61; a:
+                c &#43;&#61; 1
+        elif char &#61;&#61; &#39;k&#39;:
+            if c &gt;&#61; 1:
+                rans.append([q.pop(0), i])
+                u -&#61; 1
+                a -&#61; 1
+                c -&#61; 1
+        else:
+            return -1
+
+    if len(rans) &#61;&#61; 0:
+        return -1
+
+    ans &#61; 1
+    for i in range(len(rans)):
+        count &#61; 1
+        for j in range(i &#43; 1, len(rans)):
+            if rans[i][1] &gt;&#61; rans[j][0]:
+                count &#43;&#61; 1
+
+        ans &#61; max(ans, count)
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h3>归属于第二个&#34;q&#34;解法</h3> 
+<p>此解法思路很简单&#xff0c;即假设每只大雁都连续不断的叫&#xff0c;即某只大雁叫完一次后&#xff0c;接着叫</p> 
+<p>我们以题目自带的用例4为例&#xff1a;</p> 
+<p><img alt="" height="170" src="https://img-blog.csdnimg.cn/a2de885bc8604b4198a2d7266e75402d.png" width="1200" /></p> 
+<p>其中一种颜色标记&#xff0c;就是一只大雁的多次叫声&#xff0c;比如黄色标记&#xff0c;就相当于一只大雁叫了三声quack&#xff0c;这三声quack是不交叉的&#xff0c;因此可以认为是同一只大雁叫的。</p> 
+<p>这里其实有贪心思维的存在&#xff0c;即认为每个大雁都会发出多次叫声&#xff0c;只要存在多次不交叉的叫声&#xff0c;即认为是一只大雁发出的&#xff0c;这样最终就可以得到最少大雁数量。</p> 
+<p></p> 
+<p>具体实现时&#xff0c;需要对输入的字符串进行多轮遍历&#xff0c;每轮遍历确认一只大雁&#xff0c;并将该大雁的多次叫声对应的位置标记为used&#xff0c;这样到下一轮遍历时&#xff0c;就不会造成多个大雁使用同一个叫声。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.next()));
+  }
+
+  public static int getResult(String s) {
+    char[] quacks &#61; s.toCharArray();
+
+    int count &#61; 0;
+    while (find(quacks)) {
+      count&#43;&#43;;
+    }
+
+    // 如果没有找到一只大雁&#xff0c;请返回-1。
+    return count &#61;&#61; 0 ? -1 : count;
+  }
+
+  public static boolean find(char[] quacks) {
+    boolean isFind &#61; false;
+
+    int index &#61; 0;
+    int[] quack_index &#61; new int[5];
+
+    for (int i &#61; 0; i &lt; quacks.length; i&#43;&#43;) {
+      if (quacks[i] &#61;&#61; &#34;quack&#34;.charAt(index)) {
+        quack_index[index&#43;&#43;] &#61; i;
+      }
+
+      if (index &#61;&#61; 5) {
+        isFind &#61; true;
+
+        for (int j : quack_index) {
+          quacks[j] &#61; &#39; &#39;;
+        }
+
+        index &#61; 0;
+      }
+    }
+
+    return isFind;
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  console.log(getResult(await readline()));
+})();
+
+function getResult(s) {
+  const quacks &#61; [...s];
+
+  let count &#61; 0;
+  // 多轮找大雁
+  while (find(quacks)) {
+    count&#43;&#43;;
+  }
+
+  return count &#61;&#61; 0 ? -1 : count;
+}
+
+function find(quacks) {
+  let isFind &#61; false;
+
+  let index &#61; 0;
+  const quack_index &#61; new Array(5).fill(-1);
+
+  for (let i &#61; 0; i &lt; quacks.length; i&#43;&#43;) {
+    if (quacks[i] &#61;&#61; &#34;quack&#34;[index]) {
+      quack_index[index&#43;&#43;] &#61; i;
+    }
+
+    if (index &#61;&#61; 5) {
+      isFind &#61; true;
+
+      for (let j of quack_index) {
+        quacks[j] &#61; &#34;&#34;;
+      }
+
+      index &#61; 0;
+    }
+  }
+
+  return isFind;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+quacks &#61; list(input())
+
+
+# 一轮找出一只大雁的所有叫声
+def find():
+    isFind &#61; False
+
+    index &#61; 0
+    quack_index &#61; [-1, -1, -1, -1, -1]
+
+    for i in range(len(quacks)):
+        if quacks[i] &#61;&#61; &#34;quack&#34;[index]:
+            quack_index[index] &#61; i
+            index &#43;&#61; 1
+
+        if index &#61;&#61; 5:
+            isFind &#61; True
+
+            for j in quack_index:
+                quacks[j] &#61; &#39; &#39;
+
+            index &#61; 0
+
+    return isFind
+
+
+# 算法入口
+def getResult():
+    count &#61; 0
+
+    while find():
+        count &#43;&#61; 1
+
+    return -1 if count &#61;&#61; 0 else count
+
+
+# 算法调用
+print(getResult())</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

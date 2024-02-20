@@ -1,0 +1,491 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 机房布局（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小明正在规划一个大型数据中心机房&#xff0c;为了使得机柜上的机器都能正常满负荷工作&#xff0c;需要确保在每个机柜边上至少要有一个电箱。<br /> 为了简化题目&#xff0c;假设这个机房是一整排&#xff0c;M表示机柜&#xff0c;I表示间隔&#xff0c;请你返回这整排机柜&#xff0c;至少需要多少个电箱。 如果无解请返回 -1 。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">MIIM</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h3>逻辑分析解法&#xff08;最优解法&#xff09;</h3> 
+<h4>题目解析</h4> 
+<p>本题其实只要朝一个方向优先放电箱即可&#xff0c;但是通常我们习惯从左向右遍历&#xff0c;因此这里优先将电箱放在机柜的右边。</p> 
+<p>为什么要将电箱优先放在右边呢&#xff1f;比如下面这个例子&#xff1a;</p> 
+<blockquote> 
+ <p><strong><span style="color:#a2e043;">I </span>M <span style="color:#fe2c24;">I </span>M</strong></p> 
+</blockquote> 
+<p>优先将机柜放在<span style="color:#fe2c24;">红色I</span>位置&#xff0c;则最终只需要一个电箱。如果将机柜放<span style="color:#a2e043;">绿色I</span>位置&#xff0c;则最终需要两个电箱。</p> 
+<p>再比如下面这个例子</p> 
+<blockquote> 
+ <p><strong>M <span style="color:#fe2c24;">I </span>M I</strong></p> 
+</blockquote> 
+<p>由于我们是从左往右遍历&#xff0c;因此第一个机柜M&#xff0c;优先将电箱放在它的右边。</p> 
+<p></p> 
+<p>但是&#xff0c;如果机柜的右侧放不了电箱呢&#xff1f;比如</p> 
+<blockquote> 
+ <p><strong>I M M I</strong></p> 
+</blockquote> 
+<p>此时&#xff0c;我们需要看机柜的左侧能不能放&#xff0c;如果能放&#xff0c;则放&#xff0c;不然对应机柜就没有配置电箱了。</p> 
+<p></p> 
+<p>如果机柜的左右两侧都放不了电箱呢&#xff1f;</p> 
+<blockquote> 
+ <p><strong>M M I</strong></p> 
+</blockquote> 
+<p>此时应该直接返回-1。</p> 
+<p></p> 
+<p>另外&#xff0c;还有一个重要的点就是&#xff1a;</p> 
+<p>如果机柜的右侧可以放电箱&#xff0c;比如第 i 个位置是机柜&#xff0c;第 i &#43; 1个位置是间隔&#xff0c;则我们可以将电箱放到第 i &#43; 1个位置上&#xff0c;此时&#xff1a;第 i &#43; 2 个位置是什么还需要关注吗&#xff1f;</p> 
+<p>比如&#xff1a;</p> 
+<blockquote> 
+ <p><strong>M I<span style="color:#fe2c24;"> M</span> I</strong></p> 
+</blockquote> 
+<p>上面<span style="color:#fe2c24;">红色的M</span>还需关注放不放电箱吗&#xff1f;答案是不需要&#xff0c;因为他必然有一个电箱了。</p> 
+<p>此时我们可以直接跳到i&#43;3位置重新开始上面的判断。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61; sc.next();
+
+    System.out.println(getResult(str));
+  }
+
+  public static int getResult(String str) {
+    int n &#61; str.length();
+
+    // ans记录用了几个电箱
+    int ans &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 如果当前是机柜
+      if (str.charAt(i) &#61;&#61; &#39;M&#39;) {
+        // 则优先将电箱放到该机柜的右边&#xff0c;如果机柜右边有间隔I的话
+        if (i &#43; 1 &lt; n &amp;&amp; str.charAt(i &#43; 1) &#61;&#61; &#39;I&#39;) {
+          ans&#43;&#43;;
+          // 如果放成功了&#xff0c;即当前第 i 个位置是机柜&#xff0c;第i&#43;1个位置是 电箱&#xff0c;那么第i&#43;2个位置无论是机柜还是间隔都无所谓&#xff0c;下次我们直接从第i&#43;3位置开始判断
+          i &#43;&#61; 2; // 这里 i &#43;&#61; 2结合下轮for循环的i&#43;&#43;&#xff0c;就是i &#43;&#61; 3
+        }
+        // 如果当前第i位置的机柜右边无法放入电箱&#xff0c;则只能将电箱放到其左边第i-1位置&#xff0c;但是第i-1位置必须是间隔I
+        else if (i - 1 &gt;&#61; 0 &amp;&amp; str.charAt(i - 1) &#61;&#61; &#39;I&#39;) {
+          ans&#43;&#43;;
+        }
+        // 如果当前机柜左右都无法放入电箱&#xff0c;则返回-1
+        else {
+          ans &#61; -1;
+          break;
+        }
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  const n &#61; str.length;
+
+  // ans记录用了几个电箱
+  let ans &#61; 0;
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // 如果当前是机柜
+    if (str[i] &#61;&#61; &#34;M&#34;) {
+      // 则优先将电箱放到该机柜的右边&#xff0c;如果机柜右边有间隔I的话
+      if (i &#43; 1 &lt; n &amp;&amp; str[i &#43; 1] &#61;&#61; &#34;I&#34;) {
+        ans&#43;&#43;;
+        // 如果放成功了&#xff0c;即当前第 i 个位置是机柜&#xff0c;第i&#43;1个位置是 电箱&#xff0c;那么第i&#43;2个位置无论是机柜还是间隔都无所谓&#xff0c;下次我们直接从第i&#43;3位置开始判断
+        i &#43;&#61; 2; // 这里 i &#43;&#61; 2结合下轮for循环的i&#43;&#43;&#xff0c;就是i &#43;&#61; 3
+      }
+      // 如果当前第i位置的机柜右边无法放入电箱&#xff0c;则只能将电箱放到其左边第i-1位置&#xff0c;但是第i-1位置必须是间隔I
+      else if (i - 1 &gt;&#61; 0 &amp;&amp; str[i - 1] &#61;&#61; &#34;I&#34;) {
+        ans&#43;&#43;;
+      }
+      // 如果当前机柜左右都无法放入电箱&#xff0c;则返回-1
+      else {
+        ans &#61; -1;
+        break;
+      }
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    n &#61; len(s)
+
+    # ans记录用了几个电箱
+    ans &#61; 0
+    i &#61; 0
+    while i &lt; n:
+        # 如果当前是机柜
+        if s[i] &#61;&#61; &#39;M&#39;:
+            # 则优先将电箱放到该机柜的右边&#xff0c;如果机柜右边有间隔I的话
+            if i &#43; 1 &lt; n and s[i &#43; 1] &#61;&#61; &#39;I&#39;:
+                ans &#43;&#61; 1
+                # 如果放成功了&#xff0c;即当前第 i 个位置是机柜&#xff0c;第i&#43;1个位置是 电箱&#xff0c;那么第i&#43;2个位置无论是机柜还是间隔都无所谓&#xff0c;下次我们直接从第i&#43;3位置开始判断
+                i &#43;&#61; 2  # 这里 i &#43;&#61; 2结合后面的i &#43;&#61;1 &#xff0c;就是i &#43;&#61; 3
+            #  如果当前第i位置的机柜右边无法放入电箱&#xff0c;则只能将电箱放到其左边第i-1位置&#xff0c;但是第i-1位置必须是间隔I
+            elif i - 1 &gt;&#61; 0 and s[i - 1] &#61;&#61; &#39;I&#39;:
+                ans &#43;&#61; 1
+            # 如果当前机柜左右都无法放入电箱&#xff0c;则返回-1
+            else:
+                ans &#61; -1
+                break
+        i &#43;&#61; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult(s))
+</code></pre> 
+<p></p> 
+<h3>栈&#43;区间问题解法</h3> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题&#xff0c;“无解”的情况应该是指&#xff1a;M的左右两边都是M&#xff0c;或者边界&#xff0c;比如&#xff1a;</p> 
+<ul><li><span style="color:#fe2c24;">M</span>MIIM&#xff1a;标红M的左边是边界&#xff0c;所以无法放电箱&#xff0c;右边是M&#xff0c;所以也无法放电箱</li><li>IM<span style="color:#fe2c24;">M</span>MI&#xff1a;标红M的左右两边都是M&#xff0c;因此无法放电箱</li></ul> 
+<p>因此&#xff0c;遇到上面情况&#xff0c;我们应该返回-1。</p> 
+<p></p> 
+<p>接下来就是最少电箱的分配策略了&#xff0c;本题要求每台机柜的两边&#xff0c;至少有一边上配有电箱&#xff0c;那么最少电箱分配&#xff0c;肯定是尽可能地让两个机柜共享一个电箱。</p> 
+<p>我这里利用了区间交集的思想&#xff1a;</p> 
+<p>即&#xff0c;如果机柜处于 i 位置&#xff0c;则该机柜的区间为 [i-1, i&#43;1]&#xff0c;需要注意的是i-1和i&#43;1不能超过边界&#xff0c;如果超过边界&#xff0c;则取边界值。</p> 
+<p>如果后面一个机柜的区间和前面一个机柜有交集&#xff0c;则代表两个机柜可以共享一个电箱。</p> 
+<p></p> 
+<p>这里&#xff0c;我使用栈结构来实现电箱数的统计&#xff0c;即将机柜区间尝试压入栈中&#xff0c;如果要要入的机柜区间range和栈顶区间top有交集&#xff0c;则弹出栈顶区间top&#xff0c;并压入range。这样最终栈中区间数&#xff0c;就是电箱数了。</p> 
+<p>但是上面逻辑存在一个漏洞&#xff1a;那就是MIMIM这种情况&#xff0c;这这情况栈中只会剩下最后一个M的区间&#xff0c;但是实际上需要的电箱数是2。</p> 
+<p>这是因为&#xff0c;第2个M和第1个M存在交集后&#xff0c;我们就将第1个M弹出了&#xff0c;因此第2个M不仅代表了自身需要的电箱数&#xff0c;还代表了被弹出的第1个M的电箱数&#xff0c;因此即使第3个M和第2个M有交集&#xff0c;我们也不能将第2个M弹出&#xff0c;因为弹出的话&#xff0c;就会丢失第1个M需要的电箱数。</p> 
+<p>因此&#xff0c;我额外定义了一个stick标识&#xff0c;初始stick &#61; false&#xff0c;表示栈顶区间未形成共享电箱</p> 
+<ul><li>如果压入区间A和栈顶区间B存在交集&#xff0c;则将栈顶区间B弹出&#xff0c;并将stick&#61;true&#xff0c;表示A区间已形成共享电箱</li></ul> 
+<p>如果栈顶区间已形成共享电箱&#xff0c;即stick&#61;true&#xff0c;则此时&#xff0c;我们可以直接压入新区间&#xff0c;并将stick重置为false。</p> 
+<hr /> 
+<p>2023.04.12 优化思路&#xff1a;</p> 
+<p>上面为了避免遗漏统计共享电箱&#xff0c;因此设计了一个stick变量&#xff0c;来记录栈顶区间是否挂载了共享电箱&#xff0c;如果挂载了&#xff0c;则栈顶区间不可弹出。</p> 
+<p>上面逻辑其实可以优化&#xff0c;其实优化思路很简单&#xff0c;就是&#xff1a;共享电箱挂载到哪个区间上的问题</p> 
+<p></p> 
+<p>我们假设栈顶区间为top&#xff0c;而要加入区间为new&#xff0c;现在top和new有交集&#xff0c;即可以共享电箱。</p> 
+<p>前面逻辑&#xff1a;是将共享电箱挂载到了new区间上&#xff0c;而栈中的区间数量又表示为所需电箱数&#xff0c;因此&#xff0c;上面逻辑做了两个动作&#xff1a;</p> 
+<ul><li>top区间弹出</li><li>new区间压栈后&#xff0c;设置为不可弹出&#xff08;即设置stick标志为true&#xff09;</li></ul> 
+<p></p> 
+<p>但是&#xff0c;我们完全可以转变思路&#xff0c;即一开始&#xff0c;就将共享电箱挂载到top区间上&#xff0c;而new区间不入栈。</p> 
+<p>此时&#xff0c;top区间肯定不会和后续区间产生交集&#xff0c;因此相当于天生有stick&#61;true的标志。而new区间不入栈&#xff0c;也不会对所需电箱数产生影响。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  const n &#61; str.length;
+  const stack &#61; [];
+  let stick &#61; false;
+
+  for (let i &#61; 0; i &lt; str.length; i&#43;&#43;) {
+    if (str[i] &#61;&#61; &#34;M&#34;) {
+      // 如果机柜A两边都是机柜&#xff0c;或者没有间隔&#xff0c;则无法给机柜A放电箱&#xff0c;返回-1
+      let left &#61; i - 1 &lt; 0 || str[i - 1] &#61;&#61; &#34;M&#34;;
+      let right &#61; i &#43; 1 &gt;&#61; n || str[i &#43; 1] &#61;&#61; &#34;M&#34;;
+      if (left &amp;&amp; right) return -1;
+
+      // 将求解最少电箱问题&#xff0c;转化为区间交集问题
+      const range &#61; [Math.max(0, i - 1), Math.min(n - 1, i &#43; 1)];
+
+      if (stack.length &amp;&amp; !stick) {
+        const e1 &#61; stack.at(-1)[1];
+        const s2 &#61; range[0];
+
+        if (e1 &#61;&#61;&#61; s2) {
+          stack.pop();
+          stick &#61; true;
+        }
+      } else {
+        stick &#61; false;
+      }
+      stack.push(range);
+    }
+  }
+
+  return stack.length;
+}
+</code></pre> 
+<p>2023.04.12优化后解法</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  const n &#61; str.length;
+  const stack &#61; [];
+
+  for (let i &#61; 0; i &lt; str.length; i&#43;&#43;) {
+    if (str[i] &#61;&#61; &#34;M&#34;) {
+      // 如果机柜A两边都是机柜&#xff0c;或者没有间隔&#xff0c;则无法给机柜A放电箱&#xff0c;返回-1
+      let left &#61; i - 1 &lt; 0 || str[i - 1] &#61;&#61; &#34;M&#34;;
+      let right &#61; i &#43; 1 &gt;&#61; n || str[i &#43; 1] &#61;&#61; &#34;M&#34;;
+      if (left &amp;&amp; right) return -1;
+
+      // 将求解最少电箱问题&#xff0c;转化为区间交集问题
+      const range &#61; [Math.max(0, i - 1), Math.min(n - 1, i &#43; 1)];
+
+      if (stack.length) {
+        const e1 &#61; stack.at(-1)[1];
+        const s2 &#61; range[0];
+        
+        // 如果新区间和栈顶区间有交集&#xff0c;则可共用电箱&#xff0c;此时新区间不需要入栈&#xff0c;即这两个区间所需的电箱挂载在了此时的栈顶区间上
+        if (e1 &#61;&#61; s2) continue;
+      }
+      stack.push(range);
+    }
+  }
+
+  return stack.length;
+}
+</code></pre> 
+<p></p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61; sc.next();
+
+    System.out.println(getResult(str));
+  }
+
+  public static int getResult(String str) {
+    int n &#61; str.length();
+    LinkedList&lt;Integer[]&gt; stack &#61; new LinkedList&lt;&gt;();
+    boolean stick &#61; false;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (str.charAt(i) &#61;&#61; &#39;M&#39;) {
+        // // 如果机柜A两边都是机柜&#xff0c;或者没有间隔&#xff0c;则无法给机柜A放电箱&#xff0c;返回-1
+        boolean left &#61; i - 1 &lt; 0 || str.charAt(i - 1) &#61;&#61; &#39;M&#39;;
+        boolean right &#61; i &#43; 1 &gt;&#61; n || str.charAt(i &#43; 1) &#61;&#61; &#39;M&#39;;
+        if (left &amp;&amp; right) return -1;
+
+        // 将求解最少电箱问题&#xff0c;转化为区间交集问题
+        Integer[] range &#61; {Math.max(0, i - 1), Math.min(n - 1, i &#43; 1)};
+
+        if (stack.size() &gt; 0 &amp;&amp; !stick) {
+          int e1 &#61; stack.getLast()[1];
+          int s2 &#61; range[0];
+
+          if (e1 &#61;&#61; s2) {
+            stack.removeLast();
+            stick &#61; true;
+          }
+        } else {
+          stick &#61; false;
+        }
+        stack.addLast(range);
+      }
+    }
+
+    return stack.size();
+  }
+}
+</code></pre> 
+<p>2023.04.12优化后解法</p> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61; sc.next();
+
+    System.out.println(getResult(str));
+  }
+
+  public static int getResult(String str) {
+    int n &#61; str.length();
+    LinkedList&lt;Integer[]&gt; stack &#61; new LinkedList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (str.charAt(i) &#61;&#61; &#39;M&#39;) {
+        // // 如果机柜A两边都是机柜&#xff0c;或者没有间隔&#xff0c;则无法给机柜A放电箱&#xff0c;返回-1
+        boolean left &#61; i - 1 &lt; 0 || str.charAt(i - 1) &#61;&#61; &#39;M&#39;;
+        boolean right &#61; i &#43; 1 &gt;&#61; n || str.charAt(i &#43; 1) &#61;&#61; &#39;M&#39;;
+        if (left &amp;&amp; right) return -1;
+
+        // 将求解最少电箱问题&#xff0c;转化为区间交集问题
+        Integer[] range &#61; {Math.max(0, i - 1), Math.min(n - 1, i &#43; 1)};
+
+        if (stack.size() &gt; 0) {
+          int e1 &#61; stack.getLast()[1];
+          int s2 &#61; range[0];
+
+          // 如果新区间和栈顶区间有交集&#xff0c;则可共用电箱&#xff0c;此时新区间不需要入栈&#xff0c;即这两个区间所需的电箱挂载在了此时的栈顶区间上
+          if (e1 &#61;&#61; s2) continue;
+        }
+        stack.addLast(range);
+      }
+    }
+
+    return stack.size();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    n &#61; len(s)
+    stack &#61; []
+    stick &#61; False
+
+    for i in range(n):
+        if s[i] &#61;&#61; &#39;M&#39;:
+            # 如果机柜A两边都是机柜&#xff0c;或者没有间隔&#xff0c;则无法给机柜A放电箱&#xff0c;返回-1
+            left &#61; i - 1 &lt; 0 or s[i - 1] &#61;&#61; &#39;M&#39;
+            right &#61; i &#43; 1 &gt;&#61; n or s[i &#43; 1] &#61;&#61; &#39;M&#39;
+
+            if left and right:
+                return -1
+
+            # 将求解最少电箱问题&#xff0c;转化为区间交集问题
+            ran &#61; [max(0, i - 1), min(n - 1, i &#43; 1)]
+
+            if len(stack) &gt; 0 and not stick:
+                e1 &#61; stack[-1][1]
+                s2 &#61; ran[0]
+
+                if e1 &#61;&#61; s2:
+                    stack.pop()
+                    stick &#61; True
+            else:
+                stick &#61; False
+
+            stack.append(ran)
+
+    return len(stack)
+
+
+print(getResult(s))
+</code></pre> 
+<p>2023.04.12优化后解法</p> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    n &#61; len(s)
+    stack &#61; []
+
+    for i in range(n):
+        if s[i] &#61;&#61; &#39;M&#39;:
+            # 如果机柜A两边都是机柜&#xff0c;或者没有间隔&#xff0c;则无法给机柜A放电箱&#xff0c;返回-1
+            left &#61; i - 1 &lt; 0 or s[i - 1] &#61;&#61; &#39;M&#39;
+            right &#61; i &#43; 1 &gt;&#61; n or s[i &#43; 1] &#61;&#61; &#39;M&#39;
+
+            if left and right:
+                return -1
+
+            # 将求解最少电箱问题&#xff0c;转化为区间交集问题
+            ran &#61; [max(0, i - 1), min(n - 1, i &#43; 1)]
+
+            if len(stack) &gt; 0:
+                e1 &#61; stack[-1][1]
+                s2 &#61; ran[0]
+
+                if e1 &#61;&#61; s2:
+                    continue
+
+            stack.append(ran)
+
+    return len(stack)
+
+
+print(getResult(s))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

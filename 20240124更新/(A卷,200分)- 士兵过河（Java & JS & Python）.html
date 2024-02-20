@@ -1,0 +1,484 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 士兵过河（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>一支N个士兵的军队正在趁夜色逃亡&#xff0c;途中遇到一条湍急的大河。<br /> 敌军在T的时长后到达河面&#xff0c;没到过对岸的士兵都会被消灭。<br /> 现在军队只找到了1只小船&#xff0c;这船最多能同时坐上2个士兵。</p> 
+<ol><li>当1个士兵划船过河&#xff0c;用时为 a[i]&#xff1b;0 &lt;&#61; i &lt; N</li><li>当2个士兵坐船同时划船过河时&#xff0c;用时为max(a[j],a[i])两士兵中用时最长的。</li><li>当2个士兵坐船1个士兵划船时&#xff0c;用时为 a[i]*10&#xff1b;a[i]为划船士兵用时。</li><li>如果士兵下河游泳&#xff0c;则会被湍急水流直接带走&#xff0c;算作死亡。</li></ol> 
+<p>请帮忙给出一种解决方案&#xff0c;保证存活的士兵最多&#xff0c;且过河用时最短。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行&#xff1a;N 表示士兵数(0&lt;N&lt;1,000,000)<br /> 第二行&#xff1a;T 表示敌军到达时长(0 &lt; T &lt; 100,000,000)<br /> 第三行&#xff1a;a[0] a[1] … a[i]… a[N- 1]<br /> a[i]表示每个士兵的过河时长。<br /> (10 &lt; a[i]&lt; 100; 0&lt;&#61; i&lt; N&#xff09;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>第一行&#xff1a;”最多存活士兵数” “最短用时”</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>1&#xff09;两个士兵的同时划船时&#xff0c;如果划速不同则会导致船原地转圈圈&#xff1b;所以为保持两个士兵划速相同&#xff0c;则需要向划的慢的士兵看齐。<br /> 2&#xff09;两个士兵坐船时&#xff0c;重量增加吃水加深&#xff0c;水的阻力增大&#xff1b;同样的力量划船速度会变慢&#xff1b;<br /> 3&#xff09;由于河水湍急大量的力用来抵消水流的阻力&#xff0c;所以2&#xff09;中过河用时不是a[i] *2&#xff0c;<br /> 而是a[i] * 10。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 43<br /> 12 13 15 20 50</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3 40</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">可以达到或小于43的一种方案&#xff1a;<br /> 第一步&#xff1a;a[0] a[1] 过河用时&#xff1a;13<br /> 第二步&#xff1a;a[0] 返回用时&#xff1a;12<br /> 第三步&#xff1a;a[0] a[2] 过河用时&#xff1a;15</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 130<br /> 50 12 13 15 20</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5 128</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">可以达到或小于130的一种方案&#xff1a;<br /> 第一步&#xff1a;a[1] a[2] 过河用时&#xff1a;13<br /> 第二步&#xff1a;a[1] 返回用时&#xff1a;12<br /> 第三步&#xff1a;a[0] a[4] 过河用时&#xff1a;50<br /> 第四步&#xff1a;a[2] 返回用时&#xff1a;13<br /> 第五步&#xff1a;a[1] a[2] 过河用时&#xff1a;13<br /> 第六步&#xff1a;a[1] 返回用时&#xff1a;12<br /> 第七步&#xff1a;a[1] a[3] 过河用时&#xff1a;15<br /> 所以输出为&#xff1a;<br /><code>5 128</code></td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">7<br /> 171<br /> 25 12 13 15 20 35 20</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">7 171</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>可以达到或小于171的一种方案&#xff1a;<br /> 第一步&#xff1a;a[1] a[2] 过桥用时&#xff1a;13<br /> 第二步&#xff1a;a[1] 带火把返回用时&#xff1a;12<br /> 第三步&#xff1a;a[0] a[5] 过桥用时&#xff1a;35<br /> 第四步&#xff1a;a[2] 带火把返回用时&#xff1a;13<br /> 第五步&#xff1a;a[1] a[2] 过桥用时&#xff1a;13<br /> 第六步&#xff1a;a[1] 带火把返回用时&#xff1a;12<br /> 第七步&#xff1a;a[4] a[6] 过桥用时&#xff1a;20<br /> 第八步&#xff1a;a[2] 带火把返回用时&#xff1a;13<br /> 第九步&#xff1a;a[1] a[3] 过桥用时&#xff1a;15<br /> 第十步&#xff1a;a[1] 带火把返回用时&#xff1a;12<br /> 第十一步&#xff1a;a[1] a[2] 过桥用时&#xff1a;13</p> <p>所以输出为&#xff1a;</p> <p><code>7 171</code></p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是 <a href="https://blog.csdn.net/qfc_128220/article/details/130143621" title="POJ - 1700 Crossing River_伏城之外的博客-CSDN博客">POJ - 1700 Crossing River_伏城之外的博客-CSDN博客</a> 的变种题。</p> 
+<p>建议大家先搞定这题&#xff0c;然后再来看本题。</p> 
+<p></p> 
+<p>本题在前面这题的基础上&#xff0c;多了一个过河时间限制&#xff0c;以及要求最多存活士兵&#xff08;即在限制时间内过最多的人&#xff09;</p> 
+<p></p> 
+<p>对于贪心解法&#xff0c;可以结合二分法来求解本题。</p> 
+<p>即在0~N中尝试找到成功过河的人数&#xff0c;其中0指的是成功过河的人数为0个&#xff0c;N指的是成功过河的人数为N个。</p> 
+<p>将二分法找到的可能人数mid带入上面POJ-1700的逻辑中&#xff0c;计算出mid个人都过河所需的最短时间need&#xff0c;将need和本题过河时间限制limit进行比较&#xff1a;</p> 
+<ul><li>若 need &gt; limit&#xff0c;则说明当前mid个人无法成功过河&#xff0c;即过河人数偏多了&#xff0c;我们应该减少过河人数</li><li>若 need &lt; limit&#xff0c;则说明当前mid个人可以成功过河&#xff0c;但是可能还可以过更多人数</li><li>若 need &#61;&#61; limit&#xff0c;则说明当前mid个人刚刚好可以在limit时间过完河&#xff0c;则此时mid就是最多存货的士兵数</li></ul> 
+<p></p> 
+<p>对于动态规划解法&#xff0c;由于是从0人过河递推到N人过河&#xff0c;因此不需要二分尝试过河人数&#xff0c;而是可以直接基于dp[i]来实时比较T&#xff0c;如果超过了T&#xff0c;则说明只能过河 i 人&#xff0c;耗时dp[i-1]</p> 
+<p></p> 
+<p>另外&#xff0c;本题中说&#xff1a;</p> 
+<blockquote> 
+ <p>当2个士兵坐船1个士兵划船时&#xff0c;用时为 a[i]*10&#xff1b;a[i]为划船士兵用时。</p> 
+</blockquote> 
+<p>假设x士兵划船用时为a[x]&#xff0c;y士兵划船用时为a[y]&#xff0c;a[x] &lt; a[y]</p> 
+<p>这句话的意思是&#xff1a;如果x,y一起划船&#xff0c;有两种过河时间&#xff0c;分别是&#xff1a;</p> 
+<ul><li>a[x] * 10</li><li>a[y]</li></ul> 
+<p>如果a[y] &gt; a[x] * 10&#xff0c;我们应该选择a[x] * 10&#xff0c;即让较快的士兵单独划船过河&#xff0c;这样耗时更短。</p> 
+<p></p> 
+<p>但是&#xff0c;本题中又说&#xff1a;</p> 
+<blockquote> 
+ <p>(10 &lt; a[i]&lt; 100; 0&lt;&#61; i&lt; N&#xff09;</p> 
+</blockquote> 
+<p>即</p> 
+<ul><li>10 &lt; a[y] &lt; 100</li><li>10 &lt; a[x] &lt; 100</li></ul> 
+<p>那么必然&#xff1a;100 &lt; a[x] * 10 &lt; 1000</p> 
+<p>即必然 a[x] * 10 &gt; a[y]</p> 
+<p>因此&#xff0c;我们不需要考虑上面那种两个士兵坐船&#xff0c;一个士兵划船的情况。</p> 
+<p></p> 
+<h3>贪心解法</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const N &#61; lines[0] - 0;
+    const T &#61; lines[1] - 0;
+    const times &#61; lines[2].split(&#34; &#34;).map(Number);
+    console.log(getResult(N, T, times));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} n 士兵数
+ * &#64;param {*} limit 过河时间上限
+ * &#64;param {*} times 数组&#xff0c;元素表示每个士兵的过河时长
+ * &#64;return {*} ”最多存活士兵数” “最短用时”
+ */
+function getResult(n, limit, times) {
+  // 过河时间升序
+  times.sort((a, b) &#61;&gt; a - b);
+
+  // 最少成功过河人数
+  let min &#61; 0;
+  // 最多成功过河人数
+  let max &#61; n;
+
+  // 记录题解
+  let ans &#61; &#34;&#34;;
+
+  // 二分法取可能成功的过河人数
+  while (min &lt;&#61; max) {
+    // mid是过河人数
+    const mid &#61; Math.floor((min &#43; max) / 2);
+    // 计算mid个人过河所需的最短时间need
+    const need &#61; getMinCrossRiverTime(mid, times.slice(0, mid));
+
+    // 如果need超过了过河时间上限limit&#xff0c;那么说明能成功过河的人没这么多
+    if (need &gt; limit) {
+      max &#61; mid - 1;
+    } else if (need &lt; limit) {
+      // 如果need小于过河时间上限limit&#xff0c;那么说明mid个最快的人可以在limit时间内成功过河
+      ans &#61; &#96;${mid} ${need}&#96;;
+      // 但是可能还可以过更多人
+      min &#61; mid &#43; 1;
+    } else {
+      // 如果need &#61;&#61; limit&#xff0c;那么说明过河人数刚好可以在limit时间内成功过河&#xff0c;此时可以直接返回
+      ans &#61; &#96;${mid} ${need}&#96;;
+      break;
+    }
+  }
+
+  return ans;
+}
+
+// 计算n个人运到河对岸所需要花费的最少时间
+function getMinCrossRiverTime(n, t) {
+  let cost &#61; 0;
+
+  while (n &gt; 0) {
+    if (n &#61;&#61; 1) {
+      cost &#43;&#61; t[0];
+      break;
+    } else if (n &#61;&#61; 2) {
+      cost &#43;&#61; t[1];
+      break;
+    } else if (n &#61;&#61; 3) {
+      cost &#43;&#61; t[1] &#43; t[0] &#43; t[2];
+      break;
+    } else {
+      cost &#43;&#61; Math.min(
+        t[n - 1] &#43; t[0] &#43; t[n - 2] &#43; t[0],
+        t[1] &#43; t[0] &#43; t[n - 1] &#43; t[1]
+      );
+      n -&#61; 2;
+    }
+  }
+
+  return cost;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int t &#61; sc.nextInt();
+
+    int[] times &#61; new int[n];
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      times[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(n, t, times));
+  }
+
+  /**
+   * &#64;param n 士兵数
+   * &#64;param limit 过河时间上限
+   * &#64;param times 数组&#xff0c;元素表示每个士兵的过河时长
+   * &#64;return ”最多存活士兵数” “最短用时”
+   */
+  public static String getResult(int n, int limit, int[] times) {
+    // 过河时间升序
+    Arrays.sort(times);
+
+    // 最少成功过河人数
+    int min &#61; 0;
+    // 最多成功过河人数
+    int max &#61; n;
+
+    // 记录题解
+    String ans &#61; &#34;&#34;;
+
+    // 二分法取可能成功的过河人数
+    while (min &lt;&#61; max) {
+      // mid是过河人数
+      int mid &#61; (min &#43; max) / 2;
+      // 计算mid个人过河所需的最短时间need
+      int need &#61; getMinCrossRiverTime(mid, Arrays.copyOfRange(times, 0, mid));
+
+      // 如果need超过了过河时间上限limit&#xff0c;那么说明能成功过河的人没这么多
+      if (need &gt; limit) {
+        max &#61; mid - 1;
+      } else if (need &lt; limit) {
+        // 如果need小于过河时间上限limit&#xff0c;那么说明mid个最快的人可以在limit时间内成功过河
+        ans &#61; mid &#43; &#34; &#34; &#43; need;
+        // 但是可能还可以过更多人
+        min &#61; mid &#43; 1;
+      } else {
+        // 如果need &#61;&#61; limit&#xff0c;那么说明过河人数刚好可以在limit时间内成功过河&#xff0c;此时可以直接返回
+        ans &#61; mid &#43; &#34; &#34; &#43; need;
+        break;
+      }
+    }
+
+    return ans;
+  }
+
+  // 计算将n个人运到河对岸所需要花费的最少时间
+  public static int getMinCrossRiverTime(int n, int[] t) {
+    int cost &#61; 0;
+
+    while (n &gt; 0) {
+      if (n &#61;&#61; 1) {
+        cost &#43;&#61; t[0];
+        break;
+      } else if (n &#61;&#61; 2) {
+        cost &#43;&#61; t[1];
+        break;
+      } else if (n &#61;&#61; 3) {
+        cost &#43;&#61; t[1] &#43; t[0] &#43; t[2];
+        break;
+      } else {
+        cost &#43;&#61; Math.min(t[n - 1] &#43; t[0] &#43; t[n - 2] &#43; t[0], t[1] &#43; t[0] &#43; t[n - 1] &#43; t[1]);
+        n -&#61; 2;
+      }
+    }
+
+    return cost;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+t &#61; int(input())
+times &#61; list(map(int, input().split()))
+
+
+# 计算n个人运到河对岸所需要花费的最少时间
+def getMinCrossRiverTime(n, t):
+    cost &#61; 0
+
+    while n &gt; 0:
+        if n &#61;&#61; 1:
+            cost &#43;&#61; t[0]
+            break
+        elif n &#61;&#61; 2:
+            cost &#43;&#61; t[1]
+            break
+        elif n &#61;&#61; 3:
+            cost &#43;&#61; t[1] &#43; t[0] &#43; t[2]
+            break
+        else:
+            cost &#43;&#61; min(t[n - 1] &#43; t[0] &#43; t[n - 2] &#43; t[0], t[1] &#43; t[0] &#43; t[n - 1] &#43; t[1])
+            n -&#61; 2
+
+    return cost
+
+
+# 算法入口
+def getResult(n, limit, times):
+    &#34;&#34;&#34;
+    :param n: 士兵数
+    :param limit: 过河时间上限
+    :param times: 数组&#xff0c;元素表示每个士兵的过河时长
+    :return: ”最多存活士兵数” “最短用时”
+    &#34;&#34;&#34;
+    times.sort()
+
+    # 最少成功过河人数
+    low &#61; 0
+    # 最多成功过河人数
+    high &#61; n
+
+    # 记录题解
+    ans &#61; &#34;&#34;
+
+    # 二分法取可能成功的过河人数
+    while low &lt;&#61; high:
+        # mid是过河人数
+        mid &#61; (low &#43; high) // 2
+        # 计算mid个人过河所需的最短时间need
+        need &#61; getMinCrossRiverTime(mid, times[:mid])
+
+        # 如果need超过了过河时间上限limit&#xff0c;那么说明能成功过河的人没这么多
+        if need &gt; limit:
+            high &#61; mid - 1
+        elif need &lt; limit:
+            # 如果need小于过河时间上限limit&#xff0c;那么说明mid个最快的人可以在limit时间内成功过河
+            ans &#61; f&#34;{mid} {need}&#34;
+            # 但是可能还可以过更多人
+            low &#61; mid &#43; 1
+        else:
+            # 如果need &#61;&#61; limit&#xff0c;那么说明过河人数刚好可以在limit时间内成功过河&#xff0c;此时可以直接返回
+            ans &#61; f&#34;{mid} {need}&#34;
+            break
+
+    return ans
+
+
+# 算法调用
+print(getResult(n, t, times))
+</code></pre> 
+<p></p> 
+<h3>动态规划解法&#xff08;100%通过率&#xff09;</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int T &#61; sc.nextInt();
+
+    int[] times &#61; new int[n];
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      times[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(n, T, times));
+  }
+
+  /**
+   * &#64;param n 士兵数
+   * &#64;param limit 过河时间上限
+   * &#64;param t 数组&#xff0c;元素表示每个士兵的过河时长
+   * &#64;return ”最多存活士兵数” “最短用时”
+   */
+  public static String getResult(int n, int limit, int[] t) {
+    // 过河时间升序
+    Arrays.sort(t);
+
+    int[] dp &#61; new int[n];
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (i &#61;&#61; 0) {
+        dp[0] &#61; t[0];
+        if (dp[0] &gt; limit) return &#34;0 0&#34;;
+      } else if (i &#61;&#61; 1) dp[1] &#61; t[1];
+      else dp[i] &#61; Math.min(dp[i - 1] &#43; t[i] &#43; t[0], dp[i - 2] &#43; t[0] &#43; t[i] &#43; t[1] &#43; t[1]);
+
+      if (dp[i] &gt; limit) return i &#43; &#34; &#34; &#43; dp[i - 1];
+    }
+
+    return n &#43; &#34; &#34; &#43; dp[n - 1];
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const N &#61; lines[0] - 0;
+    const T &#61; lines[1] - 0;
+    const times &#61; lines[2].split(&#34; &#34;).map(Number);
+    console.log(getResult(N, T, times));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} n 士兵数
+ * &#64;param {*} limit 过河时间上限
+ * &#64;param {*} t 数组&#xff0c;元素表示每个士兵的过河时长
+ * &#64;return {*} ”最多存活士兵数” “最短用时”
+ */
+function getResult(n, limit, t) {
+  // 过河时间升序
+  t.sort((a, b) &#61;&gt; a - b);
+
+  const dp &#61; new Array(n);
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    if (i &#61;&#61; 0) {
+      dp[0] &#61; t[0];
+      if (dp[0] &gt; limit) return &#34;0 0&#34;;
+    } else if (i &#61;&#61; 1) {
+      dp[1] &#61; t[1];
+    } else {
+      dp[i] &#61; Math.min(
+        dp[i - 1] &#43; t[i] &#43; t[0],
+        dp[i - 2] &#43; t[0] &#43; t[i] &#43; t[1] &#43; t[1]
+      );
+    }
+
+    if (dp[i] &gt; limit) return i &#43; &#34; &#34; &#43; dp[i - 1];
+  }
+
+  return n &#43; &#34; &#34; &#43; dp[n - 1];
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+T &#61; int(input())
+times &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(n, limit, t):
+    &#34;&#34;&#34;
+    :param n: 士兵数
+    :param limit: 过河时间上限
+    :param t: 数组&#xff0c;元素表示每个士兵的过河时长
+    :return: ”最多存活士兵数” “最短用时”
+    &#34;&#34;&#34;
+    times.sort()
+
+    dp &#61; [0] * n
+
+    for i in range(n):
+        if i &#61;&#61; 0:
+            dp[0] &#61; t[0]
+            if dp[0] &gt; limit:
+                return &#34;0 0&#34;
+        elif i &#61;&#61; 1:
+            dp[1] &#61; t[1]
+        else:
+            dp[i] &#61; min(dp[i - 1] &#43; t[i] &#43; t[0], dp[i - 2] &#43; t[0] &#43; t[i] &#43; t[1] &#43; t[1])
+
+        if dp[i] &gt; limit:
+            return str(i) &#43; &#34; &#34; &#43; str(dp[i - 1])
+
+    return str(n) &#43; &#34; &#34; &#43; str(dp[n - 1])
+
+
+# 算法调用
+print(getResult(n, T, times))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

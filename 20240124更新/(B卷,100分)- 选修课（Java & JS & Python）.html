@@ -1,0 +1,343 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 选修课（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>现有两门选修课&#xff0c;每门选修课都有一部分学生选修&#xff0c;每个学生都有选修课的成绩&#xff0c;需要你找出同时选修了两门选修课的学生&#xff0c;先按照班级进行划分&#xff0c;班级编号小的先输出&#xff0c;每个班级按照两门选修课成绩和的降序排序&#xff0c;成绩相同时按照学生的学号升序排序。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为第一门选修课学生的成绩&#xff0c;</p> 
+<p>第二行为第二门选修课学生的成绩&#xff0c;</p> 
+<p>每行数据中学生之间以英文分号分隔&#xff0c;每个学生的学号和成绩以英文逗号分隔&#xff0c;</p> 
+<p>学生学号的格式为8位数字</p> 
+<blockquote> 
+ <p>2位院系编号&#43;入学年份后2位&#43;院系内部1位专业编号&#43;所在班级3位学号</p> 
+</blockquote> 
+<p>学生成绩的取值范围为[0,100]之间的整数&#xff0c;</p> 
+<p>两门选修课选修学生数的取值范围为[1-2000]之间的整数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>同时选修了两门选修课的学生的学号&#xff0c;如果没有同时选修两门选修课的学生输出NULL&#xff0c;</p> 
+<p>否则&#xff0c;先按照班级划分&#xff0c;班级编号小的先输出&#xff0c;每个班级先输出班级编号(学号前五位)&#xff0c;</p> 
+<p>然后另起一行输出这个班级同时选修两门选修课的学生学号&#xff0c;学号按照要求排序(按照两门选修课成绩和的降序&#xff0c;成绩和相同时按照学号升序学生之间以英文分号分隔。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:586px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:511px;">01202021,75;01201033,95;01202008,80;01203006,90;01203088,100<br /> 01202008,70;01203088,85;01202111,80;01202021,75;01201100,88</td></tr><tr><td style="width:86px;">输出</td><td style="width:511px;">01202<br /> 01202008;01202021<br /> 01203<br /> 01203088</td></tr><tr><td style="width:86px;">说明</td><td style="width:511px;"> <p>同时选修了两选修课的学生01202021、01202008、01203088&#xff0c;这三个学生两门选修课的成绩和分别为150、150、185&#xff0c;</p> <p>01202021、01202008属于01202班的学生&#xff0c;按照成绩和降序&#xff0c;成绩相同时按学号升序输出的结果为01202008;01202021,</p> <p>01203088属于01203班的学生&#xff0c;按照成绩和降序&#xff0c;成绩相同时按学号升序输出的结果为01203088&#xff0c;</p> <p>01202的班级编号小于01203的班级编号&#xff0c;需要先输出。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:587px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:497px;">01201022,75;01202033,95;01202018,80;01203006,90;01202066,100<br /> 01202008,70;01203102,85;01202111,80;01201021,75;01201100,88</td></tr><tr><td style="width:86px;">输出</td><td style="width:497px;">NULL</td></tr><tr><td style="width:86px;">说明</td><td style="width:497px;">没有同时选修了两门选修课的学生&#xff0c;输出NULL.</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题主要考察&#xff1a;字符串&#xff0c;数组&#xff0c;集合的操作&#xff0c;考察多条件排序。</p> 
+<p>本题的逻辑如下&#xff1a;</p> 
+<ol><li>从输入的两行中&#xff0c;解析出学生信息&#xff08;学号&#xff0c;班号&#xff0c;课程一得分&#xff0c;课程二得分&#xff09;</li><li>过滤出两门课程都有得分的学生</li><li>将学生按照班号进行分别统计</li><li>按照班号进行升序&#xff0c;然后打印班号&#xff0c;再将该班号下的学生按照&#xff1a;总分进行降序&#xff0c;总分相同&#xff0c;则继续按照学号升序&#xff0c;然后以“;”拼接同班学生的学号&#xff0c;进行打印</li></ol> 
+<p>难点主要在于第一步&#xff0c;如何从两行输入解析中得到一个完整学生的信息&#xff0c;这里我选用了字典结构&#xff0c;key为学生学号&#xff0c;value为学生信息&#xff0c;解析第二行输入时&#xff0c;可以检查字典是否已存在对应学号的key&#xff0c;若存在则再对应value下补充课程二得分。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  // 学生类
+  static class Student {
+    String sid; // 学号
+    String cid; // 班号
+    int score1 &#61; -1; // 课程一 得分
+    int score2 &#61; -1; // 课程二 得分
+
+    // 总分
+    public int getSumScore() {
+      return this.score1 &#43; this.score2;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String s1 &#61; sc.nextLine();
+    String s2 &#61; sc.nextLine();
+
+    getResult(s1, s2);
+  }
+
+  public static void getResult(String s1, String s2) {
+    // key是学号&#xff0c;value是学生对象
+    HashMap&lt;String, Student&gt; students &#61; new HashMap&lt;&gt;();
+
+    // 解析学生信息
+    divide(s1, 1, students);
+    divide(s2, 2, students);
+
+    // 过滤出有两个课程得分的学生
+    Student[] suits &#61;
+        students.values().stream()
+            .filter(stu -&gt; stu.score1 !&#61; -1 &amp;&amp; stu.score2 !&#61; -1)
+            .toArray(Student[]::new);
+
+    // 如果不存在这样的学生&#xff0c;则返回NULL
+    if (suits.length &#61;&#61; 0) {
+      System.out.println(&#34;NULL&#34;);
+      return;
+    }
+
+    // key是班号&#xff0c;value是该班级的学生集合
+    HashMap&lt;String, ArrayList&lt;Student&gt;&gt; ans &#61; new HashMap&lt;&gt;();
+    for (Student stu : suits) {
+      ans.putIfAbsent(stu.cid, new ArrayList&lt;&gt;());
+      ans.get(stu.cid).add(stu);
+    }
+
+    ans.keySet().stream()
+        .sorted(String::compareTo) // 按照班号升序
+        .forEach(
+            cid -&gt; {
+              System.out.println(cid); // 打印班号
+
+              ArrayList&lt;Student&gt; studs &#61; ans.get(cid);
+              studs.sort(
+                  (a, b) -&gt;
+                      a.getSumScore() !&#61; b.getSumScore()
+                          ? b.getSumScore() - a.getSumScore()
+                          : a.sid.compareTo(b.sid)); // 同一班的学生按照总分降序&#xff0c;总分相同&#xff0c;则按照学号升序
+
+              // 打印同一班的学号&#xff0c;以分号分隔
+              StringJoiner sj &#61; new StringJoiner(&#34;;&#34;);
+              for (Student stud : studs) sj.add(stud.sid);
+              System.out.println(sj);
+            });
+  }
+
+  public static void divide(String str, int courseId, HashMap&lt;String, Student&gt; students) {
+    for (String sub : str.split(&#34;;&#34;)) {
+      String[] tmp &#61; sub.split(&#34;,&#34;);
+
+      String sid &#61; tmp[0]; // 学号
+      String cid &#61; sid.substring(0, 5); // 班号
+      int score &#61; Integer.parseInt(tmp[1]); // 课程得分
+
+      students.putIfAbsent(sid, new Student()); // 是否已记录过该学生&#xff0c;若没有则生成对应学生对象
+
+      // 初始化学生对象
+      Student stu &#61; students.get(sid);
+
+      stu.sid &#61; sid;
+      stu.cid &#61; cid;
+
+      if (courseId &#61;&#61; 1) stu.score1 &#61; score;
+      else stu.score2 &#61; score;
+    }
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    getResult(lines[0], lines[1]);
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(s1, s2) {
+  // key是学号&#xff0c;value是学生对象
+  const students &#61; {};
+
+  // 解析学生信息
+  devide(s1, 1, students);
+  devide(s2, 2, students);
+
+  // 过滤出有两个课程得分的学生
+  const suits &#61; Object.values(students).filter(
+    (stu) &#61;&gt; stu.score1 !&#61;&#61; undefined &amp;&amp; stu.score2 !&#61;&#61; undefined
+  );
+
+  // 如果不存在这样的学生&#xff0c;则返回NULL
+  if (suits.length &#61;&#61; 0) {
+    console.log(&#34;NULL&#34;);
+    return;
+  }
+
+  // key是班号&#xff0c;value是该班级的学生集合
+  const ans &#61; {};
+  for (let stu of suits) {
+    const cid &#61; stu.cid;
+    if (!ans[cid]) ans[cid] &#61; [];
+    ans[cid].push(stu);
+  }
+
+  Object.keys(ans)
+    .sort((a, b) &#61;&gt; strCmp(a, b)) // 按照班号升序
+    .forEach((cid) &#61;&gt; {
+      // 打印班号
+      console.log(cid);
+
+      // 打印同一班的学生学号&#xff0c;以分号分隔, 同一班的学生按照总分降序&#xff0c;总分相同&#xff0c;则按照学号升序
+      console.log(
+        ans[cid]
+          .sort((a, b) &#61;&gt;
+            a.getSumScore() - b.getSumScore()
+              ? b.getSumScore() - a.getSumScore()
+              : strCmp(a.sid, b.sid)
+          )
+          .map((a) &#61;&gt; a.sid)
+          .join(&#34;;&#34;)
+      );
+    });
+}
+
+function devide(str, courseId, students) {
+  str.split(&#34;;&#34;).forEach((sub) &#61;&gt; {
+    let [sid, score] &#61; sub.split(&#34;,&#34;);
+    score &#61; Number(score);
+    const cid &#61; sid.slice(0, 5);
+
+    if (!students[sid]) {
+      students[sid] &#61; new Student(); // 是否已记录过该学生&#xff0c;若没有则生成对应学生对象
+    }
+
+    const stu &#61; students[sid];
+    stu.sid &#61; sid; // 学号
+    stu.cid &#61; cid; // 班号
+    courseId &#61;&#61; 1 ? (stu.score1 &#61; score) : (stu.score2 &#61; score); // 课程得分
+  });
+}
+
+// 字符串比较大小
+function strCmp(a, b) {
+  return a &#61;&#61; b ? 0 : a &gt; b ? 1 : -1;
+}
+
+// 学生类
+class Student {
+  constructor(sid, cid, score1, score2) {
+    this.sid &#61; sid; // 学号
+    this.cid &#61; cid; // 班号
+    this.score1 &#61; score1; // 课程一 得分
+    this.score2 &#61; score2; // 课程二 得分
+  }
+
+  // 总分
+  getSumScore() {
+    return this.score1 &#43; this.score2;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s1 &#61; input()
+s2 &#61; input()
+
+
+class Student:
+    def __init__(self, sid, cid, score1, score2):
+        self.sid &#61; sid  # 学号
+        self.cid &#61; cid  # 班号
+        self.score1 &#61; score1  # 课程一 得分
+        self.score2 &#61; score2  # 课程二 得分
+
+    # 总分
+    def getSumScore(self):
+        return self.score1 &#43; self.score2
+
+
+def divide(s, courseId, students):
+    for sub in s.split(&#34;;&#34;):
+        sid, score &#61; sub.split(&#34;,&#34;)
+        score &#61; int(score)
+        cid &#61; sid[:5]
+
+        # 是否已记录过该学生&#xff0c;若没有则生成对应学生对象
+        if students.get(sid) is None:
+            students[sid] &#61; Student(sid, cid, -1, -1)
+
+        if courseId &#61;&#61; 1:
+            students[sid].score1 &#61; score
+        else:
+            students[sid].score2 &#61; score
+
+
+# 算法入口
+def getResult():
+    # key是学号&#xff0c;value是学生对象
+    students &#61; {}
+
+    # 解析学生信息
+    divide(s1, 1, students)
+    divide(s2, 2, students)
+
+    # 过滤出有两个课程得分的学生
+    suits &#61; list(filter(lambda stu: stu.score1 !&#61; -1 and stu.score2 !&#61; -1, students.values()))
+
+    # 如果不存在这样的学生&#xff0c;则返回NULL
+    if len(suits) &#61;&#61; 0:
+        print(&#34;NULL&#34;)
+        return
+
+    # key是班号&#xff0c;value是该班级的学生集合
+    ans &#61; {}
+    for stu in suits:
+        cid &#61; stu.cid
+        if ans.get(cid) is None:
+            ans[cid] &#61; []
+        ans[cid].append(stu)
+
+    tmp &#61; list(ans.keys())
+    tmp.sort()  # 按照班号升序
+
+    for cid in tmp:
+        # 打印班号
+        print(cid)
+
+        # 同一班的学生按照总分降序&#xff0c;总分相同&#xff0c;则按照学号升序
+        ans[cid].sort(key&#61;lambda x: (-x.getSumScore(), x.sid))
+        # 打印同一班的学生学号&#xff0c;以分号分隔
+        print(&#34;;&#34;.join(map(lambda x: x.sid, ans[cid])))
+
+
+# 算法调用
+getResult()
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

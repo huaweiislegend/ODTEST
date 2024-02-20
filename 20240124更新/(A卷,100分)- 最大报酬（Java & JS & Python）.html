@@ -1,0 +1,472 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 最大报酬（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小明每周上班都会拿到自己的工作清单&#xff0c;工作清单内包含 n 项工作&#xff0c;每项工作都有对应的耗时时间&#xff08;单位 h&#xff09;和报酬&#xff0c;工作的总报酬为所有已完成工作的报酬之和&#xff0c;那么请你帮小明安排一下工作&#xff0c;保证小明在指定的工作时间内工作收入最大化。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的第一行为两个正整数 T&#xff0c;n。<br /> T 代表工作时长&#xff08;单位 h&#xff0c; 0 &lt; T &lt; 1000000&#xff09;&#xff0c;<br /> n 代表工作数量&#xff08; 1 &lt; n ≤ 3000&#xff09;。<br /> 接下来是 n 行&#xff0c;每行包含两个整数 t&#xff0c;w。<br /> t 代表该工作消耗的时长&#xff08;单位 h&#xff0c; t &gt; 0&#xff09;&#xff0c;w 代表该项工作的报酬。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出小明指定工作时长内工作可获得的最大报酬。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">40 3<br /> 20 10<br /> 20 20<br /> 20 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">30</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是01背包问题。可以使用动态规划求解。关于01背包问题请先看下面这个博客</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/128307663?spm&#61;1001.2014.3001.5502" rel="nofollow" title="算法设计 - 01背包问题_伏城之外的博客-CSDN博客">算法设计 - 01背包问题_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>本题中</p> 
+<ul><li>工作时长T相当于背包承重</li><li>每一项工作相当于每件物品</li></ul> 
+<ol><li>工作消耗的时长相当于物品重量</li><li>工作的报酬相当于物品的价值</li></ol> 
+<p></p> 
+<h3>01背包二维数组解法&#xff08;100%&#xff09;</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let T, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [T, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    const tws &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    console.log(getResult(T, tws));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} T 工作时长
+ * &#64;param {*} tws 数组&#xff0c;元素是tw&#xff0c;也是数组&#xff0c;含义为[该工作消耗的时长, 该项工作的报酬]
+ */
+function getResult(T, tws) {
+  const maxI &#61; tws.length &#43; 1;
+  const maxJ &#61; T &#43; 1;
+  const dp &#61; new Array(maxI).fill(0).map(() &#61;&gt; new Array(maxJ).fill(0)); // 默认将dp数组元素全部初始化为0
+
+  for (let i &#61; 0; i &lt; maxI; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; maxJ; j&#43;&#43;) {
+      if (i &#61;&#61;&#61; 0 || j &#61;&#61;&#61; 0) continue; // 第0行或第0列最大报酬保持0
+      const [t, w] &#61; tws[i - 1]; // 要选择的工作的[权重&#xff0c;价值]
+      if (t &gt; j) {
+        // 如果要选择的工作的权重 &gt; 当前背包权重&#xff0c;则无法放入背包&#xff0c;最大价值继承自上一行该列值
+        dp[i][j] &#61; dp[i - 1][j];
+      } else {
+        // 如果要选择的工作的权重 &lt;&#61; 当前背包权重
+        // 则我们有两种选择
+        // 1、不进行该工作&#xff0c;则最大价值继承自上一行该列值
+        // 2、进行该工作&#xff0c;则纳入该工作的价值w&#xff0c;加上&#43; 剩余权重&#xff0c;在不进行该工作的范围内&#xff0c;可得的最大价值dp[i - 1][j - t]
+        // 比较两种选择下的最大价值&#xff0c;取最大的
+        dp[i][j] &#61; Math.max(dp[i - 1][j], w &#43; dp[i - 1][j - t]);
+      }
+    }
+  }
+
+  return dp.at(-1).at(-1); // 取二维数组最右下角元素作为题解
+}
+</code></pre> 
+<p>优化后代码</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let T, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [T, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    const tws &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    console.log(getResult(n, T, tws));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} n 工作数量
+ * &#64;param {*} T 工作时长
+ * &#64;param {*} tws 数组&#xff0c;元素是tw&#xff0c;也是数组&#xff0c;含义为[该工作消耗的时长, 该项工作的报酬]
+ */
+function getResult(n, T, tws) {
+  tws.unshift([0, 0]);
+  const dp &#61; new Array(n &#43; 1).fill(0).map(() &#61;&gt; new Array(T &#43; 1).fill(0)); // 默认将dp数组元素全部初始化为0
+
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+    const [t, w] &#61; tws[i];
+    for (let j &#61; 1; j &lt;&#61; T; j&#43;&#43;) {
+      if (j &lt; t) {
+        // 注意这里j不能从t开始&#xff0c;会遗漏处理j &lt; t的情况
+        dp[i][j] &#61; dp[i - 1][j];
+      } else {
+        dp[i][j] &#61; Math.max(dp[i - 1][j], w &#43; dp[i - 1][j - t]);
+      }
+    }
+  }
+
+  return dp[n][T];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+    static ArrayList&lt;Integer[]&gt; nodes;
+
+    public static void main(String[] args) {
+        Scanner sc &#61; new Scanner(System.in);
+
+        int T &#61; sc.nextInt();
+        int n &#61; sc.nextInt();
+
+        Integer[][] tws &#61; new Integer[n][2];
+        for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+            tws[i][0] &#61; sc.nextInt();
+            tws[i][1] &#61; sc.nextInt();
+        }
+
+        System.out.println(getResult(T, tws));
+    }
+
+    /**
+     *
+     * &#64;param T 工作时长
+     * &#64;param tws 数组&#xff0c;元素是tw&#xff0c;也是数组&#xff0c;含义为[该工作消耗的时长, 该项工作的报酬]
+     * &#64;return 最大报酬
+     */
+    public static int getResult(int T, Integer[][] tws) {
+        int maxI &#61; tws.length &#43; 1;
+        int maxJ &#61; T &#43; 1;
+
+        int[][] dp &#61; new int[maxI][maxJ];
+
+        for (int i &#61; 0; i &lt; maxI; i&#43;&#43;) {
+            for (int j &#61; 0; j &lt; maxJ; j&#43;&#43;) {
+                if (i &#61;&#61; 0 || j &#61;&#61; 0) continue; // 第0行或第0列最大报酬保持0
+
+                int t &#61; tws[i - 1][0];// 要选择的工作的[权重]
+                int w &#61; tws[i - 1][1];// 要选择的工作的[价值]
+
+                if (t &gt; j) {
+                    // 如果要选择的工作的权重 &gt; 当前背包权重&#xff0c;则无法放入背包&#xff0c;最大价值继承自上一行该列值
+                    dp[i][j] &#61; dp[i - 1][j];
+                } else {
+                    // 如果要选择的工作的权重 &lt;&#61; 当前背包权重
+                    // 则我们有两种选择
+                    // 1、不进行该工作&#xff0c;则最大价值继承自上一行该列值
+                    // 2、进行该工作&#xff0c;则纳入该工作的价值w&#xff0c;加上&#43; 剩余权重&#xff0c;在不进行该工作的范围内&#xff0c;可得的最大价值dp[i - 1][j - t]
+                    // 比较两种选择下的最大价值&#xff0c;取最大的
+                    dp[i][j] &#61; Math.max(dp[i - 1][j], w &#43; dp[i - 1][j - t]);
+                }
+            }
+        }
+
+        return dp[maxI - 1][maxJ - 1];
+    }
+}</code></pre> 
+<p>优化后代码</p> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int T &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[][] tws &#61; new int[n &#43; 1][2];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      tws[i][0] &#61; sc.nextInt();
+      tws[i][1] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(n, T, tws));
+  }
+
+  /**
+   * &#64;param T 工作时长
+   * &#64;param tws 数组&#xff0c;元素是tw&#xff0c;也是数组&#xff0c;含义为[该工作消耗的时长, 该项工作的报酬]
+   * &#64;return 最大报酬
+   */
+  public static int getResult(int n, int T, int[][] tws) {
+    int[][] dp &#61; new int[n &#43; 1][T &#43; 1];
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      int t &#61; tws[i][0]; // 要选择的工作的[时长]
+      int w &#61; tws[i][1]; // 要选择的工作的[价值]
+      for (int j &#61; 1; j &lt;&#61; T; j&#43;&#43;) {
+        // 注意这里j不能从t开始&#xff0c;会遗漏处理j &lt; t的情况
+        if (j &lt; t) {
+          dp[i][j] &#61; dp[i - 1][j];
+        } else {
+          dp[i][j] &#61; Math.max(dp[i - 1][j], w &#43; dp[i - 1][j - t]);
+        }
+      }
+    }
+
+    return dp[n][T];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+t, n &#61; map(int, input().split())
+tws &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+# 算法入口
+def getResult(t, tws):
+    &#34;&#34;&#34;
+    :param t: 工作时长
+    :param tws: 列表&#xff0c;元素是tw&#xff0c;也是列表&#xff0c;含义为[该工作消耗的时长, 该项工作的报酬]
+    :return: 最大报酬
+    &#34;&#34;&#34;
+    maxI &#61; len(tws) &#43; 1
+    maxJ &#61; t &#43; 1
+
+    # 默认将dp二维列表元素全部初始化为0
+    dp &#61; [[0 for j in range(maxJ)] for i in range(maxI)]
+
+    for i in range(maxI):
+        for j in range(maxJ):
+            if i &#61;&#61; 0 or j &#61;&#61; 0:
+                continue  # 第0行或第0列最大报酬保持0
+
+            t, w &#61; tws[i - 1]  # 要选择的工作的[权重&#xff0c;价值]
+
+            if t &gt; j:
+                # 如果要选择的工作的权重 &gt; 当前背包权重&#xff0c;则无法放入背包&#xff0c;最大价值继承自上一行该列值
+                dp[i][j] &#61; dp[i - 1][j]
+            else:
+                # 如果要选择的工作的权重 &lt;&#61; 当前背包权重
+                # 则我们有两种选择
+                # 1、不进行该工作&#xff0c;则最大价值继承自上一行该列值
+                # 2、进行该工作&#xff0c;则纳入该工作的价值w&#xff0c;加上 &#43; 剩余权重&#xff0c;在不进行该工作的范围内&#xff0c;可得的最大价值dp[i - 1][j - t]
+                # 比较两种选择下的最大价值&#xff0c;取最大的
+                dp[i][j] &#61; max(dp[i - 1][j], w &#43; dp[i - 1][j - t])
+
+    return dp[-1][-1]  # 取二维列表最右下角元素作为题解
+
+
+# 算法调用
+print(getResult(t, tws))
+</code></pre> 
+<p>优化后代码</p> 
+<pre><code class="language-python"># 输入获取
+T, n &#61; map(int, input().split())
+tws &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+# 算法入口
+def getResult(n, T, tws):
+    &#34;&#34;&#34;
+    :param n: 工作数量
+    :param T: 工作时长
+    :param tws: 列表&#xff0c;元素是tw&#xff0c;也是列表&#xff0c;含义为[该工作消耗的时长, 该项工作的报酬]
+    :return: 最大报酬
+    &#34;&#34;&#34;
+    tws.insert(0, [0, 0])
+
+    # 默认将dp二维列表元素全部初始化为0
+    dp &#61; [[0 for j in range(T &#43; 1)] for i in range(n &#43; 1)]
+
+    for i in range(1, n &#43; 1):
+        t, w &#61; tws[i]  # 要选择的工作的[时长&#xff0c;价值]
+        for j in range(1, T &#43; 1): # 注意这里j不能从t开始&#xff0c;会遗漏处理j &lt; t的情况
+            if j &lt; t:
+                dp[i][j] &#61; dp[i - 1][j]
+            else:
+                dp[i][j] &#61; max(dp[i - 1][j], w &#43; dp[i - 1][j - t])
+
+    return dp[n][T]
+
+
+# 算法调用
+print(getResult(n, T, tws))
+</code></pre> 
+<p></p> 
+<h3>01背包滚动数组解法</h3> 
+<p>关于01背包的滚动数组优化&#xff0c;请看<a href="https://fcqian.blog.csdn.net/article/details/128903531" rel="nofollow" title="算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客">算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客</a></p> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let T, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [T, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    const tws &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    console.log(getResult(T, tws, n));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} T 工作时长
+ * &#64;param {*} tws 数组&#xff0c;元素是tw&#xff0c;也是数组&#xff0c;含义为[该工作消耗的时长, 该项工作的报酬]
+ * &#64;param {*} n 工作数量
+ */
+function getResult(T, tws, n) {
+  tws &#61; [[0, 0], ...tws];
+  const dp &#61; new Array(T &#43; 1).fill(0);
+
+  // 01背包问题滚动数组优化
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+    const [t, w] &#61; tws[i];
+    // 注意背包承重遍历必须倒序&#xff0c;正序的话就变成完全背包了
+    for (let j &#61; T; j &gt;&#61; t; j--) {
+      dp[j] &#61; Math.max(dp[j], dp[j - t] &#43; w);
+    }
+  }
+
+  return dp[T];
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  static ArrayList&lt;Integer[]&gt; nodes;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int T &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    Integer[][] tws &#61; new Integer[n &#43; 1][2];
+    tws[0] &#61; new Integer[] {0, 0};
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      tws[i][0] &#61; sc.nextInt();
+      tws[i][1] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(T, tws, n));
+  }
+
+  /**
+   * &#64;param T 工作时长
+   * &#64;param tws 数组&#xff0c;元素是tw&#xff0c;也是数组&#xff0c;含义为[该工作消耗的时长, 该项工作的报酬]
+   * &#64;param n 工作数量
+   * &#64;return 最大报酬
+   */
+  public static int getResult(int T, Integer[][] tws, int n) {
+    int[] dp &#61; new int[T &#43; 1];
+
+    // 01背包问题滚动数组优化
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      int t &#61; tws[i][0];
+      int w &#61; tws[i][1];
+      // 注意背包承重遍历必须倒序&#xff0c;正序的话就变成完全背包了
+      for (int j &#61; T; j &gt;&#61; t; j--) {
+        dp[j] &#61; Math.max(dp[j], dp[j - t] &#43; w);
+      }
+    }
+
+    return dp[T];
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+T, n &#61; map(int, input().split())
+tws &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+# 算法入口
+def getResult(T, tws, n):
+    &#34;&#34;&#34;
+    :param T: 工作时长
+    :param tws: 列表&#xff0c;元素是tw&#xff0c;也是列表&#xff0c;含义为[该工作消耗的时长, 该项工作的报酬]
+    :return: 最大报酬
+    &#34;&#34;&#34;
+    tws.insert(0, [0, 0])
+    dp &#61; [0]*(T&#43;1)
+
+    # 01背包问题滚动数组优化
+    for i in range(1, n&#43;1):
+        t, w &#61; tws[i]
+        # 注意背包承重遍历必须倒序&#xff0c;正序的话就变成完全背包了
+        for j in range(T, t-1, -1):
+            dp[j] &#61; max(dp[j], dp[j - t] &#43; w)
+
+    return dp[T]
+
+
+# 算法调用
+print(getResult(T, tws, n))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

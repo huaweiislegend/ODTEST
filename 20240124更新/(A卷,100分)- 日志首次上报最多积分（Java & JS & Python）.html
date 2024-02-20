@@ -1,0 +1,184 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 日志首次上报最多积分（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>日志采集是运维系统的的核心组件。日志是按行生成&#xff0c;每行记做一条&#xff0c;由采集系统分批上报。</p> 
+<ul><li>如果上报太频繁&#xff0c;会对服务端造成压力;</li><li>如果上报太晚&#xff0c;会降低用户的体验&#xff1b;</li><li>如果一次上报的条数太多&#xff0c;会导致超时失败。</li></ul> 
+<p>为此&#xff0c;项目组设计了如下的上报策略&#xff1a;</p> 
+<ol><li>每成功上报一条日志&#xff0c;奖励1分</li><li>每条日志每延迟上报1秒&#xff0c;扣1分</li><li>积累日志达到100条&#xff0c;必须立即上报</li></ol> 
+<p>给出日志序列&#xff0c;根据该规则&#xff0c;计算首次上报能获得的最多积分数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>按时序产生的日志条数 T1,T2…Tn&#xff0c;其中 1&lt;&#61;n&lt;&#61;1000&#xff0c;0&lt;&#61;Ti&lt;&#61;100</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>首次上报最多能获得的积分数</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p><code>1 98 1</code></p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">98</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">T1 时刻上报得 1 分<br /> T2 时刻上报得98分&#xff0c;最大<br /> T3 时刻上报得 0 分</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">50 60 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">50</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">如果第1个时刻上报&#xff0c;获得积分50。如果第2个时刻上报&#xff0c;最多上报100条&#xff0c;前50条延迟上报1s&#xff0c;每条扣除1分&#xff0c;共获得积分为 100-50&#61;50</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;">3 7 40 10 60</td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">37</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;"> <p>T1时刻上报得3分</p> <p>T2时刻上报得7分</p> <p>T3时刻上报得37分&#xff0c;最大</p> <p>T4时刻上报得-3分</p> <p>T5时刻上报&#xff0c;因为已经超了100条限制&#xff0c;所以只能上报100条&#xff0c;得-23分</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1意思是&#xff1a;</p> 
+<p>如果在T1时刻上报日志&#xff0c;由于只有1条日志&#xff0c;因此可得1分。</p> 
+<p>如果在T2时刻上报日志&#xff0c;由于T1时刻产生的1条日志延迟了1秒上报&#xff0c;因此要扣1分&#xff0c;到了T2时刻可以上报1&#43;98条日志&#xff0c;可得99分&#xff0c;因此99-1&#61;98分。</p> 
+<p>如果在T3时刻上报日志&#xff0c;则T1日志延迟了2s&#xff0c;要扣1*2分&#xff0c;T2日志延迟了1s&#xff0c;要扣98*1分&#xff0c;T3时刻可以上报100条日志&#xff0c;可得100分&#xff0c;因此100-2-98&#61;0分。</p> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>这种前后数据具有依赖关系&#xff0c;一般都是用动态规划DP解决。</p> 
+<p>首先&#xff0c;我用前缀和思路&#xff0c;将每个时刻&#xff0c;可得的正向分计算出来缓存进dp数组中。所谓正向分&#xff0c;比如T2时刻积累了99条日志&#xff0c;那么就应该得到99分。这是正向得分。但是最终得分还需要扣除延迟上报的负向得分。比如T2时刻上报日志的话&#xff0c;则T1时刻产生的每条日志都需要扣除1分&#xff0c;这是负向得分。因此T2时刻的最终得分是&#xff1a;正向得分  - 负向得分 &#61; 99 - 1 &#61; 98分。</p> 
+<p></p> 
+<p>每个时刻都有两种选择&#xff0c;上报、不上报。如果某时刻选择不上报&#xff0c;则会正向得分、负向得分不会清零&#xff0c;即会累加给下一个时刻&#xff0c;如果某时刻选择上报了&#xff0c;则对应的正向得分和负向得分都会清零。</p> 
+<p>需要注意的是&#xff0c;当日志累计到100条或以上时&#xff0c;则必须要上报&#xff0c;这意味着会产生一次得分清零。</p> 
+<hr /> 
+<p>2023.04.22 优化一下解析说明</p> 
+<p>以用例3为例</p> 
+<p><img alt="" height="325" src="https://img-blog.csdnimg.cn/b9e9aac33467487ca068764c70b813c3.png" width="1126" /></p> 
+<p>dp记录正向得分&#xff0c;dp[i] &#61; dp[i-1] &#43; arr[i]&#xff0c;即前缀和计算</p> 
+<p>delay记录负向得分&#xff0c;delay[i] &#61; delay[i-1] &#43; dp[i-1]&#xff0c;如下图所示</p> 
+<p><img alt="" height="361" src="https://img-blog.csdnimg.cn/29bd8ce509654345a511adb894810fe2.png" width="1136" /></p> 
+<p> score记录总分&#xff0c;score[i] &#61; dp[i] - delay[i]</p> 
+<p>另外当日志积累到100条时&#xff0c;就必须上报100条&#xff0c;比如上面时刻4&#xff0c;虽然新增了60条&#xff0c;但是实际上这60条只能上报40条</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34; &#34;).map(Number);
+
+  const dp &#61; [arr[0]]; // dp[i]表示&#xff1a;第i时刻可得的正向分
+  const delay &#61; [0]; // delay[i]表示&#xff1a;第i时刻被扣除的负向分
+  const score &#61; [arr[0]]; // score[i]表示&#xff1a;第i时刻最终得分
+  for (let i &#61; 1; i &lt; arr.length; i&#43;&#43;) {
+    dp[i] &#61; Math.min(100, dp[i - 1] &#43; arr[i]); // 最多上报100条
+    delay[i] &#61; delay[i - 1] &#43; dp[i - 1];
+    score[i] &#61; dp[i] - delay[i];
+
+    // 达到100条时必须上报&#xff0c;此时完成首次上报&#xff0c;结束循环
+    if (dp[i] &gt;&#61; 100) break;
+  }
+
+  console.log(Math.max.apply(null, score));
+});
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] arr &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(arr));
+  }
+
+  public static int getResult(Integer[] arr) {
+    int n &#61; arr.length;
+
+    // dp[i]表示&#xff1a;第i时刻可得的正向分
+    int[] dp &#61; new int[n];
+    dp[0] &#61; arr[0];
+
+    // delay[i]表示&#xff1a;第i时刻被扣除的负向分
+    int[] delay &#61; new int[n];
+    delay[0] &#61; 0;
+
+    // score[i]表示&#xff1a;第i时刻最终得分
+    int[] score &#61; new int[n];
+    score[0] &#61; arr[0];
+
+    for (int i &#61; 1; i &lt; n; i&#43;&#43;) {
+      dp[i] &#61; Math.min(100, dp[i - 1] &#43; arr[i]); // 最多上报100条
+      delay[i] &#61; delay[i - 1] &#43; dp[i - 1];
+      score[i] &#61; dp[i] - delay[i];
+
+      // 达到100条时必须上报&#xff0c;此时完成首次上报&#xff0c;结束循环
+      if (dp[i] &gt;&#61; 100) break;
+    }
+
+    return Arrays.stream(score).max().getAsInt();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(arr):
+    n &#61; len(arr)
+
+    # dp[i]表示&#xff1a;第i时刻可得的正向分
+    dp &#61; [0] * n
+    # delay[i]表示&#xff1a;第i时刻被扣除的负向分
+    delay &#61; [0] * n
+    # score[i]表示&#xff1a;第i时刻最终得分
+    score &#61; [0] * n
+
+    dp[0] &#61; arr[0]
+    score[0] &#61; arr[0]
+
+    for i in range(1, n):
+        dp[i] &#61; min(100, dp[i - 1] &#43; arr[i])  # 最多上报100条
+        delay[i] &#61; delay[i - 1] &#43; dp[i - 1]
+        score[i] &#61; dp[i] - delay[i]
+
+        # 达到100条时必须上报&#xff0c;此时完成首次上报&#xff0c;结束循环
+        if dp[i] &gt;&#61; 100:
+            break
+
+    print(max(score))
+
+
+# 调用算法
+getResult(arr)
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

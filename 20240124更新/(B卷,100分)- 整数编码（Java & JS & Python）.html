@@ -1,0 +1,173 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 整数编码（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>实现一种整数编码方法&#xff0c;使得待编码的数字越小&#xff0c;编码后所占用的字节数越小。</p> 
+<p>编码规则如下:</p> 
+<ol><li>编码时7位一组&#xff0c;每个字节的低7位用于存储待编码数字的补码</li><li>字节的最高位表示后续是否还有字节&#xff0c;置1表示后面还有更多的字节&#xff0c;置0表示当前字节为最后一个字节。</li><li>采用小端序编码&#xff0c;低位和低字节放在低地址上。</li><li>编码结果按16进制数的字符格式输出&#xff0c;小写字母需转换为大写字母</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的为一个字符串表示的非负整数</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个字符串&#xff0c;表示整数编码的16进制码流</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>待编码的数字取值范围为[0&#xff0c;1&lt;&lt;64 - 1]</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">00</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">输出的16进制字符&#xff0c;不足两位的前面补0&#xff0c;如00、01、02。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">100</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">64</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>100的二进制表示为0110 0100&#xff0c;只需要一个字节进行编码;</p> <p></p> <p>字节的最高位置0&#xff0c;剩余7位存储数字100的低7位 (110 0100) &#xff0c;所以编码后的输出为64。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1000</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">E807</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>1000的二进制表示为0011 1110 1000&#xff0c;至少需要两个字节进行编码;</p> <p></p> <p>第一个字节最高位置1&#xff0c;剩余的7位存储数字1000的第一个低7位 (1101000)&#xff0c;所以第一个字节的二进制为1110 1000&#xff0c;即E8;</p> <p></p> <p>第二个字节最高位置0&#xff0c;剩余的7位存储数字1000的第二个低7位 (0000111)&#xff0c;所以第一个字节的二进制为0000 0111&#xff0c;即07;</p> <p></p> <p>采用小端序编码&#xff0c;所以低字节E8输出在前&#xff0c;高字节07输出在后。</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先将输入的十进制数转为二进制字符串binStr&#xff0c;然后基于binStr“倒序”每7位一段&#xff0c;以用例3画图说明&#xff1a;</p> 
+<p><img alt="" height="130" src="https://img-blog.csdnimg.cn/37f1db49ebc44039a04a902c2d3e413d.png" width="693" /></p> 
+<p>如果当前“段”的左边还有后续段&#xff0c;那么当前“段”需要在头部追加“1”形成新字节&#xff0c;如上图黄色段&#xff0c;由于其左边还有&#xff0c;则最终得到的新字节字符串是&#xff1a;&#34;1&#34; &#43; &#34;1101000&#34;&#xff0c;新字节字符串转化为十六进制后为E8</p> 
+<p><img alt="" height="265" src="https://img-blog.csdnimg.cn/4721fbdbd4c74299bdb884c731c46742.png" width="590" /></p> 
+<p></p> 
+<p>如果当前”段“不足7位&#xff0c;或者左边没有后续段了&#xff0c;那么当前”段“需要在头部追加”0“形成新字节&#xff08;其实也可以不加&#xff09;&#xff0c;如上图绿色段&#xff0c;由于其左边没有后续段了&#xff0c;则最终得到的新字节字符串是&#xff1a;”0“ &#43; ”00111“&#xff0c;新字节字符串转化为16进制后为7</p> 
+<p><img alt="" height="267" src="https://img-blog.csdnimg.cn/9a0df5c2735a4d8184fa903a2b8c22bb.png" width="600" /></p> 
+<p>对于不足两位的16进制&#xff0c;要在前面补足0</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLong()));
+  }
+
+  public static String getResult(long num) {
+    String bin &#61; Long.toBinaryString(num);
+
+    StringBuilder ans &#61; new StringBuilder();
+
+    int end &#61; bin.length();
+    while (end - 7 &gt; 0) {
+      ans.append(getHexString(&#34;1&#34; &#43; bin.substring(end - 7, end)));
+      end -&#61; 7;
+    }
+
+    if (end &gt;&#61; 0) {
+      ans.append(getHexString(bin.substring(0, end)));
+    }
+
+    return ans.toString();
+  }
+
+  public static String getHexString(String binStr) {
+    String hexStr &#61; Integer.toHexString(Integer.parseInt(binStr, 2));
+    if (hexStr.length() &#61;&#61; 1) hexStr &#61; &#34;0&#34; &#43; hexStr;
+    return hexStr.toUpperCase();
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(numStr) {
+  const binStr &#61; BigInt(numStr).toString(2);
+
+  const ans &#61; [];
+  let end &#61; binStr.length;
+  while (end - 7 &gt; 0) {
+    ans.push(getHexString(&#34;1&#34; &#43; binStr.substring(end - 7, end)));
+    end -&#61; 7;
+  }
+
+  if (end &gt;&#61; 0) {
+    ans.push(getHexString(binStr.substring(0, end)));
+  }
+
+  return ans.join(&#34;&#34;);
+}
+
+function getHexString(binStr) {
+  let hexStr &#61; parseInt(binStr, 2).toString(16);
+  if (hexStr.length &#61;&#61; 1) hexStr &#61; &#34;0&#34; &#43; hexStr;
+  return hexStr.toUpperCase();
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+num &#61; int(input())
+
+
+def getHexString(binStr):
+    # bin函数可以将十进制数转为16进制字符串&#xff0c;但是开头会带0x,因此下面做了字符串截取操作
+    hexStr &#61; hex(int(binStr, 2))[2:]
+    if len(hexStr) &#61;&#61; 1:
+        hexStr &#61; &#34;0&#34; &#43; hexStr
+    return hexStr.upper()
+
+
+# 算法入口
+def getResult():
+    # bin函数可以将十进制数转为二进制字符串&#xff0c;但是开头会带0b,因此下面做了字符串截取操作
+    binStr &#61; bin(num)[2:]
+
+    ans &#61; []
+
+    end &#61; len(binStr)
+    while end - 7 &gt; 0:
+        ans.append(getHexString(&#34;1&#34; &#43; binStr[end-7:end]))
+        end -&#61; 7
+
+    if end &gt;&#61; 0:
+        ans.append(getHexString(binStr[:end]))
+
+    return &#34;&#34;.join(ans)
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

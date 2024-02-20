@@ -1,0 +1,187 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 字符串序列判定（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>输入两个字符串 S 和 L &#xff0c;都只包含英文小写字母。S长度 ≤ 100&#xff0c;L长度 ≤ 500,000。判定S是否是L的有效子串。</p> 
+<p>判定规则&#xff1a;S 中的每个字符在 L 中都能找到&#xff08;可以不连续&#xff09;&#xff0c;且 S 在&#xff2c;中字符的前后顺序与 S 中顺序要保持一致。&#xff08;例如&#xff0c;S &#61; ”ace” 是 L&#61; ”abcde” 的一个子序列且有效字符是a、c、e&#xff0c;而”aec”不是有效子序列&#xff0c;且有效字符只有a、e&#xff09;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入两个字符串 S 和 L&#xff0c;都只包含英文小写字母。S长度 ≤ 100&#xff0c;L长度 ≤ 500,000。</p> 
+<p>先输入S&#xff0c;再输入L&#xff0c;每个字符串占一行。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>S 串最后一个有效字符在 L 中的位置。&#xff08;首位从0开始计算&#xff0c;无有效字符返回-1&#xff09;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:82px;">输入</td><td style="width:416px;"> <p>ace<br /> abcde</p> </td></tr><tr><td style="width:82px;">输出</td><td style="width:416px;">4</td></tr><tr><td style="width:82px;">说明</td><td style="width:416px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:81px;">输入</td><td style="width:417px;"> <p>fgh<br /> abcde</p> </td></tr><tr><td style="width:81px;">输出</td><td style="width:417px;">-1</td></tr><tr><td style="width:81px;">说明</td><td style="width:417px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以利用双指针来解决。</p> 
+<p>定义两个指针 i , j&#xff0c;分别指向S&#xff0c;L 字符串的索引0位置&#xff0c;</p> 
+<ul><li>当 S[i] 和 L[j] 的字符相同时&#xff0c;则 i&#43;&#43; 且 j&#43;&#43;</li><li>当 S[i] 和 L[j] 的字符不同时&#xff0c;则仅 j&#43;&#43;</li></ul> 
+<p>当 i ≥ S.length || J ≥ l.length 时结束</p> 
+<p></p> 
+<p>如果最后&#xff0c;i &#61;&#61; S.length&#xff0c;则说明&#xff0c;在 L 字符串中找到了所有的 S 字符串字符。且 S 字符串最后一个字符在 L 中的位置就是 j - 1。否则&#xff0c;就返回-1。</p> 
+<p></p> 
+<p>用例1图示如下&#xff1a;</p> 
+<p><img alt="" height="283" src="https://img-blog.csdnimg.cn/c24b9e8c26a648c59fe1ae118588646b.png" width="1200" /></p> 
+<p></p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String s &#61; sc.nextLine();
+    String l &#61; sc.nextLine();
+
+    System.out.println(getResult(s, l));
+  }
+
+  public static int getResult(String s, String l) {
+    int i &#61; 0;
+    int j &#61; 0;
+
+    while (i &lt; s.length() &amp;&amp; j &lt; l.length()) {
+      if (s.charAt(i) &#61;&#61; l.charAt(j)) {
+        i&#43;&#43;;
+      }
+      j&#43;&#43;;
+    }
+
+    if (i &#61;&#61; s.length()) return j - 1;
+    else return -1;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    console.log(getResult(lines[0], lines[1]));
+    lines.length &#61; 0;
+  }
+});
+
+/* 算法逻辑 */
+function getResult(s, l) {
+  let i &#61; 0;
+  let j &#61; 0;
+
+  while (i &lt; s.length &amp;&amp; j &lt; l.length) {
+    if (s[i] &#61;&#61; l[j]) {
+      i&#43;&#43;;
+    }
+    j&#43;&#43;;
+  }
+
+  if (i &#61;&#61; s.length) return j - 1;
+  else return -1;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+l &#61; input()
+
+
+# 算法入口
+def getResult():
+    i &#61; 0
+    j &#61; 0
+
+    while i &lt; len(s) and j &lt; len(l):
+        if s[i] &#61;&#61; l[j]:
+            i &#43;&#61; 1
+        j &#43;&#61; 1
+
+    if i &#61;&#61; len(s):
+        return j - 1
+    else:
+        return -1
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    char s[101];
+    scanf(&#34;%s&#34;, s);
+
+    char l[500001];
+    scanf(&#34;%s&#34;, l);
+
+    unsigned long long sLen &#61; strlen(s);
+    unsigned long long lLen &#61; strlen(l);
+
+    int i &#61; 0;
+    int j &#61; 0;
+
+    while(i &lt; sLen &amp;&amp; j &lt; lLen) {
+        if(s[i] &#61;&#61; l[j]) {
+            i&#43;&#43;;
+        }
+        j&#43;&#43;;
+    }
+
+    printf(&#34;%d\n&#34;, i &#61;&#61; sLen ? j - 1 : -1);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,320 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 多段线数据压缩（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4>在线OJ刷题</h4> 
+<p><a href="https://hydro.ac/d/HWOD2023/p/OD400" rel="nofollow" title="题目详情 - 多段线数据压缩 - Hydro">题目详情 - 多段线数据压缩 - Hydro</a></p> 
+<p></p> 
+<h4 id="main-toc">题目描述</h4> 
+<p>下图中&#xff0c;每个方块代表一个像素&#xff0c;每个像素用其行号和列号表示。</p> 
+<p><img alt="" height="376" src="https://img-blog.csdnimg.cn/direct/bf67a50d8a8143148e6ecd058a670807.png" width="447" /></p> 
+<p>为简化处理&#xff0c;多线段的走向只能是水平、竖直、斜向45度。</p> 
+<p>上图中的多线段可以用下面的坐标串表示&#xff1a;(2,8),(3,7),(3,6),(3,5),(4,4),(5,3),(6,2),(7,3),(8,4),(7,5)。</p> 
+<p>但可以发现&#xff0c;这种表示不是最简的&#xff0c;其实只需要存储6个蓝色的关键点即可&#xff0c;它们是线段的起点、拐点、终点&#xff0c;而剩下4个点是冗余的。</p> 
+<p>现在&#xff0c;请根据输入的包含有冗余数据的多线段坐标列表&#xff0c;输出其最简化的结果。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<blockquote> 
+ <p>2 8 3 7 3 6 3 5 4 4 5 3 6 2 7 3 8 4 7 5</p> 
+</blockquote> 
+<ol><li>所有数字以空格分隔&#xff0c;每两个数字一组&#xff0c;第一个数字是行号&#xff0c;第二个数字是列号&#xff1b;</li><li>行号和列号范围 为 [0, 64)&#xff0c;用例输入保证不会越界&#xff0c;考生不必检查&#xff1b;</li><li>输入数据至少包含两个坐标点</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<blockquote> 
+ <p>2 8 3 7 3 5 6 2 8 4 7 5</p> 
+</blockquote> 
+<p>压缩后的最简化坐标列表&#xff0c;和输入数据的格式相同。</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>输出的坐标相对顺序不能变化</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 8 3 7 3 6 3 5 4 4 5 3 6 2 7 3 8 4 7 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2 8 3 7 3 5 6 2 8 4 7 5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>如上图所示&#xff0c;6个蓝色像素的坐标依次是&#xff1a;</p> <p>(2, 8)、(3, 7)、(3, 5)、(6, 2)、(8, 4)、(7, 5)</p> <p>将他们按顺序输出即可。</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题其实就是要我们保留拐点。</p> 
+<p></p> 
+<p>那么怎么判断一个点是不是拐点呢&#xff1f;</p> 
+<p>拐点拐点&#xff0c;自然是运动方向发生改变的点。</p> 
+<p></p> 
+<p>那么如何判断一个点的运动方向呢&#xff1f;</p> 
+<p>运动&#xff0c;指的是从点A到点B&#xff0c;而运动的方向&#xff0c;自然是点A到点B的方向。那么如何描述点A到点B的方向呢&#xff1f;</p> 
+<p>假设点A&#xff08;2, 8&#xff09;&#xff0c;点B&#xff08;3 7&#xff09;&#xff0c;那么此时点A到点B的偏移量为&#xff1a;</p> 
+<p>offsetX &#61; 3 - 2 &#61; 1</p> 
+<p>offsetY &#61; 7 - 8 &#61; -1</p> 
+<p>则&#xff08;offsetX, offsetY&#xff09;就是A→B的向量坐标。</p> 
+<p></p> 
+<p>当然还有可能出现这样的情况&#xff0c;比如A坐标&#xff08;3,5&#xff09;&#xff0c;B坐标&#xff08;6,2&#xff09;&#xff0c;此时A→B向量坐标为&#xff08;3, -3&#xff09;</p> 
+<p>此时&#xff08;3,-3&#xff09;向量的方向其实和&#xff08;1,-1&#xff09;是相同的。</p> 
+<p>因此&#xff0c;我们需要对这种向量做简化&#xff0c;方便后续相同方向的比较&#xff0c;即将&#xff08;3,-3&#xff09;简化为&#xff08;1,-1&#xff09;&#xff0c;字面上看&#xff0c;其实就是横坐标、纵坐标都除以3&#xff0c;那么base&#61;3该如何求解呢&#xff1f;求解公式如下</p> 
+<blockquote> 
+ <p>base &#61; max(abs(offsetX), abs(offsetY))</p> 
+</blockquote> 
+<p>这个公式的好处是&#xff0c;兼容(-5, 0)&#xff0c;(0, 10)这种向量。</p> 
+<p></p> 
+<p>当我们知道了A→B的方向&#xff0c;那么只要判断下一步B→C的方向是否发生改变&#xff0c;如果发生改变&#xff0c;那么就可以确定B是拐点&#xff0c;比如</p> 
+<p><img alt="" height="320" src="https://img-blog.csdnimg.cn/direct/25a9da87e1884c95a6e7d74d4bce9460.png" width="430" /></p> 
+<p>A→B的向量为&#xff08;-1, 0&#xff09;</p> 
+<p>B→C的向量为&#xff08;-1, 0&#xff09;</p> 
+<p>因此B不是拐点</p> 
+<p></p> 
+<p><img alt="" height="332" src="https://img-blog.csdnimg.cn/direct/dfbe36a22445471fa839921793df6387.png" width="419" /></p> 
+<p>B→C的向量为&#xff08;-1, 0&#xff09;</p> 
+<p>C→D的向量为&#xff08;1, -1&#xff09;</p> 
+<p>因此C是拐点</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+  console.log(getResult(nums));
+})();
+
+function getResult(nums) {
+  const ans &#61; [];
+
+  // 上一个点坐标&#xff08;preX, preY&#xff09;
+  let preX &#61; nums[0];
+  let preY &#61; nums[1];
+
+  // 上一次的运动方向&#xff08;preDirectX, preDirectY&#xff09;
+  let preDirectX &#61; 0;
+  let preDirectY &#61; 0;
+
+  for (let i &#61; 2; i &lt; nums.length; i &#43;&#61; 2) {
+    // 当前点坐标&#xff08;curX, curY&#xff09;
+    const curX &#61; nums[i];
+    const curY &#61; nums[i &#43; 1];
+
+    // 上一个点到当前点的偏移量&#xff08;offsetX, offsetY&#xff09;
+    const offsetX &#61; curX - preX;
+    const offsetY &#61; curY - preY;
+
+    // 根据偏移量得出本次的运动方向
+    const base &#61; Math.max(Math.abs(offsetX), Math.abs(offsetY));
+    const directX &#61; offsetX / base;
+    const directY &#61; offsetY / base;
+
+    // 如果两次运动的方向不同
+    if (directX !&#61; preDirectX || directY !&#61; preDirectY) {
+      // 则上一个点是拐点&#xff0c;需要记录下来
+      ans.push(preX, preY);
+    }
+
+    preX &#61; curX;
+    preY &#61; curY;
+
+    preDirectX &#61; directX;
+    preDirectY &#61; directY;
+  }
+
+  // 注意收尾
+  ans.push(preX, preY);
+
+  return ans.join(&#34; &#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    System.out.println(getResult(nums));
+  }
+
+  public static String getResult(int[] nums) {
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+
+    // 上一个点坐标&#xff08;preX, preY&#xff09;
+    int preX &#61; nums[0];
+    int preY &#61; nums[1];
+
+    // 上一次的运动方向&#xff08;preDirectX, preDirectY&#xff09;
+    int preDirectX &#61; 0;
+    int preDirectY &#61; 0;
+
+    for (int i &#61; 2; i &lt; nums.length; i &#43;&#61; 2) {
+      // 当前点坐标&#xff08;curX, curY&#xff09;
+      int curX &#61; nums[i];
+      int curY &#61; nums[i &#43; 1];
+
+      // 上一个点到当前点的偏移量&#xff08;offsetX, offsetY&#xff09;
+      int offsetX &#61; curX - preX;
+      int offsetY &#61; curY - preY;
+
+      // 根据偏移量得出本次的运动方向
+      int base &#61; Math.max(Math.abs(offsetX), Math.abs(offsetY));
+      int directX &#61; offsetX / base;
+      int directY &#61; offsetY / base;
+
+      // 如果两次运动的方向不同
+      if (directX !&#61; preDirectX || directY !&#61; preDirectY) {
+        // 则上一个点是拐点&#xff0c;需要记录下来
+        sj.add(preX &#43; &#34; &#34; &#43; preY);
+      }
+
+      preX &#61; curX;
+      preY &#61; curY;
+
+      preDirectX &#61; directX;
+      preDirectY &#61; directY;
+    }
+
+    // 注意收尾
+    sj.add(preX &#43; &#34; &#34; &#43; preY);
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+nums &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    ans &#61; []
+
+    # 上一个点坐标&#xff08;preX, preY&#xff09;
+    preX &#61; nums[0]
+    preY &#61; nums[1]
+
+    # 上一次的运动方向&#xff08;preDirectX, preDirectY&#xff09;
+    preDirectX &#61; 0
+    preDirectY &#61; 0
+
+    for i in range(2, len(nums), 2):
+        # 当前点坐标&#xff08;curX, curY&#xff09;
+        curX &#61; nums[i]
+        curY &#61; nums[i &#43; 1]
+
+        # 上一个点到当前点的偏移量&#xff08;offsetX, offsetY&#xff09;
+        offsetX &#61; curX - preX
+        offsetY &#61; curY - preY
+
+        # 根据偏移量得出本次的运动方向
+        base &#61; max(abs(offsetX), abs(offsetY))
+        directX &#61; offsetX // base
+        directY &#61; offsetY // base
+
+        # 如果两次运动的方向不同
+        if directX !&#61; preDirectX or directY !&#61; preDirectY:
+            # 则上一个点是拐点&#xff0c;需要记录下来
+            ans.extend([preX, preY])
+
+        preX &#61; curX
+        preY &#61; curY
+
+        preDirectX &#61; directX
+        preDirectY &#61; directY
+
+    # 注意收尾
+    ans.extend([preX, preY])
+
+    return &#34; &#34;.join(map(str, ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+#define MAX_SIZE 20000
+
+int main() {
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    // 上一个点坐标&#xff08;preX, preY&#xff09;
+    int preX &#61; nums[0];
+    int preY &#61; nums[1];
+
+    // 上一次的运动方向&#xff08;preDirectX, preDirectY&#xff09;
+    int preDirectX &#61; 0;
+    int preDirectY &#61; 0;
+
+    for (int i &#61; 2; i &lt; nums_size; i &#43;&#61; 2) {
+        // 当前点坐标&#xff08;curX, curY&#xff09;
+        int curX &#61; nums[i];
+        int curY &#61; nums[i &#43; 1];
+
+        // 上一个点到当前点的偏移量&#xff08;offsetX, offsetY&#xff09;
+        int offsetX &#61; curX - preX;
+        int offsetY &#61; curY - preY;
+
+        // 根据偏移量得出本次的运动方向
+        int base &#61; (int) fmax(abs(offsetX), abs(offsetY));
+        int directX &#61; offsetX / base;
+        int directY &#61; offsetY / base;
+
+        // 如果两次运动的方向不同
+        if (directX !&#61; preDirectX || directY !&#61; preDirectY) {
+            // 则上一个点是拐点&#xff0c;需要记录下来
+            printf(&#34;%d %d &#34;, preX, preY);
+        }
+
+        preX &#61; curX;
+        preY &#61; curY;
+
+        preDirectX &#61; directX;
+        preDirectY &#61; directY;
+    }
+
+    // 注意收尾
+    printf(&#34;%d %d&#34;, preX, preY);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

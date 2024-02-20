@@ -1,0 +1,333 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 分班（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>幼儿园两个班的小朋友在排队时混在了一起&#xff0c;每位小朋友都知道自己是否与前面一位小朋友同班&#xff0c;请你帮忙把同班的小朋友找出来。</p> 
+<p>小朋友的编号是整数&#xff0c;与前一位小朋友同班用Y表示&#xff0c;不同班用N表示。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为空格分开的小朋友编号和是否同班标志。</p> 
+<p>比如&#xff1a;6/N 2/Y 3/N 4/Y&#xff0c;表示4位小朋友&#xff0c;2和6同班&#xff0c;3和2不同班&#xff0c;4和3同班。</p> 
+<p>其中&#xff0c;小朋友总数不超过999&#xff0c;每个小朋友编号大于0&#xff0c;小于等于999。</p> 
+<p>不考虑输入格式错误问题。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出为两行&#xff0c;每一行记录一个班小朋友的编号&#xff0c;编号用空格分开&#xff0c;且&#xff1a;</p> 
+<ol><li>编号需按照大小升序排列&#xff0c;分班记录中第一个编号小的排在第一行。</li><li>若只有一个班的小朋友&#xff0c;第二行为空行。</li><li>若输入不符合要求&#xff0c;则直接输出字符串ERROR。</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:121px;">输入</td><td style="width:377px;">1/N 2/Y 3/N 4/Y</td></tr><tr><td style="width:121px;">输出</td><td style="width:377px;"> <p>1 2<br /> 3 4</p> </td></tr><tr><td style="width:121px;">说明</td><td style="width:377px;">2的同班标记为Y&#xff0c;因此和1同班。<br /> 3的同班标记为N&#xff0c;因此和1、2不同班。<br /> 4的同班标记为Y&#xff0c;因此和3同班。<br /> 所以1、2同班&#xff0c;3、4同班&#xff0c;输出为<br /> 1 2<br /> 3 4</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>1/N 2/Y 3/N 4/Y 5/Y</td></tr><tr><td>输出</td><td> <p>1 2<br /> 3 4 5</p> </td></tr><tr><td>说明</td><td>无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题应该只是逻辑分析题。</p> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>定义一个标志preBelongToOne&#xff0c;记录前一个小朋友是否属于一班&#xff0c;初始时为false&#xff0c;表示不属于一班。</p> 
+<p>然后遍历排队的小朋友&#xff0c;被遍历的小朋友为kid&#xff0c;然后kid的标志如果是Y&#xff0c;则表示和前面一个小朋友同班&#xff0c;否则不同班。我们定义一个标志 isSameWithPre&#xff0c;来记录当前kid是否和前面一个小朋友同班。</p> 
+<ul><li>如果 preBelongToOne &#61;&#61; true&#xff0c;则前一个小朋友属于一班&#xff1a;</li></ul> 
+<ol><li>若 isSameWithPre &#61;&#61; true&#xff0c;则当前小朋友也属于一班</li><li>若 isSameWithPre &#61;&#61; false&#xff0c;则当前小朋友属于二班&#xff0c;同时当前小朋友变为新的前一个小朋友&#xff0c;即需要更新preBelongToOne &#61; false</li></ol> 
+<ul><li>如果 preBelongToOne &#61;&#61; false&#xff0c;则前一个小朋友属于二班&#xff1a;</li></ul> 
+<ol><li>若 isSameWithPre &#61;&#61; true&#xff0c;则当前小朋友也属于二班</li><li>若 isSameWithPre &#61;&#61; false&#xff0c;则当前小朋友属于一班&#xff0c;同时当前小朋友变为新的前一个小朋友&#xff0c;即需要更新preBelongToOne &#61; true</li></ol> 
+<p>之后就是关注题目的校验要求和打印要求。</p> 
+<p>关于校验要求&#xff0c;如果不符合下面要求&#xff0c;打印“None”&#xff1a;</p> 
+<ul><li>小朋友总数不超过999</li><li>999 &gt;&#61; 小朋友编号 &gt; 0</li></ul> 
+<p>关于打印要求&#xff1a;</p> 
+<ul><li>一班、二班需要各自升序&#xff0c;且比较第一个小朋友编号小的&#xff0c;则首先打印</li><li>如果二班没有小朋友&#xff0c;则打印空行</li></ul> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    getResult(sc.nextLine());
+  }
+
+  public static void getResult(String str) {
+    String[][] kids &#61; Arrays.stream(str.split(&#34; &#34;)).map(s -&gt; s.split(&#34;/&#34;)).toArray(String[][]::new);
+
+    // 小朋友总数不超过999
+    if (kids.length &gt; 999) {
+      // 若输入不符合要求&#xff0c;则直接输出字符串ERROR
+      System.out.println(&#34;ERROR&#34;);
+      return;
+    }
+
+    ArrayList&lt;Integer&gt; one &#61; new ArrayList&lt;&gt;();
+    ArrayList&lt;Integer&gt; two &#61; new ArrayList&lt;&gt;();
+
+    // 第一个小朋友前面没有人&#xff0c;因此第一个小朋友不可能和前面不存在的人同班
+    if (&#34;Y&#34;.equals(kids[0][1])) {
+      System.out.println(&#34;ERROR&#34;);
+      return;
+    }
+
+    boolean preBelongToOne &#61; false;
+
+    for (String[] kid : kids) {
+      int id &#61; Integer.parseInt(kid[0]);
+
+      // 每个小朋友编号大于0&#xff0c;小于等于999
+      if (id &lt;&#61; 0 || id &gt; 999) {
+        // 若输入不符合要求&#xff0c;则直接输出字符串ERROR
+        System.out.println(&#34;ERROR&#34;);
+        return;
+      }
+
+      boolean isSameWithPre &#61; &#34;Y&#34;.equals(kid[1]);
+
+      if (preBelongToOne) {
+        if (isSameWithPre) {
+          one.add(id);
+        } else {
+          two.add(id);
+          preBelongToOne &#61; false;
+        }
+      } else {
+        if (isSameWithPre) {
+          two.add(id);
+        } else {
+          one.add(id);
+          preBelongToOne &#61; true;
+        }
+      }
+    }
+
+    // 编号需按照大小升序排列
+    one.sort((a, b) -&gt; a - b);
+    String oneStr &#61; getStr(one);
+
+    // 若只有一个班的小朋友&#xff0c;第二行为空行。
+    if (two.size() &#61;&#61; 0) {
+      System.out.println(oneStr);
+      System.out.println(&#34;&#34;);
+      return;
+    }
+
+    // 编号需按照大小升序排列
+    two.sort((a, b) -&gt; a - b);
+    String twoStr &#61; getStr(two);
+
+    // 分班记录中第一个编号小的排在第一行
+    if (one.get(0) &lt; two.get(0)) {
+      System.out.println(oneStr);
+      System.out.println(twoStr);
+    } else {
+      System.out.println(twoStr);
+      System.out.println(oneStr);
+    }
+  }
+
+  public static String getStr(ArrayList&lt;Integer&gt; list) {
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (Integer v : list) {
+      sj.add(v &#43; &#34;&#34;);
+    }
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  getResult(line);
+});
+
+function getResult(str) {
+  const kids &#61; str.split(&#34; &#34;).map((s) &#61;&gt; s.split(&#34;/&#34;));
+
+  // 小朋友总数不超过999
+  if (kids.length &gt; 999) {
+    // 若输入不符合要求&#xff0c;则直接输出字符串ERROR
+    console.log(&#34;ERROR&#34;);
+    return;
+  }
+
+  const one &#61; [];
+  const two &#61; [];
+  
+  // 第一个小朋友前面没有人&#xff0c;因此第一个小朋友不可能和前面不存在的人同班
+  if(kids[0][1] &#61;&#61; &#34;Y&#34;) {
+	  console.log(&#34;ERROR&#34;);
+	  return;
+  }
+
+  let preBelongToOne &#61; false;
+
+  for (let kid of kids) {
+    const id &#61; parseInt(kid[0]);
+
+    // 每个小朋友编号大于0&#xff0c;小于等于999
+    if (id &lt;&#61; 0 || id &gt; 999) {
+      // 若输入不符合要求&#xff0c;则直接输出字符串ERROR
+      console.log(&#34;ERROR&#34;);
+      return;
+    }
+
+    const isSameWithPre &#61; &#34;Y&#34; &#61;&#61; kid[1];
+
+    if (preBelongToOne) {
+      if (isSameWithPre) {
+        one.push(id);
+      } else {
+        two.push(id);
+        preBelongToOne &#61; false;
+      }
+    } else {
+      if (isSameWithPre) {
+        two.push(id);
+      } else {
+        one.push(id);
+        preBelongToOne &#61; true;
+      }
+    }
+  }
+
+  // 编号需按照大小升序排列
+  one.sort((a, b) &#61;&gt; a - b);
+  const oneStr &#61; one.join(&#34; &#34;);
+
+  // 若只有一个班的小朋友&#xff0c;第二行为空行。
+  if (two.length &#61;&#61; 0) {
+    console.log(oneStr);
+    console.log(&#34;&#34;);
+    return;
+  }
+
+  // 编号需按照大小升序排列
+  two.sort((a, b) &#61;&gt; a - b);
+  const twoStr &#61; two.join(&#34; &#34;);
+
+  // 分班记录中第一个编号小的排在第一行
+  if (one[0] &lt; two[0]) {
+    console.log(oneStr);
+    console.log(twoStr);
+  } else {
+    console.log(twoStr);
+    console.log(oneStr);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    kids &#61; list(map(lambda x: x.split(&#34;/&#34;), s.split()))
+
+    # 小朋友总数不超过999
+    if len(kids) &gt; 999:
+        # 若输入不符合要求&#xff0c;则直接输出字符串ERROR
+        print(&#34;ERROR&#34;)
+        return
+
+    one &#61; []
+    two &#61; []
+
+    # 第一个小朋友前面没有人&#xff0c;因此第一个小朋友不可能和前面不存在的人同班
+    if kids[0][1] &#61;&#61; &#34;Y&#34;:
+        print(&#34;ERROR&#34;)
+        return
+
+    preBelongToOne &#61; False
+
+    for kid in kids:
+        idx &#61; int(kid[0])
+
+        # 每个小朋友编号大于0&#xff0c;小于等于999
+        if idx &lt;&#61; 0 or idx &gt; 999:
+            # 若输入不符合要求&#xff0c;则直接输出字符串ERROR
+            print(&#34;ERROR&#34;)
+            return
+
+        isSameWithPre &#61; &#34;Y&#34; &#61;&#61; kid[1]
+
+        if preBelongToOne:
+            if isSameWithPre:
+                one.append(idx)
+            else:
+                two.append(idx)
+                preBelongToOne &#61; False
+        else:
+            if isSameWithPre:
+                two.append(idx)
+            else:
+                one.append(idx)
+                preBelongToOne &#61; True
+
+    # 编号需按照大小升序排列
+    one.sort()
+    oneStr &#61; &#34; &#34;.join(map(str, one))
+
+    # 若只有一个班的小朋友&#xff0c;第二行为空行。
+    if len(two) &#61;&#61; 0:
+        print(oneStr)
+        print(&#34;&#34;)
+        return
+
+    # 编号需按照大小升序排列
+    two.sort()
+    twoStr &#61; &#34; &#34;.join(map(str, two))
+
+    # 分班记录中第一个编号小的排在第一行
+    if one[0] &lt; two[0]:
+        print(oneStr)
+        print(twoStr)
+    else:
+        print(twoStr)
+        print(oneStr)
+
+
+# 算法调用
+getResult()
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

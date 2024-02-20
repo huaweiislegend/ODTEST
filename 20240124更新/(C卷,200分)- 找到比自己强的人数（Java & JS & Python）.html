@@ -1,0 +1,323 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 找到比自己强的人数（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定数组[[2,1],[3 2]]&#xff0c;每组表示师徒关系&#xff0c;第一个元素是第二个元素的老师&#xff0c;数字代表排名&#xff0c;现在找出比自己强的徒弟。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">[[2,1],[3,2]]</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[0,1,2]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入&#xff1a;</p> <p>第一行数据[2,1]表示排名第 2 的员工是排名第 1 员工的导师&#xff0c;后面的数据以此类推。</p> <p>输出&#xff1a;</p> <p>第一个元素 0 表示成绩排名第一的导师&#xff0c;没有徒弟考试超过他&#xff1b;<br /> 第二个元素 1 表示成绩排名第二的导师&#xff0c;有 1 个徒弟成绩超过他<br /> 第三个元素 2 表示成绩排名第三的导师&#xff0c;有 2 个徒弟成绩超过他</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这题也算有点难度的。难在题目给的信息太少了。</p> 
+<p>比如&#xff0c;师傅和徒弟是绝对一比一吗&#xff1f;题目没说&#xff0c;那我们应该理解为多对多关系。</p> 
+<p>自己的师傅的师傅能不能是自己的徒弟&#xff0c;比如A是B的徒弟&#xff0c;B是C的徒弟&#xff0c;C又是A的徒弟&#xff0c;题目没说&#xff0c;那我们应该考虑进这种情况。</p> 
+<p>另外&#xff0c;按照给定用例来看&#xff0c;师傅的徒弟的徒弟&#xff0c;也算是自己的徒弟。比如A是B的师傅&#xff0c;B是C的师傅&#xff0c;则A也算是C的师傅。因此统计比A强的徒弟时&#xff0c;不仅要统计A的直接徒弟&#xff0c;还要统计A的间接徒弟。</p> 
+<p></p> 
+<p>考虑上面情况&#xff0c;我构造了一个极端情况的用例&#xff1a;[[1,4],[1,3],[2,4],[2,1],[3,2]] </p> 
+<p>图示如下</p> 
+<p><img alt="" height="180" src="https://img-blog.csdnimg.cn/27b5f42dea85405895a406edc5b5f43e.png" width="281" /></p> 
+<p>排名1的师傅&#xff0c;有两个直接徒弟排名3和排名4</p> 
+<p>排名2的师傅&#xff0c;用两个直接徒弟排名1和排名4</p> 
+<p>排名3的师傅&#xff0c;有一个直接徒弟排名2&#xff0c;两个间接徒弟排1和排名4</p> 
+<p>排名4的师傅&#xff0c;没有徒弟</p> 
+<p>因此&#xff0c;输出应该是&#xff1a;</p> 
+<p>[0, 1, 2, 0]</p> 
+<p>含义是&#xff1a;</p> 
+<p>排名1的师傅&#xff0c;没有徒弟排名超过自己&#xff0c;因此返回0</p> 
+<p>排名2的师傅&#xff0c;有一个排名1的徒弟&#xff0c;因此有一个徒弟排名超过自己&#xff0c;返回1</p> 
+<p>排名3的师傅&#xff0c;有排名2和排名1的徒弟&#xff0c;因此有两个徒弟排名超过自己&#xff0c;返回2</p> 
+<p>排名4的师傅&#xff0c;没有徒弟&#xff0c;因此也就没有徒弟排名超过自己&#xff0c;返回0</p> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先把每个人的徒弟排名统计出来&#xff0c;比如用例[[1,4],[1,3],[2,4],[2,1],[3,2]] 统计结果为</p> 
+<p>fa &#61; { &#39;1&#39;: [ 4, 3 ], &#39;2&#39;: [ 4, 1 ], &#39;3&#39;: [ 2 ], &#39;4&#39;: [] }</p> 
+<p>然后我们可以遍历fa对象的每个属性&#xff08;即师傅排名&#xff09;和属性值&#xff08;师傅的直接徒弟的排名&#xff09;</p> 
+<p>然后先统计出 “直接徒弟” 中 “排名高于” 师傅的 “徒弟的名次”&#xff0c;比如fa[2]中比2高的名次是1&#xff0c;将统计出来的名词放到一个set集合中保存&#xff0c;接着&#xff08;递归&#xff09;继续统计 “间接徒弟” 中 “排名高于” 师傅的 “徒弟的名次”&#xff0c;加入到同一个set中。</p> 
+<p>直到&#xff0c;统计的徒弟没有徒弟了&#xff0c;或者徒弟是自己&#xff08;形成环&#xff09;&#xff0c;则终止递归统计。</p> 
+<p>这样的话&#xff0c;就可以统计出每个师傅下有多少个排名高于自己的徒弟了。</p> 
+<p></p> 
+<p>优化动作&#xff1a;</p> 
+<p><img alt="" height="175" src="https://img-blog.csdnimg.cn/06229f3a221e4753a04594263ba4fa7c.png" width="291" /></p> 
+<p>通过上图&#xff0c;我们发现&#xff0c;统计排名2的师傅的“比师傅高排的徒弟”时&#xff0c;排名4的徒弟会被统计两次&#xff0c;一次是作为排名2师傅的直接徒弟&#xff0c;一次是作为排名2师傅的间接徒弟&#xff0c;此时我们应该做剪枝优化。</p> 
+<p>我们目前会将比师傅排名高的徒弟的排名统计在一个集合highC中&#xff0c;并且通过递归调用getHighC来统计间接徒弟中比祖师排名高的排名&#xff0c;因此&#xff0c;如果调用getHighC之前&#xff0c;发现当前要统计徒弟已经在highC集合中&#xff0c;就无需再次统计&#xff0c;即不调用 getHighC。</p> 
+<p></p> 
+<p>补充一个测试用例&#xff1a;</p> 
+<p><img alt="" height="237" src="https://img-blog.csdnimg.cn/c72d1762a68249c5a9a780edf3f24403.png" width="305" /></p> 
+<p>[[1,4],[1,3],[2,4],[3,2],[4,5],[5,3]] </p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const relations &#61; JSON.parse(line);
+  console.log(getResult(relations));
+});
+
+/**
+ *
+ * &#64;param {*} relation 数组&#xff0c;元素也是数组&#xff0c;元素数组含义是[师傅排名&#xff0c;徒弟排名]
+ */
+function getResult(relations) {
+  // fa用于统计每个师傅名下的直接徒弟的排名&#xff0c;fa对象的属性是师傅排名&#xff0c;属性值是一个数组&#xff0c;里面元素是直接徒弟的排名
+  const fa &#61; {};
+  for (let relation of relations) {
+    const [f, c] &#61; relation;
+    fa[f] ? fa[f].push(c) : (fa[f] &#61; [c]);
+    fa[c] ? null : (fa[c] &#61; []);
+  }
+
+  /**
+   *
+   * &#64;param {*} f 当前的师傅&#xff0c;初始时为源头祖师
+   * &#64;param {*} src 源头祖师
+   * &#64;param {*} highC 比源头祖师排名的高的徒弟的排名集合
+   * &#64;returns 比源头祖师排名的高的徒弟的个数&#xff0c;即highC.size
+   */
+  function getHighC(f, src, highC) {
+    if (f &#61;&#61;&#61; 1) return 0; // 如果当前师傅是第一名&#xff0c;那么肯定没有徒弟超过它&#xff0c;因此直接返回0
+
+    // 遍历当前师傅的所有徒弟
+    for (let c of fa[f]) {
+      // flag标记是否需要统计间接徒弟&#xff0c;默认需要
+      let flag &#61; true;
+      // 如果徒弟的排名高于源头祖师&#xff08;排名越高&#xff0c;值越小&#xff09;&#xff0c;则应该统计到highC集合中
+      if (c &lt; src) {
+        // 如果highC集合没有这个徒弟&#xff0c;则统计&#xff0c;并需要统计这个徒弟的徒弟&#xff08;即间接徒弟&#xff09;的排名情况
+        if (!highC.has(c)) {
+          highC.add(c);
+        }
+        // 如果highC中已经有了当前的徒弟&#xff0c;则说明当前徒弟已经统计过了&#xff0c;不需要再统计&#xff0c;且当前徒弟的徒弟也不需要再统计了
+        else {
+          flag &#61; false;
+        }
+      }
+      // 形成环&#xff0c;需要打断
+      else if (c &#61;&#61;&#61; src) {
+        return 0;
+      }
+
+      if (flag) {
+        // 统计间接徒弟
+        getHighC(c, src, highC);
+      }
+    }
+
+    return highC.size;
+  }
+
+  const ans &#61; [];
+  // 输出结果要求依次统计&#xff1a;排名第一的师傅的高于自己的徒弟的个数&#xff0c;排名第二的师傅的高于自己的徒弟的个数&#xff0c;......
+  for (let f in fa) {
+    ans.push([f, getHighC(f - 0, f - 0, new Set())]);
+  }
+
+  // 按照师傅排名升序后&#xff0c;输出高于师傅排名的徒弟的个数
+  return ans.sort((a, b) &#61;&gt; a[0] - b[0]).map((arr) &#61;&gt; arr[1]);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61; sc.nextLine();
+
+    // 正则&#xff1a;(?&lt;&#61;\]),(?&#61;\[)  的含义是&#xff0c;找这样一个“,“,它的前面跟着&#34;]&#34;&#xff0c;后面跟着&#34;[&#34;
+    Integer[][] relations &#61;
+        Arrays.stream(str.substring(1, str.length() - 1).split(&#34;(?&lt;&#61;\\]),(?&#61;\\[)&#34;))
+            .map(
+                s -&gt;
+                    Arrays.stream(s.substring(1, s.length() - 1).split(&#34;,&#34;))
+                        .map(Integer::parseInt)
+                        .toArray(Integer[]::new))
+            .toArray(Integer[][]::new);
+
+    System.out.println(getResult(relations));
+  }
+
+  public static String getResult(Integer[][] relations) {
+    // fa用于统计每个师傅名下的直接徒弟的排名&#xff0c;fa对象的属性是师傅排名&#xff0c;属性值是一个数组&#xff0c;里面元素是直接徒弟的排名
+    HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; fa &#61; new HashMap&lt;&gt;();
+
+    for (Integer[] relation : relations) {
+      int f &#61; relation[0];
+      int c &#61; relation[1];
+
+      fa.putIfAbsent(f, new ArrayList&lt;&gt;());
+      fa.putIfAbsent(c, new ArrayList&lt;&gt;());
+
+      fa.get(f).add(c);
+    }
+
+    ArrayList&lt;Integer[]&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    // 输出结果要求依次统计&#xff1a;排名第一的师傅的高于自己的徒弟的个数&#xff0c;排名第二的师傅的高于自己的徒弟的个数&#xff0c;......
+    for (Integer f : fa.keySet()) {
+      ans.add(new Integer[] {f, getHighC(f, f, new HashSet&lt;&gt;(), fa)});
+    }
+
+    // 按照师傅排名升序后&#xff0c;输出高于师傅排名的徒弟的个数
+    ans.sort((a, b) -&gt; a[0] - b[0]);
+
+    return Arrays.toString(ans.stream().map(arr -&gt; arr[1]).toArray(Integer[]::new));
+  }
+
+  /**
+   * &#64;param f 当前的师傅&#xff0c;初始时为源头祖师
+   * &#64;param src 源头祖师
+   * &#64;param highC 比源头祖师排名的高的徒弟的排名集合
+   * &#64;param fa fa对象的属性是师傅排名&#xff0c;属性值是一个数组&#xff0c;里面元素是直接徒弟的排名
+   * &#64;return 比源头祖师排名的高的徒弟的个数&#xff0c;即highC.size
+   */
+  public static int getHighC(
+      int f, int src, HashSet&lt;Integer&gt; highC, HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; fa) {
+    if (f &#61;&#61; 1) return 0; // 如果当前师傅是第一名&#xff0c;那么肯定没有徒弟超过它&#xff0c;因此直接返回0
+
+    // 遍历当前师傅的所有徒弟
+    for (int c : fa.get(f)) {
+      // flag标记是否需要统计间接徒弟&#xff0c;默认需要
+      boolean flag &#61; true;
+
+      // 如果徒弟的排名高于源头祖师&#xff08;排名越高&#xff0c;值越小&#xff09;&#xff0c;则应该统计到highC集合中
+      if (c &lt; src) {
+        if (!highC.contains(c)) {
+          // 如果highC集合没有这个徒弟&#xff0c;则统计&#xff0c;并需要统计这个徒弟的徒弟&#xff08;即间接徒弟&#xff09;的排名情况
+          highC.add(c);
+        } else {
+          // 如果highC中已经有了当前的徒弟&#xff0c;则说明当前徒弟已经统计过了&#xff0c;不需要再统计&#xff0c;且当前徒弟的徒弟也不需要再统计了
+          flag &#61; false;
+        }
+      } else if (c &#61;&#61; src) { // 形成环&#xff0c;需要打断
+        return 0;
+      }
+
+      // 统计间接徒弟
+      if (flag) getHighC(c, src, highC, fa);
+    }
+
+    return highC.size();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+relations &#61; eval(input())  # 二维列表&#xff0c;元素列表含义是[师傅排名&#xff0c;徒弟排名]
+
+
+def getHighC(fa, f, src, highC):
+    &#34;&#34;&#34;
+    :param fa: fa用于统计每个师傅名下的直接徒弟的排名&#xff0c;fa对象的属性是师傅排名&#xff0c;属性值是一个数组&#xff0c;里面元素是直接徒弟的排名
+    :param f: 当前的师傅&#xff0c;初始时为源头祖师
+    :param src: 源头祖师
+    :param highC: 比源头祖师排名的高的徒弟的排名集合
+    :return: 比源头祖师排名的高的徒弟的个数&#xff0c;即highC.size
+    &#34;&#34;&#34;
+    # 如果当前师傅是第一名&#xff0c;那么肯定没有徒弟超过它&#xff0c;因此直接返回0
+    if f &#61;&#61; 1:
+        return 0
+
+    # 遍历当前师傅的所有徒弟
+    for c in fa[f]:
+        # flag标记是否需要统计间接徒弟&#xff0c;默认需要
+        flag &#61; True
+
+        # 如果徒弟的排名高于源头祖师&#xff08;排名越高&#xff0c;值越小&#xff09;&#xff0c;则应该统计到highC集合中
+        if c &lt; src:
+            # 如果highC集合没有这个徒弟&#xff0c;则统计&#xff0c;并需要统计这个徒弟的徒弟&#xff08;即间接徒弟&#xff09;的排名情况
+            if c not in highC:
+                highC.add(c)
+            else:
+                flag &#61; False  # 如果highC中已经有了当前的徒弟&#xff0c;则说明当前徒弟已经统计过了&#xff0c;不需要再统计&#xff0c;且当前徒弟的徒弟也不需要再统计了
+        elif c &#61;&#61; src:
+            return 0  # 形成环&#xff0c;需要打断
+
+        if flag:
+            # 统计间接徒弟
+            getHighC(fa, c, src, highC)
+
+    return len(highC)
+
+
+# 算法入口
+def getResult():
+    # fa用于统计每个师傅名下的直接徒弟的排名&#xff0c;fa对象的属性是师傅排名&#xff0c;属性值是一个数组&#xff0c;里面元素是直接徒弟的排名
+    fa &#61; {}
+
+    #  输出结果要求依次统计&#xff1a;排名第一的师傅的高于自己的徒弟的个数&#xff0c;排名第二的师傅的高于自己的徒弟的个数&#xff0c;......
+    for f, c in relations:
+        if fa.get(f) is not None:
+            fa[f].append(c)
+        else:
+            fa[f] &#61; [c]
+
+        if fa.get(c) is None:
+            fa[c] &#61; []
+
+    ans &#61; []
+
+    # 输出结果要求依次统计&#xff1a;排名第一的师傅的高于自己的徒弟的个数&#xff0c;排名第二的师傅的高于自己的徒弟的个数&#xff0c;......
+    for f in fa:
+        ans.append([f, getHighC(fa, f, f, set())])
+
+    # 按照师傅排名升序后&#xff0c;输出高于师傅排名的徒弟的个数
+    ans.sort(key&#61;lambda x: x[0])
+
+    return list(map(lambda x: x[1], ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p> </p> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

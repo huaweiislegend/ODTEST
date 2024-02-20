@@ -1,0 +1,308 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 九宫格（20220529）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>九宫格是一款广为流传的游戏&#xff0c;起源于河图洛书。游戏规则是&#xff1a;1到9九个数字放在3×3的格子中&#xff0c;要求每行、每列以及两个对角线上的三数之和都等于15。</p> 
+<p>在金庸名著《射雕英雄传》中黃蓉曾给九宫格的一种解法&#xff0c;口诀&#xff1a;戴九恩一&#xff0c;左三右七&#xff0c;二四有肩&#xff0c;八六为足&#xff0c;五居中央。解法如图所示。</p> 
+<p><img alt="" height="190" src="https://img-blog.csdnimg.cn/01d411cf8d8243fea97f856fb07ac109.png" width="209" /></p> 
+<p><br /> 现在有一种新的玩法&#xff0c;给九个不同的数字&#xff0c;将这九个数字放在3×3的格子中&#xff0c;要求每行、每列以及两个对角线上的三数之积相等&#xff08;三阶积幻方&#xff09;。</p> 
+<p>其中一个三阶幻方如图&#xff1a;</p> 
+<p><img alt="" height="200" src="https://img-blog.csdnimg.cn/c3162cf51c34427dbc020f0bec75c13f.png" width="204" /><br /> 解释&#xff1a;每行、每列以及两个对角线上的三数之积相等&#xff0c;都为216。</p> 
+<p>请设计一种算法&#xff0c;将给定的九个数宇重新排列后&#xff0c;使其满足三阶积幻方的要求。排列后的九个数宇中&#xff1a;第1-3个数字为方格的第一行&#xff0c;第4-6个数宇为方格的第二行&#xff0c;第7-9个数字为方格的第三行。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>九个不同的数宇&#xff0c;每个数字之间用空格分开。</p> 
+<ul><li>0 &lt; 数字 &lt; 10^7。</li><li>0 &lt; 排列后满足要求的每行、每列以及两个对角线上的三数之积 &lt; 2^31-1</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>九个数字所有满足要求的排列&#xff0c;每个数字之间用空格分开。每行输出一个满足要求的排列。</p> 
+<p>要求输出的排列升序排序&#xff0c;即&#xff1a;对于排列 A&#xff08;A1,A2,A3,…,A9&#xff09;和排列 B&#xff08;B1,B2,B3,…,B9&#xff09;&#xff0c;从排列的第1个数字开始&#xff0c;遇到 Ai &lt; Bi &#xff0c;则排列A &lt; 排列B &#xff08;1 ≤ j ≤ 9)。</p> 
+<p>说明&#xff1a;用例保证至少有一种排列组合满足条件。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">75 36 10 4 30 225 90 25 12</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">10 36 75 225 30 4 12 25 90<br /> 10 225 12 36 30 25 75 4 90<br /> 12 25 90 225 30 4 10 36 75<br /> 12 225 10 25 30 36 90 4 75<br /> 75 4 90 36 30 25 10 225 12<br /> 75 36 10 4 30 225 90 25 12<br /> 90 4 75 25 30 36 12 225 10<br /> 90 25 12 4 30 225 75 36 10</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>如图所示&#xff1a;九宫格的每行、每列以及两个对角线上的三数之积为27000。</p> <p><img alt="" height="404" src="https://img-blog.csdnimg.cn/95594acc5b474211acc64a21dd57a088.png" width="867" /></p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;">1 2 4 5 10 20 25 50 100</td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">2 25 20 100 10 1 5 4 50<br /> 2 100 5 25 10 4 20 1 50<br /> 5 4 50 100 10 1 2 25 20<br /> 5 100 2 4 10 25 50 1 20<br /> 20 1 50 25 10 4 2 100 5<br /> 20 25 2 1 10 100 50 4 5<br /> 50 1 20 4 10 25 5 100 2<br /> 50 4 5 1 10 100 20 25 2</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;"> <p>如图所示&#xff1a;九宫格的每行、每列以及两个对角线上的三数之和为1000。</p> <p><img alt="" height="388" src="https://img-blog.csdnimg.cn/33b11828fce445a1b34ce259e64334f4.png" width="844" /></p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的全排列问题。</p> 
+<p>关于全排列的入门&#xff0c;可以看<a href="https://www.bilibili.com/video/BV19v4y1S79W/?spm_id_from&#61;333.999.0.0&amp;vd_source&#61;b5105a99a0628dd906e154263279c518" rel="nofollow" title="组合与排列的区别&#xff0c;回溯算法求解的时候&#xff0c;有何不同&#xff1f;| LeetCode&#xff1a;46.全排列_哔哩哔哩_bilibili">组合与排列的区别&#xff0c;回溯算法求解的时候&#xff0c;有何不同&#xff1f;| LeetCode&#xff1a;46.全排列_哔哩哔哩_bilibili</a></p> 
+<p>练习题可以做leetcode上&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/127286788" rel="nofollow" title="LeetCode - 46 全排列_伏城之外的博客-CSDN博客">LeetCode - 46 全排列_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>基于回溯算法的全排列求解是一种暴力解法&#xff0c;即枚举出全部排列情况&#xff0c;因此对大数量级而言&#xff0c;我们应该慎用&#xff0c;但是本题&#xff0c;已经明确指出了求解9个数字的全排列&#xff0c;因此排列情况共有9!个&#xff0c;即362880个&#xff0c;数量级还好&#xff0c;因此可以使用暴力求解。</p> 
+<p></p> 
+<p>另外&#xff0c;求出符合要求的排列&#xff0c;还需要对各排列进行排序&#xff0c;排序是按各个数字大小来比较的&#xff0c;大家可以看下代码中关于排序的实现。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34; &#34;).map(Number);
+  getResult(arr);
+});
+
+function getResult(arr) {
+  const res &#61; [];
+  dfs(arr, [], [], res);
+
+  res.sort((a, b) &#61;&gt; {
+    for (let i &#61; 0; i &lt; 9; i&#43;&#43;) {
+      if (a[i] !&#61;&#61; b[i]) return a[i] - b[i];
+    }
+    return 0;
+  });
+
+  res.forEach((a) &#61;&gt; console.log(a.join(&#34; &#34;)));
+}
+
+function dfs(arr, used, path, res) {
+  if (path.length &#61;&#61;&#61; arr.length) {
+    if (check(path)) {
+      res.push([...path]);
+    }
+    return;
+  }
+
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    if (!used[i]) {
+      path.push(arr[i]);
+      used[i] &#61; true;
+      dfs(arr, used, path, res);
+      used[i] &#61; false;
+      path.pop();
+    }
+  }
+}
+
+function check(a) {
+  /**
+   * a0 a1 a2
+   * a3 a4 a5
+   * a6 a7 a8
+   */
+
+  const r1 &#61; a[0] * a[1] * a[2];
+
+  const r2 &#61; a[3] * a[4] * a[5];
+  if (r1 !&#61; r2) return false;
+
+  const r3 &#61; a[6] * a[7] * a[8];
+  if (r1 !&#61; r3) return false;
+
+  const c1 &#61; a[0] * a[3] * a[6];
+  if (r1 !&#61; c1) return false;
+
+  const c2 &#61; a[1] * a[4] * a[7];
+  if (r1 !&#61; c2) return false;
+
+  const c3 &#61; a[2] * a[5] * a[8];
+  if (r1 !&#61; c3) return false;
+
+  const s1 &#61; a[0] * a[4] * a[8];
+  if (r1 !&#61; s1) return false;
+
+  const s2 &#61; a[2] * a[4] * a[6];
+  if (r1 !&#61; s2) return false;
+
+  return true;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] arr &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+    getResult(arr);
+  }
+
+  public static void getResult(Integer[] arr) {
+    boolean[] used &#61; new boolean[arr.length];
+    LinkedList&lt;Integer&gt; path &#61; new LinkedList&lt;&gt;();
+    ArrayList&lt;Integer[]&gt; res &#61; new ArrayList&lt;&gt;();
+
+    dfs(arr, used, path, res);
+
+    res.sort(
+        (a, b) -&gt; {
+          for (int i &#61; 0; i &lt; 9; i&#43;&#43;) {
+            if (!Objects.equals(a[i], b[i])) return a[i] - b[i];
+          }
+          return 0;
+        });
+
+    for (Integer[] re : res) {
+      StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+      for (Integer i : re) {
+        sj.add(i &#43; &#34;&#34;);
+      }
+      System.out.println(sj);
+    }
+  }
+
+  public static void dfs(
+      Integer[] arr, boolean[] used, LinkedList&lt;Integer&gt; path, ArrayList&lt;Integer[]&gt; res) {
+    if (path.size() &#61;&#61; arr.length) {
+      if (check(path)) {
+        Integer[] a &#61; path.toArray(new Integer[0]);
+        res.add(a);
+      }
+      return;
+    }
+
+    for (int i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+      if (!used[i]) {
+        path.add(arr[i]);
+        used[i] &#61; true;
+        dfs(arr, used, path, res);
+        used[i] &#61; false;
+        path.removeLast();
+      }
+    }
+  }
+
+  public static boolean check(LinkedList&lt;Integer&gt; path) {
+    Integer[] a &#61; path.toArray(new Integer[0]);
+
+    int r1 &#61; a[0] * a[1] * a[2];
+
+    int r2 &#61; a[3] * a[4] * a[5];
+    if (r1 !&#61; r2) return false;
+
+    int r3 &#61; a[6] * a[7] * a[8];
+    if (r1 !&#61; r3) return false;
+
+    int c1 &#61; a[0] * a[3] * a[6];
+    if (r1 !&#61; c1) return false;
+
+    int c2 &#61; a[1] * a[4] * a[7];
+    if (r1 !&#61; c2) return false;
+
+    int c3 &#61; a[2] * a[5] * a[8];
+    if (r1 !&#61; c3) return false;
+
+    int s1 &#61; a[0] * a[4] * a[8];
+    if (r1 !&#61; s1) return false;
+
+    int s2 &#61; a[2] * a[4] * a[6];
+    if (r1 !&#61; s2) return false;
+
+    return true;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(arr):
+    res &#61; []
+    dfs(arr, [False for i in range(len(arr))], [], res)
+
+    res.sort(key&#61;lambda x: (x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8]))
+
+    for a in res:
+        print(&#34; &#34;.join(map(str, a)))
+
+
+# 全排列求解
+def dfs(arr, used, path, res):
+    if len(path) &#61;&#61; len(arr):
+        if check(path):
+            res.append(path[:])
+        return
+
+    for i in range(len(arr)):
+        if not used[i]:
+            path.append(arr[i])
+            used[i] &#61; True
+            dfs(arr, used, path, res)
+            used[i] &#61; False
+            path.pop()
+
+
+# 检查排列a是否符合 每行、每列、两个对角线的乘积相同
+def check(a):
+    r1 &#61; a[0] * a[1] * a[2]
+
+    r2 &#61; a[3] * a[4] * a[5]
+    if r1 !&#61; r2:
+        return False
+
+    r3 &#61; a[6] * a[7] * a[8]
+    if r1 !&#61; r3:
+        return False
+
+    c1 &#61; a[0] * a[3] * a[6]
+    if r1 !&#61; c1:
+        return False
+
+    c2 &#61; a[1] * a[4] * a[7]
+    if r1 !&#61; c2:
+        return False
+
+    c3 &#61; a[2] * a[5] * a[8]
+    if r1 !&#61; c3:
+        return False
+
+    s1 &#61; a[0] * a[4] * a[8]
+    if r1 !&#61; s1:
+        return False
+
+    s2 &#61; a[2] * a[4] * a[6]
+    if r1 !&#61; s2:
+        return False
+
+    return True
+
+# 调用算法
+getResult(arr)
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

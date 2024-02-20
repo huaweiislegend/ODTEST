@@ -1,0 +1,269 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 字符串分割（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定非空字符串s&#xff0c;将该字符串分割成一些子串&#xff0c;使<strong>每个子串</strong>的ASCII码值的和均为水仙花数。</p> 
+<p>1、若分割不成功&#xff0c;则返回0&#xff1b;</p> 
+<p>2、若分割成功且分割结果不唯一&#xff0c;则返回-1&#xff1b;</p> 
+<p>3、若分割成功且分割结果唯一&#xff0c;则返回分割后子串的数目。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入字符串的最大长度为200</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>根据题目描述中情况&#xff0c;返回相应的结果。</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>&#34;水仙花数&#34;是指一个三位数&#xff0c;每位上数字的立方和等于该数字本身&#xff0c;如 371 是’水仙花数’&#xff0c;因为 371&#61;3^3&#43;7^3&#43;1^3</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">分割不成功</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">f3&#64;d5a8</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">分割成功但分割结果不唯一&#xff0c;可以分割为两组&#xff0c;一组’f3’和’&#64;d5a8’&#xff0c;另外一组’f3&#64;d5’和’a8’</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">AXdddF</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">分割成功且分割结果唯一&#xff0c;可以分割’AX’(153)和’dddF’(370)成两个子串</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先将输入字符串变为一个ascii码值数组arr&#xff0c;比如f3&#64;d5a8&#xff0c;就变为了 [102,51,64,100,53,97,56]</p> 
+<p>然后处理逻辑如下</p> 
+<pre><code class="language-javascript">let sum &#61; 0
+for(let i&#61;0; i&lt;arr.length; i&#43;&#43;) {
+	sum &#43;&#61; arr[i]
+	if(isSxh(sum)) { // 如果sum是水仙花数&#xff0c;则0~i子串可以组成水仙花数&#xff0c;下一个子串从i&#43;1开始
+		let sum2 &#61; 0
+		for(let j&#61;i&#43;1; j&lt;arr.length; j&#43;&#43;) {
+			sum2 &#43;&#61; arr[j]
+			if(isSxh(sum2)) {// 如果sum2是水仙花数&#xff0c;则i&#43;1~j子串可以组成水仙花数&#xff0c;下一个子串从j&#43;1开始
+				let sum3 &#61; 0
+				for(let k&#61;j&#43;1; k&lt;arr.length; k&#43;&#43;) {
+					sum3 &#43;&#61; arr[k]
+					if(isSxh(sum3)) {// 如果sum3是水仙花数&#xff0c;则j&#43;1~k子串可以组成水仙花数&#xff0c;下一个子串从k&#43;1开始
+						// 重复以上逻辑
+					}
+				}
+			}
+		}
+	}
+}</code></pre> 
+<p>可以发现&#xff0c;上面逻辑可以使用递归来实现&#xff0c;当递归到子串长度为0时结束&#xff0c;或者无法没有下一次递归时结束。</p> 
+<p>在递归过程中&#xff0c;我们可以统计到一共有多少种分割方式&#xff0c;每种分割方式将字符串分为几段。</p> 
+<p>如果有0种分割方式&#xff0c;则打印0</p> 
+<p>如果有1种分割方式&#xff0c;则打印该分割方式可以将字符串分为几段</p> 
+<p>如果有2种或以上分割方式&#xff0c;则打印-1</p> 
+<p></p> 
+<p>本题还有一个优化点&#xff0c;就是基于前缀和&#xff0c;实现O(1)时间求解任意区间的元素之和。关于前缀和的应用请看&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/128976936" rel="nofollow" title="算法设计 - 前缀和 &amp; 差分数列_伏城之外的博客-CSDN博客">算法设计 - 前缀和 &amp; 差分数列_伏城之外的博客-CSDN博客</a></p> 
+<hr /> 
+<p>2023.08.09</p> 
+<p>OJ用例库为了产生这样的子串&#xff1a;</p> 
+<blockquote> 
+ <p>ASCII码值的和均为水仙花数</p> 
+</blockquote> 
+<p>因此&#xff0c;输入的字符串中会存在一些不常用的字符&#xff0c;这些字符可能会对输入获取逻辑产生影响&#xff0c;比如Java语言按照Scanner获取的话&#xff0c;则会以空白字符作为输入获取截止符&#xff0c;因此我们需要通过useDelimiter指定只有换行符才能截止输入获取。具体请看下面Java代码的输入获取逻辑。</p> 
+<p>更多输入获取知识可以看&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/130305476" rel="nofollow" title="华为OD机试ACM输入输出_伏城之外的博客-CSDN博客">华为OD机试ACM输入输出_伏城之外的博客-CSDN博客</a></p> 
+<p>对于JS和Python没有此类问题。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in).useDelimiter(&#34;[\n]&#34;);
+    System.out.println(getResult(sc.next()));
+  }
+
+  public static int getResult(String s) {
+    // 将字符串转化为ASCII数组
+    char[] cArr &#61; s.toCharArray();
+
+    int n &#61; cArr.length;
+
+    // 前缀和&#xff0c;实现O(1)时间求解某区间内元素之和
+    int[] preSum &#61; new int[n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) preSum[i] &#61; preSum[i - 1] &#43; cArr[i - 1];
+
+    // res记录成功分割的情况
+    ArrayList&lt;Integer&gt; res &#61; new ArrayList&lt;&gt;();
+    // 递归
+    recursive(preSum, n, 0, 0, res);
+
+    if (res.size() &#61;&#61; 0) return 0;
+    else if (res.size() &#61;&#61; 1) return res.get(0);
+    else return -1;
+  }
+
+  public static void recursive(int[] preSum, int n, int start, int count, ArrayList&lt;Integer&gt; res) {
+    if (start &#61;&#61; n) {
+      res.add(count);
+      return;
+    }
+
+    for (int end &#61; start &#43; 1; end &lt;&#61; n; end&#43;&#43;) {
+      // 基于前缀和快速求解任意区间内的元素和
+      if (isSxh(preSum[end] - preSum[start])) {
+        recursive(preSum, n, end, count &#43; 1, res);
+      }
+    }
+  }
+
+  // 判断num是否为水仙花数
+  public static boolean isSxh(int num) {
+    if (num &lt;&#61; 99 || num &gt;&#61; 1000) return false;
+
+    int x &#61; num / 100 % 10;
+    int y &#61; num / 10 % 10;
+    int z &#61; num % 10;
+
+    return num &#61;&#61; x * x * x &#43; y * y * y &#43; z * z * z;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+ 
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+ 
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+ 
+function getResult(str) {
+  // 将字符串转化为ASCII数组
+  const cArr &#61; [...str].map((ele) &#61;&gt; ele.charCodeAt());
+ 
+  const n &#61; cArr.length;
+ 
+  // 前缀和&#xff0c;实现O(1)时间求解某区间内元素之和
+  const preSum &#61; new Array(n &#43; 1).fill(0);
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) preSum[i] &#61; preSum[i - 1] &#43; cArr[i - 1];
+ 
+  // res记录成功分割的情况
+  const res &#61; [];
+  // 递归
+  recursive(preSum, n, 0, 0, res);
+ 
+  if (res.length &#61;&#61;&#61; 0) return 0;
+  else if (res.length &#61;&#61;&#61; 1) return res[0];
+  else return -1;
+}
+ 
+function recursive(preSum, n, start, count, res) {
+  if (start &#61;&#61;&#61; n) {
+    res.push(count);
+    return;
+  }
+ 
+  for (let end &#61; start &#43; 1; end &lt;&#61; n; end&#43;&#43;) {
+    // 基于前缀和快速求解任意区间内的元素和
+    if (isSxh(preSum[end] - preSum[start])) {
+      recursive(preSum, n, end, count &#43; 1, res);
+    }
+  }
+}
+ 
+/* 判断入参是否为水仙花数 */
+function isSxh(num) {
+  if (num &lt;&#61; 99 || num &gt;&#61; 1000) return false;
+  
+  const x &#61; parseInt(num / 100) % 10;
+  const y &#61; parseInt(num / 10) % 10;
+  const z &#61; num % 10;
+  
+  return num &#61;&#61; x * x * x &#43; y * y * y &#43; z * z * z;
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 判断num是否未水仙花数
+def isSxh(num):
+    if num &lt;&#61; 99 or num &gt;&#61; 1000:
+        return False
+
+    x, y, z &#61; [int(c) for c in str(num)]
+
+    return num &#61;&#61; x ** 3 &#43; y ** 3 &#43; z ** 3
+
+
+# 递归分割
+def recursive(preSum, n, start, count, res):
+    if start &#61;&#61; n:
+        res.append(count)
+        return
+
+    for end in range(start &#43; 1, n &#43; 1):
+        if isSxh(preSum[end] - preSum[start]):
+            recursive(preSum, n, end, count &#43; 1, res)
+
+
+# 算法入口
+def getResult():
+    # 将字符串转化为ASCII数组
+    cArr &#61; [ord(c) for c in s]
+
+    n &#61; len(cArr)
+
+    # 前缀和&#xff0c;实现O(1)时间求解某区间内元素之和
+    preSum &#61; [0] * (n &#43; 1)
+    for i in range(1, n &#43; 1):
+        preSum[i] &#61; preSum[i - 1] &#43; cArr[i - 1]
+
+    # res记录成功分割的情况
+    res &#61; []
+
+    # 递归分割
+    recursive(preSum, n, 0, 0, res)
+
+    if len(res) &#61;&#61; 0:
+        return 0
+    elif len(res) &#61;&#61; 1:
+        return res[0]
+    else:
+        return -1
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

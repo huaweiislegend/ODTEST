@@ -1,0 +1,539 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 信道分配（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>算法工程师小明面对着这样一个问题 &#xff0c;需要将通信用的信道分配给尽量多的用户:</p> 
+<p>信道的条件及分配规则如下:</p> 
+<ol><li>所有信道都有属性:”阶”。阶为 r的信道的容量为 2^r比特;</li><li>所有用户需要传输的数据量都一样:D比特;</li><li>一个用户可以分配多个信道&#xff0c;但每个信道只能分配给一个用户;</li><li>只有当分配给一个用户的所有信道的容量和&gt;&#61;D&#xff0c;用户才能传输数据;</li></ol> 
+<p>给出一组信道资源&#xff0c;最多可以为多少用户传输数据?</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行&#xff0c;一个数字 R。R为最大阶数。</p> 
+<p>0&lt;&#61;R&lt;20</p> 
+<p></p> 
+<p>第二行&#xff0c;R&#43;1个数字&#xff0c;用空格隔开。代表每种信道的数量 Ni。按照阶的值从小到大排列。</p> 
+<p>0&lt;&#61;i&lt;&#61;R,0&lt;&#61;Ni&lt;1000.</p> 
+<p></p> 
+<p>第三行&#xff0c;一个数字 D。D为单个用户需要传输的数据量。</p> 
+<p>0&lt;D&lt;1000000</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>一个数字&#xff08;代表最多可以供多少用户传输数据&#xff09;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 10 5 0 1 3 2<br /> 30</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这题是真的难&#xff0c;可能是我没想到点子上吧&#xff0c;解法想了一晚上&#xff0c;第二天带着两个黑眼圈&#xff0c;灵光一闪&#xff0c;有了下面的解法。</p> 
+<p></p> 
+<p>首先&#xff0c;题目的意思&#xff0c;我一开始就没看懂&#xff0c;后面琢磨来琢磨去&#xff0c;分析题目的意思应该是&#xff1a;</p> 
+<p>第一行输入的r表示第二行的最大阶数&#xff0c;第二行又是r&#43;1个数&#xff0c;也就是说&#xff1a;</p> 
+<p>比如第一行输入的r&#61;5&#xff0c;则第二行会输入r&#43;1&#61;6个数&#xff0c;如下</p> 
+<ul><li>第一个数10&#xff0c;的阶是0&#xff0c;即容量是2^0的信道有10个</li><li>第二个数  5&#xff0c;的阶是1&#xff0c;即容量是2^1的信道有5个</li><li>第三个数  0&#xff0c;的阶是2&#xff0c;即容量是2^2的信道有0个</li><li>第四个数  1&#xff0c;的阶是3&#xff0c;即容量是2^3的信道有1个</li><li>第五个数  3&#xff0c;的阶是4&#xff0c;即容量是2^4的信道有3个</li><li>第六个数  2&#xff0c;的阶是5&#xff0c;即容量是2^5的信道有2个</li></ul> 
+<p>题目要求从上面给定的多种信道中&#xff0c;任意挑选几个&#xff08;未使用的&#xff09;进行组合&#xff0c;让组合之和大于等于第三行输入的D值&#xff0c;问这种组合最多能有多少个&#xff1f;</p> 
+<p></p> 
+<p>这题&#xff0c;我一开始想要dfs求得所有无重复使用信道的组合&#xff0c;但是发现只能求出一类&#xff0c;而无法求出多类。大家可以试试&#xff0c;看看dfs行不行。</p> 
+<p></p> 
+<p>之后我又想&#xff0c;想要最多的组合情况&#xff0c;那么信道就要省着用&#xff0c;比如每个用户需要至少D容量的信道组合&#xff0c;那么我们就尽可能地构造出容量准确为D的信道组合&#xff0c;</p> 
+<p>比如 16 &#43; 8 &#43; 4 &#43; 2 &#61; 30&#xff0c;因此我们可以选择&#xff1a;</p> 
+<blockquote> 
+ <p>一个阶4的信道&#xff0c;一个阶3的信道&#xff0c;一个阶2的信道&#xff0c;一个阶1的信道。</p> 
+</blockquote> 
+<p>但是由于没有阶2的信道&#xff0c;因此我们可以将对于阶2的需求降级&#xff0c;变为两个阶1的信道&#xff0c;也就是说最终选择是&#xff1a;</p> 
+<blockquote> 
+ <p>一个阶4的信道&#xff0c;一个阶3的信道&#xff0c;三个阶1的信道。</p> 
+</blockquote> 
+<p>即 16 &#43; 8 &#43; 2 * 3 &#61; 30</p> 
+<p></p> 
+<p>另外&#xff0c;如果单个信道容量就能满足D&#xff0c;比如阶5的单个信道容量是32&#xff0c;虽然此时浪费了一些&#xff0c;但是一个信道只能给一个用户使用&#xff0c;因此为了避免更大的浪费&#xff0c;32的信道就可以单独组合&#xff0c;而不需要组合其他信道。</p> 
+<p></p> 
+<p>那么如何能准确的构造出容量为30的信道组合呢&#xff1f;</p> 
+<p>题目中信道容量是2^n&#xff0c;因此我有了如下思路&#xff1a;</p> 
+<p>首先&#xff0c;我们将D值转为二进制&#xff0c;然后转为字符数组&#xff0c;再反序&#xff0c;让D和N的阶数方向保持一致&#xff0c;</p> 
+<p>比如D&#61;30&#xff0c;可以转为[0, 1, 1, 1, 1] 的反序二进制值的个数数组&#xff0c;该数组的含义是</p> 
+<ul><li>2^0有0个</li><li>2^1有1个</li><li>2^2有1个</li><li>2^3有1个</li><li>2^4有1个</li></ul> 
+<p><img alt="" height="126" src="https://img-blog.csdnimg.cn/6589c29af418454f9d3715572c1527c9.png" width="428" /></p> 
+<p>而输入的第二行&#xff0c;也就是N也可以看成反序二进制数的个数数组&#xff1a; [10, 5, 0, 1, 3, 2]</p> 
+<p>该数组的含义是&#xff1a;</p> 
+<ul><li>2^0有10个</li><li>2^1有5个</li><li>2^2有0个</li><li>2^3有1个</li><li>2^4有3个</li><li>2^5有2个</li></ul> 
+<p>如果想从N中选几个信道组成和为D的组合&#xff0c;那么不就是N和D的二进制值个数求差吗&#xff1f;</p> 
+<p><img alt="" height="161" src="https://img-blog.csdnimg.cn/5841a9d9c0884e0eb66fc1dc079baa2a.png" width="369" /></p> 
+<p>我们只需要比较D.length范围的内&#xff0c;而超出D.length范围的N[i]其实就是单个信道就足以满足一个用户通信的。</p> 
+<p><img alt="" height="491" src="https://img-blog.csdnimg.cn/a129e571bbbc4d6486da532a3330d1ea.png" width="614" /></p> 
+<p>如上图所示&#xff0c;如果每次求差后&#xff0c;N[0] &gt;&#61; 0&#xff0c;则表示可以构造出一个和为30的信道组合。</p> 
+<p></p> 
+<p>但是N[0] &lt; 0 只能表示无法构造出一个和准确为30的的信道组合&#xff0c;但是却还是有可能构造出一个和大于30的信道组合</p> 
+<p>程序输入</p> 
+<blockquote> 
+ <p>5<br /> 10 5 0 1 3 2<br /> 47</p> 
+</blockquote> 
+<p>对应的N和D如下</p> 
+<p><img alt="" height="688" src="https://img-blog.csdnimg.cn/6d0c1811a924442d9e8ec4d0fa6e6f0b.png" width="934" /></p> 
+<p> 直到N[i]完全抵消了负值结束&#xff0c;然后count&#43;&#43;。也可能N[i]到最后也没有抵消完负值&#xff0c;此时说明无法构造出一个和大于30的信道组合&#xff0c;整个程序结束。</p> 
+<p></p> 
+<p>以下代码比较难以理解&#xff0c;建议大家debug模式帮助理解&#xff0c;可以监听几个关键值</p> 
+<ul><li>N&#xff1a;输入的第二行转化来信道个数数组</li><li>D2&#xff1a;输入的第三行D转化来的构造出准确D容量的信道个数数组</li><li>i&#xff1a;循环变量</li><li>minus&#xff1a;N[i]和D2[i]的差值</li><li>count&#xff1a;满足要求的信道组合个数</li></ul> 
+<p></p> 
+<hr /> 
+<p>2023.10.10</p> 
+<p>上面举得例子</p> 
+<blockquote> 
+ <p>5<br /> 10 5 0 1 3 2<br /> 47</p> 
+</blockquote> 
+<p>进行二进制减法时存在问题</p> 
+<p></p> 
+<p>如下图所示&#xff0c;在进行第二次减法时</p> 
+<p><img alt="" height="302" src="https://img-blog.csdnimg.cn/c558a60e3ad64b78af6ed119ae155fe0.png" width="429" /></p> 
+<p>之前的策略时&#xff0c;总是向低位借&#xff0c;因此最后借债都会压到被减数的阶0上&#xff0c;之后再将阶0上的借债&#xff0c;转移不停转移到高位&#xff0c;因此会得到结果如下</p> 
+<p><img alt="" height="387" src="https://img-blog.csdnimg.cn/61e0e5edcfb34d3ca09faed4ce255312.png" width="502" /></p> 
+<p>但是这种策略不是最优的&#xff0c;因为我们可以看下图</p> 
+<p><img alt="" height="320" src="https://img-blog.csdnimg.cn/2f22bc6f7df146b49d5558cb28588637.png" width="491" /></p> 
+<p>其中 被减数的标黄部分&#xff0c;经过计算&#xff0c;是可以确定小于 减数的标黄部分的&#xff0c;因此即使我们向低位借&#xff0c;最终还是不够&#xff0c;最后反过来还是要向高位借。</p> 
+<p>而二进制数&#xff0c;一个高位是可以直接满足前面的所有低位的&#xff0c;什么意思呢&#xff1f;看下图</p> 
+<p><img alt="" height="328" src="https://img-blog.csdnimg.cn/19b455e7986c409e93477d18a79c5217.png" width="482" /></p> 
+<p>我们此时直接从被减数红框高位中借1&#xff0c;就可以满足 减数红框中所有位之和。</p> 
+<p>此时被减数的 绿色低位部分 得到了保留&#xff0c;避免了浪费。</p> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+R &#61; int(input())
+N &#61; list(map(int, input().split()))
+D &#61; int(input())
+
+
+def calc_sub(bin1):
+    ans &#61; 0
+    for i in range(len(bin1)):
+        ans &#43;&#61; bin1[i] * (1 &lt;&lt; i)
+    return ans
+
+
+def binary_sub(minuend, subtrahend):
+    &#34;&#34;&#34;
+    二进制减法
+    :param minuend: 被减数
+    :param subtrahend: 减数
+    :return: 被减数是否为正数
+    &#34;&#34;&#34;
+    # 进行减法运算逻辑, 从高位开始
+    i &#61; len(minuend) - 1
+    while i &gt;&#61; 0:
+        if minuend[i] &gt;&#61; subtrahend[i]:
+            # 如果对应位的信道数足够&#xff0c;则直接相减
+            minuend[i] -&#61; subtrahend[i]
+        else:
+            # 如果对应位的信道数不足&#xff0c;此时有两种策略&#xff0c;一是向低位借&#xff0c;一是向高位借
+            # 具体向哪里借&#xff0c;需要看 minuend 的 [0,i] 低位部分是否能够承载 subtrahend[0, i] 低位部分
+            if calc_sub(minuend[0:i &#43; 1]) &lt; calc_sub(subtrahend[0:i &#43; 1]):
+                # 如果minuend 的 [0,i]不能承载&#xff0c;则向高位借&#xff0c;即从j&#61;i&#43;1位开始借
+                j &#61; i &#43; 1
+                while j &lt; len(minuend):
+                    if minuend[j] &gt; 0:
+                        # 如果高位 j 有信道可借&#xff0c;则借
+                        minuend[j] -&#61; 1
+                        return True
+                    else:
+                        # 否则继续向更高位探索
+                        j &#43;&#61; 1
+                # 如果所有高位都没有富余信道数&#xff0c;则说明减法结果为负数
+                return False
+            else:
+                # 如果minuend 的 [0,i]可以承载&#xff0c;则向低位借&#xff08;可以避免浪费&#xff09;
+                # 此时minuend[i]为负数&#xff0c;表示欠债
+                minuend[i] -&#61; subtrahend[i]
+
+                # 将当前阶位的欠债&#xff0c;转移到前面的低阶位上&#xff0c;注意转移时&#xff0c;欠债x2
+                minuend[i - 1] &#43;&#61; minuend[i] &lt;&lt; 1
+
+                # 转移后&#xff0c;当前阶位的欠债变为0
+                minuend[i] &#61; 0
+
+        i -&#61; 1
+
+    return True
+
+
+# 算法入口
+def getResult():
+    # 将D值转化为二进制形式&#xff0c;并且为了和N[]的阶位进行对应&#xff0c;这里将D的二进制进行了反转
+    subtrahend &#61; list(map(int, str(bin(D))[2:]))
+    subtrahend.reverse()
+
+    # count记录N能承载几个D
+    count &#61; 0
+
+    # N中高阶信道的单个信道就能满足D&#xff0c;因此这些高阶信道有几个&#xff0c;即能承载几个D
+    for i in range(len(subtrahend), R &#43; 1):
+        # R ~ subtrahend.length 阶的单个信道就能承载一个D&#xff0c;因此这些信道有几个&#xff0c;就能承载几个D
+        count &#43;&#61; N[i]
+
+    # 0 ~ subtrahend.length - 1 阶的单个信道无法承载一个D&#xff0c;因此这些阶需要组合起来才能承载一个D
+    minuend &#61; N[0:len(subtrahend)]
+    while len(minuend) &lt; len(subtrahend):
+        minuend.append(0)
+
+    # 进行二进制减法
+    while binary_sub(minuend, subtrahend):
+        count &#43;&#61; 1
+
+    return count
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int R &#61; sc.nextInt();
+
+    int[] N &#61; new int[R &#43; 1];
+    for (int i &#61; 0; i &lt;&#61; R; i&#43;&#43;) {
+      N[i] &#61; sc.nextInt();
+    }
+
+    int D &#61; sc.nextInt();
+
+    System.out.println(getResult(R, N, D));
+  }
+
+  public static int getResult(int R, int[] N, int D) {
+    // 将D值转化为二进制形式&#xff0c;并且为了和N[]的阶位进行对应&#xff0c;这里将D的二进制进行了反转
+    int[] subtrahend &#61;
+        Arrays.stream(new StringBuilder(Integer.toBinaryString(D)).reverse().toString().split(&#34;&#34;))
+            .mapToInt(Integer::parseInt)
+            .toArray();
+
+    // count记录N能承载几个D
+    int count &#61; 0;
+
+    // N中高阶信道的单个信道就能满足D&#xff0c;因此这些高阶信道有几个&#xff0c;即能承载几个D
+    for (int i &#61; R; i &gt;&#61; subtrahend.length; i--) {
+      // R ~ subtrahend.length 阶的单个信道就能承载一个D&#xff0c;因此这些信道有几个&#xff0c;就能承载几个D
+      count &#43;&#61; N[i];
+    }
+
+    // 0 ~ subtrahend.length - 1 阶的单个信道无法承载一个D&#xff0c;因此这些阶需要组合起来才能承载一个D
+    int[] minuend &#61; Arrays.copyOfRange(N, 0, subtrahend.length);
+
+    // 进行二进制减法
+    while (binary_sub(minuend, subtrahend)) {
+      count&#43;&#43;;
+    }
+
+    return count;
+  }
+
+  /**
+   * 二进制减法
+   *
+   * &#64;param minuend 被减数
+   * &#64;param subtrahend 减数
+   * &#64;return 被减数是否为正数
+   */
+  public static boolean binary_sub(int[] minuend, int[] subtrahend) {
+    // 进行减法运算逻辑, 从高位开始
+    for (int i &#61; minuend.length - 1; i &gt;&#61; 0; i--) {
+
+      if (minuend[i] &gt;&#61; subtrahend[i]) {
+        // 如果对应位的信道数足够&#xff0c;则直接相减
+        minuend[i] -&#61; subtrahend[i];
+      } else {
+        // 如果对应位的信道数不足&#xff0c;此时有两种策略&#xff0c;一是向低位借&#xff0c;一是向高位借
+        // 具体向哪里借&#xff0c;需要看 minuend 的 [0,i] 低位部分是否能够承载 subtrahend[0, i] 低位部分
+        if (calc_bin(Arrays.copyOfRange(minuend, 0, i &#43; 1))
+            &lt; calc_bin(Arrays.copyOfRange(subtrahend, 0, i &#43; 1))) {
+          // 如果minuend 的 [0,i]不能承载&#xff0c;则向高位借&#xff0c;即从j&#61;i&#43;1位开始借
+          int j &#61; i &#43; 1;
+          while (j &lt; minuend.length) {
+            if (minuend[j] &gt; 0) {
+              // 如果高位 j 有信道可借&#xff0c;则借
+              minuend[j] -&#61; 1;
+              return true;
+            } else {
+              // 否则继续向更高位探索
+              j &#43;&#61; 1;
+            }
+          }
+          // 如果所有高位都没有富余信道数&#xff0c;则说明减法结果为负数
+          return false;
+        } else {
+          // 如果minuend 的 [0,i]可以承载&#xff0c;则向低位借(向低位借&#xff0c;可以避免浪费)
+          // 此时minuend[i]为负数&#xff0c;表示欠债
+          minuend[i] -&#61; subtrahend[i];
+
+          // 将当前阶位的欠债&#xff0c;转移到前面的低阶位上&#xff0c;注意转移时&#xff0c;欠债x2
+          minuend[i - 1] &#43;&#61; minuend[i] &lt;&lt; 1;
+
+          // 转移后&#xff0c;当前阶位的欠债变为0
+          minuend[i] &#61; 0;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  public static int calc_bin(int[] bin) {
+    int ans &#61; 0;
+    for (int i &#61; 0; i &lt; bin.length; i&#43;&#43;) {
+      ans &#43;&#61; bin[i] * (1 &lt;&lt; i);
+    }
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // Write your code here
+  const R &#61; parseInt(await readline());
+  const N &#61; (await readline()).split(&#34; &#34;).map(Number);
+  const D &#61; parseInt(await readline());
+
+  console.log(getResult(R, N, D));
+})();
+
+function getResult(R, N, D) {
+  // 将D值转化为二进制形式&#xff0c;并且为了和N[]的阶位进行对应&#xff0c;这里将D的二进制进行了反转
+  const subtrahend &#61; Number(D).toString(2).split(&#34;&#34;).map(Number).reverse();
+
+  // count记录N能承载几个D
+  let count &#61; 0;
+
+  // N中高阶信道的单个信道就能满足D&#xff0c;因此这些高阶信道有几个&#xff0c;即能承载几个D
+  for (let i &#61; R; i &gt;&#61; subtrahend.length; i--) {
+    // R ~ subtrahend.length 阶的单个信道就能承载一个D&#xff0c;因此这些信道有几个&#xff0c;就能承载几个D
+    count &#43;&#61; N[i];
+  }
+
+  // 0 ~ subtrahend.length - 1 阶的单个信道无法承载一个D&#xff0c;因此这些阶需要组合起来才能承载一个D
+  const minuend &#61; N.slice(0, subtrahend.length);
+  while (minuend.length &lt; subtrahend.length) {
+    minuend.push(0);
+  }
+
+  // 进行二进制减法
+  while (binary_sub(minuend, subtrahend)) {
+    count&#43;&#43;;
+  }
+
+  return count;
+}
+
+/**
+ * 进行二进制减法
+ * &#64;param {*} minuend 被减数
+ * &#64;param {*} subtrahend 减数
+ * &#64;returns 被减数是否为正数
+ */
+function binary_sub(minuend, subtrahend) {
+  // 进行减法运算逻辑, 从高位开始
+  for (let i &#61; minuend.length - 1; i &gt;&#61; 0; i--) {
+    if (minuend[i] &gt;&#61; subtrahend[i]) {
+      // 如果对应位的信道数足够&#xff0c;则直接相减
+      minuend[i] -&#61; subtrahend[i];
+    } else {
+      // 如果对应位的信道数不足&#xff0c;此时有两种策略&#xff0c;一是向低位借&#xff0c;一是向高位借
+      // 具体向哪里借&#xff0c;需要看 minuend 的 [0,i] 低位部分是否能够承载 subtrahend[0, i] 低位部分
+      if (
+        calc_sub(minuend.slice(0, i &#43; 1)) &lt; calc_sub(subtrahend.slice(0, i &#43; 1))
+      ) {
+        // 如果minuend 的 [0,i]不能承载&#xff0c;则向高位借&#xff0c;即从j&#61;i&#43;1位开始借
+        let j &#61; i &#43; 1;
+        while (j &lt; minuend.length) {
+          if (minuend[j] &gt; 0) {
+            // 如果高位 j 有信道可借&#xff0c;则借
+            minuend[j] -&#61; 1;
+            return true;
+          } else {
+            // 否则继续向更高位探索
+            j &#43;&#61; 1;
+          }
+        }
+        // 如果所有高位都没有富余信道数&#xff0c;则说明减法结果为负数
+        return false;
+      } else {
+        // 如果minuend 的 [0,i]可以承载&#xff0c;则向低位借(向低位借&#xff0c;可以避免浪费)
+        // 此时minuend[i]为负数&#xff0c;表示欠债
+        minuend[i] -&#61; subtrahend[i];
+
+        // 将当前阶位的欠债&#xff0c;转移到前面的低阶位上&#xff0c;注意转移时&#xff0c;欠债x2
+        minuend[i - 1] &#43;&#61; minuend[i] &lt;&lt; 1;
+
+        // 转移后&#xff0c;当前阶位的欠债变为0
+        minuend[i] &#61; 0;
+      }
+    }
+  }
+
+  return true;
+}
+
+function calc_sub(bin) {
+  let ans &#61; 0;
+  for (let i &#61; 0; i &lt; bin.length; i&#43;&#43;) {
+    ans &#43;&#61; bin[i] * (1 &lt;&lt; i);
+  }
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 20
+
+int getResult(int R, int N[], int D);
+int binary_sub(int minuend[], int subtrahend[], int size);
+int calc_bin(const int bin[], int bin_size);
+
+int main() {
+    int R;
+    scanf(&#34;%d&#34;, &amp;R);
+
+    int N[MAX_SIZE] &#61; {0};
+    for(int i&#61;0; i&lt;&#61;R; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;N[i]);
+    }
+
+    int D;
+    scanf(&#34;%d&#34;, &amp;D);
+
+    printf(&#34;%d\n&#34;, getResult(R, N, D));
+
+    return 0;
+}
+
+int getResult(int R, int N[], int D) {
+    int subtrahend[50];
+    int subtrahend_size &#61; 0;
+
+    // 将D值转化为二进制形式&#xff0c;并且为了和N[]的阶位进行对应&#xff0c;这里将D的二进制进行了反转
+    while(D &gt; 0) {
+        subtrahend[subtrahend_size&#43;&#43;] &#61; D % 2;
+        D /&#61; 2;
+    }
+
+    // count记录N能承载几个D
+    int count &#61; 0;
+
+    // N中高阶信道的单个信道就能满足D&#xff0c;因此这些高阶信道有几个&#xff0c;即能承载几个D
+    for(int i &#61; R; i &gt;&#61; subtrahend_size; i--) {
+        // R ~ subtrahend.length 阶的单个信道就能承载一个D&#xff0c;因此这些信道有几个&#xff0c;就能承载几个D
+        count &#43;&#61; N[i];
+    }
+
+    // 0 ~ subtrahend.length - 1 阶的单个信道无法承载一个D&#xff0c;因此这些阶需要组合起来才能承载一个D
+    int minuend[subtrahend_size];
+    for(int i&#61;0; i&lt;subtrahend_size; i&#43;&#43;) {
+        minuend[i] &#61; N[i];
+    }
+
+    // 进行二进制减法
+    while(binary_sub(minuend, subtrahend, subtrahend_size)) {
+        count&#43;&#43;;
+    }
+
+    return count;
+}
+
+/*!
+ *
+ * &#64;param minuend 被减数
+ * &#64;param subtrahend 减数
+ * &#64;param size 被减数和件数的二进制位数
+ * &#64;return 减法运算后&#xff0c;被减数是否为正数
+ */
+int binary_sub(int minuend[], int subtrahend[], int size) {
+    // 进行减法运算逻辑, 从高位开始
+    for(int i&#61;size - 1; i &gt;&#61; 0; i--) {
+        if(minuend[i] &gt;&#61; subtrahend[i]) {
+            // 如果对应位的信道数足够&#xff0c;则直接相减
+            minuend[i] -&#61; subtrahend[i];
+        } else {
+            // 如果对应位的信道数不足&#xff0c;此时有两种策略&#xff0c;一是向低位借&#xff0c;一是向高位借
+            // 具体向哪里借&#xff0c;需要看 minuend 的 [0,i] 低位部分是否能够承载 subtrahend[0, i] 低位部分
+            if(calc_bin(minuend, i&#43;1) &lt; calc_bin(subtrahend, i&#43;1)) {
+                // 如果minuend 的 [0,i]不能承载&#xff0c;则向高位借&#xff0c;即从j&#61;i&#43;1位开始借
+                int j &#61; i &#43; 1;
+                while (j &lt; size) {
+                    if(minuend[j] &gt; 0) {
+                        // 如果高位 j 有信道可借&#xff0c;则借
+                        minuend[j] -&#61; 1;
+                        return 1;
+                    } else {
+                        // 否则继续向更高位探索
+                        j &#43;&#61; 1;
+                    }
+                }
+                // 如果所有高位都没有富余信道数&#xff0c;则说明减法结果为负数
+                return 0;
+            } else {
+                // 如果minuend 的 [0,i]可以承载&#xff0c;则向低位借(向低位借&#xff0c;可以避免浪费)
+                // 此时minuend[i]为负数&#xff0c;表示欠债
+                minuend[i] -&#61; subtrahend[i];
+                // 将当前阶位的欠债&#xff0c;转移到前面的低阶位上&#xff0c;注意转移时&#xff0c;欠债x2
+                minuend[i-1] &#43;&#61; minuend[i] &lt;&lt; 1;
+                // 转移后&#xff0c;当前阶位的欠债变为0
+                minuend[i] &#61; 0;
+            }
+        }
+    }
+
+    return 1;
+}
+
+int calc_bin(const int bin[], int bin_size) {
+    int ans &#61; 0;
+    for(int i&#61;0; i&lt;bin_size; i&#43;&#43;) {
+        ans &#43;&#61; bin[i] * (1 &lt;&lt; i);
+    }
+    return ans;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

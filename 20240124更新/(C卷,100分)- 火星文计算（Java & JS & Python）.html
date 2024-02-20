@@ -1,0 +1,181 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 火星文计算（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>已知火星人使用的运算符为#、$&#xff0c;其与地球人的等价公式如下&#xff1a;</p> 
+<p>x#y &#61; 2*x&#43;3*y&#43;4</p> 
+<p>x$y &#61; 3*x&#43;y&#43;2</p> 
+<ol><li>其中x、y是无符号整数</li><li>地球人公式按C语言规则计算</li><li>火星人公式中&#xff0c;$的优先级高于#&#xff0c;相同的运算符&#xff0c;按从左到右的顺序计算</li></ol> 
+<p>现有一段火星人的字符串报文&#xff0c;请你来翻译并计算结果。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>火星人字符串表达式&#xff08;结尾不带回车换行&#xff09;</p> 
+<p>输入的字符串说明&#xff1a;字符串为仅由无符号整数和操作符&#xff08;#、$&#xff09;组成的计算表达式。</p> 
+<p>例如&#xff1a;123#4$5#67$78。</p> 
+<ol><li>用例保证字符串中&#xff0c;操作数与操作符之间没有任何分隔符。</li><li>用例保证操作数取值范围为32位无符号整数。</li><li>保证输入以及计算结果不会出现整型溢出。</li><li>保证输入的字符串为合法的求值报文&#xff0c;例如&#xff1a;123#4$5#67$78</li><li>保证不会出现非法的求值报文&#xff0c;例如类似这样字符串&#xff1a;</li></ol> 
+<p>#4$5 //缺少操作数</p> 
+<p>4$5# //缺少操作数</p> 
+<p>4#$5 //缺少操作数</p> 
+<p>4 $5 //有空格</p> 
+<p>3&#43;4-5*6/7 //有其它操作符</p> 
+<p>12345678987654321$54321 //32位整数计算溢出</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>根据输入的火星人字符串输出计算结果&#xff08;结尾不带回车换行&#xff09;。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">7#6$5#12</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">226</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>7#6$5#12</p> <p>&#61;7#(3*6&#43;5&#43;2)#12</p> <p>&#61;7#25#12</p> <p>&#61;(2*7&#43;3*25&#43;4)#12</p> <p>&#61;93#12</p> <p>&#61;2*93&#43;3*12&#43;4</p> <p>&#61;226</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这个题目保证不会出现非法的求值报文&#xff0c;因此输入字符串是严格的“数字&#43;操作符&#43;数字”这种格式&#xff0c;因此&#xff0c;很适合使用正则去匹配。</p> 
+<p>首先&#xff0c;我先用正则匹配出&#34;操作数$操作数&#34;&#xff0c;然后将其替换为计算后的值&#xff0c;然后字符串中就只剩#了&#xff0c;因此再将字符串按照#分割&#xff0c;从左到右&#xff0c;两两操作计算。</p> 
+<p>最终就得到了题解。</p> 
+<hr /> 
+<p>2023.07.19</p> 
+<p>本题需要注意的是&#xff0c;当替换&#34;操作数$操作数&#34;&#xff0c;为其结果值时&#xff0c;只能进行首次匹配替换&#xff0c;不能多次匹配替换。</p> 
+<p>比如&#34;4$3$4$3&#34;&#xff0c;首先计算出4$3的值为17&#xff0c;这里替换只能将第一次出现的4$3替换为17&#xff0c;而不能将所有4$3替换为17&#xff0c;因为这两种替换的结果可能会不同&#xff0c;比如</p> 
+<ul><li>只替换第一次匹配&#xff1a;17$4$3</li><li>全部匹配替换&#xff1a;17$17</li></ul> 
+<p>的结果是不同的&#xff0c;而本题中$必须是从左到右计算。</p> 
+<p></p> 
+<p>这里不同语言的字符串首次匹配替换的API功能各有差异&#xff1a;</p> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:583px;"><tbody><tr><td style="width:76px;">JS</td><td style="width:145px;">replace</td><td style="width:183px;"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/replace" rel="nofollow" title="String.prototype.replace() - JavaScript | MDN (mozilla.org)">String.prototype.replace() - JavaScript | MDN (mozilla.org)</a></td></tr><tr><td style="width:76px;">Java</td><td style="width:145px;">replaceFirst</td><td style="width:183px;"><a href="https://docs.oracle.com/javase/8/docs/api/index.html" rel="nofollow" title="String (Java Platform SE 8 ) (oracle.com)">String (Java Platform SE 8 ) (oracle.com)</a></td></tr><tr><td style="width:76px;">Python</td><td style="width:145px;">replace</td><td style="width:183px;"><a href="https://www.runoob.com/python/att-string-replace.html" rel="nofollow" title="Python replace()方法 | 菜鸟教程 (runoob.com)">Python replace()方法 | 菜鸟教程 (runoob.com)</a></td></tr></tbody></table> 
+<p>其中</p> 
+<ul><li>JS字符串的replace只替换第一次匹配&#xff0c;符合要求。</li><li>Java的replce方法是替换所有匹配&#xff0c;而replaceFirst方法是替换第一次匹配&#xff0c;但是需要注意的是replaceFirst方法的第一个参数匹配串&#xff0c;将被用作正则表达式的内容&#xff0c;而$又是正则表达式的元字符&#xff0c;因此我们需要对$进行转义&#xff0c;当成普通字符使用。</li><li>Python的replace方法是替换所有匹配&#xff0c;但是我们可以通过replace第三个参数来控制最大替换次数。</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const path &#61; require(&#34;path&#34;);
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(huoxin(line));
+});
+
+function huoxin(str) {
+  const regExp &#61; /\d&#43;\$\d&#43;/;
+  while (str.indexOf(&#34;$&#34;) !&#61;&#61; -1) {
+    str &#61; str.replace(regExp, (match) &#61;&gt; operate$(match).toString());
+  }
+
+  return str
+    .split(&#34;#&#34;)
+    .map(Number)
+    .reduce((x, y) &#61;&gt; 2 * x &#43; 3 * y &#43; 4);
+}
+
+function operate$(str) {
+  const i &#61; str.indexOf(&#34;$&#34;);
+  const x &#61; parseInt(str.slice(0, i));
+  const y &#61; parseInt(str.slice(i &#43; 1));
+  return 3 * x &#43; y &#43; 2;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Other {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String str &#61; sc.next();
+    System.out.println(getResult(str));
+  }
+
+  public static long getResult(String str) {
+    Pattern p &#61; Pattern.compile(&#34;(\\d&#43;)\\$(\\d&#43;)&#34;);
+
+    while (true) {
+      Matcher m &#61; p.matcher(str);
+      if (!m.find()) break;
+
+      String subStr &#61; m.group(0);
+      long x &#61; Long.parseLong(m.group(1));
+      long y &#61; Long.parseLong(m.group(2));
+      str &#61; str.replaceFirst(subStr.replace(&#34;$&#34;, &#34;\\$&#34;), 3 * x &#43; y &#43; 2 &#43; &#34;&#34;);
+    }
+
+    return Arrays.stream(str.split(&#34;#&#34;))
+        .map(Long::parseLong)
+        .reduce((x, y) -&gt; 2 * x &#43; 3 * y &#43; 4)
+        .orElse(0L);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    p &#61; re.compile(&#34;(\\d&#43;)\\$(\\d&#43;)&#34;)
+
+    while True:
+        m &#61; p.search(s)
+        if m:
+            subS &#61; m.group()
+            x &#61; int(m.group(1))
+            y &#61; int(m.group(2))
+            s &#61; s.replace(subS, str(3 * x &#43; y &#43; 2), 1)  # 注意这里replace只能进行替换第一次出现的&#xff0c;不能替换多次&#xff0c;因此replace方法第三个参数为1&#xff0c;表示只替换首次匹配
+        else:
+            break
+
+    arr &#61; list(map(int, s.split(&#34;#&#34;)))
+
+    x &#61; arr[0]
+    for y in arr[1:]:
+        x &#61; 2 * x &#43; 3 * y &#43; 4
+
+    return x
+
+
+# 算法调用
+print(getResult(s))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

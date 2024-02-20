@@ -1,0 +1,282 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 区间交叠问题（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定坐标轴上的一组线段&#xff0c;线段的起点和终点均为整数并且长度不小于1&#xff0c;请你从中找到最少数量的线段&#xff0c;这些线段可以覆盖柱所有线段。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为所有线段的数量&#xff0c;不超过10000&#xff0c;后面每行表示一条线段&#xff0c;格式为&#34;x,y&#34;&#xff0c;x和y分别表示起点和终点&#xff0c;取值范围是[-10^5&#xff0c;10^5]。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最少线段数量&#xff0c;为正整数</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>3<br /> 1,4<br /> 2,5<br /> 3,6</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1图示如下</p> 
+<p><img alt="" height="164" src="https://img-blog.csdnimg.cn/46eb8308178c4e9785fbe79d27618590.png" width="420" /></p> 
+<p>可以发现&#xff0c;只要选择[]1,4[和[3,6]就可以覆盖住所有给定线段。</p> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先&#xff0c;将所有区间ranges按照开始位置升序。</p> 
+<p></p> 
+<p>然后&#xff0c;创建一个辅助的栈stack&#xff0c;初始时将排序后的第一个区间压入栈中。</p> 
+<p>然后&#xff0c;遍历出1~ranges.length范围内的每一个区间ranges[i]&#xff0c;将遍历到ranges[i]和stack栈顶区间对比&#xff1a;</p> 
+<ul><li>如果stack栈顶区间可以包含ranges[i]区间&#xff0c;则range[i]不压入栈顶</li><li>如果stack栈顶区间被ranges[i]区间包含&#xff0c;则弹出stack栈顶元素&#xff0c;继续比较ranges[i]和stack新的栈顶元素</li><li>如果stack栈顶区间和ranges[i]无法互相包含&#xff0c;只有部分交集&#xff0c;则将ranges[i]区间去除交集部分后&#xff0c;剩余部分区间压入stack</li><li>如果stack栈顶区间和ranges[i]区间没有交集&#xff0c;那么直接将ranges[i]压入栈顶</li></ul> 
+<p>这样的话&#xff0c;最终stack中有多少个区间&#xff0c;就代表至少需要多少个区间才能覆盖所有线段。</p> 
+<p>比如&#xff0c;用例1的运行流程如下&#xff1a;</p> 
+<p><img alt="" height="294" src="https://img-blog.csdnimg.cn/2c71470fd6a742f99baa37a5a09a15a4.png" width="446" /></p> 
+<p><img alt="" height="280" src="https://img-blog.csdnimg.cn/47c6e39d8781427ca4554ddd9cbb93f8.png" width="456" /></p> 
+<p><img alt="" height="283" src="https://img-blog.csdnimg.cn/04899cbb1850471ab24d0004eed87584.png" width="472" /></p> 
+<p>2,5 和 1,4 存在重叠区间&#xff0c;我们只保留2,5区间的非重叠部分4,5</p> 
+<p><img alt="" height="287" src="https://img-blog.csdnimg.cn/6e600e8e489b4aa58aa53a3708e55b3d.png" width="536" /></p> 
+<p>比较4,5区间和3,6区间&#xff0c;发现3,6完全涵盖2,5,因此2,5区间不再需要&#xff0c;可以从stack中弹栈删掉&#xff0c;即原始的2,5区间被删除了。</p> 
+<p><img alt="" height="278" src="https://img-blog.csdnimg.cn/fed81f26d47045089f026a4b0e358bf2.png" width="508" /></p> 
+<p>继续比较1,4和3,6区间&#xff0c;发现无法互相涵盖&#xff0c;因此都需要保留&#xff0c;但是3,6有部分区间和1,4重叠&#xff0c;因此只保留3,6不重叠部分4,6。</p> 
+<p>最终只需要两个区间&#xff0c;对应1,4、3,6&#xff0c;即可涵盖所有线段 </p> 
+<p></p> 
+<p><img alt="" height="243" src="https://img-blog.csdnimg.cn/5a2470ddc8114fb89abe5e43fd4827b7.png" width="515" /></p> 
+<p>自测用例&#xff1a;</p> 
+<blockquote> 
+ <p>8<br /><span style="color:#fe2c24;">0,4</span><br /> 1,2<br /> 1,4<br /><span style="color:#fe2c24;">3,7</span><br /><span style="color:#fe2c24;">6,8</span><br /><span style="color:#fe2c24;">10,12</span><br /> 11,13<br /><span style="color:#fe2c24;">12,14</span></p> 
+</blockquote> 
+<p> 输出5&#xff0c;即至少需要上面标红的五个区间才能覆盖所有线段。</p> 
+<hr /> 
+<p>2023.01.27</p> 
+<p>根据网友指正&#xff0c;上面逻辑缺失一个场景&#xff0c;比如&#xff1a;</p> 
+<blockquote> 
+ <p>3</p> 
+ <p>1,10</p> 
+ <p>5,12</p> 
+ <p>8,11</p> 
+</blockquote> 
+<p>按找前面逻辑&#xff0c;首先对所有区间按开始位置升序&#xff0c;然后将1,10入栈</p> 
+<p><img alt="" height="246" src="https://img-blog.csdnimg.cn/c751a0294f28413691734e8f7fdada7e.png" width="184" /></p> 
+<p>然后尝试将5,12入栈&#xff0c;发现和栈顶区间有交集&#xff0c;因此去除交集部分后&#xff0c;5,12变为10,12&#xff0c;入栈</p> 
+<p><img alt="" height="242" src="https://img-blog.csdnimg.cn/4178ab4c6bc84b8c85acfa2f0aeffb4c.png" width="180" /></p> 
+<p> 然后尝试将8,11入栈&#xff0c;但是此时出现一个尴尬的情况&#xff0c;那就是栈顶区间10,12不能完全包含8,11&#xff0c;因此8,11区间还需要和栈顶前一个区间1,10继续比较&#xff0c;这就背离了我们一开始将所有区间按开始位置升序的初衷了。。。</p> 
+<p>而导致这个问题的根本原因是&#xff0c;栈顶区间10,12是被裁剪过的&#xff0c;因此导致它的起始位置落后了&#xff0c;即可能无法包含住升序后下一个区间的起始位置了&#xff0c;但是转念一想&#xff0c;先入栈的区间的起始位置肯定是要小于等于后入栈的区间的&#xff0c;因此栈顶区间被裁剪&#xff0c;说明栈顶区间和前一个区间必然是严密结合的&#xff0c;因此8,11的起始位置超出了栈顶区间&#xff0c;其实还是会被栈顶前一个区间包含进去。因此这里8,11不入栈。 </p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    const ranges &#61; lines.map((line) &#61;&gt; line.split(&#34;,&#34;).map(Number));
+    console.log(getResult(ranges, n));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(ranges, n) {
+  ranges.sort((a, b) &#61;&gt; a[0] - b[0]);
+
+  const stack &#61; [ranges[0]];
+
+  for (let i &#61; 1; i &lt; ranges.length; i&#43;&#43;) {
+    const range &#61; ranges[i];
+
+    while (true) {
+      if (stack.length &#61;&#61; 0) {
+        stack.push(range);
+        break;
+      }
+
+      const [s0, e0] &#61; stack.at(-1);
+      const [s1, e1] &#61; range;
+
+      if (s1 &lt;&#61; s0) {
+        if (e1 &lt;&#61; s0) {
+          break;
+        } else if (e1 &lt; e0) {
+          break;
+        } else {
+          stack.pop();
+        }
+      } else if (s1 &lt; e0) {
+        if (e1 &lt;&#61; e0) {
+          break;
+        } else {
+          stack.push([e0, e1]);
+          break;
+        }
+      } else {
+        stack.push(range);
+        break;
+      }
+    }
+  }
+
+  //console.log(stack);
+
+  return stack.length;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+
+    Integer[][] ranges &#61; new Integer[n][];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      ranges[i] &#61;
+          Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+    }
+
+    System.out.println(getResult(ranges));
+  }
+
+  public static int getResult(Integer[][] ranges) {
+    Arrays.sort(ranges, (a, b) -&gt; a[0] - b[0]);
+
+    LinkedList&lt;Integer[]&gt; stack &#61; new LinkedList&lt;&gt;();
+    stack.add(ranges[0]);
+
+    for (int i &#61; 1; i &lt; ranges.length; i&#43;&#43;) {
+      Integer[] range &#61; ranges[i];
+
+      while (true) {
+        if (stack.size() &#61;&#61; 0) {
+          stack.add(range);
+          break;
+        }
+
+        Integer[] top &#61; stack.getLast();
+        int s0 &#61; top[0];
+        int e0 &#61; top[1];
+
+        int s1 &#61; range[0];
+        int e1 &#61; range[1];
+
+        if (s1 &lt;&#61; s0) {
+          if (e1 &lt;&#61; s0) {
+            break;
+          } else if (e1 &lt; e0) {
+            break;
+          } else {
+            stack.removeLast();
+          }
+        } else if (s1 &lt; e0) {
+          if (e1 &lt;&#61; e0) {
+            break;
+          } else {
+            stack.add(new Integer[] {e0, e1});
+            break;
+          }
+        } else {
+          stack.add(range);
+          break;
+        }
+      }
+    }
+
+    return stack.size();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+rans &#61; [list(map(int, input().split(&#34;,&#34;))) for i in range(n)]
+
+
+# 算法入口
+def getResult(rans, n):
+    rans.sort(key&#61;lambda x: x[0])
+    stack &#61; [rans[0]]
+
+    for i in range(1, n):
+        ran &#61; rans[i]
+
+        while True:
+            if len(stack) &#61;&#61; 0:
+                stack.append(ran)
+                break
+
+            s0, e0 &#61; stack[-1]
+            s1, e1 &#61; ran
+
+            if s1 &lt;&#61; s0:
+                if e1 &lt;&#61; s0:
+                    break
+                elif e1 &lt; e0:
+                    break
+                else:
+                    stack.pop()
+            elif s1 &lt; e0:
+                if e1 &lt;&#61; e0:
+                    break
+                else:
+                    stack.append([e0, e1])
+                    break
+            else:
+                stack.append(ran)
+                break
+
+    return len(stack)
+
+
+# 算法调用
+print(getResult(rans, n))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

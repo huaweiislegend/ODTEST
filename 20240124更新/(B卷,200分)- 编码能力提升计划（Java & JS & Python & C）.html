@@ -1,0 +1,419 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 编码能力提升计划（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>为了提升软件编码能力&#xff0c;小王制定了刷题计划&#xff0c;他选了题库中的n道题&#xff0c;编号从0到n-1&#xff0c;并计划在m天内按照题目编号顺序刷完所有的题目&#xff08;注意&#xff0c;小王不能用多天完成同一题&#xff09;。</p> 
+<p>在小王刷题计划中&#xff0c;小王需要用tme[i]的时间完成编号 i 的题目。</p> 
+<p>此外&#xff0c;小王还可以查看答案&#xff0c;可以省去该题的做题时间。为了真正达到刷题效果&#xff0c;小王每天最多直接看一次答案。</p> 
+<p>我们定义m天中做题时间最多的一天耗时为T&#xff08;直接看答案的题目不计入做题总时间)。</p> 
+<p>请你帮小王求出最小的T是多少。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为time&#xff0c;time[i]的时间完成编号 i 的题目</p> 
+<p>第二行输入为m&#xff0c;m表示几天内完成所有题目&#xff0c;1 ≤ m ≤ 180</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最小耗时整数T</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:550px;"><tbody><tr><td style="width:82px;">输入</td><td style="width:466px;">999,999,999<br /> 4</td></tr><tr><td style="width:82px;">输出</td><td style="width:466px;">0</td></tr><tr><td style="width:82px;">说明</td><td style="width:466px;">在前三天中&#xff0c;小王每天都直接看答案&#xff0c;这样他可以在三天内完成所有的题目并不花任何时间</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:550px;"><tbody><tr><td style="width:83px;">输入</td><td style="width:465px;">1,2,2,3,5,4,6,7,8<br /> 5</td></tr><tr><td style="width:83px;">输出</td><td style="width:465px;">4</td></tr><tr><td style="width:83px;">说明</td><td style="width:465px;"> <p>第一天完成前3题&#xff0c;第3题看答案;</p> <p>第二天完成第4题和第5题&#xff0c;第5题看答案&#xff1b;</p> <p>第三天完成第6和第7题&#xff0c;第7提看答案;</p> <p>第四天完成第8题&#xff0c;直接看答案:</p> <p>第五天完成第9题&#xff0c;直接看答案</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题要求的 T 即为每天最多要花费的做题时间&#xff0c;比如T&#61;5&#xff0c;即表示每天最多有5个小时做题。另外&#xff0c;在每天花费T时间做题的情况下&#xff0c;要在m天中做完所有题目。</p> 
+<p>现在这种可能解T有多个&#xff0c;我们要找到这些可能解中最小的T。</p> 
+<p>这是一个典型的最大最小问题&#xff0c;我们可以用二分法解题。</p> 
+<p></p> 
+<p>二分法用于求解可能解T&#xff0c;首先需要确定T的两个边界范围&#xff08;初始的二分范围&#xff09;。</p> 
+<ul><li>由于题目说&#xff0c;每天都能申请看一次答案&#xff0c;即免去一道题的做题时间&#xff0c;因此当题目数量少于m天数时&#xff0c;即可能造成每天分得不足一题&#xff0c;这样的话&#xff0c;每天都申请看答案&#xff0c;则T&#61;0。</li><li>如果我们在一天内写完所有题目&#xff0c;那么要花费的时间是sum(time)&#xff0c;另外&#xff0c;我们可以在这一天申请看一题答案&#xff0c;免去一题的做题时间&#xff0c;此时最优策略是&#xff0c;看耗时最多的那题&#xff0c;即一天最多耗时 T &#61; sum(time) - max(time)</li></ul> 
+<p>因此&#xff0c;T的取值范围是 [0, sum(time) - max(time)]</p> 
+<p>我们通过二分法&#xff0c;取中间值作为可能解 t&#xff0c;然后进行验证&#xff0c;该 t 是否可以保证在 m 天内完成 所有题目&#xff1a;</p> 
+<ul><li>如果 t 可以在 m 天完成所有题目&#xff0c;则 t 就是一个可能解&#xff0c;但不一定是最优解&#xff0c;我们需要继续尝试更小的 t &#xff0c;即 将 T 的取值范围的右边界减少到 t - 1 位置&#xff0c;然后继续二分</li><li>如果 t 不能再 m 天完成所有题目&#xff0c;则 t 取小了&#xff0c;我们应该尝试更大的 t , 即 将 T 的取值范围的左边界增加到 t &#43; 1&#xff0c;然后继续二分</li></ul> 
+<p>这样最终我们就能求得最小的T。</p> 
+<p></p> 
+<p>但是本题的难点不在于二分法&#xff0c;而在于如何验证 t 是否能在 m 天内完成所有题目&#xff1f;</p> 
+<p>我们以用例2为例来讲解&#xff1a;</p> 
+<p>首先 T 的初始取值范围是 [0, 30]&#xff0c;我们二分求得中间值 t &#61; 15</p> 
+<p>下面即开始验证&#xff0c;每天只有15个时间单位做题目&#xff0c;是否可以再 m &#61; 5 天内完成所有题目。</p> 
+<ul><li>第1天</li></ul> 
+<blockquote> 
+ <ul><li>第time[0]题耗时&#xff1a;1&#xff0c;总耗时1 &lt; 15&#xff0c;因此可以继续做题</li><li>第time[1]题耗时&#xff1a;2&#xff0c;总耗时3 &lt; 15&#xff0c;因此可以继续做题</li><li>第time[2]题耗时&#xff1a;2&#xff0c;总耗时5 &lt; 15&#xff0c;因此可以继续做题</li><li>第time[3]题耗时&#xff1a;3&#xff0c;总耗时8 &lt; 15&#xff0c;因此可以继续做题</li><li>第time[4]题耗时&#xff1a;5&#xff0c;总耗时13 &lt; 15&#xff0c;因此可以继续做题</li><li>第time[5]题耗时&#xff1a;4&#xff0c;总耗时17 &gt; 15&#xff0c;此时第1天做题时间超过了</li></ul> 
+ <p></p> 
+ <p>注意&#xff1a;此时我们有一次看答案机会&#xff0c;但是我们应该用这次机会看哪一题答案呢&#xff1f;</p> 
+ <p>很简单&#xff0c;我们应该将这次宝贵的机会用在看耗时最长的题目上&#xff0c;而这些题目中耗时最长的是time[4]&#xff0c;因此我们看time[4]题目的答案&#xff0c;总耗时17 - 5 &#61; 12。</p> 
+ <p></p> 
+ <p>这里&#xff0c;可能有人会有疑问&#xff0c;我们如果看time[5]答案&#xff0c;那么总耗时17 - 4 &#61; 13&#xff0c;也可以不超时呀。我们可以假设&#xff0c;如果下一题time[6]耗时是3&#xff0c;那么会产生什么影响&#xff1f;</p> 
+ <ul><li>如果看time[4]答案&#xff0c;那么前面总耗时是12&#xff0c;如果time[6] &#61; 3&#xff0c;则我们今天就能做了time[6]</li><li>如果看time[5]答案&#xff0c;那么前面总耗时是13&#xff0c;如果time[6] &#61; 3&#xff0c;则我们今天就做不了time[6]</li></ul> 
+ <p>因此&#xff0c;看time[4]答案是更优策略。</p> 
+</blockquote> 
+<ul><li>第2天</li></ul> 
+<blockquote> 
+ <p>第1天做到了time[6]&#xff0c;那么第2天从time[7]开始做。</p> 
+ <ul><li>第time[7]题耗时7&#xff0c;总耗时7 &lt; 15&#xff0c;因此可以继续做题</li><li>第time[8]题耗时8&#xff0c;总耗时15 &#61;&#61; 15&#xff0c;因此可以继续做题</li><li>没有题了</li></ul> 
+</blockquote> 
+<p>因此&#xff0c;当t &#61; 15时&#xff0c;只需要2天&#xff08;&lt; m&#xff09;就能做完所有题目。所以 t &#61; 15 是一个可能解&#xff0c;但不一定时最优解&#xff0c;我们应该尝试更小的 t。</p> 
+<p></p> 
+<p>接下来 T 的范围缩小为 [0, 14]&#xff0c;我们二分求得中间值 t &#61; 7。</p> 
+<p>按照上面思路&#xff0c;继续验证 t 是否能满足 m 天内完成所有题目。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const times &#61; (await readline()).split(&#34;,&#34;).map(Number);
+  const m &#61; parseInt(await readline());
+
+  // T的初始取值范围
+  let low &#61; 0;
+  let high &#61; times.reduce((a, b) &#61;&gt; a &#43; b) - Math.max(...times);
+
+  // 二分
+  while (low &lt;&#61; high) {
+    // 取中间值尝试
+    let mid &#61; (low &#43; high) &gt;&gt; 1;
+
+    if (check(mid)) {
+      high &#61; mid - 1;
+    } else {
+      low &#61; mid &#43; 1;
+    }
+  }
+
+  console.log(low);
+
+  function check(t) {
+    // 今天总耗时
+    let sum_cost &#61; 0;
+    // 今天耗时最多的题目的耗时
+    let max_cost &#61; 0;
+    // 今天是否可以申请帮助
+    let canHelp &#61; true;
+
+    // 第几天
+    let day &#61; 1;
+
+    let i &#61; 0;
+    while (i &lt; times.length) {
+      sum_cost &#43;&#61; times[i];
+      max_cost &#61; Math.max(max_cost, times[i]);
+
+      if (sum_cost &gt; t) {
+        // 如果做完times[i]&#xff0c;总耗时超过了t
+        if (canHelp) {
+          // 如果可以申请帮助&#xff0c;那么就看耗时最长的题目的答案
+          sum_cost -&#61; max_cost;
+          // 今天申请帮助的机会用完了
+          canHelp &#61; false;
+          // 下面继续做下一题
+          i&#43;&#43;;
+        } else {
+          // 如果不能申请帮助&#xff0c;则今天做不了times[i]题目&#xff0c;只能放到明天做
+          // 进入明天
+          day&#43;&#43;;
+          // 重置总耗时&#xff0c;最大耗时题目&#xff0c;以及申请帮助机会
+          sum_cost &#61; 0;
+          max_cost &#61; 0;
+          canHelp &#61; true;
+        }
+      } else {
+        // 如果做完times[i]&#xff0c;总耗时没有超过t&#xff0c;则继续做下面的题目
+        i&#43;&#43;;
+      }
+    }
+
+    return day &lt;&#61; m;
+  }
+})();
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  static int[] times;
+  static int m;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    times &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    m &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult());
+  }
+
+  public static int getResult() {
+    int sum &#61; 0;
+    int max &#61; 0;
+    for (int time : times) {
+      sum &#43;&#61; time;
+      max &#61; Math.max(time, max);
+    }
+
+    // T的初始取值范围
+    int low &#61; 0;
+    int high &#61; sum - max;
+
+    // 二分
+    while (low &lt;&#61; high) {
+      // 取中间值尝试
+      int mid &#61; (low &#43; high) &gt;&gt; 1;
+
+      if (check(mid)) {
+        high &#61; mid - 1;
+      } else {
+        low &#61; mid &#43; 1;
+      }
+    }
+
+    return low;
+  }
+
+  public static boolean check(int t) {
+    // 今天总耗时
+    int sum_cost &#61; 0;
+    // 今天耗时最多的题目的耗时
+    int max_cost &#61; 0;
+    // 今天是否可以申请帮助
+    boolean canHelp &#61; true;
+
+    // 第几天
+    int day &#61; 1;
+
+    int i &#61; 0;
+    while (i &lt; times.length) {
+      sum_cost &#43;&#61; times[i];
+      max_cost &#61; Math.max(max_cost, times[i]);
+
+      if (sum_cost &gt; t) {
+        // 如果做完times[i]&#xff0c;总耗时超过了t
+        if (canHelp) {
+          // 如果可以申请帮助&#xff0c;那么就看耗时最长的题目的答案
+          sum_cost -&#61; max_cost;
+          // 今天申请帮助的机会用完了
+          canHelp &#61; false;
+          // 下面继续做下一题
+          i&#43;&#43;;
+        } else {
+          // 如果不能申请帮助&#xff0c;则今天做不了times[i]题目&#xff0c;只能放到明天做
+          // 进入明天
+          day&#43;&#43;;
+          // 重置总耗时&#xff0c;最大耗时题目&#xff0c;以及申请帮助机会
+          sum_cost &#61; 0;
+          max_cost &#61; 0;
+          canHelp &#61; true;
+        }
+      } else {
+        // 如果做完times[i]&#xff0c;总耗时没有超过t&#xff0c;则继续做下面的题目
+        i&#43;&#43;;
+      }
+    }
+
+    return day &lt;&#61; m;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+times &#61; list(map(int, input().split(&#34;,&#34;)))
+m &#61; int(input())
+
+
+def check(t):
+    # 今天总耗时
+    sum_cost &#61; 0
+    # 今天耗时最多的题目的耗时
+    max_cost &#61; 0
+    # 今天是否可以申请帮助
+    canHelp &#61; True
+
+    # 第几天
+    day &#61; 1
+
+    i &#61; 0
+    while i &lt; len(times):
+        sum_cost &#43;&#61; times[i]
+        max_cost &#61; max(max_cost, times[i])
+
+        if sum_cost &gt; t:
+            # 如果做完times[i]&#xff0c;总耗时超过了t
+            if canHelp:
+                # 如果可以申请帮助&#xff0c;那么就看耗时最长的题目的答案
+                sum_cost -&#61; max_cost
+                # 今天申请帮助的机会用完了
+                canHelp &#61; False
+                # 下面继续做下一题
+                i &#43;&#61; 1
+            else:
+                # 如果不能申请帮助&#xff0c;则今天做不了times[i]题目&#xff0c;只能放到明天做
+                # 进入明天
+                day &#43;&#61; 1
+                # 重置总耗时&#xff0c;最大耗时题目&#xff0c;以及申请帮助机会
+                sum_cost &#61; 0
+                max_cost &#61; 0
+                canHelp &#61; True
+        else:
+            # 如果做完times[i]&#xff0c;总耗时没有超过t&#xff0c;则继续做下面的题目
+            i &#43;&#61; 1
+
+    return day &lt;&#61; m
+
+
+# 算法入口
+def getResult():
+    # T的初始取值范围
+    low &#61; 0
+    high &#61; sum(times) - max(times)
+
+    # 二分
+    while low &lt;&#61; high:
+        # 取中间值尝试
+        mid &#61; (low &#43; high) &gt;&gt; 1
+
+        if check(mid):
+            high &#61; mid - 1
+        else:
+            low &#61; mid &#43; 1
+
+    return low
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 100000
+
+#define MAX(a,b) a &gt; b ? a : b
+
+int getResult(int* times, int times_size, int m);
+int check(int t, int* times, int times_size, int m);
+
+int main()
+{
+	int times[MAX_SIZE];
+	int times_size &#61; 0;
+	while(scanf(&#34;%d&#34;, &amp;times[times_size&#43;&#43;])) {
+		if(getchar() !&#61; &#39;,&#39;) break;
+	}
+	
+	int m;
+	scanf(&#34;%d&#34;, &amp;m);
+	
+	printf(&#34;%d\n&#34;, getResult(times, times_size, m));
+	
+	return 0;
+}
+
+int getResult(int* times, int times_size, int m)
+{
+	int sum &#61; 0;
+	int max &#61; 0;
+	for(int i&#61;0; i&lt;times_size; i&#43;&#43;) {
+		sum &#43;&#61; times[i];
+		max &#61; MAX(times[i], max);
+	}
+	
+	// T的初始取值范围
+	int low &#61; 0;
+	int high &#61; sum - max;
+	
+	// 二分
+	while(low &lt;&#61; high) {
+		// 取中间值尝试
+		int mid &#61; (low &#43; high) &gt;&gt; 1;
+		
+		if(check(mid, times, times_size, m)) {
+			high &#61; mid - 1;
+		} else {
+			low &#61; mid &#43; 1;
+		}
+	}
+	
+	return low;
+}
+
+int check(int t, int* times, int times_size, int m)
+{
+	// 今天总耗时
+	int sum_cost &#61; 0;
+	// 今天耗时最多的题目的耗时
+	int max_cost &#61; 0;
+	// 今天是否可以申请帮助
+	int canHelp &#61; 1;
+	
+	// 第几天
+	int day &#61; 1;
+	
+	int i &#61; 0;
+	while(i &lt; times_size) {
+		sum_cost &#43;&#61; times[i];
+		max_cost &#61; MAX(max_cost, times[i]);
+		
+		if(sum_cost &gt; t) {
+			// 如果做完times[i]&#xff0c;总耗时超过了t
+			if(canHelp) {
+				// 如果可以申请帮助&#xff0c;那么就看耗时最长的题目的答案
+				sum_cost -&#61; max_cost;
+				// 今天申请帮助的机会用完了
+				canHelp &#61; 0;
+				// 下面继续做下一题
+				i&#43;&#43;;
+			} else {
+				// 如果不能申请帮助&#xff0c;则今天做不了times[i]题目&#xff0c;只能放到明天做
+				// 进入明天
+				day&#43;&#43;;
+				// 重置总耗时&#xff0c;最大耗时题目&#xff0c;以及申请帮助机会
+				sum_cost &#61; 0;
+				max_cost &#61; 0;
+				canHelp &#61; 1;
+			}
+		} else {
+			// 如果做完times[i]&#xff0c;总耗时没有超过t&#xff0c;则继续做下面的题目
+			i&#43;&#43;;
+		}
+	}
+	
+	return day &lt;&#61; m;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,266 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 查找充电设备组合（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>某个充电站&#xff0c;可提供n个充电设备&#xff0c;每个充电设备均有对应的输出功率。任意个充电设备组合的输出功率总和&#xff0c;均构成功率集合P的1个元素。功率集合P的最优元素&#xff0c;表示最接近充电站最大输出功率p_max的元素。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>输入为3行&#xff1a;</p> 
+<ul><li>第1行为充电设备个数n</li><li>第2行为每个充电设备的输出功率</li><li>第3行为充电站最大输出功率p_max</li></ul> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>功率集合P的最优元素</p> 
+<p></p> 
+<h3>备注</h3> 
+<ul><li>充电设备个数 n &gt; 0</li><li>最优元素必须小于或等于充电站最大输出功率p_max</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 50 20 20 60<br /> 90</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">90</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">当充电设备输出功率50、20、20组合时&#xff0c;其输出功率总和为90&#xff0c;最接近充电站最大充电输出功率&#xff0c;因此最优元素为90。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 50 40<br /> 30</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">所有充电设备的输出功率组合&#xff0c;均大于充电站最大充电输出功率30&#xff0c;此时最优元素值为0。</td></tr></tbody></table> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h3> 
+<p>本题可以当成01背包问题处理。其中&#xff1a;</p> 
+<p>第3行充电站最大输出功率p_max  可以当成  背包承重</p> 
+<p>第2行每个充电设备的输出功率  可以当成  不同物品的重量以及价值&#xff0c;即重量&#61;价值</p> 
+<p>现在要求&#xff1a;背包承重下能装入的最大价值。</p> 
+<p>关于01背包问题&#xff0c;大家可以看<a href="https://fcqian.blog.csdn.net/article/details/128307663" rel="nofollow" title="算法设计 - 01背包问题_伏城之外的博客-CSDN博客">算法设计 - 01背包问题_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h3>01背包二维数组解法</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const n &#61; lines[0] - 0;
+    const p &#61; lines[1].split(&#34; &#34;).map(Number);
+    const p_max &#61; lines[2] - 0;
+
+    console.log(getResult(n, p, p_max));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, p, p_max) {
+  const dp &#61; new Array(n &#43; 1).fill(0).map(() &#61;&gt; new Array(p_max &#43; 1).fill(0));
+
+  for (let i &#61; 0; i &lt;&#61; n; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt;&#61; p_max; j&#43;&#43;) {
+      if (i &#61;&#61;&#61; 0 || j &#61;&#61;&#61; 0) continue;
+
+      // 注意这里p[i-1]中i-1不会越界&#xff0c;因为i&#61;0时不会走到这一步&#xff0c;另外i-1是为了防止尾越界&#xff0c;因为dp矩阵的行数是n&#43;1&#xff0c;因此p[i]可能会尾越界&#xff0c;而p[i-1]就不会越界了
+      if (p[i - 1] &gt; j) {
+        dp[i][j] &#61; dp[i - 1][j];
+      } else {
+        dp[i][j] &#61; Math.max(dp[i - 1][j], p[i - 1] &#43; dp[i - 1][j - p[i - 1]]);
+      }
+    }
+  }
+
+  return dp[n][p_max];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] p &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      p[i] &#61; sc.nextInt();
+    }
+
+    int p_max &#61; sc.nextInt();
+
+    System.out.println(getResult(n, p, p_max));
+  }
+
+  public static int getResult(int n, int[] p, int p_max) {
+    int[][] dp &#61; new int[n &#43; 1][p_max &#43; 1];
+
+    for (int i &#61; 0; i &lt;&#61; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt;&#61; p_max; j&#43;&#43;) {
+        if (i &#61;&#61; 0 || j &#61;&#61; 0) continue;
+
+        // 注意这里p[i-1]中i-1不会越界&#xff0c;因为i&#61;0时不会走到这一步&#xff0c;另外i-1是为了防止尾越界&#xff0c;因为dp矩阵的行数是n&#43;1&#xff0c;因此p[i]可能会尾越界&#xff0c;而p[i-1]就不会越界了
+        if (p[i - 1] &gt; j) {
+          dp[i][j] &#61; dp[i - 1][j];
+        } else {
+          dp[i][j] &#61; Math.max(dp[i - 1][j], p[i - 1] &#43; dp[i - 1][j - p[i - 1]]);
+        }
+      }
+    }
+
+    return dp[n][p_max];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">n &#61; int(input())
+p &#61; list(map(int, input().split()))
+p_max &#61; int(input())
+
+dp &#61; [[0 for i in range(p_max &#43; 1)] for j in range(n &#43; 1)]
+
+for i in range(n &#43; 1):
+    for j in range(p_max &#43; 1):
+        if i &#61;&#61; 0 or j &#61;&#61; 0:
+            continue
+
+        if p[i - 1] &gt; j:
+            dp[i][j] &#61; dp[i - 1][j]
+        else:
+            dp[i][j] &#61; max(dp[i - 1][j], p[i - 1] &#43; dp[i - 1][j - p[i - 1]])
+
+print(dp[n][p_max])
+</code></pre> 
+<p></p> 
+<h3>01背包滚动数组优化解法</h3> 
+<p>关于01背包的滚动数组优化解法请看&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/128903531" rel="nofollow" title="算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客">算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客</a></p> 
+<h4> Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] p &#61; new int[n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      p[i] &#61; sc.nextInt();
+    }
+
+    int p_max &#61; sc.nextInt();
+
+    System.out.println(getResult(n, p, p_max));
+  }
+
+  public static int getResult(int n, int[] p, int p_max) {
+    // 01背包滚动数组优化解法
+    int[] dp &#61; new int[p_max &#43; 1];
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      // 注意使用滚动数组优化时&#xff0c;关于背包承重的遍历应该倒序
+      for (int j &#61; p_max; j &gt;&#61; p[i]; j--) {
+        dp[j] &#61; Math.max(dp[j], dp[j - p[i]] &#43; p[i]);
+      }
+    }
+
+    return dp[p_max];
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const n &#61; lines[0] - 0;
+    const p &#61; lines[1].split(&#34; &#34;).map(Number);
+    const p_max &#61; lines[2] - 0;
+
+    console.log(getResult(n, p, p_max));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, p, p_max) {
+  p &#61; [0, ...p];
+
+  // 01背包滚动数组优化解法
+  const dp &#61; new Array(p_max &#43; 1).fill(0);
+
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+    // 注意使用滚动数组优化时&#xff0c;关于背包承重的遍历应该倒序
+    for (let j &#61; p_max; j &gt;&#61; p[i]; j--) {
+      dp[j] &#61; Math.max(dp[j], dp[j - p[i]] &#43; p[i]);
+    }
+  }
+
+  return dp[p_max];
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+p &#61; list(map(int, input().split()))
+p_max &#61; int(input())
+
+
+# 算法入口
+def getResult(n, p, p_max):
+    p.insert(0, 0)
+
+    # 01背包滚动数组优化解法
+    dp &#61; [0 for _ in range(p_max &#43; 1)]
+
+    for i in range(1, n &#43; 1):
+        # 注意使用滚动数组优化时&#xff0c;关于背包承重的遍历应该倒序
+        for j in range(p_max, p[i] - 1, -1):
+            dp[j] &#61; max(dp[j], dp[j - p[i]] &#43; p[i])
+
+    print(dp[p_max])
+
+
+# 算法调用
+getResult(n, p, p_max)
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

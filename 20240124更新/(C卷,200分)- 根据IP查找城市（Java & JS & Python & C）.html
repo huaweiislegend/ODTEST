@@ -1,0 +1,388 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 根据IP查找城市（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某业务需要根据终端的IP地址获取该终端归属的城市&#xff0c;可以根据公开的IP地址池信息查询归属城市。</p> 
+<p>地址池格式如下&#xff1a;</p> 
+<blockquote> 
+ <p>城市名&#61;起始IP,结束IP</p> 
+</blockquote> 
+<p>起始和结束地址按照英文逗号分隔&#xff0c;多个地址段采用英文分号分隔。比如&#xff1a;</p> 
+<blockquote> 
+ <p>City1&#61;1.1.1.1,1.1.1.2;City1&#61;1.1.1.11,1.1.1.16;City2&#61;3.3.3.3,4.4.4.4;City3&#61;2.2.2.2,6.6.6.6</p> 
+</blockquote> 
+<p>一个城市可以有多个IP段&#xff0c;比如City1有2个IP段。</p> 
+<p>城市间也可能存在包含关系&#xff0c;如City3的IP段包含City2的IP段范围。</p> 
+<p>现在要根据输入的IP列表&#xff0c;返回最佳匹配的城市列表。</p> 
+<p></p> 
+<p>注&#xff1a;最佳匹配即包含待查询IP且长度最小的IP段&#xff0c;比如例子中3.4.4.4最佳匹配是City2&#61;3.3.3.3,4.4.4.4&#xff0c;5.5.5.5的最佳匹配是City3&#61;2.2.2.2,6.6.6.6</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入共2行。</p> 
+<p>第一行为城市的IP段列表&#xff0c;多个IP段采用英文分号 &#39;;&#39; 分隔&#xff0c;IP段列表最大不超过500000。城市名称只包含英文字母、数字和下划线。最多不超过100000个。IP段包含关系可能有多层&#xff0c;但不超过100层。</p> 
+<p>第二行为查询的IP列表&#xff0c;多个IP采用英文逗号 &#39;,&#39; 分隔&#xff0c;最多不超过10000条。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最佳匹配的城市名列表&#xff0c;采用英文逗号 &#39;,&#39; 分隔&#xff0c;城市列表长度应该跟查询的IP列表长度一致。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ol><li>无论是否查到匹配正常都要输出分隔符。举例&#xff1a;假如输入IP列表为IPa,IPb&#xff0c;两个IP均未有匹配城市&#xff0c;此时输出为&#34;,&#34;&#xff0c;即只有一个逗号分隔符&#xff0c;两个城市均为空&#xff1b;</li><li>可以假定用例中的所有输入均合法&#xff0c;IP地址均为合法的ipv4地址&#xff0c;满足 (1~255)<strong>.</strong>(0~255)<strong>.</strong>(0~255)​​​​​​​<strong>.</strong>(0~255​​​​​​​) 的格式&#xff0c;且可以假定用例中不会出现组播和广播地址&#xff1b;</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:650px;"><tbody><tr><td style="width:84px;">输入</td><td style="width:604px;">City1&#61;1.1.1.1,1.1.1.2;City1&#61;1.1.1.11,1.1.1.16;City2&#61;3.3.3.3,4.4.4.4;City3&#61;2.2.2.2,6.6.6.6<br /> 1.1.1.15,3.3.3.5,2.2.2.3</td></tr><tr><td style="width:84px;">输出</td><td style="width:604px;">City1,City2,City3</td></tr><tr><td style="width:84px;">说明</td><td style="width:604px;"> <p>1&#xff09;City1有2个IP段&#xff0c;City3的IP段包含City2的IP段&#xff1b;</p> <p>2&#xff09;1.1.1.15仅匹配City1&#61;1.1.1.11,1.1.1.16&#xff0c;所以City1就是最佳匹配&#xff1b;2.2.2.3仅匹配City3&#61;2.2.2.2,6.6.6.6&#xff0c;所以City3是最佳匹配&#xff1b;3.3.3.5同时匹配为City2&#61;3.3.3.3,4.4.4.4和City3&#61;2.2.2.2,6.6.6.6&#xff0c;但是City2&#61;3.3.3.3,4.4.4.4的IP段范围更小&#xff0c;所以City3为最佳匹配&#xff1b;</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题主要难点在于判断一个IP地址是否属于一个IP段范围。</p> 
+<p>我的解决思路是&#xff0c;将IP地址转为整型数值&#xff0c;因为IP地址本质上是4*8位二进制数&#xff0c;所以每一个IP地址其实都能对应到一个整型数值。具体转化思路请见下面博客&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/130423791?csdn_share_tail&#61;%7B%22type%22%3A%22blog%22%2C%22rType%22%3A%22article%22%2C%22rId%22%3A%22130423791%22%2C%22source%22%3A%22qfc_128220%22%7D" title="整数与IP地址间的转换-CSDN博客">整数与IP地址间的转换-CSDN博客</a></p> 
+<p>而IP地址转为整型数值后&#xff0c;即可通过数值大小关系&#xff0c;判断某个IP地址是否属于某段IP范围。</p> 
+<p></p> 
+<p>之后就是&#xff0c;遍历待查询的IP地址&#xff0c;去和每一个IP段范围匹配&#xff0c;如果可以匹配上&#xff0c;且对应IP段范围更小&#xff0c;则对应IP段的城市就是当前待查询IP的最佳匹配城市。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入输出处理
+void (async function () {
+  // 城市IP列表
+  const cities &#61; (await readline()).split(&#34;;&#34;);
+  // 带查询的IP列表
+  const queryIps &#61; (await readline()).split(&#34;,&#34;);
+
+  // IP地址转整型
+  function ip2dec(ip) {
+    let res &#61; 0;
+
+    const blocks &#61; ip.split(&#34;.&#34;);
+    for (let block of blocks) {
+      res &#61; parseInt(block) | (res &lt;&lt; 8);
+    }
+
+    return res;
+  }
+
+  class Range {
+    constructor(city, startIpStr, endIpStr) {
+      this.city &#61; city;
+      // 将IP地址转为整型
+      this.startIpDec &#61; ip2dec(startIpStr);
+      this.endIpDec &#61; ip2dec(endIpStr);
+      this.ipLen &#61; this.endIpDec - this.startIpDec &#43; 1;
+    }
+  }
+
+  const ranges &#61; [];
+
+  for (let s of cities) {
+    const [city, startIpStr, endIpStr] &#61; s.split(/[&#61;,]/);
+    ranges.push(new Range(city, startIpStr, endIpStr));
+  }
+
+  const ans &#61; [];
+
+  // 遍历待查询的IP地址
+  for (let ip of queryIps) {
+    const ipDec &#61; ip2dec(ip);
+
+    // 记录该目标IP地址的最佳匹配城市
+    let city &#61; &#34;&#34;;
+    // 记录最佳匹配城市IP段的长度
+    let minLen &#61; Infinity;
+
+    // 将带查询IP与城市IP段列表逐一匹配
+    for (let range of ranges) {
+      // 如果带查询的IP地址 在某城市的IP段范围内&#xff0c;且该城市的IP段长度更小&#xff0c;则该城市为待查询IP的最佳匹配城市
+      if (
+        ipDec &gt;&#61; range.startIpDec &amp;&amp;
+        ipDec &lt;&#61; range.endIpDec &amp;&amp;
+        minLen &gt; range.ipLen
+      ) {
+        city &#61; range.city;
+        minLen &#61; range.ipLen;
+      }
+    }
+
+    ans.push(city);
+  }
+
+  console.log(ans.join(&#34;,&#34;));
+})();
+</code></pre> 
+<p> </p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  static class Range {
+    String city;
+    long startIpDec;
+    long endIpDec;
+    long ipLen;
+
+    public Range(String city, String startIpStr, String endIpStr) {
+      this.city &#61; city;
+      // 将IP地址转为整型
+      this.startIpDec &#61; ip2dec(startIpStr);
+      this.endIpDec &#61; ip2dec(endIpStr);
+      this.ipLen &#61; this.endIpDec - this.startIpDec &#43; 1;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    ArrayList&lt;Range&gt; ranges &#61; new ArrayList&lt;&gt;();
+
+    // 城市IP列表
+    String[] cities &#61; sc.nextLine().split(&#34;;&#34;);
+    // 带查询的IP列表
+    String[] queryIps &#61; sc.nextLine().split(&#34;,&#34;);
+
+    // 提取各个城市IP列表信息
+    for (String city : cities) {
+      String[] tmp &#61; city.split(&#34;[&#61;,]&#34;);
+      ranges.add(new Range(tmp[0], tmp[1], tmp[2]));
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+
+    // 遍历待查询的IP地址
+    for (String ip : queryIps) {
+      long ipDec &#61; ip2dec(ip);
+
+      // 记录该目标IP地址的最佳匹配城市
+      String city &#61; &#34;&#34;;
+      // 记录最佳匹配城市IP段的长度
+      long minLen &#61; Long.MAX_VALUE;
+
+      // 将带查询IP与城市IP段列表逐一匹配
+      for (Range range : ranges) {
+        // 如果带查询的IP地址 在某城市的IP段范围内&#xff0c;且该城市的IP段长度更小&#xff0c;则该城市为待查询IP的最佳匹配城市
+        if (ipDec &gt;&#61; range.startIpDec &amp;&amp; ipDec &lt;&#61; range.endIpDec &amp;&amp; minLen &gt; range.ipLen) {
+          city &#61; range.city;
+          minLen &#61; range.ipLen;
+        }
+      }
+
+      sj.add(city);
+    }
+
+    System.out.println(sj);
+  }
+
+  // IP地址转整型
+  public static long ip2dec(String ip) {
+    long res &#61; 0;
+
+    String[] blocks &#61; ip.split(&#34;\\.&#34;);
+
+    for (String block : blocks) {
+      res &#61; (Integer.parseInt(block)) | (res &lt;&lt; 8);
+    }
+
+    return res;
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+import sys
+
+
+# IP地址转整型
+def ip2dec(ipStr):
+    res &#61; 0
+
+    blocks &#61; ipStr.split(&#34;.&#34;)
+    for block in blocks:
+        res &#61; int(block) | (res &lt;&lt; 8)
+
+    return res
+
+
+class Range:
+    def __init__(self, city, startIpStr, endIpStr):
+        self.city &#61; city
+        # 将IP地址转为整型
+        self.startIp &#61; ip2dec(startIpStr)
+        self.endIp &#61; ip2dec(endIpStr)
+        self.ipLen &#61; self.endIp - self.startIp &#43; 1
+
+
+# 输入获取
+cities &#61; input().split(&#34;;&#34;)  # 城市IP列表
+queryIps &#61; input().split(&#34;,&#34;)  # 带查询的IP列表
+
+# 核心代码
+ranges &#61; []
+
+# 提取各个城市IP列表信息
+for s in cities:
+    # * 用于函数参数自动解构
+    ranges.append(Range(*(re.split(r&#34;[&#61;,]&#34;, s))))
+
+ans &#61; []
+
+# 遍历待查询的IP地址
+for ip in queryIps:
+    ipDec &#61; ip2dec(ip)
+
+    # 记录该目标IP地址的最佳匹配城市
+    best_city &#61; &#34;&#34;
+    # 记录最佳匹配城市IP段的长度
+    minLen &#61; sys.maxsize
+
+    # 将带查询IP与城市IP段列表逐一匹配
+    for ran in ranges:
+        # 如果带查询的IP地址 在某城市的IP段范围内&#xff0c;且该城市的IP段长度更小&#xff0c;则该城市为待查询IP的最佳匹配城市
+        if ran.endIp &gt;&#61; ipDec &gt;&#61; ran.startIp and minLen &gt; ran.ipLen:
+            best_city &#61; ran.city
+            minLen &#61; ran.ipLen
+
+    ans.append(best_city)
+
+print(&#34;,&#34;.join(ans))
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
+
+#define CITY_NAME_LENGTH 100
+#define CITY_LIST_LENGTH 500000
+#define QUERY_LIST_LENGTH 700000
+
+typedef struct Range {
+    char city[CITY_NAME_LENGTH];
+    long startIpDec;
+    long endIpDec;
+    long ipLen;
+} Range;
+
+// IP地址转整型
+long ip2dec(char *ip) {
+    long res &#61; 0;
+
+    int n1, n2, n3, n4;
+    sscanf(ip, &#34;%d.%d.%d.%d&#34;, &amp;n1, &amp;n2, &amp;n3, &amp;n4);
+
+    res &#61; n1 | (res &lt;&lt; 8);
+    res &#61; n2 | (res &lt;&lt; 8);
+    res &#61; n3 | (res &lt;&lt; 8);
+    res &#61; n4 | (res &lt;&lt; 8);
+
+    return res;
+}
+
+Range *new_Range(char *city, char *startIpStr, char *endIpStr) {
+    Range *range &#61; (Range *) malloc(sizeof(Range));
+    strcpy(range-&gt;city, city);
+    range-&gt;startIpDec &#61; ip2dec(startIpStr);
+    range-&gt;endIpDec &#61; ip2dec(endIpStr);
+    range-&gt;ipLen &#61; range-&gt;endIpDec - range-&gt;startIpDec &#43; 1;
+    return range;
+}
+
+// 第一行输入
+char s1[CITY_LIST_LENGTH];
+
+// 第二行输入
+char s2[QUERY_LIST_LENGTH];
+
+
+Range *ranges[CITY_LIST_LENGTH];
+int ranges_size &#61; 0;
+
+int main() {
+    gets(s1);
+
+    char *token1 &#61; strtok(s1, &#34;;&#34;);
+    while (token1 !&#61; NULL) {
+        // 提取各个城市IP列表信息
+        char city[CITY_NAME_LENGTH] &#61; {&#39;\0&#39;};
+        char startIpStr[10] &#61; {&#39;\0&#39;};
+        char endIpStr[10] &#61; {&#39;\0&#39;};
+
+        sscanf(token1, &#34;%[^&#61;]&#61;%[^,],%[^,]&#34;, city, startIpStr, endIpStr);
+        ranges[ranges_size&#43;&#43;] &#61; new_Range(city, startIpStr, endIpStr);
+
+        token1 &#61; strtok(NULL, &#34;;&#34;);
+    }
+
+
+    gets(s2);
+
+    // 遍历待查询的IP地址
+    char *token2 &#61; strtok(s2, &#34;,&#34;);
+    while (token2 !&#61; NULL) {
+        long ipDec &#61; ip2dec(token2);
+
+        // 记录该目标IP地址的最佳匹配城市
+        char *city &#61; &#34;&#34;;
+        // 记录最佳匹配城市IP段的长度
+        long minLen &#61; LONG_MAX;
+
+        // 将带查询IP与城市IP段列表逐一匹配
+        for (int i &#61; 0; i &lt; ranges_size; i&#43;&#43;) {
+            // 如果带查询的IP地址 在某城市的IP段范围内&#xff0c;且该城市的IP段长度更小&#xff0c;则该城市为待查询IP的最佳匹配城市
+            if (ipDec &gt;&#61; ranges[i]-&gt;startIpDec &amp;&amp; ipDec &lt;&#61; ranges[i]-&gt;endIpDec &amp;&amp; minLen &gt; ranges[i]-&gt;ipLen) {
+                city &#61; ranges[i]-&gt;city;
+                minLen &#61; ranges[i]-&gt;ipLen;
+            }
+        }
+
+        printf(&#34;%s&#34;, city);
+
+        token2 &#61; strtok(NULL, &#34;,&#34;);
+
+        if(token2 !&#61; NULL) {
+            printf(&#34;,&#34;);
+        }
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

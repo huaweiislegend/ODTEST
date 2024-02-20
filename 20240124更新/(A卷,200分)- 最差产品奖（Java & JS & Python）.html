@@ -1,0 +1,276 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 最差产品奖（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>A公司准备对他下面的N个产品评选最差奖&#xff0c;<br /> 评选的方式是首先对每个产品进行评分&#xff0c;然后根据评分区间计算相邻几个产品中最差的产品。<br /> 评选的标准是依次找到从当前产品开始前M个产品中最差的产品&#xff0c;请给出最差产品的评分序列。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行&#xff0c;数字M&#xff0c;表示评分区间的长度&#xff0c;取值范围是0&lt;M&lt;10000<br /> 第二行&#xff0c;产品的评分序列&#xff0c;比如[12,3,8,6,5]&#xff0c;产品数量N范围是-10000 &lt; N &lt;10000</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>评分区间内最差产品的评分序列</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 12,3,8,6,5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3,3,5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>12,3,8 最差的是3</p> <p>3,8,6 最差的是3</p> <p>8,6,5 最差的是5</p> </td></tr></tbody></table> 
+<p></p> 
+<h3>暴力解法&#xff08;可100%通过&#xff09;</h3> 
+<h4>题目解析</h4> 
+<p>计算出每一个滑窗的范围&#xff0c;然后每个滑窗都花费O(m)时间去遍历&#xff0c;收集每一个滑窗的最小值。</p> 
+<p>该暴力解法的时间复杂度是O((n-m&#43;1) * m)</p> 
+<p></p> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const m &#61; lines[0] - 0;
+    const arr &#61; lines[1].split(&#34;,&#34;).map(Number);
+    console.log(getResult(arr, m));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, m) {
+  const ans &#61; [];
+  for (let i &#61; 0; i &lt;&#61; arr.length - m; i&#43;&#43;) {
+    ans.push(Math.min(...arr.slice(i, i &#43; m)));
+  }
+  return ans.join(&#34;,&#34;);
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    Integer[] arr &#61;
+        Arrays.stream(sc.next().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(arr, m));
+  }
+
+  public static String getResult(Integer[] arr, int m) {
+    ArrayList&lt;Integer&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt;&#61; arr.length - m; i&#43;&#43;) {
+      int min &#61; Integer.MAX_VALUE;
+      for (int j &#61; i; j &lt; i &#43; m; j&#43;&#43;) min &#61; Math.min(min, arr[j]);
+      ans.add(min);
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+    for (Integer an : ans) {
+      sj.add(an &#43; &#34;&#34;);
+    }
+    return sj.toString();
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+arr &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+# 算法入口
+def getResult(arr, m):
+    ans &#61; []
+    for i in range(0, len(arr) - m &#43; 1):
+        ans.append(min(arr[i:i&#43;m]))
+    return &#34;,&#34;.join(map(str, ans))
+
+
+# 算法调用
+print(getResult(arr, m))</code></pre> 
+<p></p> 
+<h3>单调队列解法&#xff08;最优解法&#xff09;</h3> 
+<h4>题目解析</h4> 
+<p>关于单调队列用法&#xff0c;请看&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/130474096?spm&#61;1001.2014.3001.5501" title="LeetCode - 239 滑动窗口最大值_伏城之外的博客-CSDN博客">LeetCode - 239 滑动窗口最大值_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<p>下面JS解法中用的数组模拟的单调队列&#xff0c;最优解法可以使用双端队列&#xff0c;但是需要自己模拟&#xff0c;具体双端队列的模拟可以看上面链接博客。</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const m &#61; lines[0] - 0;
+    const arr &#61; lines[1].split(&#34;,&#34;).map(Number);
+    console.log(getResult(arr, m));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(nums, k) {
+  const queue &#61; [];
+  const ans &#61; [];
+
+  for (let i &#61; 0; i &lt; k; i&#43;&#43;) {
+    while (queue.length &amp;&amp; queue.at(-1) &gt; nums[i]) {
+      queue.pop();
+    }
+    queue.push(nums[i]);
+  }
+  ans.push(queue[0]);
+
+  for (let i &#61; k; i &lt; nums.length; i&#43;&#43;) {
+    if (nums[i - k] &#61;&#61; queue[0]) {
+      queue.shift();
+    }
+
+    while (queue.length &amp;&amp; queue.at(-1) &gt; nums[i]) {
+      queue.pop();
+    }
+    queue.push(nums[i]);
+    ans.push(queue[0]);
+  }
+  return ans.join();
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    Integer[] arr &#61;
+        Arrays.stream(sc.next().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(arr, m));
+  }
+
+  public static String getResult(Integer[] nums, int k) {
+    LinkedList&lt;Integer&gt; queue &#61; new LinkedList&lt;&gt;();
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+
+    for (int i &#61; 0; i &lt; k; i&#43;&#43;) {
+      while (queue.size() &gt; 0 &amp;&amp; queue.getLast() &gt; nums[i]) {
+        queue.removeLast();
+      }
+      queue.add(nums[i]);
+    }
+    sj.add(queue.getFirst() &#43; &#34;&#34;);
+
+    for (int i &#61; k; i &lt; nums.length; i&#43;&#43;) {
+      if (nums[i - k] - queue.getFirst() &#61;&#61; 0) {
+        queue.removeFirst();
+      }
+
+      while (queue.size() &gt; 0 &amp;&amp; queue.getLast() &gt; nums[i]) {
+        queue.removeLast();
+      }
+      queue.add(nums[i]);
+      sj.add(queue.getFirst() &#43; &#34;&#34;);
+    }
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">from collections import deque
+
+# 输入获取
+m &#61; int(input())
+arr &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+# 算法入口
+def getResult(nums, k):
+    # dq 是单调队列
+    dq &#61; deque()
+    # ans 记录题解&#xff0c;一共有nums.length - k &#43; 1滑窗
+    ans &#61; []
+
+    # 初始滑窗
+    for i in range(k):
+        while len(dq) &gt; 0 and dq[-1] &gt; nums[i]:
+            dq.pop()
+        dq.append(nums[i])
+    ans.append(dq[0])
+
+    # 后续滑窗
+    for i in range(k, len(nums)):
+        # nums[i-k] 是滑窗失去的元素
+        if nums[i - k] &#61;&#61; dq[0]:
+            dq.popleft()  # 单调队列头删
+
+        # nums[i] 是滑窗新增的元素
+        while len(dq) &gt; 0 and dq[-1] &gt; nums[i]:
+            dq.pop()  # 单调队列尾删
+
+        dq.append(nums[i])  # 单调队列尾增
+        ans.append(dq[0])
+
+    return &#34;,&#34;.join(map(str, ans))
+
+
+# 算法调用
+print(getResult(arr, m))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,351 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 一种字符串压缩表示的解压（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一种简易压缩算法&#xff1a;针对全部由小写英文字母组成的字符串&#xff0c;将其中连续超过两个相同字母的部分压缩为连续个数加该字母&#xff0c;其他部分保持原样不变。</p> 
+<p>例如&#xff1a;字符串“aaabbccccd”经过压缩成为字符串“3abb4cd”。</p> 
+<p>请您编写解压函数&#xff0c;根据输入的字符串&#xff0c;判断其是否为合法压缩过的字符串&#xff0c;</p> 
+<p>若输入合法则输出解压缩后的字符串&#xff0c;否则输出字符串“<strong>!error</strong>”来报告错误。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入一行&#xff0c;为一个ASCII字符串&#xff0c;长度不会超过100字符&#xff0c;用例保证输出的字符串长度也不会超过100字符。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>若判断输入为合法的经过压缩后的字符串&#xff0c;则输出压缩前的字符串&#xff1b;</p> 
+<p>若输入不合法&#xff0c;则输出字符串“<strong>!error</strong>”。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4dff</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">ddddff</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">4d扩展为dddd&#xff0c;故解压后的字符串为ddddff。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2dff</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">!error</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">两个d不需要压缩&#xff0c;故输入不合法。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4d&#64;A</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">!error</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">全部由小写英文字母组成的字符串压缩后不会出现特殊字符&#64;和大写字母A&#xff0c;故输入不合法。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的字符串操作题&#xff0c;难度在于如何将输入压缩字符串中4d这种子串找到并替换为dddd&#xff0c;我这里用的正则的捕获组。</p> 
+<p><img alt="" height="241" src="https://img-blog.csdnimg.cn/56fdc12a94d74c4f93e03e03a915b594.png" width="582" /></p> 
+<p>同时生成重复字符的字符串&#xff0c;发现了一个好方法&#xff0c;即&#xff1a;</p> 
+<p>new Array(重复次数).fill(重复字符)</p> 
+<p>比如 new Array(4).fill(&#39;d&#39;) 就可以生成 &#39;dddd&#39;</p> 
+<p></p> 
+<hr /> 
+<p>2023.05.25</p> 
+<p>给几个用例&#xff1a;3bb&#xff0c;bbb&#xff0c;3b4b</p> 
+<p>大家觉得这几个压缩字符串是合法的吗&#xff1f;</p> 
+<p>答案是不合法&#xff0c;原因很简单&#xff0c;我们将他们解压后&#xff0c;再按照题目要求重新压缩&#xff0c;得到的压缩字符串和这些是不一样的&#xff0c;比如3bb&#xff0c;解压后为bbbb&#xff0c;再次压缩后为4b。</p> 
+<p>因此&#xff0c;我们只能得到解压字符串后&#xff0c;还需要重新压缩&#xff0c;来对比输入的字符串&#xff0c;如果不一样&#xff0c;则说明输入的压缩字符串不合法&#xff0c;需要返回!error</p> 
+<p></p> 
+<hr /> 
+<p>2024.1.15</p> 
+<p>下面代码中&#xff0c;当我们用正则匹配到&#xff1a;数字&#43;字母&#xff0c;比如4d&#xff0c;后面进行了字符串替换&#xff0c;将字符串中所有4d替换为了dddd&#xff0c;这是有问题的&#xff0c;比如输入串为 4d5a14d&#xff0c;进行4d替换后&#xff0c;就变为dddd5a1dddd&#xff0c;这是不正确的&#xff0c;因为后面的14d被错误替换为1dddd了&#xff0c;因此我们进行字符串替换操作时&#xff0c;只能进行首次替换。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  // 对字符串进行备份
+  const back_str &#61; str;
+
+  // 压缩字符串str只能包含小写字母和数字&#xff0c;如果包含其他字符则非法
+  if (/[^a-z0-9]/.test(str)) {
+    return &#34;!error&#34;;
+  }
+
+  // 该正则用于匹配 “4a”&#xff0c;“12b” 这种 “数字&#43;小写字母” 的子串
+  const regExp &#61; /(\d&#43;)([a-z])?/g;
+
+  while (true) {
+    const res &#61; regExp.exec(str);
+
+    if (!res) break;
+
+    // 要被替换的压缩子串
+    const src &#61; res[0];
+
+    const repeat_times &#61; res[1] - 0;
+
+    // 压缩字符串中不会存在0&#xff0c;1&#xff0c;2
+    if (repeat_times &lt;&#61; 2) {
+      return &#34;!error&#34;;
+    }
+
+    const repeat_content &#61; res[2];
+    // abc4这种情况视为异常
+    if (!repeat_content) return &#34;!error&#34;;
+
+    // // 替换后的解压子串
+    const tar &#61; new Array(repeat_times).fill(repeat_content).join(&#34;&#34;);
+
+    str &#61; str.replace(src, tar);
+  }
+
+  // 如果解压字符串重新压缩后&#xff0c;和输入的压缩子串不一样&#xff0c;则说明输入的压缩字符串不合法&#xff0c;比如输入为3bb&#xff0c;bbb, 3b4b都是不合法
+  if (zip(str) !&#61; back_str) return &#34;!error&#34;;
+
+  return str;
+}
+
+// 压缩字符串
+function zip(str) {
+  str &#43;&#61; &#34;-&#34;;
+
+  const ans &#61; [];
+
+  const stack &#61; [];
+  let repeat &#61; 0;
+
+  for (let c of str) {
+    if (stack.length &#61;&#61; 0) {
+      stack.push(c);
+      repeat&#43;&#43;;
+      continue;
+    }
+
+    // stack.length &gt; 0
+    const top &#61; stack.at(-1);
+    if (top &#61;&#61; c) {
+      repeat&#43;&#43;;
+      continue;
+    }
+
+    // top !&#61; c
+    if (repeat &gt; 2) {
+      ans.push(&#96;${repeat}${top}&#96;);
+    } else {
+      ans.push(...new Array(repeat).fill(top));
+    }
+    stack.length &#61; 0;
+    stack.push(c);
+    repeat &#61; 1;
+  }
+
+  return ans.join(&#34;&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.next()));
+  }
+
+  public static String getResult(String str) {
+    String back_str &#61; str;
+
+    // 压缩字符串str只能包含小写字母和数字 &#xff0c;如果包含其他字符则非法
+    if (!str.matches(&#34;[a-z0-9]&#43;&#34;)) {
+      return &#34;!error&#34;;
+    }
+
+    // 该正则用于匹配 “4a”&#xff0c;“12b” 这种 “数字&#43;小写字母” 的子串
+    Pattern p &#61; Pattern.compile(&#34;(\\d&#43;)([a-z])?&#34;);
+
+    while (true) {
+      Matcher m &#61; p.matcher(str);
+
+      if (!m.find()) break;
+
+      // 要被替换的压缩子串
+      String src &#61; m.group();
+
+      int repeat_times &#61; Integer.parseInt(m.group(1));
+      // 连续超过两个相同字母的部分压缩为连续个数加该字母&#xff0c;因此不可能出现0&#xff0c;1&#xff0c;2的情况
+      if (repeat_times &lt; 3) return &#34;!error&#34;;
+
+      String repeat_content &#61; m.group(2);
+      // a4这种情况视为异常
+      if (repeat_content &#61;&#61; null) return &#34;!error&#34;;
+
+      // 替换后的解压子串
+      StringBuilder sb &#61; new StringBuilder();
+      for (int i &#61; 0; i &lt; repeat_times; i&#43;&#43;) sb.append(repeat_content);
+
+      str &#61; str.replaceFirst(src, sb.toString());
+    }
+
+    // 如果解压字符串重新压缩后&#xff0c;和输入的压缩子串不一样&#xff0c;则说明输入的压缩字符串不合法&#xff0c;比如输入为3bb&#xff0c;bbb, 3b4b都是不合法
+    if (!zip(str).equals(back_str)) return &#34;!error&#34;;
+
+    return str;
+  }
+
+  public static String zip(String str) {
+    str &#43;&#61; &#34;-&#34;;
+
+    StringBuilder ans &#61; new StringBuilder();
+
+    LinkedList&lt;Character&gt; stack &#61; new LinkedList&lt;&gt;();
+    int repeat &#61; 0;
+
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      char c &#61; str.charAt(i);
+
+      if (stack.size() &#61;&#61; 0) {
+        stack.add(c);
+        repeat&#43;&#43;;
+        continue;
+      }
+
+      // stack.size() &gt; 0
+      char top &#61; stack.getLast();
+
+      if (top &#61;&#61; c) {
+        repeat&#43;&#43;;
+        continue;
+      }
+
+      // top !&#61; c
+      if (repeat &gt; 2) {
+        ans.append(repeat).append(top);
+      } else {
+        char[] tmp &#61; new char[repeat];
+        Arrays.fill(tmp, top);
+        ans.append(new String(tmp));
+      }
+      stack.clear();
+      stack.add(c);
+      repeat &#61; 1;
+    }
+
+    return ans.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+s &#61; input()
+
+
+# 压缩字符串
+def zip(src):
+    src &#43;&#61; &#34;-&#34;
+
+    ans &#61; []
+    stack &#61; []
+    repeat &#61; 0
+
+    for c in src:
+        if len(stack) &#61;&#61; 0:
+            stack.append(c)
+            repeat &#43;&#61; 1
+            continue
+
+        # stack.length &gt; 0
+        top &#61; stack[-1]
+        if top &#61;&#61; c:
+            repeat &#43;&#61; 1
+            continue
+
+        # top !&#61; c
+        if repeat &gt; 2:
+            ans.append(f&#34;{repeat}{top}&#34;)
+        else:
+            ans.append(&#34;&#34;.join([top] * repeat))
+
+        stack.clear()
+        stack.append(c)
+        repeat &#61; 1
+
+    return &#34;&#34;.join(ans)
+
+
+# 算法入口
+def getResult():
+    # 对字符串进行备份
+    back_s &#61; s
+
+    # 压缩字符串str只能包含小写字母和数字&#xff0c;如果包含其他字符则非法
+    if re.search(r&#34;[^a-z0-9]&#34;, back_s) is not None:
+        return &#34;!error&#34;
+
+    # 该正则用于匹配 “4a”&#xff0c;“12b” 这种 “数字&#43;小写字母” 的子串
+    reg &#61; re.compile(r&#34;(\d&#43;)([a-z])?&#34;)
+
+    while True:
+        match &#61; reg.search(back_s)
+
+        if match is None:
+            break
+
+        # 要被替换的压缩子串
+        src &#61; match.group()
+        repeat_times &#61; int(match.group(1))
+
+        # 压缩字符串中不会存在0&#xff0c;1&#xff0c;2
+        if repeat_times &lt;&#61; 2:
+            return &#34;!error&#34;
+
+        repeat_content &#61; match.group(2)
+
+        #  abc4这种情况视为异常
+        if repeat_content is None:
+            return &#34;!error&#34;
+
+        # 替换后的解压子串
+        tar &#61; &#34;&#34;.join([repeat_content] * repeat_times)
+
+        back_s &#61; back_s.replace(src, tar, 1)
+
+    # 如果解压字符串重新压缩后&#xff0c;和输入的压缩子串不一样&#xff0c;则说明输入的压缩字符串不合法&#xff0c;比如输入为3bb&#xff0c;bbb, 3b4b都是不合法
+    if zip(back_s) !&#61; s:
+        return &#34;!error&#34;
+    else:
+        return back_s
+
+
+# 算法调用
+print(getResult())</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

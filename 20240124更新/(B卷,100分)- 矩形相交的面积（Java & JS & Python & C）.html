@@ -1,0 +1,200 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 矩形相交的面积（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<ul><li>给出3组点坐标(x, y, w, h)&#xff0c;-1000&lt;x,y&lt;1000&#xff0c;w,h为正整数。</li><li>(x, y, w, h)表示平面直角坐标系中的一个矩形&#xff1a;</li><li>x, y为矩形左上角坐标点&#xff0c;w, h<strong>向右w</strong>&#xff0c;<strong>向下h</strong>。</li><li>(x, y, w, h)表示x轴(x, x&#43;w)和y轴(y, y-h)围成的矩形区域&#xff1b;</li><li>(0, 0, 2, 2)表示 x轴(0, 2)和y 轴(0, -2)围成的矩形区域&#xff1b;</li><li>(3, 5, 4, 6)表示x轴(3, 7)和y轴(5, -1)围成的矩形区域&#xff1b;</li><li>求3组坐标构成的矩形区域重合部分的面积。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>3行输入分别为3个矩形的位置&#xff0c;分别代表“左上角x坐标”&#xff0c;“左上角y坐标”&#xff0c;“矩形宽”&#xff0c;“矩形高” -1000 &lt;&#61; x,y &lt; 1000</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出3个矩形相交的面积&#xff0c;不相交的输出0。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>1 6 4 4<br /> 3 5 3 4<br /> 0 3 7 3</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="text-align:center;width:412px;"><img alt="" height="299" src="https://img-blog.csdnimg.cn/img_convert/6708e7b755605af24828724dd91ac703.png" width="380" /></td></tr></tbody></table> 
+<p style="text-align:center;"></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>为图示加上坐标</p> 
+<p><img alt="" height="529" src="https://img-blog.csdnimg.cn/b9388a84816b47bdbe4181808290db35.png" width="614" /></p> 
+<p>如上图所示&#xff0c;交叉区域的</p> 
+<p>长&#xff1a;Math.min(x1&#43;w1, x2&#43;w2, x3&#43;w3) - Math.max(x1, x2, x3)</p> 
+<p>宽&#xff1a;Math.min(y1, y2, y3) - Math.max(y1-h1, y2-h2, y3-h3)</p> 
+<p>如果长度 &lt;&#61;0 或者 宽度&lt;&#61;0&#xff0c;则三个矩形不存在交叉区域&#xff0c;返回0</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int x1 &#61; sc.nextInt();
+    int y1 &#61; sc.nextInt();
+    int w1 &#61; sc.nextInt();
+    int h1 &#61; sc.nextInt();
+
+    int x2 &#61; sc.nextInt();
+    int y2 &#61; sc.nextInt();
+    int w2 &#61; sc.nextInt();
+    int h2 &#61; sc.nextInt();
+
+    int x3 &#61; sc.nextInt();
+    int y3 &#61; sc.nextInt();
+    int w3 &#61; sc.nextInt();
+    int h3 &#61; sc.nextInt();
+
+    int wid &#61; getMin(x1 &#43; w1, x2 &#43; w2, x3 &#43; w3) - getMax(x1, x2, x3);
+    if (wid &lt;&#61; 0) {
+      System.out.println(0);
+      return;
+    }
+
+    int hei &#61; getMin(y1, y2, y3) - getMax(y1 - h1, y2 - h2, y3 - h3);
+    if (hei &lt;&#61; 0) {
+      System.out.println(0);
+      return;
+    }
+
+    System.out.println(wid * hei);
+  }
+
+  public static int getMax(int n1, int n2, int n3) {
+    int max &#61; Math.max(n1, n2);
+    max &#61; Math.max(max, n3);
+    return max;
+  }
+
+  public static int getMin(int n1, int n2, int n3) {
+    int min &#61; Math.min(n1, n2);
+    min &#61; Math.min(min, n3);
+    return min;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    let arr &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map((ele) &#61;&gt; parseInt(ele)));
+
+    console.log(calSquare(arr));
+
+    lines.length &#61; 0;
+  }
+});
+
+function calSquare(arr) {
+  let [rect1, rect2, rect3] &#61; arr;
+
+  let [x1, y1, w1, h1] &#61; rect1;
+  let [x2, y2, w2, h2] &#61; rect2;
+  let [x3, y3, w3, h3] &#61; rect3;
+
+  let width &#61; Math.min(x1 &#43; w1, x2 &#43; w2, x3 &#43; w3) - Math.max(x1, x2, x3);
+  if (width &lt;&#61; 0) return 0;
+
+  let height &#61; Math.min(y1, y2, y3) - Math.max(y1 - h1, y2 - h2, y3 - h3);
+  if (height &lt;&#61; 0) return 0;
+
+  return width * height;
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+x1, y1, w1, h1 &#61; map(int, input().split())
+x2, y2, w2, h2 &#61; map(int, input().split())
+x3, y3, w3, h3 &#61; map(int, input().split())
+
+
+# 算法入口
+def getResult():
+    wid &#61; min(x1 &#43; w1, x2 &#43; w2, x3 &#43; w3) - max(x1, x2, x3)
+    if wid &lt;&#61; 0:
+        return 0
+
+    hei &#61; min(y1, y2, y3) - max(y1 - h1, y2 - h2, y3 - h3)
+    if hei &lt;&#61; 0:
+        return 0
+
+    return wid * hei
+
+
+# 调用算法
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a,b,c) ((a) &gt; (b) ? (a) &gt; (c) ? (a) : (c) : (b) &gt; (c) ? (b) : (c))
+#define MIN(a,b,c) ((a) &lt; (b) ? (a) &lt; (c) ? (a) : (c) : (b) &lt; (c) ? (b) : (c))
+
+int main() {
+    int x1, y1, w1, h1;
+    scanf(&#34;%d %d %d %d&#34;, &amp;x1, &amp;y1, &amp;w1, &amp;h1);
+
+    int x2, y2, w2, h2;
+    scanf(&#34;%d %d %d %d&#34;, &amp;x2, &amp;y2, &amp;w2, &amp;h2);
+
+    int x3, y3, w3, h3;
+    scanf(&#34;%d %d %d %d&#34;, &amp;x3, &amp;y3, &amp;w3, &amp;h3);
+
+    int wid &#61; MIN(x1 &#43; w1, x2 &#43; w2, x3 &#43; w3) - MAX(x1, x2, x3);
+    int hei &#61; MIN(y1, y2, y3) - MAX(y1 - h1, y2 - h2, y3 - h3);
+
+    if(wid &lt;&#61; 0 || hei &lt;&#61; 0) {
+        puts(&#34;0&#34;);
+    } else {
+        printf(&#34;%d\n&#34;, wid * hei);
+    }
+
+    return 0;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

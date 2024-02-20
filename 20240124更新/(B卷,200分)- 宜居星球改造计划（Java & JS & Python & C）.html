@@ -1,0 +1,518 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 宜居星球改造计划（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>2XXX年&#xff0c;人类通过对火星的大气进行宜居改造分析&#xff0c;使得火星已在理论上具备人类宜居的条件&#xff1b;</p> 
+<p>由于技术原因&#xff0c;无法一次性将火星大气全部改造&#xff0c;只能通过局部处理形式&#xff1b;</p> 
+<p>假设将火星待改造的区域为row * column的网格&#xff0c;每个网格有3个值&#xff0c;宜居区、可改造区、死亡区&#xff0c;使用YES、NO、NA代替&#xff0c;YES表示该网格已经完成大气改造&#xff0c;NO表示该网格未进行改造&#xff0c;后期可进行改造&#xff0c;NA表示死亡区&#xff0c;不作为判断是否改造完的宜居&#xff0c;无法穿过&#xff1b;</p> 
+<p>初始化下&#xff0c;该区域可能存在多个宜居区&#xff0c;并目每个宜居区能同时在每个大阳日单位向上下左右四个方向的相邻格子进行扩散&#xff0c;自动将4个方向相邻的真空区改造成宜居区&#xff1b;</p> 
+<p>请计算这个待改造区域的网格中&#xff0c;可改造区是否能全部成宜居区&#xff0c;如果可以&#xff0c;则返回改造的大阳日天教&#xff0c;不可以则返回-1</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入row * column个网格数据&#xff0c;每个网格值枚举值如下: YES&#xff0c;NO&#xff0c;NA&#xff1b;</p> 
+<p>样例:</p> 
+<p>YES YES NO<br /> NO NO NO<br /> NA NO YES</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>可改造区是否能全部变成宜居区&#xff0c;如果可以&#xff0c;则返回改造的太阳日天数&#xff0c;不可以则返回-1。</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>grid[i][j]只有3种情况&#xff0c;YES、NO、NA</p> 
+<ul><li>row &#61;&#61; grid.length</li><li>column &#61;&#61; grid[i].length</li><li>1 ≤ row, column ≤ 8</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">YES YES NO<br /> NO NO NO<br /> YES NO NO</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">经过2个太阳日&#xff0c;完成宜居改造</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">YES NO NO NO<br /> NO NO NO NO<br /> NO NO NO NO<br /> NO NO NO NO</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">6</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">经过6个太阳日&#xff0c;可完成改造</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">NO NA</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无改造初始条件&#xff0c;无法进行改造</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">YES NO NO YES<br /> NO NO YES NO<br /> NO YES NA NA<br /> YES NO NA NO</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">-1 // 右下角的区域&#xff0c;被周边三个死亡区挡住&#xff0c;无法实现改造</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是图的多源BFS的经典题&#xff0c;解析可以参考&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/127711317" rel="nofollow" title="华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客">华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>注意本题没有输入截止条件&#xff0c;因此&#xff0c;我将输入空行作为输入截止条件。</p> 
+<hr /> 
+<p>2023.09.17</p> 
+<p>根据考友反馈&#xff1a;</p> 
+<p>Java和JS的可以使用空行作为输入截止条件&#xff0c;Python的貌似不可以。</p> 
+<p></p> 
+<p>Java考友反馈</p> 
+<p><img alt="" height="456" src="https://img-blog.csdnimg.cn/b3e07e7f92fe44a388ce32d21f81e6e6.png" width="895" /></p> 
+<p><img alt="" height="317" src="https://img-blog.csdnimg.cn/b18997fcca8442d4b699990447eea4c9.png" width="896" /></p> 
+<p><img alt="" height="329" src="https://img-blog.csdnimg.cn/e40bf68c89524075b2fb8489cc6736a8.png" width="902" /></p> 
+<p></p> 
+<p>JS考友反馈</p> 
+<p><img alt="" height="457" src="https://img-blog.csdnimg.cn/641a6fc731544378b2690c3d453e7455.png" width="898" /></p> 
+<p></p> 
+<p>Python考友反馈</p> 
+<p><img alt="" height="452" src="https://img-blog.csdnimg.cn/cfe7d2af2a184930879b1ee28600a388.png" width="901" /></p> 
+<p></p> 
+<p>关于无输入截止条件的ACM输入获取&#xff0c;可以参考下我这边篇博客</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/132385403?spm&#61;1001.2014.3001.5502" rel="nofollow" title="华为OD机试关于无输入截止条件的ACM输入逻辑_伏城之外的博客-CSDN博客">华为OD机试关于无输入截止条件的ACM输入逻辑_伏城之外的博客-CSDN博客</a></p> 
+<p>下面我将代码输入获取更新为最通用的处理方式&#xff0c;即上面博客第三种综合处理方式。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    ArrayList&lt;String[]&gt; matrix &#61; new ArrayList&lt;&gt;();
+
+    // 假设存在空行作为输入截止条件
+    //    while (sc.hasNextLine()) {
+    //      String line &#61; sc.nextLine();
+    //      if (&#34;&#34;.equals(line)) {
+    //        System.out.println(getResult(matrix));
+    //        break;
+    //      } else {
+    //        matrix.add(line.split(&#34; &#34;));
+    //      }
+    //    }
+
+    // 没有空行作为输入截止条件时
+    while (sc.hasNextLine()) {
+      matrix.add(sc.nextLine().split(&#34; &#34;));
+    }
+
+    System.out.println(getResult(matrix));
+  }
+
+  private static int getResult(ArrayList&lt;String[]&gt; matrix) {
+    int row &#61; matrix.size();
+    int col &#61; matrix.get(0).length;
+
+    // 记录宜居取坐标位置
+    ArrayList&lt;int[]&gt; queue &#61; new ArrayList&lt;&gt;();
+
+    // 记录可改造区数量
+    int need &#61; 0;
+
+    for (int i &#61; 0; i &lt; row; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; col; j&#43;&#43;) {
+        String val &#61; matrix.get(i)[j];
+        switch (val) {
+          case &#34;YES&#34;:
+            queue.add(new int[] {i, j});
+            break;
+          case &#34;NO&#34;:
+            need&#43;&#43;;
+            break;
+        }
+      }
+    }
+
+    // 如果没有宜居区&#xff0c;则无法改造&#xff0c;直接返回-1
+    if (queue.size() &#61;&#61; 0) return -1;
+    // 如果全是宜居区&#xff0c;则无需改造&#xff0c;直接返回0
+    if (queue.size() &#61;&#61; row * col) return 0;
+
+    // 记录花费的天数
+    int day &#61; 0;
+
+    // 上&#xff0c;下&#xff0c;左&#xff0c;右四个方向的偏移量
+    int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    // 图的多源BFS模板
+    while (queue.size() &gt; 0 &amp;&amp; need &gt; 0) {
+      ArrayList&lt;int[]&gt; newQueue &#61; new ArrayList&lt;&gt;();
+
+      for (int[] pos : queue) {
+        int x &#61; pos[0], y &#61; pos[1];
+        for (int[] offset : offsets) {
+          // 上&#xff0c;下&#xff0c;左&#xff0c;右四个方向扩散
+          int newX &#61; x &#43; offset[0];
+          int newY &#61; y &#43; offset[1];
+
+          // 如果新位置没有越界&#xff0c;且为NO&#xff0c;则可以被改造
+          if (newX &gt;&#61; 0
+              &amp;&amp; newX &lt; row
+              &amp;&amp; newY &gt;&#61; 0
+              &amp;&amp; newY &lt; col
+              &amp;&amp; &#34;NO&#34;.equals(matrix.get(newX)[newY])) {
+            matrix.get(newX)[newY] &#61; &#34;YES&#34;;
+            newQueue.add(new int[] {newX, newY});
+            need--;
+          }
+        }
+      }
+
+      day&#43;&#43;;
+      queue &#61; newQueue;
+    }
+
+    if (need &#61;&#61; 0) return day;
+    else return -1;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const matrix &#61; [];
+
+  // 假设存在空行作为输入截止条件
+  // while (true) {
+  //   const line &#61; await readline();
+
+  //   if (line !&#61; &#34;&#34;) {
+  //     matrix.push(line.split(&#34; &#34;));
+  //   } else {
+  //     break;
+  //   }
+  // }
+
+  // 没有空行作为输入截止条件时
+  while (true) {
+    try {
+      matrix.push((await readline()).split(&#34; &#34;));
+    } catch (error) {
+      break;
+    }
+  }
+
+  console.log(getResult(matrix));
+})();
+
+function getResult(matrix) {
+  const row &#61; matrix.length;
+  const col &#61; matrix[0].length;
+
+  // 记录宜居取坐标位置
+  let queue &#61; [];
+  // 记录可改造区数量
+  let need &#61; 0;
+
+  for (let i &#61; 0; i &lt; row; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; col; j&#43;&#43;) {
+      switch (matrix[i][j]) {
+        case &#34;YES&#34;:
+          queue.push([i, j]);
+          break;
+        case &#34;NO&#34;:
+          need&#43;&#43;;
+          break;
+      }
+    }
+  }
+
+  // 如果没有宜居区&#xff0c;则无法改造&#xff0c;直接返回-1
+  if (queue.length &#61;&#61; 0) return -1;
+  // 如果全是宜居区&#xff0c;则无需改造&#xff0c;直接返回0
+  if (queue.length &#61;&#61; row * col) return 0;
+
+  // 记录花费的天数
+  let day &#61; 0;
+  // 上&#xff0c;下&#xff0c;左&#xff0c;右四个方向的偏移量
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  // 图的多源BFS模板
+  while (queue.length &gt; 0 &amp;&amp; need &gt; 0) {
+    const newQueue &#61; [];
+
+    for (let [x, y] of queue) {
+      for (let offset of offsets) {
+        // 上&#xff0c;下&#xff0c;左&#xff0c;右四个方向扩散
+        const newX &#61; x &#43; offset[0];
+        const newY &#61; y &#43; offset[1];
+
+        // 如果新位置没有越界&#xff0c;且为NO&#xff0c;则可以被改造
+        if (
+          newX &gt;&#61; 0 &amp;&amp;
+          newX &lt; row &amp;&amp;
+          newY &gt;&#61; 0 &amp;&amp;
+          newY &lt; col &amp;&amp;
+          &#34;NO&#34; &#61;&#61; matrix[newX][newY]
+        ) {
+          matrix[newX][newY] &#61; &#34;YES&#34;;
+          newQueue.push([newX, newY]);
+          need--;
+        }
+      }
+    }
+
+    day&#43;&#43;;
+    queue &#61; newQueue;
+  }
+
+  if (need &#61;&#61; 0) return day;
+  else return -1;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 算法入口
+def getResult(matrix):
+    row &#61; len(matrix)
+    col &#61; len(matrix[0])
+
+    # 记录宜居取坐标位置
+    queue &#61; []
+    # 记录可改造区数量
+    need &#61; 0
+
+    for i in range(row):
+        for j in range(col):
+            if matrix[i][j] &#61;&#61; &#34;YES&#34;:
+                queue.append([i, j])
+            elif matrix[i][j] &#61;&#61; &#34;NO&#34;:
+                need &#43;&#61; 1
+
+    # 如果没有宜居区&#xff0c;则无法改造&#xff0c;直接返回-1
+    if len(queue) &#61;&#61; 0:
+        return -1
+    # 如果全是宜居区&#xff0c;则无需改造&#xff0c;直接返回0
+    elif len(queue) &#61;&#61; row * col:
+        return 0
+
+    # 记录花费的天数
+    day &#61; 0
+    # 上&#xff0c;下&#xff0c;左&#xff0c;右四个方向的偏移量
+    offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    # 图的多源BFS模板
+    while len(queue) &gt; 0 and need &gt; 0:
+        newQueue &#61; []
+
+        for x, y in queue:
+            for offsetX, offsetY in offsets:
+                # 上&#xff0c;下&#xff0c;左&#xff0c;右四个方向扩散
+                newX &#61; x &#43; offsetX
+                newY &#61; y &#43; offsetY
+
+                # 如果新位置没有越界&#xff0c;且为NO&#xff0c;则可以被改造
+                if row &gt; newX &gt;&#61; 0 and col &gt; newY &gt;&#61; 0 and matrix[newX][newY] &#61;&#61; &#34;NO&#34;:
+                    matrix[newX][newY] &#61; &#34;YES&#34;
+                    newQueue.append([newX, newY])
+                    need -&#61; 1
+
+        day &#43;&#61; 1
+        queue &#61; newQueue
+
+    if need &#61;&#61; 0:
+        return day
+    else:
+        return -1
+
+
+# 输入获取
+matrix &#61; []
+
+# 假设存在空行作为输入截止条件
+# while True:
+#     line &#61; input()
+#     if line &#61;&#61; &#34;&#34;:
+#         print(getResult(matrix))
+#         break
+#     else:
+#         matrix.append(line.split())
+
+# 没有空行作为输入截止条件时
+while True:
+    try:
+        matrix.append(input().split())
+    except:
+        break
+print(getResult(matrix))
+</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 8
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList();
+void addLast_LinkedList(LinkedList *link, int ele);
+
+int getResult(int row, int col, int matrix[MAX_SIZE][MAX_SIZE]);
+
+int main() {
+    int matrix[MAX_SIZE][MAX_SIZE];
+
+    int row &#61; 0;
+    int col &#61; 0;
+
+    char s[1000];
+    while(gets(s)) {
+        // 本地测试可以开启此行
+        // if(strlen(s) &#61;&#61; 0) break;
+
+        col &#61; 0;
+        char* token &#61; strtok(s, &#34; &#34;);
+        while(token !&#61; NULL) {
+            // YES 简化为 0, NO 简化为 1, NA 简化为 2
+            if(strcmp(&#34;YES&#34;, token) &#61;&#61; 0) {
+                matrix[row][col] &#61; 0;
+            } else if(strcmp(&#34;NO&#34;, token) &#61;&#61; 0) {
+                matrix[row][col] &#61; 1;
+            } else {
+                matrix[row][col] &#61; 2;
+            }
+
+            token &#61; strtok(NULL, &#34; &#34;);
+            col&#43;&#43;;
+        }
+        row&#43;&#43;;
+    }
+
+    printf(&#34;%d\n&#34;, getResult(row, col, matrix));
+
+    return 0;
+}
+
+int getResult(int row, int col, int matrix[MAX_SIZE][MAX_SIZE]) {
+    // 记录宜居区坐标位置
+    LinkedList *queue &#61; new_LinkedList();
+
+    // 记录可改造区数量
+    int need &#61; 0;
+
+    for (int i &#61; 0; i &lt; row; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; col; j&#43;&#43;) {
+            switch (matrix[i][j]) {
+                case 0:
+                    addLast_LinkedList(queue, i * col &#43; j);
+                    break;
+                case 1:
+                    need&#43;&#43;;
+                    break;
+            }
+        }
+    }
+
+    // 如果没有宜居区&#xff0c;则无法改造&#xff0c;直接返回-1
+    if (queue-&gt;size &#61;&#61; 0) return -1;
+    // 如果全是宜居区&#xff0c;则无需改造&#xff0c;直接返回0
+    if (queue-&gt;size &#61;&#61; row * col) return 0;
+
+    // 记录花费的天数
+    int day &#61; 0;
+
+    // 上&#xff0c;下&#xff0c;左&#xff0c;右四个方向的偏移量
+    int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                         {1,  0},
+                         {0,  -1},
+                         {0,  1}};
+
+    // 图的多源BFS模板
+    while (queue-&gt;size &gt; 0 &amp;&amp; need &gt; 0) {
+        LinkedList *newQueue &#61; new_LinkedList();
+
+        ListNode *cur &#61; queue-&gt;head;
+        while (cur !&#61; NULL) {
+            int x &#61; cur-&gt;ele / col;
+            int y &#61; cur-&gt;ele % col;
+
+            // 上&#xff0c;下&#xff0c;左&#xff0c;右四个方向扩散
+            for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+                int newX &#61; x &#43; offsets[i][0];
+                int newY &#61; y &#43; offsets[i][1];
+
+                // 如果新位置没有越界&#xff0c;且为NO&#xff0c;则可以被改造
+                if (newX &gt;&#61; 0 &amp;&amp; newX &lt; row &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; col &amp;&amp; matrix[newX][newY]&#61;&#61; 1) {
+                    matrix[newX][newY] &#61; 0;
+                    addLast_LinkedList(newQueue, newX * col &#43; newY);
+                    need--;
+                }
+            }
+
+            cur &#61; cur-&gt;next;
+        }
+
+        day&#43;&#43;;
+        queue &#61; newQueue;
+    }
+
+    if (need &#61;&#61; 0) {
+        return day;
+    } else {
+        return -1;
+    }
+}
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+
+    node-&gt;ele &#61; ele;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

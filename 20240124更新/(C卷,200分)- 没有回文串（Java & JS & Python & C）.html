@@ -1,0 +1,631 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 没有回文串（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>回文串的定义&#xff1a;正读和反读都一样的字符串。</p> 
+<p>现在已经存在一个不包含回文串的字符串&#xff0c;字符串的字符都是在英语字母的前N个,且字符串不包含任何长度大于等于2的回文串&#xff1b;</p> 
+<p>请找出下一个字典序的不包含回文串的、字符都是在英语字母的前N个、且长度相同的字符串。</p> 
+<p>如果不存在&#xff0c;请输出NO。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>输入包括两行。</p> 
+<p>第一行有一个整数:N&#xff08;1&lt;&#61;N&lt;&#61;26&#xff09;&#xff0c;表示字符串的每个字符范围都是前N的英语字母。</p> 
+<p>第二行输入一个字符串S&#xff08;输入长度&lt;&#61;10000&#xff09;&#xff0c;输入保证这个字符串是合法的并且没有包含回文串。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>输出下一个字典序的不包含回文串的、字符都是在英语字母的前N个、且长度相同的字符串&#xff1b;</p> 
+<p>如果不存在,请输出”NO“。</p> 
+<p></p> 
+<h3 id="%E7%94%A8%E4%BE%8B">用例</h3> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> cba</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">NO</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h3>题目解析&#xff08;逻辑分析解法&#xff0c;最佳解法&#xff09;</h3> 
+<p>本题要求输入字符串的<span style="color:#fe2c24;">下一个字典序</span>的、<span style="color:#fe2c24;">不包含回文串</span>的、<span style="color:#fe2c24;">字符都是在英语字母的前N个</span>、<span style="color:#fe2c24;">且长度相同的字符串</span>&#xff1b;</p> 
+<p>比如用例</p> 
+<blockquote> 
+ <p>3</p> 
+ <p>abc</p> 
+</blockquote> 
+<p>其中第一行输入的数字3表示&#xff1a;限定了每位上的字母只能是英语字母前3个&#xff0c;即每位上字母只能取a,b,c。如果按照字典序来看&#xff0c;则相当于每位字母最大取c。</p> 
+<p>因此第二行输入的abc的下一个字典序字符串是&#xff1a;aca。</p> 
+<p>但是aca字符串含有了回文串aca&#xff0c;因此我们还要继续取下一个字典序字符串&#xff1a;acb&#xff0c;而acb是不含回文串的&#xff0c;因此abc的<span style="color:#fe2c24;">下一个字典序</span>的、<span style="color:#fe2c24;">不包含回文串</span>的、<span style="color:#fe2c24;">字符都是在英语字母的前N个</span>、<span style="color:#fe2c24;">且长度相同的字符串</span><span style="color:#0d0016;">是acb。</span></p> 
+<p></p> 
+<p><span style="color:#0d0016;">上面逻辑&#xff0c;难点有几个&#xff0c;分别是&#xff1a;</span></p> 
+<ol><li><span style="color:#0d0016;">如何实现各位的取字母限定&#xff1f;</span></li><li><span style="color:#0d0016;">如果找到下一个字典序字符串&#xff1f;</span></li><li><span style="color:#0d0016;">如果判断找到的字符串不含回文串&#xff1f;</span></li></ol> 
+<p></p> 
+<p>对于1&#xff0c;我们可以将输入的字符串转化为一个字符(ASCII)数组&#xff0c;而各个字符上取值上限可以限定为97 &#43; n - 1&#xff0c;其中97是&#39;a&#39;的ASCII码值。我们假设 limit &#61; 97 &#43; n - 1。</p> 
+<p></p> 
+<p>对于2&#xff0c;我们可以定义一个指针 i &#xff0c;初始时指向输入字符串的尾巴&#xff08;低位&#xff09;&#xff0c;即 s.length - 1&#xff1a;</p> 
+<ul><li>如果 s[i] &lt; limit&#xff0c;则s的下一个字典序字符串就是 s[i]&#43;&#43; 后的新s串</li><li>如果 s[i] &#61;&#61; limit&#xff0c;则s的下一个字典序字符串就是 s[i] &#61; &#39;a&#39;&#xff0c;如果s[i-1] &lt; limit的话&#xff0c;则s[i-1]&#43;&#43;&#xff0c;否则s[i-1] &#61; &#39;a&#39;&#xff0c;继续向前&#xff08;高位&#xff09;按此逻辑处理。这是一个类似于加法运算进1的过程&#xff0c;直到 i - s.length &#43; 1 结束&#xff0c;即无更高位可进。</li></ul> 
+<p></p> 
+<p>对于3&#xff0c;每次产生新s串时&#xff0c;我们都需要基于变化位i&#xff0c;进行检查下面两项&#xff1a;</p> 
+<ul><li>s[i] &#61;&#61; s[i-1]&#xff0c;此检查是避免新串出现 *abb* 情况</li><li>s[i] &#61;&#61; s[i-2]&#xff0c;此检查是避免新串出现 *aba* 情况</li></ul> 
+<p>如果基于变化位 i 没有发现上面两个情况&#xff0c;则此时不能直接判断找到了不含回文串的字符串&#xff0c;我们应该继续退位检查。</p> 
+<p>所谓退位检查&#xff0c;即对应前面找下一个字典序字符串的进位处理。</p> 
+<p>比如用例</p> 
+<blockquote> 
+ <p>4</p> 
+ <p>cdb</p> 
+</blockquote> 
+<p>找cdb下一个字典序字符串是cdc&#xff0c;此时 i 指向最低位2&#xff08;索引&#xff09;&#xff0c;检查出s[i] &#61;&#61; s[i-2]&#xff0c;含有回文串&#xff0c;因此不符合要求&#xff0c;要继续找。</p> 
+<p>继续找下一个字典序字符串是cdd&#xff0c;此时 i 指向最低位2&#xff08;索引&#xff09;&#xff0c;检查出s[i] &#61;&#61; s[i-1]&#xff0c;含有回文串&#xff0c;因此不符合要求&#xff0c;要继续找。</p> 
+<p>继续找下一个字典序字符串是 daa&#xff0c;此时 i 已经进了两位&#xff0c;指向了最高位0&#xff08;索引&#xff09;&#xff0c;但是基于该 i 位检查&#xff0c;可以发现s[i-1]和s[i-2]都不存在&#xff0c;因此这两个情况的回文子串包含判断都没有问题&#xff0c;但是 daa 明显是不符合要求的。</p> 
+<p>此时&#xff0c;我们需要让 i 退一位&#xff0c;退到 1&#xff08;索引&#xff09;&#xff0c;然后继续检查s[i] !&#61; s[i-1]、s[i] !&#61; s[i-2]&#xff1a;</p> 
+<ul><li>如果满足条件&#xff0c;则继续退&#xff0c;直到 i 退到最低为0&#xff08;索引&#xff09;</li><li>如果不满足条件&#xff0c;则说明含有了回文串&#xff0c;我们可以继续进位处理&#xff08;此时没有必要管低位&#xff0c;因为高位已经含有回文串&#xff0c;比如aba****串&#xff0c;其中高位aba已经是回文串&#xff0c;那么无论低位****是啥&#xff0c;对应字符串含有回文串&#xff0c;因此此时我们应该直接处理高位aba&#xff0c;让高位先满足不含回文串&#xff09;</li></ul> 
+<p>如果 i 退到最低位后&#xff0c;依旧满足s[i] !&#61; s[i-1]、s[i] !&#61; s[i-2]&#xff0c;那么此时新s串就是不含回文串的。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    String s &#61; sc.next();
+
+    System.out.println(getResult(n, s));
+  }
+
+  /**
+   * &#64;param n 字符串的每个字符范围都是前N的英语字母&#xff08;1&lt;&#61;N&lt;&#61;26&#xff09;
+   * &#64;param s 合法的并且没有包含回文串的字符串&#xff08;长度&lt;&#61;10000&#xff09;
+   */
+  public static String getResult(int n, String s) {
+    // 将输入的字符串转化为ASCII数组
+    char[] chars &#61; s.toCharArray();
+    // 每一位上的最大ASCII值
+    char limit &#61; (char) (&#39;a&#39; &#43; n - 1);
+
+    // 当前位是否处于回退检查状态
+    boolean back &#61; false;
+
+    // 从最低位开始检查
+    int i &#61; chars.length - 1;
+    while (i &gt;&#61; 0) {
+      // 如果当前位还有新增空间
+      if (chars[i] &lt; limit) {
+        if (!back) {
+          // 如果当前位不是回退检查状态,则当前位ASCII&#43;1
+          chars[i] &#43;&#61; 1;
+        } else {
+          // 如果当前位是回退检查状态, 则重置back
+          back &#61; false;
+        }
+
+        // 避免出现 *abb* 这种情况
+        if (i - 1 &gt;&#61; 0 &amp;&amp; chars[i] &#61;&#61; chars[i - 1]) continue;
+        // 避免出现 *aba* 这种情况
+        if (i - 2 &gt;&#61; 0 &amp;&amp; chars[i] &#61;&#61; chars[i - 2]) continue;
+
+        // 如果都没有出现上面两个情况&#xff1a;
+        if (i &#61;&#61; chars.length - 1) {
+          // 当前检查位是最低位&#xff0c;则说明当前字符串不含回文串, 可以直接返回当前字符串
+          return new String(chars);
+        }
+
+        // 当前检查位不是最低位&#xff0c;则只完成了高位的回文检查&#xff0c;还要回退到低位检查
+        i&#43;&#43;;
+        // 由于回退到了低位&#xff0c;则标记当前i指向的位置为回退检查状态&#xff0c;即检查时不进行ASCII&#43;1操作
+        back &#61; true;
+      } else {
+        // 当前位没有新增空间了, 因此i位&#xff08;低位&#xff09;变为&#39;a&#39;,  i-1位&#xff08;高位&#xff09;&#43; 1
+        chars[i] &#61; &#39;a&#39;;
+        i--;
+      }
+    }
+
+    return &#34;NO&#34;;
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+  const s &#61; await readline();
+
+  // 将输入的字符串转化为ASCII数组
+  const chars &#61; [...s].map((c) &#61;&gt; String(c).charCodeAt());
+  // 每一位上的最大ASCII值
+  const limit &#61; 97 &#43; n - 1;
+
+  // 当前位是否处于回退检查状态
+  let back &#61; false;
+  // 从最低位开始检查
+  let i &#61; chars.length - 1;
+
+  while (i &gt;&#61; 0) {
+    // 如果当前位还有新增空间
+    if (chars[i] &lt; limit) {
+      if (!back) {
+        // 如果当前位不是回退检查状态,则当前位ASCII&#43;1
+        chars[i] &#43;&#61; 1;
+      } else {
+        // 如果当前位是回退检查状态, 则重置back
+        back &#61; false;
+      }
+
+      // 避免出现 *abb* 这种情况
+      if (i - 1 &gt;&#61; 0 &amp;&amp; chars[i] &#61;&#61; chars[i - 1]) continue;
+      // 避免出现 *aba* 这种情况
+      if (i - 2 &gt;&#61; 0 &amp;&amp; chars[i] &#61;&#61; chars[i - 2]) continue;
+
+      // 如果都没有出现上面两个情况&#xff1a;
+      // 当前检查位是最低位&#xff0c;则说明当前字符串不含回文串, 可以直接返回当前字符串
+      if (i &#61;&#61; chars.length - 1) {
+        console.log(chars.map((num) &#61;&gt; String.fromCharCode(num)).join(&#34;&#34;));
+        return;
+      }
+
+      // 当前检查位不是最低位&#xff0c;则只完成了高位的回文检查&#xff0c;还要回退到低位检查
+      i &#43;&#61; 1;
+      // 由于回退到了低位&#xff0c;则标记当前i指向的位置为回退检查状态&#xff0c;即检查时不进行ASCII&#43;1操作
+      back &#61; true;
+    } else {
+      // 当前位没有新增空间了, 因此i位&#xff08;低位&#xff09;变为&#39;a&#39;,  i-1位&#xff08;高位&#xff09;&#43; 1
+      chars[i] &#61; 97;
+      i -&#61; 1;
+    }
+  }
+
+  console.log(&#34;NO&#34;);
+})();
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    # 将输入的字符串转化为ASCII数组
+    chars &#61; list(map(lambda x: ord(x), list(s)))
+    # 每一位上的最大ASCII值
+    limit &#61; 97 &#43; n - 1
+
+    # 当前位是否处于回退检查状态
+    back &#61; False
+
+    # 从最低位开始检查
+    i &#61; len(chars) - 1
+    while i &gt;&#61; 0:
+        # 如果当前位还有新增空间
+        if chars[i] &lt; limit:
+            if not back:
+                # 如果当前位不是回退检查状态,则当前位ASCII&#43;1
+                chars[i] &#43;&#61; 1
+            else:
+                # 如果当前位是回退检查状态, 则重置back
+                back &#61; False
+
+            # 避免出现 *abb* 这种情况
+            if i - 1 &gt;&#61; 0 and chars[i] &#61;&#61; chars[i-1]:
+                continue
+
+            # 避免出现 *aba* 这种情况
+            if i - 2 &gt;&#61; 0 and chars[i] &#61;&#61; chars[i-2]:
+                continue
+
+            # 如果都没有出现上面两个情况&#xff1a;
+            # 当前检查位是最低位&#xff0c;则说明当前字符串不含回文串, 可以直接返回当前字符串
+            if i &#61;&#61; len(chars) - 1:
+                return &#34;&#34;.join(map(chr, chars))
+
+            # 当前检查位不是最低位&#xff0c;则只完成了高位的回文检查&#xff0c;还要回退到低位检查
+            i &#43;&#61; 1
+            # 由于回退到了低位&#xff0c;则标记当前i指向的位置为回退检查状态&#xff0c;即检查时不进行ASCII&#43;1操作
+            back &#61; True
+        else:
+            # 当前位没有新增空间了, 因此i位&#xff08;低位&#xff09;变为&#39;a&#39;,  i-1位&#xff08;高位&#xff09;&#43; 1
+            chars[i] &#61; 97
+            i -&#61; 1
+
+    return &#34;NO&#34;
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_LEN 10000
+
+char *getResult(int n, char *s);
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    char s[MAX_LEN];
+    scanf(&#34;%s&#34;, s);
+
+    printf(&#34;%s&#34;, getResult(n, s));
+
+    return 0;
+}
+
+char *getResult(int n, char *s) {
+    // 每一位上的最大ASCII值
+    char limit &#61; (char) (&#39;a&#39; &#43; n - 1);
+
+    // 当前位是否处于回退检查状态
+    int back &#61; 0;
+
+    // 从最低位开始检查
+    int i &#61; strlen(s) - 1;
+    while(i &gt;&#61; 0) {
+        // 如果当前位还有新增空间
+        if(s[i] &lt; limit) {
+            if(!back) {
+                // 如果当前位不是回退检查状态,则当前位ASCII&#43;1
+                s[i] &#43;&#61; 1;
+            } else {
+                // 如果当前位是回退检查状态, 则重置back
+                back &#61; 0;
+            }
+
+            // 避免出现 *abb* 这种情况
+            if(i - 1 &gt;&#61; 0 &amp;&amp; s[i] &#61;&#61; s[i-1]) continue;
+            // 避免出现 *aba* 这种情况
+            if(i - 2 &gt;&#61; 0 &amp;&amp; s[i] &#61;&#61; s[i-2]) continue;
+
+            // 如果都没有出现上面两个情况&#xff1a;
+            if(i &#61;&#61; strlen(s) - 1) {
+                // 当前检查位是最低位&#xff0c;则说明当前字符串不含回文串, 可以直接返回当前字符串
+                return s;
+            }
+
+            // 当前检查位不是最低位&#xff0c;则只完成了高位的回文检查&#xff0c;还要回退到低位检查
+            i&#43;&#43;;
+            // 由于回退到了低位&#xff0c;则标记当前i指向的位置为回退检查状态&#xff0c;即检查时不进行ASCII&#43;1操作
+            back &#61; 1;
+        } else {
+            // 当前位没有新增空间了, 因此i位&#xff08;低位&#xff09;变为&#39;a&#39;,  i-1位&#xff08;高位&#xff09;&#43; 1
+            s[i] &#61; &#39;a&#39;;
+            i--;
+        }
+    }
+
+    return &#34;NO&#34;;
+}</code></pre> 
+<p></p> 
+<p></p> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析&#xff08;数位搜索解法&#xff0c;当前数量级可能会StackOverflow&#xff09;</h3> 
+<p>本题还是比较难的。</p> 
+<p>首先&#xff0c;题目的意思是&#xff1a;</p> 
+<p>第二行会输入一个不含超过2位的回文子串的字符串。</p> 
+<blockquote> 
+ <p>啥意思呢&#xff1f;</p> 
+ <p>首先&#xff0c;我们需要了解下回文串概念&#xff1a;</p> 
+ <p>回文串是指一个字符串&#xff0c;正序和反序是一样的&#xff0c;即回文串是中心对称的&#xff0c;比如aba&#xff0c;abba。通常而言&#xff0c;空串&#xff0c;比如“”、单字符的字符串&#xff0c;比如&#34;a&#34;&#xff0c;都算是回文串。</p> 
+ <p>这里题目说给定的字符串中不含有超过2位的回文子串&#xff0c;隐含意思是&#xff0c;让我们不要把空串和单字符的字符串当成回文串。比如“abc”是符合题目要求的不含回文子串的字符串&#xff0c;而”a<span style="color:#fe2c24;">bb</span>c“是不符合题目要求的不含有回文子串的字符串。</p> 
+</blockquote> 
+<p>第一行会输入一个整数n&#xff0c;表示符合题目要求的不含回文子串的字符串的每一位字符&#xff1a;取自前n个的英语字母&#xff08;小写&#xff09;</p> 
+<blockquote> 
+ <p>啥意思呢&#xff1f;</p> 
+ <p>这个是限定字符串每一位字符的取值&#xff0c;比如n&#61;2&#xff0c;则每一位只能取&#34;a&#34;或&#34;b&#34;&#xff0c;比如n&#61;3&#xff0c;则每一位只能在&#34;a&#34;、&#34;b&#34;、&#34;c&#34;字符中取值</p> 
+</blockquote> 
+<p>输出<span style="color:#fe2c24;">下一个字典序</span>的不包含回文串的、字符都是在英语字母的前N个、且长度相同的字符串&#xff1b;</p> 
+<blockquote> 
+ <p>啥意思呢&#xff1f;</p> 
+ <p>我们假设现在输入是</p> 
+ <p>3</p> 
+ <p>bba</p> 
+ <p>那么bba后面的&#xff1a;字符都是在英语字母的前N个、且长度相同的字符串有哪些呢&#xff1f;如下图所示。</p> 
+ <p>现在求bba下一个字典序的不包含回文串的字符串&#xff0c;从图中可以看出是bca。</p> 
+</blockquote> 
+<p><img alt="" height="372" src="https://img-blog.csdnimg.cn/a8997498c1364b46b4df58c850d96183.png" width="1200" /></p> 
+<p></p> 
+<p>因此&#xff0c;本题的求解可以分为两步&#xff1a;</p> 
+<p>1、找出bba下一个字典序的、同范围、同长度的字符串F</p> 
+<p>2、判断找出的字符串F是否含有回文子串&#xff0c;若含有&#xff0c;则继续找下一个字符串&#xff0c;若不含&#xff0c;则输出找到的字符串</p> 
+<p></p> 
+<p>先看第一步&#xff0c;找下一个字典序的字符串F&#xff0c;该如何找呢&#xff1f;</p> 
+<p>从上面图树形结构&#xff0c;我们可以看出&#xff0c;这就是一个dfs的深度优先搜索的过程&#xff0c;那么该如何实现呢&#xff1f;</p> 
+<p>这个我们可以参考数位搜索的思想&#xff0c;关于数位搜索的思想请看&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/128128007" rel="nofollow" title="数位DP - 带3的数_伏城之外的博客-CSDN博客">数位DP - 带3的数_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>进行数位搜索时&#xff0c;如果是基于字符&#xff0c;那么就很难处理&#xff0c;我们可以预先将字符全部先转为数字&#xff0c;利用String(char).charCodeAt()方法得到字符char对应的ASCII码值&#xff0c;然后基于码值进行数位搜索。</p> 
+<p><img alt="" height="399" src="https://img-blog.csdnimg.cn/0aab718854d645459aa93aa87a3a1cd7.png" width="1200" /></p> 
+<p>因此可以得到如下dfs逻辑</p> 
+<pre><code class="language-javascript">// 假设第二行输入的是bba&#xff0c;则入参arr &#61; [98, 98, 97]&#xff0c;元素值是bba各位对应的码值
+// 入参level指的是当前正在设置第几层的值&#xff0c;从第0层开始
+// 入参limit指的是当前取值的下限是否受到限制&#xff0c;默认第0层取值是受到限制
+// 假设第一行输入的3&#xff0c;则入参max &#61; 97 &#43; 3 - 1 &#61; 99&#xff0c;即对应字符c
+// 入参path用于保存找到字符串的各位字符对应的码值
+function dfs(arr, level, limit, max, path){
+    if(level &#61;&#61;&#61; arr.length) {
+        const nextStr &#61; path.map(num &#61;&gt; String.fromCharCode(num)).join(&#39;&#39;)
+        return console.log(nextStr)
+    }
+
+    const min &#61; limit ? arr[level] : 97; // 97对应&#39;a&#39;
+
+    for(let i &#61; min; i &lt;&#61; max; i&#43;&#43;) {
+        path.push(i)
+        dfs(arr, level&#43;1, limit &amp;&amp; i &#61;&#61;&#61; min, max, path) // 这里的limit参数赋值为limit &amp;&amp; i &#61;&#61;&#61; min&#xff0c;大家可以参考图示好好思考下原因
+        path.pop()
+    }
+}</code></pre> 
+<p> 上面就是基于数位搜索思想&#xff0c;来遍历bba~ccc之间所有字符串的方式</p> 
+<p><img alt="" height="498" src="https://img-blog.csdnimg.cn/f632468e35044ec4a42f86b2f9cc1f74.png" width="1200" /></p> 
+<p>接下来&#xff0c;我们就可以在遍历过程中&#xff0c;去做一些检测回文子串的动作。</p> 
+<p></p> 
+<p>我们可以很容易判断一个字符串是否为回文串&#xff08;正序倒序相同&#xff09;&#xff0c;但是却无法轻易的判断一个字符串是否含有回文子串。 </p> 
+<blockquote> 
+ <p>判断一个字符串str是否含有回文子串的方式&#xff0c;大致逻辑如下&#xff1a;</p> 
+ <p>遍历字符串str的每一位&#xff0c;比如str[i]&#xff0c;然后将str[i]分别和str[i-1]、str[i&#43;1]比较&#xff0c;若相同&#xff0c;则说明含有一个两位的回文子串&#xff0c;这其实是偶数位回文串判断方式&#xff0c;比如a<span style="color:#fe2c24;">bb</span>c&#xff0c;其中bb就是偶数位回文串。另外&#xff0c;我们还需要判断是否可能存在奇数位回文子串&#xff0c;即比较str[i-1]和str[i&#43;1]是否相同&#xff0c;比如<span style="color:#fe2c24;">aba</span>c,其中aba就是奇数位回文串。</p> 
+ <p>当遍历str每一位过程中&#xff0c;发现了符合要求的回文子串&#xff0c;则可以返回true&#xff0c;表示在str中发现了回文子串。</p> 
+</blockquote> 
+<p></p> 
+<p>了解了如何判断字符串含有回文子串后&#xff0c;我们回到前面讨论&#xff0c;如何在dfs生成下一个字典序&#xff0c;且符合要求的字符串的过程中&#xff0c;去判断是否产生回文子串呢&#xff1f;</p> 
+<p>答&#xff1a;每当给一层取值时&#xff0c;比如给level&#61;1层取值&#xff0c;则我们可以判断&#xff1a;</p> 
+<ul><li>arr[level - 1]  &#61;&#61;&#61; arr[level]  即判断是否出现偶数位回文子串</li><li>arr[level - 2]  &#61;&#61;&#61; arr[level] 即判断是否出现奇数位回文子串</li></ul> 
+<pre><code class="language-javascript">function dfs(arr, level, limit, max, path) {
+  if (level &#61;&#61;&#61; arr.length) {
+    const nextStr &#61; path.map((num) &#61;&gt; String.fromCharCode(num)).join(&#34;&#34;);
+    return console.log(nextStr);
+  }
+
+  const min &#61; limit ? arr[level] : 97;
+
+  for (let i &#61; min; i &lt;&#61; max; i&#43;&#43;) {
+    if (level &gt;&#61; 1 &amp;&amp; i &#61;&#61;&#61; path[level - 1]) continue; // 偶数位回文子串
+    if (level &gt;&#61; 2 &amp;&amp; i &#61;&#61;&#61; path[level - 2]) continue; // 奇数位回文子串
+    path.push(i);
+    dfs(arr, level &#43; 1, limit &amp;&amp; i &#61;&#61;&#61; min, max, path);
+    path.pop();
+  }
+}
+
+dfs([98, 98, 97], 0, true, 99, []);
+</code></pre> 
+<p><img alt="" height="416" src="https://img-blog.csdnimg.cn/a527faba61484e1cb6d92804c3d3f7ed.png" width="1200" /></p> 
+<p>可以发现&#xff0c;答案给出的字符串少了很多&#xff0c;但都是不含回文子串的&#xff0c;字典序排后面的字符串。</p> 
+<p></p> 
+<p>但是我们只想要字典序下一个的&#xff0c;不想要下面全部的&#xff0c;因此&#xff1a;</p> 
+<p><img alt="" height="413" src="https://img-blog.csdnimg.cn/0efa121e01e74fcdbfe12320383d0960.png" width="1200" /></p> 
+<p>上面逻辑是&#xff0c;能走到dfs最后一步的肯定是符合要求的&#xff0c;不含回文子串的&#xff0c;处于下一个字典序的字符串&#xff0c;其他的都是中途失败的&#xff0c;返回undefined的&#xff0c;因此我们只要看dfs返回的是否不是undefined即可。</p> 
+<p></p> 
+<p>但是上面逻辑存在一个漏洞&#xff0c;可以尝试用例</p> 
+<blockquote> 
+ <p>4<br /> bacd</p> 
+</blockquote> 
+<p><img alt="" height="456" src="https://img-blog.csdnimg.cn/faf8e891bb924d8c83c836fe0ef1640a.png" width="1200" /></p> 
+<p> 可以发现&#xff0c;输出的还是bacd</p> 
+<p>原因是&#xff0c;我们在第一次dfs时&#xff0c;遍历的起始就是原始字符串</p> 
+<p><img alt="" height="396" src="https://img-blog.csdnimg.cn/7cee5cca6c4142678c33b6e703e1b567.png" width="1200" /></p> 
+<p>因此&#xff0c;我们要跳过第一次的遍历</p> 
+<p><img alt="" height="472" src="https://img-blog.csdnimg.cn/d34746f4392b4feb94a96612232968f2.png" width="1200" /></p> 
+<pre><code class="language-javascript">function dfs(arr, level, limit, max, path) {
+  if (level &#61;&#61;&#61; arr.length) {
+    return path.map((num) &#61;&gt; String.fromCharCode(num)).join(&#34;&#34;);
+  }
+
+  const min &#61; limit ? arr[level] : 97;
+
+  for (let i &#61; min; i &lt;&#61; max; i&#43;&#43;) {
+    if (limit &amp;&amp; level &#61;&#61;&#61; arr.length - 1 &amp;&amp; i &#61;&#61;&#61; min) continue; // 跳过首次dfs结果
+    if (level &gt;&#61; 1 &amp;&amp; i &#61;&#61;&#61; path[level - 1]) continue;
+    if (level &gt;&#61; 2 &amp;&amp; i &#61;&#61;&#61; path[level - 2]) continue;
+    path.push(i);
+    const ans &#61; dfs(arr, level &#43; 1, limit &amp;&amp; i &#61;&#61;&#61; min, max, path);
+    if (ans) return ans;
+    path.pop();
+  }
+}
+
+// 4&#xff0c;对应100
+// bacd &#xff0c;对应[98, 97, 99, 100]
+console.log(dfs([98, 97, 99, 100], 0, true, 100, []));
+</code></pre> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const n &#61; lines[0] - 0;
+    const str &#61; lines[1];
+
+    console.log(getResult(n, str));
+
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} n 字符串的每个字符范围都是前N的英语字母&#xff08;1&lt;&#61;N&lt;&#61;26&#xff09;
+ * &#64;param {*} str 合法的并且没有包含回文串的字符串&#xff08;长度&lt;&#61;10000&#xff09;
+ */
+function getResult(n, str) {
+  const arr &#61; [...str].map((char) &#61;&gt; String(char).charCodeAt());
+  const min &#61; 97; // 对应字符&#39;a&#39;
+  const max &#61; min &#43; n - 1;
+
+  const ans &#61; dfs(arr, 0, true, max, []);
+  return ans ?? &#34;NO&#34;;
+}
+
+function dfs(arr, level, limit, max, path) {
+  if (level &#61;&#61;&#61; arr.length) {
+    return path.map((num) &#61;&gt; String.fromCharCode(num)).join(&#34;&#34;);
+  }
+
+  const min &#61; limit ? arr[level] : 97;
+
+  for (let i &#61; min; i &lt;&#61; max; i&#43;&#43;) {
+    if (limit &amp;&amp; level &#61;&#61;&#61; arr.length - 1 &amp;&amp; i &#61;&#61;&#61; min) continue; // 此步跳过原始字符串
+    if (level &gt;&#61; 1 &amp;&amp; i &#61;&#61;&#61; path[level - 1]) continue; // 此步表示含有回文串&#xff0c;如abb这种情况
+    if (level &gt;&#61; 2 &amp;&amp; i &#61;&#61;&#61; path[level - 2]) continue; // 此步表示含有回文串&#xff0c;如aba这种情况
+    path.push(i);
+    const ans &#61; dfs(arr, level &#43; 1, limit &amp;&amp; i &#61;&#61;&#61; min, max, path);
+    if (ans) return ans; // 找到了不含回文串的字典序下一个字符串&#xff0c;则直接返回
+    path.pop();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    String s &#61; sc.next();
+
+    System.out.println(getResult(n, s));
+  }
+
+  /**
+   * &#64;param n 字符串的每个字符范围都是前N的英语字母&#xff08;1&lt;&#61;N&lt;&#61;26&#xff09;
+   * &#64;param s 合法的并且没有包含回文串的字符串&#xff08;长度&lt;&#61;10000&#xff09;
+   */
+  public static String getResult(int n, String s) {
+    char[] tmp &#61; s.toCharArray();
+    int[] arr &#61; new int[tmp.length];
+    for (int i &#61; 0; i &lt; tmp.length; i&#43;&#43;) arr[i] &#61; tmp[i];
+    int max &#61; 97 &#43; n - 1;
+
+    String ans &#61; dfs(arr, 0, true, max, new LinkedList&lt;&gt;());
+
+    if (ans &#61;&#61; null) {
+      return &#34;NO&#34;;
+    } else {
+      return ans;
+    }
+  }
+
+  public static String dfs(int[] arr, int level, boolean limit, int max, LinkedList&lt;Integer&gt; path) {
+    if (level &#61;&#61; arr.length) {
+      StringBuilder sb &#61; new StringBuilder();
+      for (Integer num : path) sb.append((char) ((int) num));
+      return sb.toString();
+    }
+
+    int min &#61; limit ? arr[level] : 97;
+
+    for (int i &#61; min; i &lt;&#61; max; i&#43;&#43;) {
+      // 此步跳过原始字符串
+      if (limit &amp;&amp; level &#61;&#61; arr.length - 1 &amp;&amp; i &#61;&#61; min) continue;
+      //  此步表示含有回文串&#xff0c;如abb这种情况
+      if (level &gt;&#61; 1 &amp;&amp; i &#61;&#61; path.get(level - 1)) continue;
+      // 此步表示含有回文串&#xff0c;如aba这种情况
+      if (level &gt;&#61; 2 &amp;&amp; i &#61;&#61; path.get(level - 2)) continue;
+      path.add(i);
+      String ans &#61; dfs(arr, level &#43; 1, limit &amp;&amp; i &#61;&#61; min, max, path);
+      if (ans !&#61; null) return ans; // 找到了不含回文串的字典序下一个字符串&#xff0c;则直接返回
+      path.removeLast();
+    }
+
+    return null;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+s &#61; input()
+
+
+def dfs(arr, level, limit, maxV, path):
+    if level &#61;&#61; len(arr):
+        return &#34;&#34;.join(map(lambda x: chr(x), path))
+
+    minV &#61; arr[level] if limit else 97
+
+    for i in range(minV, maxV &#43; 1):
+        # 此步跳过原始字符串
+        if limit and level &#61;&#61; len(arr) - 1 and i &#61;&#61; minV:
+            continue
+        # 此步表示含有回文串&#xff0c;如abb这种情况
+        if level &gt;&#61; 1 and i &#61;&#61; path[level - 1]:
+            continue
+        # 此步表示含有回文串&#xff0c;如aba这种情况
+        if level &gt;&#61; 2 and i &#61;&#61; path[level - 2]:
+            continue
+
+        path.append(i)
+        ans &#61; dfs(arr, level &#43; 1, limit and i &#61;&#61; minV, maxV, path)
+        # 找到了不含回文串的字典序下一个字符串&#xff0c;则直接返回
+        if ans is not None:
+            return ans
+        path.pop()
+
+    return None
+
+
+# 算法入口
+def getResult(n, s):
+    &#34;&#34;&#34;
+    :param n: 字符串的每个字符范围都是前N的英语字母&#xff08;1&lt;&#61;N&lt;&#61;26&#xff09;
+    :param s: 合法的并且没有包含回文串的字符串&#xff08;长度&lt;&#61;10000&#xff09;
+    &#34;&#34;&#34;
+    arr &#61; list(map(lambda x: ord(x), list(s)))
+    maxV &#61; 97 &#43; n - 1
+
+    ans &#61; dfs(arr, 0, True, maxV, [])
+    return ans or &#34;NO&#34;
+
+
+# 算法调用
+print(getResult(n, s))
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

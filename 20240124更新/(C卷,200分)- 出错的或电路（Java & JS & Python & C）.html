@@ -1,0 +1,279 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 出错的或电路（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某生产门电路的厂商发现某一批次的或门电路不稳定&#xff0c;具体现象为计算两个二进制数的或操作时&#xff0c;第一个二进制数中某两个比特位会出现交换&#xff0c;交换的比特位置是随机的&#xff0c;但只交换这两个位&#xff0c;其他位不变。</p> 
+<p>很明显&#xff0c;这个交换可能会影响最终的或结果&#xff0c;也可能不会有影响。</p> 
+<p>为了评估影响和定位出错的根因&#xff0c;工程师需要研究在各种交换的可能下&#xff0c;最终的或结果发生改变的情况有多少种。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行有一个正整数N; 其中1≤N≤1000000。<br /> 第二行有一个长为N的二进制数&#xff0c;表示与电路的第一个输入数&#xff0c;即会发生比特交换的输入数。<br /> 第三行有一个长为N的二进制数&#xff0c;表示与电路的第二个输入数。注意第二个输入数不会发生比特交换。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出只有一个整数&#xff0c;表示会影响或结果的交换方案个数。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:650px;"><tbody><tr><td style="width:61px;">输入</td><td style="width:526px;">3<br /> 010<br /> 110</td></tr><tr><td style="width:61px;">输出</td><td style="width:526px;">1</td></tr><tr><td style="width:61px;">说明</td><td style="width:526px;"> <p>原本010和110的或结果是110&#xff0c;但第一个输入数可能会发生如下三种交换&#xff1a;</p> <p>1、交换第1个比特和第2个比特&#xff0c;第一个输入数变为100&#xff0c;计算结果为110&#xff0c;计算结果不变<br /> 2、交换第1个比特和第3个比特&#xff0c;第一个输入数变为010&#xff0c;计算结果为110&#xff0c;计算结果不变<br /> 3、交换第2个比特和第3个比特&#xff0c;第一个输入数变为001&#xff0c;计算结果为111&#xff0c;计算结果改变<br /> 故只有一种交换会改变计算结果。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:650px;"><tbody><tr><td style="width:68px;">输入</td><td style="width:580px;">6<br /> 011011<br /> 110110</td></tr><tr><td style="width:68px;">输出</td><td style="width:580px;">4</td></tr><tr><td style="width:68px;">说明</td><td style="width:580px;"> <p>原本011011和110110的或结果是111111&#xff0c;但是第一个输入数发生如下比特交换会影响最终计算结果&#xff1a;</p> <p>1、交换第1个比特和第3个比特&#xff0c;第一个输入数变为110011&#xff0c;计算结果变为110111</p> <p>2、交换第1个比特和第6个比特&#xff0c;第一个输入数变为111010&#xff0c;计算结果变为111110</p> <p>3、交换第3个比特和第4个比特&#xff0c;第一个输入数变为010111&#xff0c;计算结果变为110111</p> <p>4、交换第4个比特和第6个比特&#xff0c;第一个输入数变为011110&#xff0c;计算结果变为111100</p> <p>其他交换都不会影响计算结果&#xff0c;故输出4.</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我们假设第一个输入数是bin1&#xff0c;第二个输入数是bin2。</p> 
+<p>需要注意的是&#xff0c;本题不能去求解bin1的全排列&#xff0c;因为题目说&#xff0c;发生或运算时&#xff0c;bin1只有某两位会发生交换。而全排列无法保证只有两位发生交换&#xff0c;很可能有多位发生交换。</p> 
+<p>另外&#xff0c;本题的bin1,bin2的长度都为N&#xff0c;1≤N≤1000000&#xff0c;这个数量级求解全排列肯定会超时的。</p> 
+<p>因此&#xff0c;本题不推荐使用全排列解法。</p> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>二进制的或运算特点是&#xff1a;进行运算的两个二进制数&#xff0c;对应某位上数有一个为1&#xff0c;则结果1&#xff0c;否则结果为0。</p> 
+<p>因此&#xff0c;我们可以忽略对bin2的值为1的位的检查&#xff0c;因为不管bin1对应位值变为多少&#xff0c;结果都为1&#xff0c;不会造成结果改变。</p> 
+<p>只对bin2的值为0的位进行检查即可。</p> 
+<p>此时有两种情况&#xff1a;</p> 
+<p>bin2值为0的位&#xff0c;在bin1对应位的值为&#xff1a;</p> 
+<ul><li>0&#xff1a;则正确结果为0&#xff0c;想要不同结果&#xff0c;则需要将bin1该位和bin1上值位1的位交换</li><li>1&#xff1a;则正确结果为1&#xff0c;想要不同结果&#xff0c;则需要将bin1该位和bin1上值为0的位交换</li></ul> 
+<p>比如用例1中&#xff1a;</p> 
+<p>bin1 &#61; &#34;01<span style="color:#a2e043;"><strong>0</strong></span>&#34;</p> 
+<p>bin2 &#61; &#34;11<strong><span style="color:#fe2c24;">0</span></strong>&#34;</p> 
+<p>bin2值为0的位只有1个&#xff0c;就是第三位&#xff0c;而对应bin1的第三位的值为0&#xff0c;因此bin1需要将该位值变为1&#xff0c;才能产生不同结果&#xff0c;而变为1的交换策略只有一个&#xff0c;那就是其第二位和第三位交换。</p> 
+<p></p> 
+<p>比如用例2中&#xff1a;</p> 
+<p>bin1 &#61; &#34;01<span style="color:#a2e043;"><strong>1</strong></span>01<span style="color:#a2e043;"><strong>1</strong></span>&#34;</p> 
+<p>bin2 &#61; &#34;11<strong><span style="color:#fe2c24;">0</span></strong>11<strong><span style="color:#fe2c24;">0</span></strong>&#34;</p> 
+<p>即将bin1种第三位的1替换为0&#xff0c;有两种策略&#xff0c;将bin1中第六位的1替换为0&#xff0c;有两种策略&#xff0c;因此一共是2&#43;2&#61;4种。</p> 
+<p></p> 
+<p>但是还有一种特殊情况&#xff0c;即</p> 
+<p>bin1 &#61; &#34;<strong><span style="color:#a2e043;">100</span></strong><span style="color:#0d0016;">1</span>&#34;</p> 
+<p>bin2 &#61; &#34;<strong><span style="color:#fe2c24;">000</span></strong><span style="color:#0d0016;">1</span>&#34;</p> 
+<p>就是出现重叠交换策略的情况&#xff1a;</p> 
+<p>bin1第一位1替换为0&#xff0c;有两种策略&#xff0c;替换后bin1分别为&#xff1a;0101、0011</p> 
+<p>bin1第二位0替换为1&#xff0c;有两种策略&#xff0c;替换后bin1为&#xff1a;<span style="background-color:#ff9900;">0101</span>、1100</p> 
+<p>bin1第三位0替换为1&#xff0c;有两种策略&#xff0c;替换后bin1为&#xff1a;<span style="background-color:#ff9900;">0011</span>、1010</p> 
+<p>造成重叠的原因就是bin2值为0的位在bin1对应位上的值既有位1的&#xff0c;又有为0的。bin1这些位1&#xff0c;和位0的互相交换就会产生重叠情况。</p> 
+<p>去重策略是&#xff1a;6 - 1 * 2 &#61; 4</p> 
+<p>6的含义是包含重复情况的所有交换策略&#xff0c;1*2的含义是bin1、bin2对应位组合为01的有一个&#xff0c;对应位组合为00有两个&#xff0c;因此重复策略为1*2个。</p> 
+<p></p> 
+<p>我的解题思路如下&#xff0c;找出bin2值为0的位&#xff0c;并统计对应位上bin1的值为0的有x个&#xff0c;值为1的有y个&#xff0c;同时统计bin1总共有多少个1&#xff08;假设a个&#xff09;&#xff0c;多少个0&#xff08;假设b个&#xff09;&#xff0c;然后就可以用公式&#xff1a;</p> 
+<p>x * a &#43; y * b - x * y</p> 
+<p>比如用例1&#xff0c;x &#61; 1&#xff0c;y&#61;0&#xff0c;a&#61;1&#xff0c;b&#61;2&#xff0c;最终结果为 1 * 1 &#43; 0 * 2 - 1 * 0 &#61; 1</p> 
+<p>比如用例2&#xff0c;x &#61; 0,  y&#61;2,  a&#61; 4, b&#61;2&#xff0c;最终结果为 0 * 4 &#43; 2 * 2 - 0 * 2 &#61; 4</p> 
+<p>再比如自测用例&#xff1a;</p> 
+<blockquote> 
+ <p>4<br /> 1001<br /> 0001</p> 
+</blockquote> 
+<p>其中 x &#61; 2&#xff0c;y&#61;1, a&#61;2,b&#61;2&#xff0c;最终结果为&#xff1a;2*2 &#43; 1*2 - 2*1 &#61; 4</p> 
+<hr /> 
+<p>2023.06.18</p> 
+<p>本题Java使用int可能会发生整型溢出&#xff0c;因此建议使用long</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const n &#61; lines[0] - 0;
+    const bin1 &#61; lines[1];
+    const bin2 &#61; lines[2];
+    console.log(getResult(n, bin1, bin2));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {number} n 二进制长度
+ * &#64;param {string} bin1 可能产生错误交换的二进制
+ * &#64;param {string} bin2 不会发生错误的二进制
+ */
+function getResult(n, bin1, bin2) {
+  // 找出bin2值为0的位&#xff0c;并统计对应位上bin1的值为0的有x个
+  let x &#61; 0;
+  // 找出bin2值为0的位&#xff0c;并统计对应位上bin1的值为1的有y个
+  let y &#61; 0;
+  // 统计bin1总共有多少个1
+  let a &#61; 0;
+  // 统计bin1总共有多少个0
+  let b &#61; 0;
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    if (bin1[i] &#61;&#61; &#34;0&#34;) {
+      b&#43;&#43;;
+      if (bin2[i] &#61;&#61; &#34;0&#34;) x&#43;&#43;;
+    } else {
+      a&#43;&#43;;
+      if (bin2[i] &#61;&#61; &#34;0&#34;) y&#43;&#43;;
+    }
+  }
+
+  return x * a &#43; y * b - x * y;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    String bin1 &#61; sc.next();
+    String bin2 &#61; sc.next();
+
+    System.out.println(getResult(n, bin1, bin2));
+  }
+
+  /**
+   * &#64;param n 二进制长度
+   * &#64;param bin1 可能产生错误交换的二进制
+   * &#64;param bin2 不会发生错误的二进制
+   * &#64;return 产生错误结果的情况有几种
+   */
+  public static long getResult(int n, String bin1, String bin2) {
+    // 找出bin2值为0的位&#xff0c;并统计对应位上bin1的值为0的有x个
+    long x &#61; 0;
+    // 找出bin2值为0的位&#xff0c;并统计对应位上bin1的值为1的有y个
+    long y &#61; 0;
+    // 统计bin1总共有多少个1
+    long a &#61; 0;
+    // 统计bin1总共有多少个0
+    long b &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (bin1.charAt(i) &#61;&#61; &#39;0&#39;) {
+        b&#43;&#43;;
+        if (bin2.charAt(i) &#61;&#61; &#39;0&#39;) x&#43;&#43;;
+      } else {
+        a&#43;&#43;;
+        if (bin2.charAt(i) &#61;&#61; &#39;0&#39;) y&#43;&#43;;
+      }
+    }
+
+    return x * a &#43; y * b - x * y;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<p></p> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+bin1 &#61; input()
+bin2 &#61; input()
+
+
+# 算法入口
+def getResult(n, bin1, bin2):
+    &#34;&#34;&#34;
+    :param n: 二进制长度
+    :param bin1: 可能产生错误交换的二进制
+    :param bin2: 不会发生错误的二进制
+    :return: 产生错误结果的情况有几种
+    &#34;&#34;&#34;
+    # 找出bin2值为0的位&#xff0c;并统计对应位上bin1的值为0的有x个
+    x &#61; 0
+    # 找出bin2值为0的位&#xff0c;并统计对应位上bin1的值为1的有y个
+    y &#61; 0
+    # 统计bin1总共有多少个1
+    a &#61; 0
+    # 统计bin1总共有多少个0
+    b &#61; 0
+
+    for i in range(n):
+        if bin1[i] &#61;&#61; &#39;0&#39;:
+            b &#43;&#61; 1
+            if bin2[i] &#61;&#61; &#39;0&#39;:
+                x &#43;&#61; 1
+        else:
+            a &#43;&#61; 1
+            if bin2[i] &#61;&#61; &#39;0&#39;:
+                y &#43;&#61; 1
+
+    return x * a &#43; y * b - x * y
+
+
+# 算法调用
+print(getResult(n, bin1, bin2))
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 1000000
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    char bin1[MAX_SIZE];
+    scanf(&#34;%s&#34;, bin1);
+
+    char bin2[MAX_SIZE];
+    scanf(&#34;%s&#34;, bin2);
+
+    // 找出bin2值为0的位&#xff0c;并统计对应位上bin1的值为0的有x个
+    long x &#61; 0;
+    // 找出bin2值为0的位&#xff0c;并统计对应位上bin1的值为1的有y个
+    long y &#61; 0;
+
+    // 统计bin1总共有多少个1
+    long a &#61; 0;
+    // 统计bin1总共有多少个0
+    long b &#61; 0;
+
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        if(bin1[i] &#61;&#61; &#39;0&#39;) {
+            b&#43;&#43;;
+            if(bin2[i] &#61;&#61; &#39;0&#39;) x&#43;&#43;;
+        } else {
+            a&#43;&#43;;
+            if(bin2[i] &#61;&#61; &#39;0&#39;) y&#43;&#43;;
+        }
+    }
+
+    printf(&#34;%ld\n&#34;, x * a &#43; y * b - x * y);
+
+    return 0;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

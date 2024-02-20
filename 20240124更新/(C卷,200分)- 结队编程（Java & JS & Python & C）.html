@@ -1,0 +1,742 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 结队编程（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>某部门计划通过结队编程来进行项目开发&#xff0c;</p> 
+<p>已知该部门有 N 名员工&#xff0c;每个员工有独一无二的职级&#xff0c;每三个员工形成一个小组进行结队编程&#xff0c;结队分组规则如下&#xff1a;</p> 
+<blockquote> 
+ <p>从部门中选出序号分别为 i、j、k 的3名员工&#xff0c;他们的职级分贝为 level[i]&#xff0c;level[j]&#xff0c;level[k]&#xff0c;</p> 
+ <p>结队小组满足 level[i] &lt; level[j] &lt; level[k] 或者 level[i] &gt; level[j] &gt; level[k]&#xff0c;</p> 
+ <p>其中 0 ≤ i &lt; j &lt; k &lt; n。</p> 
+</blockquote> 
+<p>请你按上述条件计算可能组合的小组数量。同一员工可以参加多个小组。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>第一行输入&#xff1a;员工总数 n</p> 
+<p>第二行输入&#xff1a;按序号依次排列的员工的职级 level&#xff0c;中间用空格隔开</p> 
+<p></p> 
+<p>限制&#xff1a;</p> 
+<ul><li>1 ≤ n ≤ 6000</li><li>1 ≤ level[i] ≤ 10^5</li></ul> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>可能结队的小组数量</p> 
+<p></p> 
+<h3 id="%E7%94%A8%E4%BE%8B">用例</h3> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 1 2 3 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">可能结队成的组合(1,2,3)、(1,2,4)、(1,3,4)、(2,3,4)</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 5 4 7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">根据结队条件&#xff0c;我们无法为该部门组建小组</td></tr></tbody></table> 
+<p> </p> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h3> 
+<p>本题的意思其实就是让我们求解给定输入数组中&#xff0c;比如用例1中 [1,2,3,4] &#xff0c;每个数组元素&#xff1a;</p> 
+<ul><li>左边比自己大的元素的个数&#xff0c;设为&#xff1a;leftBiggerCount</li><li>左边比自己小的元素的个数&#xff0c;设为&#xff1a;leftSmallerCount</li><li>右边比自己大的元素的个数&#xff0c;设为&#xff1a;rightBiggerCount</li><li>右边比自己小的元素是的个数&#xff0c;设为&#xff1a;rightSmallerCount</li></ul> 
+<p>当我们求解出每个数组元素的上述信息后&#xff0c;累加每个数组元素的如下计算结果&#xff1a;</p> 
+<blockquote> 
+ <p>leftBiggerCount * rightSmallerCount &#43; leftSmallerCount * rightBiggerCount</p> 
+</blockquote> 
+<p>比如题目用例1中&#xff0c;数组 [1,2,3,4]&#xff0c;索引为 idx</p> 
+<ul><li>idx&#61;0元素&#xff0c;leftBiggerCount &#61; 0&#xff0c;leftSmallerCount &#61; 0&#xff0c;rightBiggerCount &#61; 3&#xff0c;rightSmallerCount &#61; 0<br /><br /><span style="color:#fe2c24;">leftBiggerCount * rightSmallerCount &#43; leftSmallerCount * rightBiggerCount &#61; 0</span><br />  </li><li>idx&#61;1元素&#xff0c;leftBiggerCount &#61; 0&#xff0c;leftSmallerCount &#61; 1&#xff0c;rightBiggerCount &#61; 2&#xff0c;rightSmallerCount &#61; 0<br /><br /><span style="color:#fe2c24;">leftBiggerCount * rightSmallerCount &#43; leftSmallerCount * rightBiggerCount &#61; 2</span><br />  </li><li>idx&#61;2元素&#xff0c;leftBiggerCount &#61; 0&#xff0c;leftSmallerCount &#61; 2&#xff0c;rightBiggerCount &#61; 1&#xff0c;rightSmallerCount &#61; 0<br /><br /><span style="color:#fe2c24;">leftBiggerCount * rightSmallerCount &#43; leftSmallerCount * rightBiggerCount &#61; 2</span><br />  </li><li>idx&#61;3元素&#xff0c;leftBiggerCount &#61; 0&#xff0c;leftSmallerCount &#61; 3&#xff0c;rightBiggerCount &#61; 0&#xff0c;rightSmallerCount &#61; 0<br /><br /><span style="color:#fe2c24;">leftBiggerCount * rightSmallerCount &#43; leftSmallerCount * rightBiggerCount &#61; 0</span></li></ul> 
+<p>因此数组[1,2,3,4]的结队编程数量为4。</p> 
+<p></p> 
+<h3>暴力解法</h3> 
+<hr /> 
+<p>那么如何求解每个元素左右两边大于自己&#xff0c;小于自己的元素数量呢&#xff1f;</p> 
+<p>最简单的思路是暴力求解。定义两层循环&#xff0c;外层确定结队中间值&#xff0c;内层两个平级循环&#xff0c;分别扫描中间值左边&#xff0c;和中间值右边。</p> 
+<p>整体时间复杂度O(n^2)&#xff0c;本题1 ≤ n ≤ 6000&#xff0c;有超时的可能。</p> 
+<p>具体实现请看代码。</p> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入处理
+void (async function () {
+  const n &#61; parseInt(await readline());
+  const levels &#61; (await readline()).split(&#34; &#34;).map(Number);
+  console.log(getResult(n, levels));
+})();
+
+function getResult(n, levels) {
+  let ans &#61; 0;
+
+  for (let i &#61; 1; i &lt; n - 1; i&#43;&#43;) {
+    let mid &#61; levels[i];
+
+    let leftSmallerCount &#61; 0;
+    let leftBiggerCount &#61; 0;
+
+    for (let j &#61; 0; j &lt; i; j&#43;&#43;) {
+      if (levels[j] &gt; mid) {
+        leftBiggerCount&#43;&#43;;
+      } else {
+        leftSmallerCount&#43;&#43;;
+      }
+    }
+
+    let rightSmallerCount &#61; 0;
+    let rightBiggerCount &#61; 0;
+
+    for (let k &#61; i &#43; 1; k &lt; n; k&#43;&#43;) {
+      if (levels[k] &gt; mid) {
+        rightBiggerCount&#43;&#43;;
+      } else {
+        rightSmallerCount&#43;&#43;;
+      }
+    }
+
+    ans &#43;&#61;
+      leftBiggerCount * rightSmallerCount &#43; leftSmallerCount * rightBiggerCount;
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+    int[] levels &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(n, levels));
+  }
+
+  public static long getResult(int n, int[] levels) {
+    long ans &#61; 0;
+
+    for (int i &#61; 1; i &lt; n - 1; i&#43;&#43;) {
+      int mid &#61; levels[i];
+
+      long leftSmallerCount &#61; 0;
+      long leftBiggerCount &#61; 0;
+
+      for (int j &#61; 0; j &lt; i; j&#43;&#43;) {
+        if (levels[j] &gt; mid) {
+          leftBiggerCount&#43;&#43;;
+        } else {
+          leftSmallerCount&#43;&#43;;
+        }
+      }
+
+      long rightSmallerCount &#61; 0;
+      long rightBiggerCount &#61; 0;
+
+      for (int k &#61; i &#43; 1; k &lt; n; k&#43;&#43;) {
+        if (levels[k] &gt; mid) {
+          rightBiggerCount&#43;&#43;;
+        } else {
+          rightSmallerCount&#43;&#43;;
+        }
+      }
+
+      ans &#43;&#61; leftSmallerCount * rightBiggerCount &#43; leftBiggerCount * rightSmallerCount;
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+levels &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    ans &#61; 0
+
+    for i in range(1, n - 1):
+        mid &#61; levels[i]
+
+        leftSmallerCount &#61; 0
+        leftBiggerCount &#61; 0
+
+        for j in range(i):
+            if levels[j] &gt; mid:
+                leftBiggerCount &#43;&#61; 1
+            else:
+                leftSmallerCount &#43;&#61; 1
+
+        rightSmallerCount &#61; 0
+        rightBiggerCount &#61; 0
+
+        for k in range(i &#43; 1, n):
+            if levels[k] &gt; mid:
+                rightBiggerCount &#43;&#61; 1
+            else:
+                rightSmallerCount &#43;&#61; 1
+
+        ans &#43;&#61; leftSmallerCount * rightBiggerCount &#43; leftBiggerCount * rightSmallerCount
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p> </p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 6000
+
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int levels[MAX_SIZE];
+    int levels_size &#61; 0;
+    while (scanf(&#34;%d&#34;, &amp;levels[levels_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    long ans &#61; 0;
+
+    for (int i &#61; 1; i &lt; n - 1; i&#43;&#43;) {
+        int mid &#61; levels[i];
+
+        long leftSmallerCount &#61; 0;
+        long leftBiggerCount &#61; 0;
+
+        for (int j &#61; 0; j &lt; i; j&#43;&#43;) {
+            if (levels[j] &gt; mid) {
+                leftBiggerCount&#43;&#43;;
+            } else {
+                leftSmallerCount&#43;&#43;;
+            }
+        }
+
+        long rightSmallerCount &#61; 0;
+        long rightBiggerCount &#61; 0;
+
+        for (int k &#61; i &#43; 1; k &lt; n; k&#43;&#43;) {
+            if (levels[k] &gt; mid) {
+                rightBiggerCount&#43;&#43;;
+            } else {
+                rightSmallerCount&#43;&#43;;
+            }
+        }
+
+        ans &#43;&#61; leftSmallerCount * rightBiggerCount &#43; leftBiggerCount * rightSmallerCount;
+    }
+
+    printf(&#34;%ld\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<p></p> 
+<p></p> 
+<h3>二叉搜索树解法</h3> 
+<hr /> 
+<p>本题更优策略可以使用二叉搜索树&#xff0c;将时间复杂度降到O(NlogN)。</p> 
+<p>二叉搜索树&#xff0c;也叫二叉排序树&#xff0c;特点是其中序遍历序列是有序的。而构建二叉搜索树的步骤很简单&#xff0c;每次向二叉搜索树加入新节点时&#xff0c;都去和遇到的&#xff08;子树&#xff09;根节点进行比较&#xff1a;</p> 
+<ul><li>如果 新节点的值 &lt; 根节点的值&#xff0c;则插入到根节点的左子树中&#xff0c;然后继续递归和左子树根比较</li><li>如果 新节点的值 &gt; 根节点的值&#xff0c;则插入到根节点的右子树中&#xff0c;然后继续递归和右子树根比较</li></ul> 
+<p>因此&#xff0c;二叉搜索树中每个节点的左子树中所有节点的值都比自己小&#xff0c;右子树中所有节点的值都比自己大。</p> 
+<p></p> 
+<p>那么如何利用二叉搜索树解决本题呢&#xff1f;这里我通过图示说明。</p> 
+<p>首先我们来定义出二叉搜索树节点结构&#xff1a;</p> 
+<blockquote> 
+ <pre>{
+      idx:,  // 数组元素的索引
+      val:,  // 当前节点值&#xff08;数组元素的值&#xff09;
+      left:, // 当前节点的左子节点
+      right:, // 当前节点的右子节点
+      rightSmallerCount:, // 该数组元素右边比自己小的元素的个数
+      leftChildCount:,  // 该节点的左子树中节点个数
+  }</pre> 
+</blockquote> 
+<p>这里的二叉搜索树节点和数组元素是互相关联的。</p> 
+<p></p> 
+<p>然后&#xff0c;我们需要按照输入数组的倒序取元素插入到二叉搜索树中&#xff08;PS&#xff1a;原因后面说明&#xff09;</p> 
+<p>由于题目用例太极端&#xff0c;这里我自己建一个 [3, 1, 7, 2, 8, 6, 4 , 9, 5]</p> 
+<p></p> 
+<blockquote> 
+ <p>[3, 1, 7, 2, 8, 6, 4 , 9, <span style="color:#fe2c24;"><strong>5</strong></span>]</p> 
+</blockquote> 
+<p>插入5</p> 
+<p><img alt="" height="244" src="https://img-blog.csdnimg.cn/direct/b8d9b6fc199e48a2b7d7c09f8f19d7c6.png" width="750" /></p> 
+<p></p> 
+<hr /> 
+<blockquote> 
+ <p>[3, 1, 7, 2, 8, 6, 4 , <span style="color:#fe2c24;"><strong>9</strong></span>, 5]</p> 
+</blockquote> 
+<p>插入9</p> 
+<p><img alt="" height="369" src="https://img-blog.csdnimg.cn/direct/1b59b98a775f4b618bf257dc45297ed2.png" width="1004" /></p> 
+<hr /> 
+<p><img alt="" height="392" src="https://img-blog.csdnimg.cn/direct/8e851d0d180c462198d905030229db5c.png" width="841" /></p> 
+<p></p> 
+<hr /> 
+<blockquote> 
+ <p>[3, 1, 7, 2, 8, 6, <span style="color:#fe2c24;"><strong>4</strong></span>, 9, 5]</p> 
+</blockquote> 
+<p>插入4</p> 
+<p><img alt="" height="493" src="https://img-blog.csdnimg.cn/direct/91fd551294714f3fa655a7b52400afeb.png" width="1076" /></p> 
+<hr /> 
+<p><img alt="" height="412" src="https://img-blog.csdnimg.cn/direct/aec742e10c474160bc67e71d46b6d43f.png" width="1065" /></p> 
+<p></p> 
+<hr /> 
+<blockquote> 
+ <p>[3, 1, 7, 2, 8, <span style="color:#fe2c24;"><strong>6</strong></span>, 4 , 9, 5]</p> 
+</blockquote> 
+<p>插入6</p> 
+<p><img alt="" height="439" src="https://img-blog.csdnimg.cn/direct/283c5f6255264f5296644e2eabffb519.png" width="1200" /></p> 
+<hr /> 
+<p><img alt="" height="519" src="https://img-blog.csdnimg.cn/direct/bde1a7e2177c4cb599c59d6014a08e89.png" width="1194" /></p> 
+<hr /> 
+<p><img alt="" height="553" src="https://img-blog.csdnimg.cn/direct/b0f72f929d8a4acc8d7f3362665091b2.png" width="1086" /></p> 
+<hr /> 
+<blockquote> 
+ <p>[3, 1, 7, 2, <span style="color:#fe2c24;"><strong>8</strong></span>, 6, 4 , 9, 5]</p> 
+</blockquote> 
+<p>插入8</p> 
+<p><img alt="" height="576" src="https://img-blog.csdnimg.cn/direct/8ab919460ed64668ad8f7703199b6434.png" width="1190" /></p> 
+<hr /> 
+<p><img alt="" height="586" src="https://img-blog.csdnimg.cn/direct/d6706a3a52694d79bcb5b0af0c63569b.png" width="1200" /></p> 
+<hr /> 
+<p><img alt="" height="583" src="https://img-blog.csdnimg.cn/direct/4afa0cc6399e4d2798c658c1e0f99bbe.png" width="1200" /></p> 
+<hr /> 
+<p><img alt="" height="650" src="https://img-blog.csdnimg.cn/direct/60bced4eae914138b6e1677f46efe032.png" width="1200" /></p> 
+<hr /> 
+<blockquote> 
+ <p>[3, 1, 7, <span style="color:#fe2c24;"><strong>2</strong></span>, 8, 6, 4 , 9, 5]</p> 
+</blockquote> 
+<p>插入2</p> 
+<p><img alt="" height="704" src="https://img-blog.csdnimg.cn/direct/d6a60d4b427d4a58831cc7dc555bc227.png" width="1200" /></p> 
+<hr /> 
+<p><img alt="" height="659" src="https://img-blog.csdnimg.cn/direct/3b3fb9d621704267bb9c117338f08ba7.png" width="1200" /></p> 
+<hr /> 
+<p><img alt="" height="656" src="https://img-blog.csdnimg.cn/direct/91d9bcb8d8d748538265eb127d0a1e70.png" width="1143" /></p> 
+<p>后面就不画了&#xff0c;大家可以自己继续往下推导。</p> 
+<hr /> 
+<p></p> 
+<p>总结一下&#xff0c;插入新节点到二叉搜索树中&#xff0c;新节点需要不断和各种子树的根进行比较&#xff1a;</p> 
+<ul><li>如果新节点的值 &lt; 根节点的值&#xff0c;则<br /><br /><span style="color:#fe2c24;">Node(根).leftChildCount&#43;&#43;</span><br /><br /> 新节点递归进入根的左子树&#xff0c;继续比较<br />  </li><li>如果新节点的值 &gt; 根节点的值&#xff0c;则<br /><br /><span style="color:#fe2c24;">Node(新).rightSmallerCount &#43;&#61; 1 &#43; Node(根).leftChildCount</span><br /><br /> 新节点递归进入根的右子树&#xff0c;继续比较</li></ul> 
+<p>这样的话&#xff0c;当我们插入数组中所有元素后&#xff0c;每个节点上的rightSmallerCount即为对应元素&#xff1a;右边比自己小的元素的个数。</p> 
+<p></p> 
+<p>然后我们将原数组反转后&#xff0c;继续一遍上面构建二叉树的过程&#xff0c;即可得到数组中每个元素左边比自己小的元素的个数。&#xff08;具体请看代码实现&#xff09;</p> 
+<p></p> 
+<p>即&#xff0c;通过构建两个二叉搜索树&#xff0c;我们即可得到每个元素的&#xff1a;</p> 
+<ul><li>左边比自己小的元素的个数 leftSmallerCount</li><li>右边比自己小的元素的个数 rightSmallerCount</li></ul> 
+<p>而基于每个元素的索引位值idx&#xff0c;我们又能得到每个元素levels[idx]&#xff1a;</p> 
+<ul><li>左边一共有多少个元素&#xff0c;levels[idx]左边一共idx个元素</li><li>右边一共有多少个元素&#xff0c;levels[idx]右边一共levels.length - 1 - idx个元素</li></ul> 
+<p>那么每个元素的&#xff1a;</p> 
+<ul><li>左边比自己大的元素的个数 leftBiggerCount &#61; idx - leftSmallerCount</li><li>右边比自己大的元素的个数 rightBiggerCount &#61; levels.length - 1 - idx - rightSmallerCount</li></ul> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入处理
+void (async function () {
+  const n &#61; parseInt(await readline());
+  const levels &#61; (await readline()).split(&#34; &#34;).map(Number);
+  console.log(getResult(n, levels));
+})();
+
+class Node {
+  constructor(idx, val) {
+    this.idx &#61; idx; // 当前节点的值在原数组中的索引
+    this.val &#61; val; // 当前节点的值
+    this.left &#61; null; // 当前节点的左子节点
+    this.right &#61; null; // 当前节点的右子节点
+    this.count &#61; 0; // 当前节点的左子树中节点数量
+  }
+}
+
+/**
+ * 向二叉搜索树中插入新节点
+ *
+ * &#64;param root &#xff08;树/子树&#xff09;根节点
+ * &#64;param node 要插入的新节点
+ * &#64;param res 数组&#xff0c;其中res[i]代表第i个节点右边比自己小的元素的个数
+ * &#64;return 根节点
+ */
+function insertNode(root, node, res) {
+  if (root &#61;&#61; null) {
+    return node;
+  }
+
+  // 由于本题中每个员工有独一无二的职级&#xff0c;即levels中所有元素值都不互相相同&#xff0c;因此这里非大即小
+  if (node.val &lt; root.val) {
+    // 如果要插入的新节点的值&#xff0c;比根节点小&#xff0c;则插入根节点左子树
+    root.count&#43;&#43;; // 根节点左子树的节点树&#43;1
+    root.left &#61; insertNode(root.left, node, res); // 递归进入左子树继续比较
+  } else {
+    // 如果要插入的新节点的值&#xff0c;比根节点大&#xff0c;则需要插入根节点的右子树
+    res[node.idx] &#43;&#61; root.count &#43; 1; // 本处代码原理请看题目解析中的图示
+    root.right &#61; insertNode(root.right, node, res); // 递归进入右子树继续比较
+  }
+
+  return root;
+}
+
+function getResult(n, levels) {
+  let root &#61; null;
+
+  // rightSmaller[i] 记录的是 levels[i] 右边比自己小的元素的个数
+  const rightSmaller &#61; new Array(n).fill(0);
+  for (let i &#61; n - 1; i &gt;&#61; 0; i--) {
+    root &#61; insertNode(root, new Node(i, levels[i]), rightSmaller);
+  }
+
+  levels.reverse();
+  root &#61; null;
+
+  // leftSmaller[i] 记录的是 levels[i] 左边比自己小的元素的个数
+  const leftSmaller &#61; new Array(n).fill(0);
+  for (let i &#61; n - 1; i &gt;&#61; 0; i--) {
+    root &#61; insertNode(root, new Node(i, levels[i]), leftSmaller);
+  }
+  leftSmaller.reverse();
+
+  // 统计各个元素&#xff1a; 左小 * 右大 &#43; 左大 * 右小
+  let sum &#61; 0;
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // 由于本题中每个员工有独一无二的职级&#xff0c;即levels中所有元素值都不互相相同
+    const leftSmallerCount &#61; leftSmaller[i];
+    // 索引i的左边有 i 个元素&#xff0c;而索引i的左边有leftSmallerCount个比自己小的&#xff0c;因此剩余 i - leftSmallerCount 都是比自己大的
+    const leftBiggerCount &#61; i - leftSmallerCount;
+
+    const rightSmallerCount &#61; rightSmaller[i];
+    // 索引i右边有 n-i-1 个元素&#xff0c;而索引i的右边有rightSmallerCount比自己小的&#xff0c;因此剩余 n-i-1-rightSmallerCount 都是比自己大的
+    const rightBiggerCount &#61; n - i - 1 - rightSmallerCount;
+
+    sum &#43;&#61;
+      leftSmallerCount * rightBiggerCount &#43; leftBiggerCount * rightSmallerCount;
+  }
+
+  return sum;
+}
+</code></pre> 
+<p> </p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+    int[] levels &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(n, levels));
+  }
+
+  static class Node {
+    int idx; // 当前节点的值在原数组中的索引
+    int val; // 当前节点的值
+    Node left; // 当前节点的左子节点
+    Node right; // 当前节点的右子节点
+    int count; // 当前节点的左子树中节点数量
+
+    public Node(int idx, int val) {
+      this.idx &#61; idx;
+      this.val &#61; val;
+    }
+  }
+
+  /**
+   * 向二叉搜索树中插入新节点
+   *
+   * &#64;param root &#xff08;树/子树&#xff09;根节点
+   * &#64;param node 要插入的新节点
+   * &#64;param res 数组&#xff0c;其中res[i]代表第i个节点右边比自己小的元素的个数
+   * &#64;return 根节点
+   */
+  public static Node insertNode(Node root, Node node, int[] res) {
+    if (root &#61;&#61; null) {
+      return node;
+    }
+
+    // 由于本题中每个员工有独一无二的职级&#xff0c;即levels中所有元素值都不互相相同&#xff0c;因此这里非大即小
+    if (node.val &lt; root.val) {
+      // 如果要插入的新节点的值&#xff0c;比根节点小&#xff0c;则插入根节点左子树
+      root.count&#43;&#43;; // 根节点左子树的节点树&#43;1
+      root.left &#61; insertNode(root.left, node, res); // 递归进入左子树继续比较
+    } else {
+      // 如果要插入的新节点的值&#xff0c;比根节点大&#xff0c;则需要插入根节点的右子树
+      res[node.idx] &#43;&#61; root.count &#43; 1; // 本处代码原理请看题目解析中的图示
+      root.right &#61; insertNode(root.right, node, res); // 递归进入右子树继续比较
+    }
+
+    return root;
+  }
+
+  public static long getResult(int n, int[] levels) {
+    Node root &#61; null;
+
+    // rightSmaller[i] 记录的是 levels[i] 右边比自己小的元素的个数
+    int[] rightSmaller &#61; new int[n];
+    for (int i &#61; n - 1; i &gt;&#61; 0; i--) {
+      root &#61; insertNode(root, new Node(i, levels[i]), rightSmaller);
+    }
+
+    reverse(levels);
+    root &#61; null;
+
+    // leftSmaller[i] 记录的是 levels[i] 左边比自己小的元素的个数
+    int[] leftSmaller &#61; new int[n];
+    for (int i &#61; n - 1; i &gt;&#61; 0; i--) {
+      root &#61; insertNode(root, new Node(i, levels[i]), leftSmaller);
+    }
+    reverse(leftSmaller);
+
+    // 统计各个元素&#xff1a; 左小 * 右大 &#43; 左大 * 右小
+    long sum &#61; 0;
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 由于本题中每个员工有独一无二的职级&#xff0c;即levels中所有元素值都不互相相同
+      long leftSmallerCount &#61; leftSmaller[i];
+      // 索引i的左边有 i 个元素&#xff0c;而索引i的左边有leftSmallerCount个比自己小的&#xff0c;因此剩余 i - leftSmallerCount 都是比自己大的
+      long leftBiggerCount &#61; i - leftSmallerCount;
+
+      long rightSmallerCount &#61; rightSmaller[i];
+      // 索引i右边有 n-i-1 个元素&#xff0c;而索引i的右边有rightSmallerCount比自己小的&#xff0c;因此剩余 n-i-1-rightSmallerCount 都是比自己大的
+      long rightBiggerCount &#61; n - i - 1 - rightSmallerCount;
+
+      sum &#43;&#61; leftSmallerCount * rightBiggerCount &#43; leftBiggerCount * rightSmallerCount;
+    }
+
+    return sum;
+  }
+
+  public static void reverse(int[] nums) {
+    int l &#61; 0;
+    int r &#61; nums.length - 1;
+
+    while (l &lt; r) {
+      int tmp &#61; nums[l];
+      nums[l] &#61; nums[r];
+      nums[r] &#61; tmp;
+      l&#43;&#43;;
+      r--;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">class Node:
+    def __init__(self, idx, val):
+        self.idx &#61; idx
+        self.val &#61; val
+        self.left &#61; None
+        self.right &#61; None
+        self.count &#61; 0
+
+
+def insertNode(root, node, res):
+    if root is None:
+        return node
+
+    if node.val &lt; root.val:
+        root.count &#43;&#61; 1
+        root.left &#61; insertNode(root.left, node, res)
+    else:
+        res[node.idx] &#43;&#61; root.count &#43; 1
+        root.right &#61; insertNode(root.right, node, res)
+
+    return root
+
+
+# 输入获取
+n &#61; int(input())
+levels &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    root &#61; None
+
+    rightSmaller &#61; [0] * n
+    for i in range(n - 1, -1, -1):
+        root &#61; insertNode(root, Node(i, levels[i]), rightSmaller)
+
+    levels.reverse()
+    root &#61; None
+
+    leftSmaller &#61; [0] * n
+    for i in range(n - 1, -1, -1):
+        root &#61; insertNode(root, Node(i, levels[i]), leftSmaller)
+    leftSmaller.reverse()
+
+    total &#61; 0
+    for i in range(n):
+        leftSmallerCount &#61; leftSmaller[i]
+        leftBiggerCount &#61; i - leftSmallerCount
+
+        rightSmallerCount &#61; rightSmaller[i]
+        rightBiggerCount &#61; n - i - 1 - rightSmallerCount
+
+        total &#43;&#61; leftSmallerCount * rightBiggerCount &#43; leftBiggerCount * rightSmallerCount
+
+    return total
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 6000
+
+typedef struct Node {
+    int idx; // 当前节点的值在原数组中的索引
+    int val; // 当前节点的值
+    struct Node *left; // 当前节点的左子节点
+    struct Node *right; // 当前节点的右子节点
+    int count; // 当前节点的左子树中节点数量
+} Node;
+
+Node *new_Node(int idx, int val) {
+    Node *node &#61; (Node *) malloc(sizeof(Node));
+    node-&gt;idx &#61; idx;
+    node-&gt;val &#61; val;
+    node-&gt;left &#61; NULL;
+    node-&gt;right &#61; NULL;
+    node-&gt;count &#61; 0;
+
+    return node;
+}
+
+/**
+ * 向二叉搜索树中插入新节点
+ *
+ * &#64;param root &#xff08;树/子树&#xff09;根节点
+ * &#64;param node 要插入的新节点
+ * &#64;param res 数组&#xff0c;其中res[i]代表第i个节点右边比自己小的元素的个数
+ * &#64;return 根节点
+ */
+Node *insertNode(Node *root, Node *node, int res[]) {
+    if (root &#61;&#61; NULL) {
+        return node;
+    }
+
+    // 由于本题中每个员工有独一无二的职级&#xff0c;即levels中所有元素值都不互相相同&#xff0c;因此这里非大即小
+    if (node-&gt;val &lt; root-&gt;val) {
+        // 如果要插入的新节点的值&#xff0c;比根节点小&#xff0c;则插入根节点左子树
+        root-&gt;count&#43;&#43;; // 根节点左子树的节点树&#43;1
+        root-&gt;left &#61; insertNode(root-&gt;left, node, res); // 递归进入左子树继续比较
+    } else {
+        // 如果要插入的新节点的值&#xff0c;比根节点大&#xff0c;则需要插入根节点的右子树
+        res[node-&gt;idx] &#43;&#61; root-&gt;count &#43; 1; // 本处代码原理请看题目解析中的图示
+        root-&gt;right &#61; insertNode(root-&gt;right, node, res); // 递归进入右子树继续比较
+    }
+
+    return root;
+}
+
+void reverse(int nums[], int nums_size) {
+    int l &#61; 0;
+    int r &#61; nums_size - 1;
+
+    while (l &lt; r) {
+        int tmp &#61; nums[l];
+        nums[l] &#61; nums[r];
+        nums[r] &#61; tmp;
+        l&#43;&#43;;
+        r--;
+    }
+}
+
+long getResult(int n, int levels[], int levels_size) {
+    Node *root &#61; NULL;
+
+    // rightSmaller[i] 记录的是 levels[i] 右边比自己小的元素的个数
+    int rightSmaller[MAX_SIZE] &#61; {0};
+    for (int i &#61; n - 1; i &gt;&#61; 0; i--) {
+        root &#61; insertNode(root, new_Node(i, levels[i]), rightSmaller);
+    }
+
+    reverse(levels, levels_size);
+    root &#61; NULL;
+
+    // leftSmaller[i] 记录的是 levels[i] 左边比自己小的元素的个数
+    int leftSmaller[MAX_SIZE] &#61; {0};
+    for (int i &#61; n - 1; i &gt;&#61; 0; i--) {
+        root &#61; insertNode(root, new_Node(i, levels[i]), leftSmaller);
+    }
+    reverse(leftSmaller, levels_size);
+
+    // 统计各个元素&#xff1a; 左小 * 右大 &#43; 左大 * 右小
+    long sum &#61; 0;
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        // 由于本题中每个员工有独一无二的职级&#xff0c;即levels中所有元素值都不互相相同
+        int leftSmallerCount &#61; leftSmaller[i];
+        // 索引i的左边有 i 个元素&#xff0c;而索引i的左边有leftSmallerCount个比自己小的&#xff0c;因此剩余 i - leftSmallerCount 都是比自己大的
+        int leftBiggerCount &#61; i - leftSmallerCount;
+
+        int rightSmallerCount &#61; rightSmaller[i];
+        // 索引i右边有 n-i-1 个元素&#xff0c;而索引i的右边有rightSmallerCount比自己小的&#xff0c;因此剩余 n-i-1-rightSmallerCount 都是比自己大的
+        int rightBiggerCount &#61; n - i - 1 - rightSmallerCount;
+
+        sum &#43;&#61;  leftSmallerCount * rightBiggerCount &#43; leftBiggerCount * rightSmallerCount;
+    }
+
+    return sum;
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int levels[MAX_SIZE];
+    int levels_size &#61; 0;
+    while (scanf(&#34;%d&#34;, &amp;levels[levels_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    printf(&#34;%ld\n&#34;, getResult(n, levels, levels_size));
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

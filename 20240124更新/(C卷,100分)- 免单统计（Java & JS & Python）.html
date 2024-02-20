@@ -1,0 +1,169 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 免单统计（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>华为商城举办了一个促销活动&#xff0c;如果某顾客是某一秒内最早时刻下单的顾客&#xff08;可能是多个人&#xff09;&#xff0c;则可以获取免单。</p> 
+<p>请你编程计算有多少顾客可以获取免单。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为 n 行数据&#xff0c;每一行表示一位顾客的下单时间</p> 
+<p>以&#xff08;年-月-日时-分-秒.毫秒&#xff09; yyyy-MM-ddHH:mm:ss.fff 形式给出。</p> 
+<ul><li><code>0&lt;n&lt;50000</code></li><li><code>2000&lt;yyyy&lt;2020</code></li><li><code>0&lt;MM&lt;&#61;12</code></li><li><code>0&lt;dd&lt;&#61;28</code></li><li><code>0&lt;&#61;HH&lt;&#61;23</code></li><li><code>0&lt;&#61;mm&lt;&#61;59</code></li><li><code>0&lt;&#61;ss&lt;&#61;59</code></li><li><code>0&lt;&#61;fff&lt;&#61;999</code></li></ul> 
+<p>所有输入保证合法。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个整数&#xff0c;表示有多少顾客可以获取免单。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 2019-01-01 00:00:00.001<br /> 2019-01-01 00:00:00.002<br /> 2019-01-01 00:00:00.003</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">样例 1 中&#xff0c;三个订单都是同一秒内下单&#xff0c;只有第一个订单最早下单&#xff0c;可以免单。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 2019-01-01 08:59:00.123<br /> 2019-01-01 08:59:00.123<br /> 2018-12-28 10:08:00.999</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">样例 2 中&#xff0c;前两个订单是同一秒内同一时刻&#xff08;也是最早&#xff09;下单&#xff0c;都可免单&#xff0c;第三个订单是当前秒内唯一一个订单&#xff08;也是最早&#xff09;&#xff0c;也可免单。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 2019-01-01 00:00:00.004<br /> 2019-01-01 00:00:00.004<br /> 2019-01-01 00:00:01.006<br /> 2019-01-01 00:00:01.006<br /> 2019-01-01 00:00:01.005</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">样例 3 中&#xff0c;前两个订单是同一秒内同一时刻&#xff08;也是最早&#xff09;下单&#xff0c;第三第四个订单不是当前秒内最早下单&#xff0c;不可免单&#xff0c;第五个订单可以免单。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>考察数组排序以及字符串操作。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61; n &#43; 1) {
+    lines.shift();
+    console.log(getResult(lines));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr) {
+  arr.sort().reverse();
+
+  const stack &#61; [arr.pop()];
+
+  while (arr.length) {
+    const time &#61; arr.pop();
+    const top &#61; stack.at(-1);
+    if (top &#61;&#61;&#61; time || top.substring(0, 19) !&#61;&#61; time.substring(0, 19)) {
+      stack.push(time);
+    }
+  }
+
+  return stack.length;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+
+    String[] arr &#61; new String[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      arr[i] &#61; sc.nextLine();
+    }
+
+    System.out.println(getResult(arr));
+  }
+
+  // 算法入口
+  public static int getResult(String[] arr) {
+    Arrays.sort(arr);
+
+    LinkedList&lt;String&gt; stack &#61; new LinkedList&lt;&gt;();
+    stack.add(arr[0]);
+
+    int i &#61; 1;
+    while (i &lt; arr.length) {
+      String time &#61; arr[i&#43;&#43;];
+      String top &#61; stack.getLast();
+
+      if (top.equals(time) || !top.substring(0, 19).equals(time.substring(0, 19))) {
+        stack.add(time);
+      }
+    }
+
+    return stack.size();
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+arr &#61; [input() for _ in range(n)]
+
+
+# 算法入口
+def getResult():
+    arr.sort(reverse&#61;True)
+    stack &#61; [arr.pop()]
+
+    while len(arr) &gt; 0:
+        time &#61; arr.pop()
+        top &#61; stack[-1]
+
+        if top &#61;&#61; time or top[:19] !&#61; time[:19]:
+            stack.append(time)
+
+    return len(stack)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

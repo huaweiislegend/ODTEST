@@ -1,0 +1,265 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 优雅子数组（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>如果一个数组中出现次数最多的元素出现大于等于K次&#xff0c;被称为 <em>k-优雅数组 </em>&#xff0c;k也可以被称为优雅阈值。<br /> 例如&#xff0c;数组1&#xff0c;2&#xff0c;3&#xff0c;1、2&#xff0c;3&#xff0c;1&#xff0c;它是一个3-优雅数组&#xff0c;因为元素1出现次数大于等于3次&#xff0c;<br /> 数组[1, 2, 3, 1, 2]就不是一个3-优雅数组&#xff0c;因为其中出现次数最多的元素是1和2&#xff0c;只出现了2次。</p> 
+<p>给定一个数组A和k&#xff0c;请求出A有多少子数组是k-优雅子数组。</p> 
+<p>子数组是数组中一个或多个连续元素组成的数组。</p> 
+<p>例如&#xff0c;数组[1,2,3,4]包含10个子数组&#xff0c;分别是&#xff1a;<br /> [1], [1,2], [1,2,3], [1,2,3,4], [2], [2,3], [2,3,4], [3], [3, 4], [4]。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入两个数字&#xff0c;以空格隔开&#xff0c;含义是&#xff1a;A数组长度 k值</p> 
+<p>第二行输入A数组元素&#xff0c;以空格隔开</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出A有多少子数组是k-优雅子数组</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">7 3<br /> 1 2 3 1 2 3 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">7 2<br /> 1 2 3 1 2 3 1</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">10</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>利用双指针&#xff08;即一个双重for&#xff09;找到所有子数组&#xff08;有点暴力&#xff09;&#xff0c;外层 i 指针指向子数组左边界&#xff0c;内层 j 指针指向子数组右边界&#xff0c;然后统计子数组内部各数字出现个数&#xff0c;若有数字出现次数大于等于k&#xff0c;则该子数组符合要求&#xff0c;统计结果ans&#43;&#43;。</p> 
+<p></p> 
+<p>上面算法逻辑中&#xff0c;找所有子数组的逻辑基本无法优化&#xff0c;但是统计每个子数组内部各数字出现次数的逻辑却可以优化。</p> 
+<p>我们可以基于动态规划前缀和的思想&#xff0c;对相同左边界的子数组&#xff0c;只统计初始子数组的内部元素个数&#xff0c;然后每当右边界变化&#xff0c;则基于上一个子数组的统计结果计算出新结果&#xff0c;例如&#xff1a;</p> 
+<p>自测用例&#xff1a;</p> 
+<blockquote> 
+ <p>7 <span style="color:#fe2c24;"><strong>2</strong></span><br /> 1 2 3 1 2 3 1</p> 
+</blockquote> 
+<p>左右指针移动图示</p> 
+<p><img alt="" height="574" src="https://img-blog.csdnimg.cn/01fb985ee5d8462fb27d55f0a7355abb.png" width="797" /></p> 
+<p>上面统计的都是以索引0元素开头的子数组情况。</p> 
+<p>当j指针移动到尾巴时&#xff0c;就可以i&#43;&#43;&#xff0c;然后开始新一轮的统计&#xff0c;即统计以索引 i 元素开头的所有子数组中符合要求的个数&#xff0c;例如</p> 
+<p><img alt="" height="507" src="https://img-blog.csdnimg.cn/0992b57a565d4c85ae9035006dd1bea8.png" width="735" /></p> 
+<p> 这种前缀思想可以避免大量的重复统计工作。</p> 
+<p>同时&#xff0c;每轮统计我们只需要一个对象保存统计结果&#xff0c;一轮统计结束&#xff0c;则丢弃统计结果&#xff0c;不会占用太多内存。</p> 
+<p></p> 
+<hr /> 
+<p>2023.02.22 上面逻辑有机考同学反馈&#xff0c;通过率只有33%&#xff0c;后面用例不通过原因是超时。</p> 
+<p>其实上面逻辑超时的原因很容易发现&#xff0c;就是暴力枚举了所有子数组&#xff0c;因此必须优化子数组获取逻辑&#xff0c;和一位网友讨论后&#xff0c;发现上面逻辑有一个可以优化的点</p> 
+<p><img alt="" height="574" src="https://img-blog.csdnimg.cn/01fb985ee5d8462fb27d55f0a7355abb.png" width="797" /></p> 
+<p>那就是上图最找到符合要求的子串后&#xff0c;下一步的 i, j 指针运动逻辑&#xff0c;按照前面逻辑思路是&#xff1a;</p> 
+<ul><li>i 后移一位</li><li>j 重新指向 i 新位置</li></ul> 
+<p>即如下图所示&#xff0c;此时count也重新统计</p> 
+<p><img alt="" height="105" src="https://img-blog.csdnimg.cn/8c02786b888648349e7937af1d4ec877.png" width="574" /></p> 
+<p> 但是真的有必要吗&#xff1f;</p> 
+<p>我们继续往下看&#xff0c;按照上面逻辑&#xff0c;我们必然会走到下图画红圈这一步&#xff0c;然后重新找到符合要求的子串</p> 
+<p><img alt="" height="445" src="https://img-blog.csdnimg.cn/06551c8fd36945ab839b82c709183800.png" width="677" /></p> 
+<p> 但是我们再回到下图第一轮时找到符合要求子串时的图示</p> 
+<p><img alt="" height="209" src="https://img-blog.csdnimg.cn/5f114ac7563e45d19349128ed1742191.png" width="670" /></p> 
+<p> 有没有发现什么端倪呢&#xff1f;</p> 
+<p>其实&#xff0c;我们在第一轮结束时&#xff0c;不需要将 i&#xff0c;j 重头开始&#xff0c;而是可以直接&#xff1a;</p> 
+<ul><li>i&#43;&#43;</li></ul> 
+<p>即变为下图</p> 
+<p><img alt="" height="121" src="https://img-blog.csdnimg.cn/848db3d066a8431a8acbf3cc51de5ae9.png" width="577" /></p> 
+<p>然后下一步j&#43;&#43;&#xff0c;很快就会进入&#xff0c;前面第二轮经过多次指针运动后才能进入的状态</p> 
+<p><img alt="" height="137" src="https://img-blog.csdnimg.cn/579e6cd11d8249d9888ca1d79a803e2e.png" width="670" /></p> 
+<p> 这个逻辑就非常节省时间了。</p> 
+<p></p> 
+<p>但是上面逻辑还是不够完善&#xff0c;比如大家看下面这个用例&#xff1a;</p> 
+<blockquote> 
+ <p>8 2<br /> 0 1 2 3 1 2 3 1</p> 
+</blockquote> 
+<p>我按照上面新逻辑画图演示下双指针运动过程</p> 
+<p><img alt="" height="690" src="https://img-blog.csdnimg.cn/a8bfb23ab026459eb09bdbee11fa992d.png" width="835" /></p> 
+<p> 当走到最后一步时&#xff0c;我们就找到符合要求的子数组。</p> 
+<p>那么按照前面逻辑&#xff0c;下一步我们应该 i&#43;&#43;&#xff08;注意i&#43;&#43;的时&#xff0c;对应的子数组就失去一个arr[i]&#xff0c;因此对应count[arr[i]]数量要减少&#xff09;</p> 
+<p><img alt="" height="146" src="https://img-blog.csdnimg.cn/94aab58f90d9400c8947eb97447c0c9e.png" width="835" /></p> 
+<p> 然后就又发现了符合要求的子数组&#xff0c;这一步在逻辑上没有问题&#xff0c;但是在代码实现上可能会发生问题&#xff0c;比如看下面伪代码&#xff1a;</p> 
+<pre><code class="language-javascript">l &#61; 0 // 左指针
+r &#61; 0 // 右指针
+
+// n是数组arr长度
+while(l &lt; n &amp;&amp; r &lt; n) {
+	c &#61; arr[r] // r指针指向的数组元素就是将要加入的左右指针内部的元素
+	
+	// count用于统计左右指针内部&#xff08;子数组&#xff09;c字符出现的次数
+	count[c]&#43;&#43;
+	
+	// k阈值
+	if(count[c] &gt;&#61; k) {
+		ans &#43;&#61; n - r // 发现符合要求的子数组后&#xff0c;可以拓展出n-r个符合要求的子数组
+		
+		count[arr[l]]-- // 左指针右移一格&#xff0c;但是右移前要减去左指针指向字符的统计次数
+		l&#43;&#43;
+	}
+	r&#43;&#43; // 右指针移动
+}</code></pre> 
+<p>上面代码大家有发现问题吗&#xff1f;</p> 
+<p>问题出在左指针L右移一格后&#xff0c;右指针R也右移了一格&#xff0c;即如下图所示</p> 
+<p><img alt="" height="378" src="https://img-blog.csdnimg.cn/942402f3dc7a4373b7081d5e6c2da2e8.png" width="788" /></p> 
+<p> 此时其实就遗漏部分符合要求的子数组情况。大家可以对照前面正确运动过程想一下。</p> 
+<p>那么该怎么改呢&#xff1f;</p> 
+<p><img alt="" height="526" src="https://img-blog.csdnimg.cn/72caef3ec53b408c8f858bc439865e9e.png" width="884" /></p> 
+<p> 即在R指针右移前&#xff0c;做一次左移即可。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, k;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    [n, k] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(arr, n, k));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, n, k) {
+  let ans &#61; 0;
+
+  let l &#61; 0;
+  let r &#61; 0;
+  const count &#61; {};
+
+  while (l &lt; n &amp;&amp; r &lt; n) {
+    const c &#61; arr[r];
+    count[c] ? count[c]&#43;&#43; : (count[c] &#61; 1);
+    if (count[c] &gt;&#61; k) {
+      ans &#43;&#61; n - r;
+
+      count[arr[l]]--;
+      l&#43;&#43;;
+
+      count[c]--;
+      r--;
+    }
+    r&#43;&#43;;
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int k &#61; sc.nextInt();
+
+    Integer[] arr &#61; new Integer[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      arr[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(arr, n, k));
+  }
+
+  public static Integer getResult(Integer[] arr, Integer n, Integer k) {
+    int ans &#61; 0;
+
+    int l &#61; 0;
+    int r &#61; 0;
+    HashMap&lt;Integer, Integer&gt; count &#61; new HashMap&lt;&gt;();
+
+    while (l &lt; n &amp;&amp; r &lt; n) {
+      Integer c &#61; arr[r];
+      count.put(c, count.getOrDefault(c, 0) &#43; 1);
+      if (count.get(c) &gt;&#61; k) {
+        ans &#43;&#61; n - r;
+
+        count.put(arr[l], count.get(arr[l]) - 1);
+        l&#43;&#43;;
+
+        count.put(c, count.get(c) - 1);
+        r--;
+      }
+      r&#43;&#43;;
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n, k &#61; map(int, input().split())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(arr, n, k):
+    ans &#61; 0
+
+    l &#61; 0
+    r &#61; 0
+    count &#61; {}
+
+    while l &lt; n and r &lt; n:
+        c &#61; arr[r]
+
+        if count.get(c) is None:
+            count[c] &#61; 0
+
+        count[c] &#43;&#61; 1
+
+        if count[c] &gt;&#61; k:
+            ans &#43;&#61; n - r
+
+            count[arr[l]] -&#61; 1
+            l &#43;&#61; 1
+
+            count[c] -&#61; 1
+            r -&#61; 1
+
+        r &#43;&#61; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult(arr, n, k))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

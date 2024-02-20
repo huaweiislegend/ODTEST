@@ -1,0 +1,189 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 统计射击比赛成绩（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个射击比赛成绩单&#xff0c;包含多个选手若干次射击的成绩分数&#xff0c;请对每个选手按其最高3个分数之和进行降序排名&#xff0c;输出降序排名后的选手ID序列。</p> 
+<p></p> 
+<h4 id="%E6%9D%A1%E4%BB%B6%E5%A6%82%E4%B8%8B">条件如下</h4> 
+<ol><li>一个选手可以有多个射击成绩的分数&#xff0c;且次序不固定。</li><li>如果一个选手成绩少于3个&#xff0c;则认为选手的所有成绩无效&#xff0c;排名忽略该选手。</li><li>如果选手的成绩之和相等&#xff0c;则成绩之和相等的选手按照其ID降序排列。</li></ol> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0"><br /> 输入描述</h4> 
+<ul><li>输入第一行&#xff0c;一个整数N&#xff0c;表示该场比赛总共进行了N次射击&#xff0c;产生N个成绩分数&#xff08;2&lt;&#61;N&lt;&#61;100&#xff09;。</li><li>输入第二行&#xff0c;一个长度为N整数序列&#xff0c;表示参与每次射击的选手ID&#xff08;0&lt;&#61;ID&lt;&#61;99&#xff09;。</li><li>输入第三行&#xff0c;一个长度为N整数序列&#xff0c;表示参与每次射击的选手对应的成绩&#xff08;0&lt;&#61;成绩&lt;&#61;100&#xff09;。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>符合题设条件的<span style="color:#0d0016;">降序</span>排名后的选手ID序列。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td> <p>13<br /> 3,3,7,4,4,4,4,7,7,3,5,5,5<br /> 53,80,68,24,39,76,66,16,100,55,53,80,55</p> </td></tr><tr><td>输出</td><td>5,3,7,4</td></tr><tr><td>说明</td><td> <p>该场射击比赛进行了13次</p> <p>参赛的选手为3,4,5,7</p> 
+    <ul><li>3号选手成绩&#xff1a;53,80,55&#xff0c;最高3个成绩的和为&#xff1a;80&#43;55&#43;53&#61;188。</li><li>4号选手成绩&#xff1a;24,39,76,66&#xff0c;最高3个成绩的和为&#xff1a;76&#43;66&#43;39&#61;181。</li><li>5号选手成绩&#xff1a;53,80,55&#xff0c;最高3个成绩的和为&#xff1a;80&#43;55&#43;53&#61;188。</li><li>7号选手成绩&#xff1a;68,16,100&#xff0c;最高3个成绩的和为&#xff1a;100&#43;68&#43;16&#61;184。</li></ul><p>比较各个选手最高3个成绩的和&#xff0c;有3号&#61;5号&gt;7号&gt;4号&#xff0c;由于3号和5号成绩相等且ID号5&gt;3&#xff0c; 所以输出为&#xff1a;5,3,7,4</p> </td></tr></tbody></table> 
+<p></p> 
+<h4>题目解析</h4> 
+<p>简答的排序问题&#xff0c;按照题目要求写排序规则即可。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+
+    Integer[] ids &#61;
+        Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    Integer[] scores &#61;
+        Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(n, ids, scores));
+  }
+
+  public static String getResult(int n, Integer[] ids, Integer[] scores) {
+    HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; players &#61; new HashMap&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      players.putIfAbsent(ids[i], new ArrayList&lt;&gt;());
+      players.get(ids[i]).add(scores[i]);
+    }
+
+    ArrayList&lt;int[]&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    for (int id : players.keySet()) {
+      ArrayList&lt;Integer&gt; idScores &#61; players.get(id);
+      if (idScores.size() &gt;&#61; 3) {
+        int total &#61;
+            idScores.stream().sorted((a, b) -&gt; b - a).limit(3).reduce(Integer::sum).orElse(0);
+
+        ans.add(new int[] {id, total});
+      }
+    }
+
+    ans.sort((a, b) -&gt; a[1] !&#61; b[1] ? b[1] - a[1] : b[0] - a[0]);
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+    for (int[] player : ans) sj.add(player[0] &#43; &#34;&#34;);
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+  if (lines.length &#61;&#61; 3) {
+    const n &#61; lines[0] - 0;
+    const ids &#61; lines[1].split(&#34;,&#34;).map(Number);
+    const scores &#61; lines[2].split(&#34;,&#34;).map(Number);
+
+    console.log(getResult(n, ids, scores));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, ids, scores) {
+  const player &#61; {};
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    const id &#61; ids[i];
+    const score &#61; scores[i];
+
+    if (!player[id]) player[id] &#61; [];
+    player[id].push(score);
+  }
+
+  const ans &#61; [];
+
+  for (let id in player) {
+    if (player[id].length &gt;&#61; 3) {
+      const total &#61; player[id]
+        .sort((a, b) &#61;&gt; b - a)
+        .slice(0, 3)
+        .reduce((a, b) &#61;&gt; a &#43; b);
+
+      ans.push([id, total]);
+    }
+  }
+
+  return ans
+    .sort((a, b) &#61;&gt; (a[1] !&#61; b[1] ? b[1] - a[1] : b[0] - a[0]))
+    .map((x) &#61;&gt; x[0])
+    .join(&#34;,&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+ids &#61; list(map(int, input().split(&#34;,&#34;)))
+scores &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+# 算法入口
+def getResult():
+    players &#61; {}
+
+    for i in range(n):
+        players.setdefault(ids[i], [])
+        players.get(ids[i]).append(scores[i])
+
+    ans &#61; []
+
+    for pid in players:
+        if len(players[pid]) &gt;&#61; 3:
+            players[pid].sort(reverse&#61;True)
+            ans.append((pid, sum(players[pid][:3])))
+
+    ans.sort(key&#61;lambda x: (-x[1], -x[0]))
+
+    return &#34;,&#34;.join(map(lambda x: str(x[0]), ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

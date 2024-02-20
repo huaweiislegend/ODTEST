@@ -1,0 +1,639 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 五子棋迷（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>张兵和王武是五子棋迷&#xff0c;工作之余经常切磋棋艺。这不&#xff0c;这会儿又下起来了。走了一会儿&#xff0c;轮张兵了&#xff0c;对着一条线思考起来了&#xff0c;这条线上的棋子分布如下:<br /> 用数组表示: -1 0 1 1 1 0 1 0 1 -1<br /> 棋了分布说明:</p> 
+<ul><li>-1代表白子&#xff0c;0代表空位&#xff0c;1 代表黑子</li><li>数组长度L&#xff0c;满足 1 &lt; L &lt; 40&#xff0c;L为奇数</li></ul> 
+<p>你得帮他写一个程序&#xff0c;算出最有利的出子位置。 最有利定义&#xff1a;</p> 
+<ul><li>找到一个空位(0)&#xff0c;用棋子(1/-1)填充该位置&#xff0c;可以使得当前子的最大连续长度变大</li><li>如果存在多个位置&#xff0c;返回最靠近中间的较小的那个坐标</li><li>如果不存在可行位置&#xff0c;直接返回-1</li><li>连续长度不能超过5个(五字棋约束)</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行: 当前出子颜色</p> 
+<p>第二行: 当前的棋局状态</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>1个整数&#xff0c;表示出子位置的数组下标</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> -1 0 1 1 1 0 1 -1 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">当前为黑子 (1)&#xff0c;放置在下标为5的位置&#xff0c;黑子的最大连续长度&#xff0c;可以由3到5</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">-1<br /> -1 0 1 1 1 0 1 0 1 -1 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">当前为白子&#xff0c;唯一可以放置的位置下标为1&#xff0c;白子的最大长度&#xff0c;由1变为2</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> 0 0 0 0 1 0 0 0 0 1 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">可行的位置很多&#xff0c;5最接近中间的位置坐标</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用双指针解题。</p> 
+<p></p> 
+<p>定义两个指针L&#xff0c;R&#xff0c;我们假设L,R范围就是要求的连棋范围&#xff0c;那么L,R范围内必须要包含一个0&#xff0c;用于落子&#xff0c;且只能有一个0&#xff0c;范围内其余棋子必须是下棋者对应的颜色&#xff08;第一行输入的颜色&#xff09;。</p> 
+<p>另外&#xff0c;根据题目描述&#xff1a;</p> 
+<blockquote> 
+ <p>连续长度不能超过5个(五字棋约束)</p> 
+</blockquote> 
+<p>即L,R范围内需要满足三个条件&#xff1a;</p> 
+<ul><li>L,R范围内必须要包含一个0&#xff0c;用于落子&#xff0c;且只能有一个0</li><li>范围内其余棋子必须是下棋者对应的颜色</li><li>L,R范围长度不能超过5</li></ul> 
+<p></p> 
+<p>上面三个条件约束着双指针的运动&#xff0c;下面给出三个用例的L,R指针运动示意图&#xff1a;</p> 
+<p>用例1</p> 
+<p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/042846f3e50f405fabcb1d341d7d0217.png" /></p> 
+<blockquote> 
+ <p>通过上面例子&#xff0c;我们可以知道&#xff0c;在什么时机进行连棋的统计&#xff0c;需要统计连棋的落子位置和长度</p> 
+</blockquote> 
+<p></p> 
+<p>用例2</p> 
+<p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/7073057d42e2407dbc0b1173fce6877c.png" /></p> 
+<blockquote> 
+ <p>上面例子中&#xff0c;如果连棋中断&#xff0c;即遇到不同颜色的棋子&#xff0c;则L,R需要同时移动到该不同颜色棋子的右侧</p> 
+</blockquote> 
+<p></p> 
+<p>用例3</p> 
+<p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/5b6eb4f122e345b497cd9a6568aa83b2.png" /></p> 
+<blockquote> 
+ <p> 上面例子中&#xff0c;如果落子超标&#xff0c;则我们需要将L指针移动到上一次落子位置的右侧&#xff0c;以此来满足L,R范围内落子数量只有一个</p> 
+</blockquote> 
+<hr /> 
+<p>2023.06.04</p> 
+<p>上面逻辑没有考虑到一个点&#xff1a;</p> 
+<blockquote> 
+ <p>找到一个空位(0)&#xff0c;用棋子(1/-1)填充该位置&#xff0c;可以使得当前子的最大连续长度变大</p> 
+</blockquote> 
+<p>即落子后&#xff0c;一定要让当前子的最大连续长度变大&#xff0c;如果落子后&#xff0c;该子的最大连续长度没有变大&#xff0c;那么就代表不是最有利位置</p> 
+<p>因此&#xff0c;下面代码追加了一个getInitMaxConstantLen方法&#xff0c;用于获取初始状态时的最大连续长度&#xff0c;后续落子时&#xff0c;需要看新的连续长度是否超过初始最大的&#xff0c;只有超过了&#xff0c;对应落子位置才是一个可能解。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int color &#61; Integer.parseInt(sc.nextLine());
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(color, nums));
+  }
+
+  public static int getResult(int color, int[] nums) {
+    // 获取初始的最大连续长度
+    int initMaxConstantLen &#61; getInitMaxConstantLen(color, nums);
+
+    ArrayList&lt;int[]&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    // l~r之间必须且只能包含一个0&#xff0c;即必须落子一次&#xff0c;其余都是color颜色的棋子
+    int l &#61; 0;
+    int r &#61; 0;
+
+    // l~r之间包含的0的数量&#xff0c;即落子数量
+    int zero &#61; 0;
+    // l~r之间0的位置&#xff0c;即落子位置
+    int pos &#61; -1;
+
+    while (r &lt; nums.length) {
+      // 如果nums[r]是空位
+      if (nums[r] &#61;&#61; 0) {
+        // 则可以落子&#xff0c;因此落子个数&#43;&#43;
+        zero&#43;&#43;;
+
+        // 如果落子数量超过1个了&#xff0c;则此时 l~r-1 范围就是一个连棋(PS:r位置不算在内)&#xff0c;
+        // 如果该连棋长度 (r-1) - l &#43; 1 &lt;&#61; 5&#xff08;PS:五字棋约束&#xff09;&#xff0c;则是一个合法的连棋
+        // 本题要求落子可以使得当前子的最大连续长度变大
+        if (zero &gt; 1 &amp;&amp; r - l &lt;&#61; 5 &amp;&amp; r - l &gt; initMaxConstantLen) {
+          ans.add(new int[] {pos, r - l}); // 记录 l~r-1 范围的落子位置pos&#xff0c;以及连续长度r-l
+        }
+
+        // 由于只能落子一次&#xff0c;因此前面的落子需要收回&#xff0c;即更新 l 到上一次落子位置的右边
+        if (zero &gt; 1) {
+          zero--;
+          l &#61; pos &#43; 1;
+        }
+
+        // 更新落子位置
+        pos &#61; r;
+
+        &#43;&#43;r;
+      }
+      // 如果nums[r]位置有其他颜色棋子&#xff0c;则连棋中断
+      else if (nums[r] !&#61; color) {
+        // 此时需要检查 l~r-1 范围是否落过子&#xff0c;且是否符合五子棋约束
+        // 若是&#xff0c;则记录 l~r-1 范围的落子位置pos&#xff0c;以及连续长度r-l
+        // 本题要求落子可以使得当前子的最大连续长度变大
+        if (zero &#61;&#61; 1 &amp;&amp; r - l &lt;&#61; 5 &amp;&amp; r - l &gt; initMaxConstantLen) ans.add(new int[] {pos, r - l});
+        // 由于连棋中断了&#xff0c;因此落子位置pos&#xff0c;和落子数量全部重置
+        pos &#61; -1;
+        zero &#61; 0;
+        // l,r全部更新到当前r的右边一个位置
+        l &#61; &#43;&#43;r;
+      }
+      // 如果nums[r]位置有当前颜色棋子&#xff0c;则连棋继续
+      else {
+        &#43;&#43;r;
+      }
+    }
+
+    // 收尾操作
+    if (zero &#61;&#61; 1 &amp;&amp; r - l &lt;&#61; 5 &amp;&amp; r - l &gt; initMaxConstantLen) {
+      ans.add(new int[] {pos, r - l});
+    }
+
+    // 如果没有统计到连棋情&#xff0c;则返回-1
+    if (ans.size() &#61;&#61; 0) return -1;
+
+    int mid &#61; nums.length / 2;
+
+    // 如果统计到连棋
+    // 先按照连棋长度降序&#xff0c;如果长度相同&#xff0c;则按照接近中心位置mid的距离升序&#xff08;越近的越优&#xff09;&#xff0c;如果距离中心位置mid相同&#xff0c;则按照落子位置升序&#xff08;越小的越优&#xff09;
+    ans.sort((a, b) -&gt; a[1] !&#61; b[1] ? b[1] - a[1] : cmp(a[0], b[0], mid));
+    return ans.get(0)[0]; // 取最优情况的落子位置
+  }
+
+  // 比较pos1,pos2谁更接近mid&#xff0c;如果距离mid相同&#xff0c;则返回较小的
+  public static int cmp(int pos1, int pos2, int mid) {
+    int dis1 &#61; Math.abs(pos1 - mid);
+    int dis2 &#61; Math.abs(pos2 - mid);
+
+    if (dis1 !&#61; dis2) {
+      return dis1 - dis2;
+    } else {
+      return pos1 - pos2;
+    }
+  }
+
+  // 获取初始最大连续长度&#xff0c;即未落子前的最大连续长度
+  public static int getInitMaxConstantLen(int color, int[] nums) {
+    int maxLen &#61; 0;
+
+    int len &#61; 0;
+    for (int num : nums) {
+      if (num !&#61; color) {
+        maxLen &#61; Math.max(maxLen, len);
+        len &#61; 0;
+      } else {
+        len&#43;&#43;;
+      }
+    }
+
+    return Math.max(maxLen, len);
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    const color &#61; lines[0] - 0;
+    const nums &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(color, nums));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(color, nums) {
+  // 获取初始的最大连续长度
+  const initMaxConstantLen &#61; getInitMaxConstantLen(color, nums);
+
+  const ans &#61; [];
+
+  // l~r之间必须落子一次&#xff0c;其余都是color颜色的棋子
+  let l &#61; 0;
+  let r &#61; 0;
+
+  // l~r之间包含的0的数量&#xff0c;即落子数量
+  let zero &#61; 0;
+  // l~r之间0的位置&#xff0c;即落子位置
+  let pos &#61; -1;
+
+  while (r &lt; nums.length) {
+    // 如果nums[r]是空位
+    if (nums[r] &#61;&#61; 0) {
+      // 则可以落子&#xff0c;因此落子个数&#43;&#43;
+      zero&#43;&#43;;
+
+      // 如果落子数量超过1个了&#xff0c;则此时 l~r-1 范围就是一个连棋(PS:r位置不算在内)&#xff0c;
+      // 如果该连棋长度 (r-1) - l &#43; 1 &lt;&#61; 5&#xff08;PS:五字棋约束&#xff09;&#xff0c;则是一个合法的连棋
+      // 本题要求落子可以使得当前子的最大连续长度变大
+      if (zero &gt; 1 &amp;&amp; r - l &lt;&#61; 5 &amp;&amp; r - l &gt; initMaxConstantLen) {
+        // 记录 l~r-1 范围的落子位置pos&#xff0c;以及连续长度r-l
+        ans.push([pos, r - l]);
+      }
+
+      // 由于只能落子一次&#xff0c;因此前面的落子需要收回&#xff0c;即更新 l 到上一次落子位置的右边
+      if (zero &gt; 1) {
+        zero--;
+        l &#61; pos &#43; 1;
+      }
+
+      // 更新落子位置
+      pos &#61; r;
+
+      &#43;&#43;r;
+    }
+    // 如果nums[r]位置有其他颜色棋子&#xff0c;则连棋中断
+    else if (nums[r] !&#61; color) {
+      // 此时需要检查 l~r-1 范围是否落过子&#xff0c;且是否符合五子棋约束
+      // 若是&#xff0c;则记录 l~r-1 范围的落子位置pos&#xff0c;以及连续长度r-l
+      // 本题要求落子可以使得当前子的最大连续长度变大
+      if (zero &#61;&#61; 1 &amp;&amp; r - l &lt;&#61; 5 &amp;&amp; r - l &gt; initMaxConstantLen) {
+        ans.push([pos, r - l]);
+      }
+      // 由于连棋中断了&#xff0c;因此落子位置pos&#xff0c;和落子数量全部重置
+      pos &#61; -1;
+      zero &#61; 0;
+      // l,r全部更新到当前r的右边一个位置
+      l &#61; &#43;&#43;r;
+    }
+    // 如果nums[r]位置有当前颜色棋子&#xff0c;则连棋继续
+    else {
+      &#43;&#43;r;
+    }
+  }
+
+  // 收尾操作
+  if (zero &#61;&#61; 1 &amp;&amp; r - l &lt;&#61; 5 &amp;&amp; r - l &gt; initMaxConstantLen) {
+    ans.push([pos, r - l]);
+  }
+
+  // 如果没有统计到连棋情&#xff0c;则返回-1
+  if (ans.length &#61;&#61; 0) return -1;
+
+  const mid &#61; Math.floor(nums.length / 2);
+
+  // 如果统计到连棋
+  // 先按照连棋长度降序&#xff0c;如果长度相同&#xff0c;则按照接近中心位置mid的距离升序&#xff08;越近的越优&#xff09;&#xff0c;如果距离中心位置mid相同&#xff0c;则按照落子位置升序&#xff08;越小的越优&#xff09;
+  ans.sort((a, b) &#61;&gt; (a[1] !&#61; b[1] ? b[1] - a[1] : cmp(a[0], b[0], mid)));
+
+  return ans[0][0]; // 取最优情况的落子位置
+}
+
+// 比较pos1,pos2谁更接近mid&#xff0c;如果距离mid相同&#xff0c;则返回较小的pos
+function cmp(pos1, pos2, mid) {
+  const dis1 &#61; Math.abs(pos1 - mid);
+  const dis2 &#61; Math.abs(pos2 - mid);
+
+  if (dis1 !&#61; dis2) {
+    return dis1 - dis2;
+  } else {
+    return pos1 - pos2;
+  }
+}
+
+function getInitMaxConstantLen(color, nums) {
+  let maxLen &#61; 0;
+
+  let len &#61; 0;
+  for (let num of nums) {
+    if (num !&#61; color) {
+      maxLen &#61; Math.max(maxLen, len);
+      len &#61; 0;
+    } else {
+      len&#43;&#43;;
+    }
+  }
+
+  return Math.max(maxLen, len);
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+color &#61; int(input())
+nums &#61; list(map(int, input().split()))
+
+
+# 获取初始最大连续长度&#xff0c;即未落子前的最大连续长度
+def getInitMaxConstantLen():
+    maxLen &#61; 0
+
+    length &#61; 0
+    for num in nums:
+        if num !&#61; color:
+            maxLen &#61; max(maxLen, length)
+            length &#61; 0
+        else:
+            length &#43;&#61; 1
+
+    return max(maxLen, length)
+
+
+# 算法入口
+def getResult():
+    # 获取初始的最大连续长度
+    initMaxConstantLen &#61; getInitMaxConstantLen()
+
+    ans &#61; []
+
+    # l~r之间必须且只能包含一个0&#xff0c;即必须落子一次&#xff0c;其余都是color颜色的棋子
+    l &#61; 0
+    r &#61; 0
+
+    # l~r之间包含的0的数量&#xff0c;即落子数量
+    zero &#61; 0
+    # l~r之间0的位置&#xff0c;即落子位置
+    pos &#61; -1
+
+    while r &lt; len(nums):
+        # 如果nums[r]是空位
+        if nums[r] &#61;&#61; 0:
+            # 则可以落子&#xff0c;因此落子个数&#43;&#43;
+            zero &#43;&#61; 1
+
+            # 如果落子数量超过1个了&#xff0c;则此时 l~r-1 范围就是一个连棋(PS:r位置不算在内)
+            if zero &gt; 1:
+                # 如果该连棋长度 (r-1) - l &#43; 1 &lt;&#61; 5&#xff08;PS:五字棋约束&#xff09;&#xff0c;则是一个合法的连棋
+                # 记录 l~r-1 范围的落子位置pos&#xff0c;以及连续长度r-l
+                # 本题要求落子可以使得当前子的最大连续长度变大
+                if initMaxConstantLen &lt; r - l &lt;&#61; 5:
+                    ans.append([pos, r - l])
+
+                # 由于只能落子一次&#xff0c;因此前面的落子需要收回&#xff0c;即更新 l 到上一次落子位置的右边
+                zero -&#61; 1
+                l &#61; pos &#43; 1
+
+            # 更新落子位置
+            pos &#61; r
+            r &#43;&#61; 1
+        # 如果nums[r]位置有其他颜色棋子&#xff0c;则连棋中断
+        elif nums[r] !&#61; color:
+            # 此时需要检查 l~r-1 范围是否落过子&#xff0c;且是否符合五子棋约束
+            # 若是&#xff0c;则记录 l~r-1 范围的落子位置pos&#xff0c;以及连续长度r-l
+            # 本题要求落子可以使得当前子的最大连续长度变大
+            if zero &#61;&#61; 1 and initMaxConstantLen &lt; r - l &lt;&#61; 5:
+                ans.append([pos, r - l])
+
+            # 由于连棋中断了&#xff0c;因此落子位置pos&#xff0c;和落子数量全部重置
+            pos &#61; -1
+            zero &#61; 0
+
+            # l,r全部更新到当前r的右边一个位置
+            r &#43;&#61; 1
+            l &#61; r
+        else:
+            r &#43;&#61; 1
+
+    # 收尾操作
+    if zero &#61;&#61; 1 and initMaxConstantLen &lt; r - l &lt;&#61; 5:
+        ans.append([pos, r - l])
+
+    # 如果没有统计到连棋情&#xff0c;则返回-1
+    if len(ans) &#61;&#61; 0:
+        return -1
+
+    mid &#61; len(nums) // 2
+
+    # 如果统计到连棋
+    # 先按照连棋长度降序&#xff0c;如果长度相同&#xff0c;则按照接近中心位置mid的距离升序&#xff08;越近的越优&#xff09;&#xff0c;如果距离中心位置mid相同&#xff0c;则按照落子位置升序&#xff08;越小的越优&#xff09;
+    ans.sort(key&#61;lambda x: (-x[1], abs(x[0] - mid), x[0]))
+
+    # 取最优情况的落子位置
+    return ans[0][0]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// 动态数组 数据结构定义
+typedef struct List {
+    int** array;
+    int capacity;
+    int size;
+} ArrayList;
+
+// 动态数组的底层容器的初始容量
+#define MIN_CAPACITY 50
+
+// 创建动态数组
+ArrayList* new_ArrayList();
+// 向动态数组加入元素
+void add_ArrayList(ArrayList* list, int* ele);
+
+// 算法代码
+#define MAX_SIZE 40
+#define MAX(a,b) (a &gt; b ? a : b)
+
+int getResult();
+int getInitMaxConstantLen();
+int cmp(const void* a, const void* b);
+
+int color;
+int nums[MAX_SIZE];
+int nums_size &#61; 0;
+
+int main() {
+    // 输入获取
+    scanf(&#34;%d&#34;, &amp;color);
+
+    while(scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if(getchar() !&#61; &#39; &#39;) break;
+    }
+
+    // 算法入口调用
+    printf(&#34;%d\n&#34;, getResult());
+
+    return 0;
+}
+
+int getResult() {
+    // 获取初始的最大连续长度
+    int initMaxConstantLen &#61; getInitMaxConstantLen();
+
+    ArrayList* list &#61; new_ArrayList();
+
+    // l~r之间必须且只能包含一个0&#xff0c;即必须落子一次&#xff0c;其余都是color颜色的棋子
+    int l &#61; 0;
+    int r &#61; 0;
+
+    // l~r之间包含的0的数量&#xff0c;即落子数量
+    int zero &#61; 0;
+    // l~r之间0的位置&#xff0c;即落子位置
+    int pos &#61; -1;
+
+    while(r &lt; nums_size) {
+        int* tmp &#61; (int*) malloc(sizeof(int) * 2);
+        tmp[0] &#61; pos;
+        tmp[1] &#61; r - l;
+
+        // 如果nums[r]是空位
+        if(nums[r] &#61;&#61; 0) {
+            // 则可以落子&#xff0c;因此落子个数&#43;&#43;
+            zero&#43;&#43;;
+
+            // 如果落子数量超过1个了&#xff0c;则此时 l~r-1 范围就是一个连棋(PS:r位置不算在内)&#xff0c;
+            // 如果该连棋长度 (r-1) - l &#43; 1 &lt;&#61; 5&#xff08;PS:五字棋约束&#xff09;&#xff0c;则是一个合法的连棋
+            // 本题要求落子可以使得当前子的最大连续长度变大
+            if(zero &gt; 1 &amp;&amp; r - l &lt;&#61; 5 &amp;&amp; r - l &gt; initMaxConstantLen) {
+                add_ArrayList(list, tmp); // 记录 l~r-1 范围的落子位置pos&#xff0c;以及连续长度r-l
+            }
+
+            // 由于只能落子一次&#xff0c;因此前面的落子需要收回&#xff0c;即更新 l 到上一次落子位置的右边
+            if(zero &gt; 1) {
+                zero--;
+                l &#61; pos &#43; 1;
+            }
+
+            // 更新落子位置
+            pos &#61; r;
+
+            &#43;&#43;r;
+        }
+        // 如果nums[r]位置有其他颜色棋子&#xff0c;则连棋中断
+        else if(nums[r] !&#61; color) {
+            // 此时需要检查 l~r-1 范围是否落过子&#xff0c;且是否符合五子棋约束
+            // 若是&#xff0c;则记录 l~r-1 范围的落子位置pos&#xff0c;以及连续长度r-l
+            // 本题要求落子可以使得当前子的最大连续长度变大
+            if(zero &#61;&#61; 1 &amp;&amp; r - l &lt;&#61; 5 &amp;&amp; r - l &gt; initMaxConstantLen) {
+                add_ArrayList(list, tmp);
+            }
+
+            // 由于连棋中断了&#xff0c;因此落子位置pos&#xff0c;和落子数量全部重置
+            pos &#61; -1;
+            zero &#61; 0;
+
+            // l,r全部更新到当前r的右边一个位置
+            l &#61; &#43;&#43;r;
+        }
+        // 如果nums[r]位置有当前颜色棋子&#xff0c;则连棋继续
+        else {
+            &#43;&#43;r;
+        }
+    }
+
+    // 收尾操作
+    if(zero &#61;&#61; 1 &amp;&amp; r - l &lt;&#61; 5 &amp;&amp; r - l &gt; initMaxConstantLen) {
+        int* tmp &#61; (int*) malloc(sizeof(int) * 2);
+        tmp[0] &#61; pos;
+        tmp[1] &#61; r - l;
+
+        add_ArrayList(list, tmp);
+    }
+
+    // 如果没有统计到连棋情&#xff0c;则返回-1
+    if(list-&gt;size &#61;&#61; 0) {
+        return -1;
+    }
+
+    // 如果统计到连棋
+    // 先按照连棋长度降序&#xff0c;如果长度相同&#xff0c;则按照接近中心位置mid的距离升序&#xff08;越近的越优&#xff09;&#xff0c;如果距离中心位置mid相同&#xff0c;则按照落子位置升序&#xff08;越小的越优&#xff09;
+    qsort(list-&gt;array, list-&gt;size, sizeof(int*), cmp);
+
+    return list-&gt;array[0][0]; // 取最优情况的落子位置
+}
+
+// 获取初始最大连续长度&#xff0c;即未落子前的最大连续长度
+int getInitMaxConstantLen() {
+    int maxLen &#61; 0;
+
+    int len &#61; 0;
+    for(int i&#61;0; i&lt;nums_size; i&#43;&#43;) {
+        int num &#61; nums[i];
+
+        if(num !&#61; color) {
+            maxLen &#61; MAX(maxLen, len);
+            len &#61; 0;
+        } else {
+            len&#43;&#43;;
+        }
+    }
+
+    return MAX(maxLen, len);
+}
+
+
+int cmp(const void* a, const void* b) {
+    int* A &#61; *((int**) a);
+    int* B &#61; *((int**) b);
+
+    if(A[1] !&#61; B[1]) {
+        return B[1] - A[1];
+    }
+
+    int mid &#61; nums_size / 2;
+
+    // 比较pos1,pos2谁更接近mid&#xff0c;如果距离mid相同&#xff0c;则返回较小的
+    int dis1 &#61; abs(A[0] - mid);
+    int dis2 &#61; abs(B[0] - mid);
+
+    if(dis1 !&#61; dis2) {
+        return dis1 - dis2;
+    } else {
+        return A[0] - B[0];
+    }
+}
+
+ArrayList* new_ArrayList() {
+    ArrayList* list &#61; (ArrayList*) malloc(sizeof(ArrayList));
+
+    list-&gt;array &#61; (int**) malloc(sizeof(int*) * MIN_CAPACITY);
+    list-&gt;capacity &#61; MIN_CAPACITY;
+    list-&gt;size &#61; 0;
+
+    return list;
+}
+
+void add_ArrayList(ArrayList* list, int* ele) {
+    if(list-&gt;size &gt;&#61; list-&gt;capacity) {
+        list-&gt;capacity &lt;&lt;&#61; 1;
+
+        void* p &#61; realloc(list-&gt;array, sizeof(int*) * list-&gt;capacity);
+
+        if(p &#61;&#61; NULL) {
+            exit(1);
+        }
+
+        list-&gt;array &#61; (int**) p;
+    }
+
+    list-&gt;array[list-&gt;size] &#61; ele;
+    list-&gt;size&#43;&#43;;
+}
+
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

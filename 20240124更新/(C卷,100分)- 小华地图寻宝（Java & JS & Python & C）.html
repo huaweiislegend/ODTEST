@@ -1,0 +1,745 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 小华地图寻宝（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小华按照地图去寻宝&#xff0c;地图上被划分成 m 行和 n 列的方格&#xff0c;横纵坐标范围分别是 [0, n-1] 和 [0, m-1]。</p> 
+<p>在横坐标和纵坐标的数位之和不大于 k 的方格中存在黄金&#xff08;每个方格中仅存在一克黄金&#xff09;&#xff0c;但横坐标和纵坐标之和大于 k 的方格存在危险不可进入。小华从入口 (0,0) 进入&#xff0c;任何时候只能向左&#xff0c;右&#xff0c;上&#xff0c;下四个方向移动一格。</p> 
+<p>请问小华最多能获得多少克黄金&#xff1f;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>坐标取值范围如下&#xff1a;</p> 
+<ul><li>0 ≤ m ≤ 50</li><li>0 ≤ n ≤ 50</li></ul> 
+<p>k 的取值范围如下&#xff1a;</p> 
+<ul><li>0 ≤ k ≤ 100</li></ul> 
+<p>输入中包含3个字数&#xff0c;分别是m, n, k</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出小华最多能获得多少克黄金</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:550px;"><tbody><tr><td style="width:73px;">输入</td><td style="width:475px;">40 40 18</td></tr><tr><td style="width:73px;">输出</td><td style="width:475px;">1484</td></tr><tr><td style="width:73px;">说明</td><td style="width:475px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:550px;"><tbody><tr><td style="width:71px;">输入</td><td style="width:477px;">5 4 7</td></tr><tr><td style="width:71px;">输出</td><td style="width:477px;">20</td></tr><tr><td style="width:71px;">说明</td><td style="width:477px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题题目描述有些歧义</p> 
+<blockquote> 
+ <p>在横坐标和纵坐标的<span style="color:#fe2c24;"><strong>数位之和</strong></span>不大于 k 的方格中存在黄金&#xff08;每个方格中仅存在一克黄金&#xff09;</p> 
+</blockquote> 
+<p>和</p> 
+<blockquote> 
+ <p>但横坐标和纵坐标<span style="color:#fe2c24;"><strong>之和</strong></span>大于 k 的方格存在危险不可进入</p> 
+</blockquote> 
+<p>这两句话有点矛盾&#xff0c;所谓横坐标和纵坐标的数位之和&#xff0c;比如&#xff1a;</p> 
+<ul><li>横坐标是10&#xff0c;那么横坐标的数位和 &#61; 1 &#43; 0 &#61; 1</li><li>纵坐标是21&#xff0c;那么纵坐标的数位和 &#61; 2 &#43; 1 &#61; 3</li><li>横坐标和纵坐标的数位之和 &#61; 1 &#43; 3 &#61; 4</li></ul> 
+<p>但是横坐标和纵坐标之和</p> 
+<ul><li>横坐标是10&#xff0c;纵坐标是21&#xff0c;横坐标和纵坐标之和 &#61; 10 &#43; 21 &#61; 31</li></ul> 
+<p></p> 
+<p>和考友确认后&#xff0c;上面“<span style="color:#fe2c24;"><strong>横坐标和纵坐标</strong></span><span style="color:#fe2c24;"><strong>之和</strong></span>”其实也是数位之和&#xff0c;即</p> 
+<blockquote> 
+ <p>横坐标和纵坐标<span style="color:#fe2c24;"><strong>数位之和</strong></span>大于 k 的方格存在危险不可进入</p> 
+</blockquote> 
+<p></p> 
+<p>因此&#xff0c;本题其实就是图的遍历问题&#xff0c;可以使用深度优先搜索DFS&#xff0c;或者广度优先搜索BFS处理。</p> 
+<p>从&#xff08;0&#xff0c;0&#xff09;点开始&#xff0c;然后进行深搜或者广搜&#xff0c;其上下左右四个新位置&#xff0c;新位置是否可以进入的条件是&#xff1a;</p> 
+<ul><li>新位置不越界</li><li>新位置未被访问过</li><li>新位置的横坐标、纵坐标的数位之和 &lt;&#61; k</li></ul> 
+<p>每进入一个位置&#xff0c;则获得黄金1克。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<h5>深度优先搜索</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [m, n, k] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 记录题解
+  let ans &#61; 0;
+
+  // 记录已访问过的位置&#xff0c;避免重复统计
+  const visited &#61; new Set();
+
+  // 上下左右偏移量
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  // 数位和数组
+  const digitSums &#61; digitSum(Math.max(m, n));
+
+  // 深度优先搜索遍历矩阵
+  function dfs(x, y) {
+    // 如果对应位置越界&#xff0c;或者已访问过&#xff0c;或者横坐标、纵坐标的数位和之和超过了k&#xff0c;则不能进入
+    if (
+      x &lt; 0 ||
+      x &gt;&#61; m ||
+      y &lt; 0 ||
+      y &gt;&#61; n ||
+      visited.has(x * n &#43; y) ||
+      digitSums[x] &#43; digitSums[y] &gt; k
+    ) {
+      return;
+    }
+
+    // 否则可以进入&#xff0c;且获得黄金
+    visited.add(x * n &#43; y);
+    ans&#43;&#43;;
+
+    // 继续遍历上、下、左、右方向上的新位置继续深搜
+    for (let [offsetX, offsetY] of offsets) {
+      const newX &#61; x &#43; offsetX;
+      const newY &#61; y &#43; offsetY;
+
+      dfs(newX, newY);
+    }
+  }
+
+  dfs(0, 0);
+
+  console.log(ans);
+})();
+
+// 该方法用于求解 0 ~ maxSize - 1 各个数对应的数位和&#xff0c;提前计算好&#xff0c;避免后期重复计算某个数的数位和
+function digitSum(maxSize) {
+  // digitSums数组的索引是原始数&#xff0c;值是原始数对应的数位和
+  const res &#61; new Array(maxSize).fill(0);
+
+  for (let i &#61; 0; i &lt; maxSize; i&#43;&#43;) {
+    let num &#61; i;
+    while (num &gt; 0) {
+      res[i] &#43;&#61; num % 10;
+      num &#61; Math.floor(num / 10);
+    }
+  }
+
+  return res;
+}
+</code></pre> 
+<h5 style="background-color:transparent;">广度优先搜索</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [m, n, k] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 记录已访问过的位置&#xff0c;避免重复统计
+  const visited &#61; new Set();
+
+  // 上下左右偏移量
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  // 数位和数组
+  const digitSums &#61; digitSum(Math.max(m, n));
+
+  function bfs() {
+    const queue &#61; [];
+    queue.push(0);
+
+    // 由于k&gt;&#61;0,因此出发点(0,0)肯定可以访问&#xff0c;且有黄金
+    let ans &#61; 1;
+    visited.add(0);
+
+    while (queue.length &gt; 0) {
+      const pos &#61; queue.shift();
+
+      const y &#61; pos % n;
+      const x &#61; (pos - y) / n;
+
+      // 遍历当前位置的上下左右四个方向的新位置
+      for (let [offsetX, offsetY] of offsets) {
+        const newX &#61; x &#43; offsetX;
+        const newY &#61; y &#43; offsetY;
+
+        // 新位置越界&#xff0c;则无法访问
+        if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n) continue;
+
+        // 新位置的横坐标、纵坐标数位和之和超过k&#xff0c;则无法访问
+        if (digitSums[newX] &#43; digitSums[newY] &gt; k) continue;
+
+        // 新位置已访问过&#xff0c;则不能再访问
+        const newPos &#61; newX * n &#43; newY;
+        if (visited.has(newPos)) continue;
+
+        // 否则&#xff0c;可以进入新位置&#xff0c;且获得黄金
+        ans&#43;&#43;;
+        visited.add(newPos);
+        queue.push(newPos);
+      }
+    }
+
+    return ans;
+  }
+
+  if (m &#61;&#61; 0 || n &#61;&#61; 0) {
+    console.log(0);
+  } else {
+    console.log(bfs());
+  }
+})();
+
+// 该方法用于求解 0 ~ maxSize - 1 各个数对应的数位和&#xff0c;提前计算好&#xff0c;避免后期重复计算某个数的数位和
+function digitSum(maxSize) {
+  // digitSums数组的索引是原始数&#xff0c;值是原始数对应的数位和
+  const res &#61; new Array(maxSize).fill(0);
+
+  for (let i &#61; 0; i &lt; maxSize; i&#43;&#43;) {
+    let num &#61; i;
+    while (num &gt; 0) {
+      res[i] &#43;&#61; num % 10;
+      num &#61; Math.floor(num / 10);
+    }
+  }
+
+  return res;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<h5>深度优先搜索</h5> 
+<pre><code class="language-java">import java.util.HashSet;
+import java.util.Scanner;
+
+public class Main {
+  static int m;
+  static int n;
+  static int k;
+
+  // 记录题解
+  static int ans &#61; 0;
+
+  // 记录已访问过的位置&#xff0c;避免重复统计
+  static HashSet&lt;Integer&gt; visited &#61; new HashSet&lt;&gt;();
+
+  // 上下左右偏移量
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  // 数位和数组
+  static int[] digitSums;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    m &#61; sc.nextInt();
+    n &#61; sc.nextInt();
+    k &#61; sc.nextInt();
+
+    digitSum(Math.max(m, n));
+
+    dfs(0, 0);
+
+    System.out.println(ans);
+  }
+
+  // 深度优先搜索遍历矩阵
+  public static void dfs(int x, int y) {
+    // 如果对应位置越界&#xff0c;或者已访问过&#xff0c;或者横坐标、纵坐标的数位和之和超过了k&#xff0c;则不能进入
+    if (x &lt; 0
+        || x &gt;&#61; m
+        || y &lt; 0
+        || y &gt;&#61; n
+        || visited.contains(x * n &#43; y)
+        || digitSums[x] &#43; digitSums[y] &gt; k) return;
+
+    // 否则可以进入&#xff0c;且获得黄金
+    visited.add(x * n &#43; y);
+    ans&#43;&#43;;
+
+    // 继续遍历上、下、左、右方向上的新位置继续深搜
+    for (int[] offset : offsets) {
+      int newX &#61; x &#43; offset[0];
+      int newY &#61; y &#43; offset[1];
+
+      dfs(newX, newY);
+    }
+  }
+
+  // 该方法用于求解 0 ~ maxSize - 1 各个数对应的数位和&#xff0c;提前计算好&#xff0c;避免后期重复计算某个数的数位和
+  public static void digitSum(int maxSize) {
+    // digitSums数组的索引是原始数&#xff0c;值是原始数对应的数位和
+    digitSums &#61; new int[maxSize];
+
+    for (int i &#61; 0; i &lt; maxSize; i&#43;&#43;) {
+      int num &#61; i;
+      while (num &gt; 0) {
+        digitSums[i] &#43;&#61; num % 10;
+        num /&#61; 10;
+      }
+    }
+  }
+}
+</code></pre> 
+<h5>广度优先搜索</h5> 
+<pre><code class="language-java">import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  static int m;
+  static int n;
+  static int k;
+
+  // 记录已访问过的位置&#xff0c;避免重复统计
+  static HashSet&lt;Integer&gt; visited &#61; new HashSet&lt;&gt;();
+
+  // 上下左右偏移量
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  // 数位和数组
+  static int[] digitSums;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    m &#61; sc.nextInt();
+    n &#61; sc.nextInt();
+    k &#61; sc.nextInt();
+
+    digitSum(Math.max(m, n));
+
+    if (m &#61;&#61; 0 || n &#61;&#61; 0) {
+      System.out.println(0);
+    } else {
+      System.out.println(bfs());
+    }
+  }
+
+  public static int bfs() {
+    LinkedList&lt;Integer&gt; queue &#61; new LinkedList&lt;&gt;();
+    queue.add(0);
+
+    // 由于k&gt;&#61;0,因此出发点(0,0)肯定可以访问&#xff0c;且有黄金
+    int ans &#61; 1;
+    visited.add(0);
+
+    while (queue.size() &gt; 0) {
+      int pos &#61; queue.removeFirst();
+
+      int x &#61; pos / n;
+      int y &#61; pos % n;
+
+      // 遍历当前位置的上下左右四个方向的新位置
+      for (int[] offset : offsets) {
+        int newX &#61; x &#43; offset[0];
+        int newY &#61; y &#43; offset[1];
+
+        // 新位置越界&#xff0c;则无法访问
+        if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n) continue;
+
+        // 新位置的横坐标、纵坐标数位和之和超过k&#xff0c;则无法访问
+        if (digitSums[newX] &#43; digitSums[newY] &gt; k) continue;
+
+        // 新位置已访问过&#xff0c;则不能再访问
+        int newPos &#61; newX * n &#43; newY;
+        if (visited.contains(newPos)) continue;
+
+        // 否则&#xff0c;可以进入新位置&#xff0c;且获得黄金
+        ans&#43;&#43;;
+        visited.add(newPos);
+        queue.addLast(newPos);
+      }
+    }
+
+    return ans;
+  }
+
+  // 该方法用于求解 0 ~ maxSize - 1 各个数对应的数位和&#xff0c;提前计算好&#xff0c;避免后期重复计算某个数的数位和
+  public static void digitSum(int maxSize) {
+    // digitSums数组的索引是原始数&#xff0c;值是原始数对应的数位和
+    digitSums &#61; new int[maxSize];
+
+    for (int i &#61; 0; i &lt; maxSize; i&#43;&#43;) {
+      int num &#61; i;
+      while (num &gt; 0) {
+        digitSums[i] &#43;&#61; num % 10;
+        num /&#61; 10;
+      }
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<p></p> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<h5 style="background-color:transparent;">深度优先搜索</h5> 
+<pre><code class="language-python">import sys
+
+# 设置递归深度
+sys.setrecursionlimit(5000)
+
+# 输入获取
+m, n, k &#61; map(int, input().split())
+
+# 全局变量
+ans &#61; 0  # 记录题解
+visited &#61; set()  # 记录已访问过的位置&#xff0c;避免重复统计
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))  # 上下左右偏移量
+
+digitSums &#61; [0] * (max(m, n))  # digitSums数组的索引是原始数&#xff0c;值是原始数对应的数位和
+for i in range(len(digitSums)):
+    num &#61; i
+    while num &gt; 0:
+        digitSums[i] &#43;&#61; num % 10
+        num //&#61; 10
+
+
+# 深度优先搜索遍历矩阵
+def dfs(x, y):
+    # 如果对应位置越界&#xff0c;则不能进入
+    if x &lt; 0 or x &gt;&#61; m or y &lt; 0 or y &gt;&#61; n:
+        return
+
+    #  如果对应位置已横坐标、纵坐标的数位和之和超过了k&#xff0c;则不能进入
+    if digitSums[x] &#43; digitSums[y] &gt; k:
+        return
+
+    pos &#61; x * n &#43; y
+
+    # 如果对应位置已访问过&#xff0c;则不能进入
+    if pos in visited:
+        return
+
+    # 否则可以进入
+    visited.add(pos)
+
+    # 且获得黄金
+    global ans
+    ans &#43;&#61; 1
+
+    # 继续遍历上、下、左、右方向上的新位置继续深搜
+    for offsetX, offsetY in offsets:
+        newX &#61; x &#43; offsetX
+        newY &#61; y &#43; offsetY
+        dfs(newX, newY)
+
+
+# 算法入口
+dfs(0, 0)
+print(ans)
+</code></pre> 
+<h5 style="background-color:transparent;">广度优先搜索</h5> 
+<pre><code class="language-python"># 输入获取
+m, n, k &#61; map(int, input().split())
+
+# 全局变量
+visited &#61; set()  # 记录已访问过的位置&#xff0c;避免重复统计
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))  # 上下左右偏移量
+
+digitSums &#61; [0] * (max(m, n))  # digitSums数组的索引是原始数&#xff0c;值是原始数对应的数位和
+for i in range(len(digitSums)):
+    num &#61; i
+    while num &gt; 0:
+        digitSums[i] &#43;&#61; num % 10
+        num //&#61; 10
+
+
+# 广度优先搜索
+def bfs():
+    queue &#61; [0]
+
+    # 由于k&gt;&#61;0,因此出发点(0,0)肯定可以访问&#xff0c;且有黄金
+    ans &#61; 1
+    visited.add(0)
+
+    while len(queue) &gt; 0:
+        pos &#61; queue.pop(0)
+
+        x &#61; pos // n
+        y &#61; pos % n
+
+        # 遍历当前位置的上下左右四个方向的新位置
+        for offsetX, offsetY in offsets:
+            newX &#61; x &#43; offsetX
+            newY &#61; y &#43; offsetY
+
+            # 新位置越界&#xff0c;则无法访问
+            if newX &lt; 0 or newX &gt;&#61; m or newY &lt; 0 or newY &gt;&#61; n:
+                continue
+
+            #  新位置的横坐标、纵坐标数位和之和超过k&#xff0c;则无法访问
+            if digitSums[newX] &#43; digitSums[newY] &gt; k:
+                continue
+
+            # 新位置已访问过&#xff0c;则不能再访问
+            newPos &#61; newX * n &#43; newY
+            if newPos in visited:
+                continue
+
+            # 否则可以进入
+            ans &#43;&#61; 1
+            visited.add(newPos)
+            queue.append(newPos)
+
+    return ans
+
+
+# 算法入口
+if m &#61;&#61; 0 or n &#61;&#61; 0:
+    print(&#34;0&#34;)
+else:
+    print(bfs())
+</code></pre> 
+<p></p> 
+<p></p> 
+<h4>C算法源码</h4> 
+<h5 style="background-color:transparent;">深度优先搜索</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+int m, n, k;
+
+// 记录题解
+int ans &#61; 0;
+
+// 记录已访问过的位置&#xff0c;避免重复统计
+int *visited;
+
+// 上下左右偏移量
+int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                     {1,  0},
+                     {0,  -1},
+                     {0,  1}};
+
+// 数位和数组
+int *digitSums;
+
+void dfs(int x, int y) {
+    // 如果对应位置越界&#xff0c;则不能进入
+    if (x &lt; 0 || x &gt;&#61; m || y &lt; 0 || y &gt;&#61; n) {
+        return;
+    }
+
+    // 如果对应位置已横坐标、纵坐标的数位和之和超过了k&#xff0c;则不能进入
+    if (digitSums[x] &#43; digitSums[y] &gt; k) {
+        return;
+    }
+
+    // 如果对应位置已访问过&#xff0c;则不能进入
+    int pos &#61; x * n &#43; y;
+    if (visited[pos]) {
+        return;
+    }
+
+    // 否则可以进入
+    visited[pos] &#61; 1;
+    // 且获得黄金
+    ans &#43;&#61; 1;
+
+    // 继续遍历上、下、左、右方向上的新位置继续深搜
+    for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+        int newX &#61; x &#43; offsets[i][0];
+        int newY &#61; y &#43; offsets[i][1];
+        dfs(newX, newY);
+    }
+}
+
+int main() {
+    scanf(&#34;%d %d %d&#34;, &amp;m, &amp;n, &amp;k);
+
+    // digitSums数组的索引是原始数&#xff0c;值是原始数对应的数位和
+    int maxSize &#61; MAX(m, n);
+    digitSums &#61; (int *) calloc(maxSize, sizeof(int));
+    for (int i &#61; 0; i &lt; maxSize; i&#43;&#43;) {
+        int num &#61; i;
+        while (num &gt; 0) {
+            digitSums[i] &#43;&#61; num % 10;
+            num /&#61; 10;
+        }
+    }
+
+    // visited数组记录已访问过的位置&#xff0c;避免重复统计
+    visited &#61; (int *) calloc(m * n, sizeof(int));
+
+    dfs(0, 0);
+    printf(&#34;%d\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<h5 style="background-color:transparent;">广度优先搜索</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+    node-&gt;ele &#61; ele;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+int removeFirst_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;head;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+    }
+
+    link-&gt;size--;
+
+    int res &#61; removed-&gt;ele;
+
+    free(removed);
+
+    return res;
+}
+
+int m, n, k;
+
+// 记录已访问过的位置&#xff0c;避免重复统计
+int *visited;
+
+// 上下左右偏移量
+int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                     {1,  0},
+                     {0,  -1},
+                     {0,  1}};
+
+// 数位和数组
+int *digitSums;
+
+int bfs() {
+    LinkedList *queue &#61; new_LinkedList();
+    addLast_LinkedList(queue, 0);
+
+    // 由于k&gt;&#61;0,因此出发点(0,0)肯定可以访问&#xff0c;且有黄金
+    int ans &#61; 1;
+    visited[0] &#61; 1;
+
+    while (queue-&gt;size &gt; 0) {
+        int pos &#61; removeFirst_LinkedList(queue);
+
+        int x &#61; pos / n;
+        int y &#61; pos % n;
+
+        // 遍历当前位置的上下左右四个方向的新位置
+        for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+            int newX &#61; x &#43; offsets[i][0];
+            int newY &#61; y &#43; offsets[i][1];
+
+            // 新位置越界&#xff0c;则无法访问
+            if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n) continue;
+
+            // 新位置的横坐标、纵坐标数位和之和超过k&#xff0c;则无法访问
+            if (digitSums[newX] &#43; digitSums[newY] &gt; k) continue;
+
+            // 新位置已访问过&#xff0c;则不能再访问
+            int newPos &#61; newX * n &#43; newY;
+            if (visited[newPos]) continue;
+
+            // 否则&#xff0c;可以进入新位置&#xff0c;且获得黄金
+            ans&#43;&#43;;
+            visited[newPos] &#61; 1;
+            addLast_LinkedList(queue, newPos);
+        }
+    }
+
+    return ans;
+}
+
+int main() {
+    scanf(&#34;%d %d %d&#34;, &amp;m, &amp;n, &amp;k);
+
+    // digitSums数组的索引是原始数&#xff0c;值是原始数对应的数位和
+    int maxSize &#61; MAX(m, n);
+    digitSums &#61; (int *) calloc(maxSize, sizeof(int));
+    for (int i &#61; 0; i &lt; maxSize; i&#43;&#43;) {
+        int num &#61; i;
+        while (num &gt; 0) {
+            digitSums[i] &#43;&#61; num % 10;
+            num /&#61; 10;
+        }
+    }
+
+    // visited数组记录已访问过的位置&#xff0c;避免重复统计
+    visited &#61; (int *) calloc(m * n, sizeof(int));
+
+    if(m &#61;&#61; 0 || n &#61;&#61; 0) {
+        puts(&#34;0&#34;);
+    } else {
+        printf(&#34;%d\n&#34;, bfs());
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

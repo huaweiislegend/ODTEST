@@ -1,0 +1,212 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 运维日志排序（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>运维工程师采集到某产品线网运行一天产生的日志n条&#xff0c;现需根据日志时间先后顺序对日志进行排序&#xff0c;日志时间格式为H:M:S.N。</p> 
+<ul><li>H表示小时(0~23)</li><li>M表示分钟(0~59)</li><li>S表示秒(0~59)</li><li>N表示毫秒(0~999)</li></ul> 
+<p>时间可能并没有补全&#xff0c;也就是说&#xff0c;01:01:01.001也可能表示为1:1:1.1。<br />  </p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入一个整数n表示日志条数&#xff0c;1&lt;&#61;n&lt;&#61;100000&#xff0c;接下来n行输入n个时间。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>按时间升序排序之后的时间&#xff0c;如果有两个时间表示的时间相同&#xff0c;则保持输入顺序。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:73px;">输入</td><td style="width:425px;"> <p>2<br /> 01:41:8.9<br /> 1:1:09.211</p> </td></tr><tr><td style="width:73px;">输出</td><td style="width:425px;"> <p>1:1:09.211</p> <p>01:41:8.9</p> </td></tr><tr><td style="width:73px;">说明</td><td style="width:425px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:73px;">输入</td><td style="width:425px;"> <p>3<br /> 23:41:08.023<br /> 1:1:09.211<br /> 08:01:22.0</p> </td></tr><tr><td style="width:73px;">输出</td><td style="width:425px;"> <p>1:1:09.211</p> <p>08:01:22.0</p> <p>23:41:08.023</p> </td></tr><tr><td style="width:73px;">说明</td><td style="width:425px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:74px;">输入</td><td style="width:424px;"> <p>2<br /> 22:41:08.023<br /> 22:41:08.23</p> </td></tr><tr><td style="width:74px;">输出</td><td style="width:424px;"> <p>22:41:08.023</p> <p>22:41:08.23</p> </td></tr><tr><td style="width:74px;">说明</td><td style="width:424px;">两个时间表示的时间相同&#xff0c;保持输入顺序</td></tr></tbody></table> 
+<p></p> 
+<h4>题目解析</h4> 
+<p>排序日志时间用到的知识是&#xff1a;</p> 
+<ul><li>将字符串时间中各要素提取出来&#xff08;正则捕获组&#xff09;&#xff0c;然后计算出总毫秒数</li><li>根据Array.prototype.sort自定义排序策略&#xff0c;来算出的总毫秒数进行排序</li></ul> 
+<hr /> 
+<p>2023.08.15 优化</p> 
+<p>将字符串时间中各要素提取出来&#xff0c;其实可以简单地按照 &#34;:&#34; 和 &#34;.&#34; 进行分割&#xff0c;这里可以使用正则 [:.] &#xff0c;作为分隔符。</p> 
+<hr /> 
+<p>2023.10.15 </p> 
+<p>本题考试Java如果出现超时&#xff0c;则大概率是输入获取超时&#xff0c;可以考虑使用BufferedReader高效输入获取方式。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class Main {
+  public static void main(String[] args) throws IOException {
+    BufferedReader br &#61; new BufferedReader(new InputStreamReader(System.in));
+
+    int n &#61; Integer.parseInt(br.readLine());
+
+    String[] logs &#61; new String[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) logs[i] &#61; br.readLine();
+
+    Arrays.sort(logs, (a, b) -&gt; Long.compare(convert(a), convert(b)));
+
+    System.out.println(String.join(&#34;\n&#34;, logs));
+  }
+
+  public static long convert(String log) {
+    String[] tmp &#61; log.split(&#34;[:.]&#34;);
+    long H &#61; Long.parseLong(tmp[0]) * 60 * 60 * 1000;
+    long M &#61; Long.parseLong(tmp[1]) * 60 * 1000;
+    long S &#61; Long.parseLong(tmp[2]) * 1000;
+    long N &#61; Long.parseLong(tmp[3]);
+    return H &#43; M &#43; S &#43; N;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+
+  const logs &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    logs.push(await readline());
+  }
+
+  logs.sort((a, b) &#61;&gt; convert(a) - convert(b));
+
+  console.log(logs.join(&#34;\n&#34;));
+})();
+
+function convert(log) {
+  const [H, M, S, N] &#61; log.split(/[:.]/);
+
+  return (
+    parseInt(H) * 60 * 60 * 1000 &#43;
+    parseInt(M) * 60 * 1000 &#43;
+    parseInt(S) * 1000 &#43;
+    parseInt(N)
+  );
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import re
+
+n &#61; int(input())
+logs &#61; [input() for _ in range(n)]
+
+
+def convert(log):
+    tmp &#61; re.split(r&#34;[:.]&#34;, log)
+
+    H &#61; int(tmp[0]) * 60 * 60 * 1000
+    M &#61; int(tmp[1]) * 60 * 1000
+    S &#61; int(tmp[2]) * 1000
+    N &#61; int(tmp[3])
+
+    return H &#43; M &#43; S &#43; N
+
+
+# 算法入口
+def getResult():
+    logs.sort(key&#61;convert)
+    return &#34;\n&#34;.join(logs)
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int cmp(const void *a, const void *b);
+long convert(char *time);
+
+// 依次是 小时转毫秒&#xff0c;分钟转毫秒&#xff0c;秒转毫秒&#xff0c; 毫秒转毫秒  的系数
+int unit[] &#61; {60 * 60 * 1000, 60 * 1000, 1000, 1};
+
+int main() {
+    // 日志条数
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    // 输入n个时间
+    char **times &#61; (char **) malloc(sizeof(char *) * n);
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        times[i] &#61; (char *) malloc(sizeof(char) * 15);
+        scanf(&#34;%s&#34;, times[i]);
+    }
+
+    // 按时间升序排序, 如果有两个时间表示的时间相同&#xff0c;则保持输入顺序
+    qsort(times, n, sizeof(char *), cmp);
+
+    // 依次打印排序后时间
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        printf(&#34;%s\n&#34;, times[i]);
+    }
+
+    return 0;
+}
+
+int cmp(const void *a, const void *b) {
+    return convert(*(char **) a) - convert(*(char **) b);
+}
+
+// 时间字符串转毫秒数
+long convert(char *time) {
+    // strtok会改变被操作的字符串&#xff0c;因此这里要对输入字符串拷贝一下
+    char tmp[20];
+    strcpy(tmp, time);
+
+    // 时间字符串对应的毫秒数
+    long mills &#61; 0;
+
+    // unit的索引
+    int i &#61; 0;
+
+    // 时间字符串按照 : 或 . 分割
+    char *token &#61; strtok(tmp, &#34;:.&#34;);
+    while (token !&#61; NULL) {
+        mills &#43;&#61; atol(token) * unit[i&#43;&#43;];
+        token &#61; strtok(NULL, &#34;:.&#34;);
+    }
+
+    return mills;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

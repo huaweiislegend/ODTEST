@@ -1,0 +1,351 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 最多购买宝石数目（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>橱窗里有一排宝石&#xff0c;不同的宝石对应不同的价格&#xff0c;宝石的价格标记为 gems[i]</p> 
+<ul><li>0 ≤ i &lt; n</li><li>n &#61; gems.length</li></ul> 
+<p>宝石可同时出售0个或多个&#xff0c;如果同时出售多个&#xff0c;则要求出售的宝石编号连续&#xff1b;</p> 
+<p>例如客户最大购买宝石个数为m&#xff0c;购买的宝石编号必须为&#xff1a;gems[i]&#xff0c;gems[i&#43;1]&#xff0c;...&#xff0c;gems[i&#43;m-1]</p> 
+<ul><li>0 ≤ i &lt; n</li><li>m ≤ n</li></ul> 
+<p>假设你当前拥有总面值为 value 的钱&#xff0c;请问最多能购买到多少个宝石&#xff0c;如无法购买宝石&#xff0c;则返回0。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入n&#xff0c;参数类型为int&#xff0c;取值范围&#xff1a;[0,10^6]&#xff0c;表示橱窗中宝石的总数量。</p> 
+<p>之后 n 行分别表示从第0个到第n-1个宝石的价格&#xff0c;即 gems[0] 到 gems[n-1] 的价格&#xff0c;类型为int&#xff0c;取值范围&#xff1a;(0,1000]。</p> 
+<p>之后一行输入v&#xff0c;类型为int&#xff0c;取值范围&#xff1a;[0,10^9]&#xff0c;表示你拥有的钱。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出int类型的返回值&#xff0c;表示最大可购买的宝石数量。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">7<br /> 8<br /> 4<br /> 6<br /> 3<br /> 1<br /> 6<br /> 7<br /> 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>gems &#61; [8,4,6,3,1,6,7], value &#61; 10</p> <p>最多购买的宝石为gems[2]至gems[4]或者gems[3]至gems[5]</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">0<br /> 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">gems &#61; [], value &#61; 1<br /> 因为没有宝石&#xff0c;所以返回0</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:84px;">输入</td><td style="width:414px;">9<br /> 6<br /> 1<br /> 3<br /> 1<br /> 8<br /> 9<br /> 3<br /> 2<br /> 4<br /> 15</td></tr><tr><td style="width:84px;">输出</td><td style="width:414px;">4</td></tr><tr><td style="width:84px;">说明</td><td style="width:414px;">gems &#61; [6, 1, 3, 1, 8, 9, 3, 2, 4], value &#61; 15<br /> 最多购买的宝石为gems[0]至gems[3]</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">9<br /> 1<br /> 1<br /> 1<br /> 1<br /> 1<br /> 1<br /> 1<br /> 1<br /> 1<br /> 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">9</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">gems &#61; [1, 1, 1, 1, 1, 1, 1, 1, 1], value &#61; 10<br /> 最多购买的宝石为gems[0]至gems[8]&#xff0c;即全部购买</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用双指针解题。</p> 
+<p></p> 
+<p>我们以用例1为例&#xff1a;蓝色为L指针&#xff0c;橙色为R指针</p> 
+<p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/direct/2b557bb854f04ac9af1e95e96ced0d06.png" /></p> 
+<p>以上就是双指针的运行逻辑。</p> 
+<p>其中需要注意的是&#xff0c;如果内部和超过了v&#xff0c;那么此时我们需要不停右移L指针&#xff0c;来减少内部和&#xff0c;直到内部和&lt;&#61;v时&#xff0c;结束L指针右移。然后才能开始R指针右移。</p> 
+<p></p> 
+<p>还有一种特殊情况比如&#xff1a;</p> 
+<p>gems &#61; [1,2,3,100,4,5,6]&#xff0c;v &#61; 10</p> 
+<p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/direct/3003300cd0eb47f39364cc864f3560eb.png" /></p> 
+<p></p> 
+<p>更多实现细节&#xff0c;请结合代码注释理解。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 橱窗中宝石的总数量
+  const n &#61; parseInt(await readline());
+
+  // n个宝石的价格
+  const gems &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    gems[i] &#61; parseInt(await readline());
+  }
+
+  // 你拥有的钱
+  const v &#61; parseInt(await readline());
+
+  // 记录题解
+  let ans &#61; 0;
+
+  // 双指针
+  let l &#61; 0;
+  let r &#61; 0;
+
+  // 双指针范围内的和
+  let window_sum &#61; 0;
+
+  outer: while (r &lt; n) {
+    // 加入r指针指向的元素
+    window_sum &#43;&#61; gems[r];
+
+    if (window_sum &lt;&#61; v) {
+      // 如果总和不超过拥有的钱&#xff0c;则继续加入后面的
+      r&#43;&#43;;
+    } else {
+      // 如果总和超过了拥有的钱&#xff0c;则 [l, r-1] 范围的宝石是能够买下的&#xff0c;记录此时的宝石数量 r-1 - l &#43; 1
+      ans &#61; Math.max(ans, r - l);
+
+      while (l &lt; r) {
+        // 由于纳入r位置宝石后&#xff0c;总和超过了拥有的钱&#xff0c;因此我们尝试丢弃l指针宝石&#xff0c;即l&#43;&#43;
+        window_sum -&#61; gems[l&#43;&#43;];
+
+        if (window_sum &lt;&#61; v) {
+          // 如果丢弃l宝石后&#xff0c;总和不超过拥有的钱&#xff0c;则继续纳入r后面的宝石
+          r&#43;&#43;;
+          continue outer;
+        }
+      }
+
+      // 如果把 l ~ r - 1 范围宝石都丢弃了&#xff0c;总和任然超过拥有的钱&#xff0c;那么就r宝石的价值就超过了手中的钱&#xff0c;此时双指针范围内不能包含r位置
+      // 此时可以将l,r全部移动到r&#43;1位置
+      l &#61; &#43;&#43;r;
+      window_sum &#61; 0;
+    }
+  }
+
+  // 收尾操作
+  if (window_sum &lt;&#61; v) {
+    ans &#61; Math.max(ans, r - l);
+  }
+
+  console.log(ans);
+})();
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    // 橱窗中宝石的总数量
+    int n &#61; sc.nextInt();
+
+    // n个宝石的价格
+    int[] gems &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      gems[i] &#61; sc.nextInt();
+    }
+
+    // 你拥有的钱
+    int v &#61; sc.nextInt();
+
+    // 记录题解
+    int ans &#61; 0;
+
+    // 双指针
+    int l &#61; 0;
+    int r &#61; 0;
+
+    // 双指针范围内的和
+    int window_sum &#61; 0;
+
+    outer:
+    while (r &lt; n) {
+      // 加入r指针指向的元素
+      window_sum &#43;&#61; gems[r];
+
+      if (window_sum &lt;&#61; v) {
+        // 如果总和不超过拥有的钱&#xff0c;则继续加入后面的
+        r&#43;&#43;;
+      } else {
+        // 如果总和超过了拥有的钱&#xff0c;则 [l, r-1] 范围的宝石是能够买下的&#xff0c;记录此时的宝石数量 r-1 - l &#43; 1
+        ans &#61; Math.max(ans, r - l);
+
+        while (l &lt; r) {
+          // 由于纳入r位置宝石后&#xff0c;总和超过了拥有的钱&#xff0c;因此我们尝试丢弃l指针宝石&#xff0c;即l&#43;&#43;
+          window_sum -&#61; gems[l&#43;&#43;];
+          if (window_sum &lt;&#61; v) {
+            // 如果丢弃l宝石后&#xff0c;总和不超过拥有的钱&#xff0c;则继续纳入r后面的宝石
+            r&#43;&#43;;
+            continue outer;
+          }
+        }
+
+        // 如果把 l ~ r - 1 范围宝石都丢弃了&#xff0c;总和任然超过拥有的钱&#xff0c;那么就r宝石的价值就超过了手中的钱&#xff0c;此时双指针范围内不能包含r位置
+        // 此时可以将l,r全部移动到r&#43;1位置
+        l &#61; &#43;&#43;r;
+        window_sum &#61; 0;
+      }
+    }
+
+    // 收尾操作
+    if (window_sum &lt;&#61; v) {
+      ans &#61; Math.max(ans, r - l);
+    }
+
+    System.out.println(ans);
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())  # 橱窗中宝石的总数量
+
+gems &#61; []  # n个宝石的价格
+for _ in range(n):
+    gems.append(int(input()))
+
+v &#61; int(input())  # 你拥有的钱
+
+
+# 算法入口
+def getResult():
+    # 记录题解
+    ans &#61; 0
+
+    # 双指针
+    l &#61; 0
+    r &#61; 0
+
+    # 双指针范围内的和
+    window_sum &#61; 0
+
+    while r &lt; n:
+        # 加入r指针指向的元素
+        window_sum &#43;&#61; gems[r]
+
+        if window_sum &lt;&#61; v:
+            # 如果总和不超过拥有的钱&#xff0c;则继续加入后面的
+            r &#43;&#61; 1
+        else:
+            # 如果总和超过了拥有的钱&#xff0c;则 [l, r-1] 范围的宝石是能够买下的&#xff0c;记录此时的宝石数量 r-1 - l &#43; 1
+            ans &#61; max(ans, r - l)
+
+            flag &#61; False
+
+            while l &lt; r:
+                # 由于纳入r位置宝石后&#xff0c;总和超过了拥有的钱&#xff0c;因此我们尝试丢弃l指针宝石&#xff0c;即l&#43;&#43;
+                window_sum -&#61; gems[l]
+                l &#43;&#61; 1
+
+                if window_sum &lt;&#61; v:
+                    # 如果丢弃l宝石后&#xff0c;总和不超过拥有的钱&#xff0c;则继续纳入r后面的宝石
+                    r &#43;&#61; 1
+                    flag &#61; True
+                    break
+
+            if flag:
+                continue
+
+            # 如果把 l ~ r - 1 范围宝石都丢弃了&#xff0c;总和任然超过拥有的钱&#xff0c;那么就r宝石的价值就超过了手中的钱&#xff0c;此时双指针范围内不能包含r位置
+            # 此时可以将l,r全部移动到r&#43;1位置
+            r &#43;&#61; 1
+            l &#61; r
+            window_sum &#61; 0
+
+    # 收尾操作
+    if window_sum &lt;&#61; v:
+        ans &#61; max(ans, r - l)
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+int main() {
+    // 橱窗中宝石的总数量
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    // n个宝石的价格
+    int gems[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;gems[i]);
+    }
+
+    // 你拥有的钱
+    int v;
+    scanf(&#34;%d&#34;, &amp;v);
+
+    // 记录题解
+    int ans &#61; 0;
+
+    // 双指针
+    int l &#61; 0;
+    int r &#61; 0;
+
+    // 双指针范围内的和
+    int window_sum &#61; 0;
+
+    while (r &lt; n) {
+        // 加入r指针指向的元素
+        window_sum &#43;&#61; gems[r];
+
+        if (window_sum &lt;&#61; v) {
+            // 如果总和不超过拥有的钱&#xff0c;则继续加入后面的
+            r&#43;&#43;;
+        } else {
+            // 如果总和超过了拥有的钱&#xff0c;则 [l, r-1] 范围的宝石是能够买下的&#xff0c;记录此时的宝石数量 r-1 - l &#43; 1
+            ans &#61; MAX(ans, r - l);
+
+            int flag &#61; 0;
+
+            while (l &lt; r) {
+                // 由于纳入r位置宝石后&#xff0c;总和超过了拥有的钱&#xff0c;因此我们尝试丢弃l指针宝石&#xff0c;即l&#43;&#43;
+                window_sum -&#61; gems[l&#43;&#43;];
+
+                if (window_sum &lt;&#61; v) {
+                    // 如果丢弃l宝石后&#xff0c;总和不超过拥有的钱&#xff0c;则继续纳入r后面的宝石
+                    r&#43;&#43;;
+                    flag &#61; 1;
+                    break;
+                }
+            }
+
+            if (flag) {
+                continue;
+            }
+
+            // 如果把 l ~ r - 1 范围宝石都丢弃了&#xff0c;总和任然超过拥有的钱&#xff0c;那么就r宝石的价值就超过了手中的钱&#xff0c;此时双指针范围内不能包含r位置
+            // 此时可以将l,r全部移动到r&#43;1位置
+            l &#61; &#43;&#43;r;
+            window_sum &#61; 0;
+        }
+    }
+
+    // 收尾操作
+    if (window_sum &lt;&#61; v) {
+        ans &#61; MAX(ans, r - l);
+    }
+
+    printf(&#34;%d\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

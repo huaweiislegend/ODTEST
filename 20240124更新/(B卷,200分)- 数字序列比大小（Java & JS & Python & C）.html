@@ -1,0 +1,325 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 数字序列比大小（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>A&#xff0c;B两个人玩一个数字比大小的游戏&#xff0c;在游戏前&#xff0c;两个人会拿到相同长度的两个数字序列&#xff0c;两个数字序列不相同的&#xff0c;且其中的数字是随机的。</p> 
+<p>A&#xff0c;B各自从数字序列中挑选出一个数字进行大小比较&#xff0c;赢的人得1分&#xff0c;输的人扣1分&#xff0c;相等则各自的分数不变。 用过的数字需要丢弃。</p> 
+<p>求A可能赢B的最大分数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入数据的第1个数字表示数字序列的长度N&#xff0c;后面紧跟着两个长度为N的数字序列。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>A可能赢B的最大分数</p> 
+<p></p> 
+<h4>备注</h4> 
+<ol><li>这里要求计算A可能赢B的最大分数&#xff0c;不妨假设&#xff0c;A知道B的数字序列&#xff0c;且总是B先挑选数字并明示。</li><li>可以采用贪心策略&#xff0c;能赢的一定要赢&#xff0c;要输的尽量减少损失。</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 4 8 10<br /> 3 6 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入数据第1个数字表示数字序列长度为3&#xff0c;后面紧跟着两个长度为3的数字序列。</p> <p>序列A&#xff1a;4 8 10</p> <p>序列B&#xff1a;3 6 4</p> <p>A可以赢的最大分数是3。获得该分数的比大小过程可以是&#xff1a;</p> <p>1&#xff09;A&#xff1a;4   B&#xff1a;3 </p> <p>2&#xff09;A&#xff1a;8   B&#xff1a;6</p> <p>3&#xff09;A&#xff1a;10  B&#xff1a;4</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题其实就是田忌赛马问题&#xff0c;解析可以参考我的这篇博客&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/131360280?csdn_share_tail&#61;%7B%22type%22%3A%22blog%22%2C%22rType%22%3A%22article%22%2C%22rId%22%3A%22131360280%22%2C%22source%22%3A%22qfc_128220%22%7D" title="POJ - 2287 Tian Ji -- The Horse Racing_伏城之外的博客-CSDN博客">POJ - 2287 Tian Ji -- The Horse Racing_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 3) {
+    const n &#61; parseInt(lines[0]);
+    const a &#61; lines[1].split(&#34; &#34;).map(Number);
+    const b &#61; lines[2].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(n, a, b));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, a, b) {
+  a.sort((a, b) &#61;&gt; a - b);
+  b.sort((a, b) &#61;&gt; a - b);
+
+  let la &#61; 0; // 指向田忌最慢的马
+  let ra &#61; n - 1; // 指向田忌最快的马
+
+  let lb &#61; 0; // 指向齐王最慢的马
+  let rb &#61; n - 1; // 指向齐王最快的马
+
+  let ans &#61; 0; // 记录田忌获得银币数
+
+  while (la &lt;&#61; ra) {
+    if (a[ra] &gt; b[rb]) {
+      // 田忌最快的马 比 齐王最快的马要快, 则直接比
+      ans &#43;&#61; 1;
+      ra--;
+      rb--;
+    } else if (a[ra] &lt; b[rb]) {
+      // 田忌最快的马 比 齐王最快的马要慢, 则结果肯定输, 为了保留田忌最快的马, 我们应该用田忌最慢的马去消耗掉齐王最快的马
+      ans -&#61; 1;
+      la&#43;&#43;;
+      rb--;
+    } else {
+      // 田忌最快的马 和 齐王最快的 速度相同, 此时如果平局的话&#xff0c;则会让田忌损失最快的马&#xff0c;因此我们应该找到田忌最慢的马, 即田忌必输的马来消耗掉齐王最快的马
+      if (a[la] &gt; b[lb]) {
+        // 如果田忌最慢的马 比 齐王最慢的马 快, 则此时田忌最慢的马不是必输的马
+        ans &#43;&#61; 1;
+        la&#43;&#43;;
+        lb&#43;&#43;;
+      } else {
+        // 如果田忌最慢的马速度 &lt;&#61; 齐王最慢的马速度, 此时应该让田忌最慢的马 去消耗  齐王最快的马
+
+        // 如果齐王最快的马速度 &gt; 田忌最慢的马速度&#xff0c;则田忌失去银币
+        // 如果齐王最快的马速度 &#61;&#61; 田忌最慢的马速度&#xff0c;则田忌不失去银币
+        if (b[rb] &gt; a[la]) ans -&#61; 1;
+        la&#43;&#43;;
+        rb--;
+      }
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+    int[] a &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int[] b &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(n, a, b));
+  }
+
+  public static int getResult(int n, int[] a, int[] b) {
+    Arrays.sort(a);
+    Arrays.sort(b);
+
+    int la &#61; 0; // 指向田忌最慢的马
+    int ra &#61; n - 1; // 指向田忌最快的马
+
+    int lb &#61; 0; // 指向齐王最慢的马
+    int rb &#61; n - 1; // 指向齐王最快的马
+
+    int ans &#61; 0; // 记录田忌获得银币数
+
+    while (la &lt;&#61; ra) {
+      if (a[ra] &gt; b[rb]) {
+        // 田忌最快的马 比 齐王最快的马要快, 则直接比
+        ans &#43;&#61; 1;
+        ra--;
+        rb--;
+      } else if (a[ra] &lt; b[rb]) {
+        // 田忌最快的马 比 齐王最快的马要慢, 则结果肯定输, 为了保留田忌最快的马, 我们应该用田忌最慢的马去消耗掉齐王最快的马
+        ans -&#61; 1;
+        la&#43;&#43;;
+        rb--;
+      } else {
+        // 田忌最快的马 和 齐王最快的 速度相同, 此时如果平局的话&#xff0c;则会让田忌损失最快的马&#xff0c;因此我们应该找到田忌最慢的马, 即田忌必输的马来消耗掉齐王最快的马
+        if (a[la] &gt; b[lb]) {
+          // 如果田忌最慢的马 比 齐王最慢的马 快, 则此时田忌最慢的马不是必输的马
+          ans &#43;&#61; 1;
+          la&#43;&#43;;
+          lb&#43;&#43;;
+        } else {
+          // 如果田忌最慢的马速度 &lt;&#61; 齐王最慢的马速度, 此时应该让田忌最慢的马 去消耗  齐王最快的马
+
+          // 如果齐王最快的马速度 &gt; 田忌最慢的马速度&#xff0c;则田忌失去银币
+          // 如果齐王最快的马速度 &#61;&#61; 田忌最慢的马速度&#xff0c;则田忌不失去银币
+          if (b[rb] &gt; a[la]) ans -&#61; 1;
+          la&#43;&#43;;
+          rb--;
+        }
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+a &#61; list(map(int, input().split()))  # 田忌的马速度数组
+b &#61; list(map(int, input().split()))  # 齐王的马速度数组
+
+
+# 算法入口
+def getResult():
+    a.sort()
+    b.sort()
+
+    la &#61; 0  # 指向田忌最慢的马
+    ra &#61; n - 1  # 指向田忌最快的马
+
+    lb &#61; 0  # 指向齐王最慢的马
+    rb &#61; n - 1  # 指向齐王最快的马
+
+    ans &#61; 0  # 记录田忌获得银币数
+
+    while la &lt;&#61; ra:
+        if a[ra] &gt; b[rb]:
+            #  田忌最快的马 比 齐王最快的马要快, 则直接比
+            ans &#43;&#61; 1
+            ra -&#61; 1
+            rb -&#61; 1
+        elif a[ra] &lt; b[rb]:
+            # 田忌最快的马 比 齐王最快的马要慢, 则结果肯定输, 为了保留田忌最快的马, 我们应该用田忌最慢的马去消耗掉齐王最快的马
+            ans -&#61; 1
+            la &#43;&#61; 1
+            rb -&#61; 1
+        else:
+            # 田忌最快的马 和 齐王最快的 速度相同, 此时如果平局的话&#xff0c;则会让田忌损失最快的马&#xff0c;因此我们应该找到田忌最慢的马, 即田忌必输的马来消耗掉齐王最快的马
+            if a[la] &gt; b[lb]:
+                # 如果田忌最慢的马 比 齐王最慢的马 快, 则此时田忌最慢的马不是必输的马
+                ans &#43;&#61; 1
+                la &#43;&#61; 1
+                lb &#43;&#61; 1
+            else:
+                # 如果田忌最慢的马速度 &lt;&#61; 齐王最慢的马速度, 此时应该让田忌最慢的马 去消耗  齐王最快的马
+                # 如果齐王最快的马速度 &gt; 田忌最慢的马速度&#xff0c;则田忌失去银币
+                # 如果齐王最快的马速度 &#61;&#61; 田忌最慢的马速度&#xff0c;则田忌不失去银币
+                if b[rb] &gt; a[la]:
+                    ans -&#61; 1
+                la &#43;&#61; 1
+                rb -&#61; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 100
+
+int getResult(int n, int* a, int* b);
+int cmp(const void* a, const void* b);
+
+int main()
+{
+	int n;
+	scanf(&#34;%d&#34;, &amp;n);
+	
+	int a[MAX_SIZE];
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		scanf(&#34;%d&#34;, &amp;a[i]);
+	}
+	
+	int b[MAX_SIZE];
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		scanf(&#34;%d&#34;, &amp;b[i]);
+	}
+	
+	printf(&#34;%d\n&#34;, getResult(n, a, b));
+	
+	return 0;
+}
+
+int getResult(int n, int* a, int* b)
+{
+	qsort(a, n, sizeof(int), cmp);
+	qsort(b, n, sizeof(int), cmp);
+	
+	int la &#61; 0; // 指向田忌最慢的马
+	int ra &#61; n - 1; // 指向田忌最快的马
+	
+	int lb &#61; 0; // 指向齐王最慢的马
+	int rb &#61; n - 1; // 指向齐王最快的马
+	
+	int ans &#61; 0; // 记录田忌获得银币数
+	
+	while(la &lt;&#61; ra) {
+		if(a[ra] &gt; b[rb]) {
+			// 田忌最快的马 比 齐王最快的马要快, 则直接比
+			ans &#43;&#61; 1;
+			ra--;
+			rb--;
+		} else if(a[ra] &lt; b[rb]) {
+			// 田忌最快的马 比 齐王最快的马要慢, 则结果肯定输, 为了保留田忌最快的马, 我们应该用田忌最慢的马去消耗掉齐王最快的马
+			ans -&#61; 1;
+			la&#43;&#43;;
+			rb--;
+		} else {
+			// 田忌最快的马 和 齐王最快的 速度相同, 此时如果平局的话&#xff0c;则会让田忌损失最快的马&#xff0c;因此我们应该找到田忌最慢的马, 即田忌必输的马来消耗掉齐王最快的马
+			if(a[la] &gt; b[lb]) {
+				// 如果田忌最慢的马 比 齐王最慢的马 快, 则此时田忌最慢的马不是必输的马
+				ans &#43;&#61; 1;
+				la&#43;&#43;;
+				lb&#43;&#43;;
+			} else {
+				// 如果田忌最慢的马速度 &lt;&#61; 齐王最慢的马速度, 此时应该让田忌最慢的马 去消耗  齐王最快的马
+				
+				// 如果齐王最快的马速度 &gt; 田忌最慢的马速度&#xff0c;则田忌失去银币
+				// 如果齐王最快的马速度 &#61;&#61; 田忌最慢的马速度&#xff0c;则田忌不失去银币
+				if(b[rb] &gt; a[la]) {
+					ans -&#61; 1;
+				}
+				la&#43;&#43;;
+				rb--;
+			}
+		}
+	}
+	
+	return ans;
+}
+
+int cmp(const void* a, const void* b)
+{
+	return *((int*) a) - *((int*) b);
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,711 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 文件缓存系统（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>请设计一个文件缓存系统&#xff0c;该文件缓存系统可以指定缓存的最大值&#xff08;单位为字节&#xff09;。</p> 
+<p>文件缓存系统有两种操作&#xff1a;</p> 
+<ul><li>存储文件&#xff08;put&#xff09;</li><li>读取文件&#xff08;get&#xff09;</li></ul> 
+<p>操作命令为&#xff1a;</p> 
+<ul><li>put fileName fileSize</li><li>get fileName</li></ul> 
+<p>存储文件是把文件放入文件缓存系统中&#xff1b;</p> 
+<p>读取文件是从文件缓存系统中访问已存在&#xff0c;如果文件不存在&#xff0c;则不作任何操作。</p> 
+<p>当缓存空间不足以存放新的文件时&#xff0c;根据规则删除文件&#xff0c;直到剩余空间满足新的文件大小位置&#xff0c;再存放新文件。</p> 
+<p>具体的删除规则为&#xff1a;</p> 
+<blockquote> 
+ <p>文件访问过后&#xff0c;会更新文件的最近访问时间和总的访问次数&#xff0c;当缓存不够时&#xff0c;按照第一优先顺序为访问次数从少到多&#xff0c;第二顺序为时间从老到新的方式来删除文件。</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为缓存最大值 m&#xff08;整数&#xff0c;取值范围为 0 &lt; m ≤ 52428800&#xff09;</p> 
+<p>第二行为文件操作序列个数 n&#xff08;0 ≤ n ≤ 300000&#xff09;</p> 
+<p>从第三行起为文件操作序列&#xff0c;每个序列单独一行&#xff0c;文件操作定义为&#xff1a;</p> 
+<blockquote> 
+ <p>op  file_name  file_size</p> 
+</blockquote> 
+<p>file_name 是文件名&#xff0c;file_size 是文件大小</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出当前文件缓存中的文件名列表&#xff0c;文件名用英文逗号分隔&#xff0c;按字典顺序排序&#xff0c;如&#xff1a;</p> 
+<blockquote> 
+ <p>a,c</p> 
+</blockquote> 
+<p>如果文件缓存中没有文件&#xff0c;则输出NONE</p> 
+<p></p> 
+<h4>备注</h4> 
+<ol><li>如果新文件的文件名和文件缓存中已有的文件名相同&#xff0c;则不会放在缓存中</li><li>新的文件第一次存入到文件缓存中时&#xff0c;文件的总访问次数不会变化&#xff0c;文件的最近访问时间会更新到最新时间</li><li>每次文件访问后&#xff0c;总访问次数加1&#xff0c;最近访问时间更新到最新时间</li><li>任何两个文件的最近访问时间不会重复</li><li>文件名不会为空&#xff0c;均为小写字母&#xff0c;最大长度为10</li><li>缓存空间不足时&#xff0c;不能存放新文件</li><li>每个文件大小都是大于 0 的整数</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">50<br /> 6<br /> put a 10<br /> put b 20<br /> get a<br /> get a<br /> get b<br /> put c 30</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">a,c</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">50<br /> 1<br /> get file</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">NONE</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题其实就是让我们实现一个LFU缓存&#xff0c;关于LFU缓存的实现&#xff0c;大家可以先看下&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/135044649?csdn_share_tail&#61;%7B%22type%22%3A%22blog%22%2C%22rType%22%3A%22article%22%2C%22rId%22%3A%22135044649%22%2C%22source%22%3A%22qfc_128220%22%7D" title="LeetCode - 460 LFU缓存&#xff08;Java &amp; JS &amp; Python&#xff09;-CSDN博客">LeetCode - 460 LFU缓存&#xff08;Java &amp; JS &amp; Python&#xff09;-CSDN博客</a></p> 
+<p>只有看懂上面博客实现后&#xff0c;才能继续做本题。</p> 
+<p></p> 
+<p>本题中的&#xff1a;</p> 
+<ul><li>fileName 相当于 key</li><li>fileSize 相当于 val</li></ul> 
+<p>本题中的&#xff1a;</p> 
+<ul><li>get(key)操作&#xff1a;<br />         <br />         如果 key 不存在&#xff0c;不需要做任何操作<br /><br />         如果 key 存在&#xff0c;则仅增加key的访问次数</li><li>put(key, val)操作&#xff1a;<br /><br />         如果 key 存在&#xff0c;不需要做任何操作<br /><br />         如果 key 不存在&#xff0c;则进行新增操作&#xff0c;这里可以初始化访问次数为1</li></ul> 
+<p></p> 
+<p>本题还有一个变化点就是&#xff0c;put新增操作时&#xff0c;检查到LFU缓存的容量不足&#xff0c;LFUCache.capacity 小于 put的val值&#xff08;文件大小&#xff09;&#xff0c;此时我们需要删除LFU缓存中最少&#xff0c;最远使用的key&#xff08;文件名&#xff09;&#xff0c;此时可能需要进行多次删除&#xff0c;直到LFUCache.capacity &gt;&#61; put的val值。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">JS算法源码</h4> 
+<pre><code class="language-javascript">/** 双向链表节点 */
+class Node {
+  constructor(key, val, freq) {
+    /** 记录本题的键 */
+    this.key &#61; key;
+    /** 记录本题的值 */
+    this.val &#61; val;
+    /** 记录该键被访问的次数 */
+    this.freq &#61; freq;
+    /** 当前节点的上一个节点 */
+    this.prev &#61; null;
+    /** 当前节点的下一个节点 */
+    this.next &#61; null;
+  }
+}
+
+/** 双向链表 */
+class Link {
+  constructor() {
+    /** 链表中节点个数 */
+    this.size &#61; 0;
+    /** 链表头节点 */
+    this.head &#61; null;
+    /** 链表尾节点 */
+    this.tail &#61; null;
+  }
+
+  /**
+   * 尾插
+   * &#64;param {*} node 要被插入的节点
+   */
+  addLast(node) {
+    if (this.size &#61;&#61; 0) {
+      // 空链表&#xff0c;则node节点插入后&#xff0c;即为头、尾节点
+      this.head &#61; node;
+      this.tail &#61; node;
+    } else {
+      // 非空链表&#xff0c;则node节点插入到tail节点后面
+      this.tail.next &#61; node;
+      node.prev &#61; this.tail;
+      this.tail &#61; node;
+    }
+    this.size&#43;&#43;;
+  }
+
+  /**
+   * 删除指定节点
+   * &#64;param {*} node 要删除的节点
+   */
+  remove(node) {
+    // 空链表没有节点&#xff0c;所以无法删除
+    if (this.size &#61;&#61; 0) return;
+
+    if (this.size &#61;&#61; 1) {
+      // 链表只有一个节点&#xff0c;则删除完后&#xff0c;变为空链表
+      this.head &#61; null;
+      this.tail &#61; null;
+    } else if (this.head &#61;&#61; node) {
+      // 如果要删除的节点是头节点
+      this.head &#61; this.head.next;
+      this.head.prev &#61; null;
+    } else if (this.tail &#61;&#61; node) {
+      // 如果要删除的节点是尾节点
+      this.tail &#61; this.tail.prev;
+      this.tail.next &#61; null;
+    } else {
+      // 如果要删除的节点是中间节点
+      node.prev.next &#61; node.next;
+      node.next.prev &#61; node.prev;
+    }
+
+    this.size--;
+  }
+}
+
+/** LFU缓存 */
+class LFUCache {
+  constructor(capacity) {
+    /** keyMap用于记录key对应的node */
+    this.keyMap &#61; new Map();
+    /** freqMap的key是访问次数&#xff0c;value是具有相同访问次数的key对应的node组成的链表&#xff0c;链表头是最远访问的&#xff0c;链表尾是最近访问的 */
+    this.freqMap &#61; new Map();
+    /** LFU缓存中能记录的最多key的数量 */
+    this.capacity &#61; capacity;
+    /** LFU缓存中所有的key中最少的访问次数 */
+    this.minFreq &#61; 0;
+  }
+
+  get(key) {
+    // 如果文件不存在&#xff0c;则不作任何操作。
+    if (!this.keyMap.has(key)) return;
+
+    const node &#61; this.keyMap.get(key);
+    // 每次文件访问后&#xff0c;总访问次数加1&#xff0c;最近访问时间更新到最新时间
+    this.incNodeFreq(node);
+  }
+
+  put(key, val) {
+    // 如果新文件的文件名和文件缓存中已有的文件名相同&#xff0c;则不会放在缓存中
+    if (this.keyMap.has(key)) return;
+
+    // 当缓存空间不足以存放新的文件时&#xff0c;根据规则删除文件&#xff0c;直到剩余空间满足新的文件大小位置&#xff0c;再存放新文件。
+    while (this.capacity &lt; val) {
+      if (this.minFreq &#61;&#61; 0) {
+        // 文件系统空了&#xff0c;也放不下该文件&#xff0c;则不放入
+        return;
+      }
+
+      // 找出最少访问次数对应的链表
+      let minFreqLink &#61; this.freqMap.get(this.minFreq);
+
+      // 链表头部节点是最少访问次数中&#xff0c;最远访问的文件&#xff0c;我们需要删除它
+      const removeNode &#61; minFreqLink.head;
+      // 删除对应文件后&#xff0c;文件系统容量新增
+      this.capacity &#43;&#61; removeNode.val;
+
+      // 执行删除操作&#xff0c;freqMap和keyMap都要删除掉对应文件的记录
+      minFreqLink.remove(removeNode);
+      this.keyMap.delete(removeNode.key);
+
+      // 如果删除后&#xff0c;最少访问次数的链表空了&#xff0c;则需要找到下一个最少访问次数的链表
+      if (minFreqLink.size &#61;&#61; 0) {
+        // 最少次数的链表空了&#xff0c;则删除对应最少次数的记录
+        this.freqMap.delete(this.minFreq);
+
+        // 更新最少次数
+        if (this.freqMap.size &gt; 0) {
+          this.minFreq &#61; Math.min(...this.freqMap.keys());
+        } else {
+          // 文件系统没有缓存文件了&#xff0c;则最少次数为0&#xff0c;表示文件系统空了
+          this.minFreq &#61; 0;
+        }
+      }
+    }
+
+    // 新增文件&#xff0c;则文件系统容量减少
+    this.capacity -&#61; val;
+    // 新增文件的访问次数为1&#xff0c;因此最少访问次数变为了1
+    this.minFreq &#61; 1;
+    const node &#61; new Node(key, val, this.minFreq);
+
+    // 执行新增操作&#xff0c;freqMap和keyMap都要新增对应文件的记录
+    if (!this.freqMap.has(this.minFreq)) {
+      this.freqMap.set(this.minFreq, new Link());
+    }
+
+    this.freqMap.get(this.minFreq).addLast(node);
+    this.keyMap.set(key, node);
+  }
+
+  incNodeFreq(node) {
+    const link &#61; this.freqMap.get(node.freq);
+
+    // 由于要更新文件的访问次数&#xff0c;因此需要将node从当前访问次数的链表中删除
+    link.remove(node);
+
+    // 如果当前访问次数链表只有当前node&#xff0c;则继续看当前链表对应的访问次数是否位最少访问次数&#xff0c;若是&#xff0c;则说明删除当前节点后&#xff0c;最少访问次数对应的文件没了
+    if (link.size &#61;&#61; 0) {
+      // 当前访问次数没有对应文件&#xff08;链表为空&#xff09;&#xff0c;则删除当前访问次数的记录&#xff08;freqMap的key&#xff09;
+      this.freqMap.delete(node.freq);
+
+      if (node.freq &#61;&#61; this.minFreq) {
+        // 此时我们应该更新最少访问次数
+        this.minFreq&#43;&#43;;
+      }
+    }
+
+    node.freq&#43;&#43;; // 总访问次数加1
+
+    if (!this.freqMap.has(node.freq)) {
+      this.freqMap.set(node.freq, new Link());
+    }
+
+    // 将node插入到对应freq的链表中
+    // 尾插 是为了实现&#xff1a;最近访问时间更新到最新时间&#xff0c;即这里认为&#xff1a;链表尾部是最近的&#xff0c;链表头部是最远的
+    this.freqMap.get(node.freq).addLast(node);
+  }
+}
+
+const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入输出处理
+void (async function () {
+  const m &#61; parseInt(await readline());
+
+  const lfuCache &#61; new LFUCache(m);
+
+  const n &#61; parseInt(await readline());
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    const operation &#61; (await readline()).split(&#34; &#34;);
+
+    const op &#61; operation[0];
+    const fileName &#61; operation[1];
+
+    if (&#34;put&#34; &#61;&#61; op) {
+      const fileSize &#61; parseInt(operation[2]);
+      lfuCache.put(fileName, fileSize);
+    } else {
+      lfuCache.get(fileName);
+    }
+  }
+
+  if (lfuCache.capacity &#61;&#61; m) {
+    console.log(&#34;NONE&#34;);
+  } else {
+    console.log([...lfuCache.keyMap.keys()].sort().join(&#34;,&#34;));
+  }
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  /** 双向链表节点 */
+  static class Node {
+    /** 记录本题的文件名 */
+    String key;
+    /** 记录本题的文件大小 */
+    int val;
+    /** 记录该文件的访问次数 */
+    int freq;
+    /** 当前节点的前一个节点 */
+    Node prev;
+    /** 当前节点的后一个节点 */
+    Node next;
+
+    public Node(String key, int val, int freq) {
+      this.key &#61; key;
+      this.val &#61; val;
+      this.freq &#61; freq;
+      this.prev &#61; null;
+      this.next &#61; null;
+    }
+  }
+
+  /** 双向链表 */
+  static class Link {
+    /** 链表节点数 */
+    int size;
+    /** 链表头节点 */
+    Node head;
+    /** 链表尾节点 */
+    Node tail;
+
+    /**
+     * 尾插
+     *
+     * &#64;param node 要插入的节点
+     */
+    public void addLast(Node node) {
+      if (this.size &#61;&#61; 0) {
+        this.head &#61; node;
+        this.tail &#61; node;
+      } else {
+        this.tail.next &#61; node;
+        node.prev &#61; this.tail;
+        this.tail &#61; node;
+      }
+
+      this.size&#43;&#43;;
+    }
+
+    /**
+     * 删除指定节点
+     *
+     * &#64;param node 指定删除的节点
+     */
+    public void remove(Node node) {
+      // 如果是空链表&#xff0c;则没法删除
+      if (this.size &#61;&#61; 0) return;
+
+      if (this.size &#61;&#61; 1) {
+        // 如果是单节点链表&#xff0c;则删除完&#xff0c;链表为空
+        this.head &#61; null;
+        this.tail &#61; null;
+      } else if (node &#61;&#61; this.head) {
+        // 被删除节点是链表头节点
+        this.head &#61; this.head.next;
+        this.head.prev &#61; null;
+      } else if (node &#61;&#61; this.tail) {
+        // 被删除节点是链表尾节点
+        this.tail &#61; this.tail.prev;
+        this.tail.next &#61; null;
+      } else {
+        // 被删除节点是链表中间节点
+        node.prev.next &#61; node.next;
+        node.next.prev &#61; node.prev;
+      }
+
+      this.size--;
+    }
+  }
+
+  static class LFUCache {
+    /** key是文件名&#xff0c;value是文件信息&#xff08;key.value本质是freqMap.value对应的链表中节点Node的对象地址&#xff09; */
+    HashMap&lt;String, Node&gt; keyMap;
+
+    /** key是访问次数&#xff0c;value是访问次数位key的文件&#xff08;Node&#xff09;组成的链表&#xff08;Link&#xff09; */
+    HashMap&lt;Integer, Link&gt; freqMap;
+
+    /** 文件系统总容量 */
+    int capacity;
+
+    /** 最少访问次数&#xff08;记录自各个文件访问次数中最少的那个&#xff09; */
+    int minFreq;
+
+    public LFUCache(int capacity) {
+      this.capacity &#61; capacity;
+      this.minFreq &#61; 0;
+      this.keyMap &#61; new HashMap&lt;&gt;();
+      this.freqMap &#61; new HashMap&lt;&gt;();
+    }
+
+    /**
+     * &#64;param key 对应本题的文件名
+     */
+    public void get(String key) {
+      // 如果文件不存在&#xff0c;则不作任何操作。
+      if (!this.keyMap.containsKey(key)) return;
+
+      Node node &#61; this.keyMap.get(key);
+      // 每次文件访问后&#xff0c;总访问次数加1&#xff0c;最近访问时间更新到最新时间
+      incNodeFreq(node);
+    }
+
+    /**
+     * &#64;param key 对应本题的文件名
+     * &#64;param val 对应本题的文件大小
+     */
+    public void put(String key, int val) {
+      // 如果新文件的文件名和文件缓存中已有的文件名相同&#xff0c;则不会放在缓存中
+      if (this.keyMap.containsKey(key)) return;
+
+      // 当缓存空间不足以存放新的文件时&#xff0c;根据规则删除文件&#xff0c;直到剩余空间满足新的文件大小位置&#xff0c;再存放新文件。
+      while (this.capacity &lt; val) {
+        if (this.minFreq &#61;&#61; 0) {
+          // 文件系统空了&#xff0c;也放不下该文件&#xff0c;则不放入
+          return;
+        }
+
+        // 找出最少访问次数对应的链表
+        Link minFreqLink &#61; this.freqMap.get(this.minFreq);
+
+        // 链表头部节点是最少访问次数中&#xff0c;最远访问的文件&#xff0c;我们需要删除它
+        Node removeNode &#61; minFreqLink.head;
+        // 删除对应文件后&#xff0c;文件系统容量新增
+        this.capacity &#43;&#61; removeNode.val;
+
+        // 执行删除操作&#xff0c;freqMap和keyMap都要删除掉对应文件的记录
+        minFreqLink.remove(removeNode);
+        this.keyMap.remove(removeNode.key);
+
+        // 如果删除后&#xff0c;最少访问次数的链表空了&#xff0c;则需要找到下一个最少访问次数的链表
+        if (minFreqLink.size &#61;&#61; 0) {
+          // 最少访问次数没有对应文件&#xff08;链表为空&#xff09;&#xff0c;则删除最少访问次数的记录&#xff08;freqMap的key&#xff09;
+          this.freqMap.remove(this.minFreq);
+
+          if (this.freqMap.size() &gt; 0) {
+            this.minFreq &#61; this.freqMap.keySet().stream().min((a, b) -&gt; a - b).get();
+          } else {
+            // 文件系统没有缓存文件了&#xff0c;则最少次数为0&#xff0c;表示文件系统空了
+            this.minFreq &#61; 0;
+          }
+        }
+      }
+
+      // 新增文件&#xff0c;则文件系统容量减少
+      this.capacity -&#61; val;
+      // 新增文件的访问次数为1&#xff0c;因此最少访问次数变为了1
+      this.minFreq &#61; 1;
+      Node node &#61; new Node(key, val, this.minFreq);
+      // 执行新增操作&#xff0c;freqMap和keyMap都要新增对应文件的记录
+      this.freqMap.putIfAbsent(this.minFreq, new Link());
+      this.freqMap.get(this.minFreq).addLast(node);
+      this.keyMap.put(key, node);
+    }
+
+    public void incNodeFreq(Node node) {
+      Link link &#61; this.freqMap.get(node.freq);
+
+      // 由于要更新文件的访问次数&#xff0c;因此需要将node从当前访问次数的链表中删除
+      link.remove(node);
+      // 如果当前访问次数链表只有当前node&#xff0c;则继续看当前链表对应的访问次数是否位最少访问次数&#xff0c;若是&#xff0c;则说明删除当前节点后&#xff0c;最少访问次数对应的文件没了
+      if (link.size &#61;&#61; 0) {
+        // 当前访问次数没有对应文件&#xff08;链表为空&#xff09;&#xff0c;则删除当前访问次数的记录&#xff08;freqMap的key&#xff09;
+        this.freqMap.remove(node.freq);
+
+        if (node.freq &#61;&#61; this.minFreq) {
+          // 此时我们应该更新最少访问次数
+          this.minFreq&#43;&#43;;
+        }
+      }
+
+      node.freq&#43;&#43;; // 总访问次数加1
+      this.freqMap.putIfAbsent(node.freq, new Link());
+      // 将node插入到对应freq的链表中
+      // 尾插 是为了实现&#xff1a;最近访问时间更新到最新时间&#xff0c;即这里认为&#xff1a;链表尾部是最近的&#xff0c;链表头部是最远的
+      this.freqMap.get(node.freq).addLast(node);
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; Integer.parseInt(sc.nextLine());
+    LFUCache lfuCache &#61; new LFUCache(m);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      String[] operation &#61; sc.nextLine().split(&#34; &#34;);
+
+      String op &#61; operation[0];
+      String fileName &#61; operation[1];
+
+      if (&#34;put&#34;.equals(op)) {
+        int fileSize &#61; Integer.parseInt(operation[2]);
+        lfuCache.put(fileName, fileSize);
+      } else {
+        lfuCache.get(fileName);
+      }
+    }
+
+    if (lfuCache.capacity &#61;&#61; m) {
+      // 如果文件系统容量没有减少&#xff0c;则没有文件被缓存
+      System.out.println(&#34;NONE&#34;);
+    } else {
+      // 否则取出文件系统中的文件名&#xff0c;按照字典序输出
+      StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+      lfuCache.keyMap.keySet().stream().sorted().forEach(sj::add);
+      System.out.println(sj);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 双向链表节点
+class Node:
+    def __init__(self, key, val, freq):
+        &#34;&#34;&#34;
+        :param key: 记录本题的键
+        :param val: 记录本题的值
+        :param freq: 记录该键被访问的次数
+        &#34;&#34;&#34;
+        self.key &#61; key
+        self.val &#61; val
+        self.freq &#61; freq
+        self.prev &#61; None
+        self.next &#61; None
+
+
+# 双向链表
+class Link:
+    def __init__(self):
+        self.size &#61; 0
+        self.head &#61; None
+        self.tail &#61; None
+
+    def addLast(self, node):
+        &#34;&#34;&#34;
+        尾插
+        :param node: 要被插入的节点
+        &#34;&#34;&#34;
+        if self.size &#61;&#61; 0:
+            # 空链表&#xff0c;则node节点插入后&#xff0c;即为头、尾节点
+            self.head &#61; node
+            self.tail &#61; node
+        else:
+            # 非空链表&#xff0c;则node节点插入到tail节点后面
+            self.tail.next &#61; node
+            node.prev &#61; self.tail
+            self.tail &#61; node
+
+        self.size &#43;&#61; 1
+
+    def remove(self, node):
+        &#34;&#34;&#34;
+        删除指定节点
+        :param node: 要删除的节点
+        &#34;&#34;&#34;
+        if self.size &#61;&#61; 0:
+            # 空链表没有节点&#xff0c;所以无法删除
+            return
+
+        if self.size &#61;&#61; 1:
+            # 链表只有一个节点&#xff0c;则删除完后&#xff0c;变为空链表
+            self.head &#61; None
+            self.tail &#61; None
+        elif self.head &#61;&#61; node:
+            # 如果要删除的节点是头节点
+            self.head &#61; self.head.next
+            self.head.prev &#61; None
+        elif self.tail &#61;&#61; node:
+            # 如果要删除的节点是尾节点
+            self.tail &#61; self.tail.prev
+            self.tail.next &#61; None
+        else:
+            # 如果要删除的节点是中间节点
+            node.prev.next &#61; node.next
+            node.next.prev &#61; node.prev
+
+        self.size -&#61; 1
+
+
+# LFU缓存
+class LFUCache:
+    def __init__(self, capacity):
+        self.keyMap &#61; {}  # keyMap用于记录key对应的node
+        self.freqMap &#61; {}  # freqMap的key是访问次数&#xff0c;value是具有相同访问次数的key对应的node组成的链表&#xff0c;链表头是最远访问的&#xff0c;链表尾是最近访问的
+        self.capacity &#61; capacity  # LFU缓存中能记录的最多key的数量
+        self.minFreq &#61; 0  # LFU缓存中所有的key中最少的访问次数
+
+    def get(self, key):
+        # 如果文件不存在&#xff0c;则不作任何操作。
+        if key not in self.keyMap:
+            return
+
+        # 每次文件访问后&#xff0c;总访问次数加1&#xff0c;最近访问时间更新到最新时间
+        node &#61; self.keyMap[key]
+        self.incNodeFreq(node)
+
+    def put(self, key, val):
+        # 如果新文件的文件名和文件缓存中已有的文件名相同&#xff0c;则不会放在缓存中
+        if key in self.keyMap:
+            return
+
+        # 当缓存空间不足以存放新的文件时&#xff0c;根据规则删除文件&#xff0c;直到剩余空间满足新的文件大小位置&#xff0c;再存放新文件。
+        while self.capacity &lt; val:
+            if self.minFreq &#61;&#61; 0:
+                # 文件系统空了&#xff0c;也放不下该文件&#xff0c;则不放入
+                return
+
+            # 找出最少访问次数对应的链表
+            minFreqLink &#61; self.freqMap[self.minFreq]
+
+            # 链表头部节点是最少访问次数中&#xff0c;最远访问的文件&#xff0c;我们需要删除它
+            removeNode &#61; minFreqLink.head
+            # 删除对应文件后&#xff0c;文件系统容量新增
+            self.capacity &#43;&#61; removeNode.val
+
+            # 执行删除操作&#xff0c;freqMap和keyMap都要删除掉对应文件的记录
+            minFreqLink.remove(removeNode)
+            self.keyMap.pop(removeNode.key)
+
+            # 如果删除后&#xff0c;最少访问次数的链表空了&#xff0c;则需要找到下一个最少访问次数的链表
+            if minFreqLink.size &#61;&#61; 0:
+                # 最少次数的链表空了&#xff0c;则删除对应最少次数的记录
+                del self.freqMap[self.minFreq]
+
+                # 更新最少次数
+                if len(self.freqMap.keys()) &gt; 0:
+                    self.minFreq &#61; min(self.freqMap.keys())
+                else:
+                    # 文件系统没有缓存文件了&#xff0c;则最少次数为0&#xff0c;表示文件系统空了
+                    self.minFreq &#61; 0
+
+        # 新增文件&#xff0c;则文件系统容量减少
+        self.capacity -&#61; val
+        # 新增文件的访问次数为1&#xff0c;因此最少访问次数变为了1
+        self.minFreq &#61; 1
+        node &#61; Node(key, val, self.minFreq)
+        # 执行新增操作&#xff0c;freqMap和keyMap都要新增对应文件的记录
+        self.freqMap.setdefault(self.minFreq, Link())
+        self.freqMap.get(self.minFreq).addLast(node)
+        self.keyMap[key] &#61; node
+
+    def incNodeFreq(self, node):
+        &#34;&#34;&#34;
+        增加key的访问次数
+        :param node: key对应的node
+        &#34;&#34;&#34;
+        # 由于key的访问次数增加&#xff0c;因此要从原访问次数的链表中删除
+        self.freqMap[node.freq].remove(node)
+
+        # 如果原链表删除当前key对应的节点后为空&#xff0c;且原链表对应的访问次数就是最少访问次数
+        if self.freqMap[node.freq].size &#61;&#61; 0:
+            # 最少次数的链表空了&#xff0c;则删除对应最少次数的记录
+            del self.freqMap[node.freq]
+
+            # 则最少访问次数对应的key没有了&#xff0c;因此最少访问次数&#43;&#43;&#xff08;即当前key访问次数&#43;&#43;后&#xff0c;当前key的访问次数还是最少访问次数&#xff09;
+            if node.freq &#61;&#61; self.minFreq:
+                self.minFreq &#43;&#61; 1
+
+        # 当前key访问次数&#43;&#43;
+        node.freq &#43;&#61; 1
+
+        # 将当前key对应的node转移到对应增加后的访问次数对应的链表尾部&#xff08;最近访问&#xff09;
+        self.freqMap.setdefault(node.freq, Link())
+        self.freqMap[node.freq].addLast(node)
+
+
+# 输入获取
+m &#61; int(input())
+
+lfu &#61; LFUCache(m)
+
+n &#61; int(input())
+
+for _ in range(n):
+    operation &#61; input().split()
+
+    op &#61; operation[0]
+    fileName &#61; operation[1]
+
+    if &#34;put&#34; &#61;&#61; op:
+        fileSize &#61; int(operation[2])
+        lfu.put(fileName, fileSize)
+    else:
+        lfu.get(fileName)
+
+if lfu.capacity &#61;&#61; m:
+    print(&#34;NONE&#34;)
+else:
+    ans &#61; list(lfu.keyMap.keys())
+    ans.sort()
+    print(&#34;,&#34;.join(ans))</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

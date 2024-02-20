@@ -1,0 +1,326 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 荒岛求生（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>一个荒岛上有若干人&#xff0c;岛上只有一条路通往岛屿两端的港口&#xff0c;大家需要逃往两端的港口才可逃生。</p> 
+<p>假定每个人移动的速度一样&#xff0c;且只可选择向左或向右逃生。</p> 
+<p>若两个人相遇&#xff0c;则进行决斗&#xff0c;战斗力强的能够活下来&#xff0c;并损失掉与对方相同的战斗力&#xff1b;若战斗力相同&#xff0c;则两人同归于尽。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>给定一行非 0 整数数组&#xff0c;元素个数不超过30000&#xff1b;</p> 
+<p>正负表示逃生方向&#xff08;正表示向右逃生&#xff0c;负表示向左逃生&#xff09;&#xff0c;绝对值表示战斗力&#xff0c;越左边的数字表示里左边港口越近&#xff0c;逃生方向相同的人永远不会发生决斗。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>能够逃生的人总数&#xff0c;没有人逃生输出0&#xff0c;输入异常时输出-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:550px;"><tbody><tr><td style="width:61px;">输入</td><td style="width:487px;">5 10 8 -8 -5</td></tr><tr><td style="width:61px;">输出</td><td style="width:487px;">2</td></tr><tr><td style="width:61px;">说明</td><td style="width:487px;">第3个人和第4个人同归于尽&#xff0c;第2个人杀死第5个人并剩余5战斗力&#xff0c;第1个人没有遇到敌人。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以利用栈结构解题。</p> 
+<p></p> 
+<p>解题思路如下&#xff1a;</p> 
+<p>我们可以假设所有数字都向左逃生&#xff0c;那么从左边出来的只有两种情况&#xff1a;</p> 
+<ul><li>正数</li><li>负数</li></ul> 
+<p>如果左边出来的是正数&#xff0c;则由于正数不能从左边逃生&#xff0c;而只能从右边出口逃生&#xff0c;因此我们不能算该正数逃生成功&#xff0c;并且该正数还会成为左边出来的负数的逃生阻力&#xff0c;因此我们将左边出来的正数缓存进栈中。</p> 
+<p>如果左边出来的是负数&#xff0c;则由于负数可以从左边出口逃生&#xff0c;因此此时&#xff0c;我们需要检查栈中有没有缓存的正数&#xff08;阻力&#xff09;&#xff0c;如果有&#xff0c;则需要将左边逃出来的负数 和 栈顶的正数&#xff0c;进行pk&#xff08;二者求和&#xff09;&#xff1a;</p> 
+<blockquote> 
+ <p>假设负数逃生成功个数为negative&#xff0c;正数逃生成功个数为positive</p> 
+</blockquote> 
+<ul><li>若 pk &gt; 0&#xff0c;则负数逃生失败&#xff0c;栈顶正数减少战斗力后重新入栈</li><li>若 pk &lt; 0&#xff0c;则负数打败了栈顶正数&#xff0c;负数减少战斗力&#xff0c;然后继续和新的栈顶正数pk&#xff1a;</li></ul> 
+<ol><li>若栈已经空了&#xff0c;则此负数逃生成功&#xff0c;我们将负数逃生成功个数negative&#43;1</li><li>若栈未空&#xff0c;则继续pk逻辑</li></ol> 
+<ul><li>若 pk &#61;&#61; 0&#xff0c;则负数和栈顶正数同归于尽</li></ul> 
+<p>按此逻辑&#xff0c;最后栈的大小其实就是逃生成功的正数个数postive&#xff0c;我们只要求和negative&#43;postive即为题解。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 负数逃生的总人数
+  let negative &#61; 0;
+  // 正数缓冲栈&#xff0c;注意该栈只缓存正数
+  const positive &#61; [];
+
+  // 正序遍历nums&#xff0c;遍历出来的num&#xff0c;相当于从左边逃生
+  for (let num of nums) {
+    // 输入异常时输出-1
+    if (num &#61;&#61; 0) return console.log(-1);
+
+    if (num &gt; 0) {
+      // 如果左边逃出来的是正数&#xff0c;则缓冲到栈中
+      positive.push(num);
+    } else {
+      // 如果左边逃出来的是负数
+      while (true) {
+        if (positive.length &#61;&#61; 0) {
+          // 如果栈为空&#xff0c;即没有正数&#xff0c;此时左边逃出来的负数直接逃生成功
+          negative&#43;&#43;;
+          break;
+        }
+
+        // 如果栈不为空&#xff0c;则栈中有缓冲的正数&#xff0c;此时负数需要和栈顶正数进行pk
+        const pk &#61; num &#43; positive.pop();
+
+        if (pk &gt; 0) {
+          // 如果pk结果大于0&#xff0c;则负数逃生失败&#xff0c;栈顶的正数减少战斗力
+          positive.push(pk);
+          break;
+        } else if (pk &lt; 0) {
+          // 如果pk结果小于0&#xff0c;则负数pk成功&#xff0c;此时需要继续和新栈顶正数pk&#xff0c;即进入下一轮
+          num &#61; pk;
+        } else {
+          // 如果pk结果为0&#xff0c;则同归于尽
+          break;
+        }
+      }
+    }
+  }
+
+  // 最终逃生成功的人数&#xff1a;negative即负数逃生成功个数&#xff0c;positive.size()即正数逃生成功个数
+  console.log(negative &#43; positive.length);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    System.out.println(getResult(nums));
+  }
+
+  public static int getResult(int[] nums) {
+    // 负数逃生的总人数
+    int negative &#61; 0;
+
+    // 正数缓冲栈&#xff0c;注意该栈只缓存正数
+    LinkedList&lt;Integer&gt; positive &#61; new LinkedList&lt;&gt;();
+
+    // 正序遍历nums&#xff0c;遍历出来的num&#xff0c;相当于从左边逃生
+    for (int num : nums) {
+      // 输入异常时输出-1
+      if (num &#61;&#61; 0) return -1;
+
+      if (num &gt; 0) {
+        // 如果左边逃出来的是正数&#xff0c;则缓冲到栈中
+        positive.addLast(num);
+      } else {
+        // 如果左边逃出来的是负数
+        while (true) {
+          if (positive.size() &#61;&#61; 0) {
+            // 如果栈为空&#xff0c;即没有正数&#xff0c;此时左边逃出来的负数直接逃生成功
+            negative&#43;&#43;;
+            break;
+          }
+
+          // 如果栈不为空&#xff0c;则栈中有缓冲的正数&#xff0c;此时负数需要和栈顶正数进行pk
+          int pk &#61; num &#43; positive.removeLast();
+
+          if (pk &gt; 0) {
+            // 如果pk结果大于0&#xff0c;则负数逃生失败&#xff0c;栈顶的正数减少战斗力
+            positive.addLast(pk);
+            break;
+          } else if (pk &lt; 0) {
+            // 如果pk结果小于0&#xff0c;则负数pk成功&#xff0c;此时需要继续和新栈顶正数pk&#xff0c;即进入下一轮
+            num &#61; pk;
+          } else {
+            // 如果pk结果为0&#xff0c;则同归于尽
+            break;
+          }
+        }
+      }
+    }
+
+    // 最终逃生成功的人数&#xff1a;negative即负数逃生成功个数&#xff0c;positive.size()即正数逃生成功个数
+    return negative &#43; positive.size();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+nums &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    # 负数逃生的总人数
+    negative &#61; 0
+    # 正数缓冲栈&#xff0c;注意该栈只缓存正数
+    positive &#61; []
+
+    # 正序遍历nums&#xff0c;遍历出来的num&#xff0c;相当于从左边逃生
+    for num in nums:
+        # 输入异常时输出-1
+        if num &#61;&#61; 0:
+            return -1
+
+        if num &gt; 0:
+            # 如果左边逃出来的是正数&#xff0c;则缓冲到栈中
+            positive.append(num)
+        else:
+            # 如果左边逃出来的是负数
+            while True:
+                if len(positive) &#61;&#61; 0:
+                    # 如果栈为空&#xff0c;即没有正数&#xff0c;此时左边逃出来的负数直接逃生成功
+                    negative &#43;&#61; 1
+                    break
+
+                # 如果栈不为空&#xff0c;则栈中有缓冲的正数&#xff0c;此时负数需要和栈顶正数进行pk
+                pk &#61; num &#43; positive.pop()
+
+                if pk &gt; 0:
+                    # 如果pk结果大于0&#xff0c;则负数逃生失败&#xff0c;栈顶的正数减少战斗力
+                    positive.append(pk)
+                    break
+                elif pk &lt; 0:
+                    # 如果pk结果小于0&#xff0c;则负数pk成功&#xff0c;此时需要继续和新栈顶正数pk&#xff0c;即进入下一轮
+                    num &#61; pk
+                else:
+                    # 如果pk结果为0&#xff0c;则同归于尽
+                    break
+
+    # 最终逃生成功的人数&#xff1a;negative即负数逃生成功个数&#xff0c;positive.size()即正数逃生成功个数
+    return negative &#43; len(positive)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 30001
+
+int getResult(int* nums, int nums_size);
+
+/*
+ * 栈结构定义&#xff08;基于线性表&#xff09;
+ * 容器 stack 数组&#xff0c;容量上限MAX_SIZE
+ * 栈中元素个数 stack_size
+ * 压栈操作 stack_push
+ * 弹栈操作 stack_pop
+ */
+int stack[MAX_SIZE];
+int stack_size &#61; 0;
+
+void stack_push(int ele)
+{
+    if(stack_size &lt; MAX_SIZE) {
+        stack[stack_size&#43;&#43;] &#61; ele;
+    }
+}
+
+int stack_pop()
+{
+    if(stack_size &gt; 0) {
+        return stack[--stack_size];
+    }
+}
+
+// 程序入口
+int main()
+{
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+    while(scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if(getchar() !&#61; &#39; &#39;) break;
+    }
+
+    printf(&#34;%d\n&#34;, getResult(nums, nums_size));
+
+    return 0;
+}
+
+// 核心代码
+int getResult(int* nums, int nums_size)
+{
+    // 负数逃生的总人数
+    int negative &#61; 0;
+
+    // 正序遍历nums&#xff0c;遍历出来的num&#xff0c;相当于从左边逃生
+    for(int i&#61;0; i&lt;nums_size; i&#43;&#43;) {
+        int num &#61; nums[i];
+
+        // 输入异常时输出-1
+        if(num &#61;&#61; 0) return -1;
+
+        if(num &gt; 0) {
+            // 如果左边逃出来的是正数&#xff0c;则缓冲到栈中
+            stack_push(num);
+        } else {
+            while(1) {
+                // 如果左边逃出来的是负数
+                if(stack_size &#61;&#61; 0) {
+                    // 如果栈为空&#xff0c;即没有正数&#xff0c;此时左边逃出来的负数直接逃生成功
+                    negative&#43;&#43;;
+                    break;
+                }
+
+                // 如果栈不为空&#xff0c;则栈中有缓冲的正数&#xff0c;此时负数需要和栈顶正数进行pk
+                int pk &#61; num &#43; stack_pop();
+
+                if(pk &gt; 0) {
+                    // 如果pk结果大于0&#xff0c;则负数逃生失败&#xff0c;栈顶的正数减少战斗力
+                    stack_push(pk);
+                    break;
+                } else if(pk &lt; 0) {
+                    // 如果pk结果小于0&#xff0c;则负数pk成功&#xff0c;此时需要继续和新栈顶正数pk&#xff0c;即进入下一轮
+                    num &#61; pk;
+                } else {
+                    // 如果pk结果为0&#xff0c;则同归于尽
+                    break;
+                }
+            }
+        }
+    }
+
+    // 最终逃生成功的人数&#xff1a;negative即负数逃生成功个数&#xff0c;stack_size即正数逃生成功个数
+    return negative &#43; stack_size;
+}
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

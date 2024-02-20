@@ -1,0 +1,434 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 计算疫情扩散时间（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>在一个地图中(地图由n*n个区域组成&#xff09;&#xff0c;有部分区域被感染病菌。 感染区域每天都会把周围&#xff08;上下左右&#xff09;的4个区域感染。 请根据给定的地图计算&#xff0c;多少天以后&#xff0c;全部区域都会被感染。 如果初始地图上所有区域全部都被感染&#xff0c;或者没有被感染区域&#xff0c;返回-1</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>一行N*N个数字&#xff08;只包含0,1&#xff0c;不会有其他数字&#xff09;表示一个地图&#xff0c;数字间用,分割&#xff0c;0表示未感染区域&#xff0c;1表示已经感染区域 每N个数字表示地图中一行&#xff0c;输入数据共表示N行N列的区域地图。</p> 
+<p>例如输入1,0,1,0,0,0,1,0,1&#xff0c;表示地图</p> 
+<p>1,0,1<br /> 0,0,0<br /> 1,0,1<br />  </p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>一个整数&#xff0c;表示经过多少天以后&#xff0c;全部区域都被感染 1&lt;&#61;N&lt;200</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1,0,1,0,0,0,1,0,1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">1天以后&#xff0c;地图中仅剩余中心点未被感染&#xff1b;2天以后&#xff0c;全部被感染。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:83px;">输入</td><td style="width:415px;">0,0,0,0</td></tr><tr><td style="width:83px;">输出</td><td style="width:415px;">-1</td></tr><tr><td style="width:83px;">说明</td><td style="width:415px;">无感染区域</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:81px;">输入</td><td style="width:417px;">1,1,1,1,1,1,1,1,1</td></tr><tr><td style="width:81px;">输出</td><td style="width:417px;">-1</td></tr><tr><td style="width:81px;">说明</td><td style="width:417px;">全部都感染</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>自测用例&#xff1a;0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0</p> 
+<p>一共8x8个区域</p> 
+<p><img alt="" height="395" src="https://img-blog.csdnimg.cn/b8a9245ee6604399a842cbac4a1934f5.png" width="1200" /></p> 
+<p> 感染区传播过程如上图所示。</p> 
+<p></p> 
+<p>本题其实就是图结构的多源BFS。</p> 
+<p>每个感染区就是图结构中需要进行广度优先搜索的起点。感染区就相当于我们往水面扔了一颗石子&#xff0c;广度优先搜索就相当于荡起的一圈涟漪。</p> 
+<p></p> 
+<p>本题的广度优先搜索是基于队列实现的。</p> 
+<p>创建一个队列queue&#xff0c;初始时&#xff0c;遍历矩阵&#xff0c;找到所有感染区位置&#xff0c;并加入队列。</p> 
+<p>queue初始化完成后&#xff0c;我们对queue进行出队操作&#xff0c;每一个出队元素就是一个感染区位置&#xff0c;我们需要将其上下左右的区域全部改为感染区&#xff0c;并将新的感染区入队queue。</p> 
+<p>这样的话才能保证  第一批感染区  的传播才能优先进行&#xff0c;达到广度优先搜索的目的。</p> 
+<p><img alt="" height="535" src="https://img-blog.csdnimg.cn/8092baae223a49dba27f4cb71859b17b.png" width="446" /></p> 
+<p></p> 
+<p>我们再举一个例子&#xff0c;如果采用stack栈来保存感染区的话&#xff0c;则必然先弹栈一个感染区位置&#xff0c;然后将其上下左右区域感染&#xff0c;这个过程中&#xff0c;将新的感染区压栈&#xff0c;而之后再次弹栈&#xff0c;必然是第二批的感染区位置&#xff0c;也就是后进先出&#xff0c;这将会产生深度优先搜索的效果。</p> 
+<p>最终会产生如下效果</p> 
+<p><img alt="" height="169" src="https://img-blog.csdnimg.cn/bdf0080f230b481aae134937fa66c91f.png" width="931" /></p> 
+<p></p> 
+<p>了解图的多源广度优先搜索的实现后&#xff0c;我们就需要考虑如何统计感染时间了&#xff0c;这里我们可以将感染区标记和感染时间捆绑在一起&#xff0c;比如第0天的新增感染区标记为1&#xff08;即矩阵初始时元素1&#xff09;&#xff0c;第1天的新增感染区标记为2&#xff0c;这个标记是我们广度优先搜索过程中&#xff0c;遍历每个感染区位置上下左右时标记的。</p> 
+<p>因此&#xff0c;最后一次被标记的时间就是感染全区的时间&#xff0c;但是要减去1&#xff0c;因为我们是第1天标记为2了&#xff0c;因此第n天标记为n&#43;1了。</p> 
+<hr /> 
+<p>2023.06.08</p> 
+<p>上面统计天数的方案&#xff0c;是将天数和矩阵元素值耦合起来&#xff0c;即矩阵元素格子内的值是几&#xff0c;就代表该格子是第几天被感染的。</p> 
+<p>下面提供一种新方案来统计天数&#xff0c;我们知道&#xff0c;初始时&#xff0c;第一批&#xff08;第一天&#xff09;感染区都被统计到了queue中&#xff0c;之后进入bfs逻辑后&#xff0c;我们将新增的感染区也记录到了queue里面&#xff0c;这导致不同天的感染区都被记录到了一起&#xff0c;因此不好区分。</p> 
+<p>我们可以选择创建一个新的newQueue&#xff0c;来记录新增感染区&#xff0c;比如我们可以遍历queue&#xff0c;来讲queue中感染区扩散出去的新感染区都放到newQueue&#xff0c;如果queue中统计的是第一天的感染区&#xff0c;那么newQueue中统计的就是第二天的感染区。</p> 
+<p>这样的话&#xff0c;就可以将不同天数的感染区分开统计了。</p> 
+<p>最后为了保证bfs的正常运行&#xff0c;我们只要将newQueue赋值给queue&#xff0c;进行下一轮感染即可。</p> 
+<p>而这个过程中&#xff0c;每遍历完queue&#xff0c;就相当于day&#43;1</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] arr &#61;
+        Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(arr));
+  }
+
+  public static int getResult(Integer[] arr) {
+    // 题目说会输入n*n个值
+    int n &#61; (int) Math.sqrt(arr.length);
+
+    // 将一维arr输入转为二维矩阵matrix
+    int[][] matrix &#61; new int[n][n];
+
+    // 将矩阵中所有感染区域位置记录到queue中,这里选择queue先进先出的原因是保证当天的感染区域并发扩散
+    LinkedList&lt;Integer[]&gt; queue &#61; new LinkedList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        matrix[i][j] &#61; arr[i * n &#43; j];
+        if (matrix[i][j] &#61;&#61; 1) queue.add(new Integer[] {i, j});
+      }
+    }
+
+    // 全是感染区&#xff0c;或全是健康区
+    if (queue.size() &#61;&#61; 0 || queue.size() &#61;&#61; arr.length) {
+      return -1;
+    }
+
+    // 健康区个数
+    int healthy &#61; arr.length - queue.size();
+
+    // 上下左右偏移量
+    int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    // day用于统计感染全部花费的时间
+    int day &#61; 0;
+    // 如果健康区个数为0&#xff0c;说明感染完了
+    while (queue.size() &gt; 0 &amp;&amp; healthy &gt; 0) {
+      LinkedList&lt;Integer[]&gt; newQue &#61; new LinkedList&lt;&gt;();
+
+      // 遍历完当前queue的所有感染区&#xff0c;即过去一天
+      for (Integer[] tmp : queue) {
+        int x &#61; tmp[0], y &#61; tmp[1];
+
+        for (int[] offset : offsets) {
+          int newX &#61; x &#43; offset[0];
+          int newY &#61; y &#43; offset[1];
+
+          if (newX &gt;&#61; 0 &amp;&amp; newX &lt; n &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; n &amp;&amp; matrix[newX][newY] &#61;&#61; 0) {
+            matrix[newX][newY] &#61; 1;
+            healthy--;
+            // 新增感染区加到newQue中&#xff0c;不影响queue的当前遍历
+            newQue.add(new Integer[] {newX, newY});
+          }
+        }
+      }
+
+      day&#43;&#43;;
+      queue &#61; newQue;
+    }
+
+    return day;
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34;,&#34;).map(Number);
+  console.log(getResult(arr));
+});
+
+function getResult(arr) {
+  // 题目说会输入n*n个值
+  const n &#61; Math.sqrt(arr.length);
+
+  // 将一维输入转为二维矩阵
+  const matrix &#61; new Array(n).fill(0).map(() &#61;&gt; new Array(n).fill(0));
+
+  // 将矩阵中所有感染区域位置记录到queue中,这里选择queue先进先出的原因是保证当天的感染区域并发扩散
+  let queue &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+      matrix[i][j] &#61; arr[i * n &#43; j];
+      if (matrix[i][j] &#61;&#61;&#61; 1) queue.push([i, j]);
+    }
+  }
+
+  // 全是感染区&#xff0c;或全是健康区
+  if (queue.length &#61;&#61;&#61; 0 || queue.length &#61;&#61;&#61; arr.length) {
+    return -1;
+  }
+
+  // 健康区个数
+  let healthy &#61; arr.length - queue.length;
+
+  // 上下左右位置偏移量
+  const offsets &#61; [
+    [-1, 0], // 上
+    [1, 0], // 下
+    [0, -1], // 左
+    [0, 1], // 右
+  ];
+
+  // day用于统计感染全部花费的时间
+  let day &#61; 0;
+  // 如果健康区个数为0&#xff0c;说明感染完了
+  while (queue.length &amp;&amp; healthy) {
+    const newQueue &#61; [];
+
+    // 遍历完当前queue的所有感染区&#xff0c;即过去一天
+    for (const [x, y] of queue) {
+      for (let [offsetX, offsetY] of offsets) {
+        const newX &#61; x &#43; offsetX;
+        const newY &#61; y &#43; offsetY;
+
+        if (
+          newX &gt;&#61; 0 &amp;&amp;
+          newX &lt; n &amp;&amp;
+          newY &gt;&#61; 0 &amp;&amp;
+          newY &lt; n &amp;&amp;
+          matrix[newX][newY] &#61;&#61;&#61; 0
+        ) {
+          healthy--;
+          matrix[newX][newY] &#61; 1;
+          // 新增感染区加到newQue中&#xff0c;不影响queue的当前遍历
+          newQueue.push([newX, newY]);
+        }
+      }
+    }
+
+    day&#43;&#43;;
+    queue &#61; newQueue;
+  }
+
+  return day;
+}
+</code></pre> 
+<h4 style="background-color:transparent;">Python算法源码 </h4> 
+<pre><code class="language-python">import math
+
+# 输入获取
+arr &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+# 算法入口
+def getResult(arr):
+    # 题目说会输入n*n个值
+    n &#61; int(math.sqrt(len(arr)))
+
+    #  将一维arr输入转为二维矩阵matrix
+    matrix &#61; [[0 for _ in range(n)] for _ in range(n)]
+
+    # 将矩阵中所有感染区域位置记录到queue中,这里选择queue先进先出的原因是保证当天的感染区域并发扩散
+    queue &#61; []
+
+    for i in range(n):
+        for j in range(n):
+            matrix[i][j] &#61; arr[i * n &#43; j]
+            if matrix[i][j] &#61;&#61; 1:
+                queue.append([i, j])
+
+    # 全是感染区&#xff0c;或全是健康区
+    if len(queue) &#61;&#61; 0 or len(queue) &#61;&#61; len(arr):
+        return -1
+
+    # 健康区个数
+    healthy &#61; len(arr) - len(queue)
+
+    # 上下左右偏移量
+    offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    # day用于统计感染全部花费的时间
+    day &#61; 0
+    # 如果健康区个数为0&#xff0c;说明感染完了
+    while len(queue) &gt; 0 and healthy &gt; 0:
+        newQueue &#61; []
+
+        # 遍历完当前queue的所有感染区&#xff0c;即过去一天
+        for x, y in queue:
+            for offsetX, offsetY in offsets:
+                newX &#61; x &#43; offsetX
+                newY &#61; y &#43; offsetY
+
+                if n &gt; newX &gt;&#61; 0 and n &gt; newY &gt;&#61; 0 and matrix[newX][newY] &#61;&#61; 0:
+                    healthy -&#61; 1
+                    matrix[newX][newY] &#61; 1
+                    # 新增感染区加到newQue中&#xff0c;不影响queue的当前遍历
+                    newQueue.append([newX, newY])
+
+        day &#43;&#61; 1
+        queue &#61; newQueue
+
+    return day
+
+
+# 算法调用
+print(getResult(arr))
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;math.h&gt;
+
+#define MAX_SIZE 200
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList();
+
+void addLast_LinkedList(LinkedList *link, int ele);
+
+int getResult(const int nums[], int nums_size);
+
+int main() {
+    int nums[MAX_SIZE * MAX_SIZE];
+    int nums_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    printf(&#34;%d\n&#34;, getResult(nums, nums_size));
+
+    return 0;
+}
+
+int getResult(const int nums[], int nums_size) {
+    // 题目说会输入n*n个值
+    int n &#61; (int) sqrt(nums_size);
+
+    // 将一维arr输入转为二维矩阵matrix
+    int matrix[MAX_SIZE][MAX_SIZE];
+
+    // 将矩阵中所有感染区域位置记录到queue中,这里选择queue先进先出的原因是保证当天的感染区域并发扩散
+    LinkedList *queue &#61; new_LinkedList();
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            matrix[i][j] &#61; nums[i * n &#43; j];
+
+            if (matrix[i][j] &#61;&#61; 1) {
+                addLast_LinkedList(queue, i * n &#43; j);
+            }
+        }
+    }
+
+    // 全是感染区&#xff0c;或全是健康区
+    if (queue-&gt;size &#61;&#61; 0 || queue-&gt;size &#61;&#61; nums_size) {
+        return -1;
+    }
+
+    // 健康区个数
+    int healthy &#61; nums_size - queue-&gt;size;
+
+    // 上下左右偏移量
+    int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                         {1,  0},
+                         {0,  -1},
+                         {0,  1}};
+
+    // day用于统计感染全部花费的时间
+    int day &#61; 0;
+
+    // 如果健康区个数为0&#xff0c;说明感染完了
+    while (queue-&gt;size &gt; 0 &amp;&amp; healthy &gt; 0) {
+        LinkedList *newQueue &#61; new_LinkedList();
+
+        // 遍历完当前queue的所有感染区&#xff0c;即过去一天
+        ListNode *cur &#61; queue-&gt;head;
+        while (cur !&#61; NULL) {
+            int x &#61; cur-&gt;ele / n;
+            int y &#61; cur-&gt;ele % n;
+
+            for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+                int newX &#61; x &#43; offsets[i][0];
+                int newY &#61; y &#43; offsets[i][1];
+
+                if (newX &gt;&#61; 0 &amp;&amp; newX &lt; n &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; n &amp;&amp; matrix[newX][newY] &#61;&#61; 0) {
+                    matrix[newX][newY] &#61; 1;
+                    healthy--;
+                    // 新增感染区加到newQue中&#xff0c;不影响queue的当前遍历
+                    addLast_LinkedList(newQueue, newX * n &#43; newY);
+                }
+            }
+
+            cur &#61; cur-&gt;next;
+        }
+
+        day&#43;&#43;;
+        queue &#61; newQueue;
+    }
+
+    return day;
+}
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+
+    node-&gt;ele &#61; ele;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

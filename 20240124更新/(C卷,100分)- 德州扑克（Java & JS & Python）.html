@@ -1,0 +1,375 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 德州扑克（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>五张牌&#xff0c;每张牌由牌大小和花色组成&#xff0c;牌大小2~10、J、Q、K、A&#xff0c;牌花色为红桃、黑桃、梅花、方块四种花色之一。</p> 
+<p>判断牌型:</p> 
+<p>牌型1&#xff0c;同花顺&#xff1a;同一花色的顺子&#xff0c;如红桃2红桃3红桃4红桃5红桃6。<br /> 牌型2&#xff0c;四条&#xff1a;四张相同数字 &#43; 单张&#xff0c;如红桃A黑桃A梅花A方块A &#43; 黑桃K。<br /> 牌型3&#xff0c;葫芦&#xff1a;三张相同数字 &#43; 一对&#xff0c;如红桃5黑桃5梅花5 &#43; 方块9梅花9。<br /> 牌型4&#xff0c;同花&#xff1a;同一花色&#xff0c;如方块3方块7方块10方块J方块Q。<br /> 牌型5&#xff0c;顺子&#xff1a;花色不一样的顺子&#xff0c;如红桃2黑桃3红桃4红桃5方块6。<br /> 牌型6&#xff0c;三条&#xff1a;三张相同&#43;两张单。</p> 
+<p>说明&#xff1a;</p> 
+<p>&#xff08;1&#xff09;五张牌里不会出现牌大小和花色完全相同的牌。<br /> &#xff08;2&#xff09;编号小的牌型较大&#xff0c;如同花顺比四条大&#xff0c;依次类推。<br /> &#xff08;3&#xff09;包含A的合法的顺子只有10 J Q K A和A 2 3 4 5;类似K A 2 3 4的序列不认为是顺子。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入由5行组成&#xff0c;每行为一张牌大小和花色&#xff0c;牌大小为2~10、J、Q、K、A&#xff0c;花色分别用字符H、S、C、D表示红桃、黑桃、梅花、方块。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出牌型序号&#xff0c;5张牌符合多种牌型时&#xff0c;取最大的牌型序号输出。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4 H<br /> 5 S<br /> 6 C<br /> 7 D<br /> 8 D</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">4 5 6 7 8构成顺子&#xff0c;输出5</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">9 S<br /> 5 S<br /> 6 S<br /> 7 S<br /> 8 S</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">既是顺子又是同花&#xff0c;输出1&#xff0c;同花顺</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这道题应该是一道逻辑题&#xff0c;这道题目输入了五张牌&#xff0c;然后我们需要对这五张牌进行六种情况的分析&#xff0c;并且分析有优先级&#xff1a;</p> 
+<ol><li>是否为同花顺</li><li>是否为四条</li><li>是否为葫芦</li><li>是否同花</li><li>是否为顺子</li><li>是否为三条</li></ol> 
+<p>若满足了前面&#xff0c;则后面的就不需要再判断了。</p> 
+<p>另外&#xff0c;同花顺情况判断&#xff0c;其实就是 同花 &#43; 顺子&#xff0c;因此在写代码时可以再拆下代码。</p> 
+<p></p> 
+<p>上面六种情况的判断&#xff0c;其实可以将五张牌的大小和花色分开来&#xff0c;分别检查。因此我将输入的五张牌的大小存入nums数组&#xff0c;花色存入colors数组。</p> 
+<p></p> 
+<p>其中顺子的判断&#xff0c;其实不关心花色&#xff0c;只关心牌大小&#xff0c;我们只需要为牌定义好大小后&#xff0c;进行大小升序排序&#xff0c;若后面一张牌的大小总是比其前面一张牌大1&#xff0c;则就是顺子。</p> 
+<p>另外还一个特殊情况&#xff0c;即‘A2345’也是顺子&#xff0c;这里我们给A定义的大小是14&#xff0c;因此nums升序排序后&#xff0c;只需要判断nums.join(&#39;&#39;)是否和&#39;2345A&#39;相等&#xff0c;即可判定为顺子。</p> 
+<p></p> 
+<p>而四条的判断&#xff0c;也不关心花色&#xff0c;只关系牌大小&#xff0c;四条即 四个相同牌大小&#xff0c;一个不同牌大小。这个很好判断&#xff0c;我这里的方案是&#xff0c;new Set(nums)来去重&#xff0c;若去重后不是两张牌&#xff0c;那么就肯定不是四条&#xff0c;若有两张牌&#xff0c;则任取一张&#xff0c;看在nums中有几个&#xff0c;若为1个或4个&#xff0c;则可以判定为四条。</p> 
+<p></p> 
+<p>葫芦、三条的判定和四条类似。</p> 
+<p>同花的判定&#xff0c;即new Set(colors)&#xff0c;若去重后只有一个花色&#xff0c;则判定为同花。</p> 
+<p></p> 
+<p>另外&#xff0c;本题没有说如果输入的五张牌都不满足上面六种情况时&#xff0c;该输出啥&#xff0c;一个可能是&#xff0c;用例保证输入的五张牌肯定满足上面六种情况之一&#xff0c;因此不需要考虑这种异常场景。一个可能是&#xff0c;出题人遗漏了这种情况的输出说明&#xff0c;我这里把不满足上面六种情况的输出自定义为0.</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] nums &#61; new String[5];
+    String[] colors &#61; new String[5];
+
+    for (int i &#61; 0; i &lt; 5; i&#43;&#43;) {
+      nums[i] &#61; sc.next();
+      colors[i] &#61; sc.next();
+    }
+
+    System.out.println(getResult(nums, colors));
+  }
+
+  public static int getResult(String[] nums, String[] colors) {
+    Arrays.sort(nums, (a, b) -&gt; cards(a) - cards(b));
+
+    if (isShunzi(nums) &amp;&amp; isTonghua(colors)) return 1;
+    else if (isSitiao(nums)) return 2;
+    else if (isHulu(nums)) return 3;
+    else if (isTonghua(colors)) return 4;
+    else if (isShunzi(nums)) return 5;
+    else if (isSantiao(nums)) return 6;
+    else return 0;
+  }
+
+  // 牌大小 映射为 数值
+  public static int cards(String num) {
+    switch (num) {
+      case &#34;J&#34;:
+        return 11;
+      case &#34;Q&#34;:
+        return 12;
+      case &#34;K&#34;:
+        return 13;
+      case &#34;A&#34;:
+        return 14;
+      default:
+        return Integer.parseInt(num);
+    }
+  }
+
+  // 顺子
+  public static boolean isShunzi(String[] nums) {
+    if (&#34;2345A&#34;.equals(String.join(&#34;&#34;, nums))) return true;
+
+    for (int i &#61; 1; i &lt; nums.length; i&#43;&#43;) {
+      int num1 &#61; cards(nums[i - 1]);
+      int num2 &#61; cards(nums[i]);
+      if (num1 &#43; 1 !&#61; num2) return false;
+    }
+
+    return true;
+  }
+
+  // 同花
+  public static boolean isTonghua(String[] colors) {
+    // 同花牌的所有花色都一样
+    return new HashSet&lt;String&gt;(Arrays.asList(colors)).size() &#61;&#61; 1;
+  }
+
+  // 四条
+  public static boolean isSitiao(String[] nums) {
+    // 四条由两部分组成&#xff0c;一个部分四张相同牌&#xff0c;一个部分一张牌
+    return countNums(nums, 2, 4);
+  }
+
+  // 葫芦
+  public static boolean isHulu(String[] nums) {
+    // 葫芦由两部分组成&#xff0c;一个部分三张牌相同&#xff0c;一个部分两张牌相同
+    return countNums(nums, 2, 3);
+  }
+
+  // 三条
+  public static boolean isSantiao(String[] nums) {
+    // 三条由三部分组成&#xff0c;第一个部分由三张相同牌组成&#xff0c;第二个&#xff0c;第三个部分分别是两种不同的牌
+    return countNums(nums, 3, 3);
+  }
+
+  private static boolean countNums(String[] nums, int partCount, int maxSameNumCount) {
+    HashMap&lt;String, Integer&gt; count &#61; new HashMap&lt;&gt;();
+
+    for (String num : nums) {
+      count.put(num, count.getOrDefault(num, 0) &#43; 1);
+    }
+
+    if (count.keySet().size() !&#61; partCount) return false;
+
+    return count.containsValue(maxSameNumCount);
+  }
+}
+</code></pre> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 5) {
+    const arr &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;));
+    console.log(getResult(arr));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr) {
+  const nums &#61; [];
+  const colors &#61; [];
+
+  for (let [num, color] of arr) {
+    nums.push(num);
+    colors.push(color);
+  }
+
+  nums.sort((a, b) &#61;&gt; cards(a) - cards(b));
+
+  if (isShunzi(nums) &amp;&amp; isTonghua(colors)) return 1;
+  else if (isSitiao(nums)) return 2;
+  else if (isHulu(nums)) return 3;
+  else if (isTonghua(colors)) return 4;
+  else if (isShunzi(nums)) return 5;
+  else if (isSantiao(nums)) return 6;
+  else return 0;
+}
+
+function cards(num) {
+  switch (num) {
+    case &#34;J&#34;:
+      return 11;
+    case &#34;Q&#34;:
+      return 12;
+    case &#34;K&#34;:
+      return 13;
+    case &#34;A&#34;:
+      return 14;
+    default:
+      return parseInt(num);
+  }
+}
+
+// 顺子
+function isShunzi(nums) {
+  if (nums.join(&#34;&#34;) &#61;&#61;&#61; &#34;2345A&#34;) return true;
+
+  for (let i &#61; 1; i &lt; nums.length; i&#43;&#43;) {
+    const num1 &#61; cards(nums[i - 1]);
+    const num2 &#61; cards(nums[i]);
+
+    if (num1 &#43; 1 !&#61;&#61; num2) return false;
+  }
+  return true;
+}
+
+// 同花
+function isTonghua(colors) {
+  // 同花牌的所有花色都一样
+  return new Set(colors).size &#61;&#61;&#61; 1;
+}
+
+// 四条
+function isSitiao(nums) {
+  // 四条由两部分组成&#xff0c;一个部分四张相同牌&#xff0c;一个部分一张牌
+  return countNums(nums, 2, 4);
+}
+
+// 葫芦
+function isHulu(nums) {
+  // 葫芦由两部分组成&#xff0c;一个部分三张牌相同&#xff0c;一个部分两张牌相同
+  return countNums(nums, 2, 3);
+}
+
+// 三条
+function isSantiao(nums) {
+  // 三条由三部分组成&#xff0c;第一个部分由三张相同牌组成&#xff0c;第二个&#xff0c;第三个部分分别是两种不同的牌
+  return countNums(nums, 3, 3);
+}
+
+function countNums(nums, partCount, maxSameNumCount) {
+  const count &#61; {};
+
+  for (let num of nums) {
+    count[num] &#61; (count[num] ?? 0) &#43; 1;
+  }
+
+  if (Object.keys(count).size !&#61; partCount) return false;
+
+  return Object.values(count).includes(maxSameNumCount);
+}
+</code></pre> 
+<p></p> 
+<h4>Pyhon算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; [input().split() for _ in range(5)]
+
+
+# 牌大小 映射为 数值
+def cards(num):
+    if num &#61;&#61; &#34;J&#34;:
+        return 11
+    elif num &#61;&#61; &#34;Q&#34;:
+        return 12
+    elif num &#61;&#61; &#34;K&#34;:
+        return 13
+    elif num &#61;&#61; &#34;A&#34;:
+        return 14
+    else:
+        return int(num)
+
+
+def countNums(nums, partCount, maxSameNumCount):
+    count &#61; {}
+
+    for num in nums:
+        if count.get(num) is None:
+            count[num] &#61; 0
+        count[num] &#43;&#61; 1
+
+    if len(count.keys()) !&#61; partCount:
+        return False
+
+    return maxSameNumCount in count.values()
+
+
+# 三条
+def isSantiao(nums):
+    # 三条由三部分组成&#xff0c;第一个部分由三张相同牌组成&#xff0c;第二个&#xff0c;第三个部分分别是两种不同的牌
+    return countNums(nums, 3, 3)
+
+
+# 葫芦
+def isHulu(nums):
+    # 葫芦由两部分组成&#xff0c;一个部分三张牌相同&#xff0c;一个部分两张牌相同
+    return countNums(nums, 2, 3)
+
+
+# 四条
+def isSitiao(nums):
+    # 四条由两部分组成&#xff0c;一个部分四张相同牌&#xff0c;一个部分一张牌
+    return countNums(nums, 2, 4)
+
+
+# 同花
+def isTonghua(colors):
+    # 同花牌的所有花色都一样
+    return len(set(colors)) &#61;&#61; 1
+
+
+# 顺子
+def isShunzi(nums):
+    if &#34;&#34;.join(nums) &#61;&#61; &#34;2345A&#34;:
+        return True
+
+    for i in range(1, len(nums)):
+        if cards(nums[i - 1]) &#43; 1 !&#61; cards(nums[i]):
+            return False
+    return True
+
+
+# 算法入口
+def getResult():
+    nums &#61; []
+    colors &#61; []
+
+    for num, color in arr:
+        nums.append(num)
+        colors.append(color)
+
+    nums.sort(key&#61;lambda x: cards(x))
+
+    if isShunzi(nums) and isTonghua(colors):
+        return 1
+    elif isSitiao(nums):
+        return 2
+    elif isHulu(nums):
+        return 3
+    elif isTonghua(colors):
+        return 4
+    elif isShunzi(nums):
+        return 5
+    elif isSantiao(nums):
+        return 6
+    else:
+        return 0
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,348 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 字符匹配（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给你一个字符串数组&#xff08;每个字符串均由小写字母组成&#xff09;和一个字符规律&#xff08;由小写字母和.和*组成&#xff09;&#xff0c;识别数组中哪些字符串可以匹配到字符规律上。</p> 
+<p>‘.’ 匹配任意单个字符&#xff0c;’*’ 匹配零个或多个任意字符&#xff1b;</p> 
+<p>判断字符串是否匹配&#xff0c;是要涵盖整个字符串的&#xff0c;而不是部分字符串。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为空格分割的多个字符串&#xff0c;1 &lt; 单个字符串长度 &lt; 100&#xff0c;1 &lt; 字符串个数 &lt; 100</p> 
+<p>第二行为字符规律&#xff0c;1 &lt;&#61; 字符规律长度 &lt;&#61; 50</p> 
+<p>不需要考虑异常场景。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>匹配的字符串在数组中的下标&#xff08;从0开始&#xff09;&#xff0c;多个匹配时下标升序并用,分割&#xff0c;若均不匹配输出-1</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">ab aab<br /> .*</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0,1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">ab abc bsd<br /> .*</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0,1,2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">avd adb sss as<br /> adb</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题的最佳题解策略是动态规划&#xff0c;即基于动态规实现模拟正则匹配。</p> 
+<p>具体解析请看我写的这篇博客&#xff1a;<a class="link-info" href="https://blog.csdn.net/qfc_128220/article/details/130959602" title="LeetCode - 10 正则表达式匹配_伏城之外">LeetCode - 10 正则表达式匹配_伏城之外</a></p> 
+<hr /> 
+<p>2023.08.15</p> 
+<p>本题收集题目时&#xff0c;题目描述是错的.......&#xff0c;现在已改正。</p> 
+<p>新的题目描述中中关于 &#34;*&#34; 的描述&#xff0c;和正则的 &#34;*&#34; 量词符是不等价的。</p> 
+<p>’*’ 匹配零个或多个任意字符&#xff0c;因此题目中的&#34;*&#34; 应该和 正则表达式 &#34;.*&#34; 等价。</p> 
+<p>本题正则解法可以100%通过。</p> 
+<p></p> 
+<h3>正则解法</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const arr &#61; lines[0].split(&#34; &#34;);
+    const reg &#61; lines[1];
+
+    console.log(getResutlt(arr, reg));
+    lines.length &#61; 0;
+  }
+});
+
+function getResutlt(arr, reg) {
+  reg &#61; reg.replaceAll(&#34;*&#34;, &#34;(.*)&#34;);
+
+  const regExp &#61; new RegExp(&#96;^${reg}$&#96;);
+
+  const ans &#61; [];
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    if (regExp.test(arr[i])) ans.push(i);
+  }
+
+  if (ans.length &#61;&#61; 0) return &#34;-1&#34;;
+  else return ans.join(&#34;,&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.StringJoiner;
+import java.util.regex.Pattern;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] arr &#61; sc.nextLine().split(&#34; &#34;);
+    String reg &#61; sc.nextLine();
+
+    System.out.println(getResult(arr, reg));
+  }
+
+  // 算法入口
+  public static String getResult(String[] arr, String reg) {
+    reg &#61; reg.replaceAll(&#34;\\*&#34;, &#34;(.*)&#34;);
+
+    Pattern compile &#61; Pattern.compile(&#34;^&#34; &#43; reg &#43; &#34;$&#34;);
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+    for (int i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+      if (compile.matcher(arr[i]).matches()) {
+        sj.add(i &#43; &#34;&#34;);
+      }
+    }
+
+    if (sj.length() &#61;&#61; 0) return &#34;-1&#34;;
+    else return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+arr &#61; input().split()
+reg &#61; input().replace(&#34;*&#34;, &#34;(.*)&#34;)
+
+
+# 算法入口
+def getResult():
+    c &#61; re.compile(f&#34;^{reg}$&#34;)
+
+    ans &#61; []
+    for i in range(len(arr)):
+        if c.match(arr[i]):
+            ans.append(i)
+
+    if len(ans) &#61;&#61; 0:
+        return &#34;-1&#34;
+    else:
+        return &#34;,&#34;.join(map(str, ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<p></p> 
+<h3>动态规划解法</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] arr &#61; sc.nextLine().split(&#34; &#34;);
+    String reg &#61; sc.nextLine();
+
+    System.out.println(getResult(arr, reg));
+  }
+
+  // 算法入口
+  public static String getResult(String[] arr, String reg) {
+    reg &#61; reg.replaceAll(&#34;\\*&#34;, &#34;.*&#34;);
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+
+    for (int i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+      if (isMatch(arr[i], reg)) sj.add(i &#43; &#34;&#34;);
+    }
+
+    if (sj.length() &#61;&#61; 0) return &#34;-1&#34;;
+    else return sj.toString();
+  }
+
+  public static boolean isMatch(String s, String p) {
+    s &#61; &#34; &#34; &#43; s;
+    p &#61; &#34; &#34; &#43; p;
+
+    int n &#61; s.length();
+    int m &#61; p.length();
+
+    boolean[][] dp &#61; new boolean[n][m];
+    dp[0][0] &#61; true;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 内层循环遍历的是正则p的范围&#xff0c;如果j&#61;0.那么代表正则为空&#xff0c;此时匹配结果必然为false&#xff0c;而dp数组初始化时所有元素都初始化为了false&#xff0c;因此这里j可以从1开始
+      for (int j &#61; 1; j &lt; m; j&#43;&#43;) {
+        if (p.charAt(j) &#61;&#61; &#39;*&#39;) {
+          dp[i][j] &#61;
+              (j &gt;&#61; 2 &amp;&amp; dp[i][j - 2])
+                  || (eq(p.charAt(j - 1), s.charAt(i)) &amp;&amp; i &gt;&#61; 1 &amp;&amp; dp[i - 1][j]);
+        } else {
+          dp[i][j] &#61; eq(p.charAt(j), s.charAt(i)) &amp;&amp; i &gt;&#61; 1 &amp;&amp; dp[i - 1][j - 1];
+        }
+      }
+    }
+
+    return dp[n - 1][m - 1];
+  }
+
+  public static boolean eq(char p, char s) {
+    return p &#61;&#61; s || p &#61;&#61; &#39;.&#39;;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const arr &#61; lines[0].split(&#34; &#34;);
+    const reg &#61; lines[1];
+
+    console.log(getResutlt(arr, reg));
+    lines.length &#61; 0;
+  }
+});
+
+function getResutlt(arr, reg) {
+  reg &#61; reg.replaceAll(&#34;*&#34;, &#34;.*&#34;);
+
+  const ans &#61; [];
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    if (isMatch(arr[i], reg)) ans.push(i);
+  }
+
+  if (ans.length &#61;&#61; 0) return -1;
+  else return ans.join(&#34;,&#34;);
+}
+
+/**
+ * &#64;param {string} s
+ * &#64;param {string} p
+ * &#64;return {boolean}
+ */
+var isMatch &#61; function (s, p) {
+  s &#61; &#34; &#34; &#43; s;
+  p &#61; &#34; &#34; &#43; p;
+
+  const n &#61; s.length;
+  const m &#61; p.length;
+
+  const dp &#61; new Array(n).fill(0).map(() &#61;&gt; new Array(m).fill(false));
+  dp[0][0] &#61; true;
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // 内层循环遍历的是正则p的范围&#xff0c;如果j&#61;0.那么代表正则为空&#xff0c;此时匹配结果必然为false&#xff0c;而dp数组初始化时所有元素都初始化为了false&#xff0c;因此这里j可以从1开始
+    for (let j &#61; 1; j &lt; m; j&#43;&#43;) {
+      if (p[j] &#61;&#61; &#34;*&#34;) {
+        dp[i][j] &#61;
+          (j &gt;&#61; 2 &amp;&amp; dp[i][j - 2]) ||
+          (eq(p[j - 1], s[i]) &amp;&amp; i &gt;&#61; 1 &amp;&amp; dp[i - 1][j]);
+      } else {
+        dp[i][j] &#61; eq(p[j], s[i]) &amp;&amp; i &gt;&#61; 1 &amp;&amp; dp[i - 1][j - 1];
+      }
+    }
+  }
+
+  return dp[n - 1][m - 1];
+};
+
+function eq(p, s) {
+  return p &#61;&#61; s || p &#61;&#61; &#34;.&#34;;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; input().split()
+reg &#61; input().replace(&#34;*&#34;, &#34;.*&#34;)
+
+
+def eq(p, s):
+    return p &#61;&#61; s or p &#61;&#61; &#39;.&#39;
+
+
+def isMatch(s, p):
+    s &#61; &#34; &#34; &#43; s
+    p &#61; &#34; &#34; &#43; p
+
+    n &#61; len(s)
+    m &#61; len(p)
+
+    dp &#61; [[False] * m for _ in range(n)]
+    dp[0][0] &#61; True
+
+    for i in range(n):
+        # 内层循环遍历的是正则p的范围&#xff0c;如果j&#61;0.那么代表正则为空&#xff0c;此时匹配结果必然为false&#xff0c;而dp数组初始化时所有元素都初始化为了false&#xff0c;因此这里j可以从1开始
+        for j in range(1, m):
+            if p[j] &#61;&#61; &#39;*&#39;:
+                dp[i][j] &#61; (j &gt;&#61; 2 and dp[i][j - 2]) or (eq(p[j - 1], s[i]) and i &gt;&#61; 1 and dp[i - 1][j])
+            else:
+                dp[i][j] &#61; eq(p[j], s[i]) and i &gt;&#61; 1 and dp[i - 1][j - 1]
+
+    return dp[n - 1][m - 1]
+
+
+# 算法入口
+def getResult():
+    ans &#61; []
+    for i in range(len(arr)):
+        if isMatch(arr[i], reg):
+            ans.append(i)
+
+    if len(ans) &#61;&#61; 0:
+        return &#34;-1&#34;
+    else:
+        return &#34;,&#34;.join(map(str, ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

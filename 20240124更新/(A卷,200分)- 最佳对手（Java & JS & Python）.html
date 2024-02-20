@@ -1,0 +1,435 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 最佳对手（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>游戏里面&#xff0c;队伍通过匹配实力相近的对手进行对战。但是如果匹配的队伍实力相差太大&#xff0c;对于双方游戏体验都不会太好。</p> 
+<p>给定n个队伍的实力值&#xff0c;对其进行两两实力匹配&#xff0c;两支队伍实例差距在允许的最大差距d内&#xff0c;则可以匹配。<br /> 要求在匹配队伍最多的情况下匹配出的各组实力差距的总和最小。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行&#xff0c;n&#xff0c;d。队伍个数n。允许的最大实力差距d。</p> 
+<ul><li>2&lt;&#61;n &lt;&#61;50</li><li>0&lt;&#61;d&lt;&#61;100</li></ul> 
+<p>第二行&#xff0c;n个队伍的实力值空格分割。</p> 
+<ul><li>0&lt;&#61;各队伍实力值&lt;&#61;100</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>匹配后&#xff0c;各组对战的实力差值的总和。若没有队伍可以匹配&#xff0c;则输出-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6 30<br /> 81 87 47 59 81 18</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">57</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">18与47配对&#xff0c;实力差距29<br /> 59与81配对&#xff0c;实力差距22<br /> 81与87配对&#xff0c;实力差距6<br /> 总实力差距29&#43;22&#43;6&#61;57</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6 20<br /> 81 87 47 59 81 18</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">12</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>最多能匹配成功4支队伍。<br /> 47与59配对&#xff0c;实力差距12&#xff0c;</p> <p>81与81配对&#xff0c;实力差距0。</p> <p>总实力差距12&#43;0&#61;12</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4 10<br /> 40 51 62 73</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">实力差距都在10以上&#xff0c;<br /> 没有队伍可以匹配成功。</td></tr></tbody></table> 
+<p></p> 
+<h4>题目解析</h4> 
+<blockquote> 
+ <p>本题要求在匹配队伍最多的情况下匹配出的各组实力差距的总和最小</p> 
+</blockquote> 
+<p>即两个要求&#xff1a;</p> 
+<ul><li>匹配队伍最多</li><li>各匹配实力差之和最小</li></ul> 
+<p>且最终结果要优先满足“匹配队伍最多”&#xff0c;其次满足“各匹配实力差之和最小”</p> 
+<p></p> 
+<p>而两个队伍是否能够匹配&#xff0c;也有要求</p> 
+<blockquote> 
+ <p>两支队伍实例差距在允许的最大差距d内&#xff0c;则可以匹配</p> 
+</blockquote> 
+<p>因此队伍匹配也要考虑实力差。</p> 
+<p></p> 
+<p>解决本题时&#xff0c;我们可以先不考虑两个队伍实力差对队伍匹配的影响&#xff0c;即可以把 d 值当成无穷大的。</p> 
+<p>那么此时&#xff0c;“匹配队伍最多”这个要求&#xff0c;已经形同虚设&#xff0c;为什么呢&#xff1f;</p> 
+<p>因为任意两个队伍都能匹配&#xff0c;那么只要队伍个数给定了&#xff0c;那么匹配数也就确定了&#xff0c;比如10个队伍&#xff0c;可以匹配5组&#xff0c;这5组就是最多的匹配情况。再比如7个队伍&#xff0c;最多可以匹配3组。</p> 
+<p></p> 
+<p>因此&#xff0c;此时我们只需要考虑最小实力差之和的问题了。</p> 
+<p>那么如何才能让 各匹配的实力差之和 最小呢&#xff1f;</p> 
+<p>此时我们应该让队伍实力值进行升序&#xff0c;这样每个队伍和其相邻的队伍形成的匹配的实力差是最小的。</p> 
+<p>比如下面用例的实力值就是升序的</p> 
+<blockquote> 
+ <p>7 100000<br /> 1 2 10 13 21 26 27</p> 
+</blockquote> 
+<p>比如</p> 
+<ul><li>1&#xff0c;2进行匹配&#xff0c;要比1&#xff0c;10进行匹配更优</li><li>10&#xff0c;13进行匹配&#xff0c;要比10&#xff0c;1进行匹配更优</li></ul> 
+<p>此时&#xff0c;最优匹配策略&#xff0c;其实就是相邻队伍进行匹配。</p> 
+<p></p> 
+<p>对于偶数n个队伍而言&#xff0c;可以产生 n/2 个匹配&#xff0c;且为了最终各匹配实力差之和最小&#xff0c;应该顺序的两两相邻进行匹配&#xff0c;如果队伍用序号表示的话&#xff0c;则可以表示为&#xff1a;</p> 
+<blockquote> 
+ <p>[0, 1]&#xff0c;[2, 3]&#xff0c;[4, 5]&#xff0c;[6, 7]&#xff0c;....&#xff0c;[n-2, n-1]</p> 
+</blockquote> 
+<p></p> 
+<p>对于奇数m个队伍而言&#xff0c;可以产生(m - 1) / 2 个匹配&#xff0c;即必须舍弃一个队伍&#xff0c;此时匹配该如何选呢&#xff1f;</p> 
+<p>如果队伍实力值升序后为&#xff1a;</p> 
+<blockquote> 
+ <p>a&#xff0c;b&#xff0c;c&#xff0c;d&#xff0c;e&#xff0c;f&#xff0c;g</p> 
+</blockquote> 
+<p>那么可能大家最直观的匹配策略就是</p> 
+<blockquote> 
+ <p>[a, b]&#xff0c;[c, d]&#xff0c;[e, f]   // 即舍弃g</p> 
+</blockquote> 
+<p>或者</p> 
+<blockquote> 
+ <p>[g, f]&#xff0c;[e, d]&#xff0c;[c, b]  // 即舍弃a</p> 
+</blockquote> 
+<p>上面两种匹配策略其实就是&#xff1a;</p> 
+<ul><li>正方向的&#xff0c;顺序的&#xff08;保证实力差最小&#xff09;&#xff0c;两两匹配</li><li>负方向的&#xff0c;顺序的&#xff08;保证实力差最小&#xff09;&#xff0c;两两匹配</li></ul> 
+<p>这两种匹配策略产生的匹配个数是相同的&#xff0c;但是实力差之和谁更小&#xff0c;却无法确定。我们只能从中选取最小的。</p> 
+<p></p> 
+<p>但是上面策略是存在漏洞的&#xff0c;比如正向匹配策略中&#xff1a;</p> 
+<blockquote> 
+ <p>[a, b]&#xff0c;[c, d]&#xff0c;[e, f]   // 即舍弃g</p> 
+</blockquote> 
+<p>我们舍弃了g&#xff0c;那么是否可以保证&#xff1a;</p> 
+<p><span style="color:#fe2c24;">[e, f]匹配的实力差&#xff0c;就一定比[f, g]匹配的实力差更小呢&#xff1f;</span></p> 
+<p>答案是&#xff1a;无法保证</p> 
+<p>因此&#xff0c;此时对于正向匹配有两种策略&#xff1a;</p> 
+<blockquote> 
+ <p>[a, b]&#xff0c;[c, d]&#xff0c;<span style="color:#fe2c24;">[e, f] </span></p> 
+</blockquote> 
+<blockquote> 
+ <p>[a, b]&#xff0c;[c, d]&#xff0c;<span style="color:#fe2c24;">[f, g]</span></p> 
+</blockquote> 
+<p>我们应该取其中最小的。</p> 
+<p>对于负向匹配策略&#xff0c;也是同理&#xff1a;</p> 
+<blockquote> 
+ <p>[g, f]&#xff0c;[e, d]&#xff0c;<span style="color:#fe2c24;">[c, b] </span></p> 
+</blockquote> 
+<blockquote> 
+ <p>[g, f]&#xff0c;[e, d]&#xff0c;<span style="color:#fe2c24;">[b, a] </span></p> 
+</blockquote> 
+<p>我们应该取其中最小的。</p> 
+<p></p> 
+<p>好的&#xff0c;到此本题最难的逻辑已经说明清楚了&#xff0c;接下来就是解开之前埋下的雷了&#xff1a;</p> 
+<blockquote> 
+ <p>我们可以先不考虑两个队伍实力差对队伍匹配的影响&#xff0c;即可以把 d 值当成无穷大的。</p> 
+</blockquote> 
+<p>实际用例中&#xff0c;不可能都是 d 值无穷大的。必然存在 d 值&#xff0c;让一些队伍之间无法进行匹配。</p> 
+<p>其实&#xff0c;解决这个问题很简单&#xff0c;我们其实已经对队伍实力值进行升序了&#xff0c;那么接下来可以对他再进行<span style="color:#fe2c24;">“分段处理”</span>。</p> 
+<p>怎么分段呢&#xff1f;比如用例2</p> 
+<blockquote> 
+ <p>6 20<br /> 81 87 47 59 81 18</p> 
+</blockquote> 
+<p>实力值升序后为&#xff1a;</p> 
+<blockquote> 
+ <p>18 <span style="color:#fe2c24;">47 59</span> <span style="color:#38d8f0;">81 81 87</span></p> 
+</blockquote> 
+<p>其中</p> 
+<ul><li>18和相邻队伍47的实力差是29&#xff0c;而d值是20&#xff0c;因此18和47无法组队&#xff0c;同时18肯定无法和后面其他队伍进行匹配了&#xff0c;因为后面队伍的实力值要比47更大。因此18就是一段。</li><li>47和相邻队伍59的实力差是12&#xff0c;因此可以组队&#xff0c;而59和相邻队伍81的实力差是22&#xff0c;而d值是20&#xff0c;因此59和81无法组队。因此47,59就是一段。</li><li>同理81&#xff0c;81&#xff0c;87也是一段。</li></ul> 
+<p>因此&#xff0c;上面队伍其实分为了三段&#xff1a;</p> 
+<ul><li><s>18</s></li><li>47&#xff0c;59</li><li>81&#xff0c;81&#xff0c;87</li></ul> 
+<p>由于队伍匹配至少两个&#xff0c;因此分段18被排除。我们只需要讨论剩余的两个分段。此时对于每个分段来说&#xff0c;我们就可以采用正向匹配策略和负向匹配策略来获得结果。</p> 
+<p></p> 
+<p>下面代码中&#xff0c;我并没有按照队伍实力值得粒度进行分段&#xff0c;而是直接在分段过程中&#xff0c;计算出匹配队伍得实力差&#xff0c;即&#xff1a;分段记录得是两两匹配的实力差&#xff0c;上面按照队伍的分段&#xff0c;可以修改为实力差分段</p> 
+<ul><li>12       // 即59-47</li><li>0&#xff0c;6    // 即81-81&#xff0c;87-81</li></ul> 
+<p>此时&#xff0c;我们正向匹配或者负向匹配时&#xff0c;只能跳着选&#xff0c;比如分段0,6&#xff0c;我们选了0&#xff0c;就不能选6&#xff0c;因为0,6其实共用了一个队伍81。</p> 
+<p></p> 
+<p>我们还是用一个用例来演示下正向匹配&#xff1a;</p> 
+<p><img alt="" height="234" src="https://img-blog.csdnimg.cn/84dfdf7720024247bdd0bb3fe1ebc5fe.png" width="443" /></p> 
+<ul><li>第2行是实力值</li><li>第4行是顺序的两两队伍实力差</li></ul> 
+<p> 可以发现&#xff0c;对于奇数个队伍而言&#xff0c;正向匹配的话&#xff0c;其实就是从第0个实力差开始选&#xff0c;然后隔一个选一个&#xff0c;即按照序号选的话&#xff0c;就是0&#xff0c;2&#xff0c;4&#xff0c;6&#xff0c;....&#xff0c;n-2</p> 
+<p>但是最后三个队伍&#xff0c;比如上图21&#xff0c;26&#xff0c;27&#xff0c;我们应该选择【21&#xff0c;26】和【26&#xff0c;27】中较小的&#xff0c;其实就是对于最后两个实力差5&#xff0c;1中选择较小的。</p> 
+<p>抽象了来说&#xff0c;其实就是实力差数组序号n-2&#xff0c;n-1中选最小的。</p> 
+<p>同理&#xff0c;对于负向匹配而言&#xff0c;其实就是实力差数组序号0&#xff0c;1中选最小的。</p> 
+<p><img alt="" height="258" src="https://img-blog.csdnimg.cn/35d98039208d406290b7f3c71665eed5.png" width="435" /></p> 
+<p></p> 
+<hr /> 
+<p>2023.05.06  上面算法存在一个问题&#xff0c;我们可以通过一个反例来说明&#xff1a;</p> 
+<blockquote> 
+ <p>7 100<br /> 1 2 6 15 17 17 20</p> 
+</blockquote> 
+<p><img alt="" height="289" src="https://img-blog.csdnimg.cn/221bffa5b46c4b13b75cc04c5883602e.png" width="692" /></p> 
+<p>按照前面的思路&#xff0c;我们应该选择1&#43;9&#43;0的匹配策略&#xff0c;但是其实这并非最优策略&#xff0c;最优策略应该如下</p> 
+<p><img alt="" height="250" src="https://img-blog.csdnimg.cn/7c7cfa997fbd43a798589ffee1d3c8a6.png" width="589" /></p> 
+<p>即 1 &#43; 2 &#43; 3 匹配策略。</p> 
+<p></p> 
+<p>假设现在有实力差数组diffs&#xff0c;一个实力差值就是两个相邻队伍的匹配&#xff0c;因此我们不能选择相邻的实力差&#xff0c;因为这样会造成一个队伍被左右相邻的队伍同时匹配&#xff0c;因此实力差数组要按照不相邻选取原则&#xff1a;</p> 
+<ul><li>对于奇数个的实力差数组&#xff0c;最多匹配数必然是 ( diffs.length &#43; 1 )  / 2&#xff0c;只有一个选取策略&#xff0c;如下图是一个实力差列表&#xff0c;其中黄色的就是被选择的匹配&#xff0c;此时满足最多匹配</li></ul> 
+<p><img alt="" height="170" src="https://img-blog.csdnimg.cn/96ad5a9499e24b9092b9c340453ac68b.png" width="541" /></p> 
+<ul><li> 对于偶数个的实力差数组&#xff0c;最多匹配数必然是 diffs.length / 2&#xff0c;此时有如下选取策略</li></ul> 
+<p><img alt="" height="527" src="https://img-blog.csdnimg.cn/a7072c4ff1404e2897cd13432052c52d.png" width="540" /></p> 
+<p>可以发现&#xff0c;在选取过程中&#xff0c;<span style="color:#fe2c24;">我们最多只能有一次&#xff0c;间隔两位后选取的</span>&#xff0c;其他情况都是间隔一位后选取。</p> 
+<p>因为&#xff0c;如果发生两次或以上的<span style="color:#fe2c24;">间隔两位后选取</span>&#xff0c;那么就无法保证最多匹配数了。</p> 
+<p><img alt="" height="527" src="https://img-blog.csdnimg.cn/3e6613071d964228aac56d8510eeda2c.png" width="578" /></p> 
+<p> 因此&#xff0c;本题的难度就大大降低了。</p> 
+<p></p> 
+<p>我们可以定义一个abandon标志&#xff0c;初始为false&#xff0c;表示还没有进行间隔两位的选取动作。</p> 
+<p>当abandon为false时&#xff0c;此时我们有两种选取策略&#xff1a;</p> 
+<ul><li>“选” 当前实力差diffs[index]&#xff0c;实力差之和&#43;&#61;diffs[index]&#xff0c;下次从diffs[index &#43; 2]开始选取</li><li>“不选” 当前实力差diffs[index]&#xff0c;实力差之和不变&#xff0c;下次从diffs[index &#43; 2]开始选取&#xff0c;但是abandon被修改为true</li></ul> 
+<p>当abandon为true时&#xff0c;此时我们只有一种选取策略&#xff0c;那就是必然”选取“当前实力差diffs[index]</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int d &#61; sc.nextInt();
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      arr[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(n, d, arr));
+  }
+
+  /**
+   * &#64;param n 队伍个数n
+   * &#64;param d 允许的最大实力差距d
+   * &#64;param arr n个队伍的实力值数组
+   * &#64;return 匹配队伍最多的情况下匹配出的各组实力差距的总和最小
+   */
+  public static int getResult(int n, int d, int[] arr) {
+    // 实力数组升序
+    Arrays.sort(arr);
+
+    // ans记录各组实力差之和
+    //    int ans &#61; 0;
+    int res &#61; 0;
+
+    // 此flag标记是否没有队伍可以匹配&#xff0c;true表示没有队伍可以匹配&#xff0c;此时应该返回-1
+    boolean flag &#61; true;
+
+    // segment用于保存分段
+    ArrayList&lt;Integer&gt; segment &#61; new ArrayList&lt;&gt;();
+    for (int i &#61; 1; i &lt; n; i&#43;&#43;) {
+      // 相邻两队的实力差diff
+      int diff &#61; arr[i] - arr[i - 1];
+
+      // 如果diff大于d&#xff0c;那么说明 i - 1 无法和 i 组队匹配
+      if (diff &gt; d) {
+        // 此时分段开始
+        if (segment.size() &gt; 0) {
+          flag &#61; false;
+          int[] ans &#61; {Integer.MAX_VALUE};
+          getMaxCountMinSum(segment, 0, false, 0, ans); // 计算分段部分的组队匹配的&#xff1a;匹配队伍最多的情况下匹配出的各组实力差距的最小总和
+          res &#43;&#61; ans[0];
+          segment.clear(); // 开始记录新的分段
+        }
+      } else {
+        segment.add(diff); // 如果diff不大于d&#xff0c;那么说明 i - 1 可以和 i 组队匹配&#xff0c;此时将实力差&#xff08;相当于一个组队匹配&#xff09;计入分段
+      }
+    }
+
+    // 最后一个分段也要记得处理&#xff0c;上面逻辑无法将最后一个分段处理到
+    if (segment.size() &gt; 0) {
+      flag &#61; false;
+      int[] ans &#61; {Integer.MAX_VALUE};
+      getMaxCountMinSum(segment, 0, false, 0, ans);
+      res &#43;&#61; ans[0];
+    }
+
+    if (flag) {
+      return -1;
+    }
+
+    return res;
+  }
+
+  public static void getMaxCountMinSum(
+      ArrayList&lt;Integer&gt; segment, int index, boolean abandon, int sum, int[] ans) {
+    if (index &gt;&#61; segment.size()) {
+      if (sum &lt; ans[0]) ans[0] &#61; sum;
+      return;
+    }
+
+    getMaxCountMinSum(segment, index &#43; 2, abandon, sum &#43; segment.get(index), ans);
+
+    if (!abandon &amp;&amp; segment.size() % 2 &#61;&#61; 0) {
+      getMaxCountMinSum(segment, index &#43; 1, true, sum, ans);
+    }
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [n, d] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(n, d, arr));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} n 队伍个数n
+ * &#64;param {*} d 允许的最大实力差距d
+ * &#64;param {*} arr n个队伍的实力值数组
+ * &#64;return 匹配队伍最多的情况下匹配出的各组实力差距的总和最小
+ */
+function getResult(n, d, arr) {
+  // 实力数组升序
+  arr.sort((a, b) &#61;&gt; a - b);
+
+  // ans记录各组实力差之和
+  let ans &#61; 0;
+
+  // 此flag标记是否没有队伍可以匹配&#xff0c;true表示没有队伍可以匹配&#xff0c;此时应该返回-1
+  let flag &#61; true;
+
+  // segment用于保存分段
+  let segment &#61; [];
+  for (let i &#61; 1; i &lt; n; i&#43;&#43;) {
+    // 相邻两队的实力差diff
+    const diff &#61; arr[i] - arr[i - 1];
+
+    // 如果diff大于d&#xff0c;那么说明 i - 1 无法和 i 组队匹配
+    if (diff &gt; d) {
+      // 此时分段开始
+      if (segment.length &gt; 0) {
+        flag &#61; false;
+        const minSum &#61; [Infinity];
+        getMaxCountMinSum(segment, 0, false, 0, minSum); // 计算分段部分的组队匹配的&#xff1a;匹配队伍最多的情况下匹配出的各组实力差距的最小总和
+        ans &#43;&#61; minSum[0];
+        segment.length &#61; 0; // 开始记录新的分段
+      }
+    } else {
+      segment.push(diff); // 如果diff不大于d&#xff0c;那么说明 i - 1 可以和 i 组队匹配&#xff0c;此时将实力差&#xff08;相当于一个组队匹配&#xff09;计入分段
+    }
+  }
+
+  // 最后一个分段也要记得处理&#xff0c;上面逻辑无法将最后一个分段处理到
+  if (segment.length &gt; 0) {
+    flag &#61; false;
+    const minSum &#61; [Infinity];
+    getMaxCountMinSum(segment, 0, false, 0, minSum);
+    ans &#43;&#61; minSum[0];
+  }
+
+  if (flag) return -1;
+
+  return ans;
+}
+
+function getMaxCountMinSum(segment, index, abandon, sum, minSum) {
+  if (index &gt;&#61; segment.length) {
+    if (sum &lt; minSum[0]) minSum[0] &#61; sum;
+    return;
+  }
+
+  getMaxCountMinSum(segment, index &#43; 2, abandon, sum &#43; segment[index], minSum);
+
+  if (!abandon &amp;&amp; segment.length % 2 &#61;&#61; 0) {
+    getMaxCountMinSum(segment, index &#43; 1, true, sum, minSum);
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import sys
+
+n, d &#61; map(int, input().split())
+arr &#61; list(map(int, input().split()))
+
+
+def getMaxCountMinSum(segment, index, abandon, total, minTotal):
+    if index &gt;&#61; len(segment):
+        if total &lt; minTotal[0]:
+            minTotal[0] &#61; total
+        return
+
+    getMaxCountMinSum(segment, index &#43; 2, abandon, total &#43; segment[index], minTotal)
+
+    if not abandon and len(segment) % 2 &#61;&#61; 0:
+        getMaxCountMinSum(segment, index &#43; 1, True, total, minTotal)
+
+
+# 算法入口
+def getResult(n, d, arr):
+    &#34;&#34;&#34;
+    :param n: 队伍个数n
+    :param d: 允许的最大实力差距d
+    :param arr: n个队伍的实力值数组
+    :return: 匹配队伍最多的情况下匹配出的各组实力差距的总和最小
+    &#34;&#34;&#34;
+
+    # 实力数组升序
+    arr.sort()
+
+    # ans记录各组实力差之和
+    ans &#61; 0
+
+    # 此flag标记是否没有队伍可以匹配&#xff0c;true表示没有队伍可以匹配&#xff0c;此时应该返回-1
+    flag &#61; True
+
+    # segment用于保存分段
+    segment &#61; []
+    for i in range(1, n):
+        # 相邻两队的实力差diff
+        diff &#61; arr[i] - arr[i - 1]
+
+        # 如果diff大于d&#xff0c;那么说明 i - 1 无法和 i 组队匹配
+        if diff &gt; d:
+            # 此时分段开始
+            if len(segment) &gt; 0:
+                flag &#61; False
+                minTotal &#61; [sys.maxsize]
+                getMaxCountMinSum(segment, 0, False, 0, minTotal)  # 计算分段部分的组队匹配的&#xff1a;匹配队伍最多的情况下匹配出的各组实力差距的最小总和
+                ans &#43;&#61; minTotal[0]
+                segment.clear()  # 开始记录新的分段
+        else:
+            # 如果diff不大于d&#xff0c;那么说明 i - 1 可以和 i 组队匹配&#xff0c;此时将实力差&#xff08;相当于一个组队匹配&#xff09;计入分段
+            segment.append(diff)
+
+    # 最后一个分段也要记得处理&#xff0c;上面逻辑无法将最后一个分段处理到
+    if len(segment) &gt; 0:
+        flag &#61; False
+        minTotal &#61; [sys.maxsize]
+        getMaxCountMinSum(segment, 0, False, 0, minTotal)
+        ans &#43;&#61; minTotal[0]
+
+    if flag:
+        return -1
+
+    return ans
+
+
+# 算法调用
+print(getResult(n, d, arr))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

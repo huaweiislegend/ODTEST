@@ -1,0 +1,814 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 智能驾驶（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一辆汽车需要从 m * n 的地图左上角&#xff08;起点&#xff09;开往地图的右下角&#xff08;终点&#xff09;&#xff0c;去往每一个地区都需要消耗一定的油量&#xff0c;加油站可进行加油。</p> 
+<p>请你计算汽车确保从从起点到达终点时所需的最少初始油量。</p> 
+<p></p> 
+<p>说明&#xff1a;</p> 
+<ol><li>智能汽车可以上下左右四个方向移动</li><li>地图上的数字取值是 0 或 -1 或 正整数&#xff1a;<br /><br />        -1 &#xff1a;表示加油站&#xff0c;可以加满油&#xff0c;汽车的油箱容量最大为100&#xff1b;<br />         0 &#xff1a;表示这个地区是障碍物&#xff0c;汽车不能通过<br /> 正整数&#xff1a;表示汽车走过这个地区的耗油量<br />  </li><li>如果汽车无论如何都无法到达终点&#xff0c;则返回 -1</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为两个数字&#xff0c;M&#xff0c;N&#xff0c;表示地图的大小为 M * N</p> 
+<ul><li>0 &lt; M,N ≤ 200</li></ul> 
+<p>后面一个 M * N 的矩阵&#xff0c;其中的值是 0 或 -1 或正整数&#xff0c;加油站的总数不超过 200 个</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>如果汽车无论如何都无法到达终点&#xff0c;则返回 -1</p> 
+<p>如果汽车可以到达终点&#xff0c;则返回最少的初始油量</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2,2<br /> 10,20<br /> 30,40</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">70</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">行走的路线为&#xff1a;右→下</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4,4<br /> 10,30,30,20<br /> 30,30,-1,10<br /> 0,20,20,40<br /> 10,-1,30,40</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">70</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">行走的路线为&#xff1a;右→右→下→下→下→右</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4,5<br /> 10,0,30,-1,10<br /> 30,0,20,0,20<br /> 10,0,10,0,30<br /> 10,-1,30,0,10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">60</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">行走的路线为&#xff1a;下→下→下→右→右→上→上→上→右→右→下→下→下</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4,4<br /> 10,30,30,20<br /> 30,30,20,10<br /> 10,20,10,40<br /> 10,20,30,40</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无论如何都无法到达终点</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1路径</p> 
+<p><img alt="" height="149" src="https://img-blog.csdnimg.cn/direct/caa84f8e681c4539a5be31fab2d34bbc.png" width="190" /></p> 
+<hr /> 
+<p>用例2路径</p> 
+<p><img alt="" height="220" src="https://img-blog.csdnimg.cn/direct/54198d10ff834f79a6d2bfb0af6ce8da.png" width="256" /></p> 
+<hr /> 
+<p>用例3路径</p> 
+<p><img alt="" height="238" src="https://img-blog.csdnimg.cn/direct/25bdb2b7c67146829bead96bfd8134ab.png" width="291" /></p> 
+<hr /> 
+<p>用例4&#xff1a;</p> 
+<p>由于汽车油箱容量最大100&#xff0c;因此即使初始时加满了油&#xff0c;也无法找到一条路径从起点到达终点</p> 
+<hr /> 
+<p></p> 
+<p>本题我有一个疑问&#xff0c;那就是否可以走回头路&#xff1f;我这里走回头路的目的是&#xff1a;尽可能地经过加油站&#xff0c;比如下面例子&#xff1a;</p> 
+<blockquote> 
+ <p>3,3<br /> 10,-1,40<br /> 30,0,50<br /> 50,-1,40</p> 
+</blockquote> 
+<p>路线图如下&#xff0c;先走红色箭头路线&#xff0c;之后走绿色箭头 </p> 
+<p><img alt="" height="191" src="https://img-blog.csdnimg.cn/direct/14878d250aa74eda984d01581044727c.png" width="249" /></p> 
+<p>按照上面路线&#xff0c;初始只需要10个油即能完成从左上角开往右下角。</p> 
+<p>上面这种行驶路线我理解是可行的&#xff0c;也是符合本题要求的&#xff0c;同时也是符合实际生活场景的&#xff08;车子快没油了&#xff0c;肯定是优先找一个就近的加油站先加油&#xff0c;即使加油站不在规划的路线上&#xff09;。</p> 
+<p></p> 
+<p>本题的极限地图可以达到200*200&#xff0c;使用深搜DFS策略探路的话肯定会超时。</p> 
+<p>因此推荐使用广搜BFS策略探路。</p> 
+<p></p> 
+<p>当我们加起点加入到BFS队列后&#xff0c;此时即形成了一条路径&#xff0c;即起点(0,0)到(0,0)的路径&#xff0c;该路径的终点是(0,0)&#xff0c;因此我们可以理解加入BFS队列中的位置点其实可以对应为某条路径的终点位置。</p> 
+<p>当我们从BFS队列弹出一个位置点A&#xff0c;其实就是选择某条路径&#xff0c;并从该路径的终点A&#xff0c;继续向其上下左右四个方向探路&#xff1a;</p> 
+<ul><li>如果新位置B越界&#xff0c;则无法访问B</li><li>如果新位置B是障碍物&#xff0c;则无法访问B</li></ul> 
+<p>除了上面两个判断外&#xff0c;我们还需要对A位置如下信息进行分析&#xff1a;</p> 
+<ul><li>当前路径到达A点时&#xff0c;还剩余多少可用的油量&#xff0c;假设剩余可用油量为&#xff1a;A.remain</li><li>当前路径到达A点的过程中是否加过油&#xff1f;假设加油状态为&#xff1a;A.flag</li><li>当前路径到达A点所需的最少初始油量&#xff0c;假设最少初始油量为&#xff1a;A.init</li></ul> 
+<p>如果新位置B本身是加油站的话&#xff0c;那么A-&gt;B的过程中&#xff1a;</p> 
+<ul><li>B.remain &#61; 100    // 汽车到B位置后&#xff0c;会加满油</li><li>B.init &#61; A.init        // 只需要 A.init 初始油量也可以到达B位置</li><li>B.flag &#61; true         // 在B位置加油了</li></ul> 
+<p>如果新位置B不是加油站的话&#xff0c;那么A-&gt;B的过程中&#xff1a;</p> 
+<ul><li>B.flag &#61; A.flag                                      // 加油状态沿用之前的</li><li>B.remain &#61; A.remain - matrix[B.x][B.y]    // 汽车从A到B需要消耗matrix[B.x][B.y] 的油量&#xff0c;因此到B点后&#xff0c;剩余可用油量为 A.remain - matrix[B.x][B.y] </li></ul> 
+<p>此时 B.remain 可能是负数&#xff0c;也可能不是负数&#xff1a;</p> 
+<ul><li>如果 B.remain 是负数的话&#xff0c;则说明从 A 位置靠 A.remain 的剩余可用油量无法到B位置&#xff0c;此时有一个办法&#xff0c;那就是将这部分缺额油量计入到当前路径的初始油量中&#xff0c;即当前路径从起点出发时多带一点初始油量&#xff0c;且至少需要 A.init &#43; (-B.remain) 初始油量&#xff0c;才能使得当前路径从起点到达B点&#xff0c;因此此时我们更新当前路径所需最少初始油量为 B.init &#61; A.init &#43; (-B.remain)&#xff0c;注意此时B点为当前路径新的终点&#xff0c;因此当前路径的最少初始油量信息更新到B点上。同时注意更新 B.remain &#61; 0。</li><li>如果 B.remain &gt;&#61; 0 的话&#xff0c;则说明从A位置可以靠 A.remain 的剩余可用油量到达B位置&#xff0c;所以B.init &#61; A.init&#xff0c;即当前路径只需要A.init的初始油量&#xff0c;即可从起点到达B点。</li></ul> 
+<blockquote> 
+ <p>注意&#xff1a;上面讨论 B.remain 是负数的时&#xff0c;表示当前路径到达B点还缺少&#xff08;-B.remain&#xff09;的油量&#xff0c;我们上面粗暴的将缺少的油量计入到了当前路径从起点出发时带的初始油量中&#xff0c;即初始油量多带&#xff08;-B.remain&#xff09;的油量&#xff0c;即可保证当前路径刚刚好到达B点时消耗完所有的油。</p> 
+ <p></p> 
+ <p>但是&#xff0c;上面这个粗暴计入是存在问题的&#xff0c;请看下图&#xff1a;</p> 
+ <p><img alt="" height="197" src="https://img-blog.csdnimg.cn/direct/2626a43abefe4664a7b722947db57ae1.png" width="250" /></p> 
+ <p>(0, 0) -&gt; (0, 0) 至少需要初始油量10&#xff0c;如果初始油量10&#xff0c;那么此时剩余可用0</p> 
+ <p>(0, 0) -&gt; (1, 0) 至少需要初始油量40&#xff0c;如果初始油量40&#xff0c;那么此时剩余可用0</p> 
+ <p>(0, 0) -&gt; (1, 0) -&gt; (2, 0) 至少需要初始油量40&#xff0c;此时加满了油&#xff0c;剩余可用100</p> 
+ <p>(0, 0) -&gt; (1, 0) -&gt; (2, 0) -&gt; (2, 1) 至少需要初始油量40&#xff0c;剩余可用30</p> 
+ <p>(0, 0) -&gt; (1, 0) -&gt; (2, 0) -&gt; (2, 1) -&gt; (2, 2) 由于上一步剩余可用只有30&#xff0c;而到达终点(2,2)需要40的油量&#xff0c;还缺10个油&#xff0c;那么这里缺的10个油&#xff0c;能粗暴的计入到初始油量里面吗&#xff1f;</p> 
+ <p><br /> 假设我们粗暴的计入到初始油量中&#xff0c;即当前路径从起点出发时初始油量50个&#xff0c;那么</p> 
+ <p>(0, 0) -&gt; (0, 0)&#xff0c;剩余可用40</p> 
+ <p>(0, 0) -&gt; (1, 0)&#xff0c;剩余可用10</p> 
+ <p>(0, 0) -&gt; (1, 0) -&gt; (2, 0)&#xff0c;加满了油&#xff0c;剩余可用100</p> 
+ <p>(0, 0) -&gt; (1, 0) -&gt; (2, 0) -&gt; (2, 1) &#xff0c;剩余可用30</p> 
+ <p>(0, 0) -&gt; (1, 0) -&gt; (2, 0) -&gt; (2, 1) -&gt; (2, 2) &#xff0c;此时上一步剩余油量还是不够&#xff1f;&#xff1f;&#xff1f;&#xff1f;为啥&#xff1f;</p> 
+ <p><br /> 问题出在&#xff0c;该路径到达(2,2)前加过一次油了&#xff0c;因此该路径是从某个位置以满油状态来的&#xff0c;因此即使你给初始油量加再多&#xff0c;中间过程必然会变一次满油状态&#xff0c;而满油状态也无法到达(2,2)&#xff0c;因此该路径无法到达(2,2)。<br /><br /> 总结一下就是&#xff0c;如果A-&gt;B过程中&#xff0c;油量不够了&#xff0c;此时我们期望是将缺额油量计入到初始油量中&#xff0c;但是到达B之前的过程中不能加过油&#xff0c;否则此时缺额的油无法通过初始油量补充得到。</p> 
+</blockquote> 
+<p></p> 
+<p>还有一个问题&#xff0c;如果上面A-&gt;B缺少的油&#xff0c;可以计入到当前路径的初始油量中&#xff0c;那么如果是下面例子&#xff0c;还可以借吗&#xff1f;</p> 
+<p><img alt="" height="245" src="https://img-blog.csdnimg.cn/direct/daa73e0b520c4b3099583a801b44b3b4.png" width="280" /></p> 
+<p>即我们每走一步都将缺少油计入到初始油量中&#xff0c;但是汽车油箱只有100个单位&#xff0c;如果缺少的油超过了100个单位&#xff0c;那么对应路径也不大可达终点。</p> 
+<p></p> 
+<p>最后一个问题&#xff1a;本题允许回路&#xff0c;那么如何避免因为回路产生的死循环&#xff1f;</p> 
+<p>其实处理办法很简单&#xff0c;我们可以定义一个矩阵dist_init&#xff0c;其中元素dist_init[x][y] 用于记录起点到(x,y)的所有路径中的最优路径&#xff08;即需要最少初始油量的路径&#xff09;的初始油量。</p> 
+<p>每当我们BFS探索过&#xff08;弹出&#xff09;一个点&#xff08;x,y&#xff09;后&#xff0c;我们就得到了一条路径到达&#xff08;x,y&#xff09;点的最少初始油量init&#xff0c;我们比较 init 和 dist_init[x][y]&#xff0c;</p> 
+<ul><li>如果 init &lt; dist_init[x][y]&#xff0c;则说明当前路径到达(x,y)更优&#xff0c;花费更少的初始油量 init&#xff0c;此时我们更新 dist_init[x][y] &#61; init</li><li>如果 init &gt; dist_init[x][y]&#xff0c;则说明当前路径到达(x,y)不是最优的&#xff0c;因此当前路径也没必要继续往后探索了&#xff0c;可以终止当前路径的探索。</li></ul> 
+<p>而回路是指(x1,y1) -&gt; (x2, y2) -&gt; (x1, y1)&#xff0c;如果 (x2, y2)不是加油站&#xff0c;那么此时(x2, y2) -&gt; (x1, y1)的探路对应的init&#xff0c;对于&#xff08;x1, y1&#xff09;而言必然不是最优的&#xff0c;按照上面逻辑&#xff0c;可以终止该回路&#xff0c;避免死循环。比如下图&#xff1a;</p> 
+<p><img alt="" height="209" src="https://img-blog.csdnimg.cn/direct/d3676771843241f79bc1009e22926e9c.png" width="267" /></p> 
+<p>(0, 0) <span style="color:#fe2c24;"><strong>-&gt;</strong></span> (0, 1) <span style="color:#a2e043;"><strong>-&gt;</strong></span> (0, 0) &#xff0c;该路径到达(0,0) 所需的最少初始油量为 40</p> 
+<p>(0, 0) -&gt; (0, 0)&#xff0c;该路径到达(0,0) 所需的最少初始油量为 10</p> 
+<p>因此终止回路(0, 0) <span style="color:#fe2c24;"><strong>-&gt;</strong></span> (0, 1) <span style="color:#a2e043;"><strong>-&gt;</strong></span> (0, 0)的后续探索</p> 
+<p></p> 
+<p>但是如果回路过程中遇到加油站&#xff0c;比如下图&#xff1a;</p> 
+<p><img alt="" height="214" src="https://img-blog.csdnimg.cn/direct/f0c991ae3495417b88d13d40b2d917a3.png" width="244" /></p> 
+<ul><li>(0, 0) <span style="color:#fe2c24;"><strong>-&gt;</strong></span> (0, 1) <span style="color:#a2e043;"><strong>-&gt;</strong></span> (0, 0) &#xff0c;该路径到达(0,0) 所需的最少初始油量为 10</li><li>(0, 0) -&gt; (0, 0)&#xff0c;该路径到达(0,0) 所需的最少初始油量为 10</li></ul> 
+<p>此时两个路径的初始油量都只需要10&#xff0c;那么我们应该选择哪一种路径呢&#xff1f;</p> 
+<p>对于初始油量相同的&#xff0c;我们应该关注剩余可用油量更多的&#xff0c;比如上图&#xff1a;</p> 
+<ul><li>(0, 0) <span style="color:#fe2c24;"><strong>-&gt;</strong></span> (0, 1) <span style="color:#a2e043;"><strong>-&gt;</strong></span> (0, 0) &#xff0c;该路径到达(0,0) 时&#xff0c;剩余可用油量为90</li><li>(0, 0) -&gt; (0, 0)&#xff0c;该路径到达(0,0) 时&#xff0c;剩余可用油量为0</li></ul> 
+<p>此时我们选择剩余油量更多的路径更优。即此时回路更优。</p> 
+<p></p> 
+<p>因此&#xff0c;我们还需要定义一个矩阵 dist_remain , 其中元素dist_remain [x][y] 用于记录起点到(x,y)的所有路径中的最优路径&#xff08;即需要最少初始油量的路径&#xff0c;如果由多条路径的最少初始油量相同&#xff0c;则选择这些路径中剩余油量更多的&#xff09;的剩余可用油量。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [m, n] &#61; (await readline()).split(&#34;,&#34;).map(Number);
+
+  const matrix &#61; [];
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    matrix.push((await readline()).split(&#34;,&#34;).map(Number));
+  }
+
+  // 上下左右四个方向对应的偏移量
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  // 记录路径中位置的几个状态
+  class Node {
+    constructor(x, y) {
+      this.x &#61; x; // 位置横坐标
+      this.y &#61; y; // 位置纵坐标
+      this.init &#61; 0; // 到达此位置所需的最少初始油量
+      this.remain &#61; 0; // 到达此位置时剩余可用油量
+      this.flag &#61; false; // 到达此位置前有没有加过油
+    }
+  }
+
+  function bfs() {
+    // 如果左上角和右下角不可达&#xff0c;则直接返回-1
+    if (matrix[0][0] &#61;&#61; 0 || matrix[m - 1][n - 1] &#61;&#61; 0) {
+      return -1;
+    }
+
+    // 广搜队列
+    const queue &#61; [];
+
+    // 起始位置
+    const src &#61; new Node(0, 0);
+
+    if (matrix[0][0] &#61;&#61; -1) {
+      // 如果起始位置就是加油站&#xff0c;则到达(0,0)位置所需初始油量为0&#xff0c;且剩余可用油量为100&#xff0c;且需要标记已加油
+      src.init &#61; 0;
+      src.remain &#61; 100;
+      src.flag &#61; true;
+    } else {
+      // 如果起始位置不是加油站&#xff0c;则到达(0,0)位置所需的初始油量至少为matrix[0][0], 剩余可用油量为0&#xff0c;未加油状态
+      src.init &#61; matrix[0][0];
+      src.remain &#61; 0;
+      src.flag &#61; false;
+    }
+
+    queue.push(src);
+
+    // dist_init[x][y] 用于记录起点 (0, 0) 到达 (x, y) 的所有可达路径中最优路径&#xff08;即初始油量需求最少的路径&#xff09;的初始油量
+    const dist_init &#61; new Array(m)
+      .fill(0)
+      .map(() &#61;&gt; new Array(n).fill(Infinity)); // 由于需要记录每个位置的最少需要的初始油量&#xff0c;因此每个位置所需的初始油量初始化为一个较大值
+
+    // dist_remain 用于记录起点 (0,0) 到达 (x,y) 的所有可达路径中最优路径&#xff08;即初始油量需求最少的路径&#xff09;的最大剩余可用油量
+    // 即如果存在多条最优路径&#xff0c;我们应该选这些路径中到达此位置剩余油量最多的
+    const dist_remain &#61; new Array(m).fill(0).map(() &#61;&gt; new Array(n).fill(0));
+
+    // 起点&#xff08;0,0&#xff09;到达自身位置&#xff08;0,0&#xff09;所需的最少初始油量和最多剩余油量
+    dist_init[0][0] &#61; src.init;
+    dist_remain[0][0] &#61; src.remain;
+
+    // 广搜
+    while (queue.length &gt; 0) {
+      const cur &#61; queue.shift();
+
+      // 从当前位置cur开始向上下左右四个方向探路
+      for (let [offsetX, offsetY] of offsets) {
+        // 新位置
+        const newX &#61; cur.x &#43; offsetX;
+        const newY &#61; cur.y &#43; offsetY;
+
+        // 新位置越界 或者 新位置是障碍&#xff0c;则新位置不可达&#xff0c;继续探索其他方向
+        if (
+          newX &lt; 0 ||
+          newX &gt;&#61; m ||
+          newY &lt; 0 ||
+          newY &gt;&#61; n ||
+          matrix[newX][newY] &#61;&#61; 0
+        ) {
+          continue;
+        }
+
+        // 如果新位置可达&#xff0c;则计算到达新位置的三个状态数据
+        let init &#61; cur.init; // 到达新位置所需的最少初始油量
+        let remain &#61; cur.remain; // 到达新位置时还剩余的最多可用油量
+        let flag &#61; cur.flag; // 是否加油了
+
+        if (matrix[newX][newY] &#61;&#61; -1) {
+          // 如果新位置是加油站&#xff0c;则加满油
+          remain &#61; 100;
+          // 标记加过油了
+          flag &#61; true;
+        } else {
+          // 如果新位置不是加油站&#xff0c;则需要消耗matrix[newX][newY]个油
+          remain -&#61; matrix[newX][newY];
+        }
+
+        // 如果到达新位置后&#xff0c;剩余油量为负数
+        if (remain &lt; 0) {
+          if (flag) {
+            // 如果之前已经加过油了&#xff0c;则说明到达此路径前是满油状态&#xff0c;因此我们无法从初始油量里面&#34;借&#34;油
+            continue;
+          } else {
+            // 如果之前没有加过油&#xff0c;则超出的油量&#xff08;-remain&#xff09;&#xff0c;可以从初始油量里面&#34;借&#34;&#xff0c;即需要初始油量 init &#43; (-remain) 才能到达新位置
+            init -&#61; remain;
+            // 由于初始油量 init &#43; (-remain) 刚好只能支持汽车到达新位置&#xff0c;因此汽车到达新位置后剩余可用油量为0
+            remain &#61; 0;
+          }
+        }
+
+        // 如果到达新位置所需的初始油量超过了满油100&#xff0c;则无法到达新位置
+        if (init &gt; 100) {
+          continue;
+        }
+
+        // 如果可达新位置&#xff0c;则继续检查当前路径策略到达新位置(newX, newY)所需的初始油量init是否比其他路径策略更少
+        if (init &gt; dist_init[newX][newY]) {
+          // 如果不是&#xff0c;则无需探索新位置(newX, newY)
+          continue;
+        }
+
+        // 当前路径策略到达新位置(newX,newY)所需初始油量init更少&#xff0c;或者&#xff0c;init和前面路径策略相同&#xff0c;但是当前路径策略剩余可用油量remain更多
+        if (init &lt; dist_init[newX][newY] || remain &gt; dist_remain[newX][newY]) {
+          // 则当前路径策略更优&#xff0c;记录更优路径的状态
+          dist_init[newX][newY] &#61; init;
+          dist_remain[newX][newY] &#61; remain;
+
+          // 将当前新位置加入BFS队列
+          const next &#61; new Node(newX, newY);
+          next.init &#61; init;
+          next.remain &#61; remain;
+          next.flag &#61; flag;
+
+          queue.push(next);
+        }
+      }
+    }
+
+    // dist_init[m - 1][n - 1] 记录的是到达右下角终点位置所需的最少初始油量
+    return dist_init[m - 1][n - 1] &#61;&#61; Infinity ? -1 : dist_init[m - 1][n - 1];
+  }
+
+  console.log(bfs());
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  static int m;
+  static int n;
+  static int[][] matrix;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in).useDelimiter(&#34;[,\n]&#34;); // 将逗号和换行符作为一次读取的截止符
+
+    m &#61; sc.nextInt();
+    n &#61; sc.nextInt();
+
+    matrix &#61; new int[m][n];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    System.out.println(bfs());
+  }
+
+  // 上下左右四个方向对应的偏移量
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  // 记录路径中位置的几个状态
+  static class Node {
+    int x; // 位置横坐标
+    int y; // 位置纵坐标
+    int init; // 到达此位置所需的最少初始油量
+    int remain; // 到达此位置时剩余可用油量
+    boolean flag; // 到达此位置前有没有加过油
+
+    public Node(int x, int y) {
+      this.x &#61; x;
+      this.y &#61; y;
+    }
+  }
+
+  public static int bfs() {
+    // 如果左上角和右下角不可达&#xff0c;则直接返回-1
+    if (matrix[0][0] &#61;&#61; 0 || matrix[m - 1][n - 1] &#61;&#61; 0) {
+      return -1;
+    }
+
+    // 广搜队列
+    LinkedList&lt;Node&gt; queue &#61; new LinkedList&lt;&gt;();
+
+    // 起始位置
+    Node src &#61; new Node(0, 0);
+
+    if (matrix[0][0] &#61;&#61; -1) {
+      // 如果起始位置就是加油站&#xff0c;则到达(0,0)位置所需初始油量为0&#xff0c;且剩余可用油量为100&#xff0c;且需要标记已加油
+      src.init &#61; 0;
+      src.remain &#61; 100;
+      src.flag &#61; true;
+    } else {
+      // 如果起始位置不是加油站&#xff0c;则到达(0,0)位置所需的初始油量至少为matrix[0][0], 剩余可用油量为0&#xff0c;未加油状态
+      src.init &#61; matrix[0][0];
+      src.remain &#61; 0;
+      src.flag &#61; false;
+    }
+
+    queue.add(src);
+
+    // dist_init[x][y] 用于记录起点 (0, 0) 到达 (x, y) 的所有可达路径中最优路径&#xff08;即初始油量需求最少的路径&#xff09;的初始油量
+    int[][] dist_init &#61; new int[m][n];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        // 由于需要记录每个位置的最少需要的初始油量&#xff0c;因此每个位置所需的初始油量初始化为一个较大值
+        dist_init[i][j] &#61; Integer.MAX_VALUE;
+      }
+    }
+
+    // dist_remain 用于记录起点 (0,0) 到达 (x,y) 的所有可达路径中最优路径&#xff08;即初始油量需求最少的路径&#xff09;的最大剩余可用油量
+    // 即如果存在多条最优路径&#xff0c;我们应该选这些路径中到达此位置剩余油量最多的
+    int[][] dist_remain &#61; new int[m][n];
+
+    // 起点&#xff08;0,0&#xff09;到达自身位置&#xff08;0,0&#xff09;所需的最少初始油量和最多剩余油量
+    dist_init[0][0] &#61; src.init;
+    dist_remain[0][0] &#61; src.remain;
+
+    // 广搜
+    while (queue.size() &gt; 0) {
+      Node cur &#61; queue.removeFirst();
+
+      // 从当前位置cur开始向上下左右四个方向探路
+      for (int[] offset : offsets) {
+        // 新位置
+        int newX &#61; cur.x &#43; offset[0];
+        int newY &#61; cur.y &#43; offset[1];
+
+        // 新位置越界 或者 新位置是障碍&#xff0c;则新位置不可达&#xff0c;继续探索其他方向
+        if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n || matrix[newX][newY] &#61;&#61; 0) continue;
+
+        // 如果新位置可达&#xff0c;则计算到达新位置的三个状态数据
+        int init &#61; cur.init; // 到达新位置所需的最少初始油量
+        int remain &#61; cur.remain; // 到达新位置时还剩余的最多可用油量
+        boolean flag &#61; cur.flag; // 是否加油了
+
+        if (matrix[newX][newY] &#61;&#61; -1) {
+          // 如果新位置是加油站&#xff0c;则加满油
+          remain &#61; 100;
+          // 标记加过油了
+          flag &#61; true;
+        } else {
+          // 如果新位置不是加油站&#xff0c;则需要消耗matrix[newX][newY]个油
+          remain -&#61; matrix[newX][newY];
+        }
+
+        // 如果到达新位置后&#xff0c;剩余油量为负数
+        if (remain &lt; 0) {
+          if (flag) {
+            // 如果之前已经加过油了&#xff0c;则说明到达此路径前是满油状态&#xff0c;因此我们无法从初始油量里面&#34;借&#34;油
+            continue;
+          } else {
+            // 如果之前没有加过油&#xff0c;则超出的油量&#xff08;-remain&#xff09;&#xff0c;可以从初始油量里面&#34;借&#34;&#xff0c;即需要初始油量 init &#43; (-remain) 才能到达新位置
+            init -&#61; remain;
+            // 由于初始油量 init &#43; (-remain) 刚好只能支持汽车到达新位置&#xff0c;因此汽车到达新位置后剩余可用油量为0
+            remain &#61; 0;
+          }
+        }
+
+        // 如果到达新位置所需的初始油量超过了满油100&#xff0c;则无法到达新位置
+        if (init &gt; 100) {
+          continue;
+        }
+
+        // 如果可达新位置&#xff0c;则继续检查当前路径策略到达新位置(newX, newY)所需的初始油量init是否比其他路径策略更少
+        if (init &gt; dist_init[newX][newY]) {
+          // 如果不是&#xff0c;则无需探索新位置(newX, newY)
+          continue;
+        }
+
+        // 当前路径策略到达新位置(newX,newY)所需初始油量init更少&#xff0c;或者&#xff0c;init和前面路径策略相同&#xff0c;但是当前路径策略剩余可用油量remain更多
+        if (init &lt; dist_init[newX][newY] || remain &gt; dist_remain[newX][newY]) {
+          // 则当前路径策略更优&#xff0c;记录更优路径的状态
+          dist_init[newX][newY] &#61; init;
+          dist_remain[newX][newY] &#61; remain;
+
+          // 将当前新位置加入BFS队列
+          Node next &#61; new Node(newX, newY);
+          next.init &#61; init;
+          next.remain &#61; remain;
+          next.flag &#61; flag;
+
+          queue.add(next);
+        }
+      }
+    }
+
+    // dist_init[m - 1][n - 1] 记录的是到达右下角终点位置所需的最少初始油量
+    return dist_init[m - 1][n - 1] &#61;&#61; Integer.MAX_VALUE ? -1 : dist_init[m - 1][n - 1];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+m, n &#61; map(int, input().split(&#34;,&#34;))
+matrix &#61; [list(map(int, input().split(&#34;,&#34;))) for _ in range(m)]
+
+# 上下左右四个方向对应的偏移量
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+
+# 记录路径中位置的几个状态
+class Node:
+    def __init__(self, x, y):
+        self.x &#61; x  # 位置横坐标
+        self.y &#61; y  # 位置纵坐标
+        self.init &#61; 0  # 到达此位置所需的最少初始油量
+        self.remain &#61; 0  # 到达此位置时剩余可用油量
+        self.flag &#61; False  # 到达此位置前有没有加过油
+
+
+# 算法入口
+def bfs():
+    # 如果左上角和右下角不可达&#xff0c;则直接返回-1
+    if matrix[0][0] &#61;&#61; 0 or matrix[m - 1][n - 1] &#61;&#61; 0:
+        return -1
+
+    # 广搜队列
+    queue &#61; []
+
+    # 起始位置
+    src &#61; Node(0, 0)
+
+    if matrix[0][0] &#61;&#61; -1:
+        # 如果起始位置就是加油站&#xff0c;则到达(0,0)位置所需初始油量为0&#xff0c;且剩余可用油量为100&#xff0c;且需要标记已加油
+        src.init &#61; 0
+        src.remain &#61; 100
+        src.flag &#61; True
+    else:
+        # 如果起始位置不是加油站&#xff0c;则到达(0,0)位置所需的初始油量至少为matrix[0][0], 剩余可用油量为0&#xff0c;未加油状态
+        src.init &#61; matrix[0][0]
+        src.remain &#61; 0
+        src.flag &#61; False
+
+    queue.append(src)
+
+    # dist_init[x][y] 用于记录起点 (0, 0) 到达 (x, y) 的所有可达路径中最优路径&#xff08;即初始油量需求最少的路径&#xff09;的初始油量
+    # 由于需要记录每个位置的最少需要的初始油量&#xff0c;因此每个位置所需的初始油量初始化为一个较大值
+    dist_init &#61; [[sys.maxsize] * n for _ in range(m)]
+
+    # dist_remain 用于记录起点 (0,0) 到达 (x,y) 的所有可达路径中最优路径&#xff08;即初始油量需求最少的路径&#xff09;的最大剩余可用油量
+    # 即如果存在多条最优路径&#xff0c;我们应该选这些路径中到达此位置剩余油量最多的
+    dist_remain &#61; [[0] * n for _ in range(m)]
+
+    # 起点&#xff08;0,0&#xff09;到达自身位置&#xff08;0,0&#xff09;所需的最少初始油量和最多剩余油量
+    dist_init[0][0] &#61; src.init
+    dist_remain[0][0] &#61; src.remain
+
+    # 广搜
+    while len(queue) &gt; 0:
+        cur &#61; queue.pop(0)
+
+        # 从当前位置cur开始向上下左右四个方向探路
+        for offsetX, offsetY in offsets:
+            # 新位置
+            newX &#61; cur.x &#43; offsetX
+            newY &#61; cur.y &#43; offsetY
+
+            # 新位置越界 或者 新位置是障碍&#xff0c;则新位置不可达&#xff0c;继续探索其他方向
+            if newX &lt; 0 or newX &gt;&#61; m or newY &lt; 0 or newY &gt;&#61; n or matrix[newX][newY] &#61;&#61; 0:
+                continue
+
+            # 如果新位置可达&#xff0c;则计算到达新位置的三个状态数据
+            init &#61; cur.init  # 到达新位置所需的最少初始油量
+            remain &#61; cur.remain  # 到达新位置时还剩余的最多可用油量
+            flag &#61; cur.flag  # 是否加油了
+
+            if matrix[newX][newY] &#61;&#61; -1:
+                # 如果新位置是加油站&#xff0c;则加满油
+                remain &#61; 100
+                # 标记加过油了
+                flag &#61; True
+            else:
+                # 如果新位置不是加油站&#xff0c;则需要消耗matrix[newX][newY]个油
+                remain -&#61; matrix[newX][newY]
+
+            # 如果到达新位置后&#xff0c;剩余油量为负数
+            if remain &lt; 0:
+                if flag:
+                    # 如果之前已经加过油了&#xff0c;则说明到达此路径前是满油状态&#xff0c;因此我们无法从初始油量里面&#34;借&#34;油
+                    continue
+                else:
+                    # 如果之前没有加过油&#xff0c;则超出的油量&#xff08;-remain&#xff09;&#xff0c;可以从初始油量里面&#34;借&#34;&#xff0c;即需要初始油量 init &#43; (-remain) 才能到达新位置
+                    init -&#61; remain
+                    # 由于初始油量 init &#43; (-remain) 刚好只能支持汽车到达新位置&#xff0c;因此汽车到达新位置后剩余可用油量为0
+                    remain &#61; 0
+
+            # 如果到达新位置所需的初始油量超过了满油100&#xff0c;则无法到达新位置
+            if init &gt; 100:
+                continue
+
+            # 如果可达新位置&#xff0c;则继续检查当前路径策略到达新位置(newX, newY)所需的初始油量init是否比其他路径策略更少
+            if init &gt; dist_init[newX][newY]:
+                # 如果不是&#xff0c;则无需探索新位置(newX, newY)
+                continue
+
+            # 当前路径策略到达新位置(newX,newY)所需初始油量init更少&#xff0c;或者&#xff0c;init和前面路径策略相同&#xff0c;但是当前路径策略剩余可用油量remain更多
+            if init &lt; dist_init[newX][newY] or remain &gt; dist_remain[newX][newY]:
+                # 则当前路径策略更优&#xff0c;记录更优路径的状态
+                dist_init[newX][newY] &#61; init
+                dist_remain[newX][newY] &#61; remain
+
+                # 将当前新位置加入BFS队列
+                nxt &#61; Node(newX, newY)
+                nxt.init &#61; init
+                nxt.remain &#61; remain
+                nxt.flag &#61; flag
+
+                queue.append(nxt)
+
+    # dist_init[m - 1][n - 1] 记录的是到达右下角终点位置所需的最少初始油量
+    if dist_init[m - 1][n - 1] &#61;&#61; sys.maxsize:
+        return -1
+    else:
+        return dist_init[m - 1][n - 1]
+
+
+# 算法调用
+print(bfs())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
+
+#define MAX_SIZE 200
+
+// 记录路径中位置的几个状态
+typedef struct {
+    int x; // 位置横坐标
+    int y; // 位置纵坐标
+    int init; // 到达此位置所需的最少初始油量
+    int remain; // 到达此位置时剩余可用油量
+    int flag; // 到达此位置前有没有加过油
+} Node;
+
+Node *new_Node(int x, int y) {
+    Node *node &#61; (Node *) malloc(sizeof(Node));
+    node-&gt;x &#61; x;
+    node-&gt;y &#61; y;
+    node-&gt;init &#61; 0;
+    node-&gt;remain &#61; 0;
+    node-&gt;flag &#61; 0;
+    return node;
+}
+
+/** 基于链表实现队列 **/
+typedef struct ListNode {
+    Node *ele;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, Node *ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+    node-&gt;ele &#61; ele;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+Node *removeFirst_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;head;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+    }
+
+    link-&gt;size--;
+
+    return removed-&gt;ele;
+}
+
+// m * n 的地图
+int m, n;
+// 地图矩阵
+int matrix[MAX_SIZE][MAX_SIZE];
+
+// 上下左右四个方向对应的偏移量
+int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                     {1,  0},
+                     {0,  -1},
+                     {0,  1}};
+
+int bfs() {
+    // 如果左上角和右下角不可达&#xff0c;则直接返回-1
+    if (matrix[0][0] &#61;&#61; 0 || matrix[m - 1][n - 1] &#61;&#61; 0) {
+        return -1;
+    }
+
+    // 广搜队列
+    LinkedList *queue &#61; new_LinkedList();
+
+    // 起始位置
+    Node *src &#61; new_Node(0, 0);
+
+    if (matrix[0][0] &#61;&#61; -1) {
+        // 如果起始位置就是加油站&#xff0c;则到达(0,0)位置所需初始油量为0&#xff0c;且剩余可用油量为100&#xff0c;且需要标记已加油
+        src-&gt;init &#61; 0;
+        src-&gt;remain &#61; 100;
+        src-&gt;flag &#61; 1;
+    } else {
+        // 如果起始位置不是加油站&#xff0c;则到达(0,0)位置所需的初始油量至少为matrix[0][0], 剩余可用油量为0&#xff0c;未加油状态
+        src-&gt;init &#61; matrix[0][0];
+        src-&gt;remain &#61; 0;
+        src-&gt;flag &#61; 0;
+    }
+
+    addLast_LinkedList(queue, src);
+
+    // dist_init[x][y] 用于记录起点 (0, 0) 到达 (x, y) 的所有可达路径中最优路径&#xff08;即初始油量需求最少的路径&#xff09;的初始油量
+    int dist_init[MAX_SIZE][MAX_SIZE];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            // 由于需要记录每个位置的最少需要的初始油量&#xff0c;因此每个位置所需的初始油量初始化为一个较大值
+            dist_init[i][j] &#61; INT_MAX;
+        }
+    }
+
+    // dist_remain 用于记录起点 (0,0) 到达 (x,y) 的所有可达路径中最优路径&#xff08;即初始油量需求最少的路径&#xff09;的最大剩余可用油量
+    // 即如果存在多条最优路径&#xff0c;我们应该选这些路径中到达此位置剩余油量最多的
+    int dist_remain[MAX_SIZE][MAX_SIZE] &#61; {0};
+
+    // 起点&#xff08;0,0&#xff09;到达自身位置&#xff08;0,0&#xff09;所需的最少初始油量和最多剩余油量
+    dist_init[0][0] &#61; src-&gt;init;
+    dist_remain[0][0] &#61; src-&gt;remain;
+
+    // 广搜
+    while (queue-&gt;size &gt; 0) {
+        Node *cur &#61; removeFirst_LinkedList(queue);
+
+        // 从当前位置cur开始向上下左右四个方向探路
+        for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+            // 新位置
+            int newX &#61; cur-&gt;x &#43; offsets[i][0];
+            int newY &#61; cur-&gt;y &#43; offsets[i][1];
+
+            // 新位置越界 或者 新位置是障碍&#xff0c;则新位置不可达&#xff0c;继续探索其他方向
+            if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n || matrix[newX][newY] &#61;&#61; 0) {
+                continue;
+            }
+
+            // 如果新位置可达&#xff0c;则计算到达新位置的三个状态数据
+            int init &#61; cur-&gt;init; // 到达新位置所需的最少初始油量
+            int remain &#61; cur-&gt;remain; // 到达新位置时还剩余的最多可用油量
+            int flag &#61; cur-&gt;flag; // 是否加油了
+
+            if (matrix[newX][newY] &#61;&#61; -1) {
+                // 如果新位置是加油站&#xff0c;则加满油
+                remain &#61; 100;
+                // 标记加过油了
+                flag &#61; 1;
+            } else {
+                // 如果新位置不是加油站&#xff0c;则需要消耗matrix[newX][newY]个油
+                remain -&#61; matrix[newX][newY];
+            }
+
+            // 如果到达新位置后&#xff0c;剩余油量为负数
+            if (remain &lt; 0) {
+                if (flag) {
+                    // 如果之前已经加过油了&#xff0c;则说明到达此路径前是满油状态&#xff0c;因此我们无法从初始油量里面&#34;借&#34;油
+                    continue;
+                } else {
+                    // 如果之前没有加过油&#xff0c;则超出的油量&#xff08;-remain&#xff09;&#xff0c;可以从初始油量里面&#34;借&#34;&#xff0c;即需要初始油量 init &#43; (-remain) 才能到达新位置
+                    init -&#61; remain;
+                    // 由于初始油量 init &#43; (-remain) 刚好只能支持汽车到达新位置&#xff0c;因此汽车到达新位置后剩余可用油量为0
+                    remain &#61; 0;
+                }
+            }
+
+            // 如果到达新位置所需的初始油量超过了满油100&#xff0c;则无法到达新位置
+            if (init &gt; 100) {
+                continue;
+            }
+
+            // 如果可达新位置&#xff0c;则继续检查当前路径策略到达新位置(newX, newY)所需的初始油量init是否比其他路径策略更少
+            if (init &gt; dist_init[newX][newY]) {
+                // 如果不是&#xff0c;则无需探索新位置(newX, newY)
+                continue;
+            }
+
+            // 当前路径策略到达新位置(newX,newY)所需初始油量init更少&#xff0c;或者&#xff0c;init和前面路径策略相同&#xff0c;但是当前路径策略剩余可用油量remain更多
+            if (init &lt; dist_init[newX][newY] || remain &gt; dist_remain[newX][newY]) {
+                // 则当前路径策略更优&#xff0c;记录更优路径的状态
+                dist_init[newX][newY] &#61; init;
+                dist_remain[newX][newY] &#61; remain;
+
+                // 将当前新位置加入BFS队列
+                Node *next &#61; new_Node(newX, newY);
+                next-&gt;init &#61; init;
+                next-&gt;remain &#61; remain;
+                next-&gt;flag &#61; flag;
+
+                addLast_LinkedList(queue, next);
+            }
+        }
+    }
+
+    // dist_init[m - 1][n - 1] 记录的是到达右下角终点位置所需的最少初始油量
+    if (dist_init[m - 1][n - 1] &#61;&#61; INT_MAX) {
+        return -1;
+    } else {
+        return dist_init[m - 1][n - 1];
+    }
+}
+
+int main() {
+    scanf(&#34;%d,%d&#34;, &amp;m, &amp;n);
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            scanf(&#34;%d&#34;, &amp;matrix[i][j]);
+            getchar();
+        }
+    }
+
+    printf(&#34;%d\n&#34;, bfs());
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,292 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 羊、狼、农夫过河（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>羊、狼、农夫都在岸边&#xff0c;当羊的数量小于狼的数量时&#xff0c;狼会攻击羊&#xff0c;农夫则会损失羊。农夫有一艘容量固定的船&#xff0c;能够承载固定数量的动物。</p> 
+<p>要求求出不损失羊情况下将全部羊和狼运到对岸需要的最小次数。</p> 
+<p>只计算农夫去对岸的次数&#xff0c;回程时农夫不会运送羊和狼。</p> 
+<p>备注&#xff1a;农夫在或农夫离开后羊的数量大于狼的数量时狼不会攻击羊。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为M&#xff0c;N&#xff0c;X&#xff0c; 分别代表羊的数量&#xff0c;狼的数量&#xff0c;小船的容量。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出不损失羊情况下将全部羊和狼运到对岸需要的最小次数&#xff08;若无法满足条件则输出0&#xff09;。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 3 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>第一次运2只狼</p> <p>第二次运3只羊</p> <p>第三次运2只羊和1只狼</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 4 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">如果找不到不损失羊的运送方案&#xff0c;输出0</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题求不损失羊的前提下&#xff0c;将羊和狼全部运到对岸的最小次数。</p> 
+<p>首先&#xff0c;要搞清楚&#xff0c;如何保证不损失羊&#xff1f;</p> 
+<blockquote> 
+ <p>农夫在或农夫离开后羊的数量大于狼的数量时狼不会攻击羊。</p> 
+</blockquote> 
+<p>这里有个文字断句陷阱&#xff0c;到底是这样断句</p> 
+<blockquote> 
+ <ul><li>农夫在时&#xff0c;狼不会攻击羊</li><li>农夫离开后羊的数量大于狼的数量时&#xff0c;狼不会攻击羊</li></ul> 
+</blockquote> 
+<p>还是这样断句</p> 
+<blockquote> 
+ <ul><li><s>农夫在&#xff0c;羊的数量大于狼的数量时&#xff0c;狼不会攻击羊</s></li><li><s>农夫离开后&#xff0c;羊的数量大于狼的数量时&#xff0c;狼不会攻击羊</s></li></ul> 
+</blockquote> 
+<p>经过一位网友的真实机考反馈&#xff0c;上面画删除线的断句理解是错误的。</p> 
+<p></p> 
+<p>那么”农夫在时&#xff0c;狼不会攻击羊“&#xff0c;这句话到底会有什么影响呢&#xff1f;</p> 
+<blockquote> 
+ <p>只计算农夫去对岸的次数&#xff0c;回程时农夫不会运送羊和狼。</p> 
+</blockquote> 
+<p>通过上面这句话&#xff0c;我们可以理解&#xff0c;农夫回程不会带动物。因此可以认定&#xff1a;</p> 
+<ul><li>农夫如果在本岸带走的动物后&#xff0c;如果本岸羊 &lt;&#61; 狼了&#xff0c;在农夫离开后&#xff0c;羊就会被攻击</li><li>农夫如果在对岸离开后&#xff0c;对岸的羊 &lt;&#61; 狼&#xff0c;羊就会被攻击</li></ul> 
+<p>因此&#xff0c;”农夫在时&#xff0c;狼不会攻击羊“&#xff0c;这句话只会影响&#xff1a;船上&#xff0c;羊和狼的关系&#xff0c;即农夫在船上时&#xff0c;如果羊数量 &lt;&#61; 狼数量&#xff0c;此时因为农夫在&#xff0c;因此狼不会攻击羊。</p> 
+<p></p> 
+<p>本题没有什么好的解题思路&#xff0c;只能通过暴力枚举所有羊、狼数量情况&#xff0c;只需要满足下面三个条件&#xff1a;</p> 
+<ul><li>农夫离开后&#xff0c;本岸羊 &gt; 本岸狼</li><li>农夫离开后&#xff0c;对岸羊 &gt; 对岸狼</li><li>船上由于农夫始终在&#xff0c;因此羊、狼什么数量都可以&#xff0c;只要不超过船载量</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [m, n, x] &#61; line.split(&#34; &#34;).map(Number);
+
+  console.log(getResult(m, n, x));
+});
+
+function getResult(sheep, wolf, boat) {
+  const ans &#61; [];
+  dfs(sheep, wolf, boat, 0, 0, 0, ans);
+
+  if (ans.length) {
+    return Math.min.apply(null, ans);
+  } else {
+    return 0;
+  }
+}
+
+function dfs(sheep, wolf, boat, oppo_sheep, oppo_wolf, count, ans) {
+  if (sheep &#61;&#61;&#61; 0 &amp;&amp; wolf &#61;&#61;&#61; 0) {
+    ans.push(count);
+    return;
+  }
+
+  if (sheep &#43; wolf &lt;&#61; boat) {
+    ans.push(count &#43; 1);
+    return;
+  }
+
+  // i 代表船上羊数量&#xff0c;最多Math.min(boat, sheep)
+  for (let i &#61; 0; i &lt;&#61; Math.min(boat, sheep); i&#43;&#43;) {
+    // j 代表船上狼数量&#xff0c;最多Math.min(boat, wolf)
+    for (let j &#61; 0; j &lt;&#61; Math.min(boat, wolf); j&#43;&#43;) {
+      // 空运
+      if (i &#43; j &#61;&#61;&#61; 0) continue;
+
+      // 超载
+      if (i &#43; j &gt; boat) break;
+
+      // 本岸羊 &lt;&#61; 本岸狼&#xff0c;说明狼运少了
+      if (sheep - i &lt;&#61; wolf - j &amp;&amp; sheep - i !&#61;&#61; 0) continue;
+
+      // 对岸羊 &lt;&#61; 对岸狼&#xff0c;说明狼运多了
+      if (oppo_sheep &#43; i &lt;&#61; oppo_wolf &#43; j &amp;&amp; oppo_sheep &#43; i !&#61;&#61; 0) break;
+
+      // 对岸没羊&#xff0c;但是对岸狼已经超过船载量&#xff0c;即下次即使整船都运羊&#xff0c;也无法保证对岸羊 &gt; 对岸狼
+      if (oppo_sheep &#43; i &#61;&#61;&#61; 0 &amp;&amp; oppo_wolf &#43; j &gt;&#61; boat) break;
+
+      dfs(
+        sheep - i,
+        wolf - j,
+        boat,
+        oppo_sheep &#43; i,
+        oppo_wolf &#43; j,
+        count &#43; 1,
+        ans
+      );
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+    int x &#61; sc.nextInt();
+
+    System.out.println(getResult(m, n, x));
+  }
+
+  /**
+   * &#64;param sheep 本岸羊数量
+   * &#64;param wolf 本岸狼数量
+   * &#64;param boat 船负载
+   * &#64;return 最少运送次数
+   */
+  public static int getResult(int sheep, int wolf, int boat) {
+    ArrayList&lt;Integer&gt; ans &#61; new ArrayList&lt;&gt;();
+    dfs(sheep, wolf, boat, 0, 0, 0, ans);
+
+    if (ans.size() &gt; 0) {
+      return Collections.min(ans);
+    } else {
+      return 0;
+    }
+  }
+
+  public static void dfs(
+      int sheep,
+      int wolf,
+      int boat,
+      int oppo_sheep,
+      int oppo_wolf,
+      int count,
+      ArrayList&lt;Integer&gt; ans) {
+    if (sheep &#61;&#61; 0 &amp;&amp; wolf &#61;&#61; 0) {
+      ans.add(count);
+      return;
+    }
+
+    if (sheep &#43; wolf &lt;&#61; boat) {
+      ans.add(count &#43; 1);
+      return;
+    }
+
+    // i 代表船上羊数量&#xff0c;最多Math.min(boat, sheep)
+    for (int i &#61; 0; i &lt;&#61; Math.min(boat, sheep); i&#43;&#43;) {
+      // j 代表船上狼数量&#xff0c;最多Math.min(boat, wolf)
+      for (int j &#61; 0; j &lt;&#61; Math.min(boat, wolf); j&#43;&#43;) {
+        // 空运
+        if (i &#43; j &#61;&#61; 0) continue;
+        // 超载
+        if (i &#43; j &gt; boat) break;
+
+        // 本岸羊 &lt;&#61; 本岸狼&#xff0c;说明狼运少了
+        if (sheep - i &lt;&#61; wolf - j &amp;&amp; sheep - i !&#61; 0) continue;
+
+        // 对岸羊 &lt;&#61; 对岸狼&#xff0c;说明狼运多了
+        if (oppo_sheep &#43; i &lt;&#61; oppo_wolf &#43; j &amp;&amp; oppo_sheep &#43; i !&#61; 0) break;
+
+        // 对岸没羊&#xff0c;但是对岸狼已经超过船载量&#xff0c;即下次即使整船都运羊&#xff0c;也无法保证对岸羊 &gt; 对岸狼
+        if (oppo_sheep &#43; i &#61;&#61; 0 &amp;&amp; oppo_wolf &#43; j &gt;&#61; boat) break;
+
+        dfs(sheep - i, wolf - j, boat, oppo_sheep &#43; i, oppo_wolf &#43; j, count &#43; 1, ans);
+      }
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import math
+
+# 输入获取
+m, n, x &#61; map(int, input().split())
+
+
+# 算法入口
+def getResult(sheep, wolf, boat):
+    ans &#61; []
+    dfs(sheep, wolf, boat, 0, 0, 0, ans)
+
+    if len(ans) &gt; 0:
+        return min(ans)
+    else:
+        return 0
+
+
+def dfs(sheep, wolf, boat, oppo_sheep, oppo_wolf, count, ans):
+    if sheep &#61;&#61; 0 and wolf &#61;&#61; 0:
+        ans.append(count)
+        return
+
+    if sheep &#43; wolf &lt;&#61; boat:
+        ans.append(count &#43; 1)
+        return
+
+    # i 代表船上羊数量&#xff0c;最多Math.min(boat, sheep)
+    for i in range(min(boat, sheep) &#43; 1):
+        # j 代表船上狼数量&#xff0c;最多Math.min(boat, wolf)
+        for j in range(min(boat, wolf) &#43; 1):
+            # 空运
+            if i &#43; j &#61;&#61; 0:
+                continue
+
+            # 超载
+            if i &#43; j &gt; boat:
+                break
+
+            # 本岸羊 &lt;&#61; 本岸狼&#xff0c;说明狼运少了
+            if sheep - i &lt;&#61; wolf - j and sheep - i !&#61; 0:
+                continue
+
+            # 对岸羊 &lt;&#61; 对岸狼&#xff0c;说明狼运多了
+            if oppo_sheep &#43; i &lt;&#61; oppo_wolf &#43; j and oppo_sheep &#43; i !&#61; 0:
+                break
+
+            # 对岸没羊&#xff0c;但是对岸狼已经超过船载量&#xff0c;即下次即使整船都运羊&#xff0c;也无法保证对岸羊 &gt; 对岸狼
+            if oppo_sheep &#43; i &#61;&#61; 0 and oppo_wolf &#43; j &gt;&#61; boat:
+                break
+
+            dfs(sheep - i, wolf - j, boat, oppo_sheep &#43; i, oppo_wolf &#43; j, count &#43; 1, ans)
+
+
+# 算法调用
+print(getResult(m, n, x))
+</code></pre> 
+<p></p> 
+<h4>原型题</h4> 
+<p>本题非常类似于《算法乐趣》一书中的&#xff1a;妖怪和和尚过河问题&#xff0c;关于此问题算法&#xff0c;JS可以参考下面文章</p> 
+<p><a href="https://blog.csdn.net/weixin_35757191/article/details/114618093?utm_medium&#61;distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-0-114618093-blog-95733370.pc_relevant_3mothn_strategy_and_data_recovery&amp;spm&#61;1001.2101.3001.4242.1&amp;utm_relevant_index&#61;3" title="Java乘船_妖怪和和尚过河问题(javascript实现)_王元祺的博客-CSDN博客">Java乘船_妖怪和和尚过河问题(javascript实现)_王元祺的博客-CSDN博客</a></p> 
+<p>也可以观看如下视频科普&#xff1a;</p> 
+<p><a href="https://www.bilibili.com/video/BV11t411N7LR/?p&#61;5&amp;spm_id_from&#61;333.1007.top_right_bar_window_history.content.click&amp;vd_source&#61;b5105a99a0628dd906e154263279c518" rel="nofollow" title="S1E5 合作过河 River Crossing Riddle_哔哩哔哩_bilibili">S1E5 合作过河 River Crossing Riddle_哔哩哔哩_bilibili</a></p> 
+<p>但是&#xff0c;上面妖怪过河问题是基于暴力枚举法&#43;状态搜索树实现的&#xff0c;我试了一下5 3 3的用例&#xff0c;发现时间复杂度贼高。</p> 
+<p>因此可能不适合本题&#xff0c;在这里将这个思路告知大家&#xff0c;看看大家有没有什么思路&#xff0c;欢迎大家将见解在评论中发出来。</p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

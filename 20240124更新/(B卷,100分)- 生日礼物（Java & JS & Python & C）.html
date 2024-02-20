@@ -1,0 +1,384 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 生日礼物（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小牛的孩子生日快要到了&#xff0c;他打算给孩子买蛋糕和小礼物&#xff0c;蛋糕和小礼物各买一个&#xff0c;他的预算不超过x元。蛋糕cake和小礼物gift都有多种价位的可供选择。</p> 
+<p>请返回小牛共有多少种购买方案。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行表示cake的单价&#xff0c;以逗号分隔</p> 
+<p>第二行表示gift的单价&#xff0c;以逗号分隔</p> 
+<p>第三行表示x预算</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出数字表示购买方案的总数</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 ≤ cake.length ≤ 10^5</li><li>1 ≤ gift.length ≤10^5</li><li>1 ≤ cake[i]&#xff0c;gift[i] ≤ 10^5</li><li>1 ≤ X ≤ 2*10^5</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:645px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:555px;">10,20,5<br /> 5,5,2<br /> 15</td></tr><tr><td style="width:86px;">输出</td><td style="width:555px;">6</td></tr><tr><td style="width:86px;">说明</td><td style="width:555px;"> <p>解释: 小牛有6种购买方案&#xff0c;所选蛋糕与所选礼物在数组中对应的下标分别是&#xff1a;</p> <p>第1种方案: cake [0] &#43; gift [0] &#61; 10 &#43; 5 &#61; 15;<br /> 第2种方案: cake [0] &#43; gift [1]&#61; 10 &#43; 5 &#61; 15;<br /> 第3种方案: cake [0] &#43; gift [2] &#61; 10 &#43; 2 &#61; 12;</p> <p>第4种方案: cake [2] &#43; gift [0] &#61; 5 &#43; 5 &#61; 10;</p> <p>第5种方案: cake [2] &#43; gift [1]&#61; 5 &#43; 5 &#61; 10;<br /> 第6种方案: cake [2] &#43; gift [2] &#61; 5 &#43; 2 &#61; 7。</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用二分查找解决。</p> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>由于蛋糕和小礼物各买一个&#xff0c;且总预算为x。</p> 
+<p>因此&#xff0c;假设我们先买了蛋糕花了cake元&#xff0c;那么能用于买到的小礼物的最高价格就已经确定了&#xff0c;为x - cake元。因此只要&lt;&#61;x - cake元的小礼物&#xff0c;都可以可以cake元的蛋糕组合。</p> 
+<p>为了避免花费O(n)时间在gifts中找&lt;&#61;x - cake元的小礼物&#xff0c;我们可以将gifts进行升序&#xff0c;然后通过二分查找x-cake元在升序后的gitfs中的位置</p> 
+<p>二分查找目标值target在有序数组nums中的位置&#xff0c;有两种情况&#xff1a;</p> 
+<ul><li>nums中存在target&#xff0c;则二分查找最终会返回target在nums中的位置</li><li>nums中不存在target&#xff0c;则二分查找会返回target在nums中的有序插入位置</li></ul> 
+<p>关于这两个位置的实现&#xff0c;可以看下面博客中二分查找部分&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/130097676" rel="nofollow" title="算法设计 - 二分法和三分法&#xff0c;洛谷P3382_三分法和二分法_伏城之外的博客-CSDN博客">算法设计 - 二分法和三分法&#xff0c;洛谷P3382_三分法和二分法_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>如果gifts进行升序后&#xff0c;二分查找x-cake元的位置 i &#xff1a;</p> 
+<ul><li>i 是目标位置&#xff0c;则可以产生 i &#43; 1 种组合</li><li>i 是有序插入位置&#xff0c;则 i &#61; -i -1&#xff0c;即需要先变为有序插入位置&#xff0c;而有序插入位置的必然 gitfs[i] &gt;  x - cake&#xff0c;因此只能产生 i 种组合</li></ul> 
+<hr /> 
+<p>2023.06.12</p> 
+<p>本题中如果存在多个相同的价格的蛋糕或者礼物&#xff0c;</p> 
+<p>比如gifts数组升序后为&#xff1a;1,2,3,3,3,3,<span style="color:#fe2c24;"><strong>3</strong></span>,4</p> 
+<p>而现在选择的蛋糕价格是3&#xff0c;总预算是6&#xff0c;那么gitfs最高价格可选3。</p> 
+<p>因此&#xff0c;我们期望二分查找返回gifts中价格3的位置是6&#xff0c;即最后一个价格3的位置。</p> 
+<p>而普通的二分查找&#xff0c;无法找最后一个目标值的位置&#xff0c;此时的解决思路是&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/130669841?spm&#61;1001.2014.3001.5502" rel="nofollow" title="LeetCode - 34 在排序数组中查找元素的第一个和最后一个位置_伏城之外的博客-CSDN博客">LeetCode - 34 在排序数组中查找元素的第一个和最后一个位置_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>另外&#xff0c;关于最终的购买方案&#xff0c;可能会存在价位重复的组合&#xff0c;那么是否需要去重&#xff1f;</p> 
+<p>可以看下用例1中&#xff0c;第4种和第5种方案&#xff0c;是不需要去重的。</p> 
+<hr /> 
+<p>2023.08.29</p> 
+<p>根据考友实际考试反馈&#xff0c;本题实际机考系统中&#xff0c;存在20%的用例输入格式如下&#xff1a;</p> 
+<blockquote> 
+ <p>[10,20,5]<br /> [5,5,2]<br /> 15</p> 
+</blockquote> 
+<p>即第一行&#xff0c;第二行输入多了一个左右方括号</p> 
+<p><img alt="" height="402" src="https://img-blog.csdnimg.cn/0e57287b36d04be7878995981bc26149.png" width="899" /></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    // 这里replaceAll的原因是&#xff1a;有考友反馈实际考试存在20%的用例输入类似于 [10,20,5] 这种
+    const cakes &#61; lines[0]
+      .replaceAll(/[\[\]]/g, &#34;&#34;)
+      .split(&#34;,&#34;)
+      .map(Number);
+    const gifts &#61; lines[1]
+      .replaceAll(/[\[\]]/g, &#34;&#34;)
+      .split(&#34;,&#34;)
+      .map(Number);
+    const x &#61; parseInt(lines[2]);
+
+    console.log(getResult(cakes, gifts, x));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(cakes, gifts, x) {
+  cakes.sort((a, b) &#61;&gt; a - b);
+
+  let ans &#61; 0;
+  for (let gift of gifts) {
+    if (x &lt;&#61; gift) continue;
+
+    const maxCake &#61; x - gift;
+    let i &#61; searchLast(cakes, maxCake);
+
+    if (i &gt;&#61; 0) {
+      ans &#43;&#61; i &#43; 1;
+    } else {
+      i &#61; -i - 1;
+      ans &#43;&#61; i;
+    }
+  }
+
+  return ans;
+}
+
+function searchLast(arr, target) {
+  let low &#61; 0;
+  let high &#61; arr.length - 1;
+
+  while (low &lt;&#61; high) {
+    const mid &#61; (low &#43; high) &gt;&gt; 1;
+    const midVal &#61; arr[mid];
+
+    if (midVal &gt; target) {
+      high &#61; mid - 1;
+    } else if (midVal &lt; target) {
+      low &#61; mid &#43; 1;
+    } else {
+      // 向右延伸判断&#xff0c;mid是否为target数域的右边界&#xff0c;即最后一次出现的位置
+      if (mid &#61;&#61; arr.length - 1 || arr[mid] !&#61; arr[mid &#43; 1]) {
+        return mid;
+      } else {
+        low &#61; mid &#43; 1;
+      }
+    }
+  }
+
+  return -low - 1; // 找不到则返回插入位置
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    // 这里replaceAll的原因是&#xff1a;有考友反馈实际考试存在20%的用例输入类似于 [10,20,5] 这种
+    int[] cakes &#61;
+        Arrays.stream(sc.nextLine().replaceAll(&#34;[\\[\\]]&#34;, &#34;&#34;).split(&#34;,&#34;))
+            .mapToInt(Integer::parseInt)
+            .toArray();
+
+    int[] gifts &#61;
+        Arrays.stream(sc.nextLine().replaceAll(&#34;[\\[\\]]&#34;, &#34;&#34;).split(&#34;,&#34;))
+            .mapToInt(Integer::parseInt)
+            .toArray();
+    int x &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(cakes, gifts, x));
+  }
+
+  public static long getResult(int[] cakes, int[] gifts, int x) {
+    Arrays.sort(cakes);
+
+    long ans &#61; 0;
+    for (int gift : gifts) {
+      if (x &lt;&#61; gift) continue;
+
+      int maxCake &#61; x - gift;
+      int i &#61; searchLast(cakes, maxCake);
+
+      if (i &gt;&#61; 0) {
+        ans &#43;&#61; i &#43; 1;
+      } else {
+        i &#61; -i - 1;
+        ans &#43;&#61; i;
+      }
+    }
+
+    return ans;
+  }
+
+  public static int searchLast(int[] arr, int target) {
+    int low &#61; 0;
+    int high &#61; arr.length - 1;
+
+    while (low &lt;&#61; high) {
+      int mid &#61; (low &#43; high) &gt;&gt; 1;
+      int midVal &#61; arr[mid];
+
+      if (midVal &gt; target) {
+        high &#61; mid - 1;
+      } else if (midVal &lt; target) {
+        low &#61; mid &#43; 1;
+      } else {
+        // 向右延伸判断&#xff0c;mid是否为target数域的右边界&#xff0c;即最后一次出现的位置
+        if (mid &#61;&#61; arr.length - 1 || arr[mid] !&#61; arr[mid &#43; 1]) {
+          return mid;
+        } else {
+          low &#61; mid &#43; 1;
+        }
+      }
+    }
+
+    return -low - 1; // 找不到则返回插入位置
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+# 这里re.sub的原因是&#xff1a;有考友反馈实际考试存在20%的用例输入类似于 [10,20,5] 这种
+cakes &#61; list(map(int, re.sub(r&#34;[\[\]]&#34;, &#34;&#34;, input()).split(&#34;,&#34;)))
+gifts &#61; list(map(int, re.sub(r&#34;[\[\]]&#34;, &#34;&#34;, input()).split(&#34;,&#34;)))
+x &#61; int(input())
+
+
+def searchLast(arr, target):
+    low &#61; 0
+    high &#61; len(arr) - 1
+
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) &gt;&gt; 1
+        midVal &#61; arr[mid]
+
+        if midVal &gt; target:
+            high &#61; mid - 1
+        elif midVal &lt; target:
+            low &#61; mid &#43; 1
+        else:
+            if mid &#61;&#61; len(arr) - 1 or arr[mid] !&#61; arr[mid &#43; 1]:
+                return mid
+            else:
+                low &#61; mid &#43; 1
+
+    return -low - 1
+
+
+# 算法入口
+def getResult():
+    cakes.sort()
+
+    ans &#61; 0
+    for gift in gifts:
+        if x &lt;&#61; gift:
+            continue
+
+        maxCake &#61; x - gift
+        i &#61; searchLast(cakes, maxCake)
+
+        if i &gt;&#61; 0:
+            ans &#43;&#61; i &#43; 1
+        else:
+            i &#61; -i - 1
+            ans &#43;&#61; i
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 100000
+
+long getResult(int* cakes, int cakes_size, int* gifts, int gifts_size, int x);
+int cmp(const void* a, const void* b);
+int searchLast(int* arr, int arr_size, int target);
+
+int main()
+{
+	// 有考友反馈实际考试存在20%的用例输入类似于 [10,20,5] 这种
+	// 因此输入获取时需要注意处理这种特殊输入情况
+	int cakes[MAX_SIZE];
+	int cakes_size &#61; 0;
+	while(scanf(&#34;%d&#34;, &amp;cakes[cakes_size]) || scanf(&#34;[%d&#34;, &amp;cakes[cakes_size])) {
+		cakes_size&#43;&#43;;
+		if(getchar() !&#61; &#39;,&#39;) break;
+	}
+	
+	int gifts[MAX_SIZE];
+	int gifts_size &#61; 0;
+	while(scanf(&#34;%d&#34;, &amp;gifts[gifts_size]) || scanf(&#34;[%d&#34;, &amp;gifts[gifts_size])) {
+		gifts_size&#43;&#43;;
+		if(getchar() !&#61; &#39;,&#39;) break;
+	}
+	
+	int x;
+	scanf(&#34;%d&#34;, &amp;x);
+	
+	printf(&#34;%ld\n&#34;, getResult(cakes, cakes_size, gifts, gifts_size, x));
+	
+	return 0;
+}
+
+long getResult(int* cakes, int cakes_size, int* gifts, int gifts_size, int x)
+{
+	qsort(cakes, cakes_size, sizeof(int), cmp);
+	
+	long ans &#61; 0;
+	for(int i&#61;0; i&lt;gifts_size; i&#43;&#43;) {
+		int gift &#61; gifts[i];
+		
+		if(x &lt;&#61; gift) continue;
+		
+		int maxCake &#61; x - gift;
+		int i &#61; searchLast(cakes, cakes_size, maxCake);
+		
+		if(i &gt;&#61; 0) {
+			ans &#43;&#61; i &#43; 1;
+		} else {
+			i &#61; -i - 1;
+			ans &#43;&#61; i;
+		}
+	}
+	
+	return ans;
+}
+
+int cmp(const void* a, const void* b)
+{
+	return *((int*) a) - *((int*) b);
+}
+
+int searchLast(int* arr, int arr_size, int target)
+{
+	int low &#61; 0;
+	int high &#61; arr_size - 1;
+	
+	while(low &lt;&#61; high) {
+		int mid &#61; (low &#43; high) &gt;&gt; 1;
+		int midVal &#61; arr[mid];
+		
+		if(midVal &gt; target) {
+			high &#61; mid - 1;
+		} else if(midVal &lt; target) {
+			low &#61; mid &#43; 1;
+		} else {
+			// 向右延伸判断&#xff0c;mid是否为target数域的右边界&#xff0c;即最后一次出现的位置
+			if(mid &#61;&#61; arr_size - 1 || arr[mid] !&#61; arr[mid&#43;1]) {
+				return mid;
+			} else {
+				low &#61; mid &#43; 1;
+			}
+		}
+	}
+	
+	return -low - 1; // 找不到则返回插入位置
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,241 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 经典屏保（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>DVD机在视频输出时&#xff0c;为了保护电视显像管&#xff0c;在待机状态会显示“屏保动画”&#xff0c;如下图所示&#xff0c;DVD Logo在屏幕内来回运动&#xff0c;碰到边缘会反弹。</p> 
+<p><img alt="" height="198" src="https://img-blog.csdnimg.cn/df5cda4acaf6485cb83f035700edbbee.png" width="355" /></p> 
+<p>请根据如下要求&#xff0c;实现屏保Logo坐标的计算算法。</p> 
+<ol><li>屏幕是一个800*600像素的矩形&#xff0c;规定屏幕的左上角点坐标原点&#xff0c;沿横边向右方向为X轴&#xff0c;沿竖边向下方向为Y轴</li><li>Logo是一个50*25像素的矩形&#xff0c;初始状态下&#xff0c;左上角点坐标记做(x&#xff0c;y)&#xff0c;它在X和Y方向上均以1像素/秒的速度开始运动</li><li>遇到屏幕四个边缘后&#xff0c;会发生镜面反弹&#xff0c;即以45°碰撞边缘&#xff0c;再改变方向以45°弹出</li><li>当Logo和四个角碰撞时&#xff0c;两个边缘同时反弹的效果是Logo会原路返回</li></ol> 
+<p><img alt="" height="225" src="https://img-blog.csdnimg.cn/6e4f1ef1619b47a3acf7f6345cd9d13c.png" width="409" /></p> 
+<p> 请编码实现&#xff0c;t秒后Logo左上角点的坐标。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入3个数字&#xff0c;以空格分隔&#xff1a;</p> 
+<blockquote> 
+ <p>x y t</p> 
+</blockquote> 
+<p>第一个数字表示Logo左上角点的初始X坐标&#xff1b;<br /> 第二个数字表示Logo左上角点的初始Y坐标&#xff1b;<br /> 第三个数字表示时间 t&#xff0c;题目要求即求 t 秒后Logo左上角点的位置。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出2个数字&#xff0c;以空格分隔:</p> 
+<blockquote> 
+ <p>x y</p> 
+</blockquote> 
+<p>第一个数字表示 t 秒后&#xff0c;Logo左上角点的X坐标<br /> 第二个数字表示 t 秒后&#xff0c;Logo左上角点的Y坐标</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>所有用例均保证:</p> 
+<ul><li>输入的x和y坐标会保证整个Logo都在屏幕范围内&#xff0c;Logo不会出画&#xff1b;</li><li>所有输入数据都是合法的数值&#xff0c;且不会出现负数&#xff1b;</li><li>t 的最大值为100000。</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">0 0 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">10 10</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">输入样例表示Logo初始位置在屏幕的左上角点&#xff0c;10s后&#xff0c;Logo在X和Y方向都移动了10像素&#xff0c;因此输出10 10。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">500 570 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">510 570</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">输入样例表示初始状态下&#xff0c;Logo的下边缘再有5像素就碰到屏幕下边缘了&#xff0c;5s后&#xff0c;会与屏幕碰撞&#xff0c;碰撞后&#xff0c;斜向45弹出&#xff0c;又经过5s后&#xff0c;Logo与起始位置相比&#xff0c;水平移动了10像素&#xff0c;垂直方向回到了原来的高度。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这道题其实可以转化为一个简单的物理常识题&#xff0c;或者看出一个数学问题。</p> 
+<p>举个例子&#xff0c;有一束红外线&#xff0c;和一个水平放置的镜面&#xff0c;假设红外线以和水平镜面45°夹角的位置射向镜面&#xff0c;问红外线会如何反射&#xff0c;如下图</p> 
+<p><img alt="" height="329" src="https://img-blog.csdnimg.cn/15105bdd52bb4096a4b4c9716fc31890.png" width="671" /></p> 
+<p>此时有两种策略&#xff0c;第一个策略是以红外线和镜面的交点开始&#xff0c;画一条与红外线呈90°夹角的线&#xff0c;这条线就是红外线的反射线</p> 
+<p><img alt="" height="333" src="https://img-blog.csdnimg.cn/6fa5753bcdb249f89c43655748cdc4be.png" width="665" /></p> 
+<p>还有一个策略就是&#xff0c;让红外线穿透镜面后&#xff0c;沿着镜面对称反转</p> 
+<p><img alt="" height="385" src="https://img-blog.csdnimg.cn/132fc921d4b84de3b497fca2b6091b75.png" width="655" /></p> 
+<p>而本题就可以利用策略二思路解题。</p> 
+<p></p> 
+<p>得到x,y,t后&#xff0c;我们可以直接让</p> 
+<ul><li>x &#43;&#61; t</li><li>y &#43;&#61; t </li></ul> 
+<p>这其实就是相当于让红外线穿透镜面&#xff08;如果t足够大&#xff09;</p> 
+<p>之后&#xff0c;我们检查logo是否越界</p> 
+<ul><li>若 x &#43; 50 &gt; 800&#xff0c;其中x &#43; 50是logo的右下角横坐标&#xff0c;则说明越界&#xff0c;此时我们需要沿着x&#61;800轴进行对称反转&#xff0c;反转后x&#43;50坐标变为了 800 - (x&#43;50 - 800)&#xff0c;进而得到反转后 x &#61; 800 - (x&#43;50 - 800) - 50</li><li>若 y &#43; 25 &gt; 600&#xff0c;其中y &#43; 25是logo的右下角纵坐标&#xff0c;则说明越界&#xff0c;此时我们y &#61; 600轴进行对称反转&#xff0c;反转后y &#43; 25坐标变为了 600 - (y&#43;25 - 600)&#xff0c;进而得到反转后 y &#61; 600 - (y&#43;25 - 600) - 25</li></ul> 
+<p></p> 
+<p>当然除了上面logo越界情况&#xff0c;还有两个越界情况&#xff0c;如下&#xff1a;</p> 
+<ul><li>若 x &lt; 0&#xff0c;其中x是logo的左上角横坐标&#xff0c;则说明越界&#xff0c;此时我们需要沿着x&#61;0轴进行对称反转&#xff0c;即反转后 x &#61; -x</li><li>若 y &lt; 0&#xff0c;其中y是logo的左上角纵坐标&#xff0c;则说明越界&#xff0c;此时我们需要沿着y&#61;0轴进行对称反转&#xff0c;即反转后 y &#61; -y</li></ul> 
+<p></p> 
+<p>上面逻辑&#xff0c;大家可以对照下图思考一下</p> 
+<p><img alt="" height="683" src="https://img-blog.csdnimg.cn/7c75d5c92d524c5db6c681128bc10899.png" width="980" /></p> 
+<p>如果 t 足够大&#xff0c;则会进行多次越界反转逻辑&#xff0c;因此我们需要while循环判断反转后的x&#xff0c;y&#xff0c;x&#43;50&#xff0c;y&#43;25是否越界&#xff0c;如果越界则继续反转逻辑&#xff0c;否则就退出循环。</p> 
+<p>最后的x,y一定是不越界的&#xff0c;即最终坐标位置&#xff0c;此时可以作为题解返回。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextInt(), sc.nextInt(), sc.nextInt()));
+  }
+
+  public static String getResult(int x, int y, int t) {
+    x &#43;&#61; t;
+    y &#43;&#61; t;
+
+    while (y &#43; 25 &gt; 600 || y &lt; 0 || x &#43; 50 &gt; 800 || x &lt; 0) {
+      if (y &#43; 25 &gt; 600) {
+        //        y &#61; 600 - (y &#43; 25 - 600) - 25;
+        y &#61; 1150 - y;
+      }
+
+      if (x &#43; 50 &gt; 800) {
+        //        x &#61; 800 - (x &#43; 50 - 800) - 50;
+        x &#61; 1500 - x;
+      }
+
+      if (y &lt; 0) {
+        y &#61; -y;
+      }
+
+      if (x &lt; 0) {
+        x &#61; -x;
+      }
+    }
+
+    return x &#43; &#34; &#34; &#43; y;
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [x, y, t] &#61; line.split(&#34; &#34;).map(Number);
+  console.log(getResult(x, y, t));
+});
+
+function getResult(x, y, t) {
+  x &#43;&#61; t;
+  y &#43;&#61; t;
+
+  while (y &#43; 25 &gt; 600 || y &lt; 0 || x &#43; 50 &gt; 800 || x &lt; 0) {
+    if (y &#43; 25 &gt; 600) {
+      // y &#61; 600 - (y &#43; 25 - 600) - 25;
+      y &#61; 1150 - y;
+    }
+
+    if (x &#43; 50 &gt; 800) {
+      // x &#61; 800 - (x &#43; 50 - 800) - 50;
+      x &#61; 1500 - x;
+    }
+
+    if (y &lt; 0) {
+      y &#61; -y;
+    }
+
+    if (x &lt; 0) {
+      x &#61; -x;
+    }
+  }
+
+  return &#96;${x} ${y}&#96;;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+x, y, t &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    global x
+    global y
+
+    x &#43;&#61; t
+    y &#43;&#61; t
+
+    while y &#43; 25 &gt; 600 or y &lt; 0 or x &#43; 50 &gt; 800 or x &lt; 0:
+        if y &#43; 25 &gt; 600:
+            # y &#61; 600 - (y &#43; 25 - 600) - 25
+            y &#61; 1150 - y
+
+        if x &#43; 50 &gt; 800:
+            # x &#61; 800 - (x &#43; 50 - 800) -50
+            x &#61; 1500 - x
+
+        if y &lt; 0:
+            y &#61; -y
+
+        if x &lt; 0:
+            x &#61; -x
+
+    return f&#34;{x} {y}&#34;
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+int main()
+{
+	int x, y, t;
+	scanf(&#34;%d %d %d&#34;, &amp;x, &amp;y, &amp;t);
+	
+	x &#43;&#61; t;
+	y &#43;&#61; t;
+	
+	while(y &#43; 25 &gt; 600 || y &lt; 0 || x &#43; 50 &gt; 800 || x &lt; 0) {
+		if(y &#43; 25 &gt; 600) {
+			// y &#61; 600 - (y &#43; 25 - 600) - 25;
+			y &#61; 1150 - y;
+		}
+		
+		if(x &#43; 50 &gt; 800) {
+			// x &#61; 800 - (x &#43; 50 - 800) - 50;
+			x &#61; 1500 - x;
+		}
+		
+		if(y &lt; 0) {
+			y &#61; -y;
+		}
+		
+		if(x &lt; 0) {
+			x &#61; -x;
+		}
+	}
+	
+	printf(&#34;%d %d\n&#34;, x, y);
+	
+	return 0;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

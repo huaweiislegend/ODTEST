@@ -1,0 +1,365 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 天然蓄水库（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>公元2919年&#xff0c;人类终于发现了一颗宜居星球——X星。<br /> 现想在X星一片连绵起伏的山脉间建一个天热蓄水库&#xff0c;如何选取水库边界&#xff0c;使蓄水量最大&#xff1f;</p> 
+<p>要求&#xff1a;</p> 
+<ul><li>山脉用正整数数组s表示&#xff0c;每个元素代表山脉的高度。</li><li>选取山脉上两个点作为蓄水库的边界&#xff0c;则边界内的区域可以蓄水&#xff0c;蓄水量需排除山脉占用的空间</li><li>蓄水量的高度为两边界的最小值。</li><li>如果出现多个满足条件的边界&#xff0c;应选取距离最近的一组边界。</li></ul> 
+<p>输出边界下标&#xff08;从0开始&#xff09;和最大蓄水量&#xff1b;如果无法蓄水&#xff0c;则返回0&#xff0c;此时不返回边界。<br /> 例如&#xff0c;当山脉为s&#61;[3,1,2]时&#xff0c;则选取s[0]和s[2]作为水库边界&#xff0c;则蓄水量为1&#xff0c;此时输出&#xff1a;0 2:1<br /> 当山脉s&#61;[3,2,1]时&#xff0c;不存在合理的边界&#xff0c;此时输出&#xff1a;0。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>一行正整数&#xff0c;用空格隔开&#xff0c;例如输入</p> 
+<blockquote> 
+ <p>1 2 3</p> 
+</blockquote> 
+<p>表示s&#61;[1,2,3]</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>当存在合理的水库边界时&#xff0c;输出左边界、空格、右边界、英文冒号、蓄水量&#xff1b;例如</p> 
+<blockquote> 
+ <p>0 2:1</p> 
+</blockquote> 
+<p>当不存在合理的书库边界时&#xff0c;输出0&#xff1b;例如</p> 
+<blockquote> 
+ <p>0</p> 
+</blockquote> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 ≤ length(s) ≤ 10000</li><li>0 ≤ s[i] ≤ 10000</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 9 6 2 5 4 9 3 7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1 6:19</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">经过分析&#xff0c;选取s[1]和s[6]&#xff0c;水库蓄水量为19&#xff08;3&#43;7&#43;4&#43;5&#xff09;</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 8 6 2 5 4 8 3 7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1 6:15</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">经过分析&#xff0c;选取s[1]和s[8]时&#xff0c;水库蓄水量为15&#xff1b;同样选取s[1]和s[6]时&#xff0c;水库蓄水量也为15。由于后者下标距离小&#xff08;为5&#xff09;&#xff0c;故应选取后者。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 2 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">不存在合理的水库边界</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1图示如下&#xff1a;</p> 
+<p><img alt="" height="522" src="https://img-blog.csdnimg.cn/d39fb1bf439a4782a7a729595ad51fb8.png" width="539" /></p> 
+<p>选择山峰1和山峰6作为边界&#xff0c;则可获得最大蓄水量19 </p> 
+<p></p> 
+<p></p> 
+<p>用例2图示如下</p> 
+<p><img alt="" height="480" src="https://img-blog.csdnimg.cn/f91c62b39f7c49bab91ca84768e6d7fe.png" width="543" /></p> 
+<p></p> 
+<p>选择山峰1和山峰6作为边界&#xff0c;则可获得最大蓄水量15</p> 
+<p></p> 
+<p>其实用例2还可以选择山峰1和山峰8作为边界&#xff0c;也可以获得最大蓄水量15&#xff0c;如下图所示</p> 
+<p><img alt="" height="478" src="https://img-blog.csdnimg.cn/897c481602ab47c98f0954322546308f.png" width="543" /></p> 
+<p> 但是此时两边界山峰的距离是6&#xff0c;相较于选择山峰1&#xff0c;6作为边界时距离4而言&#xff0c;更远。</p> 
+<p>按照题目要求&#xff0c;我们需要找到&#xff1a;蓄水量最大的&#xff0c;且距离最近的两个边界山峰。</p> 
+<p></p> 
+<p>我一开始的解题思路是双指针&#xff0c;类似于下面这题</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127191651" title="华为OD机试 - 太阳能板最大面积&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客">华为OD机试 - 太阳能板最大面积&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>但是经过如下几个用例测试&#xff0c;发现本题无法像上面链接题目一样找到一个O(n)的解法&#xff0c;双边指针无法找到一个固定的策略进行运动。</p> 
+<p><img alt="" height="366" src="https://img-blog.csdnimg.cn/ccae3126cb294b73b1a82dfba20532dd.png" width="1035" /></p> 
+<p><img alt="" height="283" src="https://img-blog.csdnimg.cn/dd42d6eca1734639bda3bc60153a5861.png" width="1079" /> <img alt="" height="441" src="https://img-blog.csdnimg.cn/4fa3173f67184a06a3f3b9aee6f89e12.png" width="896" /></p> 
+<p></p> 
+<p>因此&#xff0c;我开始寻找其他的思路&#xff0c;直到发现了<a href="https://fcqian.blog.csdn.net/article/details/129452888" rel="nofollow" title="LeetCode - 42 接雨水_伏城之外的博客-CSDN博客">LeetCode - 42 接雨水_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>其实&#xff0c;我们不应该从横向来思考本题&#xff0c;可以从纵向来思考本题。什么意思呢&#xff1f;</p> 
+<p>我们按照接雨水那个思路&#xff0c;把用例1中所有能接水的山峰全部接满&#xff0c;即如下图所示</p> 
+<p><img alt="" height="524" src="https://img-blog.csdnimg.cn/e5dcdc75e5bd4723bca4b60188b86005.png" width="545" /></p> 
+<p>此时从纵向来看只有有两条水位线&#xff0c;如下图所示</p> 
+<p><img alt="" height="518" src="https://img-blog.csdnimg.cn/7dc2decd83bd424dbc86f619877eb534.png" width="585" /></p> 
+<p><img alt="" height="560" src="https://img-blog.csdnimg.cn/a1a49a50673146c394775a3c7482a01f.png" width="543" /></p> 
+<p></p> 
+<p>从上图可以看出&#xff0c;每条水位线都有都可能与多个山峰相交&#xff0c;但是我们只需要关注&#xff1a;</p> 
+<ul><li>两端的</li><li>能够达到该水位线要求得山峰</li></ul> 
+<p>如下图所示&#xff1a;</p> 
+<p><img alt="" height="519" src="https://img-blog.csdnimg.cn/839a509db9c0432eb1b8742b37e3ea05.png" width="538" /></p> 
+<p>上图中&#xff0c;L山峰和R山峰是可以达到该水位线要求的最外层的两端山峰&#xff0c;此时这两座山峰之间的每个山峰的储水量就是该水位线最大的储水量。</p> 
+<p>而此时边界山峰为L-1&#xff0c;和R&#43;1。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const h &#61; line.split(&#34; &#34;).map(Number);
+
+  console.log(getResult(h));
+});
+
+function getResult(h) {
+  const n &#61; h.length;
+
+  // left[i] 记录 第 i 个山峰左边的最高山峰
+  const left &#61; new Array(n).fill(0);
+  for (let i &#61; 1; i &lt; n; i&#43;&#43;) {
+    left[i] &#61; Math.max(left[i - 1], h[i - 1]);
+  }
+
+  // right[i] 记录 第 i 个山峰右边的最高山峰
+  const right &#61; new Array(n).fill(0);
+  for (let i &#61; n - 2; i &gt;&#61; 0; i--) {
+    right[i] &#61; Math.max(right[i &#43; 1], h[i &#43; 1]);
+  }
+
+  // lines[i] 记录 第 i 个山峰的水位线高度
+  const lines &#61; new Array(n).fill(0);
+  // lineSet记录有哪些水位线
+  const lineSet &#61; new Set();
+  for (let i &#61; 1; i &lt; n - 1; i&#43;&#43;) {
+    const water &#61; Math.max(0, Math.min(left[i], right[i]) - h[i]); // water 记录 第 i 个山峰可以储存多少水
+
+    if (water !&#61; 0) {
+      // 第 i 个山峰的水位线高度
+      lines[i] &#61; water &#43; h[i];
+      lineSet.add(lines[i]);
+    }
+  }
+
+  // ans数组含义&#xff1a;[左边界&#xff0c; 右边界&#xff0c; 储水量]
+  let ans &#61; [0, 0, 0];
+
+  // 遍历每一个水位线
+  for (let line of lineSet) {
+    // 满足该水位线的最左侧山峰位置l
+    let l &#61; 0;
+    while (lines[l] &lt; line || h[l] &gt;&#61; line) {
+      l&#43;&#43;;
+    }
+
+    // 满足该水位线的最右侧山峰位置r
+    let r &#61; n - 1;
+    while (lines[r] &lt; line || h[r] &gt;&#61; line) {
+      r--;
+    }
+
+    // 该水位线的总储水量
+    let sum &#61; 0;
+    for (let i &#61; l; i &lt;&#61; r; i&#43;&#43;) {
+      sum &#43;&#61; Math.max(0, line - h[i]);
+    }
+
+    // 记录最大的储水量
+    if (sum &gt; ans[2]) {
+      ans[0] &#61; l - 1;
+      ans[1] &#61; r &#43; 1;
+      ans[2] &#61; sum;
+    }
+    // 如果有多个最多储水量选择&#xff0c;则选择边界山峰距离最短的
+    else if (sum &#61;&#61; ans[2]) {
+      const curDis &#61; r - l &#43; 1;
+      const minDis &#61; ans[1] - ans[0] - 1;
+
+      if (curDis &lt; minDis) {
+        ans[0] &#61; l - 1;
+        ans[1] &#61; r &#43; 1;
+      }
+    }
+  }
+
+  if (ans[2] &#61;&#61; 0) return &#34;0&#34;;
+
+  return ans[0] &#43; &#34; &#34; &#43; ans[1] &#43; &#34;:&#34; &#43; ans[2];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] h &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(h));
+  }
+
+  public static String getResult(Integer[] h) {
+    int n &#61; h.length;
+
+    // left[i] 记录 第 i 个山峰左边的最高山峰
+    int[] left &#61; new int[n];
+    for (int i &#61; 1; i &lt; n; i&#43;&#43;) left[i] &#61; Math.max(left[i - 1], h[i - 1]);
+
+    // right[i] 记录 第 i 个山峰右边的最高山峰
+    int[] right &#61; new int[n];
+    for (int i &#61; n - 2; i &gt;&#61; 0; i--) right[i] &#61; Math.max(right[i &#43; 1], h[i &#43; 1]);
+
+    // lines[i] 记录 第 i 个山峰的水位线高度
+    int[] lines &#61; new int[n];
+    // lineSet记录有哪些水位线
+    HashSet&lt;Integer&gt; lineSet &#61; new HashSet&lt;&gt;();
+    for (int i &#61; 1; i &lt; n - 1; i&#43;&#43;) {
+      int water &#61; Math.max(0, Math.min(left[i], right[i]) - h[i]); // water 记录 第 i 个山峰可以储存多少水
+
+      if (water !&#61; 0) {
+        // 第 i 个山峰的水位线高度
+        lines[i] &#61; water &#43; h[i];
+        lineSet.add(lines[i]);
+      }
+    }
+
+    // ans数组含义&#xff1a;[左边界&#xff0c; 右边界&#xff0c; 储水量]
+    int[] ans &#61; {0, 0, 0};
+
+    // 遍历每一个水位线
+    for (int line : lineSet) {
+
+      // 满足该水位线的最左侧山峰位置l
+      int l &#61; 0;
+      while (lines[l] &lt; line || h[l] &gt;&#61; line) {
+        l&#43;&#43;;
+      }
+
+      // 满足该水位线的最右侧山峰位置r
+      int r &#61; n - 1;
+      while (lines[r] &lt; line || h[r] &gt;&#61; line) {
+        r--;
+      }
+
+      // 该水位线的总储水量
+      int sum &#61; 0;
+      for (int i &#61; l; i &lt;&#61; r; i&#43;&#43;) {
+        sum &#43;&#61; Math.max(0, line - h[i]);
+      }
+
+      // 记录最大的储水量
+      if (sum &gt; ans[2]) {
+        ans[0] &#61; l - 1;
+        ans[1] &#61; r &#43; 1;
+        ans[2] &#61; sum;
+      }
+      // 如果有多个最多储水量选择&#xff0c;则选择边界山峰距离最短的
+      else if (sum &#61;&#61; ans[2]) {
+        int curDis &#61; r - l &#43; 1;
+        int minDis &#61; ans[1] - ans[0] - 1;
+
+        if (curDis &lt; minDis) {
+          ans[0] &#61; l - 1;
+          ans[1] &#61; r &#43; 1;
+        }
+      }
+    }
+
+    if (ans[2] &#61;&#61; 0) return &#34;0&#34;;
+
+    return ans[0] &#43; &#34; &#34; &#43; ans[1] &#43; &#34;:&#34; &#43; ans[2];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+h &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(h):
+    n &#61; len(h)
+
+    # left[i] 记录 第 i 个山峰左边的最高山峰
+    left &#61; [0] * n
+    for i in range(1, n):
+        left[i] &#61; max(left[i - 1], h[i - 1])
+
+    # right[i] 记录 第 i 个山峰右边的最高山峰
+    right &#61; [0] * n
+    for i in range(n - 2, -1, -1):
+        right[i] &#61; max(right[i &#43; 1], h[i &#43; 1])
+
+    # lines[i] 记录 第 i 个山峰的水位线高度
+    lines &#61; [0] * n
+    # lineSet记录有哪些水位线
+    lineSet &#61; set()
+    for i in range(1, n - 1):
+        # water 记录 第 i 个山峰可以储存多少水
+        water &#61; max(0, min(left[i], right[i]) - h[i])
+
+        # 如果第 i 个山峰可以储存水&#xff0c;则必然有一个水位线&#xff0c;记录到lines中
+        if water !&#61; 0:
+            # 第 i 个山峰的水位线高度
+            lines[i] &#61; water &#43; h[i]
+            lineSet.add(lines[i])
+
+    # ans数组含义&#xff1a;[左边界&#xff0c; 右边界&#xff0c; 储水量]
+    ans &#61; [0, 0, 0]
+
+    # 遍历每一个水位线
+    for line in lineSet:
+        # 满足该水位线的最左侧山峰位置l
+        l &#61; 0
+        while lines[l] &lt; line or h[l] &gt;&#61; line:
+            l &#43;&#61; 1
+
+        # 满足该水位线的最右侧山峰位置r
+        r &#61; n - 1
+        while lines[r] &lt; line or h[r] &gt;&#61; line:
+            r -&#61; 1
+
+        # 该水位线的总储水量
+        total &#61; 0
+        for i in range(l, r &#43; 1):
+            total &#43;&#61; max(0, line - h[i])
+
+        # 记录最大的储水量
+        if total &gt; ans[2]:
+            ans[0] &#61; l - 1
+            ans[1] &#61; r &#43; 1
+            ans[2] &#61; total
+        # 如果有多个最多储水量选择&#xff0c;则选择边界山峰距离最短的
+        elif total &#61;&#61; ans[2]:
+            curDis &#61; r - l &#43; 1
+            minDis &#61; ans[1] - ans[0] - 1
+
+            if curDis &lt; minDis:
+                ans[0] &#61; l - 1
+                ans[1] &#61; r &#43; 1
+
+    if ans[2] &#61;&#61; 0:
+        return &#34;0&#34;
+
+    return str(ans[0]) &#43; &#34; &#34; &#43; str(ans[1]) &#43; &#34;:&#34; &#43; str(ans[2])
+
+
+# 算法调用
+print(getResult(h))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

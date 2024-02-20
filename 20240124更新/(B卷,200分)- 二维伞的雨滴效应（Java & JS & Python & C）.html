@@ -1,0 +1,638 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 二维伞的雨滴效应（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>普通的伞在二维平面世界中&#xff0c;左右两侧均有一条边&#xff0c;而两侧伞边最下面各有一个伞坠子&#xff0c;雨滴落到伞面&#xff0c;逐步流到伞坠处&#xff0c;会将伞坠的信息携带并落到地面&#xff0c;随着日积月累&#xff0c;地面会呈现伞坠的信息。</p> 
+<p>1、为了模拟伞状雨滴效应&#xff0c;用二叉树来模拟二维平面伞&#xff08;如下图所示&#xff09;&#xff0c;现在输入一串正整数数组序列&#xff08;不含0&#xff0c;数组成员至少是1个&#xff09;&#xff0c;若此数组序列是二叉搜索树的前序遍历的结果&#xff0c;那么请输出一个返回值1&#xff0c;否则输出0。</p> 
+<p>2、同时请将此序列构成的伞状效应携带到地面的数字信息输出来(左边伞坠信息&#xff0c;右边伞坠信息&#xff0c;详细参考示例图地面上数字)&#xff0c;若此树不存在左或右扇坠&#xff0c;则对应位置返回0。同时若非二叉排序树那么左右伞坠信息也返回0。</p> 
+<p><img alt="" height="609" src="https://img-blog.csdnimg.cn/200354d95c234423950b5f39f16288ef.png" width="719" /></p> 
+<p></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>一个通过空格分割的整数序列字符串&#xff0c;数组不含0&#xff0c;数组成员至少1个&#xff0c;输入的数组的任意两个数字都互不相同&#xff0c;最多1000个正整数&#xff0c;正整数值范围1~65535</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出如下三个值&#xff0c;以空格分隔&#xff1a;是否二叉排序树&#xff0c;左侧地面呈现的伞坠数字值&#xff0c;右侧地面呈现的伞坠数字值。</p> 
+<p>若是二叉排序树&#xff0c;则输出1&#xff0c;否则输出0&#xff08;其左右伞坠值也直接赋值0&#xff09;。</p> 
+<p>若不存存在左侧或者右侧伞坠值&#xff0c;那么对应伞坠值直接赋值0。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:512px;"><tbody><tr><td style="width:64px;">输入</td><td style="width:446px;">8 3 1 6 4 7 10 14 13</td></tr><tr><td style="width:64px;">输出</td><td style="width:446px;">1 1 13</td></tr><tr><td style="width:64px;">说明</td><td style="width:446px;">1表示是二叉搜索树前序遍历结果&#xff0c;1表示左侧地面呈现的伞坠数字值&#xff0c;13表示右侧地面呈现的伞坠数字值</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题解题前需要先了解几个概念&#xff1a;</p> 
+<p></p> 
+<p>什么是二叉搜索树&#xff1f;</p> 
+<blockquote> 
+ <p>二叉搜索树&#xff0c;也叫二叉排序树&#xff0c;它具有如下特点&#xff1a;</p> 
+ <ul><li>若它的左子树不空&#xff0c;则左子树上所有结点的值均小于它的根结点的值</li><li>若它的右子树不空&#xff0c;则右子树上所有结点的值均大于它的根结点的值</li><li>它的左、右子树也分别为二叉搜索树</li></ul> 
+</blockquote> 
+<p></p> 
+<p>什么是前序遍历&#xff1f;</p> 
+<blockquote> 
+ <p>二叉树的遍历方式有&#xff1a;前序遍历、中序遍历、后序遍历&#xff0c;这里的”前、中、后“指的是二叉树根节点的遍历顺序&#xff0c;</p> 
+ <ul><li>前序遍历&#xff0c;可以理解为前根序&#xff0c;即&#xff1a;根左右&#xff08;先遍历根&#xff0c;再遍历左子树&#xff0c;最后遍历右子树&#xff09;</li><li>中序遍历&#xff0c;可以理解为中根序&#xff0c;即&#xff1a;左根右&#xff08;先遍历左子树&#xff0c;再遍历根&#xff0c;最后遍历右子树&#xff09;</li><li>后续遍历&#xff0c;可以理解为后根序&#xff0c;即&#xff1a;左右根&#xff08;先遍历左子树&#xff0c;再遍历右子树&#xff0c;最后遍历根&#xff09;</li></ul> 
+ <p>下面举个例子帮助理解&#xff0c;</p> 
+ <p><img alt="" height="209" src="https://img-blog.csdnimg.cn/db532171a59c440ab3f81bf808d0dbbd.png" width="264" /></p> 
+ <p>上图二叉树的</p> 
+ <ul><li>前序遍历结果为&#xff1a;abc</li><li>中序遍历结果为&#xff1a;bac</li><li>后序遍历结果为&#xff1a;bca</li></ul> 
+ <p><img alt="" height="283" src="https://img-blog.csdnimg.cn/0c44649bd8bd472488eed5758cf30fa9.png" width="392" /></p> 
+ <p>上图二叉树的</p> 
+ <ul><li>前序遍历结果为&#xff1a;【a】【[b][d][e]】【[c][f][g]】</li><li>中序遍历结果为&#xff1a;【[d][b][e]】【a】【[f][c][g]】</li><li>后序遍历结果为&#xff1a;【[d][e][b]】【[f][g][c]】【a】</li></ul> 
+</blockquote> 
+<p></p> 
+<p>知道上面概念后&#xff0c;我们再来看本题&#xff1a;</p> 
+<p>给定一个二叉树的前序遍历的结果序列&#xff0c;判断该二叉树是否为二叉搜索树&#xff1f;</p> 
+<p>我们知道前序遍历是&#xff1a;根左右&#xff0c;因此给定序列的第一个元素必然是根节点值。</p> 
+<p>假设根节点对应的序列索引范围是[start, end]&#xff0c;那么根节点索引位置就是start。</p> 
+<p></p> 
+<p>而二叉搜索树的特点是&#xff1a;</p> 
+<ul><li>根节点的值 大于 其左子树的所有节点的值</li><li>根节点的值 小于 其右子树的所有节点的值</li></ul> 
+<p>因此&#xff0c;我们从start&#43;1位置开始判断&#xff0c;如果satrt&#43;1位置的元素值 &lt; 根节点的元素值&#xff08;start位置&#xff09;&#xff0c;那么start&#43;1位置的元素就是根节点的左子树节点&#xff0c;按此逻辑&#xff0c;依次往后判断。</p> 
+<p>假设在 i 位置&#xff0c;发现 i 位置的元素 ≮ 根节点的元素值&#xff08;start位置&#xff09;&#xff0c;则当前根节点的左子树索引范围是[satrt &#43; 1, i - 1]</p> 
+<p>之后&#xff0c;我们从 i 位置开始判断&#xff0c;如果 i 位置的元素值 &#xff1e; 根节点的元素值&#xff08;start位置&#xff09;&#xff0c;那么 i 位置的元素就是 根节点的右子树节点&#xff0c;按此逻辑&#xff0c;依次完后判断。</p> 
+<p>如果当前序列满足二叉搜索树前序遍历&#xff0c;那么最终&#xff0c;当前根节点的右子树索引范围必须是[i, end]&#xff0c;</p> 
+<p>如果右子树索引范围的结束位置达不到end&#xff0c;则不合法。</p> 
+<p></p> 
+<p>按照上面逻辑&#xff0c;我们可以得到根节点、根的左子树、根的右子树。</p> 
+<p>之后&#xff0c;我们可以继续按上面逻辑递归的判断&#xff1a;根的左子树[satrt &#43; 1, i - 1]、根的右子树[i, end]&#xff0c;他们对应索引范围的子序列&#xff0c;是否满足二叉搜索树前序遍历的特点&#xff08;根节点的值 大于 其左子树的所有节点的值、根节点的值 小于 其右子树的所有节点的值&#xff09;</p> 
+<p></p> 
+<p>以上逻辑&#xff0c;是判断一个序列是否为二叉搜索树的前序遍历结果。但是本题还需要我们求解出&#xff1a;左边伞坠信息&#xff0c;右边伞坠信息</p> 
+<p>这里思维上最简单的做法是&#xff0c;根据前面判断二叉搜索树前序遍历序列的逻辑&#xff0c;生成一颗二叉搜索树&#xff0c;还原出二叉搜索树后</p> 
+<p></p> 
+<p>求解左边伞缀的逻辑&#xff1a;</p> 
+<ul><li>从根节点开始&#xff0c;不停的遍历当前节点的左子节点&#xff0c;</li></ul> 
+<ol><li>如果存在左子节点&#xff0c;则递归继续遍历其左子节点&#xff0c;</li><li>如果不存在左子节点&#xff0c;此时需要看当前节点所处层级&#xff1a;</li></ol> 
+<blockquote> 
+ <ul><li>如果是第0层&#xff0c;则当前节点就是根节点&#xff0c;且当前根节点没有左子树&#xff0c;因此必然没有左边伞缀&#xff1b;</li><li>如果不是第0层&#xff0c;则需要检查当前节点是否存在右子节点&#xff0c;</li></ul> 
+ <ol><li>如果存在右子节点&#xff0c;则将当前节点的右子节点当成下一层的节点&#xff0c;然后重复上面逻辑&#xff0c;</li><li>如果不存在右子节点&#xff0c;则说明当前节点就是叶子节点&#xff0c;且是最后一层&#xff0c;最左边的叶子节点&#xff0c;即左边伞缀信息。</li></ol> 
+</blockquote> 
+<p></p> 
+<p>求解右边伞缀的逻辑和上面差不多&#xff0c;大家可以自行推导。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+ 
+void (async function () {
+  // 二叉搜索树前序遍历的结果序列
+  const preOrder &#61; (await readline()).split(&#34; &#34;).map(Number);
+ 
+  // 二叉树的节点类定义
+  class Node {
+    constructor(val) {
+      this.val &#61; val; // 节点值
+      this.left_child &#61; null; // 当前节点的左子节点
+      this.right_child &#61; null; // 当前节点的右子节点
+    }
+  }
+ 
+  // 二叉搜索树的根节点root
+  const root &#61; new Node(preOrder[0]);
+ 
+  if (isValid(root, 0, preOrder.length - 1)) {
+    console.log(
+      &#96;1 ${getFarLeftBottomVal(root, 0)} ${getFarRightBottomVal(root, 0)}&#96;
+    );
+  } else {
+    console.log(&#34;0 0 0&#34;);
+  }
+ 
+  /**
+   * 判断preOrder数组是否为合法的二叉搜索树前序遍历结果序列&#xff0c;如果是&#xff0c;则根绝preOrder还原出对应二叉搜索树
+   * &#64;param {*} root 二叉搜索树的节点&#xff0c;每个二叉搜索树节点都对应preOrder序列中的一段子序列
+   * &#64;param {*} start 该子序列在preOrder中的范围的起始位置
+   * &#64;param {*} end 该子序列在preOrder中的范围的结束位置
+   * &#64;returns preOrder数组是否为合法的二叉搜索树前序遍历结果
+   */
+  function isValid(root, start, end) {
+    // 如果当前节点对应的序列范围长度为1&#xff0c;则当前节点为叶子节点&#xff0c;无法继续递归&#xff0c;需要结束递归&#xff0c;而单个节点本身就是前序遍历结果&#xff0c;因此返回true
+    if (start &#61;&#61; end) return true;
+ 
+    // 前序遍历即&#xff1a;根左右&#xff0c;因此start位置是当前序列对应的子树的根节点位置&#xff0c;当前子树的左子子树从start&#43;1位置开始判断
+    let i &#61; start &#43; 1;
+    // 二叉搜索树的特点是&#xff1a;当前节点的左子节点值 &lt; 当前节点的值
+    while (i &lt;&#61; end &amp;&amp; preOrder[i] &lt; root.val) {
+      i&#43;&#43;;
+    }
+ 
+    // i 最终指向左右子树的分界位置
+    let j &#61; i;
+    // 二叉搜索树的特点是&#xff1a;当前节点的右子节点值 &gt; 当前节点的值
+    while (j &lt;&#61; end &amp;&amp; preOrder[j] &gt; root.val) {
+      j&#43;&#43;;
+    }
+ 
+    // j 最终指向右子树的终点位置的后一个位置&#xff0c;而右子树的终点位置必须在end&#xff0c;因此合法的二叉搜索树前序遍历结果 j &gt; end
+    if (j &lt;&#61; end) return false;
+ 
+    // i 最终指向左右子树的分界位置
+    // 如果 i &gt; start &#43; 1&#xff0c;则存在左子树
+    if (i &gt; start &#43; 1) {
+      // 创建当前节点的左子树节点
+      root.left_child &#61; new Node(preOrder[start &#43; 1]);
+ 
+      // 递归判断左子树对应的序列范围是否为前序遍历结果
+      if (!isValid(root.left_child, start &#43; 1, i - 1)) {
+        // 若不是&#xff0c;则preOrder无法还原出二叉搜索树
+        return false;
+      }
+    }
+ 
+    // i 最终指向左右子树的分界位置
+    // 如果 i &lt;&#61; end&#xff0c;则存在右子树
+    if (i &lt;&#61; end) {
+      // 创建当前节点的右子树节点
+      root.right_child &#61; new Node(preOrder[i]);
+      // 如果右子树对应的序列是合法的前序遍历结果&#xff0c;结合前面左子树对应的序列也是合法的前序遍历结果&#xff0c;则preOrder整体就是合法的前序遍历结果
+      return isValid(root.right_child, i, end);
+    }
+ 
+    return true;
+  }
+ 
+  // 递归查找二叉树的左缀点&#xff0c;即二叉树最后一层中&#xff0c;最靠左的点
+  function getFarLeftBottomVal(root, level) {
+    // 如果当前节点存在左子节点&#xff0c;则递归查找其左子节点
+    if (root.left_child !&#61; null) {
+      return getFarLeftBottomVal(root.left_child, level &#43; 1);
+    }
+ 
+    // 如果当前节点没有左子节点&#xff0c;则检查当前节点处于哪一层
+    if (level &gt; 0) {
+      if (root.right_child !&#61; null) {
+        // 如果当前节点不处于第0层&#xff0c;且存在右子节点&#xff0c;则递归查找其右子节点
+        return getFarLeftBottomVal(root.right_child, level &#43; 1);
+      } else {
+        // 如果当前节点不处于第0层&#xff0c;且不存在右子节点&#xff0c;则当前节点即为左缀点
+        return root.val;
+      }
+    } else {
+      // 如果当前节点处于第0层&#xff0c;且没有左子节点&#xff0c;则没有左缀点&#xff0c;按题目要求返回0
+      return 0;
+    }
+  }
+ 
+  // 递归查找二叉树的右缀点&#xff0c;即二叉树最后一层中&#xff0c;最靠右的点
+  function getFarRightBottomVal(root, level) {
+    if (root.right_child !&#61; null) {
+      return getFarRightBottomVal(root.right_child, level &#43; 1);
+    }
+ 
+    if (level &gt; 0) {
+      if (root.left_child !&#61; null) {
+        return getFarRightBottomVal(root.left_child, level &#43; 1);
+      } else {
+        return root.val;
+      }
+    } else {
+      return 0;
+    }
+  }
+})();</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  // 二叉树的节点类定义
+  static class Node {
+    int val; // 节点值
+    Node left_child; // 当前节点的左子节点
+    Node right_child; // 当前节点的右子节点
+
+    public Node(int val) {
+      this.val &#61; val;
+    }
+  }
+
+  // 二叉搜索树前序遍历的结果序列
+  static int[] preOrder;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    preOrder &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    System.out.println(getResult());
+  }
+
+  public static String getResult() {
+    // 二叉搜索树的根节点root
+    Node root &#61; new Node(preOrder[0]);
+
+    if (isValid(root, 0, preOrder.length - 1)) {
+      return 1 &#43; &#34; &#34; &#43; getFarLeftBottomVal(root, 0) &#43; &#34; &#34; &#43; getFarRightBottomVal(root, 0);
+    } else {
+      return &#34;0 0 0&#34;;
+    }
+  }
+
+  /**
+   * 判断preOrder数组是否为合法的二叉搜索树前序遍历结果序列&#xff0c;如果是&#xff0c;则根绝preOrder还原出对应二叉搜索树
+   *
+   * &#64;param root 二叉搜索树的节点&#xff0c;每个二叉搜索树节点都对应preOrder序列中的一段子序列
+   * &#64;param start 该子序列在preOrder中的范围的起始位置
+   * &#64;param end 该子序列在preOrder中的范围的结束位置
+   * &#64;return preOrder数组是否为合法的二叉搜索树前序遍历结果
+   */
+  public static boolean isValid(Node root, int start, int end) {
+    // 如果当前节点对应的序列范围长度为1&#xff0c;则当前节点为叶子节点&#xff0c;无法继续递归&#xff0c;需要结束递归&#xff0c;而单个节点本身就是前序遍历结果&#xff0c;因此返回true
+    if (start &#61;&#61; end) return true;
+
+    // 前序遍历即&#xff1a;根左右&#xff0c;因此start位置是当前序列对应的子树的根节点位置&#xff0c;当前子树的左子子树从start&#43;1位置开始判断
+    int i &#61; start &#43; 1;
+    // 二叉搜索树的特点是&#xff1a;当前节点的左子节点值 &lt; 当前节点的值
+    while (i &lt;&#61; end &amp;&amp; preOrder[i] &lt; root.val) {
+      i&#43;&#43;;
+    }
+
+    // i 最终指向左右子树的分界位置
+    int j &#61; i;
+    // 二叉搜索树的特点是&#xff1a;当前节点的右子节点值 &gt; 当前节点的值
+    while (j &lt;&#61; end &amp;&amp; preOrder[j] &gt; root.val) {
+      j&#43;&#43;;
+    }
+
+    // j 最终指向右子树的终点位置的后一个位置&#xff0c;而右子树的终点位置必须在end&#xff0c;因此合法的二叉搜索树前序遍历结果 j &gt; end
+    if (j &lt;&#61; end) return false;
+
+    // i 最终指向左右子树的分界位置
+    // 如果 i &gt; start &#43; 1&#xff0c;则存在左子树
+    if (i &gt; start &#43; 1) {
+      // 创建当前节点的左子树节点
+      root.left_child &#61; new Node(preOrder[start &#43; 1]);
+
+      // 递归判断左子树对应的序列范围是否为前序遍历结果
+      if (!isValid(root.left_child, start &#43; 1, i - 1)) {
+        // 若不是&#xff0c;则preOrder无法还原出二叉搜索树
+        return false;
+      }
+    }
+
+    // i 最终指向左右子树的分界位置
+    // 如果 i &lt;&#61; end&#xff0c;则存在右子树
+    if (i &lt;&#61; end) {
+      // 创建当前节点的右子树节点
+      root.right_child &#61; new Node(preOrder[i]);
+
+      // 如果右子树对应的序列是合法的前序遍历结果&#xff0c;结合前面左子树对应的序列也是合法的前序遍历结果&#xff0c;则preOrder整体就是合法的前序遍历结果
+      return isValid(root.right_child, i, end);
+    }
+
+    return true;
+  }
+
+  // 递归查找二叉树的左缀点&#xff0c;即二叉树最后一层中&#xff0c;最靠左的点
+  public static int getFarLeftBottomVal(Node root, int level) {
+    // 如果当前节点存在左子节点&#xff0c;则递归查找其左子节点
+    if (root.left_child !&#61; null) {
+      return getFarLeftBottomVal(root.left_child, level &#43; 1);
+    }
+
+    // 如果当前节点没有左子节点&#xff0c;则检查当前节点处于哪一层
+    if (level &gt; 0) {
+      if (root.right_child !&#61; null) {
+        // 如果当前节点不处于第0层&#xff0c;且存在右子节点&#xff0c;则递归查找其右子节点
+        return getFarLeftBottomVal(root.right_child, level &#43; 1);
+      } else {
+        // 如果当前节点不处于第0层&#xff0c;且不存在右子节点&#xff0c;则当前节点即为左缀点
+        return root.val;
+      }
+    } else {
+      // 如果当前节点处于第0层&#xff0c;且没有左子节点&#xff0c;则没有左缀点&#xff0c;按题目要求返回0
+      return 0;
+    }
+  }
+
+  // 递归查找二叉树的右缀点&#xff0c;即二叉树最后一层中&#xff0c;最靠右的点
+  public static int getFarRightBottomVal(Node root, int level) {
+    if (root.right_child !&#61; null) {
+      return getFarRightBottomVal(root.right_child, level &#43; 1);
+    }
+
+    if (level &gt; 0) {
+      if (root.left_child !&#61; null) {
+        return getFarRightBottomVal(root.left_child, level &#43; 1);
+      } else {
+        return root.val;
+      }
+    } else {
+      return 0;
+    }
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+preOrder &#61; list(map(int, input().split()))  # 二叉搜索树前序遍历的结果序列
+
+
+# 二叉树的节点类定义
+class Node:
+    def __init__(self, val):
+        self.val &#61; val  # 节点值
+        self.left_child &#61; None  # 当前节点的左子节点
+        self.right_child &#61; None  # 当前节点的右子节点
+
+
+def isValid(root, start, end):
+    &#34;&#34;&#34;
+    判断preOrder数组是否为合法的二叉搜索树前序遍历结果序列&#xff0c;如果是&#xff0c;则根绝preOrder还原出对应二叉搜索树
+    :param root: 二叉搜索树的节点&#xff0c;每个二叉搜索树节点都对应preOrder序列中的一段子序列
+    :param start: 该子序列在preOrder中的范围的起始位置
+    :param end: 该子序列在preOrder中的范围的结束位置
+    :return: preOrder数组是否为合法的二叉搜索树前序遍历结果
+    &#34;&#34;&#34;
+
+    # 如果当前节点对应的序列范围长度为1&#xff0c;则当前节点为叶子节点&#xff0c;无法继续递归&#xff0c;需要结束递归&#xff0c;而单个节点本身就是前序遍历结果&#xff0c;因此返回true
+    if start &#61;&#61; end:
+        return True
+
+    # 前序遍历即&#xff1a;根左右&#xff0c;因此start位置是当前序列对应的子树的根节点位置&#xff0c;当前子树的左子子树从start&#43;1位置开始判断
+    i &#61; start &#43; 1
+    # 二叉搜索树的特点是&#xff1a;当前节点的左子节点值 &lt; 当前节点的值
+    while i &lt;&#61; end and preOrder[i] &lt; root.val:
+        i &#43;&#61; 1
+
+    # i 最终指向左右子树的分界位置
+    j &#61; i
+    # 二叉搜索树的特点是&#xff1a;当前节点的右子节点值 &gt; 当前节点的值
+    while j &lt;&#61; end and preOrder[j] &gt; root.val:
+        j &#43;&#61; 1
+
+    # j 最终指向右子树的终点位置的后一个位置&#xff0c;而右子树的终点位置必须在end&#xff0c;因此合法的二叉搜索树前序遍历结果 j &gt; end
+    if j &lt;&#61; end:
+        return False
+
+    # i 最终指向左右子树的分界位置
+    # 如果 i &gt; start &#43; 1&#xff0c;则存在左子树
+    if i &gt; start &#43; 1:
+        # 创建当前节点的左子树节点
+        root.left_child &#61; Node(preOrder[start &#43; 1])
+
+        # 递归判断左子树对应的序列范围是否为前序遍历结果
+        if not isValid(root.left_child, start &#43; 1, i - 1):
+            # 若不是&#xff0c;则preOrder无法还原出二叉搜索树
+            return False
+
+    # i 最终指向左右子树的分界位置
+    # 如果 i &lt;&#61; end&#xff0c;则存在右子树
+    if i &lt;&#61; end:
+        # 创建当前节点的右子树节点
+        root.right_child &#61; Node(preOrder[i])
+        # 如果右子树对应的序列是合法的前序遍历结果&#xff0c;结合前面左子树对应的序列也是合法的前序遍历结果&#xff0c;则preOrder整体就是合法的前序遍历结果
+        return isValid(root.right_child, i, end)
+
+    return True
+
+
+# 递归查找二叉树的左缀点&#xff0c;即二叉树最后一层中&#xff0c;最靠左的点
+def getFarLeftBottomVal(root, level):
+    # 如果当前节点存在左子节点&#xff0c;则递归查找其左子节点
+    if root.left_child is not None:
+        return getFarLeftBottomVal(root.left_child, level &#43; 1)
+
+    # 如果当前节点没有左子节点&#xff0c;则检查当前节点处于哪一层
+    if level &gt; 0:
+        if root.right_child is not None:
+            # 如果当前节点不处于第0层&#xff0c;且存在右子节点&#xff0c;则递归查找其右子节点
+            return getFarLeftBottomVal(root.right_child, level &#43; 1)
+        else:
+            # 如果当前节点不处于第0层&#xff0c;且不存在右子节点&#xff0c;则当前节点即为左缀点
+            return root.val
+    else:
+        # 如果当前节点处于第0层&#xff0c;且没有左子节点&#xff0c;则没有左缀点&#xff0c;按题目要求返回0
+        return 0
+
+
+# 递归查找二叉树的右缀点&#xff0c;即二叉树最后一层中&#xff0c;最靠右的点
+def getFarRightBottomVal(root, level):
+    if root.right_child is not None:
+        return getFarRightBottomVal(root.right_child, level &#43; 1)
+
+    if level &gt; 0:
+        if root.left_child is not None:
+            return getFarRightBottomVal(root.left_child, level &#43; 1)
+        else:
+            return root.val
+    else:
+        return 0
+
+
+# 核心代码
+def getResult():
+    # 二叉搜索树的根节点root
+    root &#61; Node(preOrder[0])
+
+    if isValid(root, 0, len(preOrder) - 1):
+        return f&#34;1 {getFarLeftBottomVal(root, 0)} {getFarRightBottomVal(root, 0)}&#34;
+    else:
+        return &#34;0 0 0&#34;
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 1000
+#define TRUE 1
+#define FALSE 0
+
+// 二叉树的节点定义
+typedef struct Node {
+	int val; // 节点值
+	struct Node* left_child; // 当前节点的左子节点
+	struct Node* right_child; // 当前节点的右子节点
+} NODE;
+
+// 函数声明
+int isValid(NODE* root, int start, int end);
+int getFarLeftBottomVal(NODE* root, int level);
+int getFarRightBottomVal(NODE* root, int level);
+
+// 全局变量
+int pre_order[MAX_SIZE];
+int pre_order_size &#61; 0;
+
+// 程序入口
+int main()
+{
+	// 输入获取
+	while (scanf(&#34;%d&#34;, &amp;pre_order[pre_order_size&#43;&#43;])) {
+		if (getchar() !&#61; &#39; &#39;) break;
+	}
+
+	// 算法调用
+	NODE* root &#61; (NODE*) malloc(sizeof(NODE)); // 二叉搜索树的根节点root
+	root-&gt;val &#61; pre_order[0];
+	root-&gt;left_child &#61; NULL;
+	root-&gt;right_child &#61; NULL;
+
+	if (isValid(root, 0, pre_order_size - 1)) {
+		char res[20];
+		sprintf(res, &#34;1 %d %d&#34;, getFarLeftBottomVal(root, 0), getFarRightBottomVal(root, 0));
+		puts(res);
+	}
+	else {
+		puts(&#34;0 0 0&#34;);
+	}
+
+	return 0;
+}
+
+/**
+ * 判断preOrder数组是否为合法的二叉搜索树前序遍历结果序列&#xff0c;如果是&#xff0c;则根绝preOrder还原出对应二叉搜索树
+ *
+ * &#64;param root 二叉搜索树的节点&#xff0c;每个二叉搜索树节点都对应preOrder序列中的一段子序列
+ * &#64;param start 该子序列在preOrder中的范围的起始位置
+ * &#64;param end 该子序列在preOrder中的范围的结束位置
+ */
+int isValid(NODE* root, int start, int end)
+{
+	// 如果当前节点对应的序列范围长度为1&#xff0c;则当前节点为叶子节点&#xff0c;无法继续递归&#xff0c;需要结束递归&#xff0c;而单个节点本身就是前序遍历结果&#xff0c;因此返回true
+	if (start &#61;&#61; end) {
+		return TRUE;
+	}
+
+	// 前序遍历即&#xff1a;根左右&#xff0c;因此start位置是当前序列对应的子树的根节点位置&#xff0c;当前子树的左子子树从start&#43;1位置开始判断
+	int i &#61; start &#43; 1;
+	// 二叉搜索树的特点是&#xff1a;当前节点的左子节点值 &lt; 当前节点的值
+	while (i &lt;&#61; end &amp;&amp; pre_order[i] &lt; root-&gt;val) {
+		i&#43;&#43;;
+	}
+
+	// i 最终指向左右子树的分界位置
+	int j &#61; i;
+	// 二叉搜索树的特点是&#xff1a;当前节点的右子节点值 &gt; 当前节点的值
+	while (j &lt;&#61; end &amp;&amp; pre_order[j] &gt; root-&gt;val) {
+		j&#43;&#43;;
+	}
+
+	// j 最终指向右子树的终点位置的后一个位置&#xff0c;而右子树的终点位置必须在end&#xff0c;因此合法的二叉搜索树前序遍历结果 j &gt; end
+	if (j &lt;&#61; end) {
+		return FALSE;
+	}
+
+	// i 最终指向左右子树的分界位置
+	// 如果 i &gt; start &#43; 1&#xff0c;则存在左子树
+	if (i &gt; start &#43; 1) {
+		// 创建当前节点的左子树节点
+		NODE* lc &#61; (NODE*) malloc(sizeof(NODE));
+
+		lc-&gt;val &#61; pre_order[start &#43; 1];
+		lc-&gt;left_child &#61; NULL;
+		lc-&gt;right_child &#61; NULL;
+
+		root-&gt;left_child &#61; lc;
+		
+		// 递归判断左子树对应的序列范围是否为前序遍历结果
+		if (!isValid(root-&gt;left_child, start &#43; 1, i - 1)) {
+			// 若不是&#xff0c;则preOrder无法还原出二叉搜索树
+			return FALSE;
+		}
+	}
+
+	// i 最终指向左右子树的分界位置
+	// 如果 i &lt;&#61; end&#xff0c;则存在右子树
+	if (i &lt;&#61; end) {
+		// 创建当前节点的右子树节点
+		NODE* rc &#61; (NODE*) malloc(sizeof(NODE));
+
+		rc-&gt;val &#61; pre_order[i];
+		rc-&gt;left_child &#61; NULL;
+		rc-&gt;right_child &#61; NULL;
+
+		root-&gt;right_child &#61; rc;
+
+		// 如果右子树对应的序列是合法的前序遍历结果&#xff0c;结合前面左子树对应的序列也是合法的前序遍历结果&#xff0c;则preOrder整体就是合法的前序遍历结果
+		return isValid(root-&gt;right_child, i, end);
+	}
+
+	return TRUE;
+}
+
+// 递归查找二叉树的左缀点
+int getFarLeftBottomVal(NODE* root, int level)
+{
+	// 如果当前节点存在左子节点&#xff0c;则递归查找其左子节点
+	if (root-&gt;left_child !&#61; NULL) {
+		return getFarLeftBottomVal(root-&gt;left_child, level &#43; 1);
+	}
+
+	// 如果当前节点没有左子节点&#xff0c;则检查当前节点处于哪一层
+	if (level &gt; 0) {
+		if (root-&gt;right_child !&#61; NULL) {
+			// 如果当前节点不处于第0层&#xff0c;且存在右子节点&#xff0c;则递归查找其右子节点
+			return getFarLeftBottomVal(root-&gt;right_child, level &#43; 1);
+		}
+		else {
+			// 如果当前节点不处于第0层&#xff0c;且不存在右子节点&#xff0c;则当前节点即为左缀点
+			return root-&gt;val;
+		}
+	}
+	else {
+		// 如果当前节点处于第0层&#xff0c;且没有左子节点&#xff0c;则没有左缀点&#xff0c;按题目要求返回0
+		return 0;
+	}
+}
+
+// 递归查找二叉树的右缀点
+int getFarRightBottomVal(NODE* root, int level)
+{
+	if (root-&gt;right_child !&#61; NULL) {
+		return getFarRightBottomVal(root-&gt;right_child, level &#43; 1);
+	}
+
+	if (level &gt; 0) {
+		if (root-&gt;left_child !&#61; NULL) {
+			return getFarRightBottomVal(root-&gt;left_child, level &#43; 1);
+		}
+		else {
+			return root-&gt;val;
+		}
+	}
+	else {
+		return 0;
+	}
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

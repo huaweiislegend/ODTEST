@@ -1,0 +1,323 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 异常的打卡记录（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>考勤记录是分析和考核职工工作时间利用情况的原始依据&#xff0c;也是计算职工工资的原始依据&#xff0c;为了正确地计算职工工资和监督工资基金使用情况&#xff0c;公司决定对员工的手机打卡记录进行异常排查。</p> 
+<p><br /> 如果出现以下两种情况&#xff0c;则认为打卡异常&#xff1a;</p> 
+<ol><li>实际设备号与注册设备号不一样</li><li>或者&#xff0c;同一个员工的两个打卡记录的时间小于60分钟并且打卡距离超过5km。</li></ol> 
+<p>给定打卡记录的字符串数组clockRecords&#xff08;每个打卡记录组成为&#xff1a;工号;时间&#xff08;分钟&#xff09;;打卡距离&#xff08;km&#xff09;;实际设备号;注册设备号&#xff09;&#xff0c;返回其中异常的打卡记录&#xff08;按输入顺序输出&#xff09;。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为N&#xff0c;表示打卡记录数&#xff1b;</p> 
+<p>之后的N行为打卡记录&#xff0c;每一行为一条打卡记录。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出异常的打卡记录。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>clockRecords长度 ≤ 1000</li><li>clockRecords[i] 格式&#xff1a;{id},{time},{distance},{actualDeviceNumber},{registeredDeviceNumber}</li><li>id由6位数字组成</li><li>time由整数组成&#xff0c;范围为0~1000</li><li>distance由整数组成&#xff0c;范围为0~100</li><li>actualDeviceNumber与registeredDeviceNumber由思维大写字母组成</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 100000,10,1,ABCD,ABCD<br /> 100000,50,10,ABCD,ABCD</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">100000,10,1,ABCD,ABCD;100000,50,10,ABCD,ABCD</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第一条记录是异常得&#xff0c;因为第二题记录与它得间隔不超过60分钟&#xff0c;但是打卡距离超过了5km&#xff0c;同理第二条记录也是异常得。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 100000,10,1,ABCD,ABCD<br /> 100001,80,10,ABCE,ABCE</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">null</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无异常打卡记录&#xff0c;所以返回null</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 100000,10,1,ABCD,ABCD<br /> 100000,80,10,ABCE,ABCD</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">100000,80,10,ABCE,ABCD</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第二条记录得注册设备号与打卡设备号不一致&#xff0c;所以是异常记录</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先&#xff0c;打卡记录异常&#xff0c;有两种类型&#xff1a;</p> 
+<p>1、单条打卡记录自身比较&#xff0c;即单条打卡记录的实际设备号和注册设备号不同&#xff0c;则视为异常。</p> 
+<p>2、同一员工的两条打卡记录对比&#xff0c;如果打卡时间间隔小于60min&#xff0c;但是打卡距离却超过了5km&#xff0c;则视为异常</p> 
+<p>因此&#xff0c;我们应该先对每条打卡记录进行自身比较&#xff0c;即比较实际设备号&#xff0c;和注册设备号&#xff0c;如果不同&#xff0c;则直接判定异常。</p> 
+<blockquote> 
+ <p><s>另外&#xff0c;我理解&#xff0c;同一员工的&#xff08;非设备号异常&#xff09;打卡记录不需要再和&#xff08;设备号异常&#xff09;的打卡记录对比。</s></p> 
+ <p>根据考友反馈&#xff1a;</p> 
+ <p>同一员工的&#xff08;非设备号异常&#xff09;打卡记录<span style="color:#fe2c24;">需要</span>再和&#xff08;设备号异常&#xff09;的打卡记录对比。</p> 
+</blockquote> 
+<p>对于同一员工下设备号一致的打卡记录&#xff0c;需要两两对比&#xff0c;如果两个打卡记录的时间小于60分钟并且打卡距离超过5km&#xff0c;则视为异常。</p> 
+<blockquote> 
+ <p><s>但是这里有一个疑点&#xff0c;那就是一旦有两条打卡记录对比异常了&#xff0c;那么其他打卡记录是否还需要和这两条异常记录对比吗&#xff1f;</s></p> 
+ <p><s>这点&#xff0c;题目描述没说&#xff0c;给的用例也无法验证。我理解是需要的&#xff0c;</s></p> 
+ <p>需要的。</p> 
+</blockquote> 
+<p></p> 
+<p>另外&#xff0c;本题还有一个关键点就是&#xff1a;异常的打卡记录需要&#xff08;按输入顺序输出&#xff09;。</p> 
+<p>因此&#xff0c;我们在保存异常打卡记录时&#xff0c;还需要附加其输入时的索引&#xff0c;已方便按照输入索引输出。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    const clockRecords &#61; lines.map((line) &#61;&gt; line.split(&#34;,&#34;));
+    console.log(getResult(clockRecords));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} clockRecords 打卡记录的字符串数组, [工号, 时间, 打卡距离, 实际设备号, 注册设备号]
+ */
+function getResult(clockRecords) {
+  const employees &#61; {};
+
+  const ans &#61; new Set();
+
+  for (let i &#61; 0; i &lt; clockRecords.length; i&#43;&#43;) {
+    const clockRecord &#61; [...clockRecords[i], i]; // 由于异常打卡记录需要按输入顺序输出&#xff0c;因此这里追加一个输入索引到打卡记录中
+    const [id, time, dis, act_device, reg_device] &#61; clockRecord;
+
+    // 实际设备号与注册设备号不一样,则认为打卡异常
+    if (act_device !&#61; reg_device) {
+      ans.add(i);
+    }
+
+    // 统计员工的打卡记录(实际设备号与注册设备号不一样的打卡记录也计入)
+    employees[id]
+      ? employees[id].push(clockRecord)
+      : (employees[id] &#61; [clockRecord]);
+  }
+
+  for (let id in employees) {
+    // 某id员工的所有打卡记录
+    const records &#61; employees[id];
+    const n &#61; records.length;
+
+    // 将该员工打卡记录按照打卡时间升序
+    records.sort((a, b) &#61;&gt; a[1] - b[1]);
+
+    for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+      const time1 &#61; records[i][1];
+      const dis1 &#61; records[i][2];
+
+      for (let j &#61; i &#43; 1; j &lt; n; j&#43;&#43;) {
+        const time2 &#61; records[j][1];
+        const dis2 &#61; records[j][2];
+
+        // 如果两次打卡时间超过60分钟&#xff0c;则不计入异常&#xff0c;由于已按打卡时间升序&#xff0c;因此后面的都不用检查了
+        if (time2 - time1 &gt;&#61; 60) break;
+        else {
+          // 如果两次打开时间小于60MIN&#xff0c;且打卡距离超过5KM&#xff0c;则这两次打卡记录算作异常
+          if (Math.abs(dis2 - dis1) &gt; 5) {
+            // 如果打卡记录已经加入异常列表ans&#xff0c;则无需再次加入&#xff0c;否则需要加入
+            ans.add(records[i][5]);
+            ans.add(records[j][5]);
+          }
+        }
+      }
+    }
+  }
+
+  // 如果没有异常打卡记录&#xff0c;则返回null
+  if (!ans.size) return &#34;null&#34;;
+
+  return [...ans]
+    .sort((a, b) &#61;&gt; a - b)
+    .map((i) &#61;&gt; clockRecords[i])
+    .join(&#34;;&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    String[][] clockRecords &#61; new String[n][];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      clockRecords[i] &#61; sc.next().split(&#34;,&#34;);
+    }
+
+    System.out.println(getResult(clockRecords));
+  }
+
+  /**
+   * &#64;param clockRecords 打卡记录的字符串数组, [工号, 时间, 打卡距离, 实际设备号, 注册设备号]
+   * &#64;return 异常打卡记录列表&#xff08;按输入顺序排序&#xff09;
+   */
+  public static String getResult(String[][] clockRecords) {
+    HashMap&lt;String, ArrayList&lt;String[]&gt;&gt; employees &#61; new HashMap&lt;&gt;();
+    TreeSet&lt;Integer&gt; ans &#61; new TreeSet&lt;&gt;((a, b) -&gt; a - b);
+
+    for (int i &#61; 0; i &lt; clockRecords.length; i&#43;&#43;) {
+      // 由于异常打卡记录需要按输入顺序输出&#xff0c;因此这里追加一个输入索引到打卡记录中
+      String[] clockRecord &#61; Arrays.copyOf(clockRecords[i], clockRecords[i].length &#43; 1);
+      clockRecord[clockRecord.length - 1] &#61; i &#43; &#34;&#34;;
+
+      String id &#61; clockRecord[0];
+      String act_device &#61; clockRecord[3];
+      String reg_device &#61; clockRecord[4];
+
+      // 实际设备号与注册设备号不一样,则认为打卡异常
+      if (!act_device.equals(reg_device)) {
+        ans.add(i);
+      }
+
+      // 统计该员工的打卡
+      employees.putIfAbsent(id, new ArrayList&lt;&gt;());
+      employees.get(id).add(clockRecord);
+    }
+
+    for (String id : employees.keySet()) {
+      // 某id员工的所有打卡记录records
+      ArrayList&lt;String[]&gt; records &#61; employees.get(id);
+
+      // 将该员工打卡记录按照打卡时间升序
+      records.sort((a, b) -&gt; Integer.parseInt(a[1]) - Integer.parseInt(b[1]));
+
+      for (int i &#61; 0; i &lt; records.size(); i&#43;&#43;) {
+        int time1 &#61; Integer.parseInt(records.get(i)[1]);
+        int dist1 &#61; Integer.parseInt(records.get(i)[2]);
+
+        for (int j &#61; i &#43; 1; j &lt; records.size(); j&#43;&#43;) {
+          int time2 &#61; Integer.parseInt(records.get(j)[1]);
+          int dist2 &#61; Integer.parseInt(records.get(j)[2]);
+
+          // 如果两次打卡时间超过60分治&#xff0c;则不计入异常&#xff0c;由于已按打卡时间升序&#xff0c;因此后面的都不用检查了
+          if (time2 - time1 &gt;&#61; 60) break;
+          else {
+            // 如果两次打开时间小于60MIN&#xff0c;且打卡距离超过5KM&#xff0c;则这两次打卡记录算作异常
+            if (Math.abs(dist2 - dist1) &gt; 5) {
+              // 如果打卡记录已经加入异常列表ans&#xff0c;则无需再次加入&#xff0c;否则需要加入
+              ans.add(Integer.parseInt(records.get(i)[5]));
+              ans.add(Integer.parseInt(records.get(j)[5]));
+            }
+          }
+        }
+      }
+    }
+
+    // 如果没有异常打卡记录&#xff0c;则返回null
+    if (ans.size() &#61;&#61; 0) return &#34;null&#34;;
+
+    StringJoiner sj &#61; new StringJoiner(&#34;;&#34;);
+    ans.stream()
+        .map(i -&gt; clockRecords[i])
+        .forEach(
+            sArr -&gt; {
+              StringJoiner sj1 &#61; new StringJoiner(&#34;,&#34;);
+              for (String s : sArr) {
+                sj1.add(s);
+              }
+              sj.add(sj1.toString());
+            });
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+clockRecords &#61; [input().split(&#34;,&#34;) for i in range(n)]
+
+
+# 算法入口
+def getResult(clockRecords):
+    employees &#61; {}
+    ans &#61; set()
+
+    for i in range(len(clockRecords)):
+        id, time, dis, act_device, reg_device &#61; clockRecords[i]
+
+        # 实际设备号与注册设备号不一样,则认为打卡异常
+        if act_device !&#61; reg_device:
+            ans.add(i)
+
+        # 由于异常打卡记录需要按输入顺序输出&#xff0c;因此这里追加一个输入索引i到打卡记录中
+        clockRecord &#61; [id, time, dis, act_device, reg_device, i]
+        if employees.get(id) is None:
+            employees[id] &#61; []
+        employees[id].append(clockRecord)
+
+    for id in employees.keys():
+        # 某id员工的所有打卡记录
+        records &#61; employees[id]
+        n &#61; len(records)
+
+        # 将该员工打卡记录按照打卡时间升序
+        records.sort(key&#61;lambda x: int(x[1]))
+
+        for i in range(n):
+            time1 &#61; int(records[i][1])
+            dis1 &#61; int(records[i][2])
+
+            for j in range(i &#43; 1, n):
+                time2 &#61; int(records[j][1])
+                dis2 &#61; int(records[j][2])
+
+                # 如果两次打卡时间超过60分治&#xff0c;则不计入异常&#xff0c;由于已按打卡时间升序&#xff0c;因此后面的都不用检查了
+                if time2 - time1 &gt;&#61; 60:
+                    break
+                else:
+                    # 如果两次打开时间小于60MIN&#xff0c;且打卡距离超过5KM&#xff0c;则这两次打卡记录算作异常
+                    if abs(dis2 - dis1) &gt; 5:
+                        # 如果打卡记录已经加入异常列表ans&#xff0c;则无需再次加入&#xff0c;否则需要加入
+                        ans.add(records[i][5])
+                        ans.add(records[j][5])
+
+    if len(ans) &gt; 0:
+        tmp &#61; list(ans)
+        tmp.sort()
+        return &#34;;&#34;.join(list(map(lambda i: &#34;,&#34;.join(clockRecords[i]), tmp)))
+    else:
+        return &#34;null&#34;
+
+
+# 调用算法
+print(getResult(clockRecords))</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

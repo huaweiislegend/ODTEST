@@ -1,0 +1,483 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 攀登者2（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>攀登者喜欢寻找各种地图&#xff0c;并且尝试攀登到最高的山峰。</p> 
+<p>地图表示为一维数组&#xff0c;数组的索引代表水平位置&#xff0c;数组的元素代表相对海拔高度。其中数组元素0代表地面。</p> 
+<p>例如&#xff1a;[0,1,2,4,3,1,0,0,1,2,3,1,2,1,0]&#xff0c;代表如下图所示的地图&#xff0c;地图中有两个山脉位置分别为 1,2,3,4,5 和 8,9,10,11,12,13&#xff0c;最高峰高度分别为 4,3。最高峰位置分别为3,10。</p> 
+<p>一个山脉可能有多座山峰(高度大于相邻位置的高度&#xff0c;或在地图边界且高度大于相邻的高度)。</p> 
+<p><img alt="" height="239" src="https://img-blog.csdnimg.cn/63287f530c7641628550cf45ab259f28.png" width="594" /></p> 
+<p>登山时会消耗登山者的体力(整数)&#xff0c;</p> 
+<ul><li>上山时&#xff0c;消耗相邻高度差两倍的体力</li><li>下山时&#xff0c;消耗相邻高度差一倍的体力</li><li>平地不消耗体力</li></ul> 
+<p>登山者体力消耗到零时会有生命危险。</p> 
+<p>例如&#xff0c;上图所示的山峰&#xff1a;</p> 
+<ul><li>从索引0&#xff0c;走到索引1&#xff0c;高度差为1&#xff0c;需要消耗 2 * 1 &#61; 2 的体力&#xff0c;</li><li>从索引2&#xff0c;走到索引3&#xff0c;高度差为2&#xff0c;需要消耗 2 * 2 &#61; 4 的体力。</li><li>从索引3&#xff0c;走到索引4&#xff0c;高度差为1&#xff0c;需要消耗 1 * 1 &#61; 1 的体力。</li></ul> 
+<p></p> 
+<p>攀登者想要评估一张地图内有多少座山峰可以进行攀登&#xff0c;且可以安全返回到地面&#xff0c;且无生命危险。</p> 
+<p>例如上图中的数组&#xff0c;有3个不同的山峰&#xff0c;登上位置在3的山可以从位置0或者位置6开始&#xff0c;从位置0登到山顶需要消耗体力 1 * 2 &#43; 1 * 2 &#43; 2 * 2 &#61; 8&#xff0c;从山顶返回到地面0需要消耗体力 2 * 1 &#43; 1 * 1 &#43; 1 * 1 &#61; 4 的体力&#xff0c;按照登山路线 0 → 3 → 0 需要消耗体力12。攀登者至少需要12以上的体力&#xff08;大于12&#xff09;才能安全返回。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为地图一维数组</p> 
+<p>第二行输入为攀登者的体力</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>确保可以安全返回地面&#xff0c;且无生命危险的情况下&#xff0c;地图中有多少山峰可以攀登。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>0,1,4,3,1,0,0,1,2,3,1,2,1,0<br /> 13</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">登山者只能登上位置10和12的山峰&#xff0c;7 → 10 → 7&#xff0c;14 → 12 → 14</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1,4,3<br /> 999</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">没有合适的起点和终点</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题考试时为核心代码模式&#xff0c;非ACM模式&#xff0c;即无需自己解析输入数据。</p> 
+<p>本题代码实现仍然以ACM模式处理&#xff0c;但是会将输入处理 与 算法逻辑 分开&#xff0c;大家只看算法逻辑即可。</p> 
+<p></p> 
+<p> 用例1图示&#xff1a;</p> 
+<p><img alt="" height="296" src="https://img-blog.csdnimg.cn/direct/a053716bc75a49c48babc2fa85e184b2.png" width="596" /></p> 
+<p>用例说明中用的位置应该是从1开始计数的&#xff0c;换成数组索引的话&#xff0c;如下&#xff1a;</p> 
+<blockquote> 
+ <p>登山者只能登上位置9和11的山峰&#xff0c;6 → 9 → 6&#xff0c;13 → 11 → 13</p> 
+</blockquote> 
+<p>登上索引9山峰的路线&#xff1a;6 → 9 → 6&#xff0c;消耗体力 &#61; 9  &lt; 13</p> 
+<p>登上索引11山峰的路线&#xff1a;13 → 11 → 13&#xff0c;消耗体力 &#61; 6 &lt; 13</p> 
+<p></p> 
+<p>另外还有一个索引2的山峰&#xff0c;有两条路线登山&#xff0c;分别为&#xff1a;</p> 
+<p>0 → 2 → 0&#xff0c;消耗体力 &#61; 12 &lt; 13</p> 
+<p>5 → 2 → 5&#xff0c;消耗体力 &#61; 12 &lt; 13</p> 
+<p>也能满足安全登山下山&#xff0c;但是题目用例说明没有给出&#xff0c;而题目输出是给的可攀登山峰数3&#xff0c;即索引位置2&#xff0c;9&#xff0c;11的三座山峰。</p> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先找到正向第一个地面&#xff08;高度0&#xff09;位置&#xff0c;然后从此位置开始攀登&#xff1a;</p> 
+<blockquote> 
+ <p>定义两个变量 upCost&#xff0c;downCost&#xff0c;分别代表上山体力消耗&#xff0c;下山体力消耗。</p> 
+ <p>初始时都为0</p> 
+</blockquote> 
+<p>假设索引 i 执行下一个位置&#xff0c;那么 height[i] - height[i-1] 就是高度差diff&#xff1a;</p> 
+<ul><li>如果diff &gt; 0&#xff0c;那么当前处于上坡路程&#xff0c;此时upCost &#43;&#61; diff * 2&#xff0c;downCost &#43;&#61; diff</li></ul> 
+<blockquote> 
+ <p>上山时如果遇到上坡&#xff0c;那么相对应的&#xff0c;下山时&#xff0c;这段路程就变成了下坡</p> 
+</blockquote> 
+<ul><li>如果diff &lt; 0&#xff0c;那么当前处于下坡路程&#xff0c;此时upCost -&#61; diff&#xff0c;downCost -&#61; diff * 2</li></ul> 
+<blockquote> 
+ <p>上山时如果遇到下坡&#xff0c;</p> 
+ <p>PS&#xff1a;为什么上山会遇到下坡路程&#xff1f;可以看下图&#xff0c;如果我想从索引6地面攀登到索引11山峰&#xff0c;那么中间必然要经过更高的索引9山峰&#xff0c;产生下坡路程</p> 
+ <p><img alt="" height="202" src="https://img-blog.csdnimg.cn/direct/a29b91474aaf48aca93867f6be49bfa7.png" width="652" /></p> 
+ <p>上山时如果遇到下坡&#xff0c;那么相对应的&#xff0c;下山时&#xff0c;这段路程就变成了上坡路。</p> 
+ <p>注意&#xff1a;上面diff高度差 &lt; 0&#xff0c;因此 upCost &#43;&#61; -diff&#xff0c;就变为了 upCost -&#61; diff。downCost同理。</p> 
+</blockquote> 
+<ul><li>如果diff &#61;&#61; 0&#xff0c;那么当前不消耗体力</li></ul> 
+<p></p> 
+<p>上面 diff &#61; heights[i] - heights[i - 1]&#xff0c;如果 diff &lt; 0 以及 diff &#61;&#61; 0时&#xff0c;说明位置 i 的山不是山顶。</p> 
+<p>而 diff &gt; 0 时&#xff0c;位置 i 是有可能为山顶的&#xff0c;我们只需要检查 heights[i] &gt; heights[i&#43;1]即可&#xff0c;比如</p> 
+<p><img alt="" height="263" src="https://img-blog.csdnimg.cn/direct/8b7d5152724045258122f19f6a1743ed.png" width="666" /></p> 
+<p>如果确定位置 i 是山顶&#xff0c;则攀登此山顶的体力消耗&#xff08;上山&#43;下山&#xff09;&#61; upCost &#43; downCost</p> 
+<p>如果此时 upCost &#43; downCost &lt;&#61; 自身体力&#xff08;第二行输入&#xff09;&#xff0c;那么位置 i 山顶可攀登。</p> 
+<p></p> 
+<p>另外&#xff0c;我们在不断向后攀登的过程中&#xff0c;可能会重回地面&#xff08;height[i] &#61;&#61; 0&#xff09;&#xff0c;入下图绿色框部分</p> 
+<p><img alt="" height="225" src="https://img-blog.csdnimg.cn/direct/4c8ff01e146d4b3a9822272e3011086e.png" width="590" /></p> 
+<p>那么此时&#xff0c;对于后面的山峰来说&#xff0c;我们更优的攀登起始位置是绿色部分&#xff0c;而不是一开始的地面位置&#xff0c;因此&#xff0c;此时&#xff0c;我们应该将 upCost、downCost 重置为0&#xff0c;相当于从绿色部分重新攀登后面的山。</p> 
+<p></p> 
+<p>以上就是求解思路。但是存在漏洞&#xff0c;比如下图&#xff0c;我们攀登索引11的山峰&#xff0c;如果只正向考虑的话&#xff0c;则最优路径是 6 → 11 → 13</p> 
+<p><img alt="" height="295" src="https://img-blog.csdnimg.cn/direct/cae47587c3b04612aba1b9f3a10661f4.png" width="687" /></p> 
+<p>但是逆向考虑的话&#xff0c;会有更优解</p> 
+<p><img alt="" height="261" src="https://img-blog.csdnimg.cn/direct/f8c33264961f4881866b2cca8c550d56.png" width="613" /></p> 
+<p>即路径为 13 → 11 → 13</p> 
+<p></p> 
+<p>因此&#xff0c;我们应该正向、逆向都爬一次&#xff0c;这样才能保证所有山峰都能找到最优路径</p> 
+<p></p> 
+<hr /> 
+<p>2023.12.08</p> 
+<p>upCost 和 downCost 可以进行合并&#xff0c;具体请见代码注释。</p> 
+<p>攀登者体力必须要大于 上山、下山体力消耗之和&#xff0c;而不是大于等于。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入处理
+void (async function () {
+  const heights &#61; (await readline()).split(&#34;,&#34;).map(Number);
+  const strength &#61; parseInt(await readline());
+  console.log(getResult(heights, strength));
+})();
+
+// 算法实现&#xff08;本题实际考试为核心代码模式&#xff0c;因此考试时只需要写出此函数实现即可&#xff09;
+function getResult(heights, strength) {
+  // 记录可攀登的山峰索引
+  const idxs &#61; new Set();
+
+  // 正向攀登
+  climb(heights, strength, idxs, true);
+  // 逆序攀登
+  climb(heights.reverse(), strength, idxs, false);
+
+  return idxs.size;
+}
+
+function climb(heights, strength, idxs, direction) {
+  // 找到第一个地面位置
+  let j &#61; 0;
+  while (j &lt; heights.length &amp;&amp; heights[j] !&#61; 0) {
+    j&#43;&#43;;
+  }
+
+  let cost &#61; 0; // 攀登体力总消耗&#xff08;包括上山&#xff0c;下山&#xff09;
+  // let upCost &#61; 0; // 上山体力消耗
+  // let downCost &#61; 0; // 下山体力消耗
+
+  // 开始攀登
+  for (let i &#61; j &#43; 1; i &lt; heights.length; i&#43;&#43;) {
+    // 如果遇到了新的地面&#xff0c;则从新的地面位置重新计算攀登消耗的体力
+    if (heights[i] &#61;&#61; 0) {
+      cost &#61; 0;
+      // upCost &#61; 0;
+      // downCost &#61; 0;
+      continue;
+    }
+
+    const diff &#61; heights[i] - heights[i - 1]; // diff记录高度差
+
+    if (diff &gt; 0) {
+      // 如果过程是上坡
+      cost &#43;&#61; diff * 3;
+      // upCost &#43;&#61; diff * 2; // 则上山时&#xff0c;体力消耗 &#61; 高度差 * 2
+      // downCost &#43;&#61; diff; // 相反的下山时&#xff0c;体力消耗 &#61; 高度差 * 1
+
+      // 由于 height[i] &gt; heights[i-1]&#xff0c;因此如果 height[i] &gt; heights[i&#43;1] 的话&#xff0c;位置 i 就是山顶
+      if (i &#43; 1 &gt;&#61; heights.length || heights[i] &gt; heights[i &#43; 1]) {
+        // 计算攀登此山顶的上山下山消耗的体力和
+        if (cost &lt; strength) {
+          // if (upCost &#43; downCost &lt; strength) {
+          // 如果不超过自身体力&#xff0c;则可以攀登
+          if (direction) {
+            idxs.add(i);
+          } else {
+            idxs.add(heights.length - i - 1); // 需要注意&#xff0c;逆序heights数组后&#xff0c;我们对于的山峰位置需要反转
+          }
+        }
+      }
+    } else if (diff &lt; 0) {
+      cost -&#61; diff * 3;
+      // upCost -&#61; diff; // 则上山时&#xff0c;体力消耗 &#61; 高度差 * 1
+      // downCost -&#61; diff * 2; // 相反的下山时&#xff0c;体力消耗 &#61; 高度差 * 2
+      // heights[i] &lt; heights[i-1]&#xff0c;因此位置i不可能是山顶
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Scanner;
+
+public class Main {
+  // 输入处理
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] heights &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int strength &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(heights, strength));
+  }
+
+  // 算法实现&#xff08;本题实际考试为核心代码模式&#xff0c;因此考试时只需要写出此函数实现即可&#xff09;
+  public static int getResult(int[] heights, int strength) {
+    // 记录可攀登的山峰索引
+    HashSet&lt;Integer&gt; idxs &#61; new HashSet&lt;&gt;();
+
+    // 正向攀登
+    climb(heights, strength, idxs, true);
+
+    // 逆序攀登
+    reverse(heights);
+    climb(heights, strength, idxs, false);
+
+    return idxs.size();
+  }
+
+  public static void climb(int[] heights, int strength, HashSet&lt;Integer&gt; idxs, boolean direction) {
+    // 找到第一个地面位置
+    int j &#61; 0;
+    while (j &lt; heights.length &amp;&amp; heights[j] !&#61; 0) {
+      j&#43;&#43;;
+    }
+
+    int cost &#61; 0; // 攀登体力总消耗&#xff08;包括上山&#xff0c;下山&#xff09;
+    //    int upCost &#61; 0; // 上山体力消耗
+    //    int downCost &#61; 0; // 下山体力消耗
+
+    // 开始攀登
+    for (int i &#61; j &#43; 1; i &lt; heights.length; i&#43;&#43;) {
+      // 如果遇到了新的地面&#xff0c;则从新的地面位置重新计算攀登消耗的体力
+      if (heights[i] &#61;&#61; 0) {
+        cost &#61; 0;
+        //        upCost &#61; 0;
+        //        downCost &#61; 0;
+        continue;
+      }
+
+      int diff &#61; heights[i] - heights[i - 1]; // diff记录高度差
+
+      if (diff &gt; 0) {
+        // 如果过程是上坡
+        cost &#43;&#61; diff * 3;
+        //        upCost &#43;&#61; diff * 2; // 则上山时&#xff0c;体力消耗 &#61; 高度差 * 2
+        //        downCost &#43;&#61; diff; // 相反的下山时&#xff0c;体力消耗 &#61; 高度差 * 1
+
+        // 由于 height[i] &gt; heights[i-1]&#xff0c;因此如果 height[i] &gt; heights[i&#43;1] 的话&#xff0c;位置 i 就是山顶
+        if (i &#43; 1 &gt;&#61; heights.length || heights[i] &gt; heights[i &#43; 1]) {
+          // 计算攀登此山顶的上山下山消耗的体力和
+          if (cost &lt; strength) {
+            //          if (upCost &#43; downCost &lt;&#61; strength) {
+            // 如果小于自身体力&#xff0c;则可以攀登
+            if (direction) {
+              idxs.add(i);
+            } else {
+              idxs.add(heights.length - i - 1); // 需要注意&#xff0c;逆序heights数组后&#xff0c;我们对于的山峰位置需要反转
+            }
+          }
+        }
+
+      } else if (diff &lt; 0) {
+        // 如果过程是下坡
+        cost -&#61; diff * 3;
+        //        upCost -&#61; diff; // 则上山时&#xff0c;体力消耗 &#61; 高度差 * 1
+        //        downCost -&#61; diff * 2; // 相反的下山时&#xff0c;体力消耗 &#61; 高度差 * 2
+
+        // heights[i] &lt; heights[i-1]&#xff0c;因此位置i不可能是山顶
+      }
+    }
+  }
+
+  public static void reverse(int[] nums) {
+    int i &#61; 0;
+    int j &#61; nums.length - 1;
+
+    while (i &lt; j) {
+      int tmp &#61; nums[i];
+      nums[i] &#61; nums[j];
+      nums[j] &#61; tmp;
+      i&#43;&#43;;
+      j--;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+heights &#61; list(map(int, input().split(&#34;,&#34;)))
+strength &#61; int(input())
+
+
+def climb(idxs, direction):
+    # 找到第一个地面位置
+    j &#61; 0
+    while j &lt; len(heights) and heights[j] !&#61; 0:
+        j &#43;&#61; 1
+
+    # 上山体力消耗
+    # upCost &#61; 0
+    # 下山体力消耗
+    # downCost &#61; 0
+
+    # 攀登体力总消耗&#xff08;包括上山&#xff0c;下山&#xff09;
+    cost &#61; 0
+
+    for i in range(j &#43; 1, len(heights)):
+        # 如果遇到了新的地面&#xff0c;则从新的地面位置重新计算攀登消耗的体力
+        if heights[i] &#61;&#61; 0:
+            cost &#61; 0
+            # upCost &#61; 0
+            # downCost &#61; 0
+            continue
+
+        # diff记录高度差
+        diff &#61; heights[i] - heights[i - 1]
+
+        if diff &gt; 0:
+            # 如果过程是上坡
+            cost &#43;&#61; diff * 3
+            # upCost &#43;&#61; diff * 2  # 则上山时&#xff0c;体力消耗 &#61; 高度差 * 2
+            # downCost &#43;&#61; diff  # 相反的下山时&#xff0c;体力消耗 &#61; 高度差 * 1
+
+            # 由于 height[i] &gt; heights[i-1]&#xff0c;因此如果 height[i] &gt; heights[i&#43;1] 的话&#xff0c;位置 i 就是山顶
+            if i &#43; 1 &gt;&#61; len(heights) or heights[i] &gt; heights[i &#43; 1]:
+                # 计算攀登此山顶的上山下山消耗的体力和
+                if cost &lt; strength:
+                    # if upCost &#43; downCost &lt;&#61; strength:
+                    # 如果不超过自身体力&#xff0c;则可以攀登
+                    if direction:
+                        idxs.add(i)
+                    else:
+                        idxs.add(len(heights) - i - 1)  # 需要注意&#xff0c;逆序heights数组后&#xff0c;我们对于的山峰位置需要反转
+
+        elif diff &lt; 0:
+            # 如果过程是下坡
+            cost -&#61; diff * 3
+            # upCost -&#61; diff  # 则上山时&#xff0c;体力消耗 &#61; 高度差 * 1
+            # downCost -&#61; diff * 2  # 相反的下山时&#xff0c;体力消耗 &#61; 高度差 * 2
+            # heights[i] &lt; heights[i-1]&#xff0c;因此位置i不可能是山顶
+
+
+# 算法入口
+def getResult():
+    # 记录可攀登的山峰索引
+    idxs &#61; set()
+
+    # 正向攀登
+    climb(idxs, True)
+
+    # 逆序攀登
+    heights.reverse()
+    climb(idxs, False)
+
+    return len(idxs)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 100000
+
+int canClimb[MAX_SIZE] &#61; {0};
+int canClimb_count &#61; 0;
+
+void climb(const int heights[], int heights_size, int strength, int direction) {
+    // 找到第一个地面位置
+    int j &#61; 0;
+    while (j &lt; heights_size &amp;&amp; heights[j] !&#61; 0) {
+        j&#43;&#43;;
+    }
+
+    int cost &#61; 0; // 攀登体力总消耗&#xff08;包括上山&#xff0c;下山&#xff09;
+//    int upCost &#61; 0; // 上山体力消耗
+//    int downCost &#61; 0; // 下山体力消耗
+
+    // 开始攀登
+    for (int i &#61; j &#43; 1; i &lt; heights_size; i&#43;&#43;) {
+        // 如果遇到了新的地面&#xff0c;则从新的地面位置重新计算攀登消耗的体力
+        if (heights[i] &#61;&#61; 0) {
+            cost &#61; 0;
+//            upCost &#61; 0;
+//            downCost &#61; 0;
+            continue;
+        }
+
+        int diff &#61; heights[i] - heights[i - 1]; // diff记录高度差
+
+        if (diff &gt; 0) {
+            // 如果过程是上坡
+            cost &#43;&#61; diff * 3;
+//            upCost &#43;&#61; diff * 2; // 则上山时&#xff0c;体力消耗 &#61; 高度差 * 2
+//            downCost &#43;&#61; diff; // 相反的下山时&#xff0c;体力消耗 &#61; 高度差 * 1
+
+            // 由于 height[i] &gt; heights[i-1]&#xff0c;因此如果 height[i] &gt; heights[i&#43;1] 的话&#xff0c;位置 i 就是山顶
+            if (i &#43; 1 &gt;&#61; heights_size || heights[i] &gt; heights[i &#43; 1]) {
+                // 计算攀登此山顶的上山下山消耗的体力和
+                if (cost &lt; strength) {
+//                if (upCost &#43; downCost &lt; strength) {
+                    // 需要注意&#xff0c;逆序heights数组后&#xff0c;我们对于的山峰位置需要反转
+                    int idx &#61; direction ? i : heights_size - i - 1;
+
+                    if(!canClimb[idx]) {
+                        // 如果不超过自身体力&#xff0c;则可以攀登
+                        canClimb[i] &#61; 1;
+                        canClimb_count&#43;&#43;;
+                    }
+                }
+            }
+
+        } else if (diff &lt; 0) {
+            // 如果过程是下坡
+            cost -&#61; diff * 3;
+//            upCost -&#61; diff; // 则上山时&#xff0c;体力消耗 &#61; 高度差 * 1
+//            downCost -&#61; diff * 2; // 相反的下山时&#xff0c;体力消耗 &#61; 高度差 * 2
+            // heights[i] &lt; heights[i-1]&#xff0c;因此位置i不可能是山顶
+        }
+    }
+}
+
+void reverse(int nums[], int nums_size) {
+    int i &#61; 0;
+    int j &#61; nums_size - 1;
+
+    while (i &lt; j) {
+        int tmp &#61; nums[i];
+        nums[i] &#61; nums[j];
+        nums[j] &#61; tmp;
+
+        i&#43;&#43;;
+        j--;
+    }
+}
+
+// 算法实现&#xff08;本题实际考试为核心代码模式&#xff0c;因此考试时只需要写出此函数实现即可&#xff09;
+int getResult(int heights[], int heights_size, int strength) {
+    climb(heights, heights_size, strength, 1);
+
+    reverse(heights, heights_size);
+    climb(heights, heights_size, strength, 0);
+
+    return canClimb_count;
+}
+
+// 输入处理
+int main() {
+    int heights[MAX_SIZE];
+    int heights_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;heights[heights_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    int strength;
+    scanf(&#34;%d&#34;, &amp;strength);
+
+    printf(&#34;%d\n&#34;, getResult(heights, heights_size, strength));
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,226 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 高矮个子排队（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>现在有一队小朋友&#xff0c;他们高矮不同&#xff0c;我们以正整数数组表示这一队小朋友的身高&#xff0c;如数组{5,3,1,2,3}。</p> 
+<p>我们现在希望小朋友排队&#xff0c;以“高”“矮”“高”“矮”顺序排列&#xff0c;每一个“高”位置的小朋友要比相邻的位置高或者相等&#xff1b;每一个“矮”位置的小朋友要比相邻的位置矮或者相等&#xff1b;</p> 
+<p>要求小朋友们移动的距离和最小&#xff0c;第一个从“高”位开始排&#xff0c;输出最小移动距离即可。</p> 
+<p>例如&#xff0c;在示范小队{5,3,1,2,3}中&#xff0c;{5, 1, 3, 2, 3}是排序结果。</p> 
+<p>{5, 2, 3, 1, 3} 虽然也满足“高”“矮”“高”“矮”顺序排列&#xff0c;但小朋友们的移动距离大&#xff0c;所以不是最优结果。</p> 
+<p>移动距离的定义如下所示&#xff1a;</p> 
+<p>第二位小朋友移到第三位小朋友后面&#xff0c;移动距离为1&#xff0c;若移动到第四位小朋友后面&#xff0c;移动距离为2&#xff1b;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>排序前的小朋友&#xff0c;以英文空格的正整数&#xff1a;</p> 
+<p>4 3 5 7 8</p> 
+<p>注&#xff1a;小朋友&lt;100个</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>排序后的小朋友&#xff0c;以英文空格分割的正整数&#xff1a;4 3 7 5 8</p> 
+<p>备注&#xff1a;4&#xff08;高&#xff09;3&#xff08;矮&#xff09;7&#xff08;高&#xff09;5&#xff08;矮&#xff09;8&#xff08;高&#xff09;&#xff0c; 输出结果为最小移动距离&#xff0c;只有5和7交换了位置&#xff0c;移动距离都是1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4 1 3 5 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4 1 5 2 3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 1 1 1 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1 1 1 1 1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">相邻位置可以相等</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">xxx</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[ ]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">出现非法参数情况&#xff0c; 返回空数组。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>感觉本题的用例1是存在问题的</p> 
+<p>4 1 3 5 2</p> 
+<p>的最小移动距离应该是1&#xff0c;即让5和2交换位置&#xff0c;变为&#xff1a;4 1 3 2 5&#xff0c;这样的话&#xff0c;也满足&#xff1a;高 矮 高 矮 高。</p> 
+<p>而用例输出的逻辑是先让3和5交换&#xff0c;变为 4 1 5 3 2&#xff0c;再让3和2交换&#xff0c;变为 4 1 5 2 3&#xff0c;这样的话也满足&#xff1a;高 矮 高 矮 高&#xff0c;但是却交换了两次&#xff0c;也就是说移动距离是2。</p> 
+<p></p> 
+<p>难道说&#xff0c;用例逻辑是&#xff0c;必须要从第一个小朋友开始&#xff0c;每当遇到不符合要求的排队顺序&#xff0c;就必须交换位置吗&#xff1f;</p> 
+<p>那么题目描述中又为何要强调最小距离呢&#xff1f;</p> 
+<p>感觉这题有点自相矛盾。</p> 
+<p></p> 
+<p>我这里按照符合用例要求的逻辑写的代码&#xff0c;示意图如下</p> 
+<p><img alt="" height="676" src="https://img-blog.csdnimg.cn/48f932f66e4d4f5cb83c8d21e8f6ea1f.png" width="1200" /></p> 
+<p> 但是这种算法是不满足最小距离要求的。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  if (!/(\d\s)&#43;/.test(line)) return console.log(&#34;[]&#34;);
+
+  const arr &#61; line.split(&#34; &#34;).map(Number);
+
+  let flag &#61; true;
+  for (let i &#61; 0; i &lt; arr.length - 1; i&#43;&#43;) {
+    if (arr[i] !&#61;&#61; arr[i &#43; 1] &amp;&amp; arr[i] &gt; arr[i &#43; 1] !&#61;&#61; flag) {
+      let tmp &#61; arr[i];
+      arr[i] &#61; arr[i &#43; 1];
+      arr[i &#43; 1] &#61; tmp;
+    }
+
+    flag &#61; !flag;
+  }
+  console.log(arr.join(&#34; &#34;));
+});
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    try {
+      Integer[] arr &#61;
+          Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+      System.out.println(getResult(arr));
+    } catch (Exception e) {
+      System.out.println(&#34;[]&#34;);
+    }
+  }
+
+  // 算法入口
+  public static String getResult(Integer[] arr) {
+    // i高-&gt;i&#43;1矮 为true&#xff0c;i矮-&gt;i&#43;1高 为false
+    boolean flag &#61; true;
+
+    for (int i &#61; 0; i &lt; arr.length - 1; i&#43;&#43;) {
+      if (arr[i] !&#61; arr[i &#43; 1] &amp;&amp; (arr[i] &gt; arr[i &#43; 1]) !&#61; flag) {
+        int tmp &#61; arr[i];
+        arr[i] &#61; arr[i &#43; 1];
+        arr[i &#43; 1] &#61; tmp;
+      }
+
+      flag &#61; !flag;
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (Integer h : arr) {
+      sj.add(h &#43; &#34;&#34;);
+    }
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 算法入口
+def getResult(arr):
+    flag &#61; True
+
+    for i in range(len(arr) - 1):
+        if arr[i] !&#61; arr[i &#43; 1] and (arr[i] &gt; arr[i &#43; 1]) !&#61; flag:
+            tmp &#61; arr[i]
+            arr[i] &#61; arr[i &#43; 1]
+            arr[i &#43; 1] &#61; tmp
+
+        flag &#61; not flag
+
+    return &#34; &#34;.join(map(str, arr))
+
+
+# 输入获取
+try:
+    arr &#61; list(map(int, input().split()))
+    print(getResult(arr))
+except ValueError:
+    print(&#34;[]&#34;)
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_SIZE 100
+
+void getResult(int nums[], int nums_size);
+
+int main() {
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+
+    while(scanf(&#34;%d&#34;, &amp;nums[nums_size])) {
+        nums_size&#43;&#43;;
+        if(getchar() !&#61; &#39; &#39;) break;
+    }
+
+    if(nums_size &#61;&#61; 0) {
+        puts(&#34;[]&#34;);
+    } else {
+        getResult(nums, nums_size);
+    }
+
+    return 0;
+}
+
+void getResult(int nums[], int nums_size) {
+    // i高-&gt;i&#43;1矮 为true&#xff0c;i矮-&gt;i&#43;1高 为false
+    int flag &#61; 1;
+
+    for(int i&#61;0; i&lt;nums_size-1; i&#43;&#43;) {
+        if(nums[i] !&#61; nums[i&#43;1] &amp;&amp; (nums[i] &gt; nums[i&#43;1]) !&#61; flag) {
+            int tmp &#61; nums[i];
+            nums[i] &#61; nums[i&#43;1];
+            nums[i&#43;1] &#61; tmp;
+        }
+
+        flag &#61; !flag;
+    }
+
+    char res[MAX_SIZE * 10] &#61; {&#39;\0&#39;};
+    for(int i&#61;0; i&lt;nums_size; i&#43;&#43;) {
+        char tmp[10];
+        sprintf(tmp, &#34;%d&#34;, nums[i]);
+        strcat(res, tmp);
+
+        if(i !&#61; nums_size - 1) {
+            strcat(res, &#34; &#34;);
+        }
+    }
+
+    puts(res);
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

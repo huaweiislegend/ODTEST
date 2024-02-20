@@ -1,0 +1,251 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 日志限流（20220921）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某软件系统会在运行过程中持续产生日志&#xff0c;系统每天运行N单位时间&#xff0c;运行期间每单位时间产生的日志条数保行在数组records中。records[i]表示第i单位时间内产生日志条数。<br /> 由于系统磁盘空间限制&#xff0c;每天可记录保存的日志总数上限为total条。<br /> 如果一天产生的日志总条数大于total&#xff0c;则需要对当天内每单位时间产生的日志条数进行限流后保存&#xff0c;请计算每单位时间最大可保存日志条数limit&#xff0c;以确保当天保存的总日志条数不超过total。<br /> 对于单位时间内产生日志条数不超过limit的日志全部记录保存;<br /> 对于单位时间内产生日志条数超过limit的日志&#xff0c;则只记录保存limit条日志&#xff1b;<br /> 如果一天产生的日志条数总和小于等于total&#xff0c;则不需要启动限流机制&#xff0e;result为-1。<br /> 请返回result的最大值或者-1。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为系统某一天运行的单位时间数N,1&lt;&#61;N&lt;&#61;10^5<br /> 第二行为表示这一天每单位时间产生的日志数量的数组records[]&#xff0c;0 &lt;&#61; records[i] &lt;&#61; 10^5<br /> 第三行为系统一天可以保存的总日志条数total。1 &lt;&#61; total &lt;&#61; 10^9</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>每单位时间内最大可保存的日志条数limit&#xff0c;如果不需要启动限流机制&#xff0c;返回-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6<br /> 3 3 8 7 10 15<br /> 40</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">9</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例图示如下</p> 
+<p><img alt="" height="707" src="https://img-blog.csdnimg.cn/46a71a2779f044ea8799bccdef8ee1a7.png" width="377" /></p> 
+<p></p> 
+<p>本题其实和<a href="https://fcqian.blog.csdn.net/article/details/128348796" rel="nofollow" title="华为OD机试 - 开放日活动_伏城之外的博客-CSDN博客">华为OD机试 - 开放日活动_伏城之外的博客-CSDN博客</a> </p> 
+<p>几乎一模一样&#xff0c;本题将采用二分查找策略解题。</p> 
+<p></p> 
+<p>首先&#xff0c;根据<a href="https://fcqian.blog.csdn.net/article/details/128348796" rel="nofollow" title="华为OD机试 - 开放日活动_伏城之外的博客-CSDN博客">华为OD机试 - 开放日活动_伏城之外的博客-CSDN博客</a></p> 
+<p>我们可以知道&#xff0c;本题有一个理想的limit&#xff0c;值为total / n&#xff0c;取这个limit&#xff0c;得到限流后总日志数只可能小于等于total&#xff0c;原因很简单&#xff0c;大家可以自己想想。</p> 
+<p>因此&#xff0c;我们可以将 total / n 当成最小limit取值&#xff0c;而最大limit取值其实就是max(records)&#xff0c;即初始时&#xff1a;</p> 
+<ul><li>max_limit &#61; max(records)</li><li>min_limit &#61; total / n</li></ul> 
+<p>我们每次都取min_limit和max_limit的二分值作为测试limit&#xff0c;测试逻辑如下&#xff1a;</p> 
+<ul><li>遍历records每一个record&#xff0c;如果record数量小于等于limit&#xff0c;则不做限流&#xff0c;如果record大于limit&#xff0c;则限流为limit条&#xff0c;然后求限流后日志总条数tmp</li></ul> 
+<p>得到日志总条数后&#xff0c;如果</p> 
+<ul><li>tmp &lt; total&#xff0c;则说明limit取小了&#xff0c;则应该提高limit值&#xff0c;即让min_limit &#61; limit</li><li>tmp &gt; total&#xff0c;则说明limit取大了&#xff0c;则应该降低limit值&#xff0c;即让max_limit &#61; limit</li><li>tmp &#61;&#61; total&#xff0c;则说明limit取得刚刚好&#xff0c;此时的limit就是最佳limit</li></ul> 
+<p>当然我们可能无法遇到tmp &#61;&#61; total的情况&#xff0c;此时我们应该定义一个ans变量&#xff0c;保存tmp &lt; total时的limit值&#xff0c;如果最终没有tmp &#61;&#61; total的情况&#xff0c;则最后应该返回ans作为题解。</p> 
+<p></p> 
+<p>另外&#xff0c;在这些逻辑之前&#xff0c;我们可以先对records求和sum&#xff0c;如果sum &lt;&#61; total&#xff0c;则不需要做上面逻辑。</p> 
+<p></p> 
+<p>上面算法的时间复杂度为 O(log(total) * N)</p> 
+<ul><li>1&lt;&#61;N&lt;&#61;10^5</li><li>1 &lt;&#61; total &lt;&#61; 10^9</li></ul> 
+<p>因此性能还算比较优异。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const n &#61; lines[0] - 0;
+    const records &#61; lines[1].split(&#34; &#34;).map(Number);
+    const total &#61; lines[2] - 0;
+
+    console.log(getResult(n, records, total));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} n 系统某一天运行的单位时间数N
+ * &#64;param {*} records 这一天每单位时间产生的日志数量的数组
+ * &#64;param {*} total 系统一天可以保存的总日志条数total
+ * &#64;return {*} 每单位时间内最大可保存的日志条数limit&#xff0c;如果不需要启动限流机制&#xff0c;返回-1
+ */
+function getResult(n, records, total) {
+  const sum &#61; records.reduce((p, c) &#61;&gt; p &#43; c);
+
+  // 如果一天产生的日志条数总和小于等于total&#xff0c;则不需要启动限流机制&#xff0e;result为-1
+  if (sum &lt;&#61; total) return -1;
+
+  // records.sort((a, b) &#61;&gt; a - b);
+
+  // let max_limit &#61; records.at(-1);
+  let max_limit &#61; Math.max(...records);
+  let min_limit &#61; Math.floor(total / n);
+
+  let ans &#61; min_limit;
+
+  while (max_limit - min_limit &gt; 1) {
+    let limit &#61; Math.floor((max_limit &#43; min_limit) / 2);
+
+    let tmp &#61; 0;
+    records.forEach((record) &#61;&gt; {
+      tmp &#43;&#61; Math.min(record, limit);
+    });
+
+    if (tmp &gt; total) {
+      max_limit &#61; limit;
+    } else if (tmp &lt; total) {
+      min_limit &#61; limit;
+      ans &#61; limit;
+    } else {
+      return limit;
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] records &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      records[i] &#61; sc.nextInt();
+    }
+
+    int total &#61; sc.nextInt();
+
+    System.out.println(getResult(n, records, total));
+  }
+
+  /**
+   * &#64;param n 系统某一天运行的单位时间数N
+   * &#64;param records 这一天每单位时间产生的日志数量的数组
+   * &#64;param total 系统一天可以保存的总日志条数total
+   * &#64;return 每单位时间内最大可保存的日志条数limit&#xff0c;如果不需要启动限流机制&#xff0c;返回-1
+   */
+  public static int getResult(int n, int[] records, int total) {
+    int sum &#61; Arrays.stream(records).reduce(Integer::sum).getAsInt();
+
+    // 如果一天产生的日志条数总和小于等于total&#xff0c;则不需要启动限流机制&#xff0e;result为-1
+    if (sum &lt;&#61; total) return -1;
+
+    //    Arrays.sort(records);
+
+    //    int max_limit &#61; records[records.length - 1];
+    int max_limit &#61; Arrays.stream(records).max().getAsInt();
+    int min_limit &#61; total / n;
+
+    int ans &#61; min_limit;
+    while (max_limit - min_limit &gt; 1) {
+      int limit &#61; (max_limit &#43; min_limit) / 2;
+
+      int tmp &#61; 0;
+      for (int record : records) {
+        tmp &#43;&#61; Math.min(record, limit);
+      }
+
+      if (tmp &gt; total) {
+        max_limit &#61; limit;
+      } else if (tmp &lt; total) {
+        min_limit &#61; limit;
+        ans &#61; limit;
+      } else {
+        return limit;
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+records &#61; list(map(int, input().split()))
+total &#61; int(input())
+
+
+# 算法入口
+def getResult(n, records, total):
+    &#34;&#34;&#34;
+    :param n: 系统某一天运行的单位时间数N
+    :param records: 这一天每单位时间产生的日志数量的数组
+    :param total: 系统一天可以保存的总日志条数total
+    :return: 每单位时间内最大可保存的日志条数limit&#xff0c;如果不需要启动限流机制&#xff0c;返回-1
+    &#34;&#34;&#34;
+    sumV &#61; sum(records)
+
+    # 如果一天产生的日志条数总和小于等于total&#xff0c;则不需要启动限流机制&#xff0e;result为-1
+    if sumV &lt;&#61; total:
+        return -1
+
+    # records.sort()
+
+    # max_limit &#61; records[-1]
+    max_limit &#61; max(records)
+    min_limit &#61; int(total / n)
+
+    ans &#61; min_limit
+    while max_limit - min_limit &gt; 1:
+        limit &#61; int((max_limit &#43; min_limit) / 2)
+
+        tmp &#61; 0
+        for record in records:
+            tmp &#43;&#61; min(record, limit)
+
+        if tmp &gt; total:
+            max_limit &#61; limit
+        elif tmp &lt; total:
+            min_limit &#61; limit
+            ans &#61; limit
+        else:
+            return limit
+
+    return ans
+
+
+# 调用算法
+print(getResult(n, records, total))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

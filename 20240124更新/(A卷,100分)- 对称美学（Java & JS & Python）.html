@@ -1,0 +1,284 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 对称美学（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>对称就是最大的美学&#xff0c;现有一道关于对称字符串的美学。已知&#xff1a;</p> 
+<ul><li>第1个字符串&#xff1a;R</li><li>第2个字符串&#xff1a;BR</li><li>第3个字符串&#xff1a;RBBR</li><li>第4个字符串&#xff1a;BRRBRBBR</li><li>第5个字符串&#xff1a;RBBRBRRBBRRBRBBR</li></ul> 
+<p>相信你已经发现规律了&#xff0c;没错&#xff01;就是第 i 个字符串 &#61; 第 i - 1 号字符串取反 &#43; 第 i - 1 号字符串&#xff1b;</p> 
+<p>取反&#xff08;R-&gt;B, B-&gt;R&#xff09;;</p> 
+<p>现在告诉你n和k&#xff0c;让你求得第n个字符串的第k个字符是多少。&#xff08;k的编号从0开始&#xff09;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入一个T&#xff0c;表示有T组用例&#xff1b;</p> 
+<p>解析来输入T行&#xff0c;每行输入两个数字&#xff0c;表示n&#xff0c;k</p> 
+<ul><li>1 ≤ T ≤ 100&#xff1b;</li><li>1 ≤ n ≤ 64&#xff1b;</li><li>0 ≤ k &#xff1c; 2^(n-1)&#xff1b;</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出T行表示答案&#xff1b;</p> 
+<p>输出 &#34;blue&#34; 表示字符是B&#xff1b;</p> 
+<p>输出 &#34;red&#34; 表示字符是R。</p> 
+<p></p> 
+<p>备注&#xff1a;输出字符串区分大小写&#xff0c;请注意输出小写字符串&#xff0c;不带双引号。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 1 0<br /> 2 1<br /> 3 2<br /> 4 6<br /> 5 8</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"><code>red</code><br /><code>red</code><br /><code>blue</code><br /><code>blue</code><br /><code>blue</code></td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第 1 个字符串&#xff1a;R -&gt; 第 0 个字符为R<br /> 第 2 个字符串&#xff1a;BR -&gt; 第 1 个字符为R<br /> 第 3 个字符串&#xff1a;RBBR -&gt; 第 2 个字符为B<br /> 第 4 个字符串&#xff1a;BRRBRBBR -&gt; 第 6 个字符为B<br /> 第 5 个字符串&#xff1a;RBBRBRRBBRRBRBBR -&gt; 第 8 个字符为B</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> 64 73709551616</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">red</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p><img alt="" height="278" src="https://img-blog.csdnimg.cn/e292a6f1302c430eb846ec5e5d5eb298.png" width="1200" /></p> 
+<p>上图所示&#xff0c;是第1~6个字符串&#xff0c;可以发现第6个已经很长了&#xff0c;那么本题的最多要求到第64个字符串&#xff0c;那么有多长呢&#xff1f;答&#xff1a;2^63&#xff0c;即 2^(n-1)。这个长度如果用字符串来存储的话&#xff0c;肯定爆内存&#xff0c;因此任何需要缓存字符串的动作都是禁止的。</p> 
+<p></p> 
+<p>我们只能找规律&#xff0c;来通过规律推导出第n个字符串的第k个字符。</p> 
+<p>那么规律是啥呢&#xff1f;</p> 
+<p><img alt="" height="296" src="https://img-blog.csdnimg.cn/29dac29ab56b45848badb7a7b27165a7.png" width="1200" /></p> 
+<p>如上图黄框所示&#xff0c;我们可以发现&#xff0c;</p> 
+<p>第6个字符串的后半部分&#xff0c;和第5个字符串完全相同&#xff1b;</p> 
+<p>同理&#xff0c;</p> 
+<p>第5个字符串的后半部分&#xff0c;和第4个字符串完全相同&#xff1b;</p> 
+<p>第4个字符串的后半部分&#xff0c;和第3个字符串完全相同&#xff1b;</p> 
+<p>第3个字符串的后半部分&#xff0c;和第2个字符串完全相同&#xff1b;</p> 
+<p>第2个字符串的后半部分&#xff0c;和第1个字符串完全相同&#xff1b;</p> 
+<p>因此&#xff0c;如果我们要找到的k位于第n个字符串的后半部分&#xff0c;假设为get(n, k)&#xff0c;那么其等价于 get(n-1, k -<span style="color:#fe2c24;"> 2^(n-2)</span>)&#xff0c;按此逻辑递归&#xff0c;就可以一直找到第2个字符串或第1个字符串&#xff0c;而这两个字符串很好确认&#xff0c;分别是”R“&#xff0c;”BR“。</p> 
+<p></p> 
+<p>那么如果我们要找到第k个字符串&#xff0c;位于第n个字符串的前半部分呢&#xff1f;</p> 
+<p><img alt="" height="297" src="https://img-blog.csdnimg.cn/8d8e5edcf6a842b6a26e9918a2aed89a.png" width="1200" /></p> 
+<p>可以发现&#xff0c;其实get(n,k)&#xff0c;如果k &lt;&#61; 2^(n-2) &#xff0c;则相当于 get(n-1, k) 的颜色取反。</p> 
+<p></p> 
+<h4>本题的精度问题</h4> 
+<p>根据一位考友反馈的100%Java代码来看&#xff0c;逻辑和本题一模一样&#xff0c;唯一的区别在于&#xff1a;</p> 
+<p><img alt="" height="728" src="https://img-blog.csdnimg.cn/9cc25bd9f2ab42e992486adf775ffec2.png" width="1026" /></p> 
+<p>这个考友分析是可能存在超过64长度的字符串&#xff0c;因此需要使用更大范围的double类型。</p> 
+<p>但是之后又有一个Python语言的考友反馈&#xff0c;这种解法无法拿到100%&#xff0c;还是8%。这里给大家解释一下&#xff0c;Python天生支持大数&#xff08;只要不进行除法&#xff0c;非整除&#xff09;&#xff0c;因此对于Python老解法&#xff0c;我未作任何改动&#xff0c;如下图所示</p> 
+<p><img alt="" height="776" src="https://img-blog.csdnimg.cn/978d0952295c4b69b6465290ce22dd0c.png" width="800" /></p> 
+<p> 但是最后通过率只有8%。</p> 
+<p>不应该呀。为什么呢&#xff1f;</p> 
+<p>左思右想&#xff0c;发现&#xff0c;是对half的取值逻辑存在差异。</p> 
+<p>Java的是基于Math.pow(2, n-2)取得half&#xff0c;而Python是1 &lt;&lt; n-2取得的half值&#xff0c;这两者有区别吗&#xff1f;</p> 
+<p>在逻辑上是没有区别的&#xff0c;但是实际上&#xff0c;当结果超过一定范围后&#xff0c;<span style="color:#fe2c24;">Math.pow会做四舍五入&#xff0c;即丢失精度</span>。</p> 
+<p>Java如下图所示&#xff0c;2^58开始丢失精度&#xff0c;即Math.pow做了四舍五入</p> 
+<p><img alt="" height="630" src="https://img-blog.csdnimg.cn/401a8bace2d44383b30faca434b1aed8.png" width="1200" /></p> 
+<p> Python如下图所示&#xff0c;从2^55开始丢失精度&#xff0c;即Math.pow做了四舍五入</p> 
+<p><img alt="" height="775" src="https://img-blog.csdnimg.cn/aeb181a2a79f42efaace75941e6b82e3.png" width="1200" /></p> 
+<p>JS如下图所示&#xff0c;从2^55开始丢失精度&#xff0c;即Math.pow做了四舍五入</p> 
+<p><img alt="" height="786" src="https://img-blog.csdnimg.cn/3dc9409a21644e05be7d50823aee6bf2.png" width="1106" /></p> 
+<p>因此Math.pow和&lt;&lt;并不是等价的。</p> 
+<p>而本题需要使用Math.pow取half才能拿到满分。</p> 
+<p>但是&#xff0c;本题其实使用&lt;&lt;得到的答案才更加准确。</p> 
+<p></p> 
+<p>当然&#xff0c;到这里&#xff0c;本题的问题并没有解决&#xff0c;如下图所示</p> 
+<p><img alt="" height="140" src="https://img-blog.csdnimg.cn/83c9f502b18c4088bedaf3889eebb6ee.png" width="1200" /></p> 
+<p> <img alt="" height="136" src="https://img-blog.csdnimg.cn/005b5c6f5f9547e594322494d332ec85.png" width="1119" /></p> 
+<p> <img alt="" height="149" src="https://img-blog.csdnimg.cn/22e56a227bf04eb6ba1f14e0e6784701.png" width="1200" /></p> 
+<p>该场景是想求解第64个字符串的第4611686018427387905个字符的颜色。</p> 
+<p>即k &#61; 4611686018427387905&#xff0c;half &#61; math.pow(2, 62)</p> 
+<p>可以发现&#xff0c;不同的语言&#xff0c;这里产生的结果不同。其中JS返回的是1&#xff0c;而Java和Python返回的是0。</p> 
+<p></p> 
+<p>为啥呢&#xff1f;</p> 
+<p>Java</p> 
+<p><img alt="" height="200" src="https://img-blog.csdnimg.cn/dfaaa9c1d8b043e1a6e524da505182fc.png" width="1200" /></p> 
+<p> <img alt="" height="137" src="https://img-blog.csdnimg.cn/8967aa9e28e9442d8e02ab95e51c00c2.png" width="1200" /></p> 
+<p><img alt="" height="153" src="https://img-blog.csdnimg.cn/82cc9ecc12eb47d4b92f753091437e0c.png" width="1200" /></p> 
+<p> </p> 
+<p> JS</p> 
+<p><img alt="" height="205" src="https://img-blog.csdnimg.cn/f79ea5cf9928444e89fff735a712a415.png" width="947" /></p> 
+<p><img alt="" height="156" src="https://img-blog.csdnimg.cn/5ee106512f9b496abf3d9d02c5c7efad.png" width="1020" /></p> 
+<p> </p> 
+<p>Python</p> 
+<p> <img alt="" height="225" src="https://img-blog.csdnimg.cn/ebc3d7a46552419ca0b829a9963ddc1d.png" width="1001" /></p> 
+<p><img alt="" height="160" src="https://img-blog.csdnimg.cn/1dcd25176cd246118c4a8b32229ba442.png" width="1113" />  </p> 
+<p><img alt="" height="179" src="https://img-blog.csdnimg.cn/1aa57676c737427c878d23fb6b0592c6.png" width="1198" />  </p> 
+<p> <img alt="" height="197" src="https://img-blog.csdnimg.cn/49c7e574f09a400f8144651027b1b998.png" width="1047" /></p> 
+<p></p> 
+<p>因此&#xff0c;其实我们要对输入的k值&#xff0c;转成双精度浮点型&#xff0c;来满足和math.pow的结果匹配。</p> 
+<p>这里Java和Python都是OK的。但是JS就苦逼了。因为JS没有大数&#43;浮点的类型。</p> 
+<p>因此&#xff0c;本题Java和Python的代码可以妥协来适配满分。但是JS无法适配。</p> 
+<p><span style="color:#fe2c24;"><strong>建议使用JS的同学遇到这题&#xff0c;可以采用偷分策略&#xff0c;即不需要任何算法&#xff0c;直接输入red或者blue&#xff0c;选择分值更高。</strong></span></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<p>需要注意的是&#xff0c;本题中</p> 
+<ul><li>1 ≤ n ≤ 64&#xff1b;</li><li>0 ≤ k &#xff1c; 2^(n-1)&#xff1b;</li></ul> 
+<p>也就说 k 最大值可以取到 2^63 - 1&#xff0c;即9223372036854775807&#xff0c;而这个数已经超过了JS的number类型的安全数范围&#xff0c;即-2^53 &#43; 1 ~ 2^53 - 1&#xff0c;超范围的数会得到不准确的值&#xff0c;比如</p> 
+<p><img alt="" height="123" src="https://img-blog.csdnimg.cn/8a7ab568e6d74c5e89b05e019177d503.png" width="357" /></p> 
+<p>此时&#xff0c;我们应该考虑是BigInt代替Number类型来处理大数&#xff0c;而由于BigInt大数只能和BigInt大数进行运算&#xff0c;因此需要将程序中所有的数值全部变为BigInt类型。对于字面量数值&#xff0c;需要在字面量后面加个n&#xff0c;比如1是Number类型&#xff0c;那么1n就是BigInt类型的数值1。 </p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+ 
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+ 
+const lines &#61; [];
+let t;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+ 
+  if (lines.length &#61;&#61;&#61; 1) {
+    t &#61; lines[0] - 0;
+  }
+ 
+  if (t &amp;&amp; lines.length &#61;&#61;&#61; t &#43; 1) {
+    lines.shift();
+    const arr &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(BigInt));
+    getResult(arr);
+ 
+    lines.length &#61; 0;
+  }
+});
+ 
+function getResult(arr) {
+  for (let [n, k] of arr) {
+    console.log(getNK(n, k));
+  }
+}
+ 
+function getNK(n, k) {
+  // 题目没说异常如何处理&#xff0c;因此我默认输入无异常&#xff0c;比如n&#61;1的话&#xff0c;则k只能取0
+  if (n &#61;&#61;&#61; 1n) {
+    return &#34;red&#34;;
+  }
+ 
+  // n&#61;2的话&#xff0c;则k只能取0或1
+  if (n &#61;&#61;&#61; 2n) {
+    if (k &#61;&#61;&#61; 0n) return &#34;blue&#34;;
+    else return &#34;red&#34;;
+  }
+ 
+  // 第n个字符串的一半长度half
+  let half &#61; 1n &lt;&lt; (n - 2n);
+ 
+  if (k &gt;&#61; half) {
+    return getNK(n - 1n, k - half);
+  } else {
+    return getNK(n - 1n, k) &#61;&#61;&#61; &#34;red&#34; ? &#34;blue&#34; : &#34;red&#34;;
+  }
+}</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<p>需要注意的是&#xff0c;本题中</p> 
+<ul><li>1 ≤ n ≤ 64&#xff1b;</li><li>0 ≤ k &#xff1c; 2^(n-1)&#xff1b;</li></ul> 
+<p>也就说 k 最大值可以取到 2^63 - 1&#xff0c;即9223372036854775807&#xff0c;而这个数刚好是Java的long类型最大值&#xff0c;因此不会造成整型溢出。但是我们代码中所有的数都必须使用long类型装载。</p> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int t &#61; sc.nextInt();
+
+    double[][] arr &#61; new double[t][2];
+    for (int i &#61; 0; i &lt; t; i&#43;&#43;) {
+      arr[i][0] &#61; sc.nextDouble();
+      arr[i][1] &#61; sc.nextDouble();
+    }
+
+    getResult(arr);
+  }
+
+  public static void getResult(double[][] arr) {
+    for (double[] nk : arr) {
+      System.out.println(getNK(nk[0], nk[1]));
+    }
+  }
+
+  public static String getNK(double n, double k) {
+    if (n &#61;&#61; 1) {
+      return &#34;red&#34;;
+    }
+
+    if (n &#61;&#61; 2) {
+      if (k &#61;&#61; 0) return &#34;blue&#34;;
+      else return &#34;red&#34;;
+    }
+
+    double half &#61; Math.pow(2, n - 2);
+
+    if (k &gt;&#61; half) {
+      return getNK(n - 1, k - half);
+    } else {
+      return &#34;red&#34;.equals(getNK(n - 1, k)) ? &#34;blue&#34; : &#34;red&#34;;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<p>需要注意的是&#xff0c;本题中</p> 
+<ul><li>1 ≤ n ≤ 64&#xff1b;</li><li>0 ≤ k &#xff1c; 2^(n-1)&#xff1b;</li></ul> 
+<p>也就说 k 最大值可以取到 2^63 - 1&#xff0c;即9223372036854775807</p> 
+<p>关于Python处理大数的说明<a href="https://www.dovov.com/python-767.html" rel="nofollow" title="在Python中处理非常大的数字 Dovov编程网">在Python中处理非常大的数字 Dovov编程网</a></p> 
+<p>即Python3支持任意大的整数运算。</p> 
+<p>因为本题中不涉及除法&#xff0c;因此无需额外处理。</p> 
+<pre><code class="language-python"># 输入获取
+import math
+
+t &#61; int(input())
+# 注意这里需要转float
+arr &#61; [list(map(float, input().split())) for i in range(t)]
+
+
+# 算法入口
+def getResult(arr):
+    for n, k in arr:
+        print(getNK(n, k))
+
+
+def getNK(n, k):
+    # 题目没说异常如何处理&#xff0c;因此我默认输入无异常&#xff0c;比如n&#61;1的话&#xff0c;则k只能取0
+    if n &#61;&#61; 1:
+        return &#34;red&#34;
+
+    # n&#61;2的话&#xff0c;则k只能取0或1
+    if n &#61;&#61; 2:
+        if k &#61;&#61; 0:
+            return &#34;blue&#34;
+        else:
+            return &#34;red&#34;
+
+    # 第n个字符串的一半长度half
+    half &#61; math.pow(2, n - 2)
+
+    if k &gt;&#61; half:
+        return getNK(n - 1, k - half)
+    else:
+        return &#34;blue&#34; if getNK(n - 1, k) &#61;&#61; &#34;red&#34; else &#34;red&#34;
+
+
+# 调用算法
+getResult(arr)
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

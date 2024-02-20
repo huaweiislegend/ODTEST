@@ -1,0 +1,276 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 路灯照明问题（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>在一条笔直的公路上安装了N个路灯&#xff0c;从位置0开始安装&#xff0c;路灯之间间距固定为100米。<br /> 每个路灯都有自己的照明半径&#xff0c;请计算第一个路灯和最后一个路灯之间&#xff0c;无法照明的区间的长度和。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为一个数N&#xff0c;表示路灯个数&#xff0c;1&lt;&#61;N&lt;&#61;100000<br /> 第二行为N个空格分隔的数&#xff0c;表示路灯的照明半径&#xff0c;1&lt;&#61;照明半径&lt;&#61;100000*100</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>第一个路灯和最后一个路灯之间&#xff0c;无法照明的区间的长度和</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:58px;">输入</td><td style="width:440px;">2<br /> 50 50</td></tr><tr><td style="width:58px;">输出</td><td style="width:440px;">0</td></tr><tr><td style="width:58px;">说明</td><td style="width:440px;">路灯1覆盖0-50&#xff0c;路灯2覆盖50-100&#xff0c;路灯1和路灯2之间(0米-100米)无未覆盖的区间。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>4<br /> 50 70 20 70</td></tr><tr><td> <p>输入</p> <p>解释</p> </td><td>路灯1 覆盖0-50<br /> 路灯2 覆盖30-170<br /> 路灯3 覆盖180-220<br /> 路灯4 覆盖230-370</td></tr><tr><td>输出</td><td>20</td></tr><tr><td>说明</td><td>[170,180],[220,230]&#xff0c;两个未覆盖的区间&#xff0c;总里程为20</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以转化为区间问题。</p> 
+<p>每个路灯的位置都是确定&#xff0c;假设路灯的索引为 i&#xff0c;那么其位置就是 i * 100。</p> 
+<p>根据第二行输入的路灯的照明半径数组arr&#xff0c;我们可以基于路灯的位置&#xff0c;求得路灯的照明范围区间</p> 
+<p>假设center &#61; i * 100&#xff0c;r &#61; arr[i]&#xff0c;那么照明范围区间即为&#xff1a;[center - r, center &#43; r]</p> 
+<p>这样的话&#xff0c;我们就得到了一组区间。</p> 
+<p></p> 
+<p>接下来&#xff0c;我们就需要将这些区间进行合并&#xff0c;合并后&#xff0c;求剩余没有交集的区间的间隙之和就是题解。</p> 
+<p>这里区间合并是有技巧的&#xff0c;我们一般&#xff1a;</p> 
+<ul><li>先将区间按照起始位置进行升序</li><li>如果起始位置相同&#xff0c;则再按照结束位置降序</li></ul> 
+<p>这样排序的好处是&#xff0c;所有区间都按照起始位置升序排序了&#xff0c;比如第一个ran[0]和第二个区间ran[1]&#xff0c;我们可以确定&#xff1a;ran[0].start &lt;&#61; ran[1].start</p> 
+<p>由于这两个区间的起始位置关系已经确定了&#xff0c;判断这两个区间是否有交集&#xff0c;只要看ran[0].end和ran[1].start即可&#xff0c;如果ran[0].end &gt; ran[1].start&#xff0c;则说明这两个区间有交集&#xff0c;可以合并。</p> 
+<p>另外&#xff0c;如果ran[0]和ran[1]的起始位置相同的话&#xff0c;则上面排序还会按照结束位置进行降序&#xff0c;即必然ran[0].end &gt;&#61; ran[1].end。</p> 
+<p>这样排序的好处是&#xff0c;后面区间的结束位置小于前面区间的结束位置时&#xff0c;可以直接放心并入前面区间&#xff0c;而不需要再进行起始位置相同的两个区间的结束位置比较。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const n &#61; lines[0] - 0;
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(n, arr));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, arr) {
+  const ranges &#61; [];
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    const center &#61; i * 100;
+    ranges.push([center - arr[i], center &#43; arr[i]]);
+  }
+
+  // 按起始位置升序&#xff0c;起始位置相同&#xff0c;则继续按结束位置降序
+  ranges.sort((a, b) &#61;&gt; (a[0] !&#61; b[0] ? a[0] - b[0] : b[1] - a[1]));
+
+  let ans &#61; 0;
+
+  let t &#61; ranges[0][1]; // 上一个区间的结束位置
+  for (let i &#61; 1; i &lt; n; i&#43;&#43;) {
+    const [s, e] &#61; ranges[i]; // 当前区间的【开始位置&#xff0c;结束位置】
+
+    // 有交集
+    if (t &gt;&#61; s) {
+      // 合并后的新区间将变为下一轮的上一个区间&#xff0c;t为新区间的结束位置
+      t &#61; Math.max(e, t);
+    } else {
+      // 没有交集&#xff0c;则统计区间间隙 s - t
+      ans &#43;&#61; s - t;
+      // 当前区间变为下一轮的上一个区间&#xff0c;更新t
+      t &#61; e;
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[][] ranges &#61; new int[n][2];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      int center &#61; i * 100;
+      int r &#61; sc.nextInt();
+      ranges[i][0] &#61; center - r;
+      ranges[i][1] &#61; center &#43; r;
+    }
+
+    System.out.println(getResult(n, ranges));
+  }
+
+  public static int getResult(int n, int[][] ranges) {
+    int ans &#61; 0;
+
+    // 按起始位置升序&#xff0c;起始位置相同&#xff0c;则继续按结束位置降序
+    Arrays.sort(ranges, (a, b) -&gt; a[0] !&#61; b[0] ? a[0] - b[0] : b[1] - a[1]);
+
+    int t &#61; ranges[0][1]; // 上一个区间的结束位置
+
+    for (int i &#61; 1; i &lt; n; i&#43;&#43;) {
+      // 当前区间的【开始位置&#xff0c;结束位置】
+      int s &#61; ranges[i][0];
+      int e &#61; ranges[i][1];
+
+      // 有交集
+      if (t &gt;&#61; s) {
+        // 合并后的新区间将变为下一轮的上一个区间&#xff0c;t为新区间的结束位置
+        t &#61; Math.max(e, t);
+      } else {
+        // 没有交集&#xff0c;则统计区间间隙 s - t
+        ans &#43;&#61; s - t;
+        // 当前区间变为下一轮的上一个区间&#xff0c;更新t
+        t &#61; e;
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    rans &#61; []
+
+    for i in range(n):
+        center &#61; i * 100
+        rans.append([center - arr[i], center &#43; arr[i]])
+
+    # 按起始位置升序&#xff0c;起始位置相同&#xff0c;则继续按结束位置降序
+    rans.sort(key&#61;lambda ran: (ran[0], -ran[1]))
+
+    ans &#61; 0
+
+    t &#61; rans[0][1]  # 上一个区间的结束位置
+    for i in range(1, n):
+        s, e &#61; rans[i]  # 当前区间的【开始位置&#xff0c;结束位置】
+
+        # 有交集
+        if t &gt;&#61; s:
+            # 合并后的新区间将变为下一轮的上一个区间&#xff0c;t为新区间的结束位置
+            t &#61; max(e, t)
+        else:
+            # 没有交集&#xff0c;则统计区间间隙 s - t
+            ans &#43;&#61; s - t
+            #  当前区间变为下一轮的上一个区间&#xff0c;更新t
+            t &#61; e
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX(a,b) (a) &gt; (b) ? (a) : (b)
+
+int getResult(int n, int ranges[][2]);
+int cmp(const void* a, const void* b);
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int ranges[n][2];
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        int center &#61; i * 100;
+
+        int r;
+        scanf(&#34;%d&#34;, &amp;r);
+
+        ranges[i][0] &#61; center - r;
+        ranges[i][1] &#61; center &#43; r;
+    }
+
+    printf(&#34;%d\n&#34;, getResult(n, ranges));
+
+    return 0;
+}
+
+int getResult(int n, int ranges[][2]) {
+    int ans &#61; 0;
+
+    // 按起始位置升序&#xff0c;起始位置相同&#xff0c;则继续按结束位置降序
+    qsort(ranges, n, sizeof(int*), cmp);
+
+    int t &#61; ranges[0][1]; // 上一个区间的结束位置
+
+    for(int i&#61;1; i&lt;n; i&#43;&#43;) {
+        // 当前区间的【开始位置&#xff0c;结束位置】
+        int s &#61; ranges[i][0];
+        int e &#61; ranges[i][1];
+
+        if(t &gt;&#61; s) {
+            // 有交集
+            // 合并后的新区间将变为下一轮的上一个区间&#xff0c;t为新区间的结束位置
+            t &#61; MAX(e, t);
+        } else {
+            // 没有交集&#xff0c;则统计区间间隙 s - t
+            ans &#43;&#61; s - t;
+            // 当前区间变为下一轮的上一个区间&#xff0c;更新t
+            t &#61; e;
+        }
+    }
+
+    return ans;
+}
+
+int cmp(const void* a, const void* b) {
+    int* A &#61; (int*) a;
+    int* B &#61; (int*) b;
+    return A[0] !&#61; B[0] ? A[0] - B[0] : B[1] - A[1];
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,571 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 迷宫问题（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>定义一个二维数组 N*M &#xff0c;如 5 × 5 数组下所示&#xff1a;<br /> int maze[5][5] &#61; {<!-- --><br /> 0, 1, 0, 0, 0,<br /> 0, 1, 1, 1, 0,<br /> 0, 0, 0, 0, 0,<br /> 0, 1, 1, 1, 0,<br /> 0, 0, 0, 1, 0,<br /> };<br /> 它表示一个迷宫&#xff0c;其中的1表示墙壁&#xff0c;0表示可以走的路&#xff0c;只能横着走或竖着走&#xff0c;不能斜着走&#xff0c;要求编程序找出从左上角到右下角的路线。入口点为[0,0],既第一格是可以走的路。<br /> 数据范围&#xff1a; 2≤n,m≤10 &#xff0c; 输入的内容只包含 0≤val≤1。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入两个整数&#xff0c;分别表示二维数组的行数&#xff0c;列数。再输入相应的数组&#xff0c;其中的1表示墙壁&#xff0c;0表示可以走的路。数据保证有唯一解,不考虑有多解的情况&#xff0c;即迷宫只有一条通道。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>左上角到右下角的最短路径&#xff0c;格式如样例所示。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 5<br /> 0 1 0 0 0<br /> 0 1 1 1 0<br /> 0 0 0 0 0<br /> 0 1 1 1 0<br /> 0 0 0 1 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">(0,0)<br /> (1,0)<br /> (2,0)<br /> (2,1)<br /> (2,2)<br /> (2,3)<br /> (2,4)<br /> (3,4)<br /> (4,4)</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 5<br /> 0 1 0 0 0<br /> 0 1 0 1 0<br /> 0 0 0 0 1<br /> 0 1 1 1 0<br /> 0 0 0 0 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">(0,0)<br /> (1,0)<br /> (2,0)<br /> (3,0)<br /> (4,0)<br /> (4,1)<br /> (4,2)<br /> (4,3)<br /> (4,4)</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">注意&#xff1a;不能斜着走&#xff01;&#xff01;</td></tr></tbody></table> 
+<p> </p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题输出描述说</p> 
+<blockquote> 
+ <p>左上角到右下角的<span style="color:#fe2c24;">最短路径</span></p> 
+</blockquote> 
+<p>但是输入描述说</p> 
+<blockquote> 
+ <p>数据保证有唯一解,不考虑有多解的情况&#xff0c;即迷宫只有一条通道。</p> 
+</blockquote> 
+<p>这是不是有点矛盾呢&#xff1f;已经确认只有唯一可达路径了&#xff0c;又何来最短路径一说呢&#xff1f;但是这不影响解题。</p> 
+<p></p> 
+<p>本题有两种解题思路&#xff1a;</p> 
+<ul><li>广度优先搜索</li><li>深度优先搜索</li></ul> 
+<p></p> 
+<p>广搜解法更适合本题&#xff0c;关于广度优先搜索的知识&#xff0c;可以看下&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/127711317" title="华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python&#xff09;_在一个地图中(地图由n*n个区域组成)_伏城之外的博客-CSDN博客">华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python&#xff09;_在一个地图中(地图由n*n个区域组成)_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>广搜解决本题的难点在于&#xff1a;如何记录路径&#xff1f;</p> 
+<p>解决方案是&#xff0c;设计一个点类Pos&#xff0c;该类具有三个属性&#xff1a;</p> 
+<ul><li>当前点对象的横坐标x</li><li>当前点对象的纵坐标y</li><li>前一个点对象pre</li></ul> 
+<p>类似于链表节点的定义。这样设计的原因是&#xff0c;广搜过程是一个发射过程&#xff0c;可以简单理解为一个父节点&#xff0c;发散出多个子节点&#xff0c;因此对于每个节点来说都有一个父节点&#xff08;除了根节点&#xff09;。</p> 
+<p>这样当我们找到终点时&#xff0c;就可以沿着pre属性&#xff0c;一直找到起点。</p> 
+<p>另外&#xff0c;找到终点后&#xff0c;该如何打印路径呢&#xff1f;如果从终点沿着pre属性链打印&#xff0c;那么打印出来的顺序&#xff0c;其实和题目要求的打印顺序是相反的。这里可以采用递归方式打印&#xff0c;即如果一个点存在pre&#xff0c;那么就递归打印其pre点&#xff0c;等pre点打印完了&#xff0c;再回溯打印自身。</p> 
+<p></p> 
+<h3>广度优先搜索</h3> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, m, matrix;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [n, m] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    matrix &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    getResult();
+    lines.length &#61; 0;
+  }
+});
+
+function getResult() {
+  // 广搜队列
+  const queue &#61; [];
+
+  // 将&#xff08;0&#xff0c;0&#xff09;位置标记为“走过状态”&#xff0c;即将元素值设为2
+  matrix[0][0] &#61; 2;
+  // 将走过的点加入队列
+  queue.push(new Pos(0, 0, null));
+
+  // 上下左右偏移
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  // 广搜
+  while (queue.length &gt; 0) {
+    // 当前点
+    const cur &#61; queue.shift();
+
+    // 遍历当前点的上、下、左、右方向的新点
+    for (let [offsetX, offsetY] of offsets) {
+      // 新点的坐标
+      const newX &#61; cur.x &#43; offsetX;
+      const newY &#61; cur.y &#43; offsetY;
+
+      // 如果新点不越界&#xff0c;且未被访问过&#xff0c;且不是墙&#xff0c; 则新点可以访问
+      if (
+        newX &gt;&#61; 0 &amp;&amp;
+        newX &lt; n &amp;&amp;
+        newY &gt;&#61; 0 &amp;&amp;
+        newY &lt; m &amp;&amp;
+        matrix[newX][newY] &#61;&#61; 0
+      ) {
+        // 将新点状态设为走过
+        matrix[newX][newY] &#61; 2;
+        // 将新点和上一个点关联&#xff0c;形成路径链
+        const next &#61; new Pos(newX, newY, cur);
+        queue.push(next);
+
+        // 如果新点就是终点&#xff0c;那么则说明找到了起点到终点的路径
+        if (newX &#61;&#61; n - 1 &amp;&amp; newY &#61;&#61; m - 1) {
+          // 打印路径
+          printPath(next);
+          // 结束查找
+          return;
+        }
+      }
+    }
+  }
+}
+
+class Pos {
+  constructor(x, y, pre) {
+    this.x &#61; x; // 当前点的横坐标
+    this.y &#61; y; // 当前点的纵坐标
+    this.pre &#61; pre; // 当前点的上一个点&#xff08;此属性用于形成路径链&#xff09;
+  }
+}
+
+function printPath(cur) {
+  // 这里采用递归打印&#xff0c;保证打印顺序是起点到终点
+  if (cur.pre !&#61; null) {
+    // 递归的作用是优先打印pre点&#xff0c;pre点打印完&#xff0c;回溯打印cur点
+    printPath(cur.pre);
+  }
+
+  console.log(&#96;(${cur.x},${cur.y})&#96;);
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  static int n; // 矩阵行数
+  static int m; // 矩阵列数
+  static int[][] matrix; // 矩阵
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    n &#61; sc.nextInt();
+    m &#61; sc.nextInt();
+
+    matrix &#61; new int[n][m];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    getResult();
+  }
+
+  // 点类
+  static class Pos {
+    int x; // 当前点的横坐标
+    int y; // 当前点的纵坐标
+    Pos pre; // 当前点的上一个点&#xff08;此属性用于形成路径链&#xff09;
+
+    public Pos(int x, int y, Pos pre) {
+      this.x &#61; x;
+      this.y &#61; y;
+      this.pre &#61; pre;
+    }
+  }
+
+  public static void getResult() {
+    // 广搜队列
+    LinkedList&lt;Pos&gt; queue &#61; new LinkedList&lt;&gt;();
+
+    // 将&#xff08;0&#xff0c;0&#xff09;位置标记为“走过状态”&#xff0c;即将元素值设为2
+    matrix[0][0] &#61; 2;
+    // 将走过的点加入队列
+    queue.add(new Pos(0, 0, null));
+
+    // 上下左右偏移量
+    int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    // 广搜
+    while (queue.size() &gt; 0) {
+      // 当前点
+      Pos cur &#61; queue.removeFirst();
+
+      // 遍历当前点的上、下、左、右方向的新点
+      for (int[] offset : offsets) {
+        // 新点的坐标
+        int newX &#61; cur.x &#43; offset[0];
+        int newY &#61; cur.y &#43; offset[1];
+
+        // 如果新点不越界&#xff0c;且未被访问过&#xff0c;且不是墙&#xff0c; 则新点可以访问
+        if (newX &gt;&#61; 0 &amp;&amp; newX &lt; n &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; m &amp;&amp; matrix[newX][newY] &#61;&#61; 0) {
+          // 将新点状态设为走过
+          matrix[newX][newY] &#61; 2;
+          // 将新点和上一个点关联&#xff0c;形成路径链
+          Pos next &#61; new Pos(newX, newY, cur);
+          queue.add(next);
+
+          // 如果新点就是终点&#xff0c;那么则说明找到了起点到终点的路径
+          if (newX &#61;&#61; n - 1 &amp;&amp; newY &#61;&#61; m - 1) {
+            // 打印路径
+            printPath(next);
+            // 结束查找
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  public static void printPath(Pos cur) {
+    // 这里采用递归打印&#xff0c;保证打印顺序是起点到终点
+    if (cur.pre !&#61; null) {
+      // 递归的作用是优先打印pre点&#xff0c;pre点打印完&#xff0c;回溯打印cur点
+      printPath(cur.pre);
+    }
+
+    System.out.println(&#34;(&#34; &#43; cur.x &#43; &#34;,&#34; &#43; cur.y &#43; &#34;)&#34;);
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n, m &#61; map(int, input().split())
+matrix &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+class Pos:
+    def __init__(self, x, y, pre):
+        self.x &#61; x  # 当前点的横坐标
+        self.y &#61; y  # 当前点的纵坐标
+        self.pre &#61; pre  # 当前点的上一个点&#xff08;此属性用于形成路径链&#xff09;
+
+
+def printPath(cur):
+    # 这里采用递归打印&#xff0c;保证打印顺序是起点到终点
+    if cur.pre:
+        # 递归的作用是优先打印pre点&#xff0c;pre点打印完&#xff0c;回溯打印cur点
+        printPath(cur.pre)
+
+    print(f&#34;({cur.x},{cur.y})&#34;)
+
+
+# 算法入口
+def getResult():
+    # 广搜队列
+    queue &#61; []
+
+    # 将&#xff08;0&#xff0c;0&#xff09;位置标记为“走过状态”&#xff0c;即将元素值设为2
+    matrix[0][0] &#61; 2
+    # 将走过的点加入队列
+    queue.append(Pos(0, 0, None))
+
+    # 上下左右偏移量
+    offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    # 广搜
+    while len(queue) &gt; 0:
+        # 当前点
+        cur &#61; queue.pop(0)
+
+        # 遍历当前点的上、下、左、右方向的新点
+        for offsetX, offsetY in offsets:
+            # 新点的坐标
+            newX &#61; cur.x &#43; offsetX
+            newY &#61; cur.y &#43; offsetY
+
+            # 如果新点不越界&#xff0c;且未被访问过&#xff0c;且不是墙&#xff0c; 则新点可以访问
+            if n &gt; newX &gt;&#61; 0 and m &gt; newY &gt;&#61; 0 and matrix[newX][newY] &#61;&#61; 0:
+                # 将新点状态设为走过
+                matrix[newX][newY] &#61; 2
+                # 将新点和上一个点关联&#xff0c;形成路径链
+                nxt &#61; Pos(newX, newY, cur)
+                queue.append(nxt)
+
+                # 如果新点就是终点&#xff0c;那么则说明找到了起点到终点的路径
+                if newX &#61;&#61; n - 1 and newY &#61;&#61; m - 1:
+                    # 打印路径
+                    printPath(nxt)
+                    # 结束查找
+                    return
+
+
+# 算法调用
+getResult()
+</code></pre> 
+<p></p> 
+<p></p> 
+<h3>深度优先搜索</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, m, matrix;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [n, m] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    matrix &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    getResult();
+    lines.length &#61; 0;
+  }
+});
+
+function getResult() {
+  // 记录符合可以从(0,0)走到(n-1,m-1)的路径
+  const ans &#61; [];
+
+  // 将(0,0)位置标记为走过&#xff0c;值为2假设为走过&#xff0c;避免重复走
+  matrix[0][0] &#61; 2;
+  dfs(0, 0, [], ans);
+
+  // 由于输入描述说&#xff1a;数据保证有唯一解,不考虑有多解的情况&#xff0c;即迷宫只有一条通道。
+  // 因此ans只有一个解
+  for (let [x, y] of ans) {
+    console.log(&#96;(${x},${y})&#96;);
+  }
+}
+
+// 上下左右偏移
+const offsets &#61; [
+  [-1, 0],
+  [1, 0],
+  [0, -1],
+  [0, 1],
+];
+
+function dfs(x, y, path, ans) {
+  // 如果当前点(x,y)就是终点(n-1, m-1)&#xff0c;则找到路径
+  if (x &#61;&#61; n - 1 &amp;&amp; y &#61;&#61; m - 1) {
+    path.push([x, y]);
+    // 将路径加入结果集ans中
+    ans.push(...path);
+    return true;
+  }
+
+  // 否则&#xff0c;向当前点上下左右四个方向继续深搜
+  for (let [offsetX, offsetY] of offsets) {
+    const newX &#61; x &#43; offsetX;
+    const newY &#61; y &#43; offsetY;
+
+    // 如果新点不越界&#xff0c;且未走过
+    if (
+      newX &gt;&#61; 0 &amp;&amp;
+      newX &lt; n &amp;&amp;
+      newY &gt;&#61; 0 &amp;&amp;
+      newY &lt; m &amp;&amp;
+      matrix[newX][newY] &#61;&#61; 0
+    ) {
+      // 则加入路径
+      path.push([x, y]);
+      // 同时将新点标记为走过
+      matrix[newX][newY] &#61; 2;
+
+      // 基于新点&#xff0c;继续深搜
+      const res &#61; dfs(newX, newY, path, ans);
+      // 如果该分支可以到达终点&#xff0c;则结束深搜
+      if (res) return true;
+
+      // 回溯
+      matrix[newX][newY] &#61; 0;
+      path.pop();
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+
+  static int n; // 矩阵行数
+  static int m; // 矩阵列数
+  static int[][] matrix; // 矩阵
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    n &#61; sc.nextInt();
+    m &#61; sc.nextInt();
+
+    matrix &#61; new int[n][m];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    getResult();
+  }
+
+  // 记录符合可以从(0,0)走到(n-1,m-1)的路径
+  static LinkedList&lt;String&gt; ans &#61; new LinkedList&lt;&gt;();
+
+  public static void getResult() {
+    // 将(0,0)位置标记为走过&#xff0c;值为2假设为走过&#xff0c;避免重复走
+    matrix[0][0] &#61; 2;
+
+    // 从(0,0)点开始深搜
+    dfs(0, 0, new LinkedList&lt;&gt;());
+
+    // 由于输入描述说&#xff1a;数据保证有唯一解,不考虑有多解的情况&#xff0c;即迷宫只有一条通道。
+    // 因此ans只有一个解
+    for (String an : ans) {
+      System.out.println(an);
+    }
+  }
+
+  // 上下左右偏移量
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  public static boolean dfs(int x, int y, LinkedList&lt;String&gt; path) {
+    // 如果当前点(x,y)就是终点(n-1, m-1)&#xff0c;则找到路径
+    if (x &#61;&#61; n - 1 &amp;&amp; y &#61;&#61; m - 1) {
+      path.add(&#34;(&#34; &#43; x &#43; &#34;,&#34; &#43; y &#43; &#34;)&#34;);
+      // 将路径加入结果集ans中
+      ans.addAll(path);
+      return true;
+    }
+
+    // 否则&#xff0c;向当前点上下左右四个方向继续深搜
+    for (int[] offset : offsets) {
+      // 新点位置(newX, newY)
+      int newX &#61; x &#43; offset[0];
+      int newY &#61; y &#43; offset[1];
+
+      // 如果新点不越界&#xff0c;且未走过
+      if (newX &gt;&#61; 0 &amp;&amp; newX &lt; n &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; m &amp;&amp; matrix[newX][newY] &#61;&#61; 0) {
+        // 则加入路径
+        path.add(&#34;(&#34; &#43; x &#43; &#34;,&#34; &#43; y &#43; &#34;)&#34;);
+        // 同时将新点标记为走过
+        matrix[newX][newY] &#61; 2;
+
+        // 基于新点&#xff0c;继续深搜
+        boolean res &#61; dfs(newX, newY, path);
+        // 如果该分支可以到达终点&#xff0c;则结束深搜
+        if (res) return true;
+
+        matrix[newX][newY] &#61; 0;
+        path.removeLast();
+      }
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n, m &#61; map(int, input().split())
+matrix &#61; [list(map(int, input().split())) for i in range(n)]
+
+# 上下左右偏移量
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+# 记录符合可以从(0,0)走到(n-1,m-1)的路径
+ans &#61; []
+
+
+# 深搜
+def dfs(x, y, path):
+    global ans
+
+    # 如果当前点(x,y)就是终点(n-1, m-1)&#xff0c;则找到路径
+    if x &#61;&#61; n - 1 and y &#61;&#61; m - 1:
+        path.append((x, y))
+        # 将路径加入结果集ans中
+        ans &#61; path[:]
+        return True
+
+    # 否则&#xff0c;向当前点上下左右四个方向继续深搜
+    for offsetX, offsetY in offsets:
+        # 新点位置(newX, newY)
+        newX &#61; x &#43; offsetX
+        newY &#61; y &#43; offsetY
+
+        # 如果新点不越界&#xff0c;且未走过
+        if 0 &lt;&#61; newX &lt; n and 0 &lt;&#61; newY &lt; m and matrix[newX][newY] &#61;&#61; 0:
+            # 则加入路径
+            path.append((x, y))
+
+            # 同时将新点标记为走过
+            matrix[newX][newY] &#61; 2
+
+            # 基于新点&#xff0c;继续深搜
+            res &#61; dfs(newX, newY, path)
+            # 如果该分支可以到达终点&#xff0c;则结束深搜
+            if res:
+                return True
+
+            # 回溯
+            matrix[newX][newY] &#61; 0
+            path.pop()
+
+
+# 算法入口
+def getResult():
+    # 将(0,0)位置标记为走过&#xff0c;值为2假设为走过&#xff0c;避免重复走
+    matrix[0][0] &#61; 2
+
+    # 从(0,0)点开始深搜
+    dfs(0, 0, [])
+
+    # 由于输入描述说&#xff1a;数据保证有唯一解,不考虑有多解的情况&#xff0c;即迷宫只有一条通道。
+    # 因此ans只有一个解
+    for an in ans:
+        print(an)
+
+
+# 算法调用
+getResult()
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

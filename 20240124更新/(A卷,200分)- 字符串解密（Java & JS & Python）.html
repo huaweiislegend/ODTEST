@@ -1,0 +1,183 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 字符串解密（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定两个字符串string1和string2。<br /> string1是一个被加扰的字符串。</p> 
+<p>string1由小写英文字母&#xff08;’a’~’z’&#xff09;和数字字符&#xff08;’0’~’9’&#xff09;组成&#xff0c;而加扰字符串由’0’~’9’、’a’~’f’组成。</p> 
+<p>string1里面可能包含0个或多个加扰子串&#xff0c;剩下可能有0个或多个有效子串&#xff0c;这些有效子串被加扰子串隔开。</p> 
+<p>string2是一个参考字符串&#xff0c;仅由小写英文字母&#xff08;’a’~’z’&#xff09;组成。</p> 
+<p>你需要在string1字符串里找到一个有效子串&#xff0c;这个有效子串要同时满足下面两个条件&#xff1a;</p> 
+<p>&#xff08;1&#xff09;这个有效子串里不同字母的数量不超过且最接近于string2里不同字母的数量&#xff0c;即小于或等于string2里不同字母的数量的同时且最大。</p> 
+<p>&#xff08;2&#xff09;这个有效子串是满足条件&#xff08;1&#xff09;里的所有子串&#xff08;如果有多个的话&#xff09;里字典序最大的一个。</p> 
+<p>如果没有找到合适条件的子串的话&#xff0c;请输出”Not Found”</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>input_string1<br /> input_string2</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>output_string</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">123admyffc79pt<br /> ssyy</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">pt</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>将输入字符串1里的加扰子串“123ad”、“ffc79”去除后得到有效子串序列&#xff1a;&#34;my&#34;、&#34;pt&#34;&#xff0c;其中&#34;my&#34;里不同字母的数量为2&#xff08;有‘m’和&#39;y&#39;两个不同字母&#xff09;&#xff0c;“pt”里不同字母的数量为2&#xff08;有&#39;p&#39;和&#39;t&#39;两个不同字母&#xff09;&#xff1b;输入字符串2里不同字母的数量为2&#xff08;有‘s’和&#39;y&#39;两个不同字母&#xff09;。</p> <p>可得到最终输出结果为“pt”&#xff0c;其不同字母的数量最接近与“ssyy”里不同字母的数量的同时字典序最大。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">123admyffc79ptaagghi2222smeersst88mnrt<br /> ssyyfgh</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">mnrt</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">将输入字符串1里的加扰子串“123ad”、“ffc79”、&#34;aa&#34;、&#34;2222&#34;、&#34;ee&#34;、&#34;88&#34;去除后得到有效子串序列&#xff1a;“my”、“pt”、“gghi”、&#34;sm&#34;、“rsst”、&#34;mnrt&#34;&#xff1b;输入字符串2里不同字母的数量为5&#xff08;有&#39;s&#39;、&#39;y&#39;、&#39;f&#39;、&#39;g&#39;、&#39;h&#39;5个不同字母&#xff09;。可得到最终输出结果为“mnrt”&#xff0c;其不同字母的数量&#xff08;为4&#xff09;最接近于“ssyyfgh”里不同字母的数量&#xff0c;其他有效子串不同字母的数量都小于“mnrt”。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:83px;">输入</td><td style="width:415px;"> <p>abcmnq<br /> rt</p> </td></tr><tr><td style="width:83px;">输出</td><td style="width:415px;">Not Found</td></tr><tr><td style="width:83px;">说明</td><td style="width:415px;">将输入字符串1里的加扰子串“abc”去除后得到有效子串序列&#xff1a;“mnq”&#xff1b;输入字符串2里不同字母的数量为2&#xff08;有&#39;r&#39;、&#39;t&#39;两个不同的字母&#xff09;。可得到最终的输出结果为“Not Found”&#xff0c;没有符合要求的有效子串&#xff0c;因有效子串里的不同字母的数量&#xff08;为3&#xff09;&#xff0c;大于输入字符串2里的不同字母的数量。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这题出奇的简单&#xff0c;但是划在200分档&#xff0c;难道是我审题有误&#xff1f;</p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先将str1按照加扰字符串来分割&#xff0c;这里我使用正则表达式来作为分隔符&#xff0c;正则为/[0-9a-f]&#43;/&#xff0c;因此用例1中str1会被分割&#xff0c;产生一个数组valids &#61; [&#34;&#34;&#xff0c;”my“&#xff0c;&#34;pt&#34;]</p> 
+<p><img alt="" height="153" src="https://img-blog.csdnimg.cn/14eefb9b107e43edae60f42496afdf25.png" width="345" /></p> 
+<p> 然后需要求出str2的不同字母数量&#xff0c;这里可以使用new Set来去重&#xff0c;然后取size&#xff0c;就是str2的不同字母数量。</p> 
+<p>同样地&#xff0c;也可以对valids中数组元素使用上面逻辑求不同字母数量&#xff0c;然后将valids数组中每个元素不同字母数量超过str2的filter掉&#xff0c;这样valids中剩余的元素都是不同字母数量不超过str2的。</p> 
+<p>接着&#xff0c;对valids中元素先按照不同字母数量降序&#xff0c;然后按照字典序降序&#xff0c;取valids[0]作为题解。</p> 
+<p>如果valids没有元素&#xff0c;则返回Not Found</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const str1 &#61; lines[0];
+    const str2 &#61; lines[1];
+
+    console.log(getResult(str1, str2));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(str1, str2) {
+  const regExp &#61; /[0-9a-f]&#43;/;
+
+  const valids &#61; str1.split(regExp);
+
+  const count &#61; new Set(str2).size;
+
+  const ans &#61; valids.filter(
+    (valid) &#61;&gt; valid !&#61;&#61; &#34;&#34; &amp;&amp; new Set(valid).size &lt;&#61; count
+  );
+
+  if (!ans.length) return &#34;Not Found&#34;;
+
+  return ans.sort((a, b) &#61;&gt; {
+    const c1 &#61; new Set(a).size;
+    const c2 &#61; new Set(b).size;
+    return c1 !&#61;&#61; c2 ? c2 - c1 : b &gt; a ? 1 : -1;
+  })[0];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc &#61; new Scanner(System.in);
+
+        String str1 &#61; sc.next();
+        String str2 &#61; sc.next();
+
+        System.out.println(getResult(str1, str2));
+    }
+
+    public static String getResult(String str1, String str2) {
+        String reg &#61; &#34;[0-9a-f]&#43;&#34;;
+
+        String[] valids &#61; str1.split(reg);
+
+        int count &#61; getDistinctCount(str2);
+
+        String[] ans &#61; Arrays.stream(valids).filter(valid -&gt; !&#34;&#34;.equals(valid) &amp;&amp; getDistinctCount(valid) &lt;&#61; count).toArray(String[]::new);
+
+        if(ans.length &#61;&#61; 0) return &#34;Not Found&#34;;
+
+        Arrays.sort(ans, (a,b)-&gt;{
+            int c1 &#61; getDistinctCount(a);
+            int c2 &#61; getDistinctCount(b);
+            return c1 !&#61; c2 ? c2 - c1 : b.compareTo(a);
+        });
+
+        return ans[0];
+    }
+
+    public static int getDistinctCount(String str) {
+        HashSet&lt;Character&gt; set &#61; new HashSet&lt;&gt;();
+        for (char c : str.toCharArray()) {
+            set.add(c);
+        }
+        return set.size();
+    }
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+str1 &#61; input()
+str2 &#61; input()
+
+
+# 算法入口
+def getResult(str1, str2):
+    pattern &#61; r&#34;[0-9a-f]&#43;&#34;
+
+    valids &#61; re.split(pattern, str1)
+    count &#61; len(set(str2))
+
+    ans &#61; list(filter(lambda valid: valid !&#61; &#34;&#34; and len(set(valid)) &lt;&#61; count, valids))
+
+    if len(ans) &gt; 0:
+        ans.sort(key&#61;lambda x: (-len(set(x)), [-ord(char) for char in x]))
+        return ans[0]
+    else:
+        return &#34;Not Found&#34;
+
+
+# 算法调用
+print(getResult(str1, str2))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

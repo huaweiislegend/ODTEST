@@ -1,0 +1,325 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 最多等和不相交连续子序列（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个数组&#xff0c;我们称其中连续的元素为连续子序列&#xff0c;称这些元素的和为连续子序列的和。</p> 
+<p>数组中可能存在几组连续子序列&#xff0c;组内的连续子序列互不相交且有相同的和。</p> 
+<p>求一组连续子序列&#xff0c;组内子序列的数目最多。</p> 
+<p>输出这个数目。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为数组长度N&#xff0c;1&lt;&#61;N&lt;&#61;10^3</p> 
+<p>第二行为N个用空格分开的整数 Ci&#xff0c;-10^5 &lt;&#61; Ci &lt;&#61; 10^5</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>第一行是一个整数M&#xff0c;表示满足要求的最多的组内子序列的数目。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">10<br /> 8 8 9 1 9 6 3 9 1 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>四个子序列的第一个元素和最后一个元素的下标分别为</p> <p>2 2</p> <p>4 4</p> <p>5 6</p> <p>7 7</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">10<br /> -1 0 4 -3 6 5 -6 5 -7 -3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>三个子序列的第一个元素和最后一个元素的下标分别为&#xff1a;</p> <p>3 3</p> <p>5 8</p> <p>9 9</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>解题步骤分为两大步&#xff1a;</p> 
+<p>1、将和相同的连续子序列的区间统计在一起</p> 
+<p>2、求解每个“和” 下的最大不相交区间数量&#xff0c;保留最大数量作为题解</p> 
+<p></p> 
+<p>第一步&#xff0c;我们可以用动态规划前缀和的思路求出任意区间的连续子序列的和&#xff0c;具体请看下面博客中&#xff1a;一维数组前缀和的应用</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/128976936" rel="nofollow" title="算法设计 - 前缀和 &amp; 差分数列_伏城之外的博客-CSDN博客">算法设计 - 前缀和 &amp; 差分数列_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>并记录对应区间到该“和”下面。例如</p> 
+<p><img alt="" height="225" src="https://img-blog.csdnimg.cn/eb6639c994194701a6d1eaa18b0339f8.png" width="1179" /></p> 
+<p>JS可以直接使用对象记录不同和对应的区间&#xff0c;Java可以用HashMap记录。 </p> 
+<p>统计完后容器应该如下&#xff1a;</p> 
+<p><img alt="" height="329" src="https://img-blog.csdnimg.cn/8e3ce53b367442f9a1566097709384be.png" width="440" /></p> 
+<p>每个和下面都有对应的区间。</p> 
+<p></p> 
+<p>接下来就是求解同一个和下面的最大不相交区间数量了。</p> 
+<p>而求解给定的多个区间的最大不相交区间数量&#xff0c;有固定策略&#xff1a;</p> 
+<p>假设不相交区间数量为count&#xff0c;则至少为1</p> 
+<p>1、先将多个区间&#xff0c;按照右边界升序</p> 
+<p>2、然后取排序后第一个区间的右边界作为 t&#xff0c;并遍历之后的下一个区间[l, r]&#xff1a;</p> 
+<ul><li>如果 l &lt;&#61; t&#xff0c;则说明当前两个区间有交集&#xff0c;则舍弃遍历的区间&#xff0c;继续遍历下一个区间</li><li>如果 l &gt; t&#xff0c;则说明当前两个区间无交集&#xff0c;即不相交&#xff0c;此时 t &#61; r&#xff0c;并且不相交区间数量count&#43;&#43;&#xff0c;然后继续下一次遍历</li></ul> 
+<p>这样最后得到的不相交区间数量count&#xff0c;就是最大不相交区间数量</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const n &#61; lines[0] - 0;
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(arr, n));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, n) {
+  // 记录相同和连续子序列的区间
+  const ranges &#61; {};
+
+  // 求解arr数组的前缀和数组dp
+  const dp &#61; new Array(n).fill(0);
+  dp[0] &#61; arr[0];
+  for (let i &#61; 1; i &lt; n; i&#43;&#43;) {
+    dp[i] &#61; dp[i - 1] &#43; arr[i];
+  }
+
+  // 利用前缀和求差&#xff0c;求出所有连续子序列的和
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; i; j &lt; n; j&#43;&#43;) {
+      if (i &#61;&#61; 0) {
+        const sum &#61; dp[j];
+        ranges[sum] ? ranges[sum].push([0, j]) : (ranges[sum] &#61; [[0, j]]);
+      } else {
+        const sum &#61; dp[j] - dp[i - 1];
+        ranges[sum] ? ranges[sum].push([i, j]) : (ranges[sum] &#61; [[i, j]]);
+      }
+    }
+  }
+
+  // 求出所有连续子序列的和
+  // for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+  //   let sum &#61; arr[i];
+  //   ranges[sum] ? ranges[sum].push([i, i]) : (ranges[sum] &#61; [[i, i]]);
+  //   for (let j &#61; i &#43; 1; j &lt; n; j&#43;&#43;) {
+  //     sum &#43;&#61; arr[j];
+  //     ranges[sum] ? ranges[sum].push([i, j]) : (ranges[sum] &#61; [[i, j]]);
+  //   }
+  // }
+
+  // console.log(ranges);
+  // console.log(&#34;------------------------------&#34;);
+
+  // 保存相同和不相交连续子序列的最大个数
+  let max &#61; 0;
+  for (let sum in ranges) {
+    max &#61; Math.max(max, disjoint(ranges[sum]));
+  }
+
+  return max;
+}
+
+// 求不相交区间的最大个数
+function disjoint(ranges) {
+  let count &#61; 1; // 至少一个
+  ranges.sort((a, b) &#61;&gt; a[1] - b[1]);
+
+  // console.log(ranges);
+
+  let t &#61; ranges[0][1];
+  for (let i &#61; 1; i &lt; ranges.length; i&#43;&#43;) {
+    let [l, r] &#61; ranges[i];
+    if (t &lt; l) {
+      count&#43;&#43;;
+      t &#61; r;
+    }
+  }
+
+  return count;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      arr[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(arr, n));
+  }
+
+  public static int getResult(int[] arr, int n) {
+    // 记录相同和连续子序列的区间
+    HashMap&lt;Integer, ArrayList&lt;Integer[]&gt;&gt; ranges &#61; new HashMap&lt;&gt;();
+
+    // 求解arr数组的前缀和数组dp
+    int[] dp &#61; new int[n];
+    dp[0] &#61; arr[0];
+    for (int i &#61; 1; i &lt; n; i&#43;&#43;) {
+      dp[i] &#61; dp[i - 1] &#43; arr[i];
+    }
+
+    // 利用前缀和求差&#xff0c;求出所有连续子序列的和
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; i; j &lt; n; j&#43;&#43;) {
+        if (i &#61;&#61; 0) {
+          int sum &#61; dp[j];
+          ranges.putIfAbsent(sum, new ArrayList&lt;&gt;());
+          ranges.get(sum).add(new Integer[] {0, j});
+        } else {
+          int sum &#61; dp[j] - dp[i - 1];
+          ranges.putIfAbsent(sum, new ArrayList&lt;&gt;());
+          ranges.get(sum).add(new Integer[] {i, j});
+        }
+      }
+    }
+
+    //    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+    //      int sum &#61; arr[i];
+    //      ranges.putIfAbsent(sum, new ArrayList&lt;&gt;());
+    //      ranges.get(sum).add(new Integer[] {i, i});
+    //
+    //      for (int j &#61; i &#43; 1; j &lt; n; j&#43;&#43;) {
+    //        sum &#43;&#61; arr[j];
+    //        ranges.putIfAbsent(sum, new ArrayList&lt;&gt;());
+    //        ranges.get(sum).add(new Integer[] {i, j});
+    //      }
+    //    }
+
+    // 保存相同和不相交连续子序列的最大个数
+    int max &#61; 0;
+    for (Integer key : ranges.keySet()) {
+      ArrayList&lt;Integer[]&gt; range &#61; ranges.get(key);
+      max &#61; Math.max(max, disjoint(range));
+    }
+
+    return max;
+  }
+
+  //  求不相交区间的最大个数
+  public static int disjoint(ArrayList&lt;Integer[]&gt; ranges) {
+    int count &#61; 1; // 至少一个
+    ranges.sort((a, b) -&gt; a[1] - b[1]);
+
+    Integer t &#61; ranges.get(0)[1];
+    for (int i &#61; 1; i &lt; ranges.size(); i&#43;&#43;) {
+      Integer[] range &#61; ranges.get(i);
+      Integer l &#61; range[0];
+      Integer r &#61; range[1];
+
+      if (t &lt; l) {
+        count&#43;&#43;;
+        t &#61; r;
+      }
+    }
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(arr, n):
+    # 记录相同和连续子序列的区间
+    rans &#61; {}
+
+    # 求解arr数组的前缀和数组dp
+    dp &#61; [0] * n
+    dp[0] &#61; arr[0]
+    for i in range(1, n):
+        dp[i] &#61; dp[i - 1] &#43; arr[i]
+
+    # 利用前缀和求差&#xff0c;求出所有连续子序列的和
+    for i in range(n):
+        for j in range(i, n):
+            if i &#61;&#61; 0:
+                sumV &#61; dp[j]
+                if rans.get(sumV) is None:
+                    rans[sumV] &#61; []
+                rans[sumV].append([0, j])
+            else:
+                sumV &#61; dp[j] - dp[i - 1]
+                if rans.get(sumV) is None:
+                    rans[sumV] &#61; []
+                rans[sumV].append([i, j])
+
+    # 求出所有连续子序列的和
+    # for i in range(n):
+    #     sumV &#61; arr[i]
+    #     if rans.get(sumV) is None:
+    #         rans[sumV] &#61; [[i, i]]
+    #     else:
+    #         rans[sumV].append([i, i])
+    #
+    #     for j in range(i&#43;1, n):
+    #         sumV &#43;&#61; arr[j]
+    #         if rans.get(sumV) is None:
+    #             rans[sumV] &#61; [[i,j]]
+    #         else:
+    #             rans[sumV].append([i, j])
+
+    # 保存相同和不相交连续子序列的最大个数
+    maxV &#61; 0
+    for sumV in rans.keys():
+        maxV &#61; max(maxV, disjoint(rans[sumV]))
+
+    return maxV
+
+
+# 求不相交区间的最大个数
+def disjoint(rans):
+    count &#61; 1  # 至少一个
+    rans.sort(key&#61;lambda x: x[1])
+
+    t &#61; rans[0][1]
+    for i in range(len(rans)):
+        l, r &#61; rans[i]
+        if t &lt; l:
+            count &#43;&#61; 1
+            t &#61; r
+
+    return count
+
+
+# 算法调用
+print(getResult(arr, n))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

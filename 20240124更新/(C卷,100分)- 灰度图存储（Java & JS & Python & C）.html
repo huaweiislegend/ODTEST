@@ -1,0 +1,207 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 灰度图存储（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4>在线OJ刷题</h4> 
+<p><a href="https://hydro.ac/d/HWOD2023/p/OD404" rel="nofollow" title="题目详情 - 灰度图存储 - Hydro">题目详情 - 灰度图存储 - Hydro</a></p> 
+<p></p> 
+<h4 id="main-toc">题目描述</h4> 
+<p>黑白图像常采用灰度图的方式存储&#xff0c;即图像的每个像素填充一个灰色阶段值&#xff0c;256阶灰图是一个灰阶值取值范围为 0~255 的灰阶矩阵&#xff0c;0表示全黑&#xff0c;255表示全白&#xff0c;范围内的其他值表示不同的灰度。</p> 
+<p>但在计算机中实际存储时&#xff0c;会使用压缩算法&#xff0c;其中一个种压缩格式描述如如下&#xff1a;</p> 
+<blockquote> 
+ <p>10 10 255 34 0 1 255 8 0 3 255 6 0 5 255 4 0 7 255 2 0 9 255 21</p> 
+</blockquote> 
+<ol><li>所有的数值以空格分隔&#xff1b;</li><li>前两个数分别表示矩阵的行数和列数&#xff1b;</li><li>从第三个数开始&#xff0c;每两个数一组&#xff0c;每组第一个数是灰阶值&#xff0c;第二个数表示该灰阶值从左到右&#xff0c;从上到下&#xff08;可理解为二维数组按行存储在一维矩阵中&#xff09;的连续像素个数。比如题目所述的例子&#xff0c; “255 34” 表示有连续 34 个像素的灰阶值是 255。</li></ol> 
+<p>如此&#xff0c;图像软件在打开此格式灰度图的时候&#xff0c;就可以根据此算法从压缩数据恢复出原始灰度图矩阵。</p> 
+<p>请从输入的压缩数恢复灰度图原始矩阵&#xff0c;并返回指定像素的灰阶值。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<blockquote> 
+ <p>10 10 255 34 0 1 255 8 0 3 255 6 0 5 255 4 0 7 255 2 0 9 255 21<br /> 3 4</p> 
+</blockquote> 
+<p>输入包行两行&#xff1a;</p> 
+<ul><li>第一行是灰度图压缩数据</li><li>第二行表示一个像素位置的行号和列号&#xff0c;如 0 0 表示左上角像素</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<blockquote> 
+ <p>0</p> 
+</blockquote> 
+<p>输出数据表示的灰阶矩阵的指定像素的灰阶值。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>系保证输入的压缩数据是合法有效的&#xff0c;不会出现数据起界、数值不合法等无法恢复的场景</li><li>系统保证输入的像素坐标是合法的&#xff0c;不会出现不在矩阵中的像素</li><li>矩阵的行和列数范图为:(0,100]</li><li>灰阶值取值范图:[0,255]</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:600px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">10 10 56 34 99 1 87 8 99 3 255 6 99 5 255 4 99 7 255 2 99 9 255 21<br /> 3 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">99</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">将压缩数据恢复后的灰阶矩阵第3行第4列的像素灰阶值是99</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:600px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">10 10 255 34 0 1 255 8 0 3 255 6 0 5 255 4 0 7 255 2 0 9 255 21<br /> 3 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">255</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">将压缩数据恢复后的灰阶矩阵第3行第5列的像案灰阶值是255</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1图示</p> 
+<p><img alt="" height="433" src="https://img-blog.csdnimg.cn/direct/021410f63712405287da782dbc2f5783.png" width="544" /></p> 
+<p>用例2图示</p> 
+<p><img alt="" height="430" src="https://img-blog.csdnimg.cn/direct/38df31e0f0284e9a818ab5285fd2e5e5.png" width="511" /></p> 
+<p>因此&#xff0c;本题很简单&#xff0c;其实就是按照输入给定数量的灰阶值&#xff0c;顺序填充矩阵&#xff08;从左到右&#xff0c;从上到下&#xff09;&#xff0c;最后返回矩阵指定坐标位置的灰阶值即可。</p> 
+<p></p> 
+<p>本题可以将 二维矩阵 一维化&#xff0c;这样填充按顺序填充指定数量的灰阶值时&#xff0c;就会更加方便。</p> 
+<blockquote> 
+ <p>本质上&#xff0c;二维数组在内存上也是一段连续的内存</p> 
+</blockquote> 
+<p>用例1一维化图示&#xff1a;</p> 
+<p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/direct/e04577f847ae40fca417599cbf0c7ae5.png" /></p> 
+<p>如上图是&#xff0c;定义了一个10*10长度的一维数组&#xff0c;然后按顺序填充指定数量个灰阶值&#xff0c;最后要找的&#xff08;3&#xff0c;4&#xff09;二维坐标的灰阶值&#xff0c;对应到一维坐标为 3 * 列数 &#43; 4&#xff0c;即 3 * 10 &#43; 4 &#61; 34 索引位置的灰阶值。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+  const [x, y] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const rows &#61; nums[0];
+  const cols &#61; nums[1];
+
+  const graph &#61; new Array(rows * cols).fill(-1);
+
+  let start &#61; 0;
+  for (let i &#61; 2; i &lt; nums.length; i &#43;&#61; 2) {
+    const gray &#61; nums[i];
+    const len &#61; nums[i &#43; 1];
+
+    graph.fill(gray, start, start &#43; len);
+    start &#43;&#61; len;
+  }
+
+  console.log(graph[x * cols &#43; y]);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int[] pos &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    int rows &#61; nums[0];
+    int cols &#61; nums[1];
+
+    int[] graph &#61; new int[rows * cols];
+
+    int start &#61; 0;
+
+    for (int i &#61; 2; i &lt; nums.length; i &#43;&#61; 2) {
+      // 灰阶值
+      int gray &#61; nums[i];
+      // 该灰阶值从左到右&#xff0c;从上到下&#xff08;可理解为二维数组按行存储在一维矩阵中&#xff09;的连续像素个数
+      int len &#61; nums[i &#43; 1];
+      Arrays.fill(graph, start, start &#43; len, gray);
+      start &#43;&#61; len;
+    }
+
+    // 将二维坐标转为一维坐标
+    int target &#61; pos[0] * cols &#43; pos[1];
+    System.out.println(graph[target]);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+nums &#61; list(map(int, input().split()))
+x, y &#61; map(int, input().split())
+
+
+# 算法入口
+def getResult():
+    rows &#61; nums[0]
+    cols &#61; nums[1]
+
+    graph &#61; [-1] * (rows * cols)
+
+    start &#61; 0
+    for i in range(2, len(nums), 2):
+        gray &#61; nums[i]
+        length &#61; nums[i &#43; 1]
+
+        graph[start:start &#43; length] &#61; [gray] * length
+
+        start &#43;&#61; length
+
+    return graph[x * cols &#43; y]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+int main() {
+    int rows, cols;
+    scanf(&#34;%d %d&#34;, &amp;rows, &amp;cols);
+
+    int graph[rows * cols];
+    int start &#61; 0;
+
+    int gray;
+    int len;
+    while (scanf(&#34;%d %d&#34;, &amp;gray, &amp;len)) {
+        for (int i &#61; start; i &lt; start &#43; len; i&#43;&#43;) {
+            graph[i] &#61; gray;
+        }
+
+        start &#43;&#61; len;
+
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    int x, y;
+    scanf(&#34;%d %d&#34;, &amp;x, &amp;y);
+
+    printf(&#34;%d\n&#34;, graph[x * cols &#43; y]);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

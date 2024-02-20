@@ -1,0 +1,247 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 查找众数及中位数（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>众数是指一组数据中出现次数量多的那个数&#xff0c;众数可以是多个。</p> 
+<p>中位数是指把一组数据从小到大排列&#xff0c;最中间的那个数&#xff0c;如果这组数据的个数是奇数&#xff0c;那最中间那个就是中位数&#xff0c;如果这组数据的个数为偶数&#xff0c;那就把中间的两个数之和除以2&#xff0c;所得的结果就是中位数。</p> 
+<p>查找整型数组中元素的众数并组成一个新的数组&#xff0c;求新数组的中位数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入一个一维整型数组&#xff0c;数组大小取值范围 0&lt;N&lt;1000&#xff0c;数组中每个元素取值范围 0&lt;E&lt;1000</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出众数组成的新数组的中位数</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>10 11 21 19 21 17 21 16 21 18 15</td></tr><tr><td>输出</td><td>21</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>2 1 5 4 3 3 9 2 7 4 6 2 15 4 2 4</td></tr><tr><td>输出</td><td>3</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:89px;">输入</td><td style="width:409px;">5 1 5 3 5 2 5 5 7 6 7 3 7 11 7 55 7 9 98 9 17 9 15 9 9 1 39</td></tr><tr><td style="width:89px;">输出</td><td style="width:409px;">7</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>逻辑题。具体逻辑请看代码注释。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] nums &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(nums));
+  }
+
+  public static int getResult(Integer[] nums) {
+    HashMap&lt;Integer, Integer&gt; count &#61; new HashMap&lt;&gt;();
+
+    // 统计各数字出现次数
+    for (int num : nums) {
+      count.put(num, count.getOrDefault(num, 0) &#43; 1);
+    }
+
+    // 获取最大出现次数
+    int max &#61; count.values().stream().max((a, b) -&gt; a - b).orElse(0);
+
+    // 将众数挑选出来
+    ArrayList&lt;Integer&gt; ans &#61; new ArrayList&lt;&gt;();
+    for (Integer k : count.keySet()) {
+      if (count.get(k) &#61;&#61; max) ans.add(k);
+    }
+
+    // 众数升序
+    ans.sort((a, b) -&gt; a - b);
+
+    // 中位数取值
+    int mid &#61; ans.size() / 2;
+    if (ans.size() % 2 &#61;&#61; 0) {
+      // 偶数个数时&#xff0c;取中间两个位置的平均值
+      return (ans.get(mid) &#43; ans.get(mid - 1)) / 2;
+    } else {
+      // 奇数个数时&#xff0c;取中间位置的值
+      return ans.get(mid);
+    }
+  }
+}
+</code></pre> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const nums &#61; line.split(&#34; &#34;).map(Number);
+  console.log(getResult(nums));
+});
+
+function getResult(nums) {
+  const count &#61; {};
+
+  // 统计各数字出现次数
+  for (let num of nums) {
+    count[num] &#61; (count[num] ?? 0) &#43; 1;
+  }
+
+  // 获取最大出现次数
+  const max &#61; Math.max(...Object.values(count));
+
+  // 将众数挑选出来
+  const mode &#61; [];
+  for (let k in count) {
+    if (count[k] &#61;&#61; max) mode.push(parseInt(k));
+  }
+
+  // 众数升序
+  mode.sort((a, b) &#61;&gt; a - b);
+
+  // 中位数取值
+  const mid &#61; Math.floor(mode.length / 2);
+  if (mode.length % 2 &#61;&#61; 0) {
+    // 偶数个数时&#xff0c;取中间两个位置的平均值
+    return Math.floor((mode[mid] &#43; mode[mid - 1]) / 2);
+  } else {
+    // 奇数个数时&#xff0c;取中间位置的值
+    return mode[mid];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+nums &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    count &#61; {}
+
+    # 统计各数字出现次数
+    for num in nums:
+        count[num] &#61; count.get(num, 0) &#43; 1
+
+    # 获取最大出现次数
+    maxCount &#61; max(count.values())
+
+    # 将众数挑选出来
+    mode &#61; []
+    for k in count:
+        if count[k] &#61;&#61; maxCount:
+            mode.append(int(k))
+
+    # 众数升序
+    mode.sort()
+
+    # 中位数取值
+    mid &#61; len(mode) // 2
+    if len(mode) % 2 &#61;&#61; 0:
+        # 偶数个数时&#xff0c;取中间两个位置的平均值
+        return (mode[mid] &#43; mode[mid - 1]) // 2
+    else:
+        # 奇数个数时&#xff0c;取中间位置的值
+        return mode[mid]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
+
+#define MAX_SIZE 1000
+#define MAX_VAL 1000
+
+int cmp(const void* a, const void* b) {
+    return (*(int*) a) - (*(int*) b);
+}
+
+int main() {
+    // 输入数组
+    int nums[MAX_SIZE] &#61; {0};
+    int nums_size &#61; 0;
+
+    while(scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if(getchar() !&#61; &#39; &#39;) break;
+    }
+
+    // 每个数的出现次数
+    int count[MAX_VAL] &#61; {0};
+    // 最大出现次数
+    int maxCount &#61; 0;
+    for(int i&#61;0; i&lt;nums_size; i&#43;&#43;) {
+        count[nums[i]]&#43;&#43;;
+        maxCount &#61; MAX(maxCount, count[nums[i]]);
+    }
+
+    // 众数数组
+    int mode[MAX_SIZE] &#61; {0};
+    int mode_size &#61; 0;
+
+    for(int i&#61;0; i&lt;MAX_VAL; i&#43;&#43;) {
+        // 如果该数的出现次数是最大出现次数&#xff0c;则是众数
+        if(count[i] &#61;&#61; maxCount) {
+            mode[mode_size&#43;&#43;] &#61; i;
+        }
+    }
+
+    // 众数数组升序
+    qsort(mode, mode_size, sizeof(int), cmp);
+
+    // 取众数数组的中位数
+    int mid &#61; mode_size / 2;
+
+    if(mode_size % 2 &#61;&#61; 0) {
+        printf(&#34;%d\n&#34;, (mode[mid] &#43; mode[mid - 1]) / 2);
+    } else {
+        printf(&#34;%d\n&#34;, mode[mid]);
+    }
+
+    return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,325 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 贪心歌手（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>一个歌手准备从A城去B城参加演出。</p> 
+<ol><li>按照合同&#xff0c;他必须在 T 天内赶到</li><li>歌手途经 N 座城市</li><li>歌手不能往回走</li><li>每两座城市之间需要的天数都可以提前获知。</li><li>歌手在每座城市都可以在路边卖唱赚钱。<br /><br /> 经过调研&#xff0c;歌手提前获知了每座城市卖唱的收入预期&#xff1a;<br /> 如果在一座城市第一天卖唱可以赚M&#xff0c;后续每天的收入会减少D&#xff08;第二天赚的钱是 M - D&#xff0c;第三天是 M - 2D ...&#xff09;。如果收入减少到 0 就不会再少了。</li><li>歌手到达后的第二天才能开始卖唱。如果今天卖过唱&#xff0c;第二天才能出发。</li></ol> 
+<p>贪心的歌手最多可以赚多少钱&#xff1f;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行两个数字 T 和 N&#xff0c;中间用空格隔开。</p> 
+<ul><li>T 代表总天数&#xff0c;0 &lt; T &lt; 1000</li><li>N 代表路上经过 N 座城市&#xff0c;0 &lt; N &lt; 100</li></ul> 
+<p>第二行 N&#43;1 个数字&#xff0c;中间用空格隔开。代表每两座城市之间耗费的时间。</p> 
+<ul><li>其总和 ≤ T。</li></ul> 
+<p>接下来 N 行&#xff0c;每行两个数字 M 和 D&#xff0c;中间用空格隔开。代表每个城市的输入预期。</p> 
+<ul><li>0 &lt; M &lt; 1000</li><li>0 &lt; D &lt; 100</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>一个数字。代表歌手最多可以赚多少钱。以回车结束。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:532px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:442px;">10 2<br /> 1 1 2<br /> 120 20<br /> 90 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:442px;">540</td></tr><tr><td style="width:86px;">说明</td><td style="width:442px;"> <p>总共10天&#xff0c;路上经过2座城市。</p> <p>路上共花 1&#43;1&#43;2&#61;4 天</p> <p>剩余6天最好的计划是在第一座城市待3天&#xff0c;在第二座城市待3天。</p> <p>在第一座城市赚的钱&#xff1a;120 &#43; 100 &#43; 80 &#61; 300</p> <p>在第二座城市赚的钱&#xff1a;90 &#43; 80 &#43; 70 &#61; 240</p> <p>一共 300 &#43; 240 &#61; 540。</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题歌手必须从A到B&#xff0c;因此输入的第二行各个城市间的花费的路程时间之和roadCost是必须的&#xff0c;即可用于卖唱赚钱的时间 remain 为 T - roadCost。</p> 
+<p></p> 
+<p>我们需要规划 remain 时间&#xff0c;合理分配给各个城市&#xff0c;保证时间分配方案能够赚的钱最多。</p> 
+<p>按照题目意思&#xff0c;每个城市停留的第一天赚m钱&#xff0c;后面每天减少d&#xff0c;</p> 
+<blockquote> 
+ <p>每个城市停留Y天&#xff0c;那么这Y天中赚的钱是严格递减的&#xff0c;且最后一天&#xff08;第Y天&#xff09;赚的钱最少</p> 
+</blockquote> 
+<p></p> 
+<p>假设歌手目前在X市</p> 
+<ul><li>如果前面城市没有用完remain时间&#xff0c;那么当天可以停留在X市卖唱赚钱</li><li>如果前面城市已经用完remain时间&#xff0c;那么此时需要比较&#xff1a;</li></ul> 
+<ol><li>歌手选择在X市当天停留卖唱可以赚的钱 x</li><li>歌手前面时间中某天赚的最少的钱 y&#xff0c;由于每个城市停留天数中最后一天赚的钱最少&#xff0c;因此这里的y必然是前面某个城市最后一天赚的钱<br />   <p>如果 x &gt; y&#xff0c;则我们应该将前面赚 y 钱的时间&#xff0c;空闲出来&#xff0c;用于当天赚 x 元&#xff0c;这种替换逻辑&#xff0c;不会改变歌手的行程顺序</p> <p>如果 x &lt;&#61; y&#xff0c;则X市就没有必要待下去了&#xff0c;因为继续待下去赚的钱只会比x少</p> </li></ol> 
+<p>上面逻辑中&#xff0c;在前面城市&#xff08;前面时间&#xff09;中找一个最小赚的钱&#xff0c;非常适合使用优先队列。因此我们可以使用优先队列记录已经赚的钱&#xff08;按天&#xff09;&#xff0c;如果当天停留会超出remain限制&#xff0c;那么就取出优先队列中最小赚的钱&#xff0c;和当天停留可以赚的钱比较&#xff0c;如果当天停留可以赚更多钱&#xff0c;则弹出优先队列中最小赚的钱&#xff08;含义是&#xff1a;将赚最少钱的那天时间空出来&#xff09;。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [t, n] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const roadCost &#61; (await readline())
+    .split(&#34; &#34;)
+    .map(Number)
+    .reduce((a, b) &#61;&gt; a &#43; b);
+
+  const mds &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    mds.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  // remain是刨去必要的路程时间后&#xff0c;剩余可以用于赚钱的时间
+  const remain &#61; t - roadCost;
+
+  // 如果没有剩余时间可以用&#xff0c;则赚不到钱
+  if (remain &lt;&#61; 0) {
+    console.log(0);
+    return;
+  }
+
+  // 优先队列&#xff08;降序数组&#xff09;记录赚到的钱, 即数组尾巴是某天赚的最少的钱
+  const pq &#61; [];
+
+  // 第一天卖唱可以赚m&#xff0c;后续每天的收入会减少d
+  for (let [m, d] of mds) {
+    // 只要在当前城市还有钱赚&#xff0c;那么就继续待
+    while (m &gt; 0) {
+      // 只有remain天可以赚钱&#xff0c;超出的时间不能赚钱&#xff0c;因此需要比较超出的时间赚的钱m&#xff0c;和前面时间中赚的最少的钱pq.at(-1)
+      if (pq.length &gt;&#61; remain) {
+        // pq.at(-1)只可能是某座城市停留的最后一天的赚的钱&#xff0c;因为每座城市都是停留的最后一天赚的钱最少
+        if (m &gt; pq.at(-1)) {
+          // 如果当前城市当天赚的钱m&#xff0c;比前面天里面赚的最少的pq.at(-1)多&#xff0c;那么就赚pq.at(-1)钱的那天时间节约下来&#xff0c;给当天用
+          pq.pop();
+        } else {
+          // 如果当前城市当天赚的钱m&#xff0c;比前面天里面赚的最少的pq.at(-1)还少&#xff0c;则当前城市继续待下去赚的钱只会更少&#xff0c;因此没必要呆下去了
+          break;
+        }
+      }
+
+      // 如果所有城市停留时间没有超出remain天&#xff0c;或者当天是超出的时间&#xff0c;但是比前面赚的最少的一天的赚的更多&#xff0c;则赚m更优
+      pq.push(m);
+      pq.sort((a, b) &#61;&gt; b - a);
+
+      //  每天收入减少d
+      m -&#61; d;
+    }
+  }
+
+  const ans &#61; pq.reduce((a, b) &#61;&gt; a &#43; b);
+  console.log(ans);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class Main {
+  static int t;
+  static int n;
+  static int roadCost;
+  static int[][] mds;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    t &#61; sc.nextInt();
+    n &#61; sc.nextInt();
+
+    // roadCost是A~B城市必需的路程时间
+    roadCost &#61; 0;
+    for (int i &#61; 0; i &lt; n &#43; 1; i&#43;&#43;) {
+      roadCost &#43;&#61; sc.nextInt();
+    }
+
+    mds &#61; new int[n][2];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      mds[i][0] &#61; sc.nextInt();
+      mds[i][1] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult());
+  }
+
+  public static int getResult() {
+    // remain是刨去必要的路程时间后&#xff0c;剩余可以用于赚钱的时间
+    int remain &#61; t - roadCost;
+
+    // 如果没有剩余时间可以用&#xff0c;则赚不到钱
+    if (remain &lt;&#61; 0) {
+      return 0;
+    }
+
+    // 优先队列&#xff08;小顶堆&#xff09;记录赚到的钱, 即堆顶是某天赚的最少的钱
+    PriorityQueue&lt;Integer&gt; pq &#61; new PriorityQueue&lt;&gt;((a, b) -&gt; a - b);
+
+    for (int[] md : mds) {
+      // 第一天卖唱可以赚m&#xff0c;后续每天的收入会减少d
+      int m &#61; md[0];
+      int d &#61; md[1];
+
+      // 只要在当前城市还有钱赚&#xff0c;那么就继续待
+      while (m &gt; 0) {
+        // 只有remain天可以赚钱&#xff0c;超出的时间不能赚钱&#xff0c;因此需要比较超出的时间赚的钱m&#xff0c;和前面时间中赚的最少的钱pq.peek
+        if (pq.size() &gt;&#61; remain) {
+          // pq.peek只可能是某座城市停留的最后一天的赚的钱&#xff0c;因为每座城市都是停留的最后一天赚的钱最少
+          if (m &gt; pq.peek()) {
+            // 如果当前城市当天赚的钱m&#xff0c;比前面天里面赚的最少的pq.peek多&#xff0c;那么就赚pq.peek钱的那天时间节约下来&#xff0c;给当天用
+            pq.poll();
+          } else {
+            // 如果当前城市当天赚的钱m&#xff0c;比前面天里面赚的最少的pq.peek还少&#xff0c;则当前城市继续待下去赚的钱只会更少&#xff0c;因此没必要呆下去了
+            break;
+          }
+        }
+
+        // 如果所有城市停留时间没有超出remain天&#xff0c;或者当天是超出的时间&#xff0c;但是比前面赚的最少的一天的赚的更多&#xff0c;则赚m更优
+        pq.add(m);
+
+        //  每天收入减少d
+        m -&#61; d;
+      }
+    }
+
+    return pq.stream().reduce(Integer::sum).orElse(0);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import heapq
+
+# 输入获取
+t, n &#61; map(int, input().split())
+roadCost &#61; sum(map(int, input().split()))
+mds &#61; [list(map(int, input().split())) for _ in range(n)]
+
+
+# 算法入口
+def getResult():
+    # remain是刨去必要的路程时间后&#xff0c;剩余可以用于赚钱的时间
+    remain &#61; t - roadCost
+
+    # 如果没有剩余时间可以用&#xff0c;则赚不到钱
+    if remain &lt;&#61; 0:
+        return 0
+
+    # 优先队列&#xff08;小顶堆&#xff09;记录赚到的钱, 即堆顶是某天赚的最少的钱
+    pq &#61; []
+    # 第一天卖唱可以赚m&#xff0c;后续每天的收入会减少d
+    for m, d in mds:
+        # 只要在当前城市还有钱赚&#xff0c;那么就继续待
+        while m &gt; 0:
+            # 只有remain天可以赚钱&#xff0c;超出的时间不能赚钱&#xff0c;因此需要比较超出的时间赚的钱m&#xff0c;和前面时间中赚的最少的钱pq[0]
+            if len(pq) &gt;&#61; remain:
+                # pq[0]只可能是某座城市停留的最后一天的赚的钱&#xff0c;因为每座城市都是停留的最后一天赚的钱最少
+                if m &gt; pq[0]:
+                    # 如果当前城市当天赚的钱m&#xff0c;比前面天里面赚的最少的pq[0]多&#xff0c;那么就赚pq[0]钱的那天时间节约下来&#xff0c;给当天用
+                    heapq.heappop(pq)
+                else:
+                    # 如果当前城市当天赚的钱m&#xff0c;比前面天里面赚的最少的pq[0]还少&#xff0c;则当前城市继续待下去赚的钱只会更少&#xff0c;因此没必要呆下去了
+                    break
+
+            # 如果所有城市停留时间没有超出remain天&#xff0c;或者当天是超出的时间&#xff0c;但是比前面赚的最少的一天的赚的更多&#xff0c;则赚m更优
+            heapq.heappush(pq, m)
+
+            # 每天收入减少d
+            m -&#61; d
+
+    return sum(pq)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int cmp(const void *a, const void *b) {
+    return *((int *) b) - *((int *) a);
+}
+
+int main() {
+    int t, n;
+    scanf(&#34;%d %d&#34;, &amp;t, &amp;n);
+
+    // roadCost是A~B城市必需的路程时间
+    int roadCost &#61; 0;
+    for (int i &#61; 0; i &lt; n &#43; 1; i&#43;&#43;) {
+        int cost;
+        scanf(&#34;%d&#34;, &amp;cost);
+        roadCost &#43;&#61; cost;
+    }
+
+    // remain是刨去必要的路程时间后&#xff0c;剩余可以用于赚钱的时间
+    int remain &#61; t - roadCost;
+
+    // 如果没有剩余时间可以用&#xff0c;则赚不到钱
+    if (remain &lt;&#61; 0) {
+        puts(&#34;0&#34;);
+        return 0;
+    }
+
+    // 优先队列&#xff08;降序数组&#xff09;记录赚到的钱, 即数组尾巴是某天赚的最少的钱
+    int pq[remain &#43; 1];
+    int pq_size &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        // 第一天卖唱可以赚m&#xff0c;后续每天的收入会减少d
+        int m, d;
+        scanf(&#34;%d %d&#34;, &amp;m, &amp;d);
+
+        // 只要在当前城市还有钱赚&#xff0c;那么就继续待
+        while (m &gt; 0) {
+            // 只有remain天可以赚钱&#xff0c;超出的时间不能赚钱&#xff0c;因此需要比较超出的时间赚的钱m&#xff0c;和前面时间中赚的最少的钱pq.peek
+            if (pq_size &gt;&#61; remain) {
+                // pq.peek只可能是某座城市停留的最后一天的赚的钱&#xff0c;因为每座城市都是停留的最后一天赚的钱最少
+                if (m &gt; pq[pq_size - 1]) {
+                    // 如果当前城市当天赚的钱m&#xff0c;比前面天里面赚的最少的pq.peek多&#xff0c;那么就赚pq.peek钱的那天时间节约下来&#xff0c;给当天用
+                    pq_size--;
+                } else {
+                    // 如果当前城市当天赚的钱m&#xff0c;比前面天里面赚的最少的pq.peek还少&#xff0c;则当前城市继续待下去赚的钱只会更少&#xff0c;因此没必要呆下去了
+                    break;
+                }
+            }
+
+            // 如果所有城市停留时间没有超出remain天&#xff0c;或者当天是超出的时间&#xff0c;但是比前面赚的最少的一天的赚的更多&#xff0c;则赚m更优
+            pq[pq_size&#43;&#43;] &#61; m;
+            qsort(pq, pq_size, sizeof(int), cmp);
+
+            //  每天收入减少d
+            m -&#61; d;
+        }
+    }
+
+    int ans &#61; 0;
+    for (int i &#61; 0; i &lt; pq_size; i&#43;&#43;) {
+        ans &#43;&#61; pq[i];
+    }
+
+    printf(&#34;%d\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,391 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 优选核酸检测点（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>张三要去外地出差&#xff0c;需要做核酸&#xff0c;需要在指定时间点前做完核酸&#xff0c;请帮他找到满足条件的核酸检测点。</p> 
+<ul><li>给出一组核酸检测点的距离和每个核酸检测点当前的人数</li><li>给出张三要去做核酸的出发时间 出发时间是10分钟的倍数&#xff0c;同时给出张三做核酸的最晚结束时间</li><li>题目中给出的距离是整数&#xff0c;单位是公里&#xff0c;时间1分钟为一基本单位</li></ul> 
+<p>去找核酸点时&#xff0c;有如下的限制&#xff1a;</p> 
+<ul><li>去往核酸点的路上&#xff0c;每公里距离花费时间10分钟&#xff0c;费用是10元</li><li>核酸点每检测一个人的时间花费是1分钟</li><li>每个核酸点工作时间都是8点到20点中间不休息&#xff0c;核酸点准时工作&#xff0c;早到晚到都不检测</li><li>核酸检测结果可立刻知道</li><li>在张三去某个核酸点的路上花费的时间内&#xff0c;此核酸检测点的人数是动态变化的&#xff0c;变化规则是</li></ul> 
+<ol><li>在非核酸检测时间内&#xff0c;没有人排队</li><li>8点-10点每分钟增加3人</li><li>12点-14点每分钟增加10人</li><li><span style="color:#fe2c24;">18点-20点每分钟增加20人。</span></li><li><span style="color:#fe2c24;">其他时间每5分钟增加1人。</span></li></ol> 
+<p>要求将所有满足条件的核酸检测点按照优选规则排序列出 &#xff1a;<br /> 优选规则&#xff1a;</p> 
+<ol><li>花费时间最少的核酸检测点排在前面。</li><li>花费时间一样,花费费用最少的核酸检测点排在前面。</li><li>时间和费用一样&#xff0c;则ID值最小的排在前面</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<blockquote> 
+ <p>H1 M1<br /> H2 M2<br /> N<br /> ID1 D1 C1<br /> ID2 D2 C2<br /> …<br /> IDn Dn Cn</p> 
+</blockquote> 
+<p>H1: 当前时间的小时数。<br /> M1&#xff1a;当前时间的分钟数&#xff0c;<br /> H2&#xff1a;指定完成核算时间的小时数。<br /> M2&#xff1a;指定完成核算时间的分钟数。<br /> N&#xff1a;所有核酸检测点个数。<br /> ID1&#xff1a;核酸点的ID值。<br /> D1&#xff1a;核酸检测点距离张三的距离。<br /> C1&#xff1a;核酸检测点当前检测的人数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<blockquote> 
+ <p>N<br /> I2 T2 M2<br /> I3 T3 M3</p> 
+</blockquote> 
+<p>N&#xff1a;满足要求的核酸检测点个数<br /> I2:选择后的核酸检测点ID<br /> T2:做完核酸花费的总时间(分钟)<br /> M3:去该核算点花费的费用</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">10 30<br /> 14 50<br /> 3<br /> 1 10 19<br /> 2 8 20<br /> 3 21 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2<br /> 2 80 80<br /> 1 190 100</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例意思是&#xff1a;</p> 
+<p>张三在10:30出门&#xff0c;要在14:50之前做完核酸。</p> 
+<p>现在张三可选三个核酸检测点&#xff1a;</p> 
+<ul><li>检测点1&#xff1a;距离张三10公里&#xff0c;10:30的时候有19个人排队</li><li>检测点2&#xff1a;距离张三8公里&#xff0c;10:30的时候有20个人排队</li><li>检测点3&#xff1a;距离张三21公里&#xff0c;10:30的时候有3个人排队</li></ul> 
+<p>张三赶到检测点1&#xff0c;需要10*10 &#61; 100元&#xff0c;10*10&#61;100分钟&#xff0c;而在张三到达检测点时12:10&#xff0c;此时排队的人数是为&#xff1a;</p> 
+<p><img alt="" height="257" src="https://img-blog.csdnimg.cn/88910a1a5ecb46c8a79d7280f85b9b3e.png" width="437" /></p> 
+<p> 通过上图&#xff0c;我们可以看出&#xff1a;在10:30~12:00期间不会有人加入&#xff0c;只会有人离开&#xff0c;每分钟离开1人&#xff0c;因此到12:00时&#xff0c;最多离开 12*60 - (10*60&#43;30) &#61; 90人&#xff0c;而10:30时只有19人排队&#xff0c;因此到12:00时&#xff0c;检测点1只有0人排队。</p> 
+<p>然后12:00到12:10阶段&#xff0c;每分钟离开1人&#xff0c;增加10人&#xff0c;因此相当于每分钟净增9人&#xff0c;因此到12:10&#xff0c;即张三到达时&#xff0c;检测点共有&#xff1a;10 * 9 &#61; 90人。</p> 
+<p>因此张三还需排90分钟&#xff0c;才能做完核酸。</p> 
+<p>因此张三到检测点1的代价是&#xff1a;路上100分钟&#xff0c;到达后等待90分钟&#xff0c;共需190分钟&#xff0c;花费100元。</p> 
+<p>同理&#xff0c;可得张三去其他检测点的代价。</p> 
+<p></p> 
+<p>然后&#xff0c;过滤掉花费时间超出限制的代价&#xff0c;剩下的按照花费时间、花费金额排序即可。</p> 
+<p></p> 
+<p>我们可以通过求区间交集的方式&#xff0c;来获取张三【出发时间&#xff0c;到达时间】  和  【8:00&#xff0c;10:00】以及【10:00, 12:00】&#xff0c;以及【12:00, 14:00】以及【14:00&#xff0c;20:00】的交集。</p> 
+<p>其中&#xff0c;</p> 
+<ul><li>和  【8:00&#xff0c;10:00】的交集&#xff0c;每分钟净增2人</li><li>和  【10:00, 12:00】的交集&#xff0c;每分钟净减1人</li><li>和  【12:00, 14:00】的交集&#xff0c;每分钟净增9人</li><li>和  【14:00&#xff0c;20:00】的交集&#xff0c;每分钟净减1人</li></ul> 
+<p></p> 
+<p>2023.1.17补充说明&#xff1a;</p> 
+<p>根据网友m0_71826536的提示&#xff0c;如果张三在8:00前就赶到了核酸监测点&#xff0c;但是8:00前是不给排队的&#xff0c;因此张三还要等待到8:00&#xff0c;因此张三花费的时间其实是&#xff1a;路上时间 &#43; 等待时间 &#43; 排队时间</p> 
+<p></p> 
+<p>2023.03.20补充说明</p> 
+<p>有同学考到这题后&#xff0c;按照上面逻辑写&#xff0c;得到通过率20%&#xff0c;我分析了一下原因&#xff0c;有可能是下面逻辑有问题&#xff1a;</p> 
+<blockquote> 
+ <p>张三在八点前赶到时&#xff0c;排在了初始人数的前面&#xff0c;即第一个进行核酸检测。</p> 
+</blockquote> 
+<p>其实&#xff0c;根据题目用例来看&#xff0c;改成下面这个逻辑&#xff0c;也一样可行</p> 
+<blockquote> 
+ <p>张三在八点前赶到时&#xff0c;排在了初始人数的后面</p> 
+</blockquote> 
+<p>下面代码补充了该场景&#xff0c;大家可以参照代码来看</p> 
+<p></p> 
+<p>2023.03.21 补充说明</p> 
+<p>之前题目描述不全&#xff0c;新增如下规则&#xff1a;</p> 
+<ul><li><span style="color:#fe2c24;">18点-20点每分钟增加20人。</span></li><li><span style="color:#fe2c24;">其他时间每5分钟增加1人。</span></li></ul> 
+<p></p> 
+<p>2023.04.06 补充说明</p> 
+<pre>张三最迟做完核酸的时间点&#xff0c;不能早于8点&#xff0c;不能迟于20点</pre> 
+<p>因为题目说&#xff1a;</p> 
+<blockquote> 
+ <p>每个核酸点工作时间都是<span style="color:#fe2c24;">8点到20点</span>中间不休息&#xff0c;核酸点准时工作&#xff0c;早到<span style="color:#fe2c24;">晚到</span>都不检测</p> 
+</blockquote> 
+<p>Java修改了35行&#xff0c;JS修改了37行&#xff0c;Python修改了30行</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int h1 &#61; sc.nextInt();
+    int m1 &#61; sc.nextInt();
+
+    int h2 &#61; sc.nextInt();
+    int m2 &#61; sc.nextInt();
+
+    int n &#61; sc.nextInt();
+
+    int[][] targets &#61; new int[n][3];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      targets[i][0] &#61; sc.nextInt();
+      targets[i][1] &#61; sc.nextInt();
+      targets[i][2] &#61; sc.nextInt();
+    }
+
+    getResult(h1, m1, h2, m2, targets);
+  }
+
+  /**
+   * &#64;param h1 当前时间的小时数
+   * &#64;param m1 当前时间的分钟数
+   * &#64;param h2 指定完成核算时间的小时数
+   * &#64;param m2 指定完成核算时间的分钟数
+   * &#64;param targets 元素也是数组&#xff0c;元素数组含义为[核酸点的ID值, 核酸检测点距离张三的距离,核酸检测点当前检测的人数]
+   */
+  public static void getResult(int h1, int m1, int h2, int m2, int[][] targets) {
+    int start &#61; h1 * 60 &#43; m1; // 张三出发的时间点
+    //    int expect_end &#61; h2 * 60 &#43; m2; // 张三最迟做完核酸的时间点
+    int expect_end &#61; Math.min(h2 * 60 &#43; m2, 20 * 60); // 张三最迟做完核酸的时间点&#xff0c;不能迟于20点
+
+    double[][] times &#61; {
+      {8 * 60, 10 * 60, 2}, // 8点~10点&#xff0c;每分钟增加2人
+      {10 * 60, 12 * 60, -0.8}, // 10点~12点&#xff0c;每分钟减少0.8人。&#xff08;每五分钟新增1人&#xff0c;而每分钟减少1人&#xff0c;因此相当于每分钟减少0.8人&#xff09;
+      {12 * 60, 14 * 60, 9}, // 12~14点&#xff0c;每分钟增加9人
+      {14 * 60, 18 * 60, -0.8}, // 14~18点&#xff0c;每分钟减少0.8人
+      {18 * 60, 20 * 60, 19}, // 18~20点&#xff0c;每分钟增加19人
+    };
+
+    int[][] ans &#61;
+        Arrays.stream(targets)
+            .map(
+                target -&gt; {
+                  int id &#61; target[0]; // 核酸点id
+                  int dis &#61; target[1]; // 核酸点和张三的距离
+                  int wait &#61; target[2]; // 核酸点在张三出发时已有的人数&#xff0c;每个人检测需要1分钟
+
+                  int arrived &#61; start &#43; dis * 10; // 张三到达核酸点的时间
+
+                  if (arrived &lt; 8 * 60) {
+                    arrived &#61; 8 * 60;
+                    // 张三在八点之前到达&#xff0c;排在初始人数后面
+                    return new int[] {id, arrived - start &#43; wait, dis * 10};
+
+                    // 张三在八点之前到达&#xff0c;排在初始人数前面
+                    // return new int[] {id, arrived - start, dis * 10}; // 此解法通过率20%
+                  }
+
+                  double s1 &#61; start;
+                  double e1 &#61; arrived;
+
+                  for (double[] time : times) {
+                    double s2 &#61; time[0];
+                    double e2 &#61; time[1];
+                    double changePerMinutes &#61; time[2];
+
+                    double t &#61; intersection(s1, e1, s2, e2);
+
+                    if (t &gt; 0) {
+                      wait &#43;&#61; t * changePerMinutes;
+                      wait &#61; Math.max(0, wait);
+                    }
+                  }
+
+                  return new int[] {id, arrived - start &#43; wait, dis * 10};
+                })
+            .filter(arr -&gt; start &#43; arr[1] &lt;&#61; expect_end)
+            .sorted((a, b) -&gt; a[1] !&#61; b[1] ? a[1] - b[1] : a[2] !&#61; b[2] ? a[2] - b[2] : a[0] - b[0])
+            .toArray(int[][]::new);
+
+    System.out.println(ans.length);
+    for (int[] an : ans) {
+      System.out.println(an[0] &#43; &#34; &#34; &#43; an[1] &#43; &#34; &#34; &#43; an[2]);
+    }
+  }
+
+  public static double intersection(double s1, double e1, double s2, double e2) {
+    if (s1 &lt;&#61; s2 &amp;&amp; e1 &gt; s2) {
+      return Math.min(e1, e2) - s2;
+    }
+
+    if (s1 &gt;&#61; s2 &amp;&amp; e2 &gt; s1) {
+      return Math.min(e1, e2) - s1;
+    }
+
+    return 0;
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let h1, m1, h2, m2, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    [h1, m1] &#61; lines[0].split(&#34; &#34;).map(Number);
+    [h2, m2] &#61; lines[1].split(&#34; &#34;).map(Number);
+    n &#61; lines[2] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 3) {
+    const targets &#61; lines.slice(3).map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    getResult(h1, m1, h2, m2, targets);
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} h1 当前时间的小时数
+ * &#64;param {*} m1 当前时间的分钟数
+ * &#64;param {*} h2 指定完成核算时间的小时数
+ * &#64;param {*} m2 指定完成核算时间的分钟数
+ * &#64;param {*} targets [[核酸点的ID值, 核酸检测点距离张三的距离,核酸检测点当前检测的人数]]
+ */
+function getResult(h1, m1, h2, m2, targets) {
+  const start &#61; h1 * 60 &#43; m1; // 张三出发的时间点
+  // const expect_end &#61; h2 * 60 &#43; m2; // 张三最迟做完核酸的时间点
+  const expect_end &#61; Math.min(h2 * 60 &#43; m2, 20 * 60); // 张三最迟做完核酸的时间点&#xff0c;不能早于8点&#xff0c;不能迟于20点
+
+  const times &#61; [
+    [8 * 60, 10 * 60, 2], // 8点~10点&#xff0c;每分钟增加2人
+    [10 * 60, 12 * 60, -0.8], // 10点~12点&#xff0c;每分钟减少0.8人
+    [12 * 60, 14 * 60, 9], // 12~14点&#xff0c;每分钟增加9人
+    [14 * 60, 18 * 60, -0.8], // 14点~18点&#xff0c;每分钟减少0.8人
+    [18 * 60, 20 * 60, 19], // 18~20点&#xff0c;每分钟新增19人
+  ];
+
+  const ans &#61; targets
+    .map((target) &#61;&gt; {
+      let [id, dis, wait] &#61; target; // [核酸点id, 核酸点和张三的距离, 核酸点在张三出发时已有的人数&#xff0c;每个人检测需要1分钟]
+
+      let arrived &#61; start &#43; dis * 10;
+
+      if (arrived &lt; 8 * 60) {
+        arrived &#61; 8 * 60;
+        // 张三在八点之前到达&#xff0c;排在初始人数后面
+        return [id, arrived - start &#43; wait, dis * 10];
+
+        // 张三在八点之前到达&#xff0c;排在初始人数前面
+        // return [id, arrived - start, dis * 10]; // 此解法通过率20%
+      }
+
+      const s1 &#61; start;
+      const e1 &#61; arrived;
+
+      for (let [s2, e2, changePerMinutes] of times) {
+        const t &#61; intersection(s1, e1, s2, e2);
+
+        if (t &gt; 0) {
+          wait &#43;&#61; t * changePerMinutes;
+          wait &#61; Math.max(0, wait);
+        }
+      }
+
+      return [id, arrived - start &#43; wait, dis * 10];
+    })
+    .filter((arr) &#61;&gt; start &#43; arr[1] &lt;&#61; expect_end)
+    .sort((a, b) &#61;&gt;
+      a[1] !&#61; b[1] ? a[1] - b[1] : a[2] !&#61; b[2] ? a[2] - b[2] : a[0] - b[0]
+    );
+
+  console.log(ans.length);
+  ans.forEach((an) &#61;&gt; console.log(an.join(&#34; &#34;)));
+}
+
+function intersection(s1, e1, s2, e2) {
+  if (s1 &lt;&#61; s2 &amp;&amp; e1 &gt; s2) {
+    return Math.min(e1, e2) - s2;
+  }
+
+  if (s1 &gt;&#61; s2 &amp;&amp; e2 &gt; s1) {
+    return Math.min(e1, e2) - s1;
+  }
+
+  return 0;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+h1, m1 &#61; map(int, input().split())
+h2, m2 &#61; map(int, input().split())
+n &#61; int(input())
+targets &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+def intersection(s1, e1, s2, e2):
+    if s1 &lt;&#61; s2 &lt; e1:
+        return min(e1, e2) - s2
+
+    if s2 &lt;&#61; s1 &lt; e2:
+        return min(e1, e2) - s1
+
+    return 0
+
+
+# 算法入口
+def getResult(h1, m1, h2, m2, targets):
+    &#34;&#34;&#34;
+    :param h1: 当前时间的小时数
+    :param m1: 当前时间的分钟数
+    :param h2: 指定完成核算时间的小时数
+    :param m2: 指定完成核算时间的分钟数
+    :param targets: [[核酸点的ID值, 核酸检测点距离张三的距离,核酸检测点当前检测的人数]]
+    &#34;&#34;&#34;
+
+    start &#61; h1 * 60 &#43; m1
+    # expect_end &#61; h2 * 60 &#43; m2
+    expect_end &#61; min(h2 * 60 &#43; m2, 20 * 60)  # 张三最迟做完核酸的时间点&#xff0c;不能早于8点&#xff0c;不能迟于20点
+
+    # 8点~10点&#xff0c;每分钟增加2人
+    # 10点~12点&#xff0c;每分钟减少0.8人
+    # 12~14点&#xff0c;每分钟增加9人
+    # 14~18点&#xff0c;每分钟减少0.8人
+    # 18~20点&#xff0c;每分钟增加19人
+    times &#61; [[8 * 60, 10 * 60, 2],
+             [10 * 60, 12 * 60, -0.8],
+             [12 * 60, 14 * 60, 9],
+             [14 * 60, 18 * 60, -0.8],
+             [18 * 60, 20 * 60, 19]]
+
+    def mapFn(target):
+        id, dis, wait &#61; target  # [核酸点id, 核酸点和张三的距离, 核酸点在张三出发时已有的人数]
+        arrived &#61; start &#43; dis * 10
+
+        if arrived &lt; 8 * 60:
+            arrived &#61; 8 * 60
+
+            # 张三在八点之前到达&#xff0c;排在初始人数后面
+            return [id, arrived - start &#43; wait, dis * 10]
+
+            # 张三在八点之前到达&#xff0c;排在初始人数前面
+            # return [id, arrived - start, dis * 10]  # 此解法20%通过率
+
+        s1 &#61; start
+        e1 &#61; arrived
+
+        for s2, e2, changePerMinutes in times:
+            t &#61; intersection(s1, e1, s2, e2)
+
+            if t &gt; 0:
+                wait &#43;&#61; t * changePerMinutes
+                wait &#61; max(0, wait)
+
+        return [id, arrived - start &#43; int(wait), dis * 10]
+
+    ans &#61; list(filter(lambda x: start &#43; x[1] &lt;&#61; expect_end, map(mapFn, targets)))
+
+    ans.sort(key&#61;lambda x: (x[1], x[2], x[0]))
+
+    print(len(ans))
+    for an in ans:
+        print(&#34; &#34;.join(list(map(str, an))))
+
+
+# 调用算法
+getResult(h1, m1, h2, m2, targets)</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

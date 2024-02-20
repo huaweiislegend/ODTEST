@@ -1,0 +1,467 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 识图谱新词挖掘（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小华负责公司知识图谱产品&#xff0c;现在要通过新词挖掘完善知识图谱。</p> 
+<p>新词挖掘&#xff1a;给出一个待挖掘问题内容字符串Content和一个词的字符串word&#xff0c;找到content中所有word的新词。</p> 
+<p>新词&#xff1a;使用词word的字符排列形成的字符串。</p> 
+<p>请帮小华实现新词挖掘&#xff0c;返回发现的新词的数量。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为待挖掘的文本内容content&#xff1b;</p> 
+<p>第二行输入为词word&#xff1b;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>在content中找到的所有word的新词的数量。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>0 ≤ content的长度 ≤ 10000000</li><li>1 ≤ word的长度 ≤ 2000</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">qweebaewqd<br /> qwe</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>起始索引等于0的子串是“qwe”&#xff0c;它是word的新词。</p> <p>起始索引等于6的子串是“ewq”&#xff0c;它是word的新词。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abab<br /> ab</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>起始索引等于0的子串是”ab“&#xff0c;它是word的新词。</p> <p>起始索引等于1的子串是”ba“&#xff0c;它是word的新词。</p> <p>起始索引等于2的子串是”ab“&#xff0c;它是word的新词。</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90"></h4> 
+<h3>暴力解法&#xff08;可得100%通过率&#xff09;</h3> 
+<p>本题最简单的解法就是利用定长&#xff08;word长度&#xff09;滑动窗口来选择 content中的子串&#xff0c;只要选中的子串和word二者&#xff0c;在字典序排序后是一样的&#xff0c;则可以记为一个挖掘到的新词。</p> 
+<p></p> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const content &#61; lines[0];
+    const word &#61; lines[1];
+
+    console.log(getResult(content, word));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(content, word) {
+  if (content.length &lt; word.length) {
+    return 0;
+  }
+
+  const sorted_word &#61; [...word].sort().join(&#34;&#34;);
+
+  let ans &#61; 0;
+  let maxI &#61; content.length - word.length;
+  for (let i &#61; 0; i &lt;&#61; maxI; i&#43;&#43;) {
+    const sorted_substr &#61; [...content.slice(i, i &#43; word.length)]
+      .sort()
+      .join(&#34;&#34;);
+
+    if (sorted_substr &#61;&#61;&#61; sorted_word) ans&#43;&#43;;
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String content &#61; sc.next();
+    String word &#61; sc.next();
+
+    System.out.println(getResult(content, word));
+  }
+
+  public static int getResult(String content, String word) {
+    if (content.length() &lt; word.length()) return 0;
+
+    char[] tmp &#61; word.toCharArray();
+    Arrays.sort(tmp);
+    String sorted_word &#61; new String(tmp);
+
+    int ans &#61; 0;
+    int maxI &#61; content.length() - word.length();
+    int len &#61; word.length();
+
+    for (int i &#61; 0; i &lt;&#61; maxI; i&#43;&#43;) {
+      char[] window &#61; content.substring(i, i &#43; len).toCharArray();
+      Arrays.sort(window);
+
+      if (sorted_word.equals(new String(window))) {
+        ans&#43;&#43;;
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+content &#61; input()
+word &#61; input()
+
+
+# 算法入口
+def getResult(content, word):
+    # 如果content长度小于word&#xff0c;则直接返回0
+    if len(content) &lt; len(word):
+        return 0
+
+    sorted_word &#61; &#34;&#34;.join(sorted(list(word)))
+
+    ans &#61; 0
+    maxI &#61; len(content) - len(word)
+
+    for i in range(maxI &#43; 1):
+        sorted_subStr &#61; &#34;&#34;.join(sorted(content[i:i &#43; len(word)]))
+        if sorted_subStr &#61;&#61; sorted_word:
+            ans &#43;&#61; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult(content, word))
+</code></pre> 
+<p></p> 
+<h3>优化解法</h3> 
+<p>上面暴力解法的时间复杂度在&#xff1a;O(n*m)&#xff0c;其中n是content长度&#xff0c;m是word长度&#xff0c;也就是说&#xff0c;最多的会有10000000 * 2000次循环&#xff0c;有人可能会疑问时间复杂度中m哪来的&#xff1f;那是content截取出来的子串字典序排序的时间复杂度m。</p> 
+<p>因此上面的算法极其容易超时。</p> 
+<p>那么上面算法是否有优化的可能呢?</p> 
+<p>我的优化思路是&#xff0c;利用word和content截取子串的字母数量 比较 来代替  字典序排序后比较。</p> 
+<p>因为字典序排序存在一个较大的性能浪费&#xff0c;比如</p> 
+<blockquote> 
+ <p>qweebaewqd<br /> xyz</p> 
+</blockquote> 
+<p>我们可以明显发现&#xff0c;content中不存在word新词&#xff0c;因为任意位置长度3的滑动窗口中的第一个字母都不属于word&#xff0c;因此仅从滑动窗口内第一个字母就可以判断出结果&#xff0c;而不是需要截取子串字典序排序后再比较得出结果。</p> 
+<p></p> 
+<p>但是&#xff0c;通过字母数量比较也有缺陷&#xff0c;那就是&#xff0c;如果只有滑动窗口内部各字母数量和word的字母数量严格一致&#xff0c;才能算挖掘到了新词。</p> 
+<p>我的实现思路是&#xff1a;</p> 
+<p>遍历滑动窗口内部的字母&#xff0c;如c&#xff0c;如果该字母c是word中的&#xff0c;则先看统计数量count[c]是不是已经为0了&#xff0c;如果已经为0了&#xff0c;则说明当前滑动窗口遍历到的字母c是超标部分&#xff0c;因此当前滑动窗口不可用。下一个滑动窗口应该保证字母c不超标&#xff0c;即下一个滑动窗口的左边界应该在当前滑动窗口中字母c第一次出现位置的右边。</p> 
+<p>当然&#xff0c;如果遍历完滑动窗口内部所有字母&#xff0c;也没有出现超标现象&#xff0c;则说明该滑动窗口就是要挖掘的新词。</p> 
+<p>上面算法逻辑&#xff0c;其实我不太确定是否有多大的性能提升&#xff0c;但是相较于字典序排序应该有较多提升。我把上面算法逻辑称为跳跃式&#xff0c;即滑动窗口的左边界不是单纯一格一格往右滑的&#xff0c;而是可以多格滑动的。</p> 
+<p></p> 
+<p>为了以防万一&#xff0c;我这里还想了一个传统滑动窗口的解法&#xff0c;那就是一格一格移动&#xff0c;但是也是通过统计滑动窗口内部字母数量来判断是否是word新词&#xff0c;但是后一个滑动窗口可以通过差异化思想&#xff0c;快速基于前一个滑动窗口得出自身内部字母数量。这块逻辑可以参考&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/128062246" rel="nofollow" title="华为OD机试 - 完美走位_伏城之外的博客-CSDN博客_完美走位华为">华为OD机试 - 完美走位_伏城之外的博客-CSDN博客_完美走位华为</a></p> 
+<p>中求解最小覆盖子串的过程。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<p>跳跃式</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const content &#61; lines[0];
+    const word &#61; lines[1];
+
+    console.log(getResult(content, word));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(content, word) {
+  // 如果content长度小于word&#xff0c;则直接返回0
+  if (content.length &lt; word.length) {
+    return 0;
+  }
+
+  // count统计word中各字母数量
+  const count &#61; {};
+  for (let c of word) {
+    count[c] ? count[c]&#43;&#43; : (count[c] &#61; 1);
+  }
+
+  // ans保存题解
+  let ans &#61; 0;
+
+  // 滑动窗口左指针的移动范围为 0~maxI
+  let maxI &#61; content.length - word.length;
+  outer: for (let i &#61; 0; i &lt;&#61; maxI; i&#43;&#43;) {
+    const countb &#61; JSON.parse(JSON.stringify(count));
+    const letters &#61; {};
+    for (let j &#61; i; j &lt; i &#43; word.length; j&#43;&#43;) {
+      const c &#61; content[j];
+      // 如果滑动窗口j位置字母不属于word&#xff0c;则说明当前滑动窗口内的单词肯定不是word新词&#xff0c;且j之前的所有滑动窗口都毁了&#xff0c;只能从j之后滑动窗口重新开始
+      if (count[c] &#61;&#61;&#61; undefined) {
+        i &#61; j;
+        continue outer;
+      }
+
+      // 如果滑动窗口内部字母是word中的&#xff0c;且在规定数量内
+      if (countb[c] &gt; 0) {
+        // 出现了一个&#xff0c;则规定数量--
+        countb[c]--;
+        // 记录content中出现的字母的位置
+        letters[c] ? letters[c].push(j) : (letters[c] &#61; [j]);
+      } else {
+        // 如果滑动窗口j位置字母属于word&#xff0c;但是此时由于j位置字母的加入&#xff0c;导致滑动窗口内部对应字母数量超过了word&#xff0c;则说明当前滑动窗口内单词肯定不是word新词
+        // 且我们应该让之后的滑动窗口内部该字母数量不能超&#xff0c;因此下一个滑动窗口的起始位置应该是该字母在当前滑动窗口第一次出现位置的下一个位置开始滑动
+        i &#61; letters[c][0];
+        continue outer;
+      }
+    }
+    ans&#43;&#43;;
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<p>传统式</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const content &#61; lines[0];
+    const word &#61; lines[1];
+
+    console.log(getResult(content, word));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(content, word) {
+  // 如果content长度小于word&#xff0c;则直接返回0
+  if (content.length &lt; word.length) {
+    return 0;
+  }
+
+  // ans保存题解
+  let ans &#61; 0;
+
+  // total记录word字母总数
+  let total &#61; word.length;
+  // count统计word中各字母数量
+  const count &#61; {};
+  for (let c of word) {
+    count[c] ? count[c]&#43;&#43; : (count[c] &#61; 1);
+  }
+
+  // 初始滑动窗口内部字母遍历
+  for (let i &#61; 0; i &lt; word.length; i&#43;&#43;) {
+    const c &#61; content[i];
+    if (count[c] !&#61;&#61; undefined &amp;&amp; count[c]-- &gt; 0) {
+      total--;
+    }
+  }
+  if (total &#61;&#61;&#61; 0) ans&#43;&#43;;
+
+  // 滑动窗口左指针的移动范围为 0~maxI
+  let maxI &#61; content.length - word.length;
+  for (let i &#61; 1; i &lt;&#61; maxI; i&#43;&#43;) {
+    const remove_c &#61; content[i - 1];
+    const add_c &#61; content[i &#43; word.length - 1];
+
+    if (count[remove_c] !&#61;&#61; undefined &amp;&amp; count[remove_c]&#43;&#43; &gt;&#61; 0) {
+      total&#43;&#43;;
+    }
+
+    if (count[add_c] !&#61;&#61; undefined &amp;&amp; count[add_c]-- &gt; 0) {
+      total--;
+    }
+
+    if (total &#61;&#61;&#61; 0) ans&#43;&#43;;
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<blockquote> 
+ <p>Java这里只实现一个传统式的&#xff0c;因为感觉跳跃式的性能提升局限性太大。</p> 
+</blockquote> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String content &#61; sc.next();
+    String word &#61; sc.next();
+
+    System.out.println(getResult(content, word));
+  }
+
+  public static int getResult(String content, String word) {
+    // 如果content长度小于word&#xff0c;则直接返回0
+    if (content.length() &lt; word.length()) {
+      return 0;
+    }
+
+    // ans保存题解
+    int ans &#61; 0;
+
+    // total记录word字母总数
+    int total &#61; word.length();
+
+    // count统计word中各字母数量
+    HashMap&lt;Character, Integer&gt; count &#61; new HashMap&lt;&gt;();
+    for (int i &#61; 0; i &lt; word.length(); i&#43;&#43;) {
+      Character c &#61; word.charAt(i);
+      count.put(c, count.getOrDefault(c, 0) &#43; 1);
+    }
+
+    // 初始滑动窗口内部字母遍历
+    for (int i &#61; 0; i &lt; word.length(); i&#43;&#43;) {
+      Character c &#61; content.charAt(i);
+      if (count.containsKey(c)) {
+        if (count.get(c) &gt; 0) {
+          total--;
+        }
+        count.put(c, count.get(c) - 1);
+      }
+    }
+
+    if (total &#61;&#61; 0) ans&#43;&#43;;
+
+    // 滑动窗口左指针的移动范围为 0~maxI
+    int maxI &#61; content.length() - word.length();
+    for (int i &#61; 1; i &lt;&#61; maxI; i&#43;&#43;) {
+      Character remove_c &#61; content.charAt(i - 1);
+      Character add_c &#61; content.charAt(i &#43; word.length() - 1);
+
+      if (count.containsKey(remove_c)) {
+        if (count.get(remove_c) &gt;&#61; 0) {
+          total&#43;&#43;;
+        }
+        count.put(remove_c, count.get(remove_c) &#43; 1);
+      }
+
+      if (count.containsKey(add_c)) {
+        if (count.get(add_c) &gt; 0) {
+          total--;
+        }
+        count.put(add_c, count.get(add_c) - 1);
+      }
+
+      if (total &#61;&#61; 0) ans&#43;&#43;;
+    }
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">content &#61; input()
+word &#61; input()
+
+
+def getResult(content, word):
+    # 如果content长度小于word&#xff0c;则直接返回0
+    if len(content) &lt; len(word):
+        return 0
+
+    # ans保存题解
+    ans &#61; 0
+
+    # total记录word字母总数
+    total &#61; len(word)
+
+    # count统计word中各字母数量
+    count &#61; {}
+    for c in word:
+        if count.get(c) is None:
+            count[c] &#61; 1
+        else:
+            count[c] &#43;&#61; 1
+
+    # 初始滑动窗口内部字母遍历
+    for i in range(len(word)):
+        c &#61; content[i]
+        if count.get(c) is not None:
+            if count[c] &gt; 0:
+                total -&#61; 1
+            count[c] -&#61; 1
+
+    if total &#61;&#61; 0:
+        ans &#43;&#61; 1
+
+    # 滑动窗口左指针的移动范围为 0~maxI
+    maxI &#61; len(content) - len(word) &#43; 1
+    for i in range(1, maxI):
+        remove_c &#61; content[i - 1]
+        add_c &#61; content[i &#43; len(word) - 1]
+
+        if count.get(remove_c) is not None:
+            if count[remove_c] &gt;&#61; 0:
+                total &#43;&#61; 1
+            count[remove_c] &#43;&#61; 1
+
+        if count.get(add_c) is not None:
+            if count[add_c] &gt; 0:
+                total -&#61; 1
+            count[add_c] -&#61; 1
+
+        if total &#61;&#61; 0:
+            ans &#43;&#61; 1
+
+    return ans
+
+
+print(getResult(content, word))</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

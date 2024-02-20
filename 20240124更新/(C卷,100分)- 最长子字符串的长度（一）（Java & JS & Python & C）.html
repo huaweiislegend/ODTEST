@@ -1,0 +1,160 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 最长子字符串的长度（一）（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给你一个字符串 s&#xff0c;首尾相连成一个环形&#xff0c;请你在环中找出 &#39;o&#39; 字符出现了偶数次最长子字符串的长度。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入是一个小写字母组成的字符串</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出是一个整数</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 ≤ s.length ≤ 500000</li><li>s 只包含小写英文字母</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">alolobo</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">6</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">最长子字符串之一是 &#34;alolob&#34;&#xff0c;它包含2个&#39;o&#39;</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">looxdolx</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">7</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">最长子字符串&#34;oxdolxl&#34;&#xff0c;由于是首尾连接一起的&#xff0c;所以最后一个&#39;x&#39;和开头的&#39;l&#39;是连接在一起的&#xff0c;此字符串包含2个&#39;o&#39;</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">bcbcbc</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">6</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">这个示例中&#xff0c;字符串&#34;bcbcbc&#34;本身就是最长的&#xff0c;因为&#39;o&#39;都出现了0次。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题很简单&#xff0c;只要统计出输入字符串s中&#39;o&#39;的个数&#xff1a;</p> 
+<ul><li>如果 &#39;o&#39; 为偶数个&#xff0c;则s本身就是一个含有偶数个&#39;o&#39;的子字符串&#xff0c;结果输出s.length</li><li>如果 &#39;o&#39; 为奇数个&#xff0c;由于s是环形的&#xff0c;因此只要任选环中任意一个&#39;o&#39;解开&#xff08;删除&#xff09;&#xff0c;剩下的就是含有偶数个 &#39;o&#39; 的子串&#xff0c;该子串长度为 s.length - 1</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const s &#61; await readline();
+
+  // s中&#39;o&#39;的个数
+  let zeroCount &#61; 0;
+
+  for (let c of s) {
+    if (c &#61;&#61; &#34;o&#34;) zeroCount&#43;&#43;;
+  }
+
+  if (zeroCount % 2 &#61;&#61; 0) {
+    console.log(s.length);
+  } else {
+    console.log(s.length - 1);
+  }
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  public static int getResult(String s) {
+    int n &#61; s.length();
+
+    // s中&#39;o&#39;的个数
+    int zeroCount &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (s.charAt(i) &#61;&#61; &#39;o&#39;) zeroCount&#43;&#43;;
+    }
+
+    if (zeroCount % 2 &#61;&#61; 0) {
+      return n;
+    } else {
+      return n - 1;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    # s中&#39;o&#39;的个数
+    zeroCount &#61; 0
+
+    for c in s:
+        if c &#61;&#61; &#39;o&#39;:
+            zeroCount &#43;&#61; 1
+
+    if zeroCount % 2 &#61;&#61; 0:
+        return len(s)
+    else:
+        return len(s) - 1
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+int main() {
+    char s[500001];
+    gets(s);
+
+    // s中&#39;o&#39;的个数
+    int zeroCount &#61; 0;
+
+    // 遍历字符串s每一个字符
+    int i &#61; 0;
+    while (s[i] !&#61; &#39;\0&#39;) {
+        if (s[i] &#61;&#61; &#39;o&#39;) {
+            zeroCount&#43;&#43;;
+        }
+        i&#43;&#43;;
+    }
+
+    // 遍历结束后&#xff0c;i 大小就是字符串s的长度
+    printf(&#34;%d\n&#34;, zeroCount % 2 ? i - 1 : i);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

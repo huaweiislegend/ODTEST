@@ -1,0 +1,317 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 字符串化繁为简（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个输入字符串&#xff0c;字符串只可能由英文字母&#xff08; &#39;a&#39; ~ &#39;z&#39;、&#39;A&#39; ~ &#39;Z&#39; &#xff09;和左右小括号&#xff08; &#39;(&#39;、&#39;)&#39; &#xff09;组成。</p> 
+<p>当字符里存在小括号时&#xff0c;小括号是成对的&#xff0c;可以有一个或多个小括号对&#xff0c;小括号对不会嵌套&#xff0c;小括号对内可以包含1个或多个英文字母&#xff0c;也可以不包含英文字母。</p> 
+<p>当小括号对内包含多个英文字母时&#xff0c;这些字母之间是相互等效的关系&#xff0c;而且等效关系可以在不同的小括号对之间传递&#xff0c;即当存在 &#39;a&#39; 和 &#39;b&#39; 等效和存在 &#39;b&#39; 和 &#39;c&#39; 等效时&#xff0c;&#39;a&#39; 和 &#39;c&#39; 也等效&#xff0c;另外&#xff0c;同一个英文字母的大写字母和小写字母也相互等效&#xff08;即使它们分布在不同的括号对里&#xff09;</p> 
+<p>需要对这个输入字符串做简化&#xff0c;输出一个新的字符串&#xff0c;输出字符串里只需保留输入字符串里的没有被小括号对包含的字符&#xff08;按照输入字符串里的字符顺序&#xff09;&#xff0c;并将每个字符替换为在小括号对里包含的且字典序最小的等效字符。</p> 
+<p>如果简化后的字符串为空&#xff0c;请输出为&#34;0&#34;。</p> 
+<p></p> 
+<p>示例 :<br /> 输入字符串为&#34;never(dont)give(run)up(f)()&#34;&#xff0c;初始等效字符集合为(&#39;d&#39;, &#39;o&#39;, &#39;n&#39;, &#39;t&#39;)、(&#39;r&#39;, &#39;u&#39;, &#39;n&#39;)&#xff0c;由于等效关系可以传递&#xff0c;因此最终等效字符集合为(&#39;d&#39;, &#39;o&#39;, &#39;n&#39;, &#39;t&#39;, &#39;r&#39;, &#39;u&#39;)&#xff0c;将输入字符串里的剩余部分按字典序最小的等效字符替换后得到&#34;devedgivedp&#39;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>input_string</p> 
+<p>输入为1行&#xff0c;代表输入字符串</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>output_string</p> 
+<p>输出为1行&#xff0c;代表输出字符串</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>输入字符串的长度在1~100000之间</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">()abd</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">abd</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">输入字符串里没有被小括号包含的子字符串为&#34;abd&#34;&#xff0c;其中每个字符没有等效字符&#xff0c;输出为&#34;abd&#34;</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">(abd)demand(fb)()for</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">aemanaaor</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">等效字符集为(&#39;a&#39;, &#39;b&#39;, &#39;d&#39;, &#39;f&#39;)&#xff0c;输入字符串里没有被小括号包含的子字符串集合为&#39;demandfor&#34;&#xff0c;将其中字符替换为字典序最小的等效字符后输出为&#xff1a;&#34;aemanaaor&#34;</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">()happy(xyz)new(wxy)year(t)</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">happwnewwear</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">等效字符集为(‘x’, &#39;y&#39;, &#39;z&#39;, &#39;w&#39;)&#xff0c;输入字符串里没有被小括号包含的子字符串集合为&#34;happynewyear&#34;&#xff0c;将其中字符替换为字典序最小的等效字符后输出为&#xff1a;&#34;happwnewwear&#34;</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">()abcdefgAC(a)(Ab)(C)</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">AAcdefgAC</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">等效字符集为(&#39;a&#39;, &#39;A&#39;, &#39;b&#39;)&#xff0c;输入字符里没有被小括号包含的子字符串集合为&#34;abcdefgAC&#34;&#xff0c;将其中字符替换为字典序最小的等效字符后输出为&#xff1a;&#34;AAcdefgAC&#34;</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题首先需要将&#xff1a;</p> 
+<ul><li>输入字符串里的<span style="color:#fe2c24;">没有被</span>小括号对包含的字符&#xff08;主体字符&#xff09;</li><li>输入字符串里的<span style="color:#fe2c24;">被</span>小括号对包含的字符&#xff08;等效字符&#xff09;</li></ul> 
+<p>这两部分内容解析出来。</p> 
+<p></p> 
+<p>我的思路是&#xff0c;定义一个标志 isOpen &#61; fasle&#xff0c;表示有没有遇到 &#39;(&#39; 字符&#xff0c;初始时肯定没遇到&#xff0c;因此初始化为false。</p> 
+<p>然后开始遍历输入字符串的每一个字符c&#xff1a;</p> 
+<ul><li>如果 c &#61;&#61; &#39;(&#39;&#xff0c;则将isOpen&#61;true&#xff0c;并新建一个等效字符容器eq</li><li>如果 c &#61;&#61; &#39;)&#39;&#xff0c;则将isOpen&#61;false</li><li>如果 c 是其他字符&#xff0c;如果此时isOpen&#61;&#61;true&#xff0c;则将c加入“等效字符容器eq”中&#xff0c;否则将c加入“主体字符cArr”容器中。</li></ul> 
+<p>这样&#xff0c;我们就可以得到了一个&#xff08;主体字符容器&#xff09;和多个&#xff08;等效字符容器&#xff09;。</p> 
+<p></p> 
+<p>接下来&#xff0c;就是对等效字符容器&#xff0c;进行合并操作&#xff0c;两个等效字符容器可以合并的原则是&#xff1a;</p> 
+<ul><li>存在相同的字符</li><li>虽然不存在相同字符&#xff0c;但是一个有大写字符&#xff0c;另一个由小写字符</li></ul> 
+<p>这个合并操作&#xff0c;目前没有想到好办法&#xff0c;只能暴力合并。具体请看代码实现。</p> 
+<p></p> 
+<p>最后&#xff0c;遍历每一个合并后的等效字符容器&#xff0c;求出对应容器中字典序最小的字符&#xff0c;作为容器内其他字符的替换字符。按照此替换规则&#xff0c;来替换主体字符容器中对应的字符。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.TreeSet;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String s &#61; sc.nextLine();
+    System.out.println(getResult(s));
+  }
+
+  public static String getResult(String s) {
+    // 主体字符容器
+    StringBuilder sb &#61; new StringBuilder();
+    // 等效字符容器的集合
+    LinkedList&lt;TreeSet&lt;Character&gt;&gt; eqs &#61; new LinkedList&lt;&gt;();
+
+    //  isOpen标志&#xff0c;表示有没有遇到 &#39;(&#39; 字符
+    boolean isOpen &#61; false;
+
+    // 下面逻辑用于从输入字符串中解析处主体字符&#xff0c;和等效字符
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+
+      if (c &#61;&#61; &#39;(&#39;) {
+        isOpen &#61; true;
+        eqs.add(new TreeSet&lt;&gt;());
+      } else if (c &#61;&#61; &#39;)&#39;) {
+        isOpen &#61; false;
+        if (eqs.getLast().size() &#61;&#61; 0) eqs.removeLast(); // 如果等效字符容器为空&#xff0c;则删除
+      } else {
+        if (!isOpen) sb.append(c);
+        else eqs.getLast().add(c);
+      }
+    }
+
+    // 暴力的对等效字符容器进行合并
+    outer:
+    while (true) {
+      for (int i &#61; 0; i &lt; eqs.size(); i&#43;&#43;) {
+        for (int j &#61; i &#43; 1; j &lt; eqs.size(); j&#43;&#43;) {
+          if (canCombine(eqs.get(i), eqs.get(j))) {
+            eqs.get(i).addAll(eqs.get(j));
+            eqs.remove(j);
+            continue outer;
+          }
+        }
+      }
+      break;
+    }
+
+    char[] cArr &#61; sb.toString().toCharArray();
+
+    // 替换主体字符容器中的字符
+    for (TreeSet&lt;Character&gt; eq : eqs) {
+      Character t &#61; eq.first();
+      for (int i &#61; 0; i &lt; cArr.length; i&#43;&#43;) {
+        if (eq.contains(cArr[i])) cArr[i] &#61; t;
+      }
+    }
+
+    String ans &#61; new String(cArr);
+
+    // 如果简化后的字符串为空&#xff0c;请输出为&#34;0&#34;。
+    return ans.length() &#61;&#61; 0 ? &#34;0&#34; : ans;
+  }
+
+  public static boolean canCombine(TreeSet&lt;Character&gt; set1, TreeSet&lt;Character&gt; set2) {
+    // c 是小写字符
+    for (char c &#61; &#39;a&#39;; c &lt;&#61; &#39;z&#39;; c&#43;&#43;) {
+      char uc &#61; (char) (c - 32); // uc是大写字符
+      if ((set1.contains(c) || set1.contains(uc)) &amp;&amp; (set2.contains(c) || set2.contains(uc))) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  // 主体字符容器
+  const cArr &#61; [];
+  // 等效字符容器的集合
+  const eqs &#61; [];
+
+  //  isOpen标志&#xff0c;表示有没有遇到 &#39;(&#39; 字符
+  let isOpen &#61; false;
+
+  // 下面逻辑用于从输入字符串中解析处主体字符&#xff0c;和等效字符
+  for (let i &#61; 0; i &lt; s.length; i&#43;&#43;) {
+    const c &#61; s[i];
+
+    if (c &#61;&#61; &#34;(&#34;) {
+      isOpen &#61; true;
+      eqs.push(new Set());
+    } else if (c &#61;&#61; &#34;)&#34;) {
+      isOpen &#61; false;
+      if (eqs.at(-1).size &#61;&#61; 0) eqs.pop(); // 如果等效字符容器为空&#xff0c;则删除
+    } else {
+      if (!isOpen) cArr.push(c);
+      else eqs.at(-1).add(c);
+    }
+  }
+
+  // 暴力的对等效字符容器进行合并
+  outer: while (true) {
+    for (let i &#61; 0; i &lt; eqs.length; i&#43;&#43;) {
+      for (let j &#61; i &#43; 1; j &lt; eqs.length; j&#43;&#43;) {
+        if (canCombine(eqs[i], eqs[j])) {
+          eqs[i] &#61; new Set([...eqs[i], ...eqs[j]]);
+          eqs.splice(j, 1);
+          continue outer;
+        }
+      }
+    }
+    break;
+  }
+
+  // 替换主体字符容器中的字符
+  for (let eq of eqs) {
+    const t &#61; [...eq].sort()[0];
+    for (let i &#61; 0; i &lt; cArr.length; i&#43;&#43;) {
+      if (eq.has(cArr[i])) cArr[i] &#61; t;
+    }
+  }
+
+  const ans &#61; cArr.join(&#34;&#34;);
+
+  // 如果简化后的字符串为空&#xff0c;请输出为&#34;0&#34;。
+  return ans.length &#61;&#61; 0 ? &#34;0&#34; : ans;
+}
+
+function canCombine(set1, set2) {
+  for (let c &#61; 97; c &lt;&#61; 122; c&#43;&#43;) {
+    const lower &#61; String.fromCharCode(c); // 小写字符
+    const upper &#61; String.fromCharCode(c - 32); // 大写字符
+    if (
+      (set1.has(lower) || set1.has(upper)) &amp;&amp;
+      (set2.has(lower) || set2.has(upper))
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+def canCombine(set1, set2):
+    for c in range(97, 123):
+        lc &#61; chr(c)  # 小写字符
+        uc &#61; chr(c - 32)  # 大写字符
+        if (lc in set1 or uc in set1) and (lc in set2 or uc in set2):
+            return True
+    return False
+
+
+def loop(eqs):
+    for i in range(len(eqs)):
+        for j in range(i &#43; 1, len(eqs)):
+            if canCombine(eqs[i], eqs[j]):
+                tmp &#61; list(eqs[i])
+                tmp.extend(eqs[j])
+                eqs[i] &#61; set(tmp)
+                eqs.pop(j)
+                return True
+    return False
+
+
+# 算法入口
+def getResult():
+    # 主体字符容器
+    cArr &#61; []
+    # 等效字符容器的集合
+    eqs &#61; []
+
+    # isOpen标志&#xff0c;表示有没有遇到 &#39;(&#39; 字符
+    isOpen &#61; False
+
+    # 下面逻辑用于从输入字符串中解析处主体字符&#xff0c;和等效字符
+    for i in range(len(s)):
+        c &#61; s[i]
+
+        if c &#61;&#61; &#39;(&#39;:
+            isOpen &#61; True
+            eqs.append(set())
+        elif c &#61;&#61; &#39;)&#39;:
+            isOpen &#61; False
+            if len(eqs[-1]) &#61;&#61; 0: # 如果等效字符容器为空&#xff0c;则删除
+                eqs.pop()
+        else:
+            if not isOpen:
+                cArr.append(c)
+            else:
+                eqs[-1].add(c)
+
+    # 暴力的对等效字符容器进行合并
+    while loop(eqs):
+        pass
+
+    # 替换主体字符容器中的字符
+    for eq in eqs:
+        tmp &#61; list(eq)
+        tmp.sort()
+        t &#61; tmp[0]
+        for i in range(len(cArr)):
+            if cArr[i] in eq:
+                cArr[i] &#61; t
+
+    ans &#61; &#34;&#34;.join(cArr)
+
+    # 如果简化后的字符串为空&#xff0c;请输出为&#34;0&#34;。
+    return &#34;0&#34; if len(ans) &#61;&#61; 0 else ans
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

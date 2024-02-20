@@ -1,0 +1,562 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 信号发射和接收（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一个二维的天线矩阵&#xff0c;每根天线可以向其他天线发射信号&#xff0c;也能接收其他天线的信号&#xff0c;为了简化起见&#xff0c;我们约定每根天线只能向东和向南发射信号&#xff0c;换言之&#xff0c;每根天线只能接收东向或南向的信号。</p> 
+<p>每根天线有自己的高度anth&#xff0c;每根天线的高度存储在一个二维数组中&#xff0c;各个天线的位置用[r, c]表示&#xff0c;r代表天线的行位置&#xff08;从0开始编号&#xff09;&#xff0c;c代表天线的列位置&#xff08;从0开始编号&#xff09;。</p> 
+<p>在某一方向&#xff08;东向或南向&#xff09;&#xff0c;某根天线可以收到多根其他天线的信号&#xff08;也可能收不到任何其他天线的信号&#xff09;&#xff0c;对任一天线X和天线Y&#xff0c;天线X能接收到天线Y的条件是&#xff1a;</p> 
+<ol><li>天线X在天线Y的东边或南边</li><li>天线X和天线Y之间的其他天线的高度都低于天线X和天线Y&#xff0c;或天线X和天线Y之间无其他天线&#xff0c;即无遮挡。</li></ol> 
+<p>如下图示意&#xff1a;</p> 
+<p><img alt="" height="641" src="https://img-blog.csdnimg.cn/a4e673cfac664c1da478b8bf273b1971.png" width="624" /></p> 
+<p>在天线矩阵的第0行上&#xff1a;</p> 
+<ul><li>天线[0, 0]接收不到任何其他天线的信号&#xff0c;</li><li>天线[0, 1]可以接收到天线[0, 0]的信号&#xff0c;</li><li>天线[0, 2]可以接收到天线[0, 1]的信号&#xff0c;</li><li>天线[0, 3]可以接收到天线[0, 1]和天线[0, 2]的信号&#xff0c;</li><li>天线[0, 4]可以接收到天线[0, 3]的信号&#xff0c;</li><li>天线[0, 5]可以接收到天线[0, 4]的信号&#xff1b;</li></ul> 
+<p></p> 
+<p>在天线的第0列上&#xff1a;</p> 
+<ul><li>天线[0, 0]接收不到任何其他天线的信号&#xff0c;</li><li>天线[1, 0]可以接收到天线[0, 0]的信号&#xff0c;</li><li>天线[2, 0]可以接收到天线[1, 0]的信号&#xff0c;</li><li>天线[3, 0]可以接收到天线[1, 0]和天线[2, 0]的信号&#xff0c;</li><li>天线[4, 0]可以接收到天线[3, 0]的信号&#xff0c;</li><li>天线[5, 0]可以接收到天线[3, 0]和天线[4, 0]的信号&#xff1b;</li></ul> 
+<p></p> 
+<p>给一个m行n列的矩阵&#xff08;二维数组&#xff09;&#xff0c;矩阵存储各根天线的高度&#xff0c;求出每根天线可以接收到多少根其他天线的信号&#xff0c;结果输出到m行n列的矩阵&#xff08;二维矩阵&#xff09;中。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为1个m行n列的矩阵&#xff08;二维矩阵&#xff09;anth[m][n]&#xff0c;矩阵存储各根天线的高度&#xff0c;高度值anth[r]][c]为大于0的整数。</p> 
+<p>第一行为输入矩阵的行数和列数&#xff0c;如&#xff1a;</p> 
+<p>m n</p> 
+<p>第二行为输入矩阵的元素值&#xff0c;按行输入&#xff0c;如&#xff1a;</p> 
+<p>anth[0][0] anth[0][1] ... anth[0][n-1] anth[1][0] anth[1][1] ... anth[1][n-1] ... anth[m-1][0] ... anth[m-1][n-1]</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个m行n列的矩阵&#xff08;二维数组&#xff09;ret[m][n]&#xff0c;矩阵存储每根天线能收到多少根其他天线的信号&#xff0c;根数为ret[r][c]。</p> 
+<p>第一行为输出矩阵的行数和列数&#xff0c;如:</p> 
+<p>m n</p> 
+<p>第二行为输出矩阵的元素值&#xff0c;按行输出&#xff0c;如&#xff1a;</p> 
+<p>ret[0][0] ret[0][1] ... ret[0][n-1] ret[1][0] ret[1][1] ... ret[1][n-1] ... ret[m-1][0] ... ret[m-1][n-1]</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 ≤ m ≤ 500</li><li>1 ≤ n ≤ 500</li><li>0 &#xff1c; anth[r][c] &#xff1c; 10^5</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 6<br /> 2 4 1 5 3 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1 6<br /> 0 1 1 2 1 1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入为1行6列的天线矩阵的高度值</p> <p>[2 4 1 5 3 3]</p> <p>输出为1行6列的结果矩阵</p> <p>[0 1 1 2 1 1]</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 6<br /> 2 5 4 3 2 8 9 7 5 10 10 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2 6<br /> 0 1 1 1 1 4 1 2 2 4 2 2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入为2行6列的天线矩阵高度值</p> <p>[2 5 4 3 2 8]</p> <p>[9 7 5 10 10  3]</p> <p>输出为2行6列的结果矩阵</p> <p>[0 1 1 1 1 4]</p> <p>[1 2 2 4 2 2]</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>首先&#xff0c;本题我们需要从输入的一维数组中解析出二维天线矩阵&#xff0c;JS的实现略微麻烦&#xff0c;具体逻辑请看源码。</p> 
+<p>下面我们以用例1为例子&#xff0c;来解析本题&#xff0c;如下图是用例1的二维天线矩阵anth</p> 
+<p><img alt="" height="120" src="https://img-blog.csdnimg.cn/2a34a31a356b4c1fbca69869733d145b.png" width="357" /></p> 
+<p> 我们从anth[0][0]开始发射&#xff0c;本题说了&#xff0c;天线信号发射只能向东或者向南发射&#xff0c;即如下图所示</p> 
+<p> ​​<img alt="" height="163" src="https://img-blog.csdnimg.cn/284d7a6b9a304156a2038874e026ad7f.png" width="362" /></p> 
+<p>由于用例1只有一层&#xff0c;因此只需要考虑向东发射信号。</p> 
+<p>而东边的天线是否能收到信号&#xff0c;也有前提条件&#xff0c;即“发射天线”与“接收天线”之间的天线的高度都低于“发射天线”与“接收天线”&#xff0c;或者“发射天线”与“接收天线”之间没有其他天线</p> 
+<p>因此&#xff0c;上面用例1中anth[0][0]可以发射到anth[0][1]&#xff0c;因为它们之间没有其他天线</p> 
+<p><img alt="" height="109" src="https://img-blog.csdnimg.cn/13dc6474746444f98d86abaa6cceffe7.png" width="343" /></p> 
+<p>但是anth[0][0]不能发射到anth[0][2]&#xff0c;因为它们之间的天线大于等于了它们 </p> 
+<p><img alt="" height="118" src="https://img-blog.csdnimg.cn/9f826f1f62a6411098fb94f61cf4d56c.png" width="363" /></p> 
+<p>其实这一步&#xff0c;不需要走到anth[0][2]&#xff0c;因为anth[0][1] &gt;&#61; anth[0][0]&#xff0c;因此anth[0][0]必然会被anth[0][1]遮挡&#xff0c;导致无法继续向东发射。</p> 
+<p>因此&#xff0c;对于anth[0][0]作为发射点的所有情况已经讨论完了&#xff0c;它只有一个接收点&#xff0c;那就是anth[0][1]。</p> 
+<p></p> 
+<p>接下来继续讨论anth[0][1]作为发射点</p> 
+<p><img alt="" height="122" src="https://img-blog.csdnimg.cn/a64d8467e2a54be2a06b20a8bd9141d1.png" width="356" /></p> 
+<p>首先&#xff0c;相邻的anth[0][2]肯定能接收到信号。</p> 
+<p>并且由于anth[0][2]小于anth[0][1]&#xff0c;因此无法完全将anth[0][1]发射的信号遮挡&#xff0c;</p> 
+<p><img alt="" height="116" src="https://img-blog.csdnimg.cn/0bc9287ba6d345a4816e8f5b99b2ee24.png" width="361" /></p> 
+<p> 因此anth[0][3]可以接收到anth[0][1]的信号&#xff1f;</p> 
+<p>注意&#xff1a;这里我打了一个问号&#xff0c;因为题目要求&#xff0c;如果“发射天线”和“接收天线”之间有其他天线&#xff0c;那么其他天线的高度必须低于“发射天线”和“接收天线”。</p> 
+<p>上面打问号的原因是&#xff1a;我们只判断了中间天线 anth[0][2] &lt; anth[0][1] 发射天线&#xff0c;并没有判断中间天线 anth[0][2] 也小于 anth[0][3] 接收天线。</p> 
+<ul><li>而&#xff0c;这里中间天线 anth[0][2] 确实是小于 anth[0][3] 接收天线的&#xff0c;因此anth[0][3]可以接收到anth[0][1]的信号。</li></ul> 
+<p></p> 
+<p>如果&#xff0c;我们采用双重for&#xff0c;外层遍历发射天线&#xff0c;内层遍历接收天线&#xff0c;则还需一个for遍历求得发射天线和接收天线之间的&#xff1a;所有中间天线中最高的高度h&#xff0c;如果这个高度h 大于等于发射天线&#xff0c;或者接收天线&#xff0c;则发射天线和接收天线之间无法进行通信。</p> 
+<p>这其实已经是三重for了&#xff0c;再加上每个天线都会接收来自东向和南向这两个方向的信号&#xff0c;因此需要进行两次三重for。</p> 
+<p></p> 
+<p>这里的优化&#xff0c;我们可以利用单调递减栈。</p> 
+<p>首先定义一个单调递减栈stack&#xff0c;然后开始遍历天线anth[i][j]&#xff08;比如先处理东向&#xff0c;即按行从左到右遍历&#xff09;&#xff1a;</p> 
+<p>1、如果stack为空&#xff0c;则直接将天线anth[i][j]加入stack</p> 
+<p>2、如果stack不为空&#xff0c;则获取栈顶天线top</p> 
+<blockquote> 
+ <p>2.1、如果anth[i][j] &gt; top&#xff0c;则将stack栈顶的top弹出&#xff0c;然后anth[i][j]对应的ret[i][j]&#43;&#43;&#xff0c;表示anth[i][j]天线新增接收一个信号&#xff0c;而由于stack栈是递减栈&#xff0c;因此anth[i][j]还可以继续接收新栈顶天线的信号</p> 
+</blockquote> 
+<blockquote> 
+ <p>2.2、如果anth[i][j] &#61;&#61; top&#xff0c;则将stack栈顶的top弹出&#xff0c;然后anth[i][j]新增接收一个信号&#xff0c;ret[i][j]&#43;&#43;。&#xff08;注意&#xff0c;由于stack是严格递减栈&#xff0c;因此如果栈顶元素和anth[i][j]等高&#xff0c;则必然只有一个&#xff0c;且stack弹栈后的新栈顶必然大于anth[i][j]&#xff0c;此时其实可以直接结束&#xff09;</p> 
+</blockquote> 
+<blockquote> 
+ <p>2.3、如果anth[i][j] &lt; top&#xff0c;则表示anth[i][j]已经无法接收到top之前的信号了&#xff0c;因为已经被top完全阻挡了。因此anth[i][j]只能栈顶天线的信号&#xff0c;ret[i][j]&#43;&#43;&#xff0c;而无法继续接收前面天线的信号。</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [m, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(arr, m, n));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, m, n) {
+  const anth &#61; new Array(m).fill(0).map(() &#61;&gt; new Array(n));
+
+  for (let i &#61; 0; i &lt; m * n; i&#43;&#43;) {
+    const r &#61; Math.floor(i / n);
+    const c &#61; i % n;
+    anth[r][c] &#61; arr[i];
+  }
+
+  const ret &#61; new Array(m).fill(0).map(() &#61;&gt; new Array(n).fill(0));
+
+  // 先处理水平方向&#xff0c;即先进行每行的东向发射处理
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    const stack &#61; [];
+    for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+      // 如果栈顶天线比anth[i][j]&#xff0c;则anth[i][j]必然能接收到栈顶天线的信号&#xff0c;并且还能继续接收栈顶前面一个天线的信号&#xff08;递减栈&#xff0c;栈顶前面天线高度必然大于栈顶天线高度&#xff09;
+      while (stack.length &amp;&amp; anth[i][j] &gt; stack.at(-1)) {
+        ret[i][j]&#43;&#43;;
+        stack.pop();
+      }
+
+      // 走到此步&#xff0c;如果stack还有值&#xff0c;那么由于是递减栈&#xff0c;因此此时栈顶天线高度必然 &gt;&#61; anth[i][j]
+      if (stack.length) {
+        // 如果栈顶天线高度 &#61;&#61; anth[i][j]&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如5 3 2 3&#xff0c;最后一个3可以接收到前面等高3的信号&#xff0c;但是无法继续接收前面5的信号&#xff0c;因此这里anth[i][j]结束处理
+        if (anth[i][j] &#61;&#61; stack.at(-1)) {
+          ret[i][j]&#43;&#43;;
+          stack.pop(); // 维护严格递减栈
+        }
+        // 此情况必然是&#xff1a;anth[i][j] &lt; stack.at(-1)&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如6 5 2 3&#xff0c;最后一个3可以接收到前面5的信号&#xff0c;但是无法继续接收更前面6的信号&#xff0c;因此这里anth[i][j]结束处理
+        else {
+          ret[i][j]&#43;&#43;;
+        }
+      }
+
+      stack.push(anth[i][j]);
+    }
+  }
+
+  // 再处理垂直方向&#xff0c;即每列的南向发射处理&#xff0c;和上面同理
+  for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+    const stack &#61; [];
+    for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+      // 如果栈顶天线比anth[i][j]&#xff0c;则anth[i][j]必然能接收到栈顶天线的信号&#xff0c;并且还能继续接收栈顶前面一个天线的信号&#xff08;递减栈&#xff0c;栈顶前面天线高度必然大于栈顶天线高度&#xff09;
+      while (stack.length &amp;&amp; anth[i][j] &gt; stack.at(-1)) {
+        ret[i][j]&#43;&#43;;
+        stack.pop();
+      }
+
+      // 走到此步&#xff0c;如果stack还有值&#xff0c;那么由于是递减栈&#xff0c;因此此时栈顶天线高度必然 &gt;&#61; anth[i][j]
+      if (stack.length) {
+        // 如果栈顶天线高度 &#61;&#61; anth[i][j]&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如5 3 2 3&#xff0c;最后一个3可以接收到前面等高3的信号&#xff0c;但是无法继续接收前面5的信号&#xff0c;因此这里anth[i][j]结束处理
+        if (anth[i][j] &#61;&#61; stack.at(-1)) {
+          ret[i][j]&#43;&#43;;
+          stack.pop(); // 维护严格递减栈
+        }
+        // 此情况必然是&#xff1a;anth[i][j] &lt; stack.at(-1)&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如6 5 2 3&#xff0c;最后一个3可以接收到前面5的信号&#xff0c;但是无法继续接收更前面6的信号&#xff0c;因此这里anth[i][j]结束处理
+        else {
+          ret[i][j]&#43;&#43;;
+        }
+      }
+      stack.push(anth[i][j]);
+    }
+  }
+
+  return &#96;${m} ${n}\n${ret.toString().split(&#34;,&#34;).join(&#34; &#34;)}&#96;;
+}
+</code></pre> 
+<p>提取公共代码&#xff0c;优化代码结构</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [m, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(arr, m, n));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, m, n) {
+  const anth &#61; new Array(m).fill(0).map(() &#61;&gt; new Array(n));
+
+  for (let i &#61; 0; i &lt; m * n; i&#43;&#43;) {
+    const r &#61; Math.floor(i / n);
+    const c &#61; i % n;
+    anth[r][c] &#61; arr[i];
+  }
+
+  const ret &#61; new Array(m).fill(0).map(() &#61;&gt; new Array(n).fill(0));
+
+  // 先处理水平方向&#xff0c;即先进行每行的东向发射处理
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    const stack &#61; [];
+    for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+      common(stack, anth, ret, i, j);
+    }
+  }
+
+  // 再处理垂直方向&#xff0c;即每列的南向发射处理&#xff0c;和上面同理
+  for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+    const stack &#61; [];
+    for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+      common(stack, anth, ret, i, j);
+    }
+  }
+
+  return &#96;${m} ${n}\n${ret.toString().split(&#34;,&#34;).join(&#34; &#34;)}&#96;;
+}
+
+function common(stack, anth, ret, i, j) {
+  // 如果栈顶天线比anth[i][j]&#xff0c;则anth[i][j]必然能接收到栈顶天线的信号&#xff0c;并且还能继续接收栈顶前面一个天线的信号&#xff08;递减栈&#xff0c;栈顶前面天线高度必然大于栈顶天线高度&#xff09;
+  while (stack.length &amp;&amp; anth[i][j] &gt; stack.at(-1)) {
+    ret[i][j]&#43;&#43;;
+    stack.pop();
+  }
+
+  // 走到此步&#xff0c;如果stack还有值&#xff0c;那么由于是递减栈&#xff0c;因此此时栈顶天线高度必然 &gt;&#61; anth[i][j]
+  if (stack.length) {
+    // 如果栈顶天线高度 &#61;&#61; anth[i][j]&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如5 3 2 3&#xff0c;最后一个3可以接收到前面等高3的信号&#xff0c;但是无法继续接收前面5的信号&#xff0c;因此这里anth[i][j]结束处理
+    if (anth[i][j] &#61;&#61; stack.at(-1)) {
+      ret[i][j]&#43;&#43;;
+      stack.pop(); // 维护严格递减栈
+    }
+    // 此情况必然是&#xff1a;anth[i][j] &lt; stack.at(-1)&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如6 5 2 3&#xff0c;最后一个3可以接收到前面5的信号&#xff0c;但是无法继续接收更前面6的信号&#xff0c;因此这里anth[i][j]结束处理
+    else {
+      ret[i][j]&#43;&#43;;
+    }
+  }
+  stack.push(anth[i][j]);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[][] anth &#61; new int[m][n];
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        anth[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    System.out.println(getResult(anth, m, n));
+  }
+
+  public static String getResult(int[][] anth, int m, int n) {
+    int[][] ret &#61; new int[m][n];
+
+    // 先处理南向发射信号
+    for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+      LinkedList&lt;Integer&gt; stack &#61; new LinkedList&lt;&gt;();
+      for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        // 如果栈顶天线比anth[i][j]&#xff0c;则anth[i][j]必然能接收到栈顶天线的信号&#xff0c;并且还能继续接收栈顶前面一个天线的信号&#xff08;递减栈&#xff0c;栈顶前面天线高度必然大于栈顶天线高度&#xff09;
+        while (stack.size() &gt; 0 &amp;&amp; anth[i][j] &gt; stack.getLast()) {
+          ret[i][j] &#43;&#61; 1;
+          stack.removeLast();
+        }
+
+        // 走到此步&#xff0c;如果stack还有值&#xff0c;那么由于是递减栈&#xff0c;因此此时栈顶天线高度必然
+        if (stack.size() &gt; 0) {
+          // 如果栈顶天线高度 &#61;&#61; anth[i][j]&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;
+          // 比如5 3 2 3&#xff0c;最后一个3可以接收到前面等高3的信号&#xff0c;但是无法继续接收前面5的信号&#xff0c;因此这里anth[i][j]结束处理
+          if (anth[i][j] &#61;&#61; stack.getLast()) {
+            ret[i][j] &#43;&#61; 1;
+            stack.removeLast(); // 维护严格递减栈
+          }
+          // 此情况必然是&#xff1a;anth[i][j] &lt; stack.at(-1)&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;
+          // 比如6 5 2 3&#xff0c;最后一个3可以接收到前面5的信号&#xff0c;但是无法继续接收更前面6的信号&#xff0c;因此这里anth[i][j]结束处理
+          else {
+            ret[i][j] &#43;&#61; 1;
+          }
+        }
+
+        stack.add(anth[i][j]);
+      }
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+
+    // 再处理东向发射信号,和上面同理
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      LinkedList&lt;Integer&gt; stack &#61; new LinkedList&lt;&gt;();
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        // 如果栈顶天线比anth[i][j]&#xff0c;则anth[i][j]必然能接收到栈顶天线的信号&#xff0c;并且还能继续接收栈顶前面一个天线的信号&#xff08;递减栈&#xff0c;栈顶前面天线高度必然大于栈顶天线高度&#xff09;
+        while (stack.size() &gt; 0 &amp;&amp; anth[i][j] &gt; stack.getLast()) {
+          ret[i][j] &#43;&#61; 1;
+          stack.removeLast();
+        }
+
+        // 走到此步&#xff0c;如果stack还有值&#xff0c;那么由于是递减栈&#xff0c;因此此时栈顶天线高度必然
+        if (stack.size() &gt; 0) {
+          // 如果栈顶天线高度 &#61;&#61; anth[i][j]&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;
+          // 比如5 3 2 3&#xff0c;最后一个3可以接收到前面等高3的信号&#xff0c;但是无法继续接收前面5的信号&#xff0c;因此这里anth[i][j]结束处理
+          if (anth[i][j] &#61;&#61; stack.getLast()) {
+            ret[i][j] &#43;&#61; 1;
+            stack.removeLast(); // 维护严格递减栈
+          }
+          // 此情况必然是&#xff1a;anth[i][j] &lt; stack.at(-1)&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;
+          // 比如6 5 2 3&#xff0c;最后一个3可以接收到前面5的信号&#xff0c;但是无法继续接收更前面6的信号&#xff0c;因此这里anth[i][j]结束处理
+          else {
+            ret[i][j] &#43;&#61; 1;
+          }
+        }
+
+        stack.add(anth[i][j]);
+        sj.add(ret[i][j] &#43; &#34;&#34;);
+      }
+    }
+
+    return m &#43; &#34; &#34; &#43; n &#43; &#34;\n&#34; &#43; sj.toString();
+  }
+}
+</code></pre> 
+<p>提取公共代码&#xff0c;优化代码结构</p> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[][] anth &#61; new int[m][n];
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        anth[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    System.out.println(getResult(anth, m, n));
+  }
+
+  public static String getResult(int[][] anth, int m, int n) {
+    int[][] ret &#61; new int[m][n];
+
+    // 先处理南向发射信号
+    for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+      LinkedList&lt;Integer&gt; stack &#61; new LinkedList&lt;&gt;();
+      for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        common(stack, anth, ret, i, j);
+      }
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+
+    // 再处理东向发射信号,和上面同理
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      LinkedList&lt;Integer&gt; stack &#61; new LinkedList&lt;&gt;();
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        common(stack, anth, ret, i, j);
+        sj.add(ret[i][j] &#43; &#34;&#34;);
+      }
+    }
+
+    return m &#43; &#34; &#34; &#43; n &#43; &#34;\n&#34; &#43; sj.toString();
+  }
+
+  public static void common(LinkedList&lt;Integer&gt; stack, int[][] anth, int[][] ret, int i, int j) {
+    // 如果栈顶天线比anth[i][j]&#xff0c;则anth[i][j]必然能接收到栈顶天线的信号&#xff0c;并且还能继续接收栈顶前面一个天线的信号&#xff08;递减栈&#xff0c;栈顶前面天线高度必然大于栈顶天线高度&#xff09;
+    while (stack.size() &gt; 0 &amp;&amp; anth[i][j] &gt; stack.getLast()) {
+      ret[i][j] &#43;&#61; 1;
+      stack.removeLast();
+    }
+
+    // 走到此步&#xff0c;如果stack还有值&#xff0c;那么由于是递减栈&#xff0c;因此此时栈顶天线高度必然
+    if (stack.size() &gt; 0) {
+      // 如果栈顶天线高度 &#61;&#61; anth[i][j]&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;
+      // 比如5 3 2 3&#xff0c;最后一个3可以接收到前面等高3的信号&#xff0c;但是无法继续接收前面5的信号&#xff0c;因此这里anth[i][j]结束处理
+      if (anth[i][j] &#61;&#61; stack.getLast()) {
+        ret[i][j] &#43;&#61; 1;
+        stack.removeLast(); // 维护严格递减栈
+      }
+      // 此情况必然是&#xff1a;anth[i][j] &lt; stack.at(-1)&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;
+      // 比如6 5 2 3&#xff0c;最后一个3可以接收到前面5的信号&#xff0c;但是无法继续接收更前面6的信号&#xff0c;因此这里anth[i][j]结束处理
+      else {
+        ret[i][j] &#43;&#61; 1;
+      }
+    }
+
+    stack.add(anth[i][j]);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, n &#61; map(int, input().split())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法源码
+def getResult(m, n, arr):
+    anth &#61; [[0 for j in range(n)] for i in range(m)]
+
+    for i in range(m * n):
+        r &#61; int(i / n)
+        c &#61; i % n
+        anth[r][c] &#61; arr[i]
+
+    ret &#61; [[0 for j in range(n)] for i in range(m)]
+
+    # 先处理东向发射信号
+    for i in range(m):
+        stack &#61; []
+        for j in range(n):
+            # 如果栈顶天线比anth[i][j]&#xff0c;则anth[i][j]必然能接收到栈顶天线的信号&#xff0c;并且还能继续接收栈顶前面一个天线的信号&#xff08;递减栈&#xff0c;栈顶前面天线高度必然大于栈顶天线高度&#xff09;
+            while len(stack) &gt; 0 and anth[i][j] &gt; stack[-1]:
+                ret[i][j] &#43;&#61; 1
+                stack.pop()
+            # 走到此步&#xff0c;如果stack还有值&#xff0c;那么由于是递减栈&#xff0c;因此此时栈顶天线高度必然
+            if len(stack) &gt; 0:
+                # 如果栈顶天线高度 &#61;&#61; anth[i][j]&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如5 3 2 3&#xff0c;最后一个3可以接收到前面等高3的信号&#xff0c;但是无法继续接收前面5的信号&#xff0c;因此这里anth[i][j]结束处理
+                if anth[i][j] &#61;&#61; stack[-1]:
+                    ret[i][j] &#43;&#61; 1
+                    stack.pop() # 维护严格递减栈
+                # 此情况必然是&#xff1a;anth[i][j] &lt; stack.at(-1)&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如6 5 2 3&#xff0c;最后一个3可以接收到前面5的信号&#xff0c;但是无法继续接收更前面6的信号&#xff0c;因此这里anth[i][j]结束处理
+                else:
+                    ret[i][j] &#43;&#61; 1
+            stack.append(anth[i][j])
+
+    # 再处理南向发射信号
+    for j in range(n):
+        stack &#61; []
+        for i in range(m):
+            # 如果栈顶天线比anth[i][j]&#xff0c;则anth[i][j]必然能接收到栈顶天线的信号&#xff0c;并且还能继续接收栈顶前面一个天线的信号&#xff08;递减栈&#xff0c;栈顶前面天线高度必然大于栈顶天线高度&#xff09;
+            while len(stack) &gt; 0 and anth[i][j] &gt; stack[-1]:
+                ret[i][j] &#43;&#61; 1
+                stack.pop()
+            # 走到此步&#xff0c;如果stack还有值&#xff0c;那么由于是递减栈&#xff0c;因此此时栈顶天线高度必然
+            if len(stack) &gt; 0:
+                # 如果栈顶天线高度 &#61;&#61; anth[i][j]&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如5 3 2 3&#xff0c;最后一个3可以接收到前面等高3的信号&#xff0c;但是无法继续接收前面5的信号&#xff0c;因此这里anth[i][j]结束处理
+                if anth[i][j] &#61;&#61; stack[-1]:
+                    ret[i][j] &#43;&#61; 1
+                    stack.pop()  # 维护严格递减栈
+                # 此情况必然是&#xff1a;anth[i][j] &lt; stack.at(-1)&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如6 5 2 3&#xff0c;最后一个3可以接收到前面5的信号&#xff0c;但是无法继续接收更前面6的信号&#xff0c;因此这里anth[i][j]结束处理
+                else:
+                    ret[i][j] &#43;&#61; 1
+            stack.append(anth[i][j])
+
+    res &#61; &#34; &#34;.join([&#34; &#34;.join(map(str, i)) for i in ret])
+
+    print(f&#39;{m} {n}\n{res}&#39;)
+
+
+# 算法调用
+getResult(m, n, arr)
+</code></pre> 
+<p>提取公共代码&#xff0c;优化代码结构</p> 
+<pre><code class="language-python"># 输入获取
+m, n &#61; map(int, input().split())
+arr &#61; list(map(int, input().split()))
+
+
+def common(stack, anth, ret, i, j):
+    # 如果栈顶天线比anth[i][j]&#xff0c;则anth[i][j]必然能接收到栈顶天线的信号&#xff0c;并且还能继续接收栈顶前面一个天线的信号&#xff08;递减栈&#xff0c;栈顶前面天线高度必然大于栈顶天线高度&#xff09;
+    while len(stack) &gt; 0 and anth[i][j] &gt; stack[-1]:
+        ret[i][j] &#43;&#61; 1
+        stack.pop()
+    # 走到此步&#xff0c;如果stack还有值&#xff0c;那么由于是递减栈&#xff0c;因此此时栈顶天线高度必然
+    if len(stack) &gt; 0:
+        # 如果栈顶天线高度 &#61;&#61; anth[i][j]&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如5 3 2 3&#xff0c;最后一个3可以接收到前面等高3的信号&#xff0c;但是无法继续接收前面5的信号&#xff0c;因此这里anth[i][j]结束处理
+        if anth[i][j] &#61;&#61; stack[-1]:
+            ret[i][j] &#43;&#61; 1
+            stack.pop()  # 维护严格递减栈
+        # 此情况必然是&#xff1a;anth[i][j] &lt; stack.at(-1)&#xff0c;那么此时anth[i][j]可以接收栈顶天线的信号&#xff0c;比如6 5 2 3&#xff0c;最后一个3可以接收到前面5的信号&#xff0c;但是无法继续接收更前面6的信号&#xff0c;因此这里anth[i][j]结束处理
+        else:
+            ret[i][j] &#43;&#61; 1
+    stack.append(anth[i][j])
+
+
+# 算法源码
+def getResult(m, n, arr):
+    anth &#61; [[0 for j in range(n)] for i in range(m)]
+
+    for i in range(m * n):
+        r &#61; int(i / n)
+        c &#61; i % n
+        anth[r][c] &#61; arr[i]
+
+    ret &#61; [[0 for j in range(n)] for i in range(m)]
+
+    # 先处理东向发射信号
+    for i in range(m):
+        stack &#61; []
+        for j in range(n):
+            common(stack, anth, ret, i, j)
+
+    # 再处理南向发射信号
+    for j in range(n):
+        stack &#61; []
+        for i in range(m):
+            common(stack, anth, ret, i, j)
+
+    res &#61; &#34; &#34;.join([&#34; &#34;.join(map(str, i)) for i in ret])
+
+    print(f&#39;{m} {n}\n{res}&#39;)
+
+
+# 算法调用
+getResult(m, n, arr)
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

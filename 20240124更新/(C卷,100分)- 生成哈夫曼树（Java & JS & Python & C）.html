@@ -1,0 +1,611 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 生成哈夫曼树（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定长度为 n 的无序的数字数组&#xff0c;每个数字代表二叉树的叶子节点的权值&#xff0c;数字数组的值均大于等于1。</p> 
+<p>请完成一个函数&#xff0c;根据输入的数字数组&#xff0c;生成哈夫曼树&#xff0c;并将哈夫曼树按照中序遍历输出。</p> 
+<p></p> 
+<p>为了保证输出的二叉树中序遍历结果统一&#xff0c;增加以下限制&#xff1a;</p> 
+<blockquote> 
+ <p>二叉树节点中&#xff0c;左节点权值小于右节点权值&#xff0c;根节点权值为左右节点权值之和。当左右节点权值相同时&#xff0c;左子树高度小于等于右子树高度。</p> 
+</blockquote> 
+<p></p> 
+<p>注意&#xff1a;</p> 
+<blockquote> 
+ <p>所有用例保证有效&#xff0c;并能生成哈夫曼树。</p> 
+</blockquote> 
+<p></p> 
+<p>提醒&#xff1a;</p> 
+<blockquote> 
+ <p>哈夫曼树又称为最优二叉树&#xff0c;是一种带权路径长度最短的二叉树。</p> 
+ <p>所谓树的带权路径长度&#xff0c;就是树中所有的叶节点的权值乘上其到根节点的路径长度&#xff08;若根节点为 0 层&#xff0c;叶节点到根节点的路径长度为叶节点的层数&#xff09;</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>例如&#xff1a;由叶子节点&#xff1a;5 15 40 30 10&#xff0c;生成的最优二叉树如下图所示&#xff0c;该树的最短带权路径长度为&#xff1a;40 * 1 &#43; 30 * 2 &#43; 5 * 4 &#43; 10 * 4 &#61; 205。</p> 
+<p><img alt="" height="378" src="https://img-blog.csdnimg.cn/direct/9a9c13d6270c44bb9e427f3fc0cb3537.png" width="759" /></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个哈夫曼树的中序遍历数组&#xff0c;数值间以空格分隔<br />  </p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 5 15 40 30 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">40 100 30 60 15 30 5 15 10</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">根据输入&#xff0c;生成哈夫曼树&#xff0c;按照中序遍历返回。所有节点中&#xff0c;左节点权值小于等于右节点权值之和。当左右节点权值相同时&#xff0c;左子树高度小于右子树。结果如上图所示。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题主要是考察哈夫曼树的构建。</p> 
+<p></p> 
+<p>哈夫曼树定义&#xff1a;</p> 
+<blockquote> 
+ <p>给定N个权值作为N个叶子结点&#xff0c;构造一棵二叉树&#xff0c;若该树的带权路径长度达到最小&#xff0c;称这样的二叉树为最优二叉树&#xff0c;也称为哈夫曼树(Huffman Tree)。</p> 
+</blockquote> 
+<p></p> 
+<p>比如题目用例给出的N个叶子节点的权值分别为&#xff1a;5 15 40 30 10</p> 
+<p></p> 
+<p>那么我们可以根据这些叶子节点任意构造一个二叉树&#xff0c;比如下图所示</p> 
+<p><img alt="" height="366" src="https://img-blog.csdnimg.cn/direct/5766d0edbff648c095d39f16dbcd1e6c.png" width="658" /></p> 
+<p>那么这颗二叉树的各个叶子节点的带权路径长度如下&#xff1a;</p> 
+<p><img alt="" height="367" src="https://img-blog.csdnimg.cn/direct/cb076a68794742bda38905600d14fa0c.png" width="671" /></p> 
+<p>5*3 &#43; 15*3 &#43; 40*3 &#43; 30*3 &#43; 10*1 &#61; 280</p> 
+<p>因此这颗二叉树的带权路径长度 &#61; 280 要比题目描述中构造的最优二叉树的205大。因此这种二叉树就不是哈夫曼树。</p> 
+<hr /> 
+<p>哈夫曼树是根据给定的n个叶子节点构造出的带权路径长度最短的二叉树。</p> 
+<p>而哈夫曼的构建是有固定思路&#xff1a;</p> 
+<p>首先&#xff0c;我们从给定的n个叶子节点的权值序列中取出最小的两个&#xff0c;</p> 
+<p>比如 [5, 15, 40, 30, 10] 中最小的两个是5、10&#xff0c;取出进行合并&#xff0c;则可得如下新节点15&#xff08;绿色&#xff09;&#xff0c;</p> 
+<p><img alt="" height="254" src="https://img-blog.csdnimg.cn/direct/badfab6f8c64486fafa0beb9faf69cbe.png" width="648" /></p> 
+<p>然后将新节点重新加入到权值序列中&#xff0c;得到红框中新序列 [15, 15, 40, 30] </p> 
+<p>然后再从新序列 [15, 15, 40, 30]中取出最小的两个&#xff0c;进行合并</p> 
+<hr /> 
+<p><img alt="" height="314" src="https://img-blog.csdnimg.cn/direct/57d128068d3144d384680120ab67add7.png" width="476" /></p> 
+<p>然后再从新序列 [30, 40, 30]中取出最小的两个&#xff0c;进行合并</p> 
+<hr /> 
+<p><img alt="" height="385" src="https://img-blog.csdnimg.cn/direct/493c62e2a5f94a6d9a48898c4f6642b9.png" width="549" /></p> 
+<p>然后再从新序列 [60, 40]中取出最小的两个&#xff0c;进行合并</p> 
+<hr /> 
+<p><img alt="" height="457" src="https://img-blog.csdnimg.cn/direct/aabe9e78b95b49afa2fe966fd430e98b.png" width="453" /></p> 
+<p>此时序列中只剩下一个节点&#xff0c;即可停止上面逻辑。</p> 
+<p>按照这种策略构造出来的二叉树的带权路径长度是最短的&#xff0c;即构建出来的是哈夫曼树。</p> 
+<p></p> 
+<p>另外&#xff0c;如果初始有N个叶子节点的话&#xff0c;那么构造出来的哈夫曼树的节点总数就有 2 * N - 1 个。</p> 
+<p>其实&#xff0c;我们通过上图就可以发现规律&#xff0c;蓝色节点是初始N个叶子节点&#xff0c;绿色节点是新建的&#xff0c;而绿色节点的个数 &#61; N - 1。</p> 
+<p></p> 
+<p>了解了哈夫曼树的构造原理后&#xff0c;其实本题就很简单了&#xff0c;只需要不停从给定的权值序列中&#xff1a;</p> 
+<ul><li>取出两个最小的权值</li><li>放回两个最小权值的合并和</li></ul> 
+<p>直到权值序列中只有一个元素时停止。</p> 
+<p>而上面取出两个最小、返回合并和后重新排序&#xff0c;这种行为是非常适合使用优先队列&#xff08;小顶堆&#xff09;做的。</p> 
+<p></p> 
+<p>Java和Python有内置的优先队列实现&#xff0c;而JS和C没有&#xff0c;因此JS和C可以尝试更简单的每次对权值序列进行降序排序&#xff0c;尾部两个就是最小的&#xff0c;放回合并和后再重新降序排序。</p> 
+<p>下面博客实现中&#xff0c;JS和C手撕优先队列&#xff0c;关于优先队列的原理可以看&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/127695013" rel="nofollow" title="LeetCode - 1705 吃苹果的最大数目-CSDN博客">LeetCode - 1705 吃苹果的最大数目-CSDN博客</a></p> 
+<p>解析中对于优先队列实现剖析。</p> 
+<p></p> 
+<p>另外本题说&#xff1a;</p> 
+<p>为了保证输出的二叉树中序遍历结果统一&#xff0c;增加以下限制&#xff1a;</p> 
+<blockquote> 
+ <p>二叉树节点中&#xff0c;左节点权值小于右节点权值&#xff0c;根节点权值为左右节点权值之和。<span style="color:#fe2c24;">当左右节点权值相同时&#xff0c;左子树高度小于等于右子树高度。</span></p> 
+</blockquote> 
+<p>我的想法是定义哈夫曼树节点&#xff0c;带上一个节点对应子树的高度值&#xff0c;即节点定义如下&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />     left_child: ,   // 左子节点<br />     right_child: ,  // 右子节点<br />     weight: ,       // 当前节点权值<br />     height:         // 当前节点对应子树的高度<br /> }</p> 
+</blockquote> 
+<p>这样优先队列遇到相同权值的节点时&#xff0c;可以继续比较节点子树高度&#xff0c;高度低的优先级更高。</p> 
+<p>这样取出来的两个节点&#xff0c;第一个取出的肯定作为左子节点&#xff0c;第二个取出的肯定作为右子节点。</p> 
+<p></p> 
+<p>但是这种策略无法保证构造出来的哈夫曼树是唯一的&#xff0c;比如下面例子&#xff1a;</p> 
+<blockquote> 
+ <p>4<br /> 80 80 20 60</p> 
+</blockquote> 
+<p>我可以构造出两种哈夫曼树&#xff0c;这两种哈夫曼树的带权路径长度是一样的</p> 
+<p><img alt="" height="441" src="https://img-blog.csdnimg.cn/direct/9cc5e6f49a244a0d8b29c2177a20dd1b.png" width="840" /></p> 
+<p>且这两种哈夫曼树都能满足&#xff1a;</p> 
+<blockquote> 
+ <p>二叉树节点中&#xff0c;左节点权值小于右节点权值&#xff0c;根节点权值为左右节点权值之和。<span style="color:#fe2c24;">当左右节点权值相同时&#xff0c;左子树高度小于等于右子树高度。</span></p> 
+</blockquote> 
+<p>之所以会产生两种哈夫曼树&#xff0c;是因为当20、60合并后&#xff0c;新的权值序列中会有3个80</p> 
+<p><img alt="" height="276" src="https://img-blog.csdnimg.cn/direct/e9480eeddd924589970453e28f3e9f8b.png" width="513" /></p> 
+<p>此时&#xff0c;如果一个绿色和一个蓝色优先合并&#xff0c;则得到</p> 
+<p><img alt="" height="431" src="https://img-blog.csdnimg.cn/direct/d26546e9a6584306aa541a7bdb391c95.png" width="353" /></p> 
+<p>如果两个蓝色优先合并&#xff0c;则得到</p> 
+<p><img alt="" height="334" src="https://img-blog.csdnimg.cn/direct/ee3f348f89e3485ebd562f44b308cf33.png" width="476" /></p> 
+<p></p> 
+<p>这该咋搞&#xff1f;期望考试用例不会出现这种摸棱两可的情况。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+  const weights &#61; (await readline()).split(&#34; &#34;).map(Number);
+  console.log(getResult(weights));
+})();
+
+class Node {
+  constructor(lc, rc, weight, height) {
+    this.lc &#61; lc; // 左孩子节点
+    this.rc &#61; rc; // 右孩子节点
+    this.weight &#61; weight; // 当前节点的权重
+    this.height &#61; height; // 当前节点代表子树的高度
+  }
+}
+
+function midOrder(root, seq) {
+  // 中序遍历&#xff0c;即先遍历二叉树的左子树&#xff0c;再遍历二叉树的根&#xff0c;最后遍历二叉树的右子树
+  if (root.lc !&#61; null) {
+    midOrder(root.lc, seq);
+  }
+
+  seq.push(root.weight);
+
+  if (root.rc !&#61; null) {
+    midOrder(root.rc, seq);
+  }
+}
+
+function getResult(weights) {
+  // 将哈夫曼树节点进行排序&#xff0c;方便后面筛选出权值最小的两个节点
+  const pq &#61; new PriorityQueue(
+    (a, b) &#61;&gt; (a.weight !&#61; b.weight ? a.weight - b.weight : a.height - b.height) // 题目说&#xff1a;当左右节点权值相同时&#xff0c;左子树高度小于等于右子树高度。因此当节点权重相同时&#xff0c;再按照节点子树高度升序
+  );
+
+  // 创建n个哈夫曼树节点&#xff0c;并加入优先队列
+  for (let w of weights) {
+    pq.offer(new Node(null, null, w, 0));
+  }
+
+  // 初始n个节点经过多轮合并&#xff0c;只剩一个节点时&#xff0c;那么该节点就是哈夫曼树的根节点&#xff0c;因此当优先队列中只剩一个节点时即可停止合并
+  while (pq.size() &gt; 1) {
+    // 取出优先队列中前两个权值最小的节点&#xff0c;由于优先队列已按照 [节点权重&#xff0c;节点子树高度] 升序优先级&#xff0c;因此先出来的肯定是权重小&#xff0c;或者高度小的节点&#xff0c;即作为新节点的左子树
+    const lc &#61; pq.poll();
+    const rc &#61; pq.poll();
+
+    // 将lc和rc合并&#xff0c;合并后新节点fa的权重&#xff0c;是两个子节点权重之和&#xff0c;fa子树高度 &#61; rc子树高度&#43;1; PS&#xff1a;rc的高度&gt;&#61;lc的高度
+    const fa_weight &#61; lc.weight &#43; rc.weight;
+    const fa_height &#61; rc.height &#43; 1;
+
+    // 将合并后的新节点加入优先队列
+    pq.offer(new Node(lc, rc, fa_weight, fa_height));
+  }
+
+  // 最后优先队列中必然只剩一个节点&#xff0c;即哈夫曼树的根节点&#xff0c;此时对此根节点&#xff08;哈夫曼树&#xff09;进行中序遍历
+  const root &#61; pq.poll();
+  const seq &#61; [];
+  midOrder(root, seq);
+
+  return seq.join(&#34; &#34;);
+}
+
+// 基于堆实现优先队列
+class PriorityQueue {
+  constructor(cpr) {
+    this.queue &#61; [];
+    this.cpr &#61; cpr;
+  }
+
+  swap(a, b) {
+    const tmp &#61; this.queue[a];
+    this.queue[a] &#61; this.queue[b];
+    this.queue[b] &#61; tmp;
+  }
+
+  // 上浮
+  swim() {
+    let c &#61; this.queue.length - 1;
+
+    while (c &gt;&#61; 1) {
+      const f &#61; Math.floor((c - 1) / 2);
+
+      if (this.cpr(this.queue[c], this.queue[f]) &lt; 0) {
+        this.swap(c, f);
+        c &#61; f;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 入队
+  offer(val) {
+    this.queue.push(val);
+    this.swim();
+  }
+
+  // 下沉
+  sink() {
+    let f &#61; 0;
+
+    while (true) {
+      let c1 &#61; 2 * f &#43; 1;
+      let c2 &#61; c1 &#43; 1;
+
+      let c;
+      let val1 &#61; this.queue[c1];
+      let val2 &#61; this.queue[c2];
+      if (val1 !&#61; undefined &amp;&amp; val2 !&#61; undefined) {
+        c &#61; this.cpr(val1, val2) &lt; 0 ? c1 : c2;
+      } else if (val1 !&#61; undefined) {
+        c &#61; c1;
+      } else if (val2 !&#61; undefined) {
+        c &#61; c2;
+      } else {
+        break;
+      }
+
+      if (this.cpr(this.queue[c], this.queue[f]) &lt; 0) {
+        this.swap(c, f);
+        f &#61; c;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 出队
+  poll() {
+    this.swap(0, this.queue.length - 1);
+    const res &#61; this.queue.pop();
+    this.sink();
+    return res;
+  }
+
+  peek() {
+    return this.queue[0];
+  }
+
+  size() {
+    return this.queue.length;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.PriorityQueue;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  // 哈夫曼树节点
+  static class Node {
+    Node lchild; // 左孩子节点
+    Node rchild; // 右孩子节点
+    int weight; // 当前节点的权重
+    int height; // 当前节点代表子树的高度
+
+    public Node(Node lc, Node rc, int weight, int height) {
+      this.lchild &#61; lc;
+      this.rchild &#61; rc;
+      this.weight &#61; weight;
+      this.height &#61; height;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    // 将哈夫曼树节点进行排序&#xff0c;方便后面筛选出权值最小的两个节点
+    PriorityQueue&lt;Node&gt; pq &#61;
+        new PriorityQueue&lt;&gt;(
+            (a, b) -&gt;
+                a.weight !&#61; b.weight
+                    ? a.weight - b.weight
+                    : a.height - b.height); // 题目说&#xff1a;当左右节点权值相同时&#xff0c;左子树高度小于等于右子树高度。因此当节点权重相同时&#xff0c;再按照节点子树高度升序
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 创建n个哈夫曼树节点
+      int w &#61; sc.nextInt();
+      Node node &#61; new Node(null, null, w, 0);
+      // 加入优先队列
+      pq.offer(node);
+    }
+
+    // 初始n个节点经过多轮合并&#xff0c;只剩一个节点时&#xff0c;那么该节点就是哈夫曼树的根节点&#xff0c;因此当优先队列中只剩一个节点时即可停止合并
+    while (pq.size() &gt; 1) {
+      // 取出优先队列中前两个权值最小的节点&#xff0c;由于优先队列已按照 [节点权重&#xff0c;节点子树高度] 升序优先级&#xff0c;因此先出来的肯定是权重小&#xff0c;或者高度小的节点&#xff0c;即作为新节点的左子树
+      Node lc &#61; pq.poll();
+      Node rc &#61; pq.poll();
+
+      // 将lc和rc合并&#xff0c;合并后新节点fa的权重&#xff0c;是两个子节点权重之和&#xff0c;fa子树高度 &#61; rc子树高度&#43;1; PS&#xff1a;rc的高度&gt;&#61;lc的高度
+      int fa_weight &#61; lc.weight &#43; rc.weight;
+      int fa_height &#61; rc.height &#43; 1;
+
+      // 将合并后的新节点加入优先队列
+      Node fa &#61; new Node(lc, rc, fa_weight, fa_height);
+      pq.offer(fa);
+    }
+
+    // 最后优先队列中必然只剩一个节点&#xff0c;即哈夫曼树的根节点&#xff0c;此时对此根节点&#xff08;哈夫曼树&#xff09;进行中序遍历
+    Node root &#61; pq.poll();
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    midOrder(root, sj);
+
+    System.out.println(sj);
+  }
+
+  public static void midOrder(Node root, StringJoiner sj) {
+    // 中序遍历&#xff0c;即先遍历二叉树的左子树&#xff0c;再遍历二叉树的根&#xff0c;最后遍历二叉树的右子树
+    if (root.lchild !&#61; null) {
+      midOrder(root.lchild, sj);
+    }
+
+    sj.add(root.weight &#43; &#34;&#34;);
+
+    if (root.rchild !&#61; null) {
+      midOrder(root.rchild, sj);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python">import heapq
+
+
+class Node:
+    def __init__(self, lc, rc, weight, height):
+        self.lc &#61; lc  # 左孩子节点
+        self.rc &#61; rc  # 右孩子节点
+        self.weight &#61; weight  # 当前节点的权重
+        self.height &#61; height  # 当前节点代表子树的高度
+
+    def __gt__(self, other):
+        # 优先级比较时&#xff0c;权重小的优先级更高&#xff0c;权重相同时&#xff0c;高度小的优先级更高
+        if self.weight !&#61; other.weight:
+            return self.weight &gt; other.weight
+        else:
+            return self.height &gt; other.height
+
+
+# 输入获取
+n &#61; int(input())
+weights &#61; list(map(int, input().split()))
+
+
+# 二叉树中序遍历
+def midOrder(root, seq):
+    # 中序遍历&#xff0c;即先遍历二叉树的左子树&#xff0c;再遍历二叉树的根&#xff0c;最后遍历二叉树的右子树
+    if root.lc is not None:
+        midOrder(root.lc, seq)
+
+    seq.append(root.weight)
+
+    if root.rc is not None:
+        midOrder(root.rc, seq)
+
+
+# 算法入口
+def getResult():
+    pq &#61; []
+
+    # 创建n个哈夫曼树节点&#xff0c;并加入优先队列
+    for w in weights:
+        heapq.heappush(pq, Node(None, None, w, 0))
+
+    # 初始n个节点经过多轮合并&#xff0c;只剩一个节点时&#xff0c;那么该节点就是哈夫曼树的根节点&#xff0c;因此当优先队列中只剩一个节点时即可停止合并
+    while len(pq) &gt; 1:
+        # 取出优先队列中前两个权值最小的节点&#xff0c;由于优先队列已按照 [节点权重&#xff0c;节点子树高度] 升序优先级&#xff0c;因此先出来的肯定是权重小&#xff0c;或者高度小的节点&#xff0c;即作为新节点的左子树
+        lc &#61; heapq.heappop(pq)
+        rc &#61; heapq.heappop(pq)
+
+        # 将lc和rc合并&#xff0c;合并后新节点fa的权重&#xff0c;是两个子节点权重之和&#xff0c;fa子树高度 &#61; rc子树高度&#43;1; PS&#xff1a;rc的高度&gt;&#61;lc的高度
+        fa_weight &#61; lc.weight &#43; rc.weight
+        fa_height &#61; rc.height &#43; 1
+
+        # 将合并后的新节点加入优先队列
+        heapq.heappush(pq, Node(lc, rc, fa_weight, fa_height))
+
+    # 最后优先队列中必然只剩一个节点&#xff0c;即哈夫曼树的根节点&#xff0c;此时对此根节点&#xff08;哈夫曼树&#xff09;进行中序遍历
+    root &#61; heapq.heappop(pq)
+    seq &#61; []
+    midOrder(root, seq)
+
+    return &#34; &#34;.join(map(str, seq))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// 哈夫曼树节点
+typedef struct Node {
+    struct Node *lc; // 左孩子节点
+    struct Node *rc; // 右孩子节点
+    int weight; // 当前节点的权重
+    int height; // 当前节点代表子树的高度
+} Node;
+
+Node *new_Node(Node *lc, Node *rc, int weight, int height) {
+    Node *node &#61; (Node *) malloc(sizeof(Node));
+    node-&gt;lc &#61; lc;
+    node-&gt;rc &#61; rc;
+    node-&gt;weight &#61; weight;
+    node-&gt;height &#61; height;
+    return node;
+}
+
+/* 优先队列实现 */
+typedef Node *E;
+
+typedef struct PriorityQueue {
+    E *arr;
+    int size;
+
+    int (*cmp)(E, E);
+} PQ;
+
+PQ *new_PQ(int capacity, int (*cmp)(E, E)) {
+    PQ *pq &#61; (PQ *) malloc(sizeof(PQ));
+    pq-&gt;arr &#61; (E *) malloc(sizeof(int) * capacity);
+    pq-&gt;size &#61; 0;
+    pq-&gt;cmp &#61; cmp;
+    return pq;
+}
+
+void swap_PQ(PQ *pq, int a, int b) {
+    E tmp &#61; pq-&gt;arr[a];
+    pq-&gt;arr[a] &#61; pq-&gt;arr[b];
+    pq-&gt;arr[b] &#61; tmp;
+}
+
+// 上浮
+void swim_PQ(PQ *pq) {
+    int c &#61; pq-&gt;size - 1;
+
+    while (c &gt;&#61; 1) {
+        int f &#61; (c - 1) / 2;
+
+        if (pq-&gt;cmp(pq-&gt;arr[c], pq-&gt;arr[f]) &lt; 0) {
+            swap_PQ(pq, c, f);
+            c &#61; f;
+        } else {
+            break;
+        }
+    }
+}
+
+// 入队
+void offer_PQ(PQ *pq, E val) {
+    pq-&gt;arr[pq-&gt;size&#43;&#43;] &#61; val;
+    swim_PQ(pq);
+}
+
+// 下沉
+void sink_PQ(PQ *pq) {
+    int f &#61; 0;
+
+    while (1) {
+        int c1 &#61; 2 * f &#43; 1;
+        int c2 &#61; c1 &#43; 1;
+
+        int c;
+
+        if (pq-&gt;size &gt; c1 &amp;&amp; pq-&gt;size &gt; c2) {
+            if (pq-&gt;cmp(pq-&gt;arr[c1], pq-&gt;arr[c2]) &lt; 0) {
+                c &#61; c1;
+            } else {
+                c &#61; c2;
+            }
+        } else if (pq-&gt;size &gt; c1 &amp;&amp; pq-&gt;size &lt;&#61; c2) {
+            c &#61; c1;
+        } else if (pq-&gt;size &lt;&#61; c1 &amp;&amp; pq-&gt;size &gt; c2) {
+            c &#61; c2;
+        } else {
+            break;
+        }
+
+        if (pq-&gt;cmp(pq-&gt;arr[c], pq-&gt;arr[f]) &lt; 0) {
+            swap_PQ(pq, c, f);
+            f &#61; c;
+        } else {
+            break;
+        }
+    }
+}
+
+// 出队
+E poll_PQ(PQ *pq) {
+    swap_PQ(pq, 0, pq-&gt;size - 1);
+    E res &#61; pq-&gt;arr[--pq-&gt;size];
+    sink_PQ(pq);
+    return res;
+}
+
+int cmp_PQ(Node *a, Node *b) {
+    if (a-&gt;weight !&#61; b-&gt;weight) {
+        return a-&gt;weight - b-&gt;weight;
+    } else {
+        return a-&gt;height - b-&gt;height;
+    }
+}
+
+void midOrder(Node *root) {
+    // 中序遍历&#xff0c;即先遍历二叉树的左子树&#xff0c;再遍历二叉树的根&#xff0c;最后遍历二叉树的右子树
+    if (root-&gt;lc !&#61; NULL) {
+        midOrder(root-&gt;lc);
+    }
+
+    printf(&#34;%d &#34;, root-&gt;weight);
+
+    if (root-&gt;rc !&#61; NULL) {
+        midOrder(root-&gt;rc);
+    }
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    // n个叶子节点的哈夫曼树&#xff0c;总节点数为 2 * n - 1&#xff0c;因此这里pq只需要开2*n-1的空间即可
+    // 将哈夫曼树节点进行排序&#xff0c;方便后面筛选出权值最小的两个节点
+    PQ *pq &#61; new_PQ(2 * n - 1, cmp_PQ);
+
+    // 创建n个哈夫曼树节点加入优先队列
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        int w;
+        scanf(&#34;%d&#34;, &amp;w);
+
+        Node *node &#61; new_Node(NULL, NULL, w, 0);
+        offer_PQ(pq, node);
+    }
+
+    // 初始n个节点经过多轮合并&#xff0c;只剩一个节点时&#xff0c;那么该节点就是哈夫曼树的根节点&#xff0c;因此当优先队列中只剩一个节点时即可停止合并
+    while (pq-&gt;size &gt; 1) {
+        // 取出优先队列中前两个权值最小的节点&#xff0c;由于优先队列已按照 [节点权重&#xff0c;节点子树高度] 升序优先级&#xff0c;因此先出来的肯定是权重小&#xff0c;或者高度小的节点&#xff0c;即作为新节点的左子树
+        Node *lc &#61; poll_PQ(pq);
+        Node *rc &#61; poll_PQ(pq);
+
+        // 将lc和rc合并&#xff0c;合并后新节点fa的权重&#xff0c;是两个子节点权重之和&#xff0c;fa子树高度 &#61; rc子树高度&#43;1; PS&#xff1a;rc的高度&gt;&#61;lc的高度
+        int fa_weight &#61; lc-&gt;weight &#43; rc-&gt;weight;
+        int fa_height &#61; rc-&gt;height &#43; 1;
+
+        // 将合并后的新节点加入优先队列
+        Node *fa &#61; new_Node(lc, rc, fa_weight, fa_height);
+        offer_PQ(pq, fa);
+    }
+
+    // 最后优先队列中必然只剩一个节点&#xff0c;即哈夫曼树的根节点&#xff0c;此时对此根节点&#xff08;哈夫曼树&#xff09;进行中序遍历
+    midOrder(poll_PQ(pq));
+
+    return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

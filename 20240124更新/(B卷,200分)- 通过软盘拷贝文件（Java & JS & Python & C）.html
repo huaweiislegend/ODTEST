@@ -1,0 +1,397 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 通过软盘拷贝文件（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一名科学家想要从一台古董电脑中拷贝文件到自己的电脑中加以研究。</p> 
+<p>但此电脑除了有一个3.5寸软盘驱动器以外&#xff0c;没有任何手段可以将文件持贝出来&#xff0c;而且只有一张软盘可以使用。</p> 
+<p>因此这一张软盘是唯一可以用来拷贝文件的载体。</p> 
+<p>科学家想要尽可能多地将计算机中的信息拷贝到软盘中&#xff0c;做到软盘中文件内容总大小最大。</p> 
+<p>已知该软盘容量为1474560字节。文件占用的软盘空间都是按块分配的&#xff0c;每个块大小为512个字节。一个块只能被一个文件使用。拷贝到软盘中的文件必须是完整的&#xff0c;且不能采取任何压缩技术。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第1行为一个整数N&#xff0c;表示计算机中的文件数量。1 ≤ N ≤ 1000.<br /> 接下来的第2行到第N&#43;1行(共N行)&#xff0c;每行为一个整数&#xff0c;表示每个文件的大小Si&#xff0c;单位为字节。</p> 
+<p>0 ≤ i &lt; N,0 ≤ Si</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>科学家最多能拷贝的文件总大小</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>为了充分利用软盘空间&#xff0c;将每个文件在软盘上占用的块记录到本子上。即真正占用软盘空间的只有文件内容本身。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 737270<br /> 737272<br /> 737288</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1474542</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">3个文件中&#xff0c;每个文件实际占用的大小分别为737280字节、737280字节、737792字节。<br /> 只能选取前两个文件&#xff0c;总大小为1474542字节。虽然后两个文件总大小更大且未超过1474560字节&#xff0c;但因为实际占用的大小超过了1474560字节&#xff0c;所以不能选后两个文件。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6<br /> 400000<br /> 200000<br /> 200000<br /> 200000<br /> 400000<br /> 400000</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1400000</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>从6个文件中&#xff0c;选择3个大小为400000的文件和1个大小为200000的文件&#xff0c;得到最大总大小为1400000。</p> <p>也可以选择2个大小为400000的文件和3个大小为200000的文件&#xff0c;得到的总大小也是1400000</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以当成01背包问题来求解。</p> 
+<p>关于01背包问题&#xff0c;可以看&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/128307663" rel="nofollow" title="算法设计 - 01背包问题_01背包算法_伏城之外的博客-CSDN博客">算法设计 - 01背包问题_01背包算法_伏城之外的博客-CSDN博客</a></p> 
+<p>关于01背包问题的滚动数组优化&#xff0c;可以看&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/128903531" rel="nofollow" title="算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客">算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>本题中&#xff1a;</p> 
+<ul><li>软盘容量为1474560字节  → 背包承重</li><li>文件  →  物品</li><li>文件容量  → 物品价值</li><li>ceil(文件容量 / 512.0) * 512  → 物品重量</li></ul> 
+<p>其中&#xff0c;关于物品重量取值的说明&#xff1a;</p> 
+<blockquote> 
+ <p>文件占用的软盘空间都是按块分配的&#xff0c;每个块大小为512个字节。一个块只能被一个文件使用。拷贝到软盘中的文件必须是完整的&#xff0c;且不能采取任何压缩技术。</p> 
+</blockquote> 
+<p>这段话的意思是&#xff0c;比如一个文件的大小是513个字节&#xff0c;此时他需要占用软盘的容量不是513字节&#xff0c;而是需要占用两个块&#xff0c;即&#xff1a;2 * 512字节的大小。</p> 
+<p>但是最终该文件只有513字节大小。</p> 
+<p></p> 
+<p>另外&#xff0c;本题中&#xff0c;背包承重和物品重量可以将单位从&#xff1a;字节&#xff0c;优化为&#xff1a;块&#xff08;512字节每块&#xff09;</p> 
+<p>这样的话&#xff0c;可以降低dp数组的长度定义。</p> 
+<p>而物品的价值只能保持为字节&#xff0c;因为题目最后要求返回的是总字节大小。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<p>01背包二维数组解法</p> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) arr[i] &#61; sc.nextInt();
+
+    System.out.println(getResult(n, arr));
+  }
+
+  public static int getResult(int n, int[] arr) {
+    int bag &#61; 1474560 / 512; // 背包承重&#xff08;块&#xff09;
+
+    int[][] dp &#61; new int[n &#43; 1][bag &#43; 1];
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      int weight &#61; (int) Math.ceil(arr[i - 1] / 512.0); // 物品的重量&#xff08;块&#xff09;
+      int worth &#61; arr[i - 1]; // 物品的价值&#xff08;字节&#xff09;
+      for (int j &#61; 0; j &lt;&#61; bag; j&#43;&#43;) {
+        if (weight &gt; j) {
+          dp[i][j] &#61; dp[i - 1][j];
+        } else {
+          dp[i][j] &#61; Math.max(dp[i - 1][j], dp[i - 1][j - weight] &#43; worth);
+        }
+      }
+    }
+
+    return dp[n][bag];
+  }
+}
+</code></pre> 
+<p>01背包滚动数组优化解法</p> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) arr[i] &#61; sc.nextInt();
+
+    System.out.println(getResult(n, arr));
+  }
+
+  public static int getResult(int n, int[] arr) {
+    int bag &#61; 1474560 / 512; // 背包承重&#xff08;块&#xff09;
+
+    int[] dp &#61; new int[bag &#43; 1];
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      int weight &#61; (int) Math.ceil(arr[i] / 512.0); // 物品的重量&#xff08;块&#xff09;
+      int worth &#61; arr[i]; // 物品的价值&#xff08;字节&#xff09;
+      for (int j &#61; bag; j &gt;&#61; weight; j--) {
+        dp[j] &#61; Math.max(dp[j], dp[j - weight] &#43; worth);
+      }
+    }
+
+    return dp[bag];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<p>01背包二维数组解法</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61; n &#43; 1) {
+    lines.shift();
+
+    const arr &#61; lines.map(Number);
+    console.log(getResult(n, arr));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, arr) {
+  const bag &#61; 1474560 / 512; // 背包承重&#xff08;块&#xff09;
+
+  const dp &#61; new Array(n &#43; 1).fill(0).map(() &#61;&gt; new Array(bag &#43; 1).fill(0));
+
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+    const weight &#61; Math.ceil(arr[i - 1] / 512); // 物品的重量&#xff08;块&#xff09;
+    const worth &#61; arr[i - 1]; // 物品的价值&#xff08;字节&#xff09;
+    for (let j &#61; 0; j &lt;&#61; bag; j&#43;&#43;) {
+      if (weight &gt; j) {
+        dp[i][j] &#61; dp[i - 1][j];
+      } else {
+        dp[i][j] &#61; Math.max(dp[i - 1][j], dp[i - 1][j - weight] &#43; worth);
+      }
+    }
+  }
+
+  return dp[n][bag];
+}
+</code></pre> 
+<p>01背包滚动数组优化解法</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61; n &#43; 1) {
+    lines.shift();
+
+    const arr &#61; lines.map(Number);
+    console.log(getResult(n, arr));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, arr) {
+  const bag &#61; 1474560 / 512; // 背包承重&#xff08;块&#xff09;
+
+  const dp &#61; new Array(bag &#43; 1).fill(0);
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    const weight &#61; Math.ceil(arr[i] / 512); // 物品的重量&#xff08;块&#xff09;
+    const worth &#61; arr[i]; // 物品的价值&#xff08;字节&#xff09;
+    for (let j &#61; bag; j &gt;&#61; weight; j--) {
+      dp[j] &#61; Math.max(dp[j], dp[j - weight] &#43; worth);
+    }
+  }
+
+  return dp[bag];
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<p>01背包二维数组解法</p> 
+<pre><code class="language-python"># 输入获取
+import math
+
+n &#61; int(input())
+arr &#61; [int(input()) for _ in range(n)]
+
+
+# 算法入口
+def getResult():
+    bag &#61; 1474560 // 512  # 背包承重&#xff08;块&#xff09;
+
+    dp &#61; [[0]*(bag&#43;1) for _ in range(n&#43;1)]
+
+    for i in range(1, n&#43;1):
+        weight &#61; math.ceil(arr[i-1] / 512.0)  # 物品的重量&#xff08;块&#xff09;
+        worth &#61; arr[i-1]  # 物品的价值&#xff08;字节&#xff09;
+        for j in range(bag&#43;1):
+            if weight &gt; j:
+                dp[i][j] &#61; dp[i-1][j]
+            else:
+                dp[i][j] &#61; max(dp[i-1][j], dp[i-1][j-weight] &#43; worth)
+
+    return dp[n][bag]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p>01背包滚动数组优化解法</p> 
+<pre><code class="language-python"># 输入获取
+import math
+
+n &#61; int(input())
+arr &#61; [int(input()) for _ in range(n)]
+
+
+# 算法入口
+def getResult():
+    bag &#61; 1474560 // 512  # 背包承重&#xff08;块&#xff09;
+
+    dp &#61; [0]*(bag&#43;1)
+
+    for i in range(n):
+        weight &#61; math.ceil(arr[i] / 512.0)  # 物品的重量&#xff08;块&#xff09;
+        worth &#61; arr[i]  # 物品的价值&#xff08;字节&#xff09;
+        for j in range(bag, weight-1, -1):
+            dp[j] &#61; max(dp[j], dp[j-weight] &#43; worth)
+
+    return dp[bag]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<p>01背包二维数组解法</p> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+#define MAX_SIZE 1000
+#define MAX_ROWS 1000 &#43; 1
+#define MAX_COLS 1474560 / 512 &#43; 1
+
+#define MAX(a,b) a &gt; b ? a : b
+
+int getResult(int* s, int n);
+
+int main()
+{
+	int n;
+	scanf(&#34;%d&#34;, &amp;n);
+	
+	int s[MAX_SIZE];
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		scanf(&#34;%d&#34;, &amp;s[i]);
+	}
+	
+	printf(&#34;%d\n&#34;, getResult(s, n));
+	
+	return 0;
+}
+
+// dp定义在函数内会造成栈溢出&#xff0c;因此定义到全局
+int dp[MAX_ROWS][MAX_COLS] &#61; {0};
+
+int getResult(int* s, int n)
+{
+	// 背包承重&#xff08;块&#xff09;
+	int bag &#61; 1474560 / 512;
+	
+	for(int i&#61;1; i&lt;&#61;n; i&#43;&#43;) {
+		// 物品的重量&#xff08;块&#xff09;
+		int weight &#61; (int) ceil(s[i-1] / 512.0);
+		// 物品的价值&#xff08;字节&#xff09;
+		int worth &#61; s[i-1];
+		
+		for(int j&#61;0; j&lt;&#61;bag; j&#43;&#43;) {
+			if(weight &gt; j) {
+				dp[i][j] &#61; dp[i-1][j];
+			} else {
+				dp[i][j] &#61; MAX(dp[i-1][j], dp[i-1][j - weight] &#43; worth);
+			}
+		}
+	}
+	
+	return dp[n][bag];
+}</code></pre> 
+<p>01背包滚动数组优化解法</p> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+#define MAX_SIZE 1000
+#define MAX_COLS 1474560 / 512 &#43; 1
+
+#define MAX(a,b) a &gt; b ? a : b
+
+int getResult(int* s, int n);
+
+int main()
+{
+	int n;
+	scanf(&#34;%d&#34;, &amp;n);
+	
+	int s[MAX_SIZE];
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		scanf(&#34;%d&#34;, &amp;s[i]);
+	}
+	
+	printf(&#34;%d\n&#34;, getResult(s, n));
+	
+	return 0;
+}
+
+int getResult(int* s, int n)
+{
+	// 背包承重&#xff08;块&#xff09;
+	int bag &#61; 1474560 / 512;
+	
+	int dp[MAX_COLS] &#61; {0};
+	
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		// 物品的重量&#xff08;块&#xff09;
+		int weight &#61; (int) ceil(s[i] / 512.0);
+		// 物品的价值&#xff08;字节&#xff09;
+		int worth &#61; s[i];
+		
+		for(int j&#61;bag; j&gt;&#61;weight; j--) {
+			dp[j] &#61; MAX(dp[j], dp[j-weight] &#43; worth);
+		}
+	}
+	
+	return dp[bag];
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

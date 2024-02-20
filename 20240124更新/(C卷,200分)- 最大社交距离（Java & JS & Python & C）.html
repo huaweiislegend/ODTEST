@@ -1,0 +1,542 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 最大社交距离（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>疫情期间需要大家保证一定的社交距离&#xff0c;公司组织开交流会议。</p> 
+<p>座位一排共 N 个座位&#xff0c;编号分别为 [0, N - 1] 。</p> 
+<p>要求员工一个接着一个进入会议室&#xff0c;并且可以在任何时候离开会议室。</p> 
+<p></p> 
+<p>满足&#xff1a;</p> 
+<ul><li>每当一个员工进入时&#xff0c;需要坐到最大社交距离&#xff08;最大化自己和其他人的距离的座位&#xff09;&#xff1b;</li><li>如果有多个这样的座位&#xff0c;则坐到索引最小的那个座位。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>会议室座位总数 seatNum</p> 
+<ul><li>1 ≤ seatNum ≤ 500</li></ul> 
+<p>员工的进出顺序 seatOrLeave 数组</p> 
+<ul><li>元素值为 1&#xff0c;表示进场</li><li>元素值为负数&#xff0c;表示出场&#xff08;特殊&#xff1a;位置 0 的员工不会离开&#xff09;<br /><br /> 例如 -4 表示坐在位置 4 的员工离开&#xff08;保证有员工坐在该座位上&#xff09;</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最后进来员工&#xff0c;他会坐在第几个位置&#xff0c;如果位置已满&#xff0c;则输出-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:656px;"><tbody><tr><td style="width:49px;">输入</td><td style="width:605px;">10<br /> [1, 1, 1, 1, -4, 1]</td></tr><tr><td style="width:49px;">输出</td><td style="width:605px;">5</td></tr><tr><td style="width:49px;">说明</td><td style="width:605px;"> <p>seat -&gt; 0,空在任何位置都行&#xff0c;但是要给他安排索引最小的位置&#xff0c;也就是座位 0</p> <p>seat -&gt; 9,要和旁边的人距离最远&#xff0c;也就是座位 9</p> <p>seat -&gt; 4,要和旁边的人距离最远&#xff0c;应该坐到中间&#xff0c;也就是座位 4</p> <p>seat -&gt; 2,员工最后坐在 2 号座位上</p> <p>leave[4], 4 号座位的员工离开</p> <p>seat -&gt; 5,员工最后坐在 5 号座位上</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先&#xff0c;定义一个集合 seatIdx 用于记录已经坐人的座位号。</p> 
+<p>然后&#xff0c;遍历第二行输入的员工出入顺序数组&#xff0c;如果遍历出来的数组元素info&#xff1a;</p> 
+<ul><li>info值为负数&#xff0c;则坐在 -info 座位号的员工要离开&#xff0c;我们应该将 -info 从 seatIdx 中去除。</li><li>info值为正数&#xff0c;则有一个员工要进来入座&#xff0c;我们需要找到具有最大社交距离的座位给这个员工&#xff1a;<br /><br /> 假设座位使用情况如&#xff1a;[1, 0, 0, 1, 0 , 0, 0]&#xff0c;其中1代表有人坐&#xff0c;0代表没人坐。<br /><br /> 我们观察其中的连续空闲座位情况&#xff0c;连续空闲座位的左右边界有如下情况&#xff1a;<br /><br /> 1、左右边界都无人&#xff0c;此时必然是所有座位都为空&#xff1a;[<span style="color:#fe2c24;"><strong>0, 0, 0, 0, 0</strong></span>]&#xff0c;因为题目说&#xff1a;位置 0 的员工不会离开<br /><br /> 2、左右边界都有人&#xff1a;[<span style="color:#fe2c24;"><strong>1, 0, 0, 1,</strong></span> 0 , 0, 0]<br /><br /> 3、左边界有人&#xff0c;右边界无人&#xff1a;[1, 0, 0, <span style="color:#fe2c24;"><strong>1, 0 , 0, 0</strong></span>]<br /><br /> 4、左边界无人&#xff0c;右边界有人&#xff0c;本题不存在这种情况&#xff0c;因为题目说&#xff1a;位置 0 的员工不会离开<br />  </li></ul> 
+<p>如果有员工要入座&#xff0c;则检查&#xff1a;</p> 
+<p>如果seatIdx.size &#61;&#61; 0&#xff0c;则说明所有座位都是空的&#xff0c;此时对应员工直接做到第0个座位</p> 
+<p>如果seatIdx.size &#61;&#61; 1&#xff0c;则说明只有一个座位坐了人&#xff0c;那么该座位肯定是第0个座位&#xff0c;因此当前要入座的员工&#xff0c;最大社交距离位置是第 seatNum - 1 个位置</p> 
+<p>如果seatIdx.size &gt; 1&#xff0c;则此时我们需要遍历seatIdx&#xff0c;即遍历出哪些座位做了人&#xff1f;一次遍历两个&#xff0c;即获得了连续空闲座位的左右边界&#xff0c;假设左边界是left&#xff0c;右边界是right&#xff0c;</p> 
+<p>那么连续空闲座位长度<span style="color:#fe2c24;"><strong> dis &#61; right - left - 1</strong></span>&#xff0c;如下图所示&#xff1a;</p> 
+<p><img alt="" height="132" src="https://img-blog.csdnimg.cn/direct/a06d1079ac614f9ca8d22f636d145896.png" width="450" />   </p> 
+<p>此时该连续空闲座位中选一个具有最大社交距离的位置&#xff0c;通过图示&#xff0c;我们可以很容易判断出是第4个位置。</p> 
+<blockquote> 
+ <p>求解时&#xff0c;我们可以先根据dist求出最大社交距离curSeatDis为&#xff1a;<br /><br /> curSeatDis &#61; dis / 2</p> 
+ <p></p> 
+ <p>如果 dis 是偶数&#xff0c;则还需要&#xff1a; curSeatDis -&#61; 1&#xff0c;比如下图dis &#61; 8&#xff0c;座位4的社交距离 &#61; 8 / 2 - 1 &#61; 3<br /><img alt="" height="141" src="https://img-blog.csdnimg.cn/direct/b7c3abc43e4c4a0a9a4e518b6a46df4c.png" width="479" /><br /><br /> 如果 dis 是奇数&#xff0c;则不需要做处理&#xff0c;比如下图&#xff1a;</p> 
+ <p><img alt="" height="157" src="https://img-blog.csdnimg.cn/direct/89f15722857c4654a3f18e71caf7c8d5.png" width="417" /></p> 
+ <p></p> 
+ <p>得到当前空闲区域的最大社交距离后&#xff0c;我们即可求出当前空闲区域具备最大社交距离的座位号&#xff1a;</p> 
+ <p>curSeatIdx &#61; left &#43; curSeatDis &#43; 1</p> 
+</blockquote> 
+<p>如果当前座位情况存在多个连续空闲座位区域&#xff0c;比如 <strong>[1,<span style="color:#fe2c24;"> 0, 0, 0</span>, 1, <span style="color:#fe2c24;">0, 0,</span> 1, <span style="color:#fe2c24;">0 , 0 , 0, 0</span> , 1]</strong></p> 
+<p>此时&#xff0c;我们应该按照上面逻辑&#xff0c;求出每一个空闲区域的最大社交距离&#xff0c;如果对应空闲区域的最大社交距离更大&#xff0c;则对应空闲区域可以得到更优的座位。</p> 
+<p>题目说&#xff1a;</p> 
+<blockquote> 
+ <p>如果有多个这样的座位&#xff0c;则坐到索引最小的那个座位。</p> 
+</blockquote> 
+<p>因此&#xff0c;只有当前空闲区域的最大社交距离严格大于前面的&#xff0c;才能更新最优座位号。这样可以保证出现相同最大社交距离时&#xff0c;可以保留索引较小的座位号。</p> 
+<p></p> 
+<p>另外&#xff0c;还有一种特殊情况&#xff0c;比如下面座位使用情况</p> 
+<blockquote> 
+ <p>[1, 0, 0, 0, 1, 0, 0, 0]</p> 
+</blockquote> 
+<p>此时进来一个员工入座的话&#xff0c;则选择最后一个座位&#xff0c;社交距离更大</p> 
+<p><img alt="" height="141" src="https://img-blog.csdnimg.cn/direct/336a43397d0d4ad48f2879e0a7c2504b.png" width="409" /></p> 
+<p><img alt="" height="172" src="https://img-blog.csdnimg.cn/direct/2a3625cd982047a6aa2a8f61a446202b.png" width="484" /></p> 
+<p>即&#xff0c;如果最后一个座位空闲&#xff0c;那么选择坐最后一个座位的社交距离计算公式是不同于之前左右边界都有人的情况的&#xff0c;此时最大社交距离curSeatDis为&#xff1a;</p> 
+<blockquote> 
+ <p>curSeatDis &#61; seatNum - 1 - seatIdx.getLast - 1</p> 
+</blockquote> 
+<p>我们应该考虑到这种情况。</p> 
+<p></p> 
+<p>另外&#xff0c;本题还需要考虑坐满的情况。更多细节请看代码实现。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const seatNum &#61; parseInt(await readline());
+  const seatOrLeave &#61; JSON.parse(await readline());
+  console.log(getResult(seatNum, seatOrLeave));
+})();
+
+function getResult(seatNum, seatOrLeave) {
+  // 记录已经坐人位置的序号
+  let seatIdx &#61; [];
+
+  // 记录题解
+  let lastSeatIdx &#61; -1;
+
+  // 遍历员工的进出顺序
+  for (let info of seatOrLeave) {
+    // 如果当前元素值为负数&#xff0c;表示出场&#xff08;特殊&#xff1a;位置 0 的员工不会离开&#xff09;
+    // 例如 -4 表示坐在位置 4 的员工离开&#xff08;保证有员工坐在该座位上&#xff09;
+    if (info &lt; 0) {
+      const leaveIdx &#61; -info;
+      seatIdx &#61; seatIdx.filter((idx) &#61;&gt; idx !&#61; leaveIdx);
+      continue;
+    }
+
+    // 如果当前元素值为 1&#xff0c;表示进场
+    // 如果没有空闲位置&#xff0c;则坐不下
+    if (seatIdx.length &#61;&#61; seatNum) {
+      lastSeatIdx &#61; -1;
+      continue;
+    }
+
+    if (seatIdx.length &#61;&#61; 0) {
+      // 当前人员进场前&#xff0c;座位上没有人&#xff0c;则当前人员是第一个进场的&#xff0c;直接坐第0个位置
+      seatIdx.push(0);
+      lastSeatIdx &#61; 0;
+    } else if (seatIdx.length &#61;&#61; 1) {
+      // 当前人员进场前&#xff0c;座位上只有一个人&#xff0c;那么这个人肯定坐在第0个位置&#xff0c;则当前进场的人坐在 seatNum - 1 位置才能离 0 位置最远
+      seatIdx.push(seatNum - 1);
+      lastSeatIdx &#61; seatNum - 1;
+    } else {
+      // 记录具有最大社交距离的座位号
+      let bestSeatIdx &#61; -1;
+      // 记录最大社交距离
+      let bestSeatDis &#61; -1;
+
+      let left &#61; seatIdx[0]; // 左边界
+      for (let i &#61; 1; i &lt; seatIdx.length; i&#43;&#43;) {
+        const right &#61; seatIdx[i]; // 右边界
+
+        // 连续空闲座位区域的长度
+        const dis &#61; right - left - 1;
+
+        // 如果连续空闲座位区域长度为0&#xff0c;则无法坐人&#xff0c;此时遍历下一个连续空闲座位区域
+        // 如果连续空闲座位区域长度大于0&#xff0c;则可以坐人
+        if (dis &gt; 0) {
+          // 当前空闲区域能产生的最大社交距离
+          const curSeatDis &#61; Math.floor(dis / 2) - (dis % 2 &#61;&#61; 0 ? 1 : 0);
+          // 当前空闲区域中具备最大社交距离的位置
+          const curSeatIdx &#61; left &#43; curSeatDis &#43; 1;
+
+          // 保留最优解
+          if (curSeatDis &gt; bestSeatDis) {
+            bestSeatDis &#61; curSeatDis;
+            bestSeatIdx &#61; curSeatIdx;
+          }
+        }
+
+        left &#61; right;
+      }
+
+      // 如果最后一个座位&#xff0c;即第 seatNum - 1 号座位没有坐人的话&#xff0c;比如 1 0 0 0 1 0 0 0 0&#xff0c;此时最后一段空闲区域是没有右边界的&#xff0c;需要特殊处理
+      if (seatIdx.at(-1) &lt; seatNum - 1) {
+        // 此时可以直接坐到第 seatNum - 1 号座位&#xff0c;最大社交距离为 curSeatDis
+        const curSeatDis &#61; seatNum - 1 - seatIdx.at(-1) - 1;
+        const curSeatIdx &#61; seatNum - 1;
+
+        // 保留最优解
+        if (curSeatDis &gt; bestSeatDis) {
+          bestSeatIdx &#61; curSeatIdx;
+        }
+      }
+
+      // 如果能坐人&#xff0c;则将坐的位置加入seatIdx中
+      if (bestSeatIdx &gt; 0) {
+        seatIdx.push(bestSeatIdx);
+        seatIdx.sort((a, b) &#61;&gt; a - b);
+      }
+
+      // 假设当前人就是最后一个人&#xff0c;那么无论当前人是否能坐进去&#xff0c;都更新lastSeatIdx &#61; bestSeatIdx
+      lastSeatIdx &#61; bestSeatIdx;
+    }
+  }
+
+  return lastSeatIdx;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int seatNum &#61; Integer.parseInt(sc.nextLine());
+
+    String tmp &#61; sc.nextLine();
+    int[] searOrLeave &#61;
+        Arrays.stream(tmp.substring(1, tmp.length() - 1).split(&#34;, &#34;))
+            .mapToInt(Integer::parseInt)
+            .toArray();
+
+    System.out.println(getResult(seatNum, searOrLeave));
+  }
+
+  public static int getResult(int seatNum, int[] seatOrLeave) {
+    // 记录已经坐人位置的序号
+    ArrayList&lt;Integer&gt; seatIdx &#61; new ArrayList&lt;&gt;();
+
+    // 记录题解
+    int lastSeatIdx &#61; -1;
+
+    // 遍历员工的进出顺序
+    for (int info : seatOrLeave) {
+      // 如果当前元素值为负数&#xff0c;表示出场&#xff08;特殊&#xff1a;位置 0 的员工不会离开&#xff09;
+      // 例如 -4 表示坐在位置 4 的员工离开&#xff08;保证有员工坐在该座位上&#xff09;
+      if (info &lt; 0) {
+        int leaveIdx &#61; -info;
+        seatIdx.remove(new Integer(leaveIdx));
+        continue;
+      }
+
+      // 如果当前元素值为 1&#xff0c;表示进场
+      // 如果没有空闲位置&#xff0c;则坐不下
+      if (seatIdx.size() &#61;&#61; seatNum) {
+        // 假设当前人就是最后一个人
+        lastSeatIdx &#61; -1;
+        continue;
+      }
+
+      if (seatIdx.size() &#61;&#61; 0) {
+        // 当前人员进场前&#xff0c;座位上没有人&#xff0c;则当前人员是第一个进场的&#xff0c;直接坐第0个位置
+        seatIdx.add(0);
+        lastSeatIdx &#61; 0;
+      } else if (seatIdx.size() &#61;&#61; 1) {
+        // 当前人员进场前&#xff0c;座位上只有一个人&#xff0c;那么这个人肯定坐在第0个位置&#xff0c;则当前进场的人坐在 seatNum - 1 位置才能离 0 位置最远
+        seatIdx.add(seatNum - 1);
+        lastSeatIdx &#61; seatNum - 1;
+      } else {
+        // 记录具有最大社交距离的座位号
+        int bestSeatIdx &#61; -1;
+        // 记录最大社交距离
+        int bestSeatDis &#61; -1;
+
+        // 找到连续空闲座位区域&#xff08;该区域左、右边界是坐了人的座位&#xff09;
+
+        int left &#61; seatIdx.get(0); // 左边界
+        for (int i &#61; 1; i &lt; seatIdx.size(); i&#43;&#43;) {
+          int right &#61; seatIdx.get(i); // 右边界
+
+          // 连续空闲座位区域的长度
+          int dis &#61; right - left - 1;
+
+          // 如果连续空闲座位区域长度为0&#xff0c;则无法坐人&#xff0c;此时遍历下一个连续空闲座位区域
+          // 如果连续空闲座位区域长度大于0&#xff0c;则可以坐人
+          if (dis &gt; 0) {
+            // 当前空闲区域能产生的最大社交距离
+            int curSeatDis &#61; dis / 2 - (dis % 2 &#61;&#61; 0 ? 1 : 0);
+            // 当前空闲区域中具备最大社交距离的位置
+            int curSeatIdx &#61; left &#43; curSeatDis &#43; 1;
+
+            // 保留最优解
+            if (curSeatDis &gt; bestSeatDis) {
+              bestSeatDis &#61; curSeatDis;
+              bestSeatIdx &#61; curSeatIdx;
+            }
+          }
+
+          left &#61; right;
+        }
+
+        // 如果最后一个座位&#xff0c;即第 seatNum - 1 号座位没有坐人的话&#xff0c;比如 1 0 0 0 1 0 0 0 0&#xff0c;此时最后一段空闲区域是没有右边界的&#xff0c;需要特殊处理
+        if (seatIdx.get(seatIdx.size() - 1) &lt; seatNum - 1) {
+          // 此时可以直接坐到第 seatNum - 1 号座位&#xff0c;最大社交距离为 curSeatDis
+          int curSeatDis &#61; seatNum - 1 - seatIdx.get(seatIdx.size() - 1) - 1;
+          int curSeatIdx &#61; seatNum - 1;
+
+          // 保留最优解
+          if (curSeatDis &gt; bestSeatDis) {
+            bestSeatIdx &#61; curSeatIdx;
+          }
+        }
+
+        // 如果能坐人&#xff0c;则将坐的位置加入seatIdx中
+        if (bestSeatIdx &gt; 0) {
+          seatIdx.add(bestSeatIdx);
+          seatIdx.sort((a, b) -&gt; a - b);
+        }
+
+        // 假设当前人就是最后一个人&#xff0c;那么无论当前人是否能坐进去&#xff0c;都更新lastSeatIdx &#61; bestSeatIdx
+        lastSeatIdx &#61; bestSeatIdx;
+      }
+    }
+
+    return lastSeatIdx;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+seatNum &#61; int(input())
+seatOrLeave &#61; eval(input())
+
+
+# 算法入口
+def getResult():
+    # 记录已经坐人位置的序号
+    seatIdx &#61; []
+
+    # 记录题解
+    lastSeatIdx &#61; -1
+
+    # 遍历员工的进出顺序
+    for info in seatOrLeave:
+        # 如果当前元素值为负数&#xff0c;表示出场&#xff08;特殊&#xff1a;位置 0 的员工不会离开&#xff09;
+        # 例如 -4 表示坐在位置 4 的员工离开&#xff08;保证有员工坐在该座位上&#xff09;
+        if info &lt; 0:
+            leaveIdx &#61; -info
+            seatIdx.remove(leaveIdx)
+            continue
+
+        # 如果当前元素值为 1&#xff0c;表示进场
+        # 如果没有空闲位置&#xff0c;则坐不下
+        if len(seatIdx) &#61;&#61; seatNum:
+            lastSeatIdx &#61; -1
+            continue
+
+        if len(seatIdx) &#61;&#61; 0:
+            # 当前人员进场前&#xff0c;座位上没有人&#xff0c;则当前人员是第一个进场的&#xff0c;直接坐第0个位置
+            seatIdx.append(0)
+            lastSeatIdx &#61; 0
+        elif len(seatIdx) &#61;&#61; 1:
+            # 当前人员进场前&#xff0c;座位上只有一个人&#xff0c;那么这个人肯定坐在第0个位置&#xff0c;则当前进场的人坐在 seatNum - 1 位置才能离 0 位置最远
+            seatIdx.append(seatNum - 1)
+            lastSeatIdx &#61; seatNum - 1
+        else:
+            # 记录具有最大社交距离的座位号
+            bestSeatIdx &#61; -1
+            # 记录最大社交距离
+            bestSeatDis &#61; -1
+
+            # 找到连续空闲座位区域&#xff08;该区域左、右边界是坐了人的座位&#xff09;
+
+            left &#61; seatIdx[0]  # 左边界
+            for i in range(1, len(seatIdx)):
+                right &#61; seatIdx[i]  # 右边界
+
+                # 连续空闲座位区域的长度
+                dis &#61; right - left - 1
+
+                # 如果连续空闲座位区域长度为0&#xff0c;则无法坐人&#xff0c;此时遍历下一个连续空闲座位区域
+                # 如果连续空闲座位区域长度大于0&#xff0c;则可以坐人
+                if dis &gt; 0:
+                    # 当前空闲区域能产生的最大社交距离
+                    curSeatDis &#61; dis // 2 - (1 if dis % 2 &#61;&#61; 0 else 0)
+                    # 当前空闲区域中具备最大社交距离的位置
+                    curSeatIdx &#61; left &#43; curSeatDis &#43; 1
+
+                    # 保留最优解
+                    if curSeatDis &gt; bestSeatDis:
+                        bestSeatDis &#61; curSeatDis
+                        bestSeatIdx &#61; curSeatIdx
+
+                left &#61; right
+
+            # 如果最后一个座位&#xff0c;即第 seatNum - 1 号座位没有坐人的话&#xff0c;比如 1 0 0 0 1 0 0 0 0&#xff0c;此时最后一段空闲区域是没有右边界的&#xff0c;需要特殊处理
+            if seatIdx[-1] &lt; seatNum - 1:
+                # 此时可以直接坐到第 seatNum - 1 号座位&#xff0c;最大社交距离为 curSeatDis
+                curSeatDis &#61; seatNum - 1 - seatIdx[-1] - 1
+                curSeatIdx &#61; seatNum - 1
+
+                # 保留最优解
+                if curSeatDis &gt; bestSeatDis:
+                    bestSeatIdx &#61; curSeatIdx
+
+            # 如果能坐人&#xff0c;则将坐的位置加入seatIdx中
+            if bestSeatIdx &gt; 0:
+                seatIdx.append(bestSeatIdx)
+                seatIdx.sort()
+
+            # 假设当前人就是最后一个人&#xff0c;那么无论当前人是否能坐进去&#xff0c;都更新lastSeatIdx &#61; bestSeatIdx
+            lastSeatIdx &#61; bestSeatIdx
+
+    return lastSeatIdx
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 500
+
+int cmp(const void *a, const void *b) {
+    return *((int *) a) - *((int *) b);
+}
+
+int main() {
+    int seatNum;
+    scanf(&#34;%d&#34;, &amp;seatNum);
+
+    getchar();
+
+    int seatOrLeave[MAX_SIZE] &#61; {0};
+    int seatOrLeave_size &#61; 0;
+
+    while (scanf(&#34;[%d&#34;, &amp;seatOrLeave[seatOrLeave_size]) || scanf(&#34;%d&#34;, &amp;seatOrLeave[seatOrLeave_size])) {
+        seatOrLeave_size&#43;&#43;;
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    // 记录已经坐人位置的序号
+    int seatIdx[MAX_SIZE];
+    int seatIdx_size &#61; 0;
+
+    // 记录题解
+    int lastSeatIdx &#61; -1;
+
+    // 遍历员工的进出顺序
+    for (int i &#61; 0; i &lt; seatOrLeave_size; i&#43;&#43;) {
+        int info &#61; seatOrLeave[i];
+
+        // 如果当前元素值为负数&#xff0c;表示出场&#xff08;特殊&#xff1a;位置 0 的员工不会离开&#xff09;
+        // 例如 -4 表示坐在位置 4 的员工离开&#xff08;保证有员工坐在该座位上&#xff09;
+        if (info &lt; 0) {
+            int leaveIdx &#61; -info;
+
+            // 删除seatIdx中对应leaveIdx
+            int j &#61; 0;
+            for (; j &lt; seatIdx_size; j&#43;&#43;) {
+                if (seatIdx[j] &#61;&#61; leaveIdx) break;
+            }
+
+            for (; j &lt; seatIdx_size - 1; j&#43;&#43;) {
+                seatIdx[j] &#61; seatIdx[j &#43; 1];
+            }
+
+            seatIdx_size--;
+
+            continue;
+        }
+
+        // 如果当前元素值为 1&#xff0c;表示进场
+        // 如果没有空闲位置&#xff0c;则坐不下
+        if(seatIdx_size &#61;&#61; seatNum) {
+            // 假设当前人就是最后一个人
+            lastSeatIdx &#61; -1;
+            continue;
+        }
+
+        if (seatIdx_size &#61;&#61; 0) {
+            // 当前人员进场前&#xff0c;座位上没有人&#xff0c;则当前人员是第一个进场的&#xff0c;直接坐第0个位置
+            seatIdx[seatIdx_size&#43;&#43;] &#61; 0;
+            lastSeatIdx &#61; 0;
+        } else if (seatIdx_size &#61;&#61; 1) {
+            // 当前人员进场前&#xff0c;座位上只有一个人&#xff0c;那么这个人肯定坐在第0个位置&#xff0c;则当前进场的人坐在 seatNum - 1 位置才能离 0 位置最远
+            seatIdx[seatIdx_size&#43;&#43;] &#61; seatNum - 1;
+            lastSeatIdx &#61; seatNum - 1;
+        } else {
+            // 记录具有最大社交距离的座位号
+            int bestSeatIdx &#61; -1;
+            // 记录最大社交距离
+            int bestSeatDis &#61; -1;
+
+            // 找到连续空闲座位区域&#xff08;该区域左、右边界是坐了人的座位&#xff09;
+
+            int left &#61; seatIdx[0]; // 左边界
+            for (int j &#61; 1; j &lt; seatIdx_size; j&#43;&#43;) {
+                int right &#61; seatIdx[j]; // 右边界
+
+                // 连续空闲座位区域的长度
+                int dis &#61; right - left - 1;
+
+                // 如果连续空闲座位区域长度为0&#xff0c;则无法坐人&#xff0c;此时遍历下一个连续空闲座位区域
+                // 如果连续空闲座位区域长度大于0&#xff0c;则可以坐人
+                if (dis &gt; 0) {
+                    // 当前空闲区域能产生的最大社交距离
+                    int curSeatDis &#61; dis / 2 - (dis % 2 &#61;&#61; 0 ? 1 : 0);
+                    // 当前空闲区域中具备最大社交距离的位置
+                    int curSeatIdx &#61; left &#43; curSeatDis &#43; 1;
+
+                    // 保留最优解
+                    if (curSeatDis &gt; bestSeatDis) {
+                        bestSeatDis &#61; curSeatDis;
+                        bestSeatIdx &#61; curSeatIdx;
+                    }
+                }
+
+                left &#61; right;
+            }
+
+            // 如果最后一个座位&#xff0c;即第 seatNum - 1 号座位没有坐人的话&#xff0c;比如 1 0 0 0 1 0 0 0 0&#xff0c;此时最后一段空闲区域是没有右
+            if (seatIdx[seatIdx_size - 1] &lt; seatNum - 1) {
+                // 此时可以直接坐到第 seatNum - 1 号座位&#xff0c;最大社交距离为 curSeatDis
+                int curSeatDis &#61; seatNum - 1 - seatIdx[seatIdx_size - 1] - 1;
+                int curSeatIdx &#61; seatNum - 1;
+
+                // 保留最优解
+                if (curSeatDis &gt; bestSeatDis) {
+                    bestSeatIdx &#61; curSeatIdx;
+                }
+            }
+
+            // 如果能坐人&#xff0c;则将坐的位置加入seatIdx中
+            if (bestSeatIdx &gt; 0) {
+                seatIdx[seatIdx_size&#43;&#43;] &#61; bestSeatIdx;
+                qsort(seatIdx, seatIdx_size, sizeof(int), cmp);
+            }
+
+            // 假设当前人就是最后一个人&#xff0c;那么无论当前人是否能坐进去&#xff0c;都更新lastSeatIdx &#61; bestSeatIdx
+            lastSeatIdx &#61; bestSeatIdx;
+        }
+    }
+
+    printf(&#34;%d\n&#34;, lastSeatIdx);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,511 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 跳房子II（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>跳房子&#xff0c;也叫跳飞机&#xff0c;是一种世界性的儿童游戏。</p> 
+<p>游戏参与者需要分多个回合按顺序跳到第1格直到房子的最后一格&#xff0c;然后获得一次选房子的机会&#xff0c;直到所有房子被选完&#xff0c;房子最多的人获胜。</p> 
+<p>跳房子的过程中&#xff0c;如果有踩线等违规行为&#xff0c;会结束当前回合&#xff0c;甚至可能倒退几步。</p> 
+<p>假设房子的总格数是count&#xff0c;小红每回合可能连续跳的步数都放在数组steps中&#xff0c;请问数组中是否有一种步数的组合&#xff0c;可以让小红三个回合跳到最后一格?</p> 
+<p>如果有&#xff0c;请输出索引和最小的步数组合&#xff08;数据保证索引和最小的步数组合是唯一的&#xff09;。</p> 
+<p>注意&#xff1a;数组中的步数可以重复&#xff0c;但数组中的元素不能重复使用。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为房子总格数count&#xff0c;它是int整数类型。<br /> 第二行输入为每回合可能连续跳的步数&#xff0c;它是int整数数组类型</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>返回索引和最小的满足要求的步数组合&#xff08;顺序保持steps中原有顺序&#xff09;</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>count ≤ 10000</li><li>3 ≤ steps.length ≤ 10000</li><li>-100000 ≤ steps[i] ≤ 100000</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">[1,4,5,2,0,2]<br /> 9</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[4,5,0]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">[1,5,2,0,2,4]<br /> 9</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[5,2,2]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">[-1,2,4,9]<br /> 12</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[-1,4,9]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题其实就是<a href="https://leetcode.cn/problems/3sum/" rel="nofollow" title="15. 三数之和 - 力扣&#xff08;LeetCode&#xff09;">15. 三数之和 - 力扣&#xff08;LeetCode&#xff09;</a>的变种题</p> 
+<p>即给的一个数组steps&#xff0c;让你从中找出三个数&#xff0c;保证这三个数的和等于count。</p> 
+<p>本题的变化在于&#xff0c;可能存在多个三数组合满足要求&#xff0c;但是我们只取其中三数的索引和最小的。即我们不仅要算三数的值之和&#xff0c;还是算三数的索引之和。</p> 
+<p></p> 
+<p>因此&#xff0c;我首先根据输入的steps数组&#xff0c;将其转化为newSteps数组&#xff0c;</p> 
+<p>newSteps数组的元素是{val: steps[i]&#xff0c; idx: i}&#xff0c;</p> 
+<p>然后将newSteps数组按照元素的val值进行升序&#xff0c;若val值相同&#xff0c;则继续按照idx值升序。</p> 
+<p>之后&#xff0c;就按照leetcode三数之和的逻辑求解满足要求的三数组合&#xff0c;即定义一个双重循环&#xff0c;</p> 
+<p>外层for循环遍历newSteps每一个元素&#xff0c;指针为 i&#xff0c;然后再定义两个指针 l &#61; i &#43; 1&#xff0c; r &#61; newSteps.length - 1&#xff0c;假设valSum &#61; newSteps[i].val&#43; newSteps[l].val &#43; newSteps[r].val&#xff0c;</p> 
+<p>如果 valSum &lt; count&#xff0c;则 l&#43;&#43;</p> 
+<p>如果 valSum &gt; count&#xff0c;则 r--</p> 
+<p>如果 valSum &#61;&#61; count&#xff0c;那么i&#xff0c;l&#xff0c;r指向的三数&#xff0c;就是一个符合要求的三数组合&#xff0c;此时再计算下三数的索引之和&#xff1a;idxSum &#61; newSteps[i].idx&#43; newSteps[l].idx&#43; newSteps[r].idx</p> 
+<p>比较idxSum和minIdxSum&#xff1a;</p> 
+<ul><li>如果idxSum &lt; minIdxSum&#xff0c;则当前三数组合就是更优解&#xff0c;我们更新minIdxSum &#61; idxSum&#xff0c;然后继续尝试更优解&#xff0c;即 r--&#xff1a;</li></ul> 
+<ol><li>注意&#xff0c;这里为什么要r--&#xff0c;因为输入的steps数组是存在重复元素的&#xff0c;因此可能存在steps[r-1] &#61;&#61; steps[r]&#xff0c;而因此i,l,r-1也能形成符合要求的三数组合&#xff0c;且索引和更小</li><li>注意&#xff0c;这里为什么不l&#43;&#43;&#xff0c;虽然steps[l&#43;1]可能与steps[l]相同&#xff0c;因此i,l&#43;1,r也能形成符合要求的三数组合&#xff0c;但是索引和更大&#xff0c;而本题要求索引和最小的&#xff0c;因此不需要尝试l&#43;&#43;</li></ol> 
+<ul><li>如果idxSum &gt; minIdxSum&#xff0c;丢弃</li><li>如果idxSum &#61;&#61; minIdxSum&#xff0c;不存在此场景&#xff0c;因为题目描述中说&#xff1a;数据保证索引和最小的步数组合是唯一的</li></ul> 
+<p></p> 
+<p>本题数量级较大&#xff0c;需要做剪枝优化&#xff0c;才有可能不超时&#xff0c;三数之和问题一般有下面剪枝优化&#xff1a;</p> 
+<p>1、如果steps[i] &gt; count的话&#xff0c;则steps[i] &#43; steps[l] &#43; steps[r] &gt; count是必然的&#xff1f;</p> 
+<p>前提是&#xff1a;steps[i] &gt; 0 &#xff0c;以及count &gt; 0&#xff0c;即i ,l ,r 指向的元素全正数的情况。此时就可以break掉 i 的遍历</p> 
+<p></p> 
+<p>2、避免统计重复组合&#xff0c;即组合元素都相同的组合</p> 
+<p>2.1、关于R指针的组合去重策略</p> 
+<p>比如排序后steps为&#xff1a;[0,1,2,3,3,3]</p> 
+<p>如下例子&#xff0c;我们发现可能存在连续的steps[r] &#61;&#61; steps[r-1]的情况&#xff0c;对于这种情况&#xff0c;我们可以开一个循环&#xff0c;不停左移R指针&#xff0c;且这个过程会产生更优解&#xff0c;我们还有记录更优解</p> 
+<p><img alt="" height="460" src="https://img-blog.csdnimg.cn/00138664c5ce47c68ca72d36b0d5e1fe.png" width="696" /></p> 
+<p></p> 
+<p>2.2、关于L指针的组合去重策略</p> 
+<p>比如排序后steps为&#xff1a;[0,1,1,1,2,3]&#xff0c;</p> 
+<p>即会存在连续的steps[l] &#61;&#61; steps[l&#43;1]&#xff0c;此时虽然 i, l&#43;1, r 三元组不会产生更优解&#xff0c;但是我们仍有必要尝试 L 指针右移&#xff0c;来避免产生重复组合</p> 
+<p><img alt="" height="493" src="https://img-blog.csdnimg.cn/4be68bfd6468443688ae34b36177eabc.png" width="447" /></p> 
+<p></p> 
+<p>2.3、关于 i 指针的组合去重策略&#xff1a;</p> 
+<p>当i &gt; 0时&#xff0c;如果steps[i] &#61;&#61; steps[i-1]&#xff0c;则也会产生重复组合&#xff0c;且此时 i,l,r三元组的索引和要大于 i-1,l,r三元组的&#xff0c;因此此情况也可以直接continue掉</p> 
+<p><img alt="" height="380" src="https://img-blog.csdnimg.cn/f0176095f57240ebb8c74cdecd74ab37.png" width="651" /></p> 
+<p></p> 
+<hr /> 
+<p>2023.08.06</p> 
+<p>根据考友提示&#xff0c;Python语言存在超时现象&#xff0c;因此考友补充了一个剪枝方案&#xff1a;</p> 
+<p>即确定 i 指针后&#xff0c;其实L&#xff0c;R指针指向数的目标和已经确定了&#xff0c;即 count - steps[i]</p> 
+<p>而 L&#xff0c;R指针必然存在 steps[L] &lt;&#61; steps[R] 的关系&#xff0c;因此</p> 
+<p>必然存在关系&#xff1a;</p> 
+<p>steps[L] &lt;&#61;  (count - steps[i]) / 2</p> 
+<p>steps[R] &gt;&#61;  (count - steps[i]) / 2</p> 
+<p>因此&#xff0c;如果初始时steps[L]&#xff0c;steps[R]不满足上面关系&#xff0c;则可以剪枝。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    const steps &#61; lines[0].slice(1, -1).split(&#34;,&#34;).map(Number);
+    const count &#61; parseInt(lines[1]);
+
+    console.log(getResult(steps, count));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(steps, count) {
+  const n &#61; steps.length;
+
+  const newSteps &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    newSteps.push(new Step(steps[i], i));
+  }
+
+  newSteps.sort((a, b) &#61;&gt; (a.val !&#61; b.val ? a.val - b.val : a.idx - b.idx));
+
+  let minStepIdxSum &#61; Infinity;
+  let ans &#61; &#34;&#34;;
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // 剪枝优化
+    if (newSteps[i].val &gt; 0 &amp;&amp; count &gt; 0 &amp;&amp; newSteps[i].val &gt; count) {
+      break;
+    }
+
+    // 剪枝优化
+    if (i &gt; 0 &amp;&amp; newSteps[i].val &#61;&#61; newSteps[i - 1].val) {
+      continue;
+    }
+
+    let l &#61; i &#43; 1;
+    let r &#61; n - 1;
+
+    while (l &lt; r) {
+      // 剪枝优化&#xff0c;L,R指针指向值的目标和为count - i指针指向的值&#xff0c;而L指针指向的值 必然小于等于 R指针指向的值&#xff0c;因此L指针指向的值必然 &lt;&#61; 目标和/2&#xff0c;而R指针指向的值必然 &gt;&#61; 目标和/2
+      const threshold &#61; (count - newSteps[i].val) / 2;
+      if (newSteps[l].val &gt; threshold || newSteps[r].val &lt; threshold) break;
+
+      const stepValSum &#61; newSteps[i].val &#43; newSteps[l].val &#43; newSteps[r].val;
+
+      if (stepValSum &lt; count) {
+        l&#43;&#43;;
+      } else if (stepValSum &gt; count) {
+        r--;
+      } else {
+        // 剪枝优化
+        while (l &lt; r - 1 &amp;&amp; newSteps[r].val &#61;&#61; newSteps[r - 1].val) {
+          r--;
+        }
+
+        const stepIdxSum &#61; newSteps[i].idx &#43; newSteps[l].idx &#43; newSteps[r].idx;
+        if (stepIdxSum &lt; minStepIdxSum) {
+          minStepIdxSum &#61; stepIdxSum;
+
+          const arr &#61; [newSteps[i], newSteps[l], newSteps[r]];
+          arr.sort((a, b) &#61;&gt; a.idx - b.idx);
+
+          ans &#61; &#96;[${arr.map((step) &#61;&gt; step.val).join(&#34;,&#34;)}]&#96;;
+        }
+
+        // 剪枝优化
+        while (l &#43; 1 &lt; r &amp;&amp; newSteps[l].val &#61;&#61; newSteps[l &#43; 1].val) {
+          l&#43;&#43;;
+        }
+
+        l&#43;&#43;;
+        r--;
+      }
+    }
+  }
+
+  return ans;
+}
+
+class Step {
+  constructor(val, idx) {
+    this.val &#61; val;
+    this.idx &#61; idx;
+  }
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  static class Step {
+    int val;
+    int idx;
+
+    public Step(int val, int idx) {
+      this.idx &#61; idx;
+      this.val &#61; val;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String tmp &#61; sc.nextLine();
+    int[] steps &#61;
+        Arrays.stream(tmp.substring(1, tmp.length() - 1).split(&#34;,&#34;))
+            .mapToInt(Integer::parseInt)
+            .toArray();
+
+    int count &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(steps, count));
+  }
+
+  public static String getResult(int[] steps, int count) {
+    int n &#61; steps.length;
+
+    Step[] newSteps &#61; new Step[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      newSteps[i] &#61; new Step(steps[i], i);
+    }
+
+    Arrays.sort(newSteps, (a, b) -&gt; a.val !&#61; b.val ? a.val - b.val : a.idx - b.idx);
+
+    int minStepIdxSum &#61; Integer.MAX_VALUE;
+    String ans &#61; &#34;&#34;;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 剪枝优化
+      if (newSteps[i].val &gt; count &amp;&amp; newSteps[i].val &gt; 0 &amp;&amp; count &gt; 0) break;
+
+      // 剪枝优化
+      if (i &gt; 0 &amp;&amp; newSteps[i].val &#61;&#61; newSteps[i - 1].val) continue;
+
+      int l &#61; i &#43; 1;
+      int r &#61; n - 1;
+
+      while (l &lt; r) {
+        // 剪枝优化&#xff0c;L,R指针指向值的目标和为count - i指针指向的值&#xff0c;而L指针指向的值 必然小于等于 R指针指向的值&#xff0c;
+        // 因此L指针指向的值必然 &lt;&#61; 目标和/2&#xff0c;而R指针指向的值必然 &gt;&#61; 目标和/2
+        int threshold &#61; (count - newSteps[i].val) / 2;
+        if (newSteps[l].val &gt; threshold || newSteps[r].val &lt; threshold) break;
+
+        int stepValSum &#61; newSteps[i].val &#43; newSteps[l].val &#43; newSteps[r].val;
+
+        if (stepValSum &lt; count) {
+          l&#43;&#43;;
+        } else if (stepValSum &gt; count) {
+          r--;
+        } else {
+          // 剪枝优化
+          while (l &lt; r - 1 &amp;&amp; newSteps[r].val &#61;&#61; newSteps[r - 1].val) {
+            r--;
+          }
+
+          int stepIdxSum &#61; newSteps[i].idx &#43; newSteps[l].idx &#43; newSteps[r].idx;
+          if (stepIdxSum &lt; minStepIdxSum) {
+            minStepIdxSum &#61; stepIdxSum;
+
+            Step[] arr &#61; {newSteps[i], newSteps[l], newSteps[r]};
+            Arrays.sort(arr, (a, b) -&gt; a.idx - b.idx);
+
+            StringJoiner sj &#61; new StringJoiner(&#34;,&#34;, &#34;[&#34;, &#34;]&#34;);
+            for (Step step : arr) sj.add(step.val &#43; &#34;&#34;);
+
+            ans &#61; sj.toString();
+          }
+
+          // 剪枝优化
+          while (l &#43; 1 &lt; r &amp;&amp; newSteps[l].val &#61;&#61; newSteps[l &#43; 1].val) {
+            l&#43;&#43;;
+          }
+
+          l&#43;&#43;;
+          r--;
+        }
+      }
+    }
+    return ans;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+steps &#61; list(map(int, input()[1:-1].split(&#34;,&#34;)))
+count &#61; int(input())
+
+
+class Step:
+    def __init__(self, val, idx):
+        self.val &#61; val
+        self.idx &#61; idx
+
+
+# 算法入口
+def getResult():
+    n &#61; len(steps)
+
+    newSteps &#61; [Step(steps[i], i) for i in range(n)]
+
+    newSteps.sort(key&#61;lambda x: (x.val, x.idx))
+
+    minStepIdxSum &#61; sys.maxsize
+    ans &#61; &#34;&#34;
+
+    for i in range(n):
+        # 剪枝优化
+        if newSteps[i].val &gt; 0 and 0 &lt; count &lt; newSteps[i].val:
+            break
+
+        # 剪枝优化
+        if i &gt; 0 and newSteps[i].val &#61;&#61; newSteps[i - 1].val:
+            continue
+
+        l &#61; i &#43; 1
+        r &#61; n - 1
+
+        while l &lt; r:
+            # 剪枝优化&#xff0c;L,R指针指向值的目标和为count - i指针指向的值&#xff0c;而L指针指向的值 必然小于等于 R指针指向的值&#xff0c;
+            # 因此L指针指向的值必然 &lt;&#61; 目标和/2&#xff0c;而R指针指向的值必然 &gt;&#61; 目标和/2
+            threshold &#61; (count - newSteps[i].val) / 2
+            if newSteps[l].val &gt; threshold or newSteps[r].val &lt; threshold:
+                break
+
+            stepValSum &#61; newSteps[i].val &#43; newSteps[l].val &#43; newSteps[r].val
+
+            if stepValSum &lt; count:
+                l &#43;&#61; 1
+            elif stepValSum &gt; count:
+                r -&#61; 1
+            else:
+                # 剪枝优化
+                while l &lt; r - 1 and newSteps[r].val &#61;&#61; newSteps[r - 1].val:
+                    r -&#61; 1
+
+                stepIdxSum &#61; newSteps[i].idx &#43; newSteps[l].idx &#43; newSteps[r].idx
+                if stepIdxSum &lt; minStepIdxSum:
+                    minStepIdxSum &#61; stepIdxSum
+
+                    arr &#61; [newSteps[i], newSteps[l], newSteps[r]]
+                    arr.sort(key&#61;lambda x: x.idx)
+
+                    ans &#61; &#34;[&#34; &#43; &#34;,&#34;.join(map(lambda x: str(x.val), arr)) &#43; &#34;]&#34;
+
+                # 剪枝优化
+                while l &#43; 1 &lt; r and newSteps[l].val &#61;&#61; newSteps[l &#43; 1].val:
+                    l &#43;&#61; 1
+
+                l &#43;&#61; 1
+                r -&#61; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;limits.h&gt;
+
+#define MAX_SIZE 10000
+
+typedef struct {
+    int val;
+    int idx;
+} Step;
+
+void getResult(const int steps[], int steps_size, int count);
+
+int main() {
+    int steps[MAX_SIZE];
+    int steps_size &#61; 0;
+
+    while(scanf(&#34;[%d&#34;, &amp;steps[steps_size]) || scanf(&#34;%d&#34;, &amp;steps[steps_size])) {
+        steps_size&#43;&#43;;
+        if(getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    int count;
+    scanf(&#34;%d&#34;, &amp;count);
+
+    getResult(steps, steps_size, count);
+
+    return 0;
+}
+
+int cmp(const void* a, const void* b) {
+    Step* A &#61; (Step*) a;
+    Step* B &#61; (Step*) b;
+
+    return A-&gt;val !&#61; B-&gt;val ? A-&gt;val - B-&gt;val : A-&gt;idx - B-&gt;idx;
+}
+
+int cmp2(const void* a, const void* b) {
+    Step* A &#61; (Step*) a;
+    Step* B &#61; (Step*) b;
+
+    return A-&gt;idx - B-&gt;idx;
+}
+
+void getResult(const int steps[], int steps_size, int count) {
+    Step newSteps[steps_size];
+
+    for(int i&#61;0; i&lt;steps_size; i&#43;&#43;) {
+        newSteps[i].val &#61; steps[i];
+        newSteps[i].idx &#61; i;
+    }
+
+    qsort(newSteps, steps_size, sizeof(Step), cmp);
+
+    int minStepIdxSum &#61; INT_MAX;
+    char* ans &#61; &#34;&#34;;
+
+    for(int i &#61; 0; i &lt; steps_size; i&#43;&#43;) {
+        // 剪枝优化
+        if(newSteps[i].val &gt; count &amp;&amp; count &gt; 0) break;
+
+        // 剪枝优化
+        if(i &gt; 0 &amp;&amp; newSteps[i].val &#61;&#61; newSteps[i-1].val) continue;
+
+        int l &#61; i &#43; 1;
+        int r &#61; steps_size - 1;
+
+        while(l &lt; r) {
+            // 剪枝优化&#xff0c;L,R指针指向值的目标和为count - i指针指向的值&#xff0c;而L指针指向的值 必然小于等于 R指针指向的值&#xff0c;
+            // 因此L指针指向的值必然 &lt;&#61; 目标和/2&#xff0c;而R指针指向的值必然 &gt;&#61; 目标和/2
+            int threshold &#61; (count - newSteps[i].val) / 2;
+
+            if(newSteps[l].val &gt; threshold || newSteps[r].val &lt; threshold) break;
+
+            int stepValSum &#61; newSteps[i].val &#43; newSteps[l].val &#43; newSteps[r].val;
+
+            if(stepValSum &lt; count) {
+                l&#43;&#43;;
+            } else if(stepValSum &gt; count) {
+                r--;
+            } else {
+                // 剪枝优化
+                while (l &lt; r - 1 &amp;&amp; newSteps[r].val &#61;&#61; newSteps[r-1].val) {
+                    r--;
+                }
+
+                int stepIdxSum &#61; newSteps[i].idx &#43; newSteps[l].idx &#43; newSteps[r].idx;
+
+                if(stepIdxSum &lt; minStepIdxSum) {
+                    minStepIdxSum &#61; stepIdxSum;
+
+                    Step arr[] &#61; {newSteps[i], newSteps[l], newSteps[r]};
+                    qsort(arr, 3, sizeof(Step), cmp2);
+
+                    char res[100000] &#61; {&#39;\0&#39;};
+                    res[0] &#61; &#39;[&#39;;
+
+                    for(int j &#61; 0; j &lt; 3; j&#43;&#43;) {
+                        Step step &#61; arr[j];
+
+                        char tmp[1000];
+                        sprintf(tmp, &#34;%d&#34;, step.val);
+
+                        strcat(res, tmp);
+
+                        if(j &lt; 2) {
+                            strcat(res, &#34;,&#34;);
+                        } else {
+                            strcat(res, &#34;]&#34;);
+                        }
+                    }
+
+                    ans &#61; res;
+                }
+
+                // 剪枝优化
+                while (l &#43; 1 &lt; r &amp;&amp; newSteps[l].val &#61;&#61; newSteps[l &#43; 1].val) {
+                    l&#43;&#43;;
+                }
+
+                l&#43;&#43;;
+                r--;
+            }
+        }
+    }
+
+    puts(ans);
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

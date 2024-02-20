@@ -1,0 +1,385 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 字符串摘要（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个字符串的摘要算法&#xff0c;请输出给定字符串的摘要值</p> 
+<ol><li>去除字符串中非字母的符号。</li><li>如果出现连续字符(不区分大小写) &#xff0c;则输出&#xff1a;该字符 (小写) &#43; 连续出现的次数。</li><li>如果是非连续的字符(不区分大小写)&#xff0c;则输出&#xff1a;该字符(小写) &#43; 该字母之后字符串中出现的该字符的次数</li><li>对按照以上方式表示后的字符串进行排序&#xff1a;字母和紧随的数字作为一组进行排序&#xff0c;数字大的在前&#xff0c;数字相同的&#xff0c;则按字母进行排序&#xff0c;字母小的在前。</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>一行字符串&#xff0c;长度为[1,200]</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>摘要字符串</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">aabbcc</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">a2b2c2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">bAaAcBb</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">a3b2b2c0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>bAaAcBb:<br /> 第一个b非连续字母&#xff0c;该字母之后字符串中还出现了2次(最后的两个Bb) &#xff0c;所以输出b2</p> <p>a连续出现3次&#xff0c;输出a3&#xff0c;<br /> c非连续&#xff0c;该字母之后字符串再没有出现过c&#xff0c;输出c0</p> <p>Bb连续2次&#xff0c;输出b2</p> <p>对b2a3c0b2进行排序&#xff0c;最终输出a3b2b2c0</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题主要考察逻辑分析。</p> 
+<p></p> 
+<p>本题主要难点在于&#xff1a;</p> 
+<blockquote> 
+ <p>如果是非连续的字符(不区分大小写)&#xff0c;则输出&#xff1a;该字符(小写) &#43; 该字母之后字符串中出现的该字符的次数</p> 
+</blockquote> 
+<p>如果当前位置的字母是一个非连续字符&#xff0c;那么我们需要统计当前位置之后的该字母出现次数。</p> 
+<p>为了避免重复的扫描统计&#xff0c;我们可以一开始就统计好所有字母的出现次数到count中&#xff0c;每扫描一个位置&#xff0c;则对于位置的字母数量count[letter]--&#xff0c;表示该字母在后面还剩多少个。</p> 
+<p>这样的话&#xff0c;碰到非连续字母letter时&#xff0c;我们只需要获取count[letter]即可知道其后续还有多少个letter字母。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  // 不区分大小写
+  s &#61; s.toLowerCase();
+
+  // 统计每个字母出现的次数
+  const count &#61; {};
+
+  // 去除字符串中的非字母
+  const letters &#61; [];
+
+  for (let c of s) {
+    if (c &gt;&#61; &#34;a&#34; &amp;&amp; c &lt;&#61; &#34;z&#34;) {
+      count[c] &#61; (count[c] ?? 0) &#43; 1;
+      letters.push(c);
+    }
+  }
+
+  // 加空格是为了避免后续的收尾操作&#xff0c;如果有疑问可以移除下面加空格操作
+  s &#61; letters.join(&#34;&#34;) &#43; &#34; &#34;;
+
+  // 记录连续字母和非连续字母
+  const ans &#61; [];
+
+  // 上一个位置的字母
+  let pre &#61; s[0];
+  // 该字母连续次数记为1
+  let repeat &#61; 1;
+  // 后续该字母还有count[pre]-&#61;1个
+  count[pre]--;
+
+  for (let i &#61; 1; i &lt; s.length; i&#43;&#43;) {
+    // 当前位置的字母
+    const cur &#61; s[i];
+    // 后续该字母还有count[cur]-&#61;1个
+    count[cur]--;
+
+    if (cur &#61;&#61; pre) {
+      // 如果当前位置和上一个位置的字母相同&#xff0c;则产生连续
+      // 连续次数&#43;1
+      repeat&#43;&#43;;
+    } else {
+      // 如果当前位置和上一个位置的字母不同&#xff0c;则连续打断
+      // 如果pre字母连续次数&gt;1&#xff0c;则是真连续&#xff0c;那么就是pre&#43;repeat,否则就是假连续,是pre&#43;count[pre]
+      ans.push([pre, repeat &gt; 1 ? repeat : count[pre]]);
+      // 更新pre为cur
+      pre &#61; cur;
+      // 更新pre连续次数为1
+      repeat &#61; 1;
+    }
+  }
+
+  // 字母和紧随的数字作为一组进行排序&#xff0c;数字大的在前&#xff0c;数字相同的&#xff0c;则按字母进行排序&#xff0c;字母小的在前
+  return ans
+    .sort((a, b) &#61;&gt;
+      a[1] !&#61; b[1] ? b[1] - a[1] : a[0].charCodeAt() - b[0].charCodeAt()
+    )
+    .map(([letter, num]) &#61;&gt; letter &#43; num)
+    .join(&#34;&#34;);
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  // 字母数字类
+  static class Letter {
+    char letter;
+    int num;
+
+    public Letter(char letter, int num) {
+      this.letter &#61; letter;
+      this.num &#61; num;
+    }
+
+    &#64;Override
+    public String toString() {
+      return this.letter &#43; &#34;&#34; &#43; this.num;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  public static String getResult(String s) {
+    // 不区分大小写
+    s &#61; s.toLowerCase();
+
+    // 统计每个字母出现的次数
+    int[] count &#61; new int[128];
+
+    // 去除字符串中的非字母
+    StringBuilder sb &#61; new StringBuilder();
+
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+      if (c &gt;&#61; &#39;a&#39; &amp;&amp; c &lt;&#61; &#39;z&#39;) {
+        count[c]&#43;&#43;;
+        sb.append(c);
+      }
+    }
+
+    // 加空格是为了避免后续的收尾操作&#xff0c;如果有疑问可以移除下面加空格操作
+    s &#61; sb &#43; &#34; &#34;;
+
+    // 记录连续字母和非连续字母
+    ArrayList&lt;Letter&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    // 上一个位置的字母
+    char pre &#61; s.charAt(0);
+    // 该字母连续次数记为1
+    int repeat &#61; 1;
+    // 后续该字母还有count[pre]-&#61;1个
+    count[pre]--;
+
+    for (int i &#61; 1; i &lt; s.length(); i&#43;&#43;) {
+      // 当前位置的字母
+      char cur &#61; s.charAt(i);
+      // 后续该字母还有count[cur]-&#61;1个
+      count[cur]--;
+
+      if (cur &#61;&#61; pre) {
+        // 如果当前位置和上一个位置的字母相同&#xff0c;则产生连续
+        // 连续次数&#43;1
+        repeat&#43;&#43;;
+      } else {
+        // 如果当前位置和上一个位置的字母不同&#xff0c;则连续打断
+        // 如果pre字母连续次数&gt;1&#xff0c;则是真连续&#xff0c;那么就是pre&#43;repeat,否则就是假连续,是pre&#43;count[pre]
+        ans.add(new Letter(pre, repeat &gt; 1 ? repeat : count[pre]));
+        // 更新pre为cur
+        pre &#61; cur;
+        // 更新pre连续次数为1
+        repeat &#61; 1;
+      }
+    }
+
+    // 字母和紧随的数字作为一组进行排序&#xff0c;数字大的在前&#xff0c;数字相同的&#xff0c;则按字母进行排序&#xff0c;字母小的在前
+    ans.sort((a, b) -&gt; a.num !&#61; b.num ? b.num - a.num : a.letter - b.letter);
+
+    StringBuilder res &#61; new StringBuilder();
+    for (Letter an : ans) {
+      res.append(an.toString());
+    }
+    return res.toString();
+  }
+}
+</code></pre> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    global s
+
+    # 不区分大小写
+    s &#61; s.lower()
+
+    # 统计每个字母出现的次数
+    count &#61; {}
+    # 去除字符串中的非字母
+    letters &#61; []
+
+    for c in s:
+        if &#39;z&#39; &gt;&#61; c &gt;&#61; &#39;a&#39;:
+            count[c] &#61; count.get(c, 0) &#43; 1
+            letters.append(c)
+
+    # 加空格是为了避免后续的收尾操作&#xff0c;如果有疑问可以移除下面加空格操作
+    s &#61; &#34;&#34;.join(letters) &#43; &#34; &#34;
+    count[&#39; &#39;] &#61; 1
+
+    # 记录连续字母和非连续字母
+    ans &#61; []
+
+    # 上一个位置的字母
+    pre &#61; s[0]
+    # 该字母连续次数记为1
+    repeat &#61; 1
+    # 后续该字母还有count[pre]-&#61;1个
+    count[pre] -&#61; 1
+
+    for i in range(1, len(s)):
+        # 当前位置的字母
+        cur &#61; s[i]
+        # 后续该字母还有count[cur]-&#61;1个
+        count[cur] -&#61; 1
+
+        if cur &#61;&#61; pre:
+            # 如果当前位置和上一个位置的字母相同&#xff0c;则产生连续
+            # 连续次数&#43;1
+            repeat &#43;&#61; 1
+        else:
+            # 如果当前位置和上一个位置的字母不同&#xff0c;则连续打断
+            # 如果pre字母连续次数&gt;1&#xff0c;则是真连续&#xff0c;那么就是pre&#43;repeat,否则就是假连续,是pre&#43;count[pre]
+            ans.append([pre, repeat if repeat &gt; 1 else count[pre]])
+            # 更新pre为cur
+            pre &#61; cur
+            # 更新pre连续次数为1
+            repeat &#61; 1
+
+    # 字母和紧随的数字作为一组进行排序&#xff0c;数字大的在前&#xff0c;数字相同的&#xff0c;则按字母进行排序&#xff0c;字母小的在前
+    ans.sort(key&#61;lambda x: (-x[1], x[0]))
+
+    return &#34;&#34;.join(map(lambda x: x[0]&#43;str(x[1]), ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 201
+
+typedef struct {
+    char letter;
+    int num;
+} Letter;
+
+int cmp(const void *a, const void *b) {
+    Letter *A &#61; (Letter *) a;
+    Letter *B &#61; (Letter *) b;
+
+    return A-&gt;num !&#61; B-&gt;num ? B-&gt;num - A-&gt;num : A-&gt;letter - B-&gt;letter;
+}
+
+int main() {
+    char s[MAX_SIZE];
+    gets(s);
+
+    unsigned long long len &#61; strlen(s);
+
+    // 记录转小写&#xff0c;去除非字母后的s字符串
+    char ss[MAX_SIZE];
+    int ss_size &#61; 0;
+
+    // 统计每个字母出现的次数
+    int count[128] &#61; {0};
+    for (int i &#61; 0; i &lt; len; i&#43;&#43;) {
+        char c &#61; s[i];
+        if (c &gt;&#61; &#39;a&#39; &amp;&amp; c &lt;&#61; &#39;z&#39;) {
+            count[c]&#43;&#43;;
+            ss[ss_size&#43;&#43;] &#61; c;
+        } else if (c &gt;&#61; &#39;A&#39; &amp;&amp; c &lt;&#61; &#39;Z&#39;) {
+            count[c &#43; 32]&#43;&#43;;
+            ss[ss_size&#43;&#43;] &#61; (char) (c &#43; 32);
+        }
+    }
+
+    // 记录连续字母和非连续字母
+    Letter res[MAX_SIZE];
+    int res_size &#61; 0;
+
+    // 上一个位置的字母
+    char pre &#61; ss[0];
+    // 该字母连续次数记为1
+    int repeat &#61; 1;
+    // 后续该字母还有count[pre]-&#61;1个
+    count[pre]--;
+
+    for (int i &#61; 1; i &lt;&#61; ss_size; i&#43;&#43;) {
+        // 当前位置的字母
+        char cur &#61; ss[i];
+        // 后续该字母还有count[cur]-&#61;1个
+        count[cur]--;
+
+        if (cur &#61;&#61; pre) {
+            // 如果当前位置和上一个位置的字母相同&#xff0c;则产生连续
+            // 连续次数&#43;1
+            repeat&#43;&#43;;
+        } else {
+            // 如果当前位置和上一个位置的字母不同&#xff0c;则连续打断
+            // 如果pre字母连续次数&gt;1&#xff0c;则是真连续&#xff0c;那么就是pre&#43;repeat,否则就是假连续,是pre&#43;count[pre]
+            res[res_size].num &#61; repeat &gt; 1 ? repeat : count[pre];
+            res[res_size].letter &#61; pre;
+            res_size&#43;&#43;;
+
+            // 更新pre为cur
+            pre &#61; cur;
+            // 更新pre连续次数为1
+            repeat &#61; 1;
+        }
+    }
+
+    // 字母和紧随的数字作为一组进行排序&#xff0c;数字大的在前&#xff0c;数字相同的&#xff0c;则按字母进行排序&#xff0c;字母小的在前
+    qsort(res, res_size, sizeof(Letter), cmp);
+
+    char ans[MAX_SIZE] &#61; {&#39;\0&#39;};
+    for (int i &#61; 0; i &lt; res_size; i&#43;&#43;) {
+        char letter[2];
+        sprintf(letter, &#34;%c&#34;, res[i].letter);
+
+        char num[10];
+        sprintf(num, &#34;%d&#34;, res[i].num);
+
+        strcat(ans, letter);
+        strcat(ans, num);
+    }
+
+    puts(ans);
+
+    return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

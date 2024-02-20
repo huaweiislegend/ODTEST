@@ -1,0 +1,219 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 快递运输（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>一辆运送快递的货车&#xff0c;运送的快递放在大小不等的长方体快递盒中&#xff0c;为了能够装载更多的快递&#xff0c;同时不能让货车超载&#xff0c;需要计算最多能装多少个快递。</p> 
+<p>注&#xff1a;快递的体积不受限制&#xff0c;快递数最多1000个&#xff0c;货车载重最大50000</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入每个快递的重量&#xff0c;用英文逗号隔开&#xff0c;如 5,10,2,11</p> 
+<p>第二行输入货车的载重量&#xff0c;如 20</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出最多能装多少个快递&#xff0c;如 3</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>不需要考虑异常输入</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>5,10,2,11<br /> 20</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">货车的载重量为20&#xff0c;最多只能放三个快递5、10、2&#xff0c;因此输出3</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以转化为01背包问题。</p> 
+<p>关于01背包问题可以看&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/128307663" rel="nofollow" title="算法设计 - 01背包问题_01背包算法_伏城之外的博客-CSDN博客">算法设计 - 01背包问题_01背包算法_伏城之外的博客-CSDN博客</a></p> 
+<p>关于01背包滚动数组优化&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/128903531" rel="nofollow" title="算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客">算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>本题中&#xff1a;</p> 
+<p>货车的载重量 → 背包承重</p> 
+<p>物品 → 快递</p> 
+<p>物品种类  → 快递重量</p> 
+<p>物品价值  → 1&#xff08;件数&#xff09;</p> 
+<p></p> 
+<p>这里要求货车能装最多快递件数&#xff0c;其实相当于每件物品的价值为1&#xff0c;求解01背包问题的最大价值。</p> 
+<hr /> 
+<p>2023.06.18</p> 
+<p>本题之前想复杂了&#xff0c;其实本题需要&#xff1a;装最多件数&#xff0c;但是不能超载</p> 
+<p>因此&#xff0c;我们应该尽量选择重量小的快递。</p> 
+<p>因此&#xff0c;可以将输入的快递重量数组进行升序&#xff0c;依次累加&#xff0c;看总重量是否超过限制即可&#xff0c;超过限制&#xff0c;则对应快递不能加入&#xff0c;最多只能运送前面所有快递。</p> 
+<p>其实&#xff0c;这里很容易理解&#xff0c;假设0~i的快递总重量都在限载内&#xff0c;那么下一个快递我们最优是选择什么呢&#xff1f;</p> 
+<p>当然是选择重量最小的加入尝试。</p> 
+<p>因此&#xff0c;每次我们选择加入的都是重量最小的&#xff0c;才能保证结果最优。此解法为贪心解法。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] weights &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int limit &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(weights, limit));
+  }
+
+  public static int getResult(int[] weights, int limit) {
+    Arrays.sort(weights);
+
+    int count &#61; 0;
+    int sum &#61; 0;
+    for (int w : weights) {
+      // 每次都选择重量最小的快递加入
+      sum &#43;&#61; w;
+      if (sum &gt; limit) break;
+      count&#43;&#43;;
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const weights &#61; lines[0].split(&#34;,&#34;).map(Number);
+    const limit &#61; parseInt(lines[1]);
+
+    console.log(getResult(weights, limit));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(weights, limit) {
+  weights.sort((a, b) &#61;&gt; a - b);
+
+  let count &#61; 0;
+  let sum &#61; 0;
+  for (let w of weights) {
+    sum &#43;&#61; w;
+    if (sum &gt; limit) break;
+    count&#43;&#43;;
+  }
+
+  return count;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+weights &#61; list(map(int, input().split(&#34;,&#34;)))
+limit &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    weights.sort()
+    
+    total &#61; 0
+    count &#61; 0
+    for w in weights:
+        total &#43;&#61; w
+        if total &gt; limit:
+            break
+        count &#43;&#61; 1
+    
+    return count
+
+
+# 调用算法
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 1000
+
+int getResult(int weights[], int weights_size, int limit);
+
+int main() {
+    int weights[MAX_SIZE];
+    int weights_size &#61; 0;
+
+    while(scanf(&#34;%d&#34;, &amp;weights[weights_size&#43;&#43;])) {
+        if(getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    int limit;
+    scanf(&#34;%d&#34;, &amp;limit);
+
+    printf(&#34;%d\n&#34;, getResult(weights, weights_size, limit));
+
+    return 0;
+}
+
+int cmp(const void* a, const void* b) {
+    return (*(int*) a) - (*(int*) b);
+}
+
+int getResult(int weights[], int weights_size, int limit) {
+    qsort(weights, weights_size, sizeof(int), cmp);
+
+    int count &#61; 0;
+    int sum &#61; 0;
+
+    for(int i &#61; 0; i &lt; weights_size; i&#43;&#43;) {
+        sum &#43;&#61; weights[i];
+
+        if(sum &gt; limit) {
+            break;
+        }
+
+        count&#43;&#43;;
+    }
+
+    return count;
+}
+</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

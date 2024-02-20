@@ -1,0 +1,209 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 通信误码（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>信号传播过程中会出现一些误码&#xff0c;不同的数字表示不同的误码ID&#xff0c;取值范围为1~65535&#xff0c;用一个数组记录误码出现的情况&#xff0c;<br /> 每个误码出现的次数代表误码频度&#xff0c;请找出记录中包含频度最高误码的最小子数组长度。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>误码总数目&#xff1a;取值范围为0~255&#xff0c;取值为0表示没有误码的情况。<br /> 误码出现频率数组&#xff1a;误码ID范围为1~65535&#xff0c;数组长度为1~1000。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>包含频率最高的误码最小子数组长度</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 1 2 2 4 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">频度最高的有1和2&#xff0c;频度是2&#xff08;出现的次数都是2&#xff09;。<br /> 可以包含频度最高的记录数组是[2 2]和[1 2 2 4 1]&#xff0c;<br /> 最短是[2 2]&#xff0c;最小长度为2。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">7<br /> 1 2 2 4 2 1 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">频度最高的是1和2&#xff0c;最短的是[2 2 4 2]</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的排序题。</p> 
+<p>首先&#xff0c;我们统计出误码数组各个误码的出现过的索引值&#xff0c;假设统计到idxs对象中&#xff0c;属性是误码&#xff0c;属性值是数组&#xff0c;记录误码出现过的索引位置。</p> 
+<p></p> 
+<p>然后将idxs对象的所有属性值&#xff08;各个误码出现过的索引位置数组&#xff09;拎出来&#xff0c;即Object.values&#xff0c;然后对这些索引位置数组&#xff0c;进行排序&#xff0c;先按照索引位置数组长度进行排序&#xff0c;长度越长&#xff0c;说明频率越高&#xff0c;排序越靠前&#xff0c;如果两个数组长度相同&#xff0c;则看索引跨度&#xff0c;即索引数组的头元素索引和尾元素索引的差距&#xff0c;差距越小&#xff0c;越靠前。这样排序后&#xff0c;得到的首元素数组的首尾索引跨度就是题解。</p> 
+<p></p> 
+<hr /> 
+<p>2023.04.29</p> 
+<p>之前的解法中未考虑&#xff0c;第一行输入0的情况&#xff0c;主要是被第二行后面说的&#xff1a;数组长度为1~1000&#xff0c;给误导了。</p> 
+<p>现在补充了第一行输入0的边界情况的处理。</p> 
+<p>另外&#xff0c;对于JS和Python解法而言&#xff0c;第一行输入0了&#xff0c;那么第二行其实就不会输入了&#xff0c;因此在输入逻辑上要做特殊处理。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    const total &#61; lines[0] - 0;
+    if (total &#61;&#61; 0) {
+      console.log(0);
+      lines.length &#61; 0;
+    }
+  }
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(arr));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} arr 误码出现频率数组
+ */
+function getResult(arr) {
+  const idxs &#61; {};
+
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    const code &#61; arr[i];
+    idxs[code] ? idxs[code].push(i) : (idxs[code] &#61; [i]);
+  }
+
+  let maxSize &#61; 0;
+  let minLen &#61; 0;
+
+  for (let values of Object.values(idxs)) {
+    const size &#61; values.length;
+    const len &#61; values.at(-1) - values.at(0) &#43; 1;
+
+    if (size &gt; maxSize || (size &#61;&#61; maxSize &amp;&amp; len &lt; minLen)) {
+      maxSize &#61; size;
+      minLen &#61; len;
+    }
+  }
+
+  return minLen;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      arr[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(arr));
+  }
+
+  /**
+   * &#64;param arr 误码出现频率数组
+   * &#64;return 包含频率最高的误码最小子数组长度
+   */
+  public static int getResult(int[] arr) {
+    HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; idxs &#61; new HashMap&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+      Integer code &#61; arr[i];
+      idxs.putIfAbsent(code, new ArrayList&lt;&gt;());
+      idxs.get(code).add(i);
+    }
+
+    int maxSize &#61; 0;
+    int minLen &#61; 0;
+
+    for (ArrayList&lt;Integer&gt; value : idxs.values()) {
+      int size &#61; value.size();
+      int len &#61; value.get(value.size() - 1) - value.get(0) &#43; 1;
+
+      if (size &gt; maxSize || (size &#61;&#61; maxSize &amp;&amp; len &lt; minLen)) {
+        maxSize &#61; size;
+        minLen &#61; len;
+      }
+    }
+
+    return minLen;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 算法入口
+def getResult(arr):
+    &#34;&#34;&#34;
+    :param total: 误码总数目
+    :param arr: 误码出现频率数组
+    :return: 包含频率最高的误码最小子数组长度
+    &#34;&#34;&#34;
+    idxs &#61; {}
+
+    for i in range(len(arr)):
+        code &#61; arr[i]
+        if idxs.get(code) is None:
+            idxs[code] &#61; [i]
+        else:
+            idxs[code].append(i)
+
+    maxSize &#61; 0
+    minLen &#61; 0
+
+    for values in idxs.values():
+        size &#61; len(values)
+        length &#61; values[-1] - values[0] &#43; 1
+
+        if size &gt; maxSize or (size &#61;&#61; maxSize and length &lt; minLen):
+            maxSize &#61; size
+            minLen &#61; length
+
+    return minLen
+
+
+# 输入获取
+total &#61; int(input())
+
+if total &#61;&#61; 0:
+    print(0)
+else:
+    arr &#61; list(map(int, input().split()))
+    print(getResult(arr))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

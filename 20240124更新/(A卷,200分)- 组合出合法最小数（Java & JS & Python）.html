@@ -1,0 +1,475 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 组合出合法最小数（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>给一个数组&#xff0c;数组里面哦都是代表非负整数的字符串&#xff0c;将数组里所有的数值排列组合拼接起来组成一个数字&#xff0c;输出拼接成的最小的数字。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>一个数组&#xff0c;数组不为空&#xff0c;数组里面都是代表非负整数的字符串&#xff0c;可以是0开头&#xff0c;例如&#xff1a;[&#34;13&#34;, &#34;045&#34;, &#34;09&#34;, &#34;56&#34;]。</p> 
+<p>数组的大小范围&#xff1a;[1, 50]</p> 
+<p>数组中每个元素的长度范围&#xff1a;[1, 30]</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>以字符串的格式输出一个数字&#xff0c;</p> 
+<ul><li>如果最终结果是多位数字&#xff0c;要优先选择输出不是“0”开头的最小数字</li><li>如果拼接出来的数字都是“0”开头&#xff0c;则选取值最小的&#xff0c;并且把开头部分的“0”都去掉再输出</li><li>如果是单位数“0”&#xff0c;可以直接输出“0”</li></ul> 
+<p></p> 
+<h3 id="%E7%94%A8%E4%BE%8B">用例</h3> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">20 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">120</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">08 10 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">10082</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">01 02</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">102</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>一般来说&#xff0c;<span style="color:#fe2c24;">如果数组中元素长度都相同的话</span>&#xff0c;则可以直接将数组进行字典序升序&#xff0c;这样数组元素按顺序拼接得到的组合数就是最小&#xff0c;比如数组[45, 32, 11, 31] 按照字典序升序后变为 [11, 31, 32, 45]&#xff0c;然后进行拼接&#xff0c;得到的组合数为11313245就是最小的。</p> 
+<p>但是&#xff0c;如果<span style="color:#fe2c24;">数组中元素长度不全相同的话</span>&#xff0c;则此时直接字典序升序&#xff0c;可能无法得到最小组合数&#xff0c;比如数组 [3, 32, 321]&#xff0c;按照字典序升序后变为 [3, 32, 321]&#xff0c;然后进行拼接&#xff0c;得到组合数332321&#xff0c;但是这个组合数显然不是最小的&#xff0c;最小的组合数应该是 321323。</p> 
+<p>而本题数组元素的长度是有可能不一样的&#xff0c;此时我们应该采用另一种排序规则&#xff1a;</p> 
+<p>即直接尝试对要组合的两个字符串a&#xff0c;b进行组合&#xff0c;此时有两种组合方式&#xff1a;</p> 
+<ol><li>a &#43; b</li><li>b &#43; a</li></ol> 
+<p>然后&#xff0c;比较 (a &#43; b) 和 &#xff08;b&#43;a&#xff09;的数值谁小&#xff0c;如果a&#43;b的数值更小&#xff0c;则保持当前a,b顺序不变&#xff0c;如果b&#43;a的数值更小&#xff0c;则交换a,b位置。</p> 
+<p>比如 strs &#61; [a, b]&#xff0c; a &#61; &#34;3&#34;&#xff0c;b &#61; &#34;32&#34;</p> 
+<p>a &#43; b &#61; &#34;332&#34;</p> 
+<p>b &#43; a &#61; &#34;323&#34;</p> 
+<p>可以发现 b&#43;a更小&#xff0c;因此交换a,b位置&#xff0c;strs变为[32, 3]&#xff0c;然后进行元素拼接得到 323 最小组合数。</p> 
+<p></p> 
+<p>另外&#xff0c;本题&#xff0c;还有其他限定规则&#xff1a;</p> 
+<ul><li>如果最终结果是多位数字&#xff0c;要优先选择输出不是“0”开头的最小数字</li><li>如果拼接出来的数字都是“0”开头&#xff0c;则选取值最小的&#xff0c;并且把开头部分的“0”都去掉再输出</li></ul> 
+<p>即排序后&#xff0c;数组开头元素如果以“0”开头&#xff0c;此时分两种情况讨论&#xff1a;</p> 
+<ul><li>数组全部元素都是以“0”开头&#xff0c;则此时应该将拼接后的组合数去除前导0</li><li>数组有不以“0”开头的元素&#xff0c;则此时不应该把“0”开头的元素放在数组头部。</li></ul> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先&#xff0c;按照前面的规则将数组元素排序&#xff0c;排序后&#xff0c;检查数组头元素是否以“0”开头&#xff0c;如果是的话&#xff0c;则开始遍历数组后面的元素&#xff0c;直到找到一个不以“0”开头的元素x&#xff0c;然后将元素x取出&#xff0c;并插入到数组头部。如果一直找不到这样的x&#xff0c;则说明数组元素全部是以0开头的&#xff0c;此时直接拼接出组合数&#xff0c;然后去除前导0。</p> 
+<p></p> 
+<p>关于去除前导0&#xff0c;这里不建议使用parseInt&#xff0c;或者python的int&#xff0c;因为对应组合数非常有可能超出int范围&#xff0c;这里我们应该保持组合数为字符串&#xff0c;实现去除前导0。</p> 
+<p>对于Java,JS而言&#xff0c;可以是正则表达式 /^0&#43;/ 来替换前导0为空字串。</p> 
+<p>对于Python而言&#xff0c;可以使用lstrip方法来去除左边0</p> 
+<p></p> 
+<hr /> 
+<p>2023.03.28</p> 
+<p>本题有网友给出了一个用例&#xff1a;</p> 
+<blockquote> 
+ <p>010 02 201 20</p> 
+</blockquote> 
+<p>该用例的正确答案应该是&#xff1a;2001002201</p> 
+<p>但是我的算法代码输出是&#xff1a;2010100220</p> 
+<p>因此我的算法是有问题的。</p> 
+<p></p> 
+<p>但是&#xff0c;我看了该题的机试系统中也有一个类似的用例&#xff1a;</p> 
+<blockquote> 
+ <p>20 02 2010 2032 698 6982 6987 0120</p> 
+</blockquote> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>理论上正确答案</td><td>200120022010203269826986987</td></tr><tr><td>机试系统答案</td><td>201001200220203269826986987</td></tr><tr><td>我当前代码的答案</td><td>201001200220203269826986987</td></tr></tbody></table> 
+<p>因此&#xff0c;当前我的代码是符合机试系统要求的。</p> 
+<p></p> 
+<p>为什么会这样呢&#xff1f;</p> 
+<p>我的猜测是&#xff0c;出本题的人应该是参考了leetcode的<a href="https://leetcode.cn/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/" rel="nofollow" title="面试题45. 把数组排成最小的数 - 力扣&#xff08;LeetCode&#xff09;">面试题45. 把数组排成最小的数 - 力扣&#xff08;LeetCode&#xff09;</a></p> 
+<p>上面这道题的策略其实就是当前我的代码算法策略。</p> 
+<p>只是出题人想搞点新花样&#xff0c;就是在leetcode这题的基础上允许带前导0的元素数字&#xff0c;结果把自己绕进去了。</p> 
+<p></p> 
+<h3>有问题&#xff0c;但是应该可以满分的解法</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const strs &#61; line.split(&#34; &#34;);
+  console.log(getResult(strs));
+});
+
+function getResult(strs) {
+  strs.sort((a, b) &#61;&gt; {
+    const s1 &#61; a &#43; b;
+    const s2 &#61; b &#43; a;
+    return s1 &#61;&#61; s2 ? 0 : s1 &gt; s2 ? 1 : -1;
+  });
+
+  if (strs[0][0] &#61;&#61; &#34;0&#34;) {
+    for (let i &#61; 1; i &lt; strs.length; i&#43;&#43;) {
+      if (strs[i][0] !&#61; &#34;0&#34;) {
+        strs[0] &#61; strs[i] &#43; strs[0];
+        strs[i] &#61; &#34;&#34;;
+        break;
+      }
+    }
+  }
+
+  const ans &#61; strs.join(&#34;&#34;).replace(/^0&#43;/, &#34;&#34;);
+
+  return ans &#61;&#61; &#34;&#34; ? &#34;0&#34; : ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] strs &#61; sc.nextLine().split(&#34; &#34;);
+    System.out.println(getResult(strs));
+  }
+
+  public static String getResult(String[] strs) {
+    Arrays.sort(strs, (a, b) -&gt; (a &#43; b).compareTo(b &#43; a));
+
+    if (strs[0].charAt(0) &#61;&#61; &#39;0&#39;) {
+      for (int i &#61; 1; i &lt; strs.length; i&#43;&#43;) {
+        if (strs[i].charAt(0) !&#61; &#39;0&#39;) {
+          strs[0] &#61; strs[i] &#43; strs[0];
+          strs[i] &#61; &#34;&#34;;
+          break;
+        }
+      }
+    }
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (String str : strs) {
+      sb.append(str);
+    }
+
+    String ans &#61; sb.toString().replaceAll(&#34;^0&#43;&#34;, &#34;&#34;);
+
+    // 避免返回空串
+    return &#34;&#34;.equals(ans) ? &#34;0&#34; : ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import functools
+
+# 输入获取
+strs &#61; input().split()
+
+
+# 算法入口
+def cmp(a, b):
+    s1 &#61; a &#43; b
+    s2 &#61; b &#43; a
+    return 0 if s1 &#61;&#61; s2 else 1 if s1 &gt; s2 else -1
+
+
+def getResult(strs):
+    strs.sort(key&#61;functools.cmp_to_key(cmp))
+
+    if strs[0][0] &#61;&#61; &#39;0&#39;:
+        for i in range(1, len(strs)):
+            if strs[i][0] !&#61; &#39;0&#39;:
+                strs[0] &#61; strs[i] &#43; strs[0]
+                strs[i] &#61; &#34;&#34;
+                break
+
+    ans &#61; &#34;&#34;.join(strs).lstrip(&#34;0&#34;)
+
+    # 避免返回空串
+    return &#34;0&#34; if ans &#61;&#61; &#34;&#34; else ans
+
+
+# 算法调用
+print(getResult(strs))
+</code></pre> 
+<p></p> 
+<h3>最优的&#xff0c;正确的&#xff0c;不超时的解法</h3> 
+<p>其实本题如果想组合出最小数&#xff0c;有一个规律&#xff1a;</p> 
+<blockquote> 
+ <p>所有含前导的0的数必须要拼接在一起</p> 
+</blockquote> 
+<p>比如用例&#xff1a;010 02 201 20&#xff0c;对应的组合最小数是&#xff1a;20<span style="color:#fe2c24;">010</span><span style="color:#98c091;">02</span>201</p> 
+<p>比如用例&#xff1a;20 02 2010 2032 698 6982 6987 0120&#xff0c;对应的组合最小数是&#xff1a;20<span style="color:#fe2c24;">0120</span><span style="color:#a2e043;">02</span>2010203269826986987</p> 
+<p></p> 
+<p>有了这个规则&#xff0c;其实本题的求解就非常容易了。</p> 
+<p>我们可以将所有含前导0的数先筛出来&#xff0c;然后基于 a &#43; b &gt; b &#43; a 的排序规则&#xff0c;求出这些含前导0的数能组合出的最小数combineZeroLead。</p> 
+<p>接着&#xff0c;再把所有不含前导0的数筛出来&#xff0c;进行字典序排序&#xff0c;将字典序最小的不含前导0的数选出&#xff0c;作为最终组合数的头部head。</p> 
+<p>剩余的不含前导0的数&#xff0c;继续a &#43; b &gt; b &#43; a 的排序规则&#xff0c;求出一个最小数组合tail。</p> 
+<p>最终 head &#43; combineZeroLead &#43; tail 就是整体的组合最小数。</p> 
+<p></p> 
+<p>但是上面逻辑&#xff0c;是在既又含前导0数&#xff0c;又有不含前导0数的情况下。</p> 
+<p>如果输入的数&#xff1a;</p> 
+<ul><li>全部都是不含前导0的&#xff0c;则直接a &#43; b &gt; b &#43; a 的排序后&#xff0c;组合在一起返回。</li><li>全部都是含前导0的&#xff0c;则直接将combineZeroLead去除左侧0后返回&#xff0c;注意不能返回空串。</li></ul> 
+<p></p> 
+<hr /> 
+<p>2023.03.29</p> 
+<p>经网友指出&#xff0c;上面逻辑还是有问题&#xff0c;比如用例&#xff1a;</p> 
+<blockquote> 
+ <p>1 0101 101</p> 
+</blockquote> 
+<p>下面代码会输出结果&#xff1a;<span style="color:#a2e043;">1</span><span style="color:#fe2c24;">0101</span><span style="color:#0d0016;">101</span></p> 
+<p>但是实际正确结果是&#xff1a;<span style="color:#a2e043;">101</span><span style="color:#fe2c24;">0101</span>1</p> 
+<p>问题就在于组合数的开头head的确定&#xff0c;受到head &#43; combineZeroLead的长度影响。如上面标注的绿色 &#43; 红色。</p> 
+<p>因为head &#43; combineZeroLead长度无法保证一致&#xff0c;因此我们无法简单的通过head &#43; combineZeroLead的字典序大小&#xff0c;来确定head。</p> 
+<p></p> 
+<p>因此&#xff0c;我们需要对上面算法进行改正。</p> 
+<p>我的策略是&#xff1a;</p> 
+<p>将组合数分为三部分来看&#xff1a;head , combineZeroLead&#xff0c;tail</p> 
+<p>其中combineZeroLead就是含前导0的数的最小组合&#xff0c;这个策略和之前一样。</p> 
+<p>其次是head&#xff0c;head由于无法直接确定是某个数&#xff0c;但是可以确实是某些数&#xff0c;比如用例</p> 
+<blockquote> 
+ <p>20 02 2010 2032 698 6987 0120</p> 
+</blockquote> 
+<p>head数必然只能是20 2010 2032这三个数中选&#xff0c;即不含0的数中&#xff0c;首位字典序最小的这些数。</p> 
+<p></p> 
+<p>我们可以依次遍历20 2010 2032每一个数做head&#xff0c;那么没有被选择的其他数就只能加到tail中。</p> 
+<p>比如&#xff0c;我们选择20作为head&#xff0c;则此时组成tail的数包括&#xff1a;2010,2032,698,6987</p> 
+<p></p> 
+<p>接下来&#xff0c;我们只要让tail组合出最小数即可&#xff0c;同样按照a &#43; b &gt; b &#43; a的规则来排序。</p> 
+<p>这样每一种head&#xff0c;都有一个对应的最小数组合head &#43; combineZeroLead &#43; tail&#xff0c;我们保留其中最小的&#xff0c;就是题解。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] nums &#61; sc.nextLine().split(&#34; &#34;);
+    System.out.println(getResult(nums));
+  }
+
+  public static String getResult(String[] nums) {
+    // zeroLead记录含前导0的数
+    ArrayList&lt;String&gt; zeroLead &#61; new ArrayList&lt;&gt;();
+    // notZeroLead记录不含前导0的数
+    ArrayList&lt;String&gt; notZeroLead &#61; new ArrayList&lt;&gt;();
+
+    for (String num : nums) {
+      if (num.charAt(0) &#61;&#61; &#39;0&#39;) {
+        zeroLead.add(num);
+      } else {
+        notZeroLead.add(num);
+      }
+    }
+
+    // 要使最终的组合数最小&#xff0c;则含前导0的数必须要组合在一起&#xff0c;且按照 a &#43; b &gt; b &#43; a的规则排序
+    if (zeroLead.size() !&#61; 0) {
+      zeroLead.sort((a, b) -&gt; (a &#43; b).compareTo(b &#43; a));
+    }
+
+    StringBuilder combineZeroLead &#61; new StringBuilder();
+    for (String s : zeroLead) combineZeroLead.append(s);
+
+    // 如果输入的数都是含前导0的&#xff0c;则直接返回combineZeroLead&#xff0c;需要去除左侧0&#xff0c;但是注意不能返回空串
+    if (notZeroLead.size() &#61;&#61; 0) {
+      String tmp &#61; combineZeroLead.toString().replaceAll(&#34;^0&#43;&#34;, &#34;&#34;);
+      return tmp.length() &#61;&#61; 0 ? &#34;0&#34; : tmp;
+    }
+
+    //  将不含前导0的所有数进行字典序排序&#xff0c;将首位字典序最小的数都提取到heads中&#xff0c;他们都是head的可选值
+    notZeroLead.sort((a, b) -&gt; a.compareTo(b));
+
+    ArrayList&lt;String&gt; heads &#61; new ArrayList&lt;&gt;();
+    heads.add(notZeroLead.remove(0));
+
+    while (notZeroLead.size() &gt; 0 &amp;&amp; heads.get(0).charAt(0) &#61;&#61; notZeroLead.get(0).charAt(0)) {
+      heads.add(notZeroLead.remove(0));
+    }
+
+    String ans &#61; null;
+    for (int i &#61; 0; i &lt; heads.size(); i&#43;&#43;) {
+      // 选取某个head
+      String head &#61; heads.get(i);
+
+      // 则heads剩下的数以及notZeroLead剩下的数将组成tail&#xff0c;依旧按照 a &#43; b &gt; b &#43; a的规则排序&#xff0c;这样tail才能最小
+      ArrayList&lt;String&gt; tail &#61; new ArrayList&lt;&gt;();
+      tail.addAll(notZeroLead);
+      tail.addAll(heads.subList(0, i));
+      tail.addAll(heads.subList(i &#43; 1, heads.size()));
+
+      tail.sort((a, b) -&gt; (a &#43; b).compareTo(b &#43; a));
+
+      StringBuilder tailStr &#61; new StringBuilder();
+      for (String s : tail) tailStr.append(s);
+
+      // 最终只记录整体最小数
+      if (ans !&#61; null) {
+        String tmp &#61; head &#43; combineZeroLead &#43; tailStr;
+        if (tmp.compareTo(ans) &lt; 0) {
+          ans &#61; tmp;
+        }
+      } else {
+        ans &#61; head &#43; combineZeroLead &#43; tailStr;
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const nums &#61; line.split(&#34; &#34;);
+  console.log(getResult(nums));
+});
+
+function getResult(nums) {
+  // zeroLead记录含前导0的数
+  const zeroLead &#61; [];
+  // notZeroLead记录不含前导0的数
+  const notZeroLead &#61; [];
+
+  for (let num of nums) {
+    if (num[0] &#61;&#61; &#34;0&#34;) {
+      zeroLead.push(num);
+    } else {
+      notZeroLead.push(num);
+    }
+  }
+
+  // 要使最终的组合数最小&#xff0c;则含前导0的数必须要组合在一起&#xff0c;且按照 a &#43; b &gt; b &#43; a的规则排序
+  if (zeroLead.length !&#61; 0) {
+    zeroLead.sort((a, b) &#61;&gt; (a &#43; b &gt; b &#43; a ? 1 : a &#43; b &#61;&#61; b &#43; a ? 0 : -1));
+  }
+
+  const combineZeroLead &#61; zeroLead.join(&#34;&#34;);
+
+  // 如果输入的数都是含前导0的&#xff0c;则直接返回combineZeroLead&#xff0c;需要去除左侧0&#xff0c;但是注意不能返回空串
+  if (notZeroLead.length &#61;&#61; 0) {
+    const tmp &#61; combineZeroLead.replace(/^0&#43;/g, &#34;&#34;);
+    return tmp.length &#61;&#61; 0 ? &#34;0&#34; : tmp;
+  }
+
+  // 将不含前导0的所有数进行字典序排序&#xff0c;将首位字典序最小的数都提取到heads中&#xff0c;他们都是head的可选值
+  notZeroLead.sort();
+
+  const heads &#61; [notZeroLead.shift()];
+  while (notZeroLead.length &gt; 0 &amp;&amp; heads[0][0] &#61;&#61; notZeroLead[0][0]) {
+    heads.push(notZeroLead.shift());
+  }
+
+  let ans;
+  for (let i &#61; 0; i &lt; heads.length; i&#43;&#43;) {
+    // 选取某个head
+    const head &#61; heads[i];
+
+    // 则heads剩下的数以及notZeroLead剩下的数将组成tail&#xff0c;依旧按照 a &#43; b &gt; b &#43; a的规则排序&#xff0c;这样tail才能最小
+    const tail &#61; [...notZeroLead, ...heads.slice(0, i), ...heads.slice(i &#43; 1)];
+    tail.sort((a, b) &#61;&gt; (a &#43; b &gt; b &#43; a ? 1 : a &#43; b &#61;&#61; b &#43; a ? 0 : -1));
+
+    // 最终只记录整体最小数
+    if (ans) {
+      const tmp &#61; head &#43; combineZeroLead &#43; tail.join(&#34;&#34;);
+      if (tmp &lt; ans) {
+        ans &#61; tmp;
+      }
+    } else {
+      ans &#61; head &#43; combineZeroLead &#43; tail.join(&#34;&#34;);
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import functools
+
+# 输入获取
+nums &#61; input().split()
+
+
+# 算法入口
+def getResult(nums):
+    # zeroLead列表记录含前导0的数
+    zeroLead &#61; []
+    # notZeroLead列表记录不含前导0的数
+    notZeroLead &#61; []
+
+    for num in nums:
+        if num[0] &#61;&#61; &#39;0&#39;:
+            zeroLead.append(num)
+        else:
+            notZeroLead.append(num)
+
+    # 要使最终的组合数最小&#xff0c;则含前导0的数必须要组合在一起&#xff0c;且按照 a &#43; b &gt; b &#43; a的规则排序
+    if len(zeroLead) !&#61; 0:
+        zeroLead.sort(key&#61;functools.cmp_to_key(lambda a, b: 1 if a &#43; b &gt; b &#43; a else 0 if a &#43; b &#61;&#61; b &#43; a else -1))
+
+    combineZeroLead &#61; &#34;&#34;.join(zeroLead)
+
+    # 如果输入的数都是含前导0的&#xff0c;则直接返回combineZeroLead&#xff0c;需要去除左侧0&#xff0c;但是注意不能返回空串
+    if len(notZeroLead) &#61;&#61; 0:
+        tmp &#61; combineZeroLead.lstrip(&#34;0&#34;)
+        return &#34;0&#34; if len(tmp) &#61;&#61; 0 else tmp
+
+    # 将不含前导0的所有数进行字典序排序&#xff0c;将首位字典序最小的数都提取到heads中&#xff0c;他们都是head的可选值
+    notZeroLead.sort()
+
+    heads &#61; [notZeroLead.pop(0)]
+
+    while len(notZeroLead) &gt; 0 and heads[0][0] &#61;&#61; notZeroLead[0][0]:
+        heads.append(notZeroLead.pop(0))
+
+    ans &#61; None
+    for i in range(len(heads)):
+        # 选取某个head
+        head &#61; heads[i]
+
+        # 则heads剩下的数以及notZeroLead剩下的数将组成tail&#xff0c;依旧按照 a &#43; b &gt; b &#43; a的规则排序&#xff0c;这样tail才能最小
+        tail &#61; []
+        tail.extend(notZeroLead)
+        tail.extend(heads[:i])
+        tail.extend(heads[i &#43; 1:])
+
+        tail.sort(key&#61;functools.cmp_to_key(lambda a, b: 1 if a &#43; b &gt; b &#43; a else 0 if a &#43; b &#61;&#61; b &#43; a else -1))
+
+        # 最终只记录整体最小数
+        if ans is None:
+            ans &#61; head &#43; combineZeroLead &#43; &#34;&#34;.join(tail)
+        else:
+            tmp &#61; head &#43; combineZeroLead &#43; &#34;&#34;.join(tail)
+            if tmp &lt; ans:
+                ans &#61; tmp
+
+    return ans
+
+
+# 算法调用
+print(getResult(nums))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

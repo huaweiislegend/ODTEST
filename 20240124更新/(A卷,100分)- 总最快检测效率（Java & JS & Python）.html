@@ -1,0 +1,942 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 总最快检测效率（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>在系统、网络均正常的情况下组织核酸采样员和志愿者对人群进行核酸检测筛查。</p> 
+<p>每名采样员的效率不同&#xff0c;采样效率为N人/小时。</p> 
+<p>由于外界变化&#xff0c;采样员的效率会以M人/小时为粒度发生变化&#xff0c;M为采样效率浮动粒度&#xff0c;M&#61;N*10%&#xff0c;输入保证N*10%的结果为整数。</p> 
+<p>采样员效率浮动规则&#xff1a;采样员需要一名志愿者协助组织才能发挥正常效率&#xff0c;在此基础上&#xff0c;每增加一名志愿者&#xff0c;效率提升1M&#xff0c;最多提升3M&#xff1b;如果没有志愿者协助组织&#xff0c;效率下降2M。</p> 
+<p>怎么安排速度最快&#xff1f;求<strong>总最快检测效率</strong>&#xff08;总检查效率为各采样人员效率值相加&#xff09;。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>第一行&#xff1a;第一个值&#xff0c;采样员人数&#xff0c;取值范围[1, 100]&#xff1b;第二个值&#xff0c;志愿者人数&#xff0c;取值范围[1, 500]&#xff1b;<br /> 第二行&#xff1a;各采样员基准效率值&#xff08;单位人/小时&#xff09;&#xff0c;取值范围[60, 600]&#xff0c;保证序列中每项值计算10%为整数。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>第一行&#xff1a;总最快检测效率&#xff08;单位人/小时&#xff09;</p> 
+<p></p> 
+<h3 id="%E7%94%A8%E4%BE%8B">用例</h3> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 2<br /> 200 200</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">400</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">输入需要保证采样员基准效率值序列的每个值*10%为整数。</td></tr></tbody></table> 
+<p></p> 
+<h3>逻辑分析解法</h3> 
+<p>假设有x个采样员&#xff08;正常采样效率为a1,a2,a3,...,ax&#xff09;&#xff0c;y个志愿者&#xff0c;初始时&#xff0c;不给采样员安排志愿者&#xff0c;则可以得到所有采样员的裸奔状态的采样效率 &#61; (a1 * 0.8) &#43; (a2 * 0.8) &#43; (a3 * 0.8) &#43; ... &#43; (ax * 0.8)。</p> 
+<p>然后&#xff0c;我们收集每个采样员的如下数据&#xff1a;</p> 
+<ul><li>增加第一个采样员&#xff0c;新增的效率</li><li>增加第两个采样员&#xff0c;新增的效率</li><li>增加第三个采样员&#xff0c;新增的效率</li><li>增加第四个采样员&#xff0c;新增的效率</li></ul> 
+<p>比如&#xff0c;对于采样员a1而言&#xff1a;</p> 
+<ul><li>增加第一个采样员&#xff0c;新增效率 a1 * 0.2</li><li>增加第两个采样员&#xff0c;新增效率 a1 * 0.1</li><li>增加第三个采样员&#xff0c;新增效率 a1 * 0.1</li><li>增加第四个采样员&#xff0c;新增效率 a1 * 0.1</li></ul> 
+<p>我们将每个采样员上面数据收集到一个列表add中&#xff0c;对add进行降序&#xff08;从大到小排序&#xff09;&#xff0c;则前y个新增效率&#xff0c;即最多新增效率。</p> 
+<p>这里可能有人会产生疑问&#xff1f;对于每个采样员元而言&#xff0c;其新增的效率都是递进的&#xff0c;比如增加第二个采样员&#xff0c;得到的新增效率&#xff0c;必须要在增加第一个采样员的基础上&#xff0c;上面对add列表进行排序后&#xff0c;是否还能保证取到的前y个效率能保证这个递进关系呢&#xff1f;</p> 
+<p>答案是可以。因为&#xff0c;本题已经固定了新增效率的规则&#xff1a;</p> 
+<blockquote> 
+ <p>采样员需要一名志愿者协助组织才能发挥正常效率<span style="color:#fe2c24;">&#xff08;即提升2M效率&#xff09;</span>&#xff0c;在此基础上&#xff0c;每增加一名志愿者&#xff0c;效率提升1M</p> 
+</blockquote> 
+<p>因此&#xff0c;一个采样员想要提升1M效率前面必须要先提升2M效率&#xff0c;而add列表进行降序的话&#xff0c;必然是2M在前&#xff0c;1M在后。</p> 
+<p>因此&#xff0c;add列表降序&#xff0c;不会破会单个采样员的新增效率的递进关系。</p> 
+<p>那么多个采样员的新增效率混在一起排序&#xff0c;会产生影响吗&#xff1f;答案是也不会&#xff0c;相当于是有多个降序列表&#xff0c;比如&#xff1a;</p> 
+<ul><li>[8, 4, 4, 4]</li><li>[10, 5, 5, 5]</li><li>[6, 3, 3, 3]</li></ul> 
+<p>将这多个降序列表进行合并后&#xff0c;再次降序</p> 
+<ul><li>[10, 8, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3]</li></ul> 
+<p>则这个合并列表&#xff0c;其实还是维持着各自采样员的新增效率递进关系&#xff1a;</p> 
+<ul><li>[<strong><span style="color:#fe2c24;">10</span>,</strong> 8, 6, <strong><span style="color:#fe2c24;">5, 5, 5</span></strong>, 4, 4, 4, 3, 3, 3]</li><li>[10, <strong><span style="color:#fe2c24;">8</span></strong>, 6, 5, 5, 5, <strong><span style="color:#fe2c24;">4, 4, 4</span>,</strong> 3, 3, 3]</li><li>[10, 8, <span style="color:#fe2c24;"><strong>6</strong></span>, 5, 5, 5, 4, 4, 4, <strong><span style="color:#fe2c24;">3, 3, 3</span></strong>]</li></ul> 
+<p></p> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // x是采样员人数&#xff0c;y是志愿者人数
+  const [x, y] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // x个采样员的正常效率
+  const normals &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // base 记录每个采样员的裸奔效率
+  let base &#61; 0;
+
+  // add 记录每个采样员的递进新增效率
+  const add &#61; [];
+
+  for (let normal of normals) {
+    // M为采样效率浮动粒度
+    const m &#61; normal * 0.1;
+
+    // 采样员正常效率是10M&#xff0c;如果没有志愿者协助组织&#xff0c;效率下降2M&#xff0c;即8M
+    base &#43;&#61; 8 * m;
+
+    // 增加第1个采样员的新增效率&#xff0c; 增加第2个采样员的新增效率&#xff0c;增加第3个采样员的新增效率&#xff0c;增加第4个采样员的新增效率&#xff0c;
+    add.push(2 * m, m, m, m);
+  }
+
+  // 对所有新增效率降序
+  add.sort((a, b) &#61;&gt; b - a);
+
+  // 裸奔效率 &#43; 前y大的新增效率 就是 最高效率
+  const ans &#61; base &#43; add.slice(0, y).reduce((a, b) &#61;&gt; a &#43; b);
+  console.log(ans);
+})();
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    // x是采样员人数&#xff0c;y是志愿者人数
+    int x &#61; sc.nextInt();
+    int y &#61; sc.nextInt();
+
+    // x个采样员的正常效率
+    int[] normals &#61; new int[x];
+    for (int i &#61; 0; i &lt; x; i&#43;&#43;) normals[i] &#61; sc.nextInt();
+
+    // base 记录每个采样员的裸奔效率
+    int base &#61; 0;
+    // increase 记录每个采样员的递进新增效率
+    ArrayList&lt;Integer&gt; increase &#61; new ArrayList&lt;&gt;();
+
+    for (int normal : normals) {
+      // M为采样效率浮动粒度
+      int m &#61; normal / 10;
+
+      // 采样员正常效率是10M&#xff0c;如果没有志愿者协助组织&#xff0c;效率下降2M&#xff0c;即8M
+      base &#43;&#61; 8 * m;
+
+      // 增加第1个采样员的新增效率
+      increase.add(2 * m);
+      // 增加第2个采样员的新增效率
+      increase.add(m);
+      // 增加第3个采样员的新增效率
+      increase.add(m);
+      // 增加第4个采样员的新增效率
+      increase.add(m);
+    }
+
+    // 对所有新增效率降序
+    increase.sort((a, b) -&gt; b - a);
+
+    // 裸奔效率 &#43; 前y大的新增效率 就是 最高效率
+    int ans &#61;
+        base
+            &#43; increase.subList(0, Math.min(y, increase.size())).stream()
+                .reduce(Integer::sum)
+                .orElse(0);
+    System.out.println(ans);
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+x, y &#61; map(int, input().split())  # x是采样员人数&#xff0c;y是志愿者人数
+normals &#61; list(map(int, input().split()))  # x个采样员的正常效率
+
+
+# 算法入口
+def getResult():
+    # base 记录每个采样员的裸奔效率
+    base &#61; 0
+    # increase 记录每个采样员的递进新增效率
+    increase &#61; []
+
+    for normal in normals:
+        # M为采样效率浮动粒度
+        m &#61; normal // 10
+
+        # 采样员正常效率是10M&#xff0c;如果没有志愿者协助组织&#xff0c;效率下降2M&#xff0c;即8M
+        base &#43;&#61; 8 * m
+
+        # 增加第1个采样员的新增效率
+        increase.append(2 * m)
+        # 增加第2个采样员的新增效率
+        increase.append(m)
+        # 增加第3个采样员的新增效率
+        increase.append(m)
+        # 增加第4个采样员的新增效率
+        increase.append(m)
+
+    # 对所有新增效率降序
+    increase.sort(reverse&#61;True)
+
+    # 裸奔效率 &#43; 前y大的新增效率 就是 最高效率
+    return base &#43; sum(increase[:y])
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<p></p> 
+<h3>贪心思维解法</h3> 
+<p>用例意思是&#xff1a;</p> 
+<p>有两个采样员&#xff0c;两个志愿者。</p> 
+<p>两个采样员的正常效率都是200&#xff0c;但是要给每个采样员配一个志愿者才能发挥正常效率。</p> 
+<p>现在刚好采样员和志愿者是一比一&#xff0c;因此可以发挥出总效率是&#xff1a;200 &#43; 200 &#61; 400。</p> 
+<p></p> 
+<p>如果&#xff0c;我们给一个采样员配两个志愿者&#xff0c;那么该采样员发挥的效率是&#xff1a;200 &#43; 200 * 10% &#61; 220。</p> 
+<p>但是另一名采样员就没有志愿者了&#xff0c;因此发挥不了正常效率&#xff0c;200 - 200 * 20% &#61; 160&#xff0c;此时总效率是220 &#43; 160 &#61; 380。</p> 
+<p>因此&#xff0c;总最快效率是400。</p> 
+<p></p> 
+<p>需要注意的是&#xff0c;用例中采样员的正常效率只是凑巧相同&#xff0c;很有可能出现一个采样员的正常效率极高&#xff0c;一个采样员的正常效率极低的情况。</p> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先分两种情况&#xff1a;</p> 
+<p>1、志愿者数量少于采样员</p> 
+<p>2、志愿者数量不少于采样员</p> 
+<p></p> 
+<p>对于情况1&#xff0c;我们应该将不多的志愿者优先分配给高效率的采样员&#xff0c;默认一比一分配。</p> 
+<p>接下来&#xff0c;我们应该考虑&#xff0c;剥夺低效率的采样员的志愿者  给 高效率的采样员&#xff0c;只要 高效率采样员增加的10%的效率   可以大于  低效率采样员减少的20%的效率。</p> 
+<p>其中还要考虑&#xff0c;高效率的采样员最多可以追加3个志愿者&#xff0c;即最多增加30%的效率。如果最高效率的采样员已经提升30%效率&#xff0c;则第二高效率的采样员称为最高优先级&#xff0c;继续上面剥夺逻辑。</p> 
+<p></p> 
+<p>对于情况2&#xff0c;我们应该先按一比一的方式&#xff0c;给每个采样员分配一个志愿者。</p> 
+<p>然后&#xff0c;如果还多出志愿者的话&#xff0c;则优先分配给高效率的采样员&#xff0c;同样需要注意每个采样员最追加3个志愿者。</p> 
+<p>当多出的志愿者分配完后&#xff0c;我们需要考虑剥夺低效率的采样员的志愿者  给 高效率的采样员&#xff0c;只要 高效率采样员增加的10%的效率   可以大于  低效率采样员减少的20%的效率。逻辑同情况1。</p> 
+<p></p> 
+<p>根据ant_shi网友的指正&#xff0c;上面解析对于志愿者超出采样员数量四倍时的情况考虑不够全面&#xff1a;</p> 
+<blockquote> 
+ <p>另外&#xff0c;对于情况2而言&#xff0c;如果采样员&#xff1a;志愿者 的比例&#xff0c;超过了1&#xff1a;4&#xff0c;那么超出4倍采样员范围的志愿者将没有效率提升作用&#xff0c;因此有效志愿者数量最多是四倍的采样员数量。</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [x, y] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arrX &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(arrX, x, y));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} x 采样员人数
+ * &#64;param {*} arr 每个采样员的正常效率
+ * &#64;param {*} y 志愿者人数
+ */
+function getResult(arr, x, y) {
+  // 按照正常效率降序
+  arr.sort((a, b) &#61;&gt; b - a);
+
+  let max &#61; 0;
+
+  // 如果志愿者少于采样员&#xff0c;则优先将志愿者分配给正常效率高的采样员
+  if (y &lt; x) {
+    for (let i &#61; 0; i &lt; x; i&#43;&#43;) {
+      // 0~y-1范围内高效率的采样员优先获得一个志愿者&#xff0c;因此保持正常效率&#xff0c;而y~x-1范围内的低效率采样员则没有志愿者&#xff0c;效率下降20%
+      max &#43;&#61; i &lt; y ? arr[i] : arr[i] * 0.8;
+    }
+
+    let i &#61; 0;
+    let j &#61; y - 1;
+    let count &#61; 0;
+    while (i &lt; j) {
+      // 接下来&#xff0c;我们需要比较0~y-1范围&#xff0c;最高效率的采样员上升10%的效率  是否大于  最低效率的采样员下降20%的效率
+      if (arr[i] * 0.1 &gt; arr[j] * 0.2) {
+        // 如果大于&#xff0c;则将效率低的采样员的志愿者分配给效率高的采样员
+        max &#43;&#61; arr[i] * 0.1 - arr[j] * 0.2;
+        // 由于一个采样员最多只能提升30%&#xff0c;即除了一个基础志愿者外&#xff0c;最多再配3个志愿者&#xff0c;多配了也没用
+        if (&#43;&#43;count &#61;&#61;&#61; 3) {
+          count &#61; 0;
+          i&#43;&#43;;
+        }
+        j--;
+      } else {
+        break;
+      }
+    }
+  }
+  // 如果志愿者 不少于 采样员&#xff0c;那么默认情况下每个采样员都分配一个志愿者
+  else {
+    // 如果志愿者人数超过采样员四倍&#xff0c;则多出来的志愿者就没有作用了
+    if (y &gt;&#61; 4 * x) {
+      y &#61; 4 * x;
+    }
+
+    // 每个采样员都默认发挥正常效率
+    max &#61; arr.reduce((p, c) &#61;&gt; p &#43; c);
+
+    // surplus记录每个采样员分配一个志愿者后&#xff0c;还多出来的志愿者
+    let surplus &#61; y - x;
+
+    let i &#61; 0;
+    let j &#61; x - 1;
+    let count &#61; 0;
+
+    // 优先将多出来的志愿者分配给高效率的采样员
+    while (surplus &gt; 0) {
+      max &#43;&#61; arr[i] * 0.1;
+      surplus--;
+      if (&#43;&#43;count &#61;&#61;&#61; 3) {
+        count &#61; 0;
+        i&#43;&#43;;
+      }
+    }
+
+    // 多出来的志愿者分配完后&#xff0c;则继续考虑剥夺低效率采样员的志愿者给高效率的采样员
+    while (i &lt; j) {
+      if (arr[i] * 0.1 &gt; arr[j] * 0.2) {
+        max &#43;&#61; arr[i] * 0.1 - arr[j] * 0.2;
+        if (&#43;&#43;count &#61;&#61;&#61; 3) {
+          count &#61; 0;
+          i&#43;&#43;;
+        }
+        j--;
+      } else {
+        break;
+      }
+    }
+  }
+
+  return max;
+}
+</code></pre> 
+<p></p> 
+<p>优化逻辑后代码</p> 
+<pre><code class="language-java">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [x, y] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arrX &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(arrX, x, y));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} x 采样员人数
+ * &#64;param {*} arr 每个采样员的正常效率
+ * &#64;param {*} y 志愿者人数
+ */
+function getResult(arr, x, y) {
+  // 按照正常效率降序
+  arr.sort((a, b) &#61;&gt; b - a);
+
+  let max &#61; 0;
+
+  let i;
+  let j;
+  let count &#61; 0;
+
+  // 如果志愿者少于采样员&#xff0c;则优先将志愿者分配给正常效率高的采样员
+  if (y &lt; x) {
+    for (let i &#61; 0; i &lt; x; i&#43;&#43;) {
+      // 0~y-1范围内高效率的采样员优先获得一个志愿者&#xff0c;因此保持正常效率&#xff0c;而y~x-1范围内的低效率采样员则没有志愿者&#xff0c;效率下降20%
+      max &#43;&#61; i &lt; y ? arr[i] : arr[i] * 0.8;
+    }
+
+    i &#61; 0;
+    j &#61; y - 1;
+  }
+  // 如果志愿者 不少于 采样员&#xff0c;那么默认情况下每个采样员都分配一个志愿者
+  else {
+    // 如果志愿者人数超过采样员四倍&#xff0c;则多出来的志愿者就没有作用了
+    if (y &gt;&#61; 4 * x) {
+      y &#61; 4 * x;
+    }
+
+    // 每个采样员都默认发挥正常效率
+    max &#61; arr.reduce((p, c) &#61;&gt; p &#43; c);
+
+    // surplus记录每个采样员分配一个志愿者后&#xff0c;还多出来的志愿者
+    let surplus &#61; y - x;
+
+    i &#61; 0;
+    j &#61; x - 1;
+
+    // 优先将多出来的志愿者分配给高效率的采样员
+    while (surplus &gt; 0) {
+      max &#43;&#61; arr[i] * 0.1;
+      surplus--;
+      if (&#43;&#43;count &#61;&#61;&#61; 3) {
+        count &#61; 0;
+        i&#43;&#43;;
+      }
+    }
+  }
+
+  // 多出来的志愿者分配完后&#xff0c;则继续考虑剥夺低效率采样员的志愿者给高效率的采样员
+  while (i &lt; j) {
+    // 接下来&#xff0c;我们需要比较最高效率的采样员上升10%的效率  是否大于  最低效率的采样员下降20%的效率
+    if (arr[i] * 0.1 &gt; arr[j] * 0.2) {
+      // 如果大于&#xff0c;则将效率低的采样员的志愿者分配给效率高的采样员
+      max &#43;&#61; arr[i] * 0.1 - arr[j] * 0.2;
+      // 由于一个采样员最多只能提升30%&#xff0c;即除了一个基础志愿者外&#xff0c;最多再配3个志愿者&#xff0c;多配了也没用
+      if (&#43;&#43;count &#61;&#61;&#61; 3) {
+        count &#61; 0;
+        i&#43;&#43;;
+      }
+      j--;
+    } else {
+      break;
+    }
+  }
+
+  return max;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int x &#61; sc.nextInt();
+    int y &#61; sc.nextInt();
+
+    Integer[] arrX &#61; new Integer[x];
+    for (int i &#61; 0; i &lt; x; i&#43;&#43;) {
+      arrX[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(arrX, x, y));
+  }
+
+  public static int getResult(Integer[] arr, int x, int y) {
+    // 按照正常效率降序
+    Arrays.sort(arr, (a, b) -&gt; b - a);
+
+    int max &#61; 0;
+    int count &#61; 0;
+    int i;
+    int j;
+
+    // 如果志愿者少于采样员&#xff0c;则优先将志愿者分配给正常效率高的采样员
+    if (y &lt; x) {
+      // 0~y-1范围内高效率的采样员优先获得一个志愿者&#xff0c;因此保持正常效率&#xff0c;而y~x-1范围内的低效率采样员则没有志愿者&#xff0c;效率下降20%
+      for (int k &#61; 0; k &lt; x; k&#43;&#43;) {
+        max &#43;&#61; k &lt; y ? arr[k] : arr[k] * 0.8;
+      }
+
+      i &#61; 0;
+      j &#61; y - 1;
+    }
+    // 如果志愿者 不少于 采样员&#xff0c;那么默认情况下每个采样员都分配一个志愿者
+    else {
+      // 如果志愿者人数超过采样员四倍&#xff0c;则多出来的志愿者就没有作用了
+      if (y &gt;&#61; 4 * x) {
+        y &#61; 4 * x;
+      }
+
+      // 每个采样员都默认发挥正常效率
+      for (Integer val : arr) {
+        max &#43;&#61; val;
+      }
+
+      // surplus记录每个采样员分配一个志愿者后&#xff0c;还多出来的志愿者
+      int surplus &#61; y - x;
+
+      i &#61; 0;
+      j &#61; x - 1;
+
+      // 优先将多出来的志愿者分配给高效率的采样员
+      while (surplus &gt; 0) {
+        max &#43;&#61; arr[i] * 0.1;
+        surplus--;
+        if (&#43;&#43;count &#61;&#61; 3) {
+          count &#61; 0;
+          i&#43;&#43;;
+        }
+      }
+    }
+
+    // 志愿者分配完后&#xff0c;则继续考虑剥夺低效率采样员的志愿者给高效率的采样员
+    while (i &lt; j) {
+      // 如果最高效率的采样员上升10%的效率  是否大于  最低效率的采样员下降20%的效率&#xff0c;那么就值得剥夺
+      if (arr[i] * 0.1 &gt; arr[j] * 0.2) {
+        max &#43;&#61; arr[i] * 0.1 - arr[j] * 0.2;
+
+        // 由于一个采样员最多只能提升30%&#xff0c;即除了一个基础志愿者外&#xff0c;最多再配3个志愿者&#xff0c;多配了也没用
+        if (&#43;&#43;count &#61;&#61; 3) {
+          count &#61; 0;
+          i&#43;&#43;;
+        }
+        j--;
+      } else {
+        break;
+      }
+    }
+
+    return max;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+x, y &#61; map(int, input().split())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(arr, x, y):
+    # 按照正常效率降序
+    arr.sort(reverse&#61;True)
+
+    maxV &#61; 0
+    count &#61; 0
+    i &#61; None
+    j &#61; None
+
+    # 如果志愿者少于采样员&#xff0c;则优先将志愿者分配给正常效率高的采样员
+    if y &lt; x:
+        # 0~y-1范围内高效率的采样员优先获得一个志愿者&#xff0c;因此保持正常效率&#xff0c;而y~x-1范围内的低效率采样员则没有志愿者&#xff0c;效率下降20%
+        for k in range(x):
+            maxV &#43;&#61; arr[k] if k &lt; y else arr[k] * 0.8
+
+        i &#61; 0
+        j &#61; y - 1
+    # 如果志愿者 不少于 采样员&#xff0c;那么默认情况下每个采样员都分配一个志愿者
+    else:
+        # 如果志愿者人数超过采样员四倍&#xff0c;则多出来的志愿者就没有作用了
+        if y &gt;&#61; 4 * x:
+            y &#61; 4 * x
+
+        # 每个采样员都默认发挥正常效率
+        for val in arr:
+            maxV &#43;&#61; val
+
+        # surplus记录每个采样员分配一个志愿者后&#xff0c;还多出来的志愿者
+        surplus &#61; y - x
+
+        i &#61; 0
+        j &#61; x - 1
+
+        # 优先将多出来的志愿者分配给高效率的采样员
+        while surplus &gt; 0:
+            maxV &#43;&#61; arr[i] * 0.1
+            surplus -&#61; 1
+            count &#43;&#61; 1
+            if count &#61;&#61; 3:
+                count &#61; 0
+                i &#43;&#61; 1
+
+    # 志愿者分配完后&#xff0c;则继续考虑剥夺低效率采样员的志愿者给高效率的采样员
+    while i &lt; j:
+        # 如果最高效率的采样员上升10%的效率  是否大于  最低效率的采样员下降20%的效率&#xff0c;那么就值得剥夺
+        if arr[i] * 0.1 &gt; arr[j] * 0.2:
+            maxV &#43;&#61; arr[i] * 0.1 - arr[j] * 0.2
+
+            # 由于一个采样员最多只能提升30%&#xff0c;即除了一个基础志愿者外&#xff0c;最多再配3个志愿者&#xff0c;多配了也没用
+            count &#43;&#61; 1
+            if count &#61;&#61; 3:
+                count &#61; 0
+                i &#43;&#61; 1
+            j -&#61; 1
+        else:
+            break
+
+    return int(maxV)
+
+
+# 算法调用
+print(getResult(arr, x, y))</code></pre> 
+<p></p> 
+<h3>优先队列解法</h3> 
+<p>本题最优思路是采用优先队列解法。</p> 
+<p>即将所有采样员加入&#xff08;大顶堆&#xff09;优先队列中&#xff0c;优先级是&#xff1a;该采样员新增一名志愿者&#xff0c;所能提升的效率。</p> 
+<p>初始时&#xff0c;加入优先队列的采样员都不搭配采样员&#xff0c;此时新增一名志愿者&#xff0c;每个采样员都能提升20%&#xff0c;但是由于基准效率base不同&#xff0c;因此实际每个采样员提升的效率值为base * 0.2。</p> 
+<p>之后&#xff0c;我们取出堆顶最大提升效率的采样员&#xff0c;为其新增一名志愿者&#xff1a;</p> 
+<ul><li>如果其已有志愿者数量为0&#xff0c;则新增一名志愿者后&#xff0c;恢复为base效率</li><li>如果其已有志愿者数量&lt;&#61;3&#xff0c;则新增一名志愿者后&#xff0c;其总效率 &#43;&#61; base * 0.1</li><li>如果其已有志愿者数量 &gt; 3&#xff0c;即至少为4&#xff0c;则再新增一名志愿者&#xff0c;不会带来效率提升&#xff0c;即新增效率为0</li></ul> 
+<p>当我们更新完取出的采样员的志愿者数量和总效率后&#xff0c;将其重新压入优先队列&#xff0c;进行排序。</p> 
+<p>最后&#xff0c;当志愿者用完了&#xff0c;或者所有采样员都安排了4名志愿者了&#xff0c;则结束上面操作。</p> 
+<p></p> 
+<p>接下来就是取出优先队列的所有采样员&#xff0c;并累加他们的总效率作为题解。</p> 
+<p></p> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [x, y] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arrX &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(arrX, x, y));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} arr 每个采样员的正常效率
+ * &#64;param {*} x 采样员人数
+ * &#64;param {*} y 志愿者人数
+ */
+function getResult(arr, x, y) {
+  // 大顶堆优先队列&#xff0c;堆顶元素总是&#xff1a;新增一个志愿者后&#xff0c;提升效率最多的采样员
+  const pq &#61; new PriorityQueue((a, b) &#61;&gt; getAdd(b) - getAdd(a));
+
+  // 将所有采样员员加入优先队列&#xff0c;初始时采样员都不搭配志愿者
+  for (let base of arr) {
+    pq.offer(new Sample(base));
+  }
+
+  // 只要还有志愿者&#xff0c;就将其分配给采样员
+  while (y &gt; 0) {
+    // 如果堆顶采样员已有四个志愿者&#xff0c;那么该采样员能提升的效率为0&#xff0c;说明此时提升0的效率就是所有采样员中能提升的最大效率&#xff0c;即说明所有采样员都安排到了四个采样员&#xff0c;因此再增加志愿者也不会带来效率提升
+    if (pq.size &#61;&#61; 0 || pq.peek().volunteer &#61;&#61; 4) break;
+
+    // 如果上一步不成立&#xff0c;则取出堆顶采样员
+    const s &#61; pq.poll();
+
+    // 为其新增一个志愿者&#xff0c;并提升相应效率
+    s.total &#43;&#61; getAdd(s);
+    s.volunteer &#43;&#61; 1;
+
+    // 重新压入队列
+    pq.offer(s);
+    y--;
+  }
+
+  let ans &#61; 0;
+  while (pq.size &gt; 0) ans &#43;&#61; pq.poll().total;
+  return ans;
+}
+
+class Sample {
+  constructor(base) {
+    this.volunteer &#61; 0; // 该采样员搭配的志愿者人数
+    this.base &#61; base; // 该采样员的基准效率
+    this.total &#61; base * 0.8; // 该采样员的搭配志愿者后的总效率,初始时采样员没有搭配志愿者&#xff0c;则效率只有base*0.8
+  }
+}
+
+// 采样员s增加一名志愿者能提升的效率
+function getAdd(s) {
+  // 如果当前采样员没有志愿者&#xff0c;则新增一名志愿者可以提升base * 20%的效率
+  if (s.volunteer &#61;&#61; 0) return s.base * 0.2;
+  // 如果当前采样员搭配的志愿者数量小于等于3个&#xff0c;则说明再新增一个志愿者&#xff0c;可以提升base * 10%的效率
+  else if (s.volunteer &lt;&#61; 3) return s.base * 0.1;
+  // 如果当前采样员已有4个志愿者&#xff0c;则再新增一个志愿者&#xff0c;不能提升效率&#xff0c;即提升效率为0
+  else return 0;
+}
+
+// 基于堆实现优先队列
+class PriorityQueue {
+  constructor(cpr) {
+    this.queue &#61; [];
+    this.size &#61; 0;
+    this.cpr &#61; cpr;
+  }
+
+  swap(i, j) {
+    let tmp &#61; this.queue[i];
+    this.queue[i] &#61; this.queue[j];
+    this.queue[j] &#61; tmp;
+  }
+
+  // 上浮
+  swim() {
+    let ch &#61; this.queue.length - 1;
+
+    while (ch !&#61;&#61; 0) {
+      let fa &#61; Math.floor((ch - 1) / 2);
+
+      const ch_node &#61; this.queue[ch];
+      const fa_node &#61; this.queue[fa];
+
+      if (this.cpr(ch_node, fa_node) &lt; 0) {
+        this.swap(ch, fa);
+        ch &#61; fa;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 下沉
+  sink() {
+    let fa &#61; 0;
+
+    while (true) {
+      let ch_left &#61; 2 * fa &#43; 1;
+      let ch_right &#61; 2 * fa &#43; 2;
+
+      let ch_max;
+      let ch_max_node;
+
+      const fa_node &#61; this.queue[fa];
+      const ch_left_node &#61; this.queue[ch_left];
+      const ch_right_node &#61; this.queue[ch_right];
+
+      if (ch_left_node &amp;&amp; ch_right_node) {
+        // 注意这里应该要&gt;&#61;0&#xff0c;因为左边优先级高
+        if (this.cpr(ch_left_node, ch_right_node) &lt;&#61; 0) {
+          ch_max &#61; ch_left;
+          ch_max_node &#61; ch_left_node;
+        } else {
+          ch_max &#61; ch_right;
+          ch_max_node &#61; ch_right_node;
+        }
+      } else if (ch_left_node &amp;&amp; !ch_right_node) {
+        ch_max &#61; ch_left;
+        ch_max_node &#61; ch_left_node;
+      } else if (!ch_left_node &amp;&amp; ch_right_node) {
+        ch_max &#61; ch_right;
+        ch_max_node &#61; ch_right_node;
+      } else {
+        break;
+      }
+
+      // 注意这里应该要&gt;0&#xff0c;因为父优先级高
+      if (this.cpr(ch_max_node, fa_node) &lt; 0) {
+        this.swap(ch_max, fa);
+        fa &#61; ch_max;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 向优先队列中加入元素
+  offer(ele) {
+    this.queue.push(ele);
+    this.size&#43;&#43;;
+    this.swim();
+  }
+
+  // 取出最高优先级元素
+  poll() {
+    this.swap(0, this.queue.length - 1);
+    this.size--;
+    const ans &#61; this.queue.pop();
+    this.sink();
+    return ans;
+  }
+
+  // 只使用最高优先级元素&#xff0c;不取出
+  peek() {
+    return this.queue[0];
+  }
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int x &#61; sc.nextInt();
+    int y &#61; sc.nextInt();
+
+    Integer[] arrX &#61; new Integer[x];
+    for (int i &#61; 0; i &lt; x; i&#43;&#43;) {
+      arrX[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(arrX, x, y));
+  }
+
+  /**
+   * &#64;param arr 各采样员基准效率值&#xff08;单位人/小时&#xff09; [60, 600]
+   * &#64;param x 采样员人数 [1, 100]
+   * &#64;param y 志愿者人数 [1, 500]
+   * &#64;return 总最快检测效率&#xff08;单位人/小时&#xff09;
+   */
+  public static int getResult(Integer[] arr, int x, int y) {
+    // 大顶堆优先队列&#xff0c;堆顶元素总是&#xff1a;新增一个志愿者后&#xff0c;提升效率最多的采样员
+    PriorityQueue&lt;Sampler&gt; pq &#61; new PriorityQueue&lt;&gt;((a, b) -&gt; (int) (getAdd(b) - getAdd(a)));
+
+    // 将所有采样员员加入优先队列&#xff0c;初始时采样员都不搭配志愿者
+    for (int base : arr) {
+      pq.offer(new Sampler(0, base));
+    }
+
+    // 只要还有志愿者&#xff0c;就将其分配给采样员
+    while (y &gt; 0) {
+      // 如果堆顶采样员已有四个志愿者&#xff0c;那么该采样员能提升的效率为0&#xff0c;说明此时提升0的效率就是所有采样员中能提升的最大效率&#xff0c;即说明所有采样员都安排到了四个采样员&#xff0c;因此再增加志愿者也不会带来效率提升
+      if (pq.isEmpty() || pq.peek().volunteer &#61;&#61; 4) break;
+
+      // 如果上一步不成立&#xff0c;则取出堆顶采样员
+      Sampler s &#61; pq.poll();
+
+      // 为其新增一个志愿者&#xff0c;并提升相应效率
+      s.total &#43;&#61; getAdd(s);
+      s.volunteer &#43;&#61; 1;
+
+      // 重新压入队列
+      pq.offer(s);
+      y--;
+    }
+
+    double ans &#61; 0;
+    while (!pq.isEmpty()) ans &#43;&#61; pq.poll().total;
+    return (int) ans;
+  }
+
+  // 采样员s增加一名志愿者能提升的效率
+  public static double getAdd(Sampler s) {
+    // 如果当前采样员没有志愿者&#xff0c;则新增一名志愿者可以提升base * 20%的效率
+    if (s.volunteer &#61;&#61; 0) return s.base * 0.2;
+    // 如果当前采样员搭配的志愿者数量小于等于3个&#xff0c;则说明再新增一个志愿者&#xff0c;可以提升base * 10%的效率
+    else if (s.volunteer &lt;&#61; 3) return s.base * 0.1;
+    // 如果当前采样员已有4个志愿者&#xff0c;则再新增一个志愿者&#xff0c;不能提升效率&#xff0c;即提升效率为0
+    else return 0;
+  }
+}
+
+// 采样员类
+class Sampler {
+  int volunteer &#61; 0; // 该采样员搭配的志愿者人数
+  double base &#61; 0; // 该采样员的基准效率
+  double total &#61; 0; // 该采样员的搭配志愿者后的总效率
+
+  public Sampler(int volunteer, double base) {
+    this.volunteer &#61; volunteer;
+    this.base &#61; base;
+    this.total &#61; base * 0.8; // 初始时采样员没有搭配志愿者&#xff0c;则效率只有base*0.8
+  }
+}
+</code></pre> 
+<h4>Python算法源码 </h4> 
+<pre><code class="language-python">import queue
+
+# 输入获取
+x, y &#61; map(int, input().split())
+arr &#61; list(map(int, input().split()))
+
+
+def getAdd(s):
+    &#34;&#34;&#34;
+    :param s: 采样员对象
+    :return: 假设采样员s增加一名志愿者能提升的效率
+    &#34;&#34;&#34;
+    if s.volunteer &#61;&#61; 0:  # 如果当前采样员没有志愿者&#xff0c;则新增一名志愿者可以提升base * 20%的效率
+        return s.base * 0.2
+    elif s.volunteer &lt;&#61; 3:  # 如果当前采样员搭配的志愿者数量小于等于3个&#xff0c;则说明再新增一个志愿者&#xff0c;可以提升base * 10%的效率
+        return s.base * 0.1
+    else:  # 如果当前采样员已有4个志愿者&#xff0c;则再新增一个志愿者&#xff0c;不能提升效率&#xff0c;即提升效率为0
+        return 0
+
+
+class Sampler:
+    def __init__(self, volunteer, base):
+        &#34;&#34;&#34;
+        :param volunteer: 该采样员搭配的志愿者人数
+        :param base: 该采样员的基准效率
+        &#34;&#34;&#34;
+        self.volunteer &#61; volunteer
+        self.base &#61; base
+        self.total &#61; base * 0.8  # 初始时采样员没有搭配志愿者&#xff0c;则效率只有base*0.8
+
+    def __lt__(self, other):
+        return getAdd(self) &gt; getAdd(other)  # 基于大顶堆排序&#xff0c;优先级为&#xff1a;增加一名志愿者能提升的效率
+
+
+# 算法入口
+def getResult(arr, x, y):
+    &#34;&#34;&#34;
+    :param arr: 各采样员基准效率值&#xff08;单位人/小时&#xff09; [60, 600]
+    :param x: 采样员人数 [1, 100]
+    :param y: 志愿者人数 [1, 500]
+    :return: 总最快检测效率&#xff08;单位人/小时&#xff09;
+    &#34;&#34;&#34;
+
+    # 优先队列
+    pq &#61; queue.PriorityQueue()
+
+    # 将所有采样员员加入优先队列&#xff0c;初始时采样员都不搭配志愿者
+    for base in arr:
+        pq.put(Sampler(0, base))
+
+    # 只要还有志愿者&#xff0c;就将其分配给采样员
+    while y &gt; 0:
+        # 如果堆顶采样员已有四个志愿者&#xff0c;那么该采样员能提升的效率为0&#xff0c;说明此时提升0的效率就是所有采样员中能提升的最大效率&#xff0c;即说明所有采样员都安排到了四个采样员&#xff0c;因此再增加志愿者也不会带来效率提升
+        if pq.qsize() &#61;&#61; 0 or pq.queue[0].volunteer &#61;&#61; 4:
+            break
+
+        # 如果上一步不成立&#xff0c;则取出堆顶采样员
+        s &#61; pq.get()
+
+        # 为其新增一个志愿者&#xff0c;并提升相应效率
+        s.total &#43;&#61; getAdd(s)
+        s.volunteer &#43;&#61; 1
+
+        # 重新压入队列
+        pq.put(s)
+        y -&#61; 1
+
+    ans &#61; 0
+    while pq.qsize() &gt; 0:
+        ans &#43;&#61; pq.get().total
+
+    return int(ans)
+
+
+# 算法调用
+print(getResult(arr, x, y))
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

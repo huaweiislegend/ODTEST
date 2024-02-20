@@ -1,0 +1,359 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 模拟商场优惠打折（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>模拟商场优惠打折&#xff0c;有三种优惠券可以用&#xff0c;满减券、打折券和无门槛券。</p> 
+<p>满减券&#xff1a;满100减10&#xff0c;满200减20&#xff0c;满300减30&#xff0c;满400减40&#xff0c;以此类推不限制使用&#xff1b;</p> 
+<p>打折券&#xff1a;固定折扣92折&#xff0c;且打折之后向下取整&#xff0c;每次购物只能用1次&#xff1b;</p> 
+<p>无门槛券&#xff1a;一张券减5元&#xff0c;没有使用限制。</p> 
+<p>每个人结账使用优惠券时有以下限制&#xff1a;</p> 
+<p>每人每次只能用两种优惠券&#xff0c;并且同一种优惠券必须一次用完&#xff0c;不能跟别的穿插使用&#xff08;比如用一张满减&#xff0c;再用一张打折&#xff0c;再用一张满减&#xff0c;这种顺序不行&#xff09;。</p> 
+<p>求不同使用顺序下每个人用完券之后得到的最低价格和对应使用优惠券的总数&#xff1b;如果两种顺序得到的价格一样低&#xff0c;就取使用优惠券数量较少的那个。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行三个数字m,n,k&#xff0c;分别表示每个人可以使用的满减券、打折券和无门槛券的数量;</p> 
+<p>第二行一个数字x, 表示有几个人购物;</p> 
+<p>后面x行数字&#xff0c;依次表示是这几个人打折之前的商品总价。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出每个人使用券之后的最低价格和对应使用优惠券的数量</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:668px;"><tbody><tr><td style="width:60px;">输入</td><td style="width:606px;">3 2 5<br /> 3<br /> 100<br /> 200<br /> 400</td></tr><tr><td style="width:60px;">输出</td><td style="width:606px;">65 6<br /> 135 8<br /> 275 8</td></tr><tr><td style="width:60px;">说明</td><td style="width:606px;"> <p>输入&#xff1a;</p> <p>第一行三个数字m,n,k&#xff0c;分别表示每个人可以使用的满减券、打折券和无门槛券的数量。</p> <p></p> <p>输出&#xff1a;</p> <p>第一个人使用 1 张满减券和5张无门槛券价格最低。&#xff08;100-10&#61;90, 90-5*5&#61;65&#xff09;</p> <p>第二个人使用 3 张满减券和5张无门槛券价格最低。&#xff08;200-20-10-10&#61;160, 160 – 5*5 &#61; 135&#xff09;</p> <p>第二个人使用 3 张满减券和5张无门槛券价格最低。&#xff08;400-40-30-30&#61;300, 300 – 5*5&#61;275&#xff09;</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题的解题思路如下&#xff0c;首先实现满减&#xff0c;打折&#xff0c;无门槛的逻辑&#xff1a;</p> 
+<ul><li>满减逻辑&#xff0c;只要总价price大于等于100&#xff0c;且还有满减券&#xff0c;则不停price -&#61; Math.floor(price / 100) * 10; 直到总价price小于100&#xff0c;或者满减券用完。</li><li>打折逻辑&#xff0c;按照题目意思&#xff0c;打折券只能使用一次&#xff0c;因此无论打折券有多少张&#xff0c;都只能使用一次&#xff0c;因此只要打折券数量大于等于1&#xff0c;那么price &#61; Math.floor(price * 0.92);</li><li>无门槛逻辑&#xff0c;只要总价price大于0&#xff0c;且还有无门槛券&#xff0c;则不停price -&#61; 5; 直到price小于等于0&#xff0c;或者无门槛券用完。</li></ul> 
+<p>接下来就是求上面三种逻辑的任选2个的排列&#xff1a;</p> 
+<p>假设满减是M&#xff0c;打折是N&#xff0c;无门槛是K&#xff0c;则有排列如下&#xff1a;</p> 
+<ul><li>MN、NM</li><li>MK、KM</li><li>NK、KN</li></ul> 
+<p>注意&#xff0c;券的使用对顺序敏感。</p> 
+<p>因此&#xff0c;求出以上排列后&#xff0c;对每个人的总价使用六种方式减价&#xff0c;只保留减价最多&#xff0c;用券最少的那个。</p> 
+<p></p> 
+<p>根据网友iygvh提供的优化思路&#xff1a;</p> 
+<p>对于无门槛券的使用&#xff0c;无门槛券总是在最后使用才会最优。</p> 
+<p>对于满减来说&#xff0c;无门槛肯定是最后使用最优惠&#xff0c;</p> 
+<p>对于92折来说&#xff0c;</p> 
+<ul><li>先用无门槛后打折(x-5y)*0.92 &#61; x*0.92 - <span style="color:#fe2c24;">5*0.92*y</span> </li><li>先打折后用无门槛 x*0.92 - <span style="color:#fe2c24;">5y</span></li></ul> 
+<p>对比可以看出&#xff0c;先92折&#xff0c;再无门槛最优惠&#xff0c;因此确实可以直接排除KM和KN的情况&#xff0c;即先无门槛的情况。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m, n, k, x;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [m, n, k] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    x &#61; parseInt(lines[1]);
+  }
+
+  if (x &amp;&amp; lines.length &#61;&#61;&#61; x &#43; 2) {
+    lines.shift();
+    lines.shift();
+
+    const arr &#61; lines.map(Number);
+
+    getResult(arr, m, n, k);
+
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} prices 几个人打折之前的商品总价
+ * &#64;param {*} m 满减券数量
+ * &#64;param {*} n 打折券数量
+ * &#64;param {*} k 无门槛券数量
+ */
+function getResult(prices, m, n, k) {
+  for (let price of prices) {
+    const ans &#61; [];
+
+    const resM &#61; M(price, m); // 先满减
+
+    const resMN_N &#61; N(resM[0], n); // 满减后打折
+    ans.push([resMN_N[0], m &#43; n - (resM[1] &#43; resMN_N[1])]); // resMN_N[0]是 “满减后打折” 的剩余总价&#xff0c; m &#43; n - resM[1] - resMN_N[1] 是 该种用券方式的: 总券数 m&#43;n&#xff0c; 剩余券数 resM[1] &#43; resMN_N[1], 因此使用掉的券数&#xff1a; m&#43;n - (resM[1] &#43; resMN_N[1])
+
+    const resMK_K &#61; K(resM[0], k); // 满减后无门槛
+    ans.push([resMK_K[0], m &#43; k - (resM[1] &#43; resMK_K[1])]);
+
+    const resN &#61; N(price, n); // 先打折
+
+    const resNM_M &#61; M(resN[0], m); // 打折后满减
+    ans.push([resNM_M[0], n &#43; m - (resN[1] &#43; resNM_M[1])]);
+
+    const resNK_K &#61; K(resN[0], k); // 打折后无门槛
+    ans.push([resNK_K[0], n &#43; k - (resN[1] &#43; resNK_K[1])]);
+
+    ans.sort((a, b) &#61;&gt; (a[0] &#61;&#61;&#61; b[0] ? a[1] - b[1] : a[0] - b[0])); // 对ans进行排序&#xff0c;排序规则是&#xff1a;优先按剩余总价升序&#xff0c;如果剩余总价相同&#xff0c;则再按“使用掉的券数量”升序
+
+    console.log(ans[0].join(&#34; &#34;));
+  }
+}
+
+/**
+ * &#64;param {*} price 总价
+ * &#64;param {*} m 满减券数量
+ * &#64;returns 总价满减后结果&#xff0c;对应数组含义是 [用券后剩余总价&#xff0c; 剩余满减券数量]
+ */
+function M(price, m) {
+  while (price &gt;&#61; 100 &amp;&amp; m &gt; 0) {
+    price -&#61; Math.floor(price / 100) * 10; // 假设price&#61;340&#xff0c;那么可以优惠 340/100 * 10 &#61; 30元
+    m--;
+  }
+  return [price, m];
+}
+
+/**
+ * &#64;param {*} price 总价
+ * &#64;param {*} n 打折券数量
+ * &#64;returns 总价打折后结果&#xff0c;对应数组含义是 [用券后剩余总价&#xff0c; 剩余打折券数量]
+ */
+function N(price, n) {
+  if (n &gt;&#61; 1) {
+    price &#61; Math.floor(price * 0.92);
+    n--;
+  }
+  return [price, n];
+}
+
+/**
+ * &#64;param {*} price 总价
+ * &#64;param {*} k 无门槛券数量
+ * &#64;returns 无门槛券用后结果&#xff0c;对应数组含义是 [用券后剩余总价&#xff0c; 剩余无门槛券数量]
+ */
+function K(price, k) {
+  while (price &gt; 0 &amp;&amp; k &gt; 0) {
+    price -&#61; 5;
+    price &#61; Math.max(price, 0); // 无门槛券过多会导致优惠后总价小于0&#xff0c;此时我们应该避免
+    k--;
+  }
+  return [price, k];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+    int k &#61; sc.nextInt();
+    int x &#61; sc.nextInt();
+
+    int[] arr &#61; new int[x];
+    for (int i &#61; 0; i &lt; x; i&#43;&#43;) {
+      arr[i] &#61; sc.nextInt();
+    }
+
+    getResult(arr, m, n, k);
+  }
+
+  public static void getResult(int[] arr, int m, int n, int k) {
+    for (int i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+      Integer[][] ans &#61; new Integer[4][2]; // 4的含义对应4种使用券的方式&#xff1a;MN,NM,MK,NK,  2的含义对应每种方式下&#xff1a;剩余总价&#xff0c;剩余券数量
+      int price &#61; arr[i];
+
+      int[] resM &#61; M(price, m); // 先满减
+      int[] resN &#61; N(price, n); // 先打折
+
+      // MN
+      int[] resMN_N &#61; N(resM[0], n); // 满减后打折
+      ans[0] &#61;
+          new Integer[] {
+            resMN_N[0], m &#43; n - resM[1] - resMN_N[1]
+          }; // resMN_N[0]是 “满减后打折” 的剩余总价&#xff0c; m &#43; n - resM[1] - resMN_N[1] 是 该种用券方式的: 总券数 m&#43;n&#xff0c; 剩余券数
+      // resM[1] &#43; resMN_N[1], 因此使用掉的券数&#xff1a; m&#43;n - (resM[1] &#43; resMN_N[1])
+
+      // NM
+      int[] resNM_M &#61; M(resN[0], m); // 打折后满减
+      ans[1] &#61; new Integer[] {resNM_M[0], n &#43; m - resN[1] - resNM_M[1]};
+
+      // MK
+      int[] resMK_K &#61; K(resM[0], k); // 满减后无门槛
+      ans[2] &#61; new Integer[] {resMK_K[0], m &#43; k - resM[1] - resMK_K[1]};
+
+      // NK
+      int[] resNK_K &#61; K(resN[0], k); // 打折后无门槛
+      ans[3] &#61; new Integer[] {resNK_K[0], n &#43; k - resN[1] - resNK_K[1]};
+
+      Arrays.sort(
+          ans,
+          (a, b) -&gt;
+              a[0].equals(b[0])
+                  ? a[1] - b[1]
+                  : a[0] - b[0]); // 对ans进行排序&#xff0c;排序规则是&#xff1a;优先按剩余总价升序&#xff0c;如果剩余总价相同&#xff0c;则再按“使用掉的券数量”升序
+      System.out.println(ans[0][0] &#43; &#34; &#34; &#43; ans[0][1]);
+    }
+  }
+
+  /**
+   * &#64;param price 总价
+   * &#64;param m 满减券数量
+   * &#64;return 总价满减后结果&#xff0c;对应数组含义是 [用券后剩余总价&#xff0c; 剩余满减券数量]
+   */
+  public static int[] M(int price, int m) {
+    while (price &gt;&#61; 100 &amp;&amp; m &gt; 0) {
+      price -&#61; price / 100 * 10; // 假设price&#61;340&#xff0c;那么可以优惠 340/100 * 10 &#61; 30元
+      m--;
+    }
+    return new int[] {price, m};
+  }
+
+  /**
+   * &#64;param price 总价
+   * &#64;param n 打折券数量
+   * &#64;return 总价打折后结果&#xff0c;对应数组含义是 [用券后剩余总价&#xff0c; 剩余打折券数量]
+   */
+  public static int[] N(int price, int n) {
+    if (n &gt;&#61; 1) {
+      price &#61; (int) Math.floor((price * 0.92));
+      n--;
+    }
+    return new int[] {price, n};
+  }
+
+  /**
+   * &#64;param price 总价
+   * &#64;param k 无门槛券数量
+   * &#64;return 无门槛券用后结果&#xff0c;对应数组含义是 [用券后剩余总价&#xff0c; 剩余无门槛券数量]
+   */
+  public static int[] K(int price, int k) {
+    while (price &gt; 0 &amp;&amp; k &gt; 0) {
+      price -&#61; 5;
+      price &#61; Math.max(price, 0); // 感谢m0_71826536提供的思路&#xff0c;当无门槛券过多时&#xff0c;是有可能导致优惠后总价低于0的情况的&#xff0c;此时我们应该避免总价小于0的情况
+      k--;
+    }
+    return new int[] {price, k};
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">m, n, k &#61; map(int, input().split())
+
+x &#61; int(input())
+
+prices &#61; []
+for i in range(x):
+    prices.append(int(input()))
+
+
+def fullSubtraction(price, m):
+    &#34;&#34;&#34;
+    满减规则
+    :param price: 总价
+    :param m: 满减券数量
+    :return: 总价满减后结果&#xff0c;对应数组含义是 (用券后剩余总价&#xff0c; 剩余满减券数量)
+    &#34;&#34;&#34;
+    while price &gt;&#61; 100 and m &gt; 0:
+        price -&#61; int(price / 100) * 10
+        m -&#61; 1
+
+    return price, m
+
+
+def discount(price, n):
+    &#34;&#34;&#34;
+    打折规则
+    :param price: 总价
+    :param n: 打折券数量
+    :return: 总价打折后结果&#xff0c;对应数组含义是 (用券后剩余总价&#xff0c; 剩余打折券数量)
+    &#34;&#34;&#34;
+    if n &gt;&#61; 1:
+        price &#61; int(price * 0.92)
+        n -&#61; 1
+    return price, n
+
+
+def thresholdFree(price, k):
+    &#34;&#34;&#34;
+    无门槛你规则
+    :param price: 总价
+    :param k: 无门槛券数量
+    :return: 门槛券用后结果&#xff0c;对应数组含义是 (用券后剩余总价&#xff0c; 剩余无门槛券数量)
+    &#34;&#34;&#34;
+    while price &gt; 0 and k &gt; 0:
+        price -&#61; 5
+        price &#61; max(price, 0)  # 无门槛券过多会导致优惠后总价小于0&#xff0c;此时我们应该避免
+        k -&#61; 1
+    return price, k
+
+
+for price in prices:
+    ans &#61; []
+
+    resM &#61; fullSubtraction(price, m)  # 先满减
+
+    resMN_N &#61; discount(resM[0], n)  # 满减后打折
+    ans.append((resMN_N[0], m &#43; n - (resM[1] &#43; resMN_N[1])))  # m &#43; n 是满减后打折方式的总券数量&#xff0c; resM[1] &#43; resMN_N[1] 是满减券剩余数&#43;打折券剩余数
+
+    resMK_K &#61; thresholdFree(resM[0], k)  # 满减后无门槛
+    ans.append((resMK_K[0], m &#43; k - (resM[1] &#43; resMK_K[1])))
+
+    resN &#61; discount(price, n)  # 先打折
+
+    resNM_M &#61; fullSubtraction(resN[0], m)  # 打折后满减
+    ans.append((resNM_M[0], n &#43; m - (resN[1] &#43; resNM_M[1])))
+
+    resNK_K &#61; thresholdFree(resN[0], k)  # 打折后无门槛
+    ans.append((resNK_K[0], n &#43; k - (resN[1] &#43; resNK_K[1])))
+
+    # 对ans进行排序&#xff0c;排序规则是&#xff1a;优先按剩余总价升序&#xff0c;如果剩余总价相同&#xff0c;则再按“使用掉的券数量”升序
+    ans.sort(key&#61;lambda x: (x[0], x[1]))
+
+    print(&#34; &#34;.join(map(str, ans[0])))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

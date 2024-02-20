@@ -1,0 +1,608 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 小朋友分组最少调整次数（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>n 个学生排成一排&#xff0c;学生编号分别是 1 到 n&#xff0c;n 为 3 的整倍数。</p> 
+<p>老师随机抽签决定将所有学生分成 m 个 3 人的小组&#xff08;n &#61;&#61; 3 * m&#xff09; &#xff0c;</p> 
+<p>为了便于同组学生交流&#xff0c;老师决定将小组成员安排到一起&#xff0c;也就是同组成员彼此相连&#xff0c;同组任意两个成员之间无其它组的成员。</p> 
+<p>因此老师决定调整队伍&#xff0c;老师每次可以调整任何一名学生到队伍的任意位置&#xff0c;计为调整了一次&#xff0c; 请计算最少调整多少次可以达到目标。</p> 
+<p>注意&#xff1a;对于小组之间没有顺序要求&#xff0c;同组学生之间没有顺序要求。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入初始排队顺序序列</p> 
+<p>第二行输入分组排队顺序序列</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最少调整多少次数</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4 2 8 5 3 6 1 9 7<br /> 6 3 1 2 4 8 7 9 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>分组分别为&#xff1a;6,3,1一组&#xff0c;2,4,8一组&#xff0c;7,9,5一组</p> <p>初始排队顺序中&#xff0c;只要将5移动到1后面&#xff0c;变为&#xff1a;</p> <p>4 2 8 3 6 1 5 9 7</p> <p>即可满足分组排队顺序要求。</p> <p>因此至少需要调整1次站位。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td>8 9 7 5 6 3 2 1 4<br /> 7 8 9 4 2 1 3 5 6</td></tr><tr><td>输出</td><td>0</td></tr><tr><td>说明</td><td>无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;">7 9 8 5 6 4 2 1 3<br /> 7 8 9 4 2 1 3 5 6</td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">1</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题有两个难点&#xff1a;</p> 
+<ol><li>如何快速判断两个小朋友是否为一组</li><li>如何调整站队&#xff0c;才能花费次数最少</li></ol> 
+<p>关于1&#xff0c;我们可以根据第二行输入做如下处理&#xff08;以用例1为例&#xff09;&#xff1a;</p> 
+<p><img alt="" height="119" src="https://img-blog.csdnimg.cn/a0958410d7324539b4f76e5ad4572932.png" width="453" /></p> 
+<p>由于第二行输入的分组排队序列&#xff0c;每3个一组&#xff0c;因此我们只要将分组序列的各元素索引值整除3&#xff0c;即可得出各元素&#xff08;小朋友序号&#xff09;所在的分组。</p> 
+<p>即我们可以根据第二行输入&#xff0c;能得到一个&#xff1a;“序号-&gt;组号” 的映射关系。</p> 
+<p><img alt="" height="247" src="https://img-blog.csdnimg.cn/049fd16a7e504190af7f1fc4a1784f1e.png" width="523" /></p> 
+<p>这组映射关系&#xff0c;我们可以保存为一个map数组&#xff0c;map数组索引就是小朋友序号&#xff0c;map数组元素就是小朋友组号。</p> 
+<p></p> 
+<p>之后&#xff0c;我们再根据map的映射关系&#xff0c;就可以将第一行输入的初始小朋友&#xff08;序号&#xff09;排队顺序&#xff0c;映射为初始小朋友&#xff08;组号&#xff09;顺序&#xff0c;比如用例1&#xff1a;</p> 
+<p>初始小朋友&#xff08;序号&#xff09;排队顺序&#xff1a;4 2 8 5 3 6 1 9 7</p> 
+<p>初始小朋友&#xff08;组号&#xff09;排队顺序&#xff1a;1 1 1 2 0 0 0 2 2</p> 
+<p>之后&#xff0c;分组调整只需要按照 “初始小朋友&#xff08;组号&#xff09;排队顺序” 进行即可。</p> 
+<p></p> 
+<p>关于2&#xff0c;由于小朋友按3人一组&#xff0c;因此初始组号排队顺序可能存在如下情况&#xff1a;</p> 
+<ol><li>1 1 x 1 y z</li><li>1 x 1 1 y z</li><li>1 x 1 y 1 z</li></ol> 
+<p>上面三种情况&#xff0c;我们需要让组号1的小朋友组合在一起。</p> 
+<hr /> 
+<p>对于情况1&#xff1a;</p> 
+<p>我们可以这样调整一次</p> 
+<p><img alt="" height="174" src="https://img-blog.csdnimg.cn/1ed7a6564c4c428a8fe0583cd8d0641a.png" width="659" /></p> 
+<p>此时分组1&#xff0c;不会对其他分组造成影响。比如具体示例&#xff1a;</p> 
+<ul><li>1 1 2 1 2 2 按上面策略调整后 1 1 1 2 2 2</li><li>1 1 2 2 1 2 按上面策略调整后 1 1 1 2 2 2</li><li>1 1 2 2 2 1 按上面策略调整后 1 1 1 2 2 2</li></ul> 
+<p></p> 
+<p>但是&#xff0c;如果我们像下面这样调整&#xff0c;需要调整2次</p> 
+<p><img alt="" height="153" src="https://img-blog.csdnimg.cn/0c0db808274d4c889c73984ec91145f0.png" width="624" /></p> 
+<p>并且可能会影响到x的调整&#xff0c;比如具体示例&#xff1a;</p> 
+<ul><li>1 1 2 1 2 2 按上面策略调整后 2 1 1 1 2 2</li><li>1 1 2 2 1 2 按上面策略调整后 2 2 1 1 1 2</li><li>1 1 2 2 2 1 按上面策略调整后 2 2 2 1 1 1</li></ul> 
+<p></p> 
+<p>因此&#xff0c;对于情况1而言&#xff0c;最优策略是将后面的单独1并入到开头两个1中&#xff0c;只需要调整1次。</p> 
+<hr /> 
+<p>对于情况2&#xff1a;</p> 
+<p>如果将开头单独1并入后面两个2中&#xff0c;只需要调整一次&#xff0c;但是可能会对x造成影响</p> 
+<p><img alt="" height="181" src="https://img-blog.csdnimg.cn/29366b0151ca4a19847df66417b39eaf.png" width="615" /></p> 
+<p>比如&#xff1a;</p> 
+<p>1 2 2 1 1 2 按照上面策略调整后 2 2 1 1 1 2&#xff0c;此时2还需要至少调整1次</p> 
+<p>1 2 1 1 2 2 按照上面策略调整后 2 1 1 1 2 2&#xff0c;此时2还需要至少调整1次</p> 
+<p>但是对于</p> 
+<p>1 2 2 2 1 1 这种情况&#xff0c;当前调整策略是最优的</p> 
+<p></p> 
+<p>如果将后面两个1并入到开头单独1中&#xff0c;那么需要调整2次</p> 
+<p><img alt="" height="210" src="https://img-blog.csdnimg.cn/fc333334e5864d7aa0c7e8b4647a6afe.png" width="623" /></p> 
+<p>比如对于下面情况&#xff0c;当前调整策略是最优的</p> 
+<p>1 2 2 1 1 2 按照上面策略调整后 1 1 1 2 2 2</p> 
+<p>1 2 1 1 2 2 按照上面策略调整后 1 1 1 2 2 2</p> 
+<p>但是对于</p> 
+<p>1 2 2 2 1 1 这种情况&#xff0c;当前调整策略不是最优。</p> 
+<p></p> 
+<p>因此&#xff0c;对于情况2&#xff0c;我们需要判断&#xff0c;开头单独1和后面两个1之间是否是连续完整分组&#xff1a;</p> 
+<ul><li>如果是&#xff0c;那么只需要调整一次&#xff0c;开头单独1并入到后面两个1中</li><li>如果不是&#xff0c;那么需要调整两次&#xff0c;后面两个1并入到开头单独1中</li></ul> 
+<p></p> 
+<hr /> 
+<p>对于情况3&#xff0c;有如下调整策略&#xff1a;</p> 
+<p><img alt="" height="197" src="https://img-blog.csdnimg.cn/23da1662a86246cc846f356ff71b8500.png" width="597" /></p> 
+<p><img alt="" height="156" src="https://img-blog.csdnimg.cn/01e42a28d5074b03a179f40c78270f17.png" width="600" /></p> 
+<p><img alt="" height="177" src="https://img-blog.csdnimg.cn/aa9c4edeead24de4ae52a532c0ae35c7.png" width="619" /></p> 
+<p>可以发现&#xff0c;无论怎么调整都需要两次。</p> 
+<hr /> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 初始小朋友&#xff08;序号&#xff09;排队顺序
+  let nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+  const sorted_nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const n &#61; nums.length;
+
+  // 序号-&gt;组号 映射关系
+  const map &#61; new Array(n &#43; 1).fill(0);
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    const num &#61; sorted_nums[i];
+    map[num] &#61; Math.floor(i / 3);
+  }
+
+  // 分块&#xff08;即连续的相同组的小朋友&#xff09;
+  class NumberCount {
+    constructor(num, count) {
+      this.num &#61; num;
+      this.count &#61; count;
+    }
+  }
+
+  // 按初始排队顺序记录分块
+  let queue &#61; [];
+
+  // 记录组号对应的分块&#xff0c; key是组号&#xff0c;val是对应组号的小朋友分块
+  const blocks &#61; {};
+
+  nums
+    .map((num) &#61;&gt; map[num]) // 序号-&gt;组号
+    .forEach((num) &#61;&gt; {
+      // 相邻相同组号合并为块
+      if (queue.length &#61;&#61; 0 || queue.at(-1).num !&#61; num) {
+        queue.push(new NumberCount(num, 1));
+        // 记录相同组号的各个分块
+        if (!blocks[num]) blocks[num] &#61; [];
+        blocks[num].push(queue.at(-1));
+      } else {
+        queue.at(-1).count&#43;&#43;;
+      }
+    });
+
+  // 记录调整次数
+  let moved_count &#61; 0;
+  while (queue.length &gt; 0) {
+    const first &#61; queue.shift();
+    // 如果开头块是空的&#xff0c;或者开头块已经包含3个小朋友&#xff0c;那么不需要调整位置
+    if (first.count &#61;&#61; 0 || first.count &#61;&#61; 3) continue;
+
+    if (queue.length &#61;&#61; 0) break;
+
+    // 第二块
+    let second &#61; queue[0];
+    while (second.count &#61;&#61; 0) {
+      queue.shift();
+      second &#61; queue[0];
+    }
+
+    // 如果开头块和第二块组号相同&#xff0c;则合并&#xff08;前面并入后面&#xff09;
+    if (first.num &#61;&#61; second.num) {
+      second.count &#43;&#61; first.count;
+      continue;
+    }
+
+    /* 如果开头块和第二块组号不同&#xff0c;则进入具体情况分析 */
+
+    if (first.count &#61;&#61; 2) {
+      // 开头块有2个小朋友&#xff0c;则情况如下组号1例子&#xff0c;此时需要将后面的单独1&#xff0c;并入开头两个1中&#xff0c;即调整一次
+      // 1 1 x 1
+      moved_count &#43;&#61; 1;
+      // 后面单独1所在块的小朋友数量清空
+      blocks[first.num].forEach((block) &#61;&gt; (block.count &#61; 0));
+      continue;
+    }
+
+    if (first.count &#61;&#61; 1) {
+      // 开头块只有1个小朋友&#xff0c;则有两种情况
+      if (blocks[first.num].length &#61;&#61; 3) {
+        // 对于组号的分块有三个&#xff0c;即如下组号1例子
+        // 1 x 1 y 1 z
+        // 此时需要将后面两个单独1&#xff0c;并入到开头1中&#xff0c;即调整两次
+        moved_count &#43;&#61; 2;
+        // 后面两个单独1所在块的小朋友数量清空
+        blocks[first.num].forEach((block) &#61;&gt; (block.count &#61; 0));
+      } else {
+        // 对于组号的分块有两个&#xff0c;则如下组号1例子
+        // 1 x 1 1
+        // 此时需要将开头单独1并入到后面两个1中&#xff0c;即调整一次
+        moved_count &#43;&#61; 1;
+        // 后面两个1所在块的小朋友数量变为3个
+        blocks[first.num].forEach((block) &#61;&gt; (block.count &#61; 3));
+      }
+    }
+  }
+
+  console.log(moved_count);
+})();
+</code></pre> 
+<p></p> 
+<h4 id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  // 分块&#xff08;即连续的相同组的小朋友&#xff09;
+  static class NumCount {
+    int num;
+    int count;
+
+    public NumCount(int num, int count) {
+      this.num &#61; num;
+      this.count &#61; count;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    // 初始小朋友&#xff08;序号&#xff09;排队顺序
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int n &#61; nums.length;
+
+    // 序号-&gt;组号 映射关系
+    int[] map &#61; new int[n &#43; 1];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      int num &#61; sc.nextInt();
+      map[num] &#61; i / 3;
+    }
+
+    // 初始小朋友&#xff08;组号&#xff09;排队顺序
+    nums &#61; Arrays.stream(nums).map(num -&gt; map[num]).toArray();
+
+    // key是组号&#xff0c;val是对应组号的小朋友分块
+    HashMap&lt;Integer, ArrayList&lt;NumCount&gt;&gt; blocks &#61; new HashMap&lt;&gt;();
+
+    // 相邻相同组号合并为块
+    LinkedList&lt;NumCount&gt; queue &#61; new LinkedList&lt;&gt;();
+    for (int num : nums) {
+      if (queue.isEmpty() || queue.getLast().num !&#61; num) {
+        queue.addLast(new NumCount(num, 1));
+        // 记录相同组号的各个分块
+        blocks.putIfAbsent(num, new ArrayList&lt;&gt;());
+        blocks.get(num).add(queue.getLast());
+      } else {
+        queue.getLast().count&#43;&#43;;
+      }
+    }
+
+    // 记录调整位置次数
+    int moved_count &#61; 0;
+
+    while (queue.size() &gt; 0) {
+      NumCount first &#61; queue.removeFirst();
+      // 如果开头块是空的&#xff0c;或者开头块已经包含3个小朋友&#xff0c;那么不需要调整位置
+      if (first.count &#61;&#61; 0 || first.count &#61;&#61; 3) continue;
+
+      if (queue.size() &#61;&#61; 0) break;
+
+      // 第二块
+      NumCount second &#61; queue.getFirst();
+      while (second.count &#61;&#61; 0) {
+        queue.removeFirst();
+        second &#61; queue.getFirst();
+      }
+
+      // 如果开头块和第二块组号相同&#xff0c;则合并&#xff08;前面并入后面&#xff09;
+      if (first.num &#61;&#61; second.num) {
+        second.count &#43;&#61; first.count;
+        continue;
+      }
+
+      /* 如果开头块和第二块组号不同&#xff0c;则进入具体情况分析 */
+
+      if (first.count &#61;&#61; 2) {
+        // 开头块有2个小朋友&#xff0c;则情况如下组号1例子&#xff0c;此时需要将后面的单独1&#xff0c;并入开头两个1中&#xff0c;即调整一次
+        // 1 1 x 1
+        moved_count &#43;&#61; 1;
+        // 后面单独1所在块的小朋友数量清空
+        blocks.get(first.num).forEach(block -&gt; block.count &#61; 0);
+        continue;
+      }
+
+      if (first.count &#61;&#61; 1) {
+        // 开头块只有1个小朋友&#xff0c;则有两种情况
+        if (blocks.get(first.num).size() &#61;&#61; 3) {
+          // 对于组号的分块有三个&#xff0c;即如下组号1例子
+          // 1 x 1 y 1 z
+          // 此时需要将后面两个单独1&#xff0c;并入到开头1中&#xff0c;即调整两次
+          moved_count &#43;&#61; 2;
+          // 后面两个单独1所在块的小朋友数量清空
+          blocks.get(first.num).forEach(block -&gt; block.count &#61; 0);
+        } else {
+          // 对于组号的分块有两个&#xff0c;则如下组号1例子
+          // 1 x 1 1
+          // 此时需要将开头单独1并入到后面两个1中&#xff0c;即调整一次
+          moved_count &#43;&#61; 1;
+          // 后面两个1所在块的小朋友数量变为3个
+          blocks.get(first.num).forEach(block -&gt; block.count &#61; 3);
+        }
+      }
+    }
+
+    System.out.println(moved_count);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Python算法源码</h4> 
+<pre><code class="language-python"># 分块&#xff08;即连续的相同组的小朋友&#xff09;
+class NumberCount:
+    def __init__(self, num, count):
+        self.num &#61; num
+        self.count &#61; count
+
+
+# 输入获取
+nums &#61; list(map(int, input().split()))  # 初始小朋友&#xff08;序号&#xff09;排队顺序
+sorted_nums &#61; list(map(int, input().split()))  # 小朋友&#xff08;序号&#xff09;分组排队顺序
+
+n &#61; len(nums)
+
+# 序号-&gt;组号 映射关系
+mapping &#61; [0] * (n &#43; 1)
+for i in range(n):
+    num &#61; sorted_nums[i]
+    mapping[num] &#61; i // 3
+
+# 初始小朋友&#xff08;组号&#xff09;排队顺序
+nums &#61; map(lambda x: mapping[x], nums)
+
+
+# 算法入口
+def getResult():
+    # 按初始排队顺序记录分块
+    queue &#61; []
+
+    # 记录组号对应的分块&#xff0c; key是组号&#xff0c;val是对应组号的小朋友分块
+    blocks &#61; {}
+
+    for num in nums:
+        if len(queue) &#61;&#61; 0 or queue[-1].num !&#61; num:
+            # 相邻相同组号合并为块
+            queue.append(NumberCount(num, 1))
+            # 记录相同组号的各个分块
+            blocks.setdefault(num, [])
+            blocks[num].append(queue[-1])
+        else:
+            queue[-1].count &#43;&#61; 1
+
+    # 记录调整次数
+    moved_count &#61; 0
+    while len(queue) &gt; 0:
+        first &#61; queue.pop(0)
+
+        # 如果开头块是空的&#xff0c;或者开头块已经包含3个小朋友&#xff0c;那么不需要调整位置
+        if first.count &#61;&#61; 0 or first.count &#61;&#61; 3:
+            continue
+
+        if len(queue) &#61;&#61; 0:
+            break
+
+        # 第二块
+        second &#61; queue[0]
+        while second.count &#61;&#61; 0:
+            queue.pop(0)
+            second &#61; queue[0]
+
+        # 如果开头块和第二块组号相同&#xff0c;则合并&#xff08;前面并入后面&#xff09;
+        if first.num &#61;&#61; second.num:
+            second.count &#43;&#61; first.count
+            continue
+
+        &#34;&#34;&#34;
+        如果开头块和第二块组号不同&#xff0c;则进入具体情况分析
+        &#34;&#34;&#34;
+
+        if first.count &#61;&#61; 2:
+            # 开头块有2个小朋友&#xff0c;则情况如下组号1例子&#xff0c;此时需要将后面的单独1&#xff0c;并入开头两个1中&#xff0c;即调整一次
+            # 1 1 x 1
+            moved_count &#43;&#61; 1
+
+            # 后面单独1所在块的小朋友数量清空
+            for block in blocks[first.num]:
+                block.count &#61; 0
+
+            continue
+
+        if first.count &#61;&#61; 1:
+            # 开头块只有1个小朋友&#xff0c;则有两种情况
+            if len(blocks[first.num]) &#61;&#61; 3:
+                # 对于组号的分块有三个&#xff0c;即如下组号1例子
+                # 1 x 1 y 1 z
+                # 此时需要将后面两个单独1&#xff0c;并入到开头1中&#xff0c;即调整两次
+                moved_count &#43;&#61; 2
+                # 后面两个单独1所在块的小朋友数量清空
+                for block in blocks[first.num]:
+                    block.count &#61; 0
+            else:
+                # 对于组号的分块有两个&#xff0c;则如下组号1例子
+                # 1 x 1 1
+                # 此时需要将开头单独1并入到后面两个1中&#xff0c;即调整一次
+                moved_count &#43;&#61; 1
+                # 后面两个1所在块的小朋友数量变为3个
+                for block in blocks[first.num]:
+                    block.count &#61; 3
+
+    return moved_count
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 id="C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 90000
+
+typedef struct ListNode {
+    int num;
+    int count;
+    struct ListNode* next;
+} ListNode;
+
+typedef struct LinkedList {
+    int size;
+    ListNode* head;
+    ListNode* tail;
+} LinkedList;
+
+LinkedList* new_LinkedList() {
+    LinkedList* link &#61; (LinkedList*) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    return link;
+}
+
+void addFirst_LinkedList(LinkedList* link, int num, int count) {
+    ListNode* node &#61; (ListNode*) malloc(sizeof(ListNode));
+    node-&gt;num &#61; num;
+    node-&gt;count &#61; count;
+    node-&gt;next &#61; NULL;
+
+    if(link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        node-&gt;next &#61; link-&gt;head;
+        link-&gt;head &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+void addLast_LinkedList(LinkedList* link, int num, int count) {
+    ListNode* node &#61; (ListNode*) malloc(sizeof(ListNode));
+    node-&gt;num &#61; num;
+    node-&gt;count &#61; count;
+    node-&gt;next &#61; NULL;
+
+    if(link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+ListNode* removeFirst_LinkedList(LinkedList* link) {
+    if(link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode* removed &#61; link-&gt;head;
+
+    if(link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+    }
+
+    link-&gt;size--;
+
+    return removed;
+}
+
+LinkedList* confirm(LinkedList* queue, int confirmed_num) {
+    // 此方法用于剔除掉队列中已被调整完位置的小朋友&#xff0c;并且抽离后&#xff0c;尝试合并抽离位置前后的小朋友&#xff08;如果是同一组&#xff09;
+    // 时间复杂度有点高这里&#xff0c;可能会超时
+    LinkedList* back_queue &#61; new_LinkedList();
+
+    while (queue-&gt;size &gt; 0) {
+        ListNode* first &#61; removeFirst_LinkedList(queue);
+
+        if(first-&gt;num &#61;&#61; confirmed_num) {
+            continue;
+        }
+
+        if(back_queue-&gt;size &#61;&#61; 0 || back_queue-&gt;tail-&gt;num !&#61; first-&gt;num) {
+            addLast_LinkedList(back_queue, first-&gt;num, first-&gt;count);
+        } else {
+            back_queue-&gt;tail-&gt;count &#43;&#61; first-&gt;count;
+        }
+    }
+
+    return back_queue;
+}
+
+
+int main() {
+    // 初始小朋友&#xff08;序号&#xff09;排队顺序
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    // 序号-&gt;组号 映射关系
+    int map[nums_size &#43; 1];
+    for (int i &#61; 0; i &lt; nums_size; i&#43;&#43;) {
+        int num;
+        scanf(&#34;%d&#34;, &amp;num);
+
+        map[num] &#61; i / 3;
+    }
+
+    // 相邻相同组号合并统计
+    LinkedList* queue &#61; new_LinkedList();
+    for (int i &#61; 0; i &lt; nums_size; i&#43;&#43;) {
+        int num &#61; map[nums[i]];
+
+        if(queue-&gt;size &#61;&#61; 0 || queue-&gt;tail-&gt;num !&#61; num) {
+            addLast_LinkedList(queue, num, 1);
+        } else {
+            queue-&gt;tail-&gt;count&#43;&#43;;
+        }
+    }
+
+    // 记录调整次数
+    int moved_count &#61; 0;
+    while(queue-&gt;size &gt; 0) {
+        ListNode* first &#61; removeFirst_LinkedList(queue);
+
+        // 当first.count &#61; 1 时&#xff0c;情况如下
+        // 1 x 1 1 y z
+        // 1 x 1 y 1 z
+        if(first-&gt;count &#61;&#61; 1) {
+            ListNode* x &#61; queue-&gt;head;
+
+            // 判断x是否存在连续完整分组
+            while (x-&gt;count &#61;&#61; 3) {
+                removeFirst_LinkedList(queue);
+                x &#61; queue-&gt;head;
+            }
+
+            if(x-&gt;num &#61;&#61; first-&gt;num &amp;&amp; x-&gt;count &#61;&#61; 2) {
+                // 情况&#xff1a;1 2 2 2 x[1 1]
+                // 将开头1&#xff0c;移动进x中
+                moved_count &#43;&#61; 1;
+                removeFirst_LinkedList(queue);
+            } else {
+                // 情况如下&#xff1a;
+                // 1 x[2 2] 1 1
+                // 1 x[2] 1 2 1
+                // 将后面的两个1移动到开头
+                moved_count &#43;&#61; 2;
+                queue &#61; confirm(queue, first-&gt;num);
+            }
+        } else if(first-&gt;count &#61;&#61; 2) {
+            // 当first.count &#61;&#61; 2 时&#xff0c;情况如下&#xff1a;
+            // 1 1 x 1 y z
+            moved_count &#43;&#61; 1;
+            queue &#61; confirm(queue, first-&gt;num);
+        }
+    }
+
+    printf(&#34;%d\n&#34;, moved_count);
+
+    return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

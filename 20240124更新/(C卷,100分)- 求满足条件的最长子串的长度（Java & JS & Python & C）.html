@@ -1,0 +1,319 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 求满足条件的最长子串的长度（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个字符串&#xff0c;只包含字母和数字&#xff0c;按要求找出字符串中的最长&#xff08;连续&#xff09;子串的长度&#xff0c;字符串本身是其最长的子串&#xff0c;子串要求&#xff1a;</p> 
+<p>1、 只包含1个字母(a~z, A~Z)&#xff0c;其余必须是数字&#xff1b;</p> 
+<p>2、 字母可以在子串中的任意位置&#xff1b;</p> 
+<p>如果找不到满足要求的子串&#xff0c;如全是字母或全是数字&#xff0c;则返回-1。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>字符串(只包含字母和数字)</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>子串的长度</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:71px;">输入</td><td style="width:427px;">abC124ACb</td></tr><tr><td style="width:71px;">输出</td><td style="width:427px;">4</td></tr><tr><td style="width:71px;">说明</td><td style="width:427px;">满足条件的最长子串是C124或者124A&#xff0c;长度都是4</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>a5</td></tr><tr><td>输出</td><td>2</td></tr><tr><td>说明</td><td>字符串自身就是满足条件的子串&#xff0c;长度为2</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:71px;">输入</td><td style="width:427px;">aBB9</td></tr><tr><td style="width:71px;">输出</td><td style="width:427px;">2</td></tr><tr><td style="width:71px;">说明</td><td style="width:427px;">满足条件的子串为B9&#xff0c;长度为2</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:71px;">输入</td><td style="width:427px;">abcdef</td></tr><tr><td style="width:71px;">输出</td><td style="width:427px;">-1</td></tr><tr><td style="width:71px;">说明</td><td style="width:427px;">没有满足要求的子串&#xff0c;返回-1</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>此题可以用滑动窗口求解。</p> 
+<p>滑动窗口的左指针开始指向索引0&#xff0c;右指针也是从索引0开始不断向右移动&#xff0c;当右指针遇到字母时&#xff0c;则滑动窗口内部含字母量&#43;1。</p> 
+<p>当滑动窗口内部含有两个字母时&#xff0c;存在如下情况&#xff1a;</p> 
+<p><img alt="" height="745" src="https://img-blog.csdnimg.cn/862c2c560abd4ecc8819897b12dbd390.png" width="1200" /></p> 
+<p>此时&#xff0c;我们需要移动left指针来达到减少一个字母的目的&#xff0c;但是单纯的left&#43;&#43;就能减少一个字母吗&#xff1f;</p> 
+<p>我们可以看看上面第三个圈的情况&#xff0c;当left指针指向的是数字&#xff0c;如果left&#43;&#43;&#xff0c;则滑动窗口内的字母并不会减少。</p> 
+<p>因此&#xff0c;我们需要判断left指针当前指向的元素是否为字母&#xff0c;如果为字母&#xff0c;则left&#43;&#43;才能起到减少一个字母的作用&#xff0c;否则不能。</p> 
+<p>那么当left指针当前指向的是数字&#xff0c;则left指针应该如何跳转呢&#xff1f;</p> 
+<p>如上面第三个圈内所示&#xff0c;貌似是直接 left &#61; right&#xff0c;但是真是这样吗&#xff1f;请看下面例子</p> 
+<p><img alt="" height="747" src="https://img-blog.csdnimg.cn/27a837dbb4744e77ba361574decceb6c.png" width="491" /></p> 
+<p>从上面例子可以看出&#xff0c;当left指针指向数字&#xff0c;但是滑动窗口内已经有两个字母时&#xff0c;left应该移动到第一个字母的后面一个位置target。target位置只有两种数据&#xff1a;字母或数字&#xff0c;如果是字母则target位置就是滑动窗口内第二字母的位置&#xff0c;如果是数字&#xff0c;则避免了长度损失。 </p> 
+<p>而为了能够准确跳转到滑动窗口内第一个字母后面一个位置&#xff0c;我们在right指针扫描过程中&#xff0c;就需要记录字母所在的索引。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+/* 滑动窗口 */
+function getResult(s) {
+  let maxLen &#61; -1;
+
+  let l &#61; 0,
+    r &#61; 0;
+
+  let hasLetter &#61; false;
+
+  const letterIdx &#61; [];
+
+  while (r &lt; s.length) {
+    if (isLetter(s[r])) {
+      hasLetter &#61; true;
+      letterIdx.push(r);
+
+      if (letterIdx.length &gt; 1) {
+        l &#61; letterIdx.shift() &#43; 1;
+      }
+
+      if (r &#61;&#61; l) {
+        r&#43;&#43;;
+        continue;
+      }
+    }
+
+    maxLen &#61; Math.max(maxLen, r - l &#43; 1);
+    r&#43;&#43;;
+  }
+
+  if (!hasLetter) return -1;
+  return maxLen;
+}
+
+function isLetter(c) {
+  return (c &gt;&#61; &#34;a&#34; &amp;&amp; c &lt;&#61; &#34;z&#34;) || (c &gt;&#61; &#34;A&#34; &amp;&amp; c &lt;&#61; &#34;Z&#34;);
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.next()));
+  }
+
+  private static int getResult(String str) {
+    int maxLen &#61; -1;
+    boolean hasLetter &#61; false;
+
+    int l &#61; 0, r &#61; 0;
+    LinkedList&lt;Integer&gt; letterIdx &#61; new LinkedList&lt;&gt;();
+
+    while (r &lt; str.length()) {
+      char c &#61; str.charAt(r);
+
+      if (isLetter(c)) {
+        hasLetter &#61; true;
+        letterIdx.add(r);
+
+        if (letterIdx.size() &gt; 1) {
+          l &#61; letterIdx.removeFirst() &#43; 1;
+        }
+
+        if (r &#61;&#61; l) {
+          r&#43;&#43;;
+          continue;
+        }
+      }
+
+      maxLen &#61; Math.max(maxLen, r - l &#43; 1);
+      r&#43;&#43;;
+    }
+
+    if (!hasLetter) return -1;
+    return maxLen;
+  }
+
+  public static boolean isLetter(char c) {
+    return (c &gt;&#61; &#39;a&#39; &amp;&amp; c &lt;&#61; &#39;z&#39;) || (c &gt;&#61; &#39;A&#39; &amp;&amp; c &lt;&#61; &#39;Z&#39;);
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    maxLen &#61; -1
+
+    l &#61; 0
+    r &#61; 0
+    letterIdx &#61; []
+    hasLetter &#61; False
+
+    while r &lt; len(s):
+        if s[r].isalpha():
+            hasLetter &#61; True
+            letterIdx.append(r)
+
+            if len(letterIdx) &gt; 1:
+                l &#61; letterIdx.pop(0) &#43; 1
+
+            if r &#61;&#61; l:
+                r &#43;&#61; 1
+                continue
+
+        maxLen &#61; max(maxLen, r - l &#43; 1)
+        r &#43;&#61; 1
+
+    if not hasLetter:
+        return -1
+    return maxLen
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
+
+typedef struct ListNode{
+    int ele;
+    struct ListNode* next;
+} ListNode;
+
+typedef struct {
+    int size;
+    ListNode* head;
+    ListNode* tail;
+} LinkedList;
+
+LinkedList* new_LinkedList();
+void addLast_LinkedList(LinkedList* link, int ele);
+int removeFirst_LinkedList(LinkedList* link);
+
+int main() {
+    char s[100000];
+    gets(s);
+
+    int maxLen &#61; -1;
+    int hasLetter &#61; 0;
+
+    int l &#61; 0;
+    int r &#61; 0;
+
+    LinkedList* letterIdx &#61; new_LinkedList();
+
+    int len &#61; strlen(s);
+    while(r &lt; len) {
+        char c &#61; s[r];
+
+        if((c &gt;&#61; &#39;a&#39; &amp;&amp; c &lt;&#61; &#39;z&#39;) || (c &gt;&#61; &#39;A&#39; &amp;&amp; c &lt;&#61; &#39;Z&#39;)) {
+            hasLetter &#61; 1;
+            addLast_LinkedList(letterIdx, r);
+
+            if(letterIdx-&gt;size &gt; 1) {
+                l &#61; removeFirst_LinkedList(letterIdx) &#43; 1;
+            }
+
+            if(r &#61;&#61; l) {
+                r&#43;&#43;;
+                continue;
+            }
+        }
+
+        maxLen &#61; MAX(maxLen, r - l &#43; 1);
+        r&#43;&#43;;
+    }
+
+    if(!hasLetter) {
+        puts(&#34;-1&#34;);
+    } else {
+        printf(&#34;%d\n&#34;, maxLen);
+    }
+
+
+    return 0;
+}
+
+LinkedList* new_LinkedList() {
+    LinkedList* link &#61; (LinkedList*) malloc(sizeof(LinkedList));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void addLast_LinkedList(LinkedList* link, int ele) {
+    ListNode* node &#61; (ListNode*) malloc(sizeof(ListNode));
+
+    node-&gt;ele &#61; ele;
+    node-&gt;next &#61; NULL;
+
+    if(link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+int removeFirst_LinkedList(LinkedList* link) {
+    if(link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode* removed &#61; link-&gt;head;
+
+    if(link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+    }
+
+    link-&gt;size--;
+
+    int res &#61; removed-&gt;ele;
+
+    free(removed);
+
+    return res;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

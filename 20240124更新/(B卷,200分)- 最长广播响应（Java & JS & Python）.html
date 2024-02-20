@@ -1,0 +1,429 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 最长广播响应（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某通信网络中有N个网络结点&#xff0c;用1到N进行标识。</p> 
+<p>网络中的结点互联互通&#xff0c;且结点之间的消息传递有时延&#xff0c;相连结点的时延均为一个时间单位。</p> 
+<p>现给定网络结点的连接关系link[i]&#61;{u&#xff0c;v}&#xff0c;其中u和v表示网络结点。</p> 
+<p>当指定一个结点向其他结点进行广播&#xff0c;所有被广播结点收到消息后都会在原路径上回复一条响应消息&#xff0c;请计算发送结点至少需要等待几个时间单位才能收到所有被广播结点的响应消息。</p> 
+<p><strong>注&#xff1a;</strong></p> 
+<ol><li>N的取值范围为[1&#xff0c;100];</li><li>连接关系link的长度不超过3000&#xff0c;且1 &lt;&#61; u,v &lt;&#61; N;</li><li>网络中任意结点间均是可达的;</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的第一行为两个正整数&#xff0c;分别表示网络结点的个数N&#xff0c;以及时延列表的长度T&#xff1b;</p> 
+<p>接下来的T行输入&#xff0c;表示结点间的连接关系列表&#xff1b;</p> 
+<p>最后一行的输入为一个正整数&#xff0c;表示指定的广播结点序号&#xff1b;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个整数&#xff0c;表示发送结点接收到所有响应消息至少需要等待的时长。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 7<br /> 1 4<br /> 2 1<br /> 2 3<br /> 2 4<br /> 3 4<br /> 3 5<br /> 4 5<br /> 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">结点2到5的最小时延为2&#xff0c;到剩余结点的最小时延均为1&#xff0c;所以至少要等待2*2&#61;4s。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>题目用例的连接图如下</p> 
+<p><img alt="" height="236" src="https://img-blog.csdnimg.cn/dfda7b652d23498285dd79705de98848.png" width="382" /></p> 
+<p>本题其实就是求解单源最短路径&#xff0c;可以使用dijkstra算法。</p> 
+<p>关于dijkstra算法可以参考<a href="https://blog.csdn.net/qfc_128220/article/details/127680161?spm&#61;1001.2014.3001.5501" title="LeetCode - 743 网络延迟时间_伏城之外的博客-CSDN博客">LeetCode - 743 网络延迟时间_伏城之外的博客-CSDN博客</a></p> 
+<hr /> 
+<p>2023.06.06</p> 
+<p>本题是无向图&#xff0c;即点与点之间都是双向连接&#xff0c;因此构建邻接表时&#xff0c;需要注意双向性。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, t;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [n, t] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (t &amp;&amp; lines.length &#61;&#61;&#61; t &#43; 2) {
+    lines.shift();
+    const src &#61; parseInt(lines.pop());
+    const relations &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+
+    console.log(getMaxRespTime(n, src, relations));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getMaxRespTime(n, k, relations) {
+  // 邻接表
+  const graph &#61; {};
+
+  // 初始化邻接表
+  for (let i &#61; 0; i &lt; relations.length; i&#43;&#43;) {
+    const [p1, p2] &#61; relations[i];
+    graph[p1] ? graph[p1].push(p2) : (graph[p1] &#61; [p2]);
+    graph[p2] ? graph[p2].push(p1) : (graph[p2] &#61; [p1]);
+  }
+
+  // dist用于统计源点到图中各点的最短距离&#xff0c;初始化最短距离为Infinity&#xff0c;由于题目要求网络节点从1开始&#xff0c;因此这里数组长度设为n&#43;1
+  const dist &#61; new Array(n &#43; 1).fill(Infinity);
+  // 源点到自身的最短距离是0
+  dist[k] &#61; 0;
+
+  // needCheck是一个优先队列&#xff0c;用于存储每轮路径查找中确认了最短路径的目标点v
+  const needCheck &#61; [];
+
+  while (true) {
+    let flag &#61; false;
+    // graph[k]是一个数组&#xff0c;存储的是源点k的下一步相邻节点v
+    graph[k]?.forEach((v) &#61;&gt; {
+      let newDist &#61; dist[k] &#43; 1; // 题目说相邻节点的传输时延是1
+
+      // 如果本次路径下&#xff0c;源点k到目标点v的距离小于上次统计的&#xff0c;则更新
+      if (dist[v] &gt; newDist) {
+        dist[v] &#61; newDist;
+        // 如果优先队列中没有目标点v&#xff0c;则加入
+        if (needCheck.indexOf(v) &#61;&#61;&#61; -1) {
+          needCheck.push(v);
+          flag &#61; true;
+        }
+      }
+    });
+
+    // 如果优先队列为空&#xff0c;则结束循环
+    if (!needCheck.length) break;
+    // 如果优先队列有新节点加入&#xff0c;则重新排序&#xff0c;到源点k距离最小的点v&#xff0c;当成下次循环的新源点
+    if (flag) needCheck.sort((a, b) &#61;&gt; dist[a] - dist[b]);
+    // 取出队头&#xff0c;当成新源点&#xff0c;进入下次循环
+    k &#61; needCheck.shift();
+  }
+
+  // dist初始化为n&#43;1长度的数组&#xff0c;头部不对应任何节点&#xff0c;节点只取索引1~n&#xff0c;因此头部弹出
+  dist.shift();
+
+  // 由于题目说所有网络节点均互联&#xff0c;因此不存在零散点&#xff0c;即所有节点到源点距离均不可能是Infinity&#xff0c;因此可以直接取最大的
+  let ans &#61; Math.max(...dist);
+
+  // 本题要求最长响应时间&#xff0c;即往返时间
+  return ans * 2;
+}
+</code></pre> 
+<p></p> 
+<p>上面算法中&#xff0c;优先队列是基于有序数组实现的&#xff0c;但是优先队列其实并不需要维护成整体有序&#xff0c;只需要保证队头元素总是优先级最高的即可。</p> 
+<p>因此&#xff0c;我们可以基于堆结构&#xff08;完全二叉树&#xff09;来实现优先队列&#xff0c;关于优先队列的原理和实现&#xff0c;请看</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127695013?spm&#61;1001.2014.3001.5502" title="LeetCode - 1705 吃苹果的最大数目_伏城之外的博客-CSDN博客">LeetCode - 1705 吃苹果的最大数目_伏城之外的博客-CSDN博客</a></p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, t;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [n, t] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (t &amp;&amp; lines.length &#61;&#61;&#61; t &#43; 2) {
+    lines.shift();
+    const src &#61; parseInt(lines.pop());
+    const relations &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+
+    console.log(getMaxRespTime(n, src, relations));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getMaxRespTime(n, k, relations) {
+  const graph &#61; {};
+
+  for (let [u, v] of relations) {
+    graph[u] ? graph[u].push(v) : (graph[u] &#61; [v]);
+    graph[v] ? graph[v].push(u) : (graph[v] &#61; [u]);
+  }
+
+  const dist &#61; new Array(n &#43; 1).fill(Infinity);
+  dist[k] &#61; 0;
+
+  const pq &#61; new MyPriorityQueue((a, b) &#61;&gt; a[1] - b[1]);
+
+  while (true) {
+    graph[k]?.forEach((v) &#61;&gt; {
+      const newDist &#61; dist[k] &#43; 1;
+
+      if (newDist &lt; dist[v]) {
+        dist[v] &#61; newDist;
+        pq.push([v, dist[v]]);
+      }
+    });
+
+    if (pq.isEmpty()) break;
+
+    k &#61; pq.shift()[0];
+  }
+
+  dist.shift();
+
+  const ans &#61; Math.max(...dist);
+
+  return ans * 2;
+}
+
+class MyPriorityQueue {
+  constructor(compare) {
+    this.queue &#61; [];
+    this.compare &#61; compare;
+  }
+
+  #swap(i, j) {
+    const tmp &#61; this.queue[i];
+    this.queue[i] &#61; this.queue[j];
+    this.queue[j] &#61; tmp;
+  }
+
+  #sink() {
+    let k &#61; 0;
+
+    while (true) {
+      let l &#61; 2 * k &#43; 1;
+      let r &#61; l &#43; 1;
+
+      let fa &#61; this.queue[k];
+      let leftCh &#61; this.queue[l];
+      let rightCh &#61; this.queue[r];
+
+      let targetCh;
+      let t;
+      if (leftCh &amp;&amp; rightCh) {
+        if (this.compare(leftCh, rightCh) &lt; 0) {
+          targetCh &#61; leftCh;
+          t &#61; l;
+        } else {
+          targetCh &#61; rightCh;
+          t &#61; r;
+        }
+      } else if (!leftCh &amp;&amp; rightCh) {
+        targetCh &#61; rightCh;
+        t &#61; r;
+      } else if (!rightCh &amp;&amp; leftCh) {
+        targetCh &#61; leftCh;
+        t &#61; l;
+      } else {
+        break;
+      }
+
+      if (this.compare(targetCh, fa) &lt; 0) {
+        this.#swap(t, k);
+        k &#61; t;
+      } else {
+        break;
+      }
+    }
+  }
+
+  #swim() {
+    let c &#61; this.queue.length - 1;
+
+    while (c !&#61;&#61; 0) {
+      let f &#61; Math.floor((c - 1) / 2);
+
+      let fa &#61; this.queue[f];
+      let ch &#61; this.queue[c];
+
+      if (this.compare(fa, ch) &gt; 0) {
+        this.#swap(c, f);
+        c &#61; f;
+      } else {
+        break;
+      }
+    }
+  }
+
+  isEmpty() {
+    return this.queue.length &#61;&#61;&#61; 0;
+  }
+
+  top() {
+    return this.queue[0];
+  }
+
+  shift() {
+    this.#swap(this.queue.length - 1, 0);
+    const res &#61; this.queue.pop();
+    this.#sink();
+    return res;
+  }
+
+  push(ele) {
+    this.queue.push(ele);
+    this.#swim();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int t &#61; sc.nextInt();
+
+    int[][] relations &#61; new int[t][2];
+    for (int i &#61; 0; i &lt; t; i&#43;&#43;) {
+      relations[i][0] &#61; sc.nextInt();
+      relations[i][1] &#61; sc.nextInt();
+    }
+
+    int src &#61; sc.nextInt();
+    System.out.println(getResult(n, src, relations));
+  }
+
+  public static int getResult(int n, int src, int[][] relations) {
+    HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; graph &#61; new HashMap&lt;&gt;();
+
+    for (int[] relation : relations) {
+      int u &#61; relation[0];
+      int v &#61; relation[1];
+
+      graph.putIfAbsent(u, new ArrayList&lt;&gt;());
+      graph.get(u).add(v);
+
+      graph.putIfAbsent(v, new ArrayList&lt;&gt;());
+      graph.get(v).add(u);
+    }
+
+    ArrayList&lt;Integer&gt; dist &#61; new ArrayList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; n &#43; 1; i&#43;&#43;) {
+      dist.add(Integer.MAX_VALUE);
+    }
+
+    dist.set(src, 0);
+
+    PriorityQueue&lt;Integer[]&gt; pq &#61; new PriorityQueue&lt;&gt;((a, b) -&gt; a[1] - b[1]);
+
+    while (true) {
+      if (graph.containsKey(src)) {
+        for (Integer v : graph.get(src)) {
+          int newDist &#61; dist.get(src) &#43; 1;
+          if (newDist &lt; dist.get(v)) {
+            dist.set(v, newDist);
+            pq.offer(new Integer[] {v, newDist});
+          }
+        }
+      }
+
+      if (pq.isEmpty()) break;
+      src &#61; pq.poll()[0];
+    }
+
+    dist.remove(0);
+
+    return dist.stream().max((a, b) -&gt; a - b).get() * 2;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import queue
+import sys
+
+n, t &#61; map(int, input().split())
+relations &#61; [list(map(int, input().split())) for _ in range(t)]
+src &#61; int(input())
+
+
+# 算法入口
+def getResult(n, src, relations):
+    graph &#61; {}
+
+    for u, v in relations:
+        if graph.get(u) is None:
+            graph[u] &#61; []
+        graph[u].append(v)
+
+        if graph.get(v) is None:
+            graph[v] &#61; []
+        graph[v].append(u)
+
+    dist &#61; [sys.maxsize] * (n &#43; 1)
+
+    dist[src] &#61; 0
+
+    pq &#61; queue.PriorityQueue()
+
+    while True:
+        if graph.get(src) is not None:
+            for v in graph[src]:
+                newDist &#61; dist[src] &#43; 1
+                if newDist &lt; dist[v]:
+                    dist[v] &#61; newDist
+                    pq.put([newDist, v])
+
+        if pq.qsize() &#61;&#61; 0:
+            break
+
+        src &#61; pq.get()[1]
+
+    dist.pop(0)
+
+    return max(dist) * 2
+
+
+# 算法调用
+print(getResult(n, src, relations))
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

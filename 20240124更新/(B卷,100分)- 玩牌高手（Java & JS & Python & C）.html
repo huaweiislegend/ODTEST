@@ -1,0 +1,206 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 玩牌高手（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个长度为n的整型数组&#xff0c;表示一个选手在n轮内可选择的牌面分数。选手基于规则选牌&#xff0c;</p> 
+<p>请计算所有轮结束后其可以获得的最高总分数。</p> 
+<p><strong>选择规则如下&#xff1a;</strong></p> 
+<ol><li>在每轮里选手可以选择获取该轮牌面&#xff0c;则其总分数加上该轮牌面分数&#xff0c;为其新的总分数。</li><li>选手也可不选择本轮牌面直接跳到下一轮&#xff0c;此时将当前总分数还原为3轮前的总分数&#xff0c;若当前轮次小于等于3&#xff08;即在第1、2、3轮选择跳过轮次&#xff09;&#xff0c;则总分数置为0。</li><li>选手的初始总分数为0&#xff0c;且必须依次参加每一轮。</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为一个小写逗号分割的字符串&#xff0c;表示n轮的牌面分数&#xff0c;1&lt;&#61; n &lt;&#61;20。</p> 
+<p>分数值为整数&#xff0c;-100 &lt;&#61; 分数值 &lt;&#61; 100。</p> 
+<p>不考虑格式问题。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>所有轮结束后选手获得的最高总分数。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:76px;">输入</td><td style="width:422px;">1,-5,-6,4,3,6,-2</td></tr><tr><td style="width:76px;">输出</td><td style="width:422px;">11</td></tr><tr><td style="width:76px;">说明</td><td style="width:422px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这题是一道简单的动态规划的题目&#xff0c;因为每一轮的总分都与前面轮次的总分有状态转移关系。</p> 
+<p></p> 
+<p>比如 1,-5,-6,4,3,6,-2</p> 
+<p>第1轮&#xff0c;牌面1&#xff0c;我们选了的话&#xff0c;总分1&#xff0c;不选的话&#xff0c;总分0&#xff0c;而本轮总分正数的话&#xff0c;对后面轮总分有益&#xff0c;因此我们选牌面1&#xff0c;让总分为1</p> 
+<p>第2轮&#xff0c;牌面-5&#xff0c;我们选了的话&#xff0c;总分-5&#43;1&#61;-4&#xff0c;不选的话&#xff0c;总分重置为0&#xff0c;因此我们不选&#xff0c;因为负数总分对后面轮次总分无益&#xff0c;此时总分为0</p> 
+<p>第3轮&#xff0c;牌面-6&#xff0c;同样不选&#xff0c;总分为0</p> 
+<p>第4轮&#xff0c;牌面4&#xff0c;选&#xff0c;总分4</p> 
+<p>第5轮&#xff0c;牌面3&#xff0c;选&#xff0c;总分7</p> 
+<p>第6轮&#xff0c;牌面6&#xff0c;选&#xff0c;总分13</p> 
+<p>第7轮&#xff0c;牌面-2&#xff0c;如果我们不选&#xff0c;则总分将还原为3轮前的总分数&#xff0c;即第4轮&#xff0c;总分变为4&#xff0c;如果我们选了&#xff0c;则总分为13-2&#61;11&#xff0c;而11&gt;4&#xff0c;因此我们选牌面-2</p> 
+<p>最终最高总分为11。</p> 
+<p></p> 
+<p>通过上面逻辑我们可以总结出状态转移方程如下&#xff1a;</p> 
+<p>dp[0] &#61; max(arr[0], 0)</p> 
+<p>dp[i] &#61; max(dp[i-1] &#43; arr[i], 0)    ,  1&lt;&#61;i&lt;&#61;2</p> 
+<p>dp[i] &#61; max(dp[i-1] &#43; arr[i], dp[i-3]),  i&gt;2</p> 
+<p></p> 
+<p>dp数组用于存储每轮的最高总分。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34;,&#34;).map((ele) &#61;&gt; parseInt(ele));
+
+  console.log(getMaxScore(arr));
+});
+
+function getMaxScore(arr) {
+  const dp &#61; [];
+
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    if (i &#61;&#61;&#61; 0) {
+      dp[0] &#61; Math.max(arr[0], 0);
+    } else if (i &gt; 0 &amp;&amp; i &lt; 3) {
+      dp[i] &#61; Math.max(dp[i - 1] &#43; arr[i], 0);
+    } else {
+      dp[i] &#61; Math.max(dp[i - 1] &#43; arr[i], dp[i - 3]);
+    }
+  }
+
+  return dp.pop();
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+ 
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+ 
+    Integer[] arr &#61;
+        Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+ 
+    System.out.println(getResult(arr));
+  }
+ 
+  // 算法入口
+  public static int getResult(Integer[] arr) {
+    int n &#61; arr.length;
+ 
+    int[] dp &#61; new int[n];
+ 
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (i &#61;&#61; 0) {
+        dp[0] &#61; Math.max(0, arr[0]);
+      } else if (i &lt; 3) {
+        dp[i] &#61; Math.max(0, dp[i - 1] &#43; arr[i]);
+      } else {
+        dp[i] &#61; Math.max(dp[i - 3], dp[i - 1] &#43; arr[i]);
+      }
+    }
+ 
+    return dp[n - 1];
+  }
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(int, input().split(&#34;,&#34;)))
+ 
+ 
+# 算法入口
+def getResult():
+    n &#61; len(arr)
+ 
+    dp &#61; [0] * n
+ 
+    for i in range(n):
+        if i &#61;&#61; 0:
+            dp[0] &#61; max(0, arr[0])
+        elif i &lt; 3:
+            dp[i] &#61; max(0, dp[i - 1] &#43; arr[i])
+        else:
+            dp[i] &#61; max(dp[i - 3], dp[i - 1] &#43; arr[i])
+ 
+    return dp[-1]
+ 
+ 
+# 算法调用
+print(getResult())</code></pre> 
+<p> </p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a,b) (a) &gt; (b) ? (a) : (b)
+
+#define MAX_SIZE 20
+
+int getResult(int nums[], int nums_size);
+
+int main() {
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+
+    while(scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if(getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    printf(&#34;%d\n&#34;, getResult(nums, nums_size));
+
+    return 0;
+}
+
+int getResult(int nums[], int nums_size) {
+    int dp[nums_size];
+
+    for(int i&#61;0; i&lt;nums_size; i&#43;&#43;) {
+        if(i &#61;&#61; 0) {
+            dp[0] &#61; MAX(0, nums[0]);
+        } else if(i &lt; 3) {
+            dp[i] &#61; MAX(0, dp[i-1] &#43; nums[i]);
+        } else {
+            dp[i] &#61; MAX(dp[i-3], dp[i-1] &#43; nums[i]);
+        }
+    }
+
+    return dp[nums_size-1];
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

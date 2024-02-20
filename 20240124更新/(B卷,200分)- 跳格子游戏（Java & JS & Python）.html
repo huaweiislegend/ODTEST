@@ -1,0 +1,229 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 跳格子游戏（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>地上共有N个格子&#xff0c;你需要跳完地上所有的格子&#xff0c;但是格子间是有强依赖关系的&#xff0c;跳完前一个格子后&#xff0c;后续的格子才会被开启&#xff0c;格子间的依赖关系由多组steps数组给出&#xff0c;steps[0]表示前一个格子&#xff0c;steps[1]表示steps[0]可以开启的格子:</p> 
+<p>比如[0,1]表示从跳完第0个格子以后第1个格子就开启了&#xff0c;比如[2,1]&#xff0c;[2,3]表示跳完第2个格子后第1个格子和第3个格子就被开启了。</p> 
+<p>请你计算是否能由给出的steps数组跳完所有的格子&#xff0c;如果可以输出yes&#xff0c;否则输出no。</p> 
+<p><strong>说明&#xff1a;</strong></p> 
+<p>1.你可以从一个格子跳到任意一个开启的格子</p> 
+<p>2.没有前置依赖条件的格子默认就是开启的</p> 
+<p>3.如果总数是N&#xff0c;则所有的格子编号为[0,1,2,3…N-1]连续的数组</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入一个整数N表示总共有多少个格子&#xff0c;接着输入多组二维数组steps表示所有格子之间的依赖关系。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>如果能按照steps给定的依赖顺序跳完所有的格子输出yes&#xff0c;</p> 
+<p>否则输出no。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 ≤ N &#xff1c; 500</li><li>step[i].length &#61; 2</li><li>0 ≤ step[i][0]&#xff0c;step[i][1] &#xff1c; N</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 0 1<br /> 0 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">yes</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">总共有三个格子[0,1,2]&#xff0c;跳完0个格子后第1个格子就开启了&#xff0c;跳到第0个格子后第2个格子也被开启了&#xff0c;按照0-&gt;1-&gt;2或者0-&gt;2-&gt;1的顺序都可以跳完所有的格子</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 1 0<br /> 0 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">no</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">总共有2个格子&#xff0c;第1个格子可以开启第0格子&#xff0c;但是第1个格子又需要第0个格子才能开启&#xff0c;相互依赖&#xff0c;因此无法完成</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6<br /> 0 1<br /> 0 2<br /> 0 3<br /> 0 4<br /> 0 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">yes</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">总共有6个格子&#xff0c;第0个格子可以开启第1,2,3,4,5个格子&#xff0c;所以跳完第0个格子之后其他格子都被开启了&#xff0c;之后按任何顺序可以跳完剩余的格子</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 4 3<br /> 0 4<br /> 2 1<br /> 3 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">yes</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">跳完第0个格子可以开启格子4&#xff0c;跳完格子4可以开启格子3&#xff0c;跳完格子3可以开启格子2&#xff0c;跳完格子2可以开启格子1&#xff0c;按照0-&gt;4-&gt;3-&gt;2-&gt;1这样就跳完所有的格子</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 1 2<br /> 1 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">yes</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">总共4个格子[0,1,2,3]&#xff0c;格子1和格子3没有前置条件所以默认开启&#xff0c;格子1可以开启格子0和格子2&#xff0c;所以跳到格子1之后就可以开启所有的格子&#xff0c;因此可以跳完所有格子。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用拓扑排序求解&#xff0c;关于拓扑排序的解题原理请看<a href="https://blog.csdn.net/qfc_128220/article/details/127804547?spm&#61;1001.2014.3001.5502" title="LeetCode - 207 课程表_伏城之外的博客-CSDN博客">LeetCode - 207 课程表_伏城之外的博客-CSDN博客</a></p> 
+<p>在上面博客中&#xff0c;对拓扑排序做了详细描述&#xff0c;且上面算法题和本题意思几乎一致。</p> 
+<p></p> 
+<p>另外&#xff0c;本题输入描述中未给出输入结束条件&#xff0c;因此&#xff0c;我这里判断如果输入是一个空串&#xff0c;则判定为输入结束。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+
+    ArrayList&lt;Integer[]&gt; relations &#61; new ArrayList&lt;&gt;();
+    while (sc.hasNextLine()) {
+      String line &#61; sc.nextLine();
+      if (&#34;&#34;.equals(line)) break; // 题目没有说输入终止条件&#xff0c;因此我这里将输入空行作为终止条件
+      relations.add(Arrays.stream(line.split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new));
+    }
+
+    System.out.println(getResult(n, relations));
+  }
+
+  public static String getResult(int n, ArrayList&lt;Integer[]&gt; relations) {
+    int[] inDegree &#61; new int[n];
+    HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; next &#61; new HashMap&lt;&gt;();
+
+    for (Integer[] relation : relations) {
+      int a &#61; relation[0], b &#61; relation[1];
+      inDegree[b]&#43;&#43;;
+      next.putIfAbsent(a, new ArrayList&lt;&gt;());
+      next.get(a).add(b);
+    }
+
+    LinkedList&lt;Integer&gt; stack &#61; new LinkedList&lt;&gt;();
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (inDegree[i] &#61;&#61; 0) {
+        stack.add(i);
+      }
+    }
+
+    int count &#61; 0;
+    while (stack.size() &gt; 0) {
+      int a &#61; stack.removeLast();
+      count&#43;&#43;;
+
+      if (next.containsKey(a)) {
+        for (int b : next.get(a)) {
+          if (--inDegree[b] &#61;&#61; 0) {
+            stack.add(b);
+          }
+        }
+      }
+    }
+
+    return count &#61;&#61; n ? &#34;yes&#34; : &#34;no&#34;;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  if (line &#61;&#61;&#61; &#34;&#34;) {
+    const n &#61; parseInt(lines.shift());
+    const relations &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+
+    console.log(getResult(n, relations));
+
+    lines.length &#61; 0;
+  } else {
+    lines.push(line);
+  }
+});
+
+function getResult(n, relations) {
+  const inDegree &#61; new Array(n).fill(0); // 每个顶点的入度
+  const next &#61; {}; // 每个顶点的后继
+
+  for (let i &#61; 0; i &lt; relations.length; i&#43;&#43;) {
+    const [a, b] &#61; relations[i]; // 学完a&#xff0c;才能学b&#xff0c;即 a → b
+
+    inDegree[b]&#43;&#43;; // b顶点入度&#43;1
+    next[a] ? next[a].push(b) : (next[a] &#61; [b]); // a顶点的后继加入b
+  }
+
+  const stack &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    if (inDegree[i] &#61;&#61;&#61; 0) {
+      stack.push(i);
+    }
+  }
+
+  let count &#61; 0;
+  while (stack.length) {
+    const a &#61; stack.pop();
+    count&#43;&#43;;
+
+    next[a]?.forEach((b) &#61;&gt; {
+      if (--inDegree[b] &#61;&#61;&#61; 0) stack.push(b);
+    });
+  }
+
+  return count &#61;&#61;&#61; n ? &#34;yes&#34; : &#34;no&#34;;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+
+relations &#61; []
+while True:
+    line &#61; input()
+
+    # 本题没有给输入终止条件&#xff0c;因此我已输入空串为结束条件
+    if &#34;&#34; &#61;&#61; line:
+        break
+
+    relations.append(list(map(int, line.split())))
+
+
+# 算法入口
+def getResult():
+    inDegree &#61; [0] * n
+    next &#61; {}
+
+    for a, b in relations:
+        inDegree[b] &#43;&#61; 1
+        next.setdefault(a, [])
+        next[a].append(b)
+
+    stack &#61; []
+    for i in range(n):
+        if inDegree[i] &#61;&#61; 0:
+            stack.append(i)
+
+    count &#61; 0
+    while len(stack) &gt; 0:
+        a &#61; stack.pop()
+        count &#43;&#61; 1
+
+        if next.get(a) is not None:
+            for b in next[a]:
+                inDegree[b] -&#61; 1
+                if inDegree[b] &#61;&#61; 0:
+                    stack.append(b)
+
+    return &#34;yes&#34; if count &#61;&#61; n else &#34;no&#34;
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,184 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 括号匹配（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个字符串&#xff0c;里边可能包含“()”、“[]”、“{}”三种括号&#xff0c;请编写程序检查该字符串中的括号是否成对出现&#xff0c;且嵌套关系正确。<br /> 若括号成对出现且嵌套关系正确&#xff0c;或该字符串中无括号字符&#xff0c;输出&#xff1a;true&#xff1b;<br /> 若未正确使用括号字符&#xff0c;输出&#xff1a;false。<br /> 实现时&#xff0c;无需考虑非法输入。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">(1&#43;2)/(0.5&#43;1)</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">true</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/128000143?spm&#61;1001.2014.3001.5501" title="华为机试 - 表达式括号匹配_伏城之外的博客-CSDN博客">华为机试 - 表达式括号匹配_伏城之外的博客-CSDN博客</a></p> 
+<p>的变种题&#xff0c;解题思路相同。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(line) {
+  const regExp &#61; /[^\(\)\[\]\{\}]/g;
+
+  // 去除非括号字符
+  line &#61; line.replace(regExp, &#34;&#34;);
+
+  const map &#61; {
+    &#34;)&#34;: &#34;(&#34;,
+    &#34;]&#34;: &#34;[&#34;,
+    &#34;}&#34;: &#34;{&#34;,
+  };
+
+  const stack &#61; [];
+
+  for (let c of line) {
+    if (stack.length &amp;&amp; map[c]) {
+      if (stack.at(-1) &#61;&#61;&#61; map[c]) {
+        stack.pop();
+        continue;
+      } else {
+        return false;
+      }
+    }
+
+    stack.push(c);
+  }
+
+  return stack.length &#61;&#61; 0;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String s &#61; sc.nextLine();
+
+    System.out.println(getResult(s));
+  }
+
+  // 算法入口
+  public static boolean getResult(String s) {
+    // 去除非括号字符
+    s &#61; s.replaceAll(&#34;[^\\(\\)\\[\\]\\{\\}]&#34;, &#34;&#34;);
+
+    HashMap&lt;Character, Character&gt; map &#61; new HashMap&lt;&gt;();
+    map.put(&#39;)&#39;, &#39;(&#39;);
+    map.put(&#39;]&#39;, &#39;[&#39;);
+    map.put(&#39;}&#39;, &#39;{&#39;);
+
+    LinkedList&lt;Character&gt; stack &#61; new LinkedList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+
+      if (stack.size() &gt; 0 &amp;&amp; map.containsKey(c)) {
+        if (stack.getLast() &#61;&#61; map.get(c)) {
+          stack.removeLast();
+          continue;
+        } else {
+          return false;
+        }
+      }
+
+      stack.add(c);
+    }
+
+    return stack.size() &#61;&#61; 0;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    # 去除非括号字符
+    s &#61; re.sub(r&#34;[^\(\)\[\]\{\}]&#34;, &#34;&#34;, s)
+
+    map &#61; {
+        &#34;)&#34;: &#34;(&#34;,
+        &#34;]&#34;: &#34;[&#34;,
+        &#34;}&#34;: &#34;{&#34;
+    }
+
+    stack &#61; []
+
+    for i in range(len(s)):
+        c &#61; s[i]
+
+        if len(stack) &gt; 0 and map.get(c) is not None:
+            if stack[-1] &#61;&#61; map[c]:
+                stack.pop()
+                continue
+            else:
+                return False
+
+        stack.append(c)
+
+    return len(stack) &#61;&#61; 0
+
+
+# 算法调用
+print(str(getResult(s)).lower())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

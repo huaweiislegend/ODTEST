@@ -1,0 +1,234 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 微服务的集成测试（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>现在有n个容器服务&#xff0c;服务的启动可能有一定的依赖性&#xff08;有些服务启动没有依赖&#xff09;&#xff0c;其次服务自身启动加载会消耗一些时间。</p> 
+<p>给你一个 n x n 的二维矩阵useTime&#xff0c;其中</p> 
+<ul><li>useTime[i][i]&#61;10 表示服务i自身启动加载需要消耗10s</li><li>useTime[i][j] &#61; 1 表示服务i启动依赖服务j启动完成</li><li>useTime[i][k]&#61;0  表示服务i启动不依赖服务k</li></ul> 
+<p>其实 0&lt;&#61; i&#xff0c;j&#xff0c;k &lt; n。</p> 
+<p>服务之间启动没有循环依赖&#xff08;不会出现环&#xff09;&#xff0c;若想对任意一个服务i进行集成测试&#xff08;服务i自身也需要加载&#xff09;&#xff0c;求最少需要等待多少时间。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入服务总量 n&#xff0c;<br /> 之后的 n 行表示服务启动的依赖关系以及自身启动加载耗时<br /> 最后输入 k 表示计算需要等待多少时间后可以对服务 k 进行集成测试</p> 
+<p>其中 1 &lt;&#61; k &lt;&#61;n&#xff0c;1&lt;&#61;n&lt;&#61;100</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最少需要等待多少时间(s)后可以对服务 k 进行集成测试</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 5 0 0<br /> 1 5 0<br /> 0 1 5<br /> 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">15</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">服务3启动依赖服务2&#xff0c;服务2启动依赖服务1&#xff0c;由于服务1&#xff0c;2&#xff0c;3自身加载需要消耗5s&#xff0c;所以5&#43;5&#43;5&#61;15&#xff0c;需要等待15s后可以对服务3进行集成测试</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 5 0 0<br /> 1 10 1<br /> 1 0 11<br /> 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">26</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">服务2启动依赖服务1和服务3&#xff0c;服务3启动需要依赖服务1&#xff0c;服务1&#xff0c;2&#xff0c;3自身加载需要消耗5s&#xff0c;10s&#xff0c;11s&#xff0c;所以5&#43;10&#43;11&#61;26s&#xff0c;需要等待26s后可以对服务2进行集成测试。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 2 0 0 0<br /> 0 3 0 0<br /> 1 1 4 0<br /> 1 1 1 5<br /> 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">12</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">服务3启动依赖服务1和服务2&#xff0c;服务4启动需要依赖服务1&#xff0c;2&#xff0c;3&#xff0c;服务1&#xff0c;2&#xff0c;3自身加载需要消耗2s,3s,4s,5s&#xff0c;所以3&#43;4&#43;5&#61;12s&#xff08;因为服务1和服务2可以同时启动&#xff09;&#xff0c;要等待12s后可以对服务4进行集成测试。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 1 0 0 0 0<br /> 0 2 0 0 0<br /> 1 1 3 0 0<br /> 1 1 0 4 0<br /> 0 0 1 1 5<br /> 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">11</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">服务3启动依赖服务1和服务2&#xff0c;服务4启动需要依赖服务1&#xff0c;2&#xff0c;服务5启动需要依赖服务3&#xff0c;5&#xff0c;服务1&#xff0c;2&#xff0c;3&#xff0c;4&#xff0c;5自身加载需要消耗1s,2s,3s,4s,5s&#xff0c;所以2&#43;4&#43;5&#61;11s&#xff08;因为服务1和服务2可以同时启动&#xff0c;服务3和服务4可以同时启动&#xff09;&#xff0c;要等待11s后可以对服务5进行集成测试。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题看上去很像拓扑排序&#xff0c;但是拓扑排序并不是解决本题的最佳方案。</p> 
+<p>本题最佳解题思路是&#xff0c;利用递归&#xff0c;求解要求的服务点的启动时间&#xff0c;具体思路如下&#xff1a;</p> 
+<p>比如用例3图示如下&#xff1a;</p> 
+<p><img alt="" height="393" src="https://img-blog.csdnimg.cn/636a94984ceb4918af17e164a18b61bb.png" width="553" /></p> 
+<p>现在要求解服务4的启动时间&#xff0c;其实就是&#xff1a;</p> 
+<p>服务4的启动时间 &#61; <span style="color:#fe2c24;">max</span>(服务1启动时间&#xff0c; 服务2启动时间&#xff0c; 服务3启动时间)  &#43; 本身启动时间</p> 
+<p></p> 
+<p>其中&#xff0c;服务1&#xff0c;服务2没有前置服务&#xff0c;因此他们的启动时间就是本身启动时间。</p> 
+<p>而&#xff0c;服务3有前置服务&#xff0c;因此服务3的启动时间 &#61; <span style="color:#fe2c24;">max</span>(服务1启动时间&#xff0c; 服务2启动时间&#xff09;&#43; 本身启动时间</p> 
+<p></p> 
+<p>因此&#xff0c;服务3的启动时间 &#61; max(2, 3) &#43; 4 &#61; 7</p> 
+<p>进而&#xff0c;服务4的启动时间 &#61; max(2, 3, 7) &#43; 5 &#61; 12</p> 
+<p></p> 
+<p>这里提供一个测试用例&#xff1a;</p> 
+<blockquote> 
+ <p>4<br /> 2 0 0 1<br /> 0 3 0 0<br /> 0 1 1 0<br /> 0 1 1 1<br /> 1</p> 
+</blockquote> 
+<p><img alt="" height="174" src="https://img-blog.csdnimg.cn/2813b4e958814d7a822b6095bb918f8e.png" width="291" /></p> 
+<p>输出应该是7 </p> 
+<p></p> 
+<p>再提高一个测试用例&#xff1a;</p> 
+<blockquote> 
+ <p>4<br /> 5 0 0 0<br /> 0 1 0 0<br /> 0 1 1 0<br /> 1 0 1 3<br /> 4</p> 
+</blockquote> 
+<p><img alt="" height="130" src="https://img-blog.csdnimg.cn/8f2022f233174d0ba0ab2385e8690f89.png" width="291" /></p> 
+<p>输出应该是8 </p> 
+<p></p> 
+<p>再补充一个测试用例&#xff1a;</p> 
+<blockquote> 
+ <p>6<br /> 6 0 0 0 0 0<br /> 1 1 0 0 0 0<br /> 0 0 5 1 0 1<br /> 0 0 0 2 0 0<br /> 0 1 1 0 3 1<br /> 0 0 0 0 0 3<br /> 5</p> 
+</blockquote> 
+<p>输出应该是11</p> 
+<p>图示如下</p> 
+<p><img alt="" height="311" src="https://img-blog.csdnimg.cn/cbf596efc5b649598877d5c54a2020fc.png" width="447" /></p> 
+<p>依赖关系如下&#xff1a;<br /> 5 依赖于 2&#xff0c;3服务启动完成&#xff1b;<br /> - 2 依赖于 1 服务启动完成&#xff1b;<br /> - 1 不依赖于其他服务<br /> - 3 依赖于 4&#xff0c;6服务启动完成&#xff1b;<br /> - 4 不依赖于其他服务<br /> - 6 不依赖于其他服务<br /><br /> 我们假设当前时刻为0&#xff0c;然后1&#xff0c;4&#xff0c;6同时开始启动<br /> 0时刻&#xff1a;1&#xff0c;4&#xff0c;6启动中<br /> 1时刻&#xff1a;1&#xff0c;4&#xff0c;6启动中<br /> 2时刻&#xff1a;1&#xff0c;6启动中&#xff0c;4启动完成<br /> 3时刻&#xff1a;1 启动中&#xff0c;6启动完成&#xff0c;因此该时刻3服务可以启动了<br /> 4时刻&#xff1a;1&#xff0c;3启动中<br /> 5时刻&#xff1a;1&#xff0c;3启动中<br /> 6时刻&#xff1a;3启动中&#xff0c;1启动完成&#xff0c;因此该时刻2服务可以启动了<br /> 7时刻&#xff1a;3启动中&#xff0c;2启动完成<br /> 8时刻&#xff1a;3启动完成&#xff0c;因此该时刻5服务可以启动了<br /> 9时刻&#xff1a;5启动中<br /> 10时刻&#xff1a;5启动中<br /> 11时刻&#xff1a;5启动完成 </p> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+let cache;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 2) {
+    lines.shift();
+    const k &#61; lines.pop();
+    const matrix &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    cache &#61; new Array(n);
+    console.log(getResult(matrix, k));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(matrix, k) {
+  return dfs(k - 1, matrix);
+}
+
+function dfs(k, matrix) {
+  // cache用于记录每个服务所需要时间&#xff0c;避免多个子服务依赖同一个父服务时&#xff0c;对父服务启动时间的重复递归求解
+  if (cache[k] !&#61; undefined) return cache[k];
+
+  const preK &#61; matrix[k];
+
+  let maxPreTime &#61; 0;
+  for (let i &#61; 0; i &lt; preK.length; i&#43;&#43;) {
+    if (i !&#61; k &amp;&amp; preK[i] !&#61; 0) {
+      maxPreTime &#61; Math.max(maxPreTime, dfs(i, matrix));
+    }
+  }
+
+  cache[k] &#61; matrix[k][k] &#43; maxPreTime;
+
+  return cache[k];
+}
+</code></pre> 
+<p></p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  static int[] cache;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    cache &#61; new int[n];
+    Arrays.fill(cache, -1);
+
+    int[][] matrix &#61; new int[n][n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    int k &#61; sc.nextInt();
+
+    System.out.println(getResult(matrix, n, k));
+  }
+
+  public static int getResult(int[][] matrix, int n, int k) {
+    return dfs(k - 1, matrix);
+  }
+
+  public static int dfs(int k, int[][] matrix) {
+    // cache用于记录每个服务所需要时间&#xff0c;避免多个子服务依赖同一个父服务时&#xff0c;对父服务启动时间的重复递归求解
+    if (cache[k] !&#61; -1) return cache[k];
+
+    int[] preK &#61; matrix[k];
+
+    int maxPreTime &#61; 0;
+    for (int i &#61; 0; i &lt; preK.length; i&#43;&#43;) {
+      if (i !&#61; k &amp;&amp; preK[i] !&#61; 0) {
+        maxPreTime &#61; Math.max(maxPreTime, dfs(i, matrix));
+      }
+    }
+
+    cache[k] &#61; matrix[k][k] &#43; maxPreTime;
+
+    return cache[k];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+matrix &#61; [list(map(int, input().split())) for i in range(n)]
+k &#61; int(input())
+
+cache &#61; [-1]*n
+
+
+def dfs(k, matrix):
+    # cache用于记录每个服务所需要时间&#xff0c;避免多个子服务依赖同一个父服务时&#xff0c;对父服务启动时间的重复递归求解
+    if cache[k] !&#61; -1:
+        return cache[k]
+
+    preK &#61; matrix[k]
+
+    maxPreTime &#61; 0
+    for i in range(len(preK)):
+        if i !&#61; k and preK[i] !&#61; 0:
+            maxPreTime &#61; max(maxPreTime, dfs(i, matrix))
+
+    cache[k] &#61; matrix[k][k] &#43; maxPreTime
+
+    return cache[k]
+
+
+# 算法入口
+def getResult(matrix, k):
+    return dfs(k - 1, matrix)
+
+
+# 算法调用
+print(getResult(matrix, k))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

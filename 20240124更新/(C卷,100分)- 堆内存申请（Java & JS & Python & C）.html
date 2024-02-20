@@ -1,0 +1,456 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 堆内存申请（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4>在线OJ刷题</h4> 
+<p><a href="https://hydro.ac/d/HWOD2023/p/OD401" rel="nofollow" title="题目详情 - 堆内存申请 - Hydro">题目详情 - 堆内存申请 - Hydro</a></p> 
+<p></p> 
+<h4 id="main-toc">题目描述</h4> 
+<p>有一个总空间为100字节的堆&#xff0c;现要从中新申请一块内存&#xff0c;内存分配原则为&#xff1a;优先紧接着前一块已使用内存&#xff0c;分配空间足够且最接近申请大小的空闲内存。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第1行是1个整数&#xff0c;表示期望申请的内存字节数</p> 
+<p>第2到第N行是用空格分割的两个整数&#xff0c;表示当前已分配的内存的情况&#xff0c;每一行表示一块已分配的连续内存空间&#xff0c;每行的第1和第2个整数分别表示偏移地址和内存块大小&#xff0c;如&#xff1a;</p> 
+<blockquote> 
+ <p>0 1<br /> 3 2</p> 
+</blockquote> 
+<p>表示 0 偏移地址开始的 1 个字节和 3 偏移地址开始的 2 个字节已被分配&#xff0c;其余内存空闲。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>若申请成功&#xff0c;输出申请到内存的偏移&#xff1b;</p> 
+<p>若申请失败&#xff0c;输出 -1。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ol><li>若输入信息不合法或无效&#xff0c;则申请失败</li><li>若没有足够的空间供分配&#xff0c;则申请失败</li><li>堆内存信息有区域重叠或有非法值等都是无效输入</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> 0 1<br /> 3 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">堆中已使用的两块内存是偏移从0开始的1字节和偏移从3开始的2字节&#xff0c;空闲的两块内存是偏移从1开始2个字节和偏移从5开始95字节&#xff0c;根据分配原则&#xff0c;新申请的内存应从1开始分配1个字节&#xff0c;所以输出偏移为1。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例图示如下&#xff1a;</p> 
+<p>黄色表示从第2行开始输入的内存占用情况</p> 
+<p>绿色表示对应第1行的申请到的内存</p> 
+<p><img alt="" height="155" src="https://img-blog.csdnimg.cn/direct/0cfb2c04d1374465836572d1719b5603.png" width="667" /></p> 
+<p></p> 
+<p></p> 
+<p>本题我的解题思路如下&#xff1a;</p> 
+<p>首先收集所有的已分配的内存&#xff08;第2行~最后一行&#xff09;&#xff0c;然后将这些已分配内存按照起始位置升序排序。我们假设升序后的已分配内存为 used_memory。</p> 
+<p>然后&#xff0c;定义一个 free_offset&#xff0c;用于记录当前已分配内存的上一个空闲内存块的起始位置&#xff0c;比如</p> 
+<p><img alt="" height="296" src="https://img-blog.csdnimg.cn/direct/9c13e5f9c3c7463f9502187cee493e47.png" width="674" /></p> 
+<p>free_offset初始化为0。</p> 
+<p></p> 
+<p>之后&#xff0c;开始遍历 used_memory&#xff0c;每遍历一个已分配内存块&#xff0c;我们会得到如下信息&#xff1a;</p> 
+<ul><li>used.offset&#xff0c;当前已分配内存块的起始位置</li><li>used.size&#xff0c;当前已分配内存块的大小</li></ul> 
+<p></p> 
+<p>下面需要对于used.offset和used.size进行判断&#xff1a;</p> 
+<ul><li>如果 used.offset &lt; free_offset&#xff0c;则说明已分配内存块之间存在区域重叠&#xff0c;此时需要返回-1</li><li>如果 used.offset &gt; 99&#xff0c;则说明越界&#xff0c;因为当前堆只有100个字节&#xff0c;即最大偏移&#xff08;起始位置&#xff09;为99&#xff0c;此时应该返回-1</li><li>如果 used.size &lt;&#61; 0&#xff0c;则说明占用的内存非法&#xff0c;返回-1</li><li>如果 used.size &gt; 100 - used.offset&#xff0c;则说明占用的内存无效&#xff0c;即起始位置为used.offset的内存块&#xff0c;最大占用内存大小为 100 - used.offset&#xff0c;如果超过&#xff0c;则返回-1</li></ul> 
+<p></p> 
+<p>如果used.offset和used.size都合法&#xff0c;则我们可以比较used.offset 和 free_offset&#xff0c;如果 used.offset &gt; free_offset&#xff0c;则 [free_offset, used.offset - 1] 这个闭区间范围内是空闲内存块&#xff0c;比如下图所示&#xff1a;</p> 
+<p><img alt="" height="206" src="https://img-blog.csdnimg.cn/direct/9849c0a959f9483f806c0fc0f4102619.png" width="769" /></p> 
+<p>该空闲内存块的大小为&#xff1a; used.offset - free_offset</p> 
+<p>我们判断下该空闲内存块大小是否 ≥ 申请内存&#xff0c;若是&#xff0c;则继续判断该空闲内存块大小是否最接近 申请内存&#xff0c;若是&#xff0c;则记录此时的free_offset为一个可能解</p> 
+<p></p> 
+<p>接下来&#xff0c;更新 free_offset &#61; used.offset &#43; used.size&#xff0c;即如下图所示&#xff1a;</p> 
+<p><img alt="" height="199" src="https://img-blog.csdnimg.cn/direct/e74ccebe3bd3471b9f1eceea3526f21e.png" width="658" /></p> 
+<p>之后继续遍历下一个used_memory&#xff0c;重复上面逻辑。</p> 
+<p></p> 
+<p>需要注意收尾操作&#xff0c;即如下图所示&#xff1a;</p> 
+<p><img alt="" height="219" src="https://img-blog.csdnimg.cn/direct/17e0cc8eff7d4cc4841c137340ae400f.png" width="805" /></p> 
+<p>当遍历完used_memory后&#xff0c;free_offset会如上图所示指向最后一块空闲内存起始位置&#xff0c;此时该空闲内存块大小为 100 - free_offset&#xff0c;我们需要判断下这个空闲内存块是不是足够申请内存&#xff0c;且是最接近申请内存大小的。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+class Memory {
+  constructor(offset, size) {
+    this.offset &#61; offset; // 内存块起始位置
+    this.size &#61; size; // 内存块大小
+  }
+}
+
+void (async function () {
+  // 要申请的内存大小
+  const malloc_size &#61; parseInt(await readline());
+
+  // 已占用的内存
+  const used_memory &#61; [];
+
+  while (true) {
+    try {
+      const line &#61; await readline();
+
+      // 本地测试使用空行作为结束条件
+      // if (line.length &#61;&#61; 0) break;
+
+      const [offset, size] &#61; line.split(&#34; &#34;).map(Number);
+      used_memory.push(new Memory(offset, size));
+    } catch (e) {
+      break;
+    }
+  }
+
+  console.log(getResult(malloc_size, used_memory));
+})();
+
+function getResult(malloc_size, used_memory) {
+  // 申请的内存大小非法&#xff0c;则返回-1
+  if (malloc_size &lt;&#61; 0 || malloc_size &gt; 100) {
+    return -1;
+  }
+
+  // 记录最优的申请内存起始位置
+  let malloc_offset &#61; -1;
+  // 记录最接近申请内存的空闲内存块大小
+  let min_malloc_size &#61; 100;
+
+  // 对占用的内存按照起始位置升序
+  used_memory.sort((a, b) &#61;&gt; a.offset - b.offset);
+
+  // 记录&#xff08;相对于已占用内存的前面一个&#xff09;空闲内存块的起始位置
+  let free_offset &#61; 0;
+
+  for (let used of used_memory) {
+    // 如果占用的内存起始位置 小于 前面一个空闲内存块起始位置&#xff0c;则存在占用内存区域重叠
+    // 如果占用的内存起始位置 大于 99&#xff0c;则非法
+    if (used.offset &lt; free_offset || used.offset &gt; 99) return -1;
+
+    // 如果占用的内存的大小少于0&#xff0c;则非法
+    // 如果占用的内存的大小超过该内存起始位置往后所能申请到的最大内存大小&#xff0c;则无效
+    if (used.size &lt;&#61; 0 || used.size &gt; 100 - used.offset) return -1;
+
+    // 空闲内存块地址范围是&#xff1a;free_offset ~ memory.offset - 1
+    if (used.offset &gt; free_offset) {
+      // 空闲内存块大小
+      const free_memory_size &#61; used.offset - free_offset;
+
+      // 如果该空闲内存块大小足够&#xff0c;且最接近申请的内存大小
+      if (
+        free_memory_size &gt;&#61; malloc_size &amp;&amp;
+        free_memory_size &lt; min_malloc_size
+      ) {
+        malloc_offset &#61; free_offset;
+        min_malloc_size &#61; free_memory_size;
+      }
+    }
+
+    // 更新&#xff1a;空闲内存的起始位置 &#61; &#xff08;当前占用内存的结束位置 &#43; 1&#xff09; &#61; &#xff08;当前占用内存的起始位置 &#43; 占用大小&#xff09;
+    free_offset &#61; used.offset &#43; used.size;
+  }
+
+  // 收尾
+  const last_free_memory_size &#61; 100 - free_offset;
+  if (
+    last_free_memory_size &gt;&#61; malloc_size &amp;&amp;
+    last_free_memory_size &lt; min_malloc_size
+  ) {
+    malloc_offset &#61; free_offset;
+  }
+
+  return malloc_offset;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  static class Memory {
+    // 内存块起始位置
+    int offset;
+    // 内存块大小
+    int size;
+
+    public Memory(int offset, int size) {
+      this.offset &#61; offset;
+      this.size &#61; size;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    // 要申请的内存大小
+    int malloc_size &#61; Integer.parseInt(sc.nextLine());
+
+    // 已占用的内存
+    ArrayList&lt;Memory&gt; used_memory &#61; new ArrayList&lt;&gt;();
+    while (sc.hasNextLine()) {
+      String line &#61; sc.nextLine();
+
+      // 本地测试使用空行作为结束条件
+      //      if (line.length() &#61;&#61; 0) break;
+
+      int[] tmp &#61; Arrays.stream(line.split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+      used_memory.add(new Memory(tmp[0], tmp[1]));
+    }
+
+    System.out.println(getResult(malloc_size, used_memory));
+  }
+
+  public static int getResult(int malloc_size, ArrayList&lt;Memory&gt; used_memory) {
+    // 申请的内存大小非法&#xff0c;则返回-1
+    if (malloc_size &lt;&#61; 0 || malloc_size &gt; 100) {
+      return -1;
+    }
+
+    // 记录最优的申请内存起始位置
+    int malloc_offset &#61; -1;
+    // 记录最接近申请内存的空闲内存块大小
+    int min_malloc_size &#61; 100;
+
+    // 对占用的内存按照起始位置升序
+    used_memory.sort((a, b) -&gt; a.offset - b.offset);
+
+    // 记录&#xff08;相对于已占用内存的前面一个&#xff09;空闲内存块的起始位置
+    int free_offset &#61; 0;
+
+    for (Memory used : used_memory) {
+      // 如果占用的内存起始位置 小于 前面一个空闲内存块起始位置&#xff0c;则存在占用内存区域重叠
+      // 如果占用的内存起始位置 大于 99&#xff0c;则非法
+      if (used.offset &lt; free_offset || used.offset &gt; 99) return -1;
+
+      // 如果占用的内存的大小少于0&#xff0c;则非法
+      // 如果占用的内存的大小超过该内存起始位置往后所能申请到的最大内存大小&#xff0c;则无效
+      if (used.size &lt;&#61; 0 || used.size &gt; 100 - used.offset) return -1;
+
+      // 空闲内存块地址范围是&#xff1a;free_offset ~ memory.offset - 1
+      if (used.offset &gt; free_offset) {
+        // 空闲内存块大小
+        int free_memory_size &#61; used.offset - free_offset;
+
+        // 如果该空闲内存块大小足够&#xff0c;且最接近申请的内存大小
+        if (free_memory_size &gt;&#61; malloc_size &amp;&amp; free_memory_size &lt; min_malloc_size) {
+          malloc_offset &#61; free_offset;
+          min_malloc_size &#61; free_memory_size;
+        }
+      }
+
+      // 更新&#xff1a;空闲内存的起始位置 &#61; &#xff08;当前占用内存的结束位置 &#43; 1&#xff09; &#61; &#xff08;当前占用内存的起始位置 &#43; 占用大小&#xff09;
+      free_offset &#61; used.offset &#43; used.size;
+    }
+
+    // 收尾
+    int last_free_memory_size &#61; 100 - free_offset;
+    if (last_free_memory_size &gt;&#61; malloc_size &amp;&amp; last_free_memory_size &lt; min_malloc_size) {
+      malloc_offset &#61; free_offset;
+    }
+
+    return malloc_offset;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">class Memory:
+    def __init__(self, offset, size):
+        self.offset &#61; offset  # 内存块起始位置
+        self.size &#61; size  # 内存块大小
+
+
+# 输入获取
+malloc_size &#61; int(input())  # 要申请的内存大小
+
+used_memory &#61; []  # 已占用的内存
+while True:
+    try:
+        offset, size &#61; map(int, input().split())
+        used_memory.append(Memory(offset, size))
+    except:
+        break
+
+
+# 算法入口
+def getResult():
+    # 申请的内存大小非法&#xff0c;则返回-1
+    if malloc_size &lt;&#61; 0 or malloc_size &gt; 100:
+        return -1
+
+    # 记录最优的申请内存起始位置
+    malloc_offset &#61; -1
+    # 记录最接近申请内存的空闲内存块大小
+    min_malloc_size &#61; 100
+
+    # 对占用的内存按照起始位置升序
+    used_memory.sort(key&#61;lambda x: x.offset)
+
+    # 记录&#xff08;相对于已占用内存的前面一个&#xff09;空闲内存块的起始位置
+    free_offset &#61; 0
+
+    for used in used_memory:
+        # 如果占用的内存起始位置 小于 前面一个空闲内存块起始位置&#xff0c;则存在占用内存区域重叠
+        # 如果占用的内存起始位置 大于 99&#xff0c;则非法
+        if used.offset &lt; free_offset or used.offset &gt; 99:
+            return -1
+
+        # 如果占用的内存的大小少于0&#xff0c;则非法
+        # 如果占用的内存的大小超过该内存起始位置往后所能申请到的最大内存大小&#xff0c;则无效
+        if used.size &lt;&#61; 0 or used.size &gt; 100 - used.offset:
+            return -1
+
+        # 空闲内存块地址范围是&#xff1a;free_offset ~ memory.offset - 1
+        if used.offset &gt; free_offset:
+            # 空闲内存块大小
+            free_memory_size &#61; used.offset - free_offset
+
+            # 如果该空闲内存块大小足够&#xff0c;且最接近申请的内存大小
+            if malloc_size &lt;&#61; free_memory_size &lt; min_malloc_size:
+                malloc_offset &#61; free_offset
+                min_malloc_size &#61; free_memory_size
+
+        # 更新&#xff1a;空闲内存的起始位置 &#61; &#xff08;当前占用内存的结束位置 &#43; 1&#xff09; &#61; &#xff08;当前占用内存的起始位置 &#43; 占用大小&#xff09;
+        free_offset &#61; used.offset &#43; used.size
+
+    # 收尾
+    last_free_memory_size &#61; 100 - free_offset
+    if malloc_size &lt;&#61; last_free_memory_size &lt; min_malloc_size:
+        malloc_offset &#61; free_offset
+
+    return malloc_offset
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_COUNT 100
+
+typedef struct {
+    int offset;  // 内存块起始位置
+    int size; // 内存块大小
+} Memory;
+
+Memory *new_Memory(int offset, int size) {
+    Memory *m &#61; (Memory *) malloc(sizeof(Memory));
+    m-&gt;offset &#61; offset;
+    m-&gt;size &#61; size;
+    return m;
+}
+
+int cmp(const void *a, const void *b) {
+    Memory *A &#61; *((Memory **) a);
+    Memory *B &#61; *((Memory **) b);
+    return A-&gt;offset - B-&gt;offset;
+}
+
+int getResult(int malloc_size, Memory *used_memory[], int used_memory_count) {
+    // 申请的内存大小非法&#xff0c;则返回-1
+    if (malloc_size &lt;&#61; 0 || malloc_size &gt; 100) {
+        return -1;
+    }
+
+    // 记录最优的申请内存起始位置
+    int malloc_offset &#61; -1;
+    // 记录最接近申请内存的空闲内存块大小
+    int min_malloc_size &#61; 100;
+
+    // 对占用的内存按照起始位置升序
+    qsort(used_memory, used_memory_count, sizeof(Memory *), cmp);
+
+    // 记录&#xff08;相对于已占用内存的前面一个&#xff09;空闲内存块的起始位置
+    int free_offset &#61; 0;
+
+    for (int i &#61; 0; i &lt; used_memory_count; i&#43;&#43;) {
+        Memory *used &#61; used_memory[i];
+
+        // 如果占用的内存起始位置 小于 前面一个空闲内存块起始位置&#xff0c;则存在占用内存区域重叠
+        // 如果占用的内存起始位置 大于 99&#xff0c;则非法
+        if (used-&gt;offset &lt; free_offset || used-&gt;offset &gt; 99) return -1;
+
+        // 如果占用的内存的大小少于0&#xff0c;则非法
+        // 如果占用的内存的大小超过该内存起始位置往后所能申请到的最大内存大小&#xff0c;则无效
+        if (used-&gt;size &lt;&#61; 0 || used-&gt;size &gt; 100 - used-&gt;offset) return -1;
+
+        // 空闲内存块地址范围是&#xff1a;free_offset ~ memory.offset - 1
+        if (used-&gt;offset &gt; free_offset) {
+            // 空闲内存块大小
+            int free_memory_size &#61; used-&gt;offset - free_offset;
+
+            // 如果该空闲内存块大小足够&#xff0c;且最接近申请的内存大小
+            if (free_memory_size &gt;&#61; malloc_size &amp;&amp; free_memory_size &lt; min_malloc_size) {
+                malloc_offset &#61; free_offset;
+                min_malloc_size &#61; free_memory_size;
+            }
+        }
+
+        // 更新&#xff1a;空闲内存的起始位置 &#61; &#xff08;当前占用内存的结束位置 &#43; 1&#xff09; &#61; &#xff08;当前占用内存的起始位置 &#43; 占用大小&#xff09;
+        free_offset &#61; used-&gt;offset &#43; used-&gt;size;
+    }
+
+    // 收尾
+    int last_free_memory_size &#61; 100 - free_offset;
+    if (last_free_memory_size &gt;&#61; malloc_size &amp;&amp; last_free_memory_size &lt; min_malloc_size) {
+        malloc_offset &#61; free_offset;
+    }
+
+    return malloc_offset;
+}
+
+int main() {
+    // 要申请的内存大小
+    int malloc_size;
+    scanf(&#34;%d&#34;, &amp;malloc_size);
+    getchar();
+
+    // 已占用的内存
+    Memory *used_memory[MAX_COUNT];
+    int count &#61; 0;
+
+    char s[100];
+    while (gets(s)) {
+        // 本地测试使用空行作为结束条件
+        if(strlen(s) &#61;&#61; 0) break;
+
+        int offset, size;
+        sscanf(s, &#34;%d %d&#34;, &amp;offset, &amp;size);
+        used_memory[count&#43;&#43;] &#61; new_Memory(offset, size);
+    }
+
+    printf(&#34;%d\n&#34;, getResult(malloc_size, used_memory, count));
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,172 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 热点网站统计（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>企业路由器的统计页面&#xff0c;有一个功能需要动态统计公司访问最多的网页URL top N。请设计一个算法&#xff0c;可以高效动态统计Top N的页面。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>每一行都是一个URL或一个数字&#xff0c;如果是URL&#xff0c;代表一段时间内的网页访问&#xff1b;<br /> 如果是一个数字N&#xff0c;代表本次需要输出的Top N个URL。</p> 
+<p>输入约束&#xff1a;</p> 
+<p>1、总访问网页数量小于5000个&#xff0c;单网页访问次数小于65535次&#xff1b;<br /> 2、网页URL仅由字母&#xff0c;数字和点分隔符组成&#xff0c;且长度小于等于127字节&#xff1b;<br /> 3、数字是正整数&#xff0c;小于等于10且小于当前总访问网页数&#xff1b;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>每行输入要对应一行输出&#xff0c;输出按访问次数排序的前N个URL&#xff0c;用逗号分隔。</p> 
+<p>输出要求&#xff1a;</p> 
+<p>1、每次输出要统计之前所有输入&#xff0c;不仅是本次输入&#xff1b;<br /> 2、如果有访问次数相等的URL&#xff0c;按URL的字符串字典序升序排列&#xff0c;输出排序靠前的URL&#xff1b;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"><code>news.qq.com</code><br /><code>news.sina.com.cn</code><br /><code>news.qq.com</code><br /><code>news.qq.com</code><br /><code>game.163.com</code><br /><code>game.163.com</code><br /><code>www.huawei.com</code><br /><code>www.cctv.com</code><br /><code>3</code><br /><code>www.huawei.com</code><br /><code>www.cctv.com</code><br /><code>www.huawei.com</code><br /><code>www.cctv.com</code><br /><code>www.huawei.com</code><br /><code>www.cctv.com</code><br /><code>www.huawei.com</code><br /><code>www.cctv.com</code><br /><code>www.huawei.com</code><br /><code>3</code></td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"><code>news.qq.com,game.163.com,news.sina.com.cn</code><br /><code>www.huawei.com,www.cctv.com,news.qq.com</code></td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"><code>news.qq.com</code><br /><code>www.cctv.com</code><br /><code>1</code><br /><code>www.huawei.com</code><br /><code>www.huawei.com</code><br /><code>2</code><br /><code>3</code></td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"><code>news.qq.com</code><br /><code>www.huawei.com,news.qq.com</code><br /><code>www.huawei.com,news.qq.com,www.cctv.com</code></td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题需要注意&#xff1a;“每次输出要统计<span style="color:#fe2c24;">之前所有输入&#xff0c;不仅是本次输入</span><span style="color:#0d0016;">”。</span></p> 
+<p><span style="color:#0d0016;">这句话&#xff0c;可以看第一个用例的第二行输出&#xff0c;其中news.qq.com的输出就取决于上面这句话。</span></p> 
+<p></p> 
+<p>另外&#xff0c;还有这句话&#xff1a;“<span style="color:#fe2c24;">总访问网页数量小于5000个&#xff0c;单网页访问次数小于65535次&#xff1b;</span>”</p> 
+<p>也就说&#xff0c;最多有不超过5000 * 65535条访问URL记录&#xff0c;这个规模&#xff0c;我们需要尽可能地优化代码时间复杂度到O(1)左右&#xff0c;特别是“每次输出要统计<span style="color:#fe2c24;">之前所有输入&#xff0c;不仅是本次输入</span><span style="color:#0d0016;">”&#xff0c;我们最好创建缓存表&#xff0c;而不是重新统计。</span></p> 
+<p></p> 
+<p><span style="color:#0d0016;">其余地就感觉没什么需要注意的了&#xff0c;都是逻辑实现了。</span></p> 
+<hr /> 
+<p>2023.08.28</p> 
+<p>根据考友反馈&#xff0c;本题输入截止条件不能使用空行判断&#xff0c;可以直接死循环获取</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const cache &#61; {};
+
+  while (true) {
+    const line &#61; await readline();
+
+    if (/^\d&#43;$/.test(line)) {
+      console.log(sortURL(parseInt(line)));
+    } else {
+      cache[line] ? cache[line]&#43;&#43; : (cache[line] &#61; 1);
+    }
+  }
+
+  function sortURL(n) {
+    return Object.entries(cache)
+      .sort((a, b) &#61;&gt; {
+        // entry[0]代表key&#xff0c;即url
+        // entry[1]代表val, 即出现次数count
+        const res &#61; b[1] - a[1];
+        return res &#61;&#61; 0 ? (a[0] &gt; b[0] ? 1 : -1) : res;
+      })
+      .slice(0, n)
+      .map((entry) &#61;&gt; entry[0])
+      .join(&#34;,&#34;);
+  }
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.StringJoiner;
+import java.util.regex.Pattern;
+
+public class Main {
+  // 改正则用于判断一个字符串是否为正整数
+  static Pattern reg &#61; Pattern.compile(&#34;^\\d&#43;$&#34;);
+
+  // cache记录每个url出现次数
+  static HashMap&lt;String, Integer&gt; cache &#61; new HashMap&lt;&gt;();
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    while (sc.hasNextLine()) {
+      String tmp &#61; sc.nextLine();
+
+      if (reg.matcher(tmp).find()) {
+        // 如果输入的是正整数
+        System.out.println(sortURL(Integer.parseInt(tmp)));
+      } else {
+        // 输入的是url
+        cache.put(tmp, cache.getOrDefault(tmp, 0) &#43; 1);
+      }
+    }
+  }
+
+  public static String sortURL(int n) {
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+
+    cache.entrySet().stream()
+        .sorted(
+            (a, b) -&gt;
+                Objects.equals(a.getValue(), b.getValue())
+                    ? a.getKey().compareTo(b.getKey())
+                    : b.getValue() - a.getValue())
+        .limit(n)
+        .map(ele -&gt; ele.getKey())
+        .forEach(url -&gt; sj.add(url));
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+cache &#61; {}  # 记录每个url出现的次数
+ans &#61; []  # 记录题解
+
+
+def sortURL(n):
+    urlCount &#61; list(cache.items())
+    urlCount.sort(key&#61;lambda x: (-x[1], x[0]))
+
+    return &#34;,&#34;.join(map(lambda x: x[0], urlCount[:n]))
+
+
+while True:
+    tmp &#61; input()
+
+    if tmp.isnumeric():  # 如果输入的是数字&#xff0c;则需要对前面输入的url进行排序统计
+        print(sortURL(int(tmp)))
+    else:
+        if cache.get(tmp) is None:
+            cache[tmp] &#61; 1
+        else:
+            cache[tmp] &#43;&#61; 1
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

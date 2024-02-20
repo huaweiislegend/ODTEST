@@ -1,0 +1,390 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 称砝码（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>现有n种砝码&#xff0c;重量互不相等&#xff0c;分别为 m1,m2,m3…mn &#xff1b;<br /> 每种砝码对应的数量为 x1,x2,x3...xn 。现在要用这些砝码去称物体的重量(放在同一侧)&#xff0c;问能称出多少种不同的重量。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>对于每组测试数据&#xff1a;<br /> 第一行&#xff1a;n --- 砝码的种数(范围[1,10])<br /> 第二行&#xff1a;m1 m2 m3 ... mn --- 每种砝码的重量(范围[1,2000])<br /> 第三行&#xff1a;x1 x2 x3 .... xn --- 每种砝码对应的数量(范围[1,10])</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>利用给定的砝码可以称出的不同的重量数</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>数据范围&#xff1a;每组输入数据满足&#xff1a;</p> 
+<ul><li>1 ≤ n ≤ 10</li><li>1 ≤ mi ≤ 2000</li><li>1 ≤ xi ≤ 10</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 1 2<br /> 2 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">可以表示出0&#xff0c;1&#xff0c;2&#xff0c;3&#xff0c;4五种重量。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用多重背包求解。关于多重背包问题&#xff0c;其实就是01背包的变种问题。</p> 
+<p></p> 
+<p>01背包问题&#xff1a;</p> 
+<blockquote> 
+ <p>有N种物品&#xff0c;<span style="color:#fe2c24;">每种物品只有一个</span>&#xff0c;第 i 个物品的重量为 wi&#xff0c;价值为pi&#xff0c;另外还有一个承重为W的背包&#xff0c;问该背包在不超载的情况下&#xff0c;装入物品的最大价值是多少?</p> 
+</blockquote> 
+<p>多重背包问题</p> 
+<blockquote> 
+ <p>有N种物品&#xff0c;第 i 个物品的重量为 wi&#xff0c;价值为pi&#xff0c;<span style="color:#fe2c24;">数量为ci</span>&#xff0c;另外还有一个承重为W的背包&#xff0c;问该背包在不超载的情况下&#xff0c;装入物品的最大价值是多少?</p> 
+</blockquote> 
+<p></p> 
+<p>想求解多重背包问题&#xff0c;需要先弄得01背包问题&#xff0c;最好也了解下01背包的滚动数组优化&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/128307663" rel="nofollow" title="算法设计 - 01背包问题_01背包算法_伏城之外的博客-CSDN博客">算法设计 - 01背包问题_01背包算法_伏城之外的博客-CSDN博客</a></p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/128903531" rel="nofollow" title="算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客">算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_01背包问题状态转移方程_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>学会01背包后&#xff0c;多重背包问题的求解就非常简单了&#xff0c;其实我们可以将多重背包问题&#xff0c;转化为01背包问题&#xff0c;怎么转化呢&#xff1f;</p> 
+<p>举个例子&#xff1a;你有红富士苹果10个&#xff0c;那么是不是等价于红富士苹果A有1个&#xff0c;红富士苹果B有1个&#xff0c;...&#xff0c;红富士苹果J有1个&#xff1f;</p> 
+<p>其实这就是多重背包转化为01背包的方法。即将1种物品N个&#xff0c;转化为N种物品1个。</p> 
+<p></p> 
+<p>关于多重背包的求解有两种解法&#xff1a;</p> 
+<p>1、朴素解法</p> 
+<p>2、二进制优化解法</p> 
+<p>这两种解法具体逻辑请看&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/129300443" rel="nofollow" title="华为校招机试 - 攻城战&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客">华为校招机试 - 攻城战&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>本题中</p> 
+<ul><li>N种砝码  →  N种物品</li><li>每种砝码的重量  → 每种物品的重量</li><li>每种砝码的重量  → 每种物品的价值</li><li>每种砝码的数量  → 每种物品的数量</li><li>所有砝码的重量之和  → 背包承重</li></ul> 
+<p>本题要求的是&#xff1a;用给的砝码能组合出多少种重量</p> 
+<p>而这其实刚好和求解背包问题时&#xff0c;遍历所有可能的背包承重相符&#xff0c;因此本题非常适合当成背包问题求解。</p> 
+<p></p> 
+<h3>朴素解法</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+    lines.push(line);
+
+    if (lines.length &#61;&#61;&#61; 3) {
+        const n &#61; Number(lines[0]);
+        const m &#61; lines[1].split(&#34; &#34;).map(Number);
+        const x &#61; lines[2].split(&#34; &#34;).map(Number);
+
+        console.log(getResult(n, m, x));
+
+        lines.length &#61; 0;
+    }
+});
+
+/**
+ * &#64;param {*} n 砝码的种数
+ * &#64;param {*} m 每种砝码的重量
+ * &#64;param {*} x 每种砝码对应的数量
+ */
+function getResult(n, m, x) {
+    m &#61; [0, ...m];
+    x &#61; [0, ...x];
+
+    let bag &#61; 0;
+    for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) bag &#43;&#61; m[i] * x[i];
+
+    const dp &#61; new Array(bag &#43; 1).fill(false);
+    dp[0] &#61; true;
+
+    for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        for (let j &#61; bag; j &gt;&#61; m[i]; j--) {
+            for (let k &#61; 1; k &lt;&#61; x[i]; k&#43;&#43;) {
+                if (j &gt;&#61; m[i] * k) {
+                    if (dp[j - m[i] * k]) dp[j] &#61; true;
+                }
+            }
+        }
+    }
+
+    return dp.filter((f) &#61;&gt; f).length;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.HashSet;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc &#61; new Scanner(System.in);
+        int n &#61; sc.nextInt();
+
+        int[] m &#61; new int[n &#43; 1];
+        for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+            m[i] &#61; sc.nextInt();
+        }
+
+        int[] x &#61; new int[n &#43; 1];
+        for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+            x[i] &#61; sc.nextInt();
+        }
+
+        System.out.println(getResult(n, m, x));
+    }
+
+    public static int getResult(int n, int[] m, int[] x) {
+        int bag &#61; 0;
+        for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) bag &#43;&#61; m[i] * x[i];
+
+        boolean[] dp &#61; new boolean[bag &#43; 1];
+        dp[0] &#61; true;
+
+        for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+            for (int j &#61; bag; j &gt;&#61; m[i]; j--) {
+                for (int k &#61; 1; k &lt;&#61; x[i]; k&#43;&#43;) {
+                    if (j &gt;&#61; m[i] * k) {
+                        if (dp[j - m[i] * k]) dp[j] &#61; true;
+                    }
+                }
+            }
+        }
+
+        int count &#61; 0;
+        for (boolean flag : dp) {
+            if (flag) count&#43;&#43;;
+        }
+
+        return count;
+    }
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<p>Python朴素解法实测超时&#xff0c;请使用二进制优化解法</p> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+m &#61; list(map(int, input().split()))
+x &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(n, m, x):
+    m.insert(0, 0)
+    x.insert(0, 0)
+
+    bag &#61; 0
+    for i in range(1, n &#43; 1):
+        bag &#43;&#61; m[i] * x[i]
+
+    dp &#61; [False] * (bag &#43; 1)
+    dp[0] &#61; True
+
+    for i in range(1, n &#43; 1):
+        for j in range(bag, m[i] - 1, -1):
+            for k in range(1, x[i] &#43; 1):
+                if j &gt;&#61; m[i] * k:
+                    if dp[j - m[i] * k]:
+                        dp[j] &#61; True
+
+    return len(list(filter(lambda x: x, dp)))
+
+
+# 算法调用
+print(getResult(n, m, x))
+</code></pre> 
+<p></p> 
+<h3>二进制优化解法</h3> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const n &#61; Number(lines[0]);
+    const m &#61; lines[1].split(&#34; &#34;).map(Number);
+    const x &#61; lines[2].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(n, m, x));
+
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} n 砝码的种数
+ * &#64;param {*} m 每种砝码的重量
+ * &#64;param {*} x 每种砝码对应的数量
+ */
+function getResult(n, m, x) {
+  let bag &#61; 0;
+  const newM &#61; [];
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // 背包承重等于所有砝码重量之和
+    bag &#43;&#61; m[i] * x[i];
+
+    // 将1种物品N个&#xff0c;进行二进制优化
+    for (let j &#61; 1; j &lt;&#61; x[i]; j &lt;&lt;&#61; 1) {
+      newM.push(m[i] * j);
+      x[i] -&#61; j;
+    }
+
+    if (x[i] !&#61; 0) {
+      newM.push(x[i] * m[i]);
+    }
+  }
+
+  // 01背包滚动数组优化求解
+  const dp &#61; new Array(bag &#43; 1).fill(false);
+  // 0重量组合肯定存在
+  dp[0] &#61; true;
+
+  for (let w of newM) {
+    for (let j &#61; bag; j &gt;&#61; w; j--) {
+      // 如果j-w组合重量存在&#xff0c;那么j重量组合也一定存在
+      if (dp[j - w]) dp[j] &#61; true;
+    }
+  }
+
+  return dp.filter((f) &#61;&gt; f).length;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int n &#61; sc.nextInt();
+
+    int[] m &#61; new int[n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      m[i] &#61; sc.nextInt();
+    }
+
+    int[] x &#61; new int[n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      x[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(n, m, x));
+  }
+
+  public static int getResult(int n, int[] m, int[] x) {
+    int bag &#61; 0;
+    ArrayList&lt;Integer&gt; newM &#61; new ArrayList&lt;&gt;();
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      // 背包承重等于所有砝码重量之和
+      bag &#43;&#61; m[i] * x[i];
+
+      // 将1种物品N个&#xff0c;进行二进制优化
+      for (int j &#61; 1; j &lt;&#61; x[i]; j &lt;&lt;&#61; 1) {
+        newM.add(m[i] * j);
+        x[i] -&#61; j;
+      }
+
+      if (x[i] !&#61; 0) {
+        newM.add(m[i] * x[i]);
+      }
+    }
+
+    // 01背包滚动数组优化求解
+    boolean[] dp &#61; new boolean[bag &#43; 1];
+    // 0重量组合肯定存在
+    dp[0] &#61; true;
+
+    for (Integer w : newM) {
+      for (int j &#61; bag; j &gt;&#61; w; j--) {
+        // 如果j-w组合重量存在&#xff0c;那么j重量组合也一定存在
+        if (dp[j - w]) dp[j] &#61; true;
+      }
+    }
+
+    int count &#61; 0;
+    for (boolean flag : dp) {
+      if (flag) count&#43;&#43;;
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+m &#61; list(map(int, input().split()))
+x &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(n, m, x):
+    bag &#61; 0
+    newM &#61; []
+    for i in range(n):
+        # 背包承重等于所有砝码重量之和
+        bag &#43;&#61; m[i] * x[i]
+
+        # 将1种物品N个&#xff0c;进行二进制优化
+        j &#61; 1
+        while j &lt;&#61; x[i]:
+            newM.append(m[i] * j)
+            x[i] -&#61; j
+            j &lt;&lt;&#61; 1
+
+        if x[i] !&#61; 0:
+            newM.append(m[i] * x[i])
+
+    # 01背包滚动数组优化求解
+    dp &#61; [False] * (bag &#43; 1)
+    # 0重量组合肯定存在
+    dp[0] &#61; True
+
+    for w in newM:
+        for j in range(bag, w - 1, -1):
+            # 如果j-w组合重量存在&#xff0c;那么j重量组合也一定存在
+            if dp[j - w]:
+                dp[j] &#61; True
+
+    return len(list(filter(lambda x: x, dp)))
+
+
+# 算法调用
+print(getResult(n, m, x))
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

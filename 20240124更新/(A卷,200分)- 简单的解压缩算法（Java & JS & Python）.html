@@ -1,0 +1,257 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 简单的解压缩算法（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>现需要实现一种算法&#xff0c;能将一组压缩字符串还原成原始字符串&#xff0c;<strong>还原规则</strong>如下&#xff1a;</p> 
+<p>1、字符后面加数字N&#xff0c;表示重复字符N次。例如&#xff1a;压缩内容为A3&#xff0c;表示原始字符串为AAA。<br /> 2、花括号中的字符串加数字N&#xff0c;表示花括号中的字符重复N次。例如压缩内容为{AB}3&#xff0c;表示原始字符串为ABABAB。<br /> 3、字符加N和花括号后面加N&#xff0c;支持<strong>任意的嵌套</strong>&#xff0c;包括<strong>互相嵌套</strong>&#xff0c;例如&#xff1a;压缩内容可以{A3B1{C}3}3</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入一行压缩后的字符串</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出压缩前的字符串</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>输入保证&#xff0c;数字不会为0&#xff0c;花括号中的内容不会为空&#xff0c;保证输入的都是合法有效的压缩字符串</li><li>输入输出字符串区分大小写</li><li>输入的字符串长度范围为[1, 10000]</li><li>输出的字符串长度范围为[1, 100000]</li><li>数字N范围为[1, 10000]</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">{A3B1{C}3}3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">AAABCCCAAABCCCAAABCCC</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">{A3B1{C}3}3代表A字符重复3次&#xff0c;B字符重复1次&#xff0c;花括号中的C字符重复3次&#xff0c;最外层花括号中的AAABCCC重复3次。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题似曾相识&#xff0c;和下面两个题目很像</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127418256?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522166870038916782429736221%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;166870038916782429736221&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-1-127418256-null-null.nonecase&amp;utm_term&#61;%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8E%8B%E7%BC%A9&amp;spm&#61;1018.2226.3001.4450" title="华为机试 - 一种字符串压缩表示的解压_伏城之外的博客-CSDN博客">华为机试 - 一种字符串压缩表示的解压_伏城之外的博客-CSDN博客</a></p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127217535?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522166870803516800182766465%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;166870803516800182766465&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-1-127217535-null-null.nonecase&amp;utm_term&#61;%E6%8A%A5%E6%96%87%E8%A7%A3%E5%8E%8B%E7%BC%A9&amp;spm&#61;1018.2226.3001.4450" title="华为机试 - 报文解压缩_伏城之外的博客-CSDN博客">华为机试 - 报文解压缩_伏城之外的博客-CSDN博客</a></p> 
+<p>做完本题后&#xff0c;可以尝试再做做上面这两个真题。</p> 
+<p>本题可以使用栈结构来解题。</p> 
+<p></p> 
+<p>我的解题思路是&#xff0c;从左到右遍历输入字符串的每一个字符&#xff1a;</p> 
+<p>若发现非数字的字符&#xff0c;则直接压入栈stack中&#xff1b;</p> 
+<blockquote> 
+ <p>另外&#xff0c;发现字符“{”时&#xff0c;需要记录它在stack栈中位置到idxs数组中&#xff1b;</p> 
+</blockquote> 
+<p>若发现数字字符c&#xff0c;则我们需要观察此时stack栈顶元素&#xff1a;</p> 
+<ul><li>如果栈顶不是 ”}“ 字符&#xff0c;则取出栈顶元素&#xff0c;重复c次后&#xff0c;重新压入栈中。</li><li>如果栈顶是 ”}“ 字符&#xff0c;则弹出&#xff0c;并取出idxs中记录的最后一次的 ”{“ 压stack栈的位置idx&#xff0c;然后通过splice操作&#xff0c;将stack栈中idx往后的元素都删除取出为frag&#xff0c;然后重复frag片段c次&#xff0c;后重新压入stack栈中。</li></ul> 
+<p>按照此逻辑&#xff0c;即可完成本题要求的解压缩。</p> 
+<p></p> 
+<p>但是&#xff0c;本题有两个疑点&#xff1a;</p> 
+<ul><li>是否存在异常情况&#xff1f;由于本题没说如何处理异常&#xff0c;因此我这里默认无异常情况&#xff0c;即输入都是合法的。</li><li>数字N会不会出现多位数&#xff0c;比如A13这种情况&#xff0c;如果允许多位数字&#xff0c;则本题会变得更加复杂&#xff0c;由于用例和题目描述中都没有特别说明这种情况&#xff0c;因此我们默认这里的数字不会有多位数。</li></ul> 
+<p></p> 
+<p>2023.01.29</p> 
+<p>本题新增了备注说明&#xff0c;因此上面两个疑点得到了解答。</p> 
+<p>1、备注说明&#xff1a;保证输入的都是合法有效的压缩字符串</p> 
+<p>2、数字N范围为[1, 10000]</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  const stack &#61; [];
+  const idxs &#61; [];
+  const repeat &#61; [];
+
+  str &#43;&#61; &#34; &#34;;
+
+  for (let c of str) {
+    if (/\d/.test(c)) {
+      repeat.push(c);
+      continue;
+    }
+
+    // 如果出现A13,或者{ABC}99这种情况&#xff0c;我们需要把多位数解析出来
+    if (repeat.length &gt; 0) {
+      const n &#61; parseInt(repeat.join(&#34;&#34;));
+      repeat.length &#61; 0;
+      const top &#61; stack.pop();
+      if (top &#61;&#61;&#61; &#34;}&#34;) {
+        const frag &#61; stack.splice(idxs.pop()).slice(1).join(&#34;&#34;);
+        stack.push(...new Array(n).fill(frag).join(&#34;&#34;));
+      } else {
+        stack.push(...new Array(n).fill(top));
+      }
+    }
+
+    if (c &#61;&#61;&#61; &#34;{&#34;) {
+      idxs.push(stack.length);
+    }
+
+    stack.push(c);
+  }
+
+  return stack.join(&#34;&#34;).trim();
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<p>Java这里最好使用LinkedList模拟栈&#xff0c;但是LinkedList模拟的栈是严格栈&#xff0c;即只能每次弹出栈顶元素&#xff0c;不能一下将某个范围元素全部删除&#xff0c;因此在取出栈中 { 和 } 中间内容时&#xff0c;比JS略显复杂&#xff0c;但是处理逻辑相同。 </p> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61; sc.next();
+    System.out.println(getResult(str));
+  }
+
+  public static String getResult(String str) {
+    LinkedList&lt;String&gt; stack &#61; new LinkedList&lt;&gt;();
+    // idxs记录 { 出现的索引位置
+    LinkedList&lt;Integer&gt; idxs &#61; new LinkedList&lt;&gt;();
+    StringBuilder repeat &#61; new StringBuilder();
+    str &#43;&#61; &#34; &#34;;
+
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      char c &#61; str.charAt(i);
+      if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) { // 如果压栈遇到数字
+        // 如果出现A13,或者{ABC}99这种情况&#xff0c;我们需要把多位数解析出来
+        repeat.append(c);
+        continue;
+      }
+
+      if (repeat.length() &gt; 0) {
+        int n &#61; Integer.parseInt(repeat.toString());
+        repeat &#61; new StringBuilder();
+        if (&#34;}&#34;.equals(stack.getLast())) { // 如果此时栈顶是 } , 则需要将{,} 中间的内容整体重复repeat次
+          int left &#61; idxs.removeLast();
+          stack.remove(left); // 去掉 {
+          stack.removeLast(); // 去掉 }
+          updateStack(stack, left, n); // 将 {,} 中间部分重复 repeat次后重新压栈
+        } else { // 如果此时栈顶不是 }&#xff0c;则只需要将栈顶元素重复repeat次即可。
+          updateStack(stack, stack.size() - 1, n);
+        }
+      }
+
+      // 记录 { 出现的索引位置
+      if (c &#61;&#61; &#39;{&#39;) {
+        idxs.addLast(stack.size());
+      }
+
+      // 数字外的字符都压入栈中&#xff0c;其中{,}需要再重复操作时删除
+      stack.addLast(c &#43; &#34;&#34;);
+    }
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (String c : stack) {
+      sb.append(c);
+    }
+    return sb.toString().trim();
+  }
+
+  // 将stack&#xff0c;从left索引开始到最后的内容&#xff0c;弹栈&#xff0c;并整体重复repeat次后&#xff0c;再重新压入栈
+  public static void updateStack(LinkedList&lt;String&gt; stack, int left, int repeat) {
+    int count &#61; stack.size() - left;
+
+    // frag用于存储弹栈数据
+    String[] frag &#61; new String[count];
+
+    while (count-- &gt; 0) {
+      frag[count] &#61; stack.removeLast();
+    }
+
+    // 由于重复的是弹栈内容的整体&#xff0c;而不是每个&#xff0c;因此需要将弹栈内容合并
+    StringBuilder sb &#61; new StringBuilder();
+    for (String s : frag) {
+      sb.append(s);
+    }
+
+    // 将弹栈内容合并后重复repeat次&#xff0c;再重新压入栈中
+    String fragment &#61; sb.toString();
+    StringBuilder ans &#61; new StringBuilder();
+
+    for (int i &#61; 0; i &lt; repeat; i&#43;&#43;) {
+      ans.append(fragment);
+    }
+
+    stack.addLast(ans.toString());
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    stack &#61; []
+    idxs &#61; []
+    repeat &#61; []
+    
+    s &#61; s &#43; &#34; &#34;
+
+    for c in s:
+        if c.isdigit():
+            repeat.append(c)
+            continue
+        
+        if len(repeat) &gt; 0:
+            n &#61; int(&#34;&#34;.join(repeat))
+            repeat &#61; []
+            top &#61; stack.pop()
+            if top &#61;&#61; &#34;}&#34;:
+                start &#61; idxs.pop()
+                frag &#61; &#34;&#34;.join(stack[start&#43;1:])
+                stack &#61; stack[:start]
+                stack.extend([frag] * int(n))
+            else:
+                stack.extend([top]*int(n))
+
+        if c &#61;&#61; &#34;{&#34;:
+            idxs.append(len(stack))
+
+        stack.append(c)
+
+    return &#34;&#34;.join(stack).strip()
+
+
+# 算法调用
+print(getResult(s))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

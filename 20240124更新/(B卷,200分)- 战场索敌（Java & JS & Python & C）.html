@@ -1,0 +1,1089 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 战场索敌（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一个大小是N*M的战场地图&#xff0c;被墙壁 &#39;#&#39; 分隔成大小不同的区域&#xff0c;上下左右四个方向相邻的空地 &#39;.&#39; 属于同一个区域&#xff0c;只有空地上可能存在敌人&#39;E”&#xff0c;请求出地图上总共有多少区域里的敌人数小于K。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为N,M,K&#xff1b;</p> 
+<ul><li>N表示地图的行数&#xff0c;M表示地图的列数&#xff0c; K表示目标敌人数量</li><li>N&#xff0c;M&lt;&#61;100</li></ul> 
+<p>之后为一个NxM大小的字符数组。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>敌人数小于K的区域数量</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 5 2<br /> ..#EE<br /> E.#E.<br /> ###..</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">地图被墙壁分为两个区域&#xff0c;左边区域有1个敌人&#xff0c;右边区域有3个敌人&#xff0c;符合条件的区域数量是1</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析 </h4> 
+<p>用例图示如下</p> 
+<p><img alt="" height="200" src="https://img-blog.csdnimg.cn/9c419d9fe4af4d9e9136a865cfa88482.png" width="313" /></p> 
+<p></p> 
+<p>本题可以用深度优先搜索DFS来解决。</p> 
+<p></p> 
+<p>如果一个点满足下面条件&#xff0c;则进入深搜&#xff1a;</p> 
+<ul><li>未被访问过&#xff08;未被深搜过&#xff09;</li><li>不是墙</li></ul> 
+<p>同属一个源头的深搜区域&#xff0c;就是对应一个被墙隔开的独立区域&#xff0c;如果该独立区域深搜过程中&#xff0c;发现&#39;E&#39;&#xff0c;则该区域的敌军数量&#43;1。</p> 
+<p>如果一个独立区域深搜完成&#xff0c;对应敌军数量&lt;k&#xff0c;则最终题解统计的&#xff1a;敌军小于K的区域数量 &#43; 1。</p> 
+<p></p> 
+<p>另外&#xff0c;本题数量级稍大&#xff0c;如果采用深度优先搜索&#xff08;递归实现&#xff09;&#xff0c;则可能会发生栈内存溢出&#xff0c;即Stack Overflow&#xff0c;因此推荐使用深度优先搜索&#xff08;栈实现&#xff09;&#xff0c;或者广度优先搜索。</p> 
+<p>关于深度优先搜索&#xff08;基于栈&#xff09;和广度优先搜索&#xff08;基于队列&#xff09;的代码模板是非常类似的&#xff0c;但是由于选择的数据结构不同&#xff0c;因此产生深搜和广搜的不同效果。具体原因请看&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127711317" title="华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python&#xff09;_华为机考数组扩散求用时_伏城之外的博客-CSDN博客">华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python&#xff09;_华为机考数组扩散求用时_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<p>广度优先搜索&#xff08;基于队列结构&#xff0c;先进先出&#xff09;</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+
+// 矩阵行数&#xff0c;矩阵列数&#xff0c;区域敌军数量上限
+let n, m, k;
+// 地图矩阵
+let matrix;
+// 访问矩阵
+let visited;
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    [n, m, k] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n !&#61; undefined &amp;&amp; lines.length &#61;&#61; n &#43; 1) {
+    lines.shift();
+    matrix &#61; lines;
+    visited &#61; new Array(n).fill(0).map(() &#61;&gt; new Array(m).fill(false));
+
+    console.log(getResult());
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult() {
+  let ans &#61; 0;
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; m; j&#43;&#43;) {
+      if (visited[i][j] || matrix[i][j] &#61;&#61; &#34;#&#34;) continue;
+      // 如果(i,j)位置未访问过&#xff0c;且不是墙&#xff0c;则进入广搜&#xff0c;广搜结果是广搜区域内的敌军数量&#xff0c;如果数量小于k&#xff0c;则该区域符合要求
+      ans &#43;&#61; bfs(i, j) &lt; k ? 1 : 0;
+    }
+  }
+
+  return ans;
+}
+
+// 上、下、左、右偏移量
+const offsets &#61; [
+  [-1, 0],
+  [1, 0],
+  [0, -1],
+  [0, 1],
+];
+
+function bfs(i, j) {
+  // 该区域敌军数量
+  let count &#61; 0;
+
+  // 如果源位置是E&#xff0c;则敌军数量&#43;1
+  if (matrix[i][j] &#61;&#61; &#34;E&#34;) count &#43;&#61; 1;
+
+  // 标记源位置访问过
+  visited[i][j] &#61; true;
+
+  // 广搜依赖于队列结构&#xff0c;先进先出
+  const queue &#61; [[i, j]];
+
+  while (queue.length &gt; 0) {
+    const [x, y] &#61; queue.shift();
+
+    // 遍历该位置的上下左右
+    for (let offset of offsets) {
+      const newX &#61; x &#43; offset[0];
+      const newY &#61; y &#43; offset[1];
+
+      // 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续广搜
+      if (
+        newX &gt;&#61; 0 &amp;&amp;
+        newX &lt; n &amp;&amp;
+        newY &gt;&#61; 0 &amp;&amp;
+        newY &lt; m &amp;&amp;
+        !visited[newX][newY] &amp;&amp;
+        matrix[newX][newY] !&#61; &#34;#&#34;
+      ) {
+        // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+        if (matrix[newX][newY] &#61;&#61; &#34;E&#34;) count &#43;&#61; 1;
+
+        // 标记该位置访问过
+        visited[newX][newY] &#61; true;
+
+        queue.push([newX, newY]);
+      }
+    }
+  }
+
+  return count;
+}
+</code></pre> 
+<p>深度优先搜索&#xff08;基于栈结构&#xff0c;后进先出&#xff09; </p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+
+// 矩阵行数&#xff0c;矩阵列数&#xff0c;区域敌军数量上限
+let n, m, k;
+// 地图矩阵
+let matrix;
+// 访问矩阵
+let visited;
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    [n, m, k] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n !&#61; undefined &amp;&amp; lines.length &#61;&#61; n &#43; 1) {
+    lines.shift();
+    matrix &#61; lines;
+    visited &#61; new Array(n).fill(0).map(() &#61;&gt; new Array(m).fill(false));
+
+    console.log(getResult());
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult() {
+  let ans &#61; 0;
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; m; j&#43;&#43;) {
+      if (visited[i][j] || matrix[i][j] &#61;&#61; &#34;#&#34;) continue;
+      // 如果(i,j)位置未访问过&#xff0c;且不是墙&#xff0c;则进入深搜&#xff0c;深搜结果是深搜区域内的敌军数量&#xff0c;如果数量小于k&#xff0c;则该区域符合要求
+      ans &#43;&#61; dfs(i, j) &lt; k ? 1 : 0;
+    }
+  }
+
+  return ans;
+}
+
+// 上、下、左、右偏移量
+const offsets &#61; [
+  [-1, 0],
+  [1, 0],
+  [0, -1],
+  [0, 1],
+];
+
+function dfs(i, j) {
+  // 该区域敌军数量
+  let count &#61; 0;
+
+  // 如果源位置是E&#xff0c;则敌军数量&#43;1
+  if (matrix[i][j] &#61;&#61; &#34;E&#34;) count &#43;&#61; 1;
+
+  // 标记源位置访问过
+  visited[i][j] &#61; true;
+
+  // 深搜依赖于栈结构&#xff0c;后进先出
+  const stack &#61; [[i, j]];
+
+  while (stack.length &gt; 0) {
+    const [x, y] &#61; stack.pop();
+
+    // 遍历该位置的上下左右
+    for (let offset of offsets) {
+      const newX &#61; x &#43; offset[0];
+      const newY &#61; y &#43; offset[1];
+
+      // 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续深搜
+      if (
+        newX &gt;&#61; 0 &amp;&amp;
+        newX &lt; n &amp;&amp;
+        newY &gt;&#61; 0 &amp;&amp;
+        newY &lt; m &amp;&amp;
+        !visited[newX][newY] &amp;&amp;
+        matrix[newX][newY] !&#61; &#34;#&#34;
+      ) {
+        // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+        if (matrix[newX][newY] &#61;&#61; &#34;E&#34;) count &#43;&#61; 1;
+
+        // 标记该位置访问过
+        visited[newX][newY] &#61; true;
+
+        stack.push([newX, newY]);
+      }
+    }
+  }
+
+  return count;
+}
+</code></pre> 
+<p>深度优先搜索&#xff08;基于递归&#xff09;&#xff0c;容易超出执行栈内存&#xff0c;即Stack Overflow </p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+
+// 矩阵行数&#xff0c;矩阵列数&#xff0c;区域敌军数量上限
+let n, m, k;
+// 地图矩阵
+let matrix;
+// 访问矩阵
+let visited;
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    [n, m, k] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n !&#61; undefined &amp;&amp; lines.length &#61;&#61; n &#43; 1) {
+    lines.shift();
+    matrix &#61; lines;
+    visited &#61; new Array(n).fill(0).map(() &#61;&gt; new Array(m).fill(false));
+
+    console.log(getResult());
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult() {
+  let ans &#61; 0;
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; m; j&#43;&#43;) {
+      if (visited[i][j] || matrix[i][j] &#61;&#61; &#34;#&#34;) continue;
+      // 如果(i,j)位置未访问过&#xff0c;且不是墙&#xff0c;则进入深搜&#xff0c;深搜结果是深搜区域内的敌军数量&#xff0c;如果数量小于k&#xff0c;则该区域符合要求
+      ans &#43;&#61; dfs(i, j, 0) &lt; k ? 1 : 0;
+    }
+  }
+
+  return ans;
+}
+
+// 上、下、左、右偏移量
+const offsets &#61; [
+  [-1, 0],
+  [1, 0],
+  [0, -1],
+  [0, 1],
+];
+
+function dfs(x, y, count) {
+  // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+  if (matrix[x][y] &#61;&#61; &#34;E&#34;) count &#43;&#61; 1;
+  // 标记该位置访问过
+  visited[x][y] &#61; true;
+
+  // 遍历该位置的上下左右
+  for (let offset of offsets) {
+    const newX &#61; x &#43; offset[0];
+    const newY &#61; y &#43; offset[1];
+
+    // 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续深搜
+    if (
+      newX &gt;&#61; 0 &amp;&amp;
+      newX &lt; n &amp;&amp;
+      newY &gt;&#61; 0 &amp;&amp;
+      newY &lt; m &amp;&amp;
+      !visited[newX][newY] &amp;&amp;
+      matrix[newX][newY] !&#61; &#34;#&#34;
+    ) {
+      // 更新count
+      count &#61; dfs(newX, newY, count);
+    }
+  }
+
+  return count;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<p>广度优先搜索&#xff08;基于队列结构&#xff0c;先进先出&#xff09;</p> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  static int n; // 地图行数
+  static int m; // 地图列数
+  static int k; // 区域敌军人数上限值
+  static char[][] matrix; // 地图矩阵
+  static boolean[][] visited; // 访问矩阵
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] tmp &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    n &#61; tmp[0];
+    m &#61; tmp[1];
+    k &#61; tmp[2];
+
+    visited &#61; new boolean[n][m];
+
+    matrix &#61; new char[n][];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      matrix[i] &#61; sc.nextLine().toCharArray();
+    }
+
+    System.out.println(getResult());
+  }
+
+  public static int getResult() {
+    int ans &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        if (visited[i][j] || matrix[i][j] &#61;&#61; &#39;#&#39;) continue;
+        // 如果(i,j)位置未访问过&#xff0c;且不是墙&#xff0c;则进入广搜&#xff0c;广搜结果是广搜区域内的敌军数量&#xff0c;如果数量小于k&#xff0c;则该区域符合要求
+        ans &#43;&#61; bfs(i, j) &lt; k ? 1 : 0;
+      }
+    }
+
+    return ans;
+  }
+
+  // 上、下、左、右偏移量
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  public static int bfs(int i, int j) {
+    // 该区域敌军数量
+    int count &#61; 0;
+
+    // 标记该位置访问过
+    visited[i][j] &#61; true;
+
+    // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+    if (matrix[i][j] &#61;&#61; &#39;E&#39;) count &#43;&#61; 1;
+
+    // 广搜依赖于队列结构&#xff0c;先进先出
+    LinkedList&lt;int[]&gt; queue &#61; new LinkedList&lt;&gt;();
+    queue.add(new int[] {i, j});
+
+    while (queue.size() &gt; 0) {
+      int[] pos &#61; queue.removeFirst();
+      int x &#61; pos[0], y &#61; pos[1];
+
+      // 遍历该位置的上下左右
+      for (int[] offset : offsets) {
+        int newX &#61; x &#43; offset[0];
+        int newY &#61; y &#43; offset[1];
+
+        // 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续广搜
+        if (newX &gt;&#61; 0
+            &amp;&amp; newX &lt; n
+            &amp;&amp; newY &gt;&#61; 0
+            &amp;&amp; newY &lt; m
+            &amp;&amp; !visited[newX][newY]
+            &amp;&amp; matrix[newX][newY] !&#61; &#39;#&#39;) {
+          // 标记该位置访问过
+          visited[newX][newY] &#61; true;
+
+          // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+          if (matrix[newX][newY] &#61;&#61; &#39;E&#39;) count &#43;&#61; 1;
+
+          queue.add(new int[] {newX, newY});
+        }
+      }
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<p>深度优先搜索&#xff08;基于栈结构&#xff0c;后进先出&#xff09; </p> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  static int n; // 地图行数
+  static int m; // 地图列数
+  static int k; // 区域敌军人数上限值
+  static char[][] matrix; // 地图矩阵
+  static boolean[][] visited; // 访问矩阵
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] tmp &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    n &#61; tmp[0];
+    m &#61; tmp[1];
+    k &#61; tmp[2];
+
+    visited &#61; new boolean[n][m];
+
+    matrix &#61; new char[n][];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      matrix[i] &#61; sc.nextLine().toCharArray();
+    }
+
+    System.out.println(getResult());
+  }
+
+  public static int getResult() {
+    int ans &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        if (visited[i][j] || matrix[i][j] &#61;&#61; &#39;#&#39;) continue;
+        // 如果(i,j)位置未访问过&#xff0c;且不是墙&#xff0c;则进入深搜&#xff0c;深搜结果是深搜区域内的敌军数量&#xff0c;如果数量小于k&#xff0c;则该区域符合要求
+        ans &#43;&#61; dfs(i, j) &lt; k ? 1 : 0;
+      }
+    }
+
+    return ans;
+  }
+
+  // 上、下、左、右偏移量
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  public static int dfs(int i, int j) {
+    // 该区域敌军数量
+    int count &#61; 0;
+
+    // 标记该位置访问过
+    visited[i][j] &#61; true;
+
+    // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+    if (matrix[i][j] &#61;&#61; &#39;E&#39;) count &#43;&#61; 1;
+
+    // 深搜依赖于栈结构&#xff0c;后进先出
+    LinkedList&lt;int[]&gt; stack &#61; new LinkedList&lt;&gt;();
+    stack.add(new int[] {i, j});
+
+    while (stack.size() &gt; 0) {
+      int[] pos &#61; stack.removeLast();
+      int x &#61; pos[0], y &#61; pos[1];
+
+      // 遍历该位置的上下左右
+      for (int[] offset : offsets) {
+        int newX &#61; x &#43; offset[0];
+        int newY &#61; y &#43; offset[1];
+
+        // 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续深搜
+        if (newX &gt;&#61; 0
+            &amp;&amp; newX &lt; n
+            &amp;&amp; newY &gt;&#61; 0
+            &amp;&amp; newY &lt; m
+            &amp;&amp; !visited[newX][newY]
+            &amp;&amp; matrix[newX][newY] !&#61; &#39;#&#39;) {
+          // 标记该位置访问过
+          visited[newX][newY] &#61; true;
+
+          // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+          if (matrix[newX][newY] &#61;&#61; &#39;E&#39;) count &#43;&#61; 1;
+
+          stack.add(new int[] {newX, newY});
+        }
+      }
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<p>深度优先搜索&#xff08;基于递归&#xff09;&#xff0c;容易超出执行栈内存&#xff0c;即Stack Overflow </p> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  static int n; // 地图行数
+  static int m; // 地图列数
+  static int k; // 区域敌军人数上限值
+  static char[][] matrix; // 地图矩阵
+  static boolean[][] visited; // 访问矩阵
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] tmp &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    n &#61; tmp[0];
+    m &#61; tmp[1];
+    k &#61; tmp[2];
+
+    visited &#61; new boolean[n][m];
+
+    matrix &#61; new char[n][];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      matrix[i] &#61; sc.nextLine().toCharArray();
+    }
+
+    System.out.println(getResult());
+  }
+
+  public static int getResult() {
+    int ans &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        if (visited[i][j] || matrix[i][j] &#61;&#61; &#39;#&#39;) continue;
+        // 如果(i,j)位置未访问过&#xff0c;且不是墙&#xff0c;则进入深搜&#xff0c;深搜结果是深搜区域内的敌军数量&#xff0c;如果数量小于k&#xff0c;则该区域符合要求
+        ans &#43;&#61; dfs(i, j, 0) &lt; k ? 1 : 0;
+      }
+    }
+
+    return ans;
+  }
+
+  // 上、下、左、右偏移量
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  public static int dfs(int x, int y, int count) {
+    // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+    if (matrix[x][y] &#61;&#61; &#39;E&#39;) count &#43;&#61; 1;
+    // 标记该位置访问过
+    visited[x][y] &#61; true;
+
+    // 遍历该位置的上下左右
+    for (int[] offset : offsets) {
+      int newX &#61; x &#43; offset[0];
+      int newY &#61; y &#43; offset[1];
+
+      // 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续深搜
+      if (newX &gt;&#61; 0
+          &amp;&amp; newX &lt; n
+          &amp;&amp; newY &gt;&#61; 0
+          &amp;&amp; newY &lt; m
+          &amp;&amp; !visited[newX][newY]
+          &amp;&amp; matrix[newX][newY] !&#61; &#39;#&#39;) {
+        // 更新count
+        count &#61; dfs(newX, newY, count);
+      }
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<p>广度优先搜索&#xff08;基于队列结构&#xff0c;先进先出&#xff09;</p> 
+<pre><code class="language-python"># 输入获取
+n, m, k &#61; map(int, input().split())  # 地图行数, 地图列数, 区域敌军人数上限值
+matrix &#61; [input() for _ in range(n)]  # 地图矩阵
+visited &#61; [[False for _ in range(m)] for _ in range(n)]  # 访问矩阵
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))  # 上、下、左、右偏移量
+
+
+# 广度优先搜索
+def bfs(i, j):
+    count &#61; 0
+
+    # 如果对应位置是E&#xff0c;则敌军数量&#43;1
+    if matrix[i][j] &#61;&#61; &#39;E&#39;:
+        count &#43;&#61; 1
+
+    # 标记该位置访问过
+    visited[i][j] &#61; True
+
+    queue &#61; [(i, j)]
+
+    while len(queue) &gt; 0:
+        # 广搜依赖于队列结构&#xff0c;先进先出
+        x, y &#61; queue.pop(0)
+
+        # 遍历该位置的上下左右
+        for offsetX, offsetY in offsets:
+            newX &#61; x &#43; offsetX
+            newY &#61; y &#43; offsetY
+
+            # 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续广度
+            if n &gt; newX &gt;&#61; 0 and m &gt; newY &gt;&#61; 0 and not visited[newX][newY] and matrix[newX][newY] !&#61; &#39;#&#39;:
+                # 如果对应位置是E&#xff0c;则敌军数量&#43;1
+                if matrix[newX][newY] &#61;&#61; &#39;E&#39;:
+                    count &#43;&#61; 1
+
+                # 标记该位置访问过
+                visited[newX][newY] &#61; True
+
+                queue.append((newX, newY))
+
+    return count
+
+
+# 算法入口
+def getResult():
+    ans &#61; 0
+
+    for i in range(n):
+        for j in range(m):
+            if visited[i][j] or matrix[i][j] &#61;&#61; &#39;#&#39;:
+                continue
+
+            # 如果(i,j)位置未访问过&#xff0c;且不是墙&#xff0c;则进入广度&#xff0c;广度结果是广度区域内的敌军数量&#xff0c;如果数量小于k&#xff0c;则该区域符合要求
+            ans &#43;&#61; 1 if bfs(i, j) &lt; k else 0
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p>深度优先搜索&#xff08;基于栈结构&#xff0c;后进先出&#xff09; </p> 
+<pre><code class="language-python"># 输入获取
+n, m, k &#61; map(int, input().split())  # 地图行数, 地图列数, 区域敌军人数上限值
+matrix &#61; [input() for _ in range(n)]  # 地图矩阵
+visited &#61; [[False for _ in range(m)] for _ in range(n)]  # 访问矩阵
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))  # 上、下、左、右偏移量
+
+
+# 深搜优先搜索
+def dfs(i, j):
+    # 该区域敌军数量
+    count &#61; 0
+
+    visited[i][j] &#61; True
+
+    if matrix[i][j] &#61;&#61; &#39;E&#39;:
+        count &#43;&#61; 1
+
+    stack &#61; [(i, j)]
+
+    while len(stack) &gt; 0:
+        # 深搜依赖于栈结构&#xff0c;后进先出
+        x, y &#61; stack.pop()
+
+        # 遍历该位置的上下左右
+        for offsetX, offsetY in offsets:
+            newX &#61; x &#43; offsetX
+            newY &#61; y &#43; offsetY
+
+            # 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续深搜
+            if n &gt; newX &gt;&#61; 0 and m &gt; newY &gt;&#61; 0 and not visited[newX][newY] and matrix[newX][newY] !&#61; &#39;#&#39;:
+                visited[newX][newY] &#61; True
+
+                if matrix[newX][newY] &#61;&#61; &#39;E&#39;:
+                    count &#43;&#61; 1
+
+                stack.append((newX, newY))
+
+    return count
+
+
+# 算法入口
+def getResult():
+    ans &#61; 0
+
+    for i in range(n):
+        for j in range(m):
+            if visited[i][j] or matrix[i][j] &#61;&#61; &#39;#&#39;:
+                continue
+
+            # 如果(i,j)位置未访问过&#xff0c;且不是墙&#xff0c;则进入深搜&#xff0c;深搜结果是深搜区域内的敌军数量&#xff0c;如果数量小于k&#xff0c;则该区域符合要求
+            ans &#43;&#61; 1 if dfs(i, j) &lt; k else 0
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p>深度优先搜索&#xff08;基于递归&#xff09;&#xff0c;容易超出执行栈内存&#xff0c;即Stack Overflow </p> 
+<pre><code class="language-python"># 输入获取
+n, m, k &#61; map(int, input().split())  # 地图行数, 地图列数, 区域敌军人数上限值
+matrix &#61; [input() for _ in range(n)]  # 地图矩阵
+visited &#61; [[False for _ in range(m)] for _ in range(n)]  # 访问矩阵
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))  # 上、下、左、右偏移量
+
+
+# 深搜
+def dfs(x, y, count):
+    # 如果对应位置是E&#xff0c;则敌军数量&#43;1
+    if matrix[x][y] &#61;&#61; &#39;E&#39;:
+        count &#43;&#61; 1
+
+    # 标记该位置访问过
+    visited[x][y] &#61; True
+
+    # 遍历该位置的上下左右
+    for offsetX, offsetY in offsets:
+        newX &#61; x &#43; offsetX
+        newY &#61; y &#43; offsetY
+
+        # 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续深搜
+        if n &gt; newX &gt;&#61; 0 and m &gt; newY &gt;&#61; 0 and not visited[newX][newY] and matrix[newX][newY] !&#61; &#39;#&#39;:
+            # 更新count
+            count &#61; dfs(newX, newY, count)
+
+    return count
+
+
+# 算法入口
+def getResult():
+    ans &#61; 0
+
+    for i in range(n):
+        for j in range(m):
+            if visited[i][j] or matrix[i][j] &#61;&#61; &#39;#&#39;:
+                continue
+
+            # 如果(i,j)位置未访问过&#xff0c;且不是墙&#xff0c;则进入深搜&#xff0c;深搜结果是深搜区域内的敌军数量&#xff0c;如果数量小于k&#xff0c;则该区域符合要求
+            ans &#43;&#61; 1 if dfs(i, j, 0) &lt; k else 0
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<p>广度优先搜索&#xff08;基于队列结构&#xff0c;先进先出&#xff09;</p> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 101
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList();
+void addLast_LinkedList(LinkedList *link, int ele);
+int removeFirst_LinkedList(LinkedList* link);
+
+// 地图行数,地图列数,区域敌军人数上限值
+int n, m, k;
+// 地图矩阵
+char matrix[MAX_SIZE][MAX_SIZE] &#61; {&#39;\0&#39;};
+// 访问矩阵
+int visited[MAX_SIZE][MAX_SIZE] &#61; {0};
+// 上下左右的方位偏移量
+int offsets[4][2] &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+int getResult();
+int bfs(int i, int j);
+
+int main() {
+    scanf(&#34;%d %d %d&#34;, &amp;n, &amp;m, &amp;k);
+
+    for(int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%s&#34;, matrix[i]);
+    }
+
+    printf(&#34;%d\n&#34;, getResult());
+
+    return 0;
+}
+
+int getResult() {
+    int ans &#61; 0;
+
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        for(int j&#61;0; j&lt;m; j&#43;&#43;) {
+            if(visited[i][j] || matrix[i][j] &#61;&#61; &#39;#&#39;) continue;
+            ans &#43;&#61; bfs(i, j) &lt; k ? 1 : 0;
+        }
+    }
+
+    return ans;
+}
+
+int bfs(int i, int j) {
+    // 该区域敌军数量
+    int count &#61; 0;
+
+    // 标记该位置访问过
+    visited[i][j] &#61; 1;
+
+    // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+    if(matrix[i][j] &#61;&#61; &#39;E&#39;) count&#43;&#43;;
+
+    // 广搜依赖于队列结构&#xff0c;先进先出
+    LinkedList* queue &#61; new_LinkedList();
+    addLast_LinkedList(queue, i * m &#43; j);
+
+    // 遍历该位置的上下左右
+    while(queue-&gt;size &gt; 0) {
+        int pos &#61; removeFirst_LinkedList(queue);
+
+        int x &#61; pos / m;
+        int y &#61; pos % m;
+
+        for(int a &#61; 0; a &lt; 4; a&#43;&#43;) {
+            int newX &#61; x &#43; offsets[a][0];
+            int newY &#61; y &#43; offsets[a][1];
+
+            // 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续广搜
+            if(newX &gt;&#61; 0 &amp;&amp; newX &lt; n &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; m &amp;&amp; !visited[newX][newY] &amp;&amp; matrix[newX][newY] !&#61; &#39;#&#39;) {
+                // 标记该位置访问过
+                visited[newX][newY] &#61; 1;
+
+                // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+                if(matrix[newX][newY] &#61;&#61; &#39;E&#39;) count&#43;&#43;;
+
+                addLast_LinkedList(queue, newX * m &#43; newY);
+            }
+        }
+    }
+
+    return count;
+}
+
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+
+    node-&gt;ele &#61; ele;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+int removeFirst_LinkedList(LinkedList* link) {
+    if(link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode* removed &#61; link-&gt;head;
+
+    if(link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+    }
+
+    link-&gt;size--;
+
+    int res &#61; removed-&gt;ele;
+
+    free(removed);
+
+    return res;
+}</code></pre> 
+<p> 深度优先搜索&#xff08;基于栈结构&#xff0c;后进先出&#xff09; </p> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 101
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode* prev;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList();
+void addLast_LinkedList(LinkedList *link, int ele);
+int removeLast_LinkedList(LinkedList* link);
+
+// 地图行数,地图列数,区域敌军人数上限值
+int n, m, k;
+// 地图矩阵
+char matrix[MAX_SIZE][MAX_SIZE] &#61; {&#39;\0&#39;};
+// 访问矩阵
+int visited[MAX_SIZE][MAX_SIZE] &#61; {0};
+// 上下左右的方位偏移量
+int offsets[4][2] &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+int getResult();
+int dfs(int i, int j);
+
+int main() {
+    scanf(&#34;%d %d %d&#34;, &amp;n, &amp;m, &amp;k);
+
+    for(int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%s&#34;, matrix[i]);
+    }
+
+    printf(&#34;%d\n&#34;, getResult());
+
+    return 0;
+}
+
+int getResult() {
+    int ans &#61; 0;
+
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        for(int j&#61;0; j&lt;m; j&#43;&#43;) {
+            if(visited[i][j] || matrix[i][j] &#61;&#61; &#39;#&#39;) continue;
+            ans &#43;&#61; dfs(i, j) &lt; k ? 1 : 0;
+        }
+    }
+
+    return ans;
+}
+
+int dfs(int i, int j) {
+    // 该区域敌军数量
+    int count &#61; 0;
+
+    // 标记该位置访问过
+    visited[i][j] &#61; 1;
+
+    // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+    if(matrix[i][j] &#61;&#61; &#39;E&#39;) count&#43;&#43;;
+
+    // 深搜依赖于栈结构&#xff0c;后进先出
+    LinkedList* stack &#61; new_LinkedList();
+    addLast_LinkedList(stack, i * m &#43; j);
+
+    // 遍历该位置的上下左右
+    while(stack-&gt;size &gt; 0) {
+        int pos &#61; removeLast_LinkedList(stack);
+
+        int x &#61; pos / m;
+        int y &#61; pos % m;
+
+        for(int a &#61; 0; a &lt; 4; a&#43;&#43;) {
+            int newX &#61; x &#43; offsets[a][0];
+            int newY &#61; y &#43; offsets[a][1];
+
+            // 如果新位置不越界&#xff0c;且未访问过&#xff0c;且不是墙&#xff0c;则继续广搜
+            if(newX &gt;&#61; 0 &amp;&amp; newX &lt; n &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; m &amp;&amp; !visited[newX][newY] &amp;&amp; matrix[newX][newY] !&#61; &#39;#&#39;) {
+                // 标记该位置访问过
+                visited[newX][newY] &#61; 1;
+
+                // 如果对应位置是E&#xff0c;则敌军数量&#43;1
+                if(matrix[newX][newY] &#61;&#61; &#39;E&#39;) count&#43;&#43;;
+
+                addLast_LinkedList(stack, newX * m &#43; newY);
+            }
+        }
+    }
+
+    return count;
+}
+
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+
+    node-&gt;ele &#61; ele;
+    node-&gt;prev &#61; NULL;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        node-&gt;prev &#61; link-&gt;tail;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+int removeLast_LinkedList(LinkedList* link) {
+    if(link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode* removed &#61; link-&gt;tail;
+
+    if(link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;tail &#61; link-&gt;tail-&gt;prev;
+        link-&gt;tail-&gt;next &#61; NULL;
+    }
+
+    link-&gt;size--;
+
+    int res &#61; removed-&gt;ele;
+
+    free(removed);
+
+    return res;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

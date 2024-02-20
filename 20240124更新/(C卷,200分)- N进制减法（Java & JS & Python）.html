@@ -1,0 +1,249 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- N进制减法（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>主管期望你实现一个基于字符串的N进制的减法。</p> 
+<p>需要对输入的两个字符串按照给定的N进制进行减法操作&#xff0c;输出正负符号和表示结果的字符串。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入有三个参数&#xff1a;</p> 
+<ol><li>第一个参数是整数形式的进制N值&#xff0c;N值范围为大于等于2、小于等于35。</li><li>第二个参数为被减数字符串&#xff1b;</li><li>第三个参数为减数字符串。</li></ol> 
+<p>有效的字符包括0-9以及小写字母a-z&#xff0c;字符串有效字符个数最大为100个字符&#xff0c;另外还有结尾的\0。</p> 
+<p>限制&#xff1a;</p> 
+<p>输入的被减数和减数&#xff0c;除了单独的0以外&#xff0c;不能是以0开头的字符串。</p> 
+<p>如果输入有异常或计算过程中有异常&#xff0c;此时应当输出-1表示错误。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出有2个。</p> 
+<p>其一为减法计算的结果&#xff0c;-1表示出错&#xff0c;0表示结果为整数&#xff0c;1表示结果为负数。</p> 
+<p>其二为表示结果的字符串。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"><code>2 11 1</code></td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"><code>0 10</code></td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">按二进制计算 11 -1 &#xff0c;计算正常&#xff0c;0表示符号为正数&#xff0c;结果为10</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"><code>8 07 1</code></td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"><code>-1</code></td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>按8进制&#xff0c;检查到减数不符合非0前导的要求&#xff0c;返回结果为-1&#xff0c;没有其他结果内容。</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我是这么思考的&#xff0c;先不考虑异常情况&#xff0c;做N进制减法运算&#xff0c;最简单的就是将N进制数转为十进制&#xff0c;然后进行十进制减法&#xff0c;得到的差值&#xff0c;再转为N进制数。</p> 
+<p>而刚好JS语言中&#xff0c;可以利用Number.parseInt(str, n)&#xff0c;将n进制字符串数值转为十进制数&#xff0c;然后可以利用Number.prototype.toString(n)&#xff0c;再将十进制数转为N进制数值字符串。</p> 
+<p>有了以上思路后&#xff0c;本题几乎就解决了。</p> 
+<p></p> 
+<p>但是&#xff0c;本题中给了几种异常情况&#xff0c;并且题目要求异常返回-1。</p> 
+<p>因此我们需要注意异常情况的处理。</p> 
+<p>1、N值范围为大于等于2、小于等于35</p> 
+<p>2、减数、被减数的有效的字符包括0-9以及小写字母a-z</p> 
+<p>3、减数、被减数字符串有效字符个数最大为100个字符</p> 
+<p>4、输入的被减数和减数&#xff0c;除了单独的0以外&#xff0c;不能是以0开头的字符串。</p> 
+<p></p> 
+<p>另外还有一个隐藏的异常就是&#xff0c;一个N进制数&#xff0c;它的每一位不可能大于等于N&#xff0c;这也是我们需要考虑的异常情况</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [n, shou, gong] &#61; line.split(&#34; &#34;);
+  console.log(getResult(n - 0, shou, gong));
+});
+
+/**
+ *
+ * &#64;param {*} n 表示shou和gong是n进制数
+ * &#64;param {*} shou 被减数
+ * &#64;param {*} gong 减数
+ */
+function getResult(n, shou, gong) {
+  if (n &lt; 2 || n &gt; 35) return -1;
+  if (!valid(shou, n) || !valid(gong, n)) return -1;
+
+  shou &#61; parseInt(shou, n);
+  gong &#61; parseInt(gong, n);
+
+  const diff &#61; Number(Math.abs(shou - gong)).toString(n);
+
+  return &#96;${shou &gt;&#61; gong ? 0 : 1} ${diff}&#96;;
+}
+
+function valid(str, n) {
+  // 含前导的0只有0值本身合法
+  if (str.startsWith(&#34;0&#34;)) {
+    return str &#61;&#61;&#61; &#34;0&#34;;
+  }
+
+  // 被减数&#xff0c;减数只能包含字符0-9&#xff0c;a-z
+  const regExp &#61; /[^a-z0-9]/;
+  if (regExp.test(str)) return false;
+
+  // 被减数&#xff0c;减数长度最多100
+  if (str.length &gt; 100) return false;
+
+  // 被减数&#xff0c;减数的每位不能超过n
+  for (let c of str) {
+    if (/^[0-9]$/.test(c)) {
+      if (c - 0 &gt;&#61; n) return false; // 比如2进制数的每一位不能超过2
+    } else {
+      if (String(c).charCodeAt() - 87 &gt;&#61; n) return false; // &#xff0c;16进制数每一位不能超过f
+    }
+  }
+
+  return true;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.regex.Pattern;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    String b_sub &#61; sc.next();
+    String sub &#61; sc.next();
+    System.out.println(getResult(n, b_sub, sub));
+  }
+
+  /**
+   * &#64;param n 表示被减数和减数是n进制数
+   * &#64;param b_sub 被减数
+   * &#64;param sub 减数
+   * &#64;return 输出正负符号和表示结果的字符串
+   */
+  public static String getResult(int n, String b_sub, String sub) {
+    if (n &lt; 2 || n &gt; 35) return &#34;-1&#34;;
+
+    if (!isValid(b_sub, n) || !isValid(sub, n)) return &#34;-1&#34;;
+
+    long b_sub_val &#61; Long.parseLong(b_sub, n);
+    long sub_val &#61; Long.parseLong(sub, n);
+
+    String diff &#61; Long.toString(Math.abs(b_sub_val - sub_val), n);
+    String sign &#61; b_sub_val &gt;&#61; sub_val ? &#34;0&#34; : &#34;1&#34;;
+
+    return sign &#43; &#34; &#34; &#43; diff;
+  }
+
+  public static boolean isValid(String str, int n) {
+    // 含前导的0只有0值本身合法
+    if (str.startsWith(&#34;0&#34;)) return &#34;0&#34;.equals(str);
+
+    // 被减数&#xff0c;减数只能包含字符0-9&#xff0c;a-z
+    Pattern reg &#61; Pattern.compile(&#34;[^a-z0-9]&#34;);
+    if (reg.matcher(str).find()) return false;
+
+    // 被减数&#xff0c;减数长度最多100
+    if (str.length() &gt; 100) return false;
+
+    // 被减数&#xff0c;减数的每位不能超过n
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      char c &#61; str.charAt(i);
+      if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39; &amp;&amp; Integer.parseInt(c &#43; &#34;&#34;) &gt;&#61; n) return false; // 比如2进制数的每一位不能超过2
+      if (c &gt;&#61; &#39;a&#39; &amp;&amp; c &lt;&#61; &#39;z&#39; &amp;&amp; c - 87 &gt;&#61; n) return false; // 比如16进制数每一位不能超过f
+    }
+
+    return true;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+n, b_sub, sub &#61; input().split()
+
+covertStr &#61; &#34;0123456789abcdefghijklmnopqrstuvwxyz&#34;
+
+
+# 将十进制数num转为base进制数
+def toBase(num, base):
+    if num &lt; base:
+        return covertStr[num]
+    else:
+        return toBase(num // base, base) &#43; covertStr[num % base]
+
+
+def isValid(s, n):
+    #  含前导的0只有0值本身合法
+    if s.startswith(&#34;0&#34;):
+        return s &#61;&#61; &#34;0&#34;
+
+    # 被减数&#xff0c;减数只能包含字符0-9&#xff0c;a-z
+    if re.search(&#34;[^0-9a-z]&#34;, s) is not None:
+        return False
+
+    # 被减数&#xff0c;减数长度最多100
+    if len(s) &gt; 100:
+        return False
+
+    # 被减数&#xff0c;减数的每位不能超过n
+    for c in s:
+        if c.isnumeric() and int(c) &gt;&#61; n:  # 比如2进制数的每一位不能超过2
+            return False
+        elif c.isalpha() and ord(c) - 87 &gt;&#61; n:  # 比如16进制数每一位不能超过f
+            return False
+
+    return True
+
+
+# 算法入口
+def getResult(n, b_sub, sub):
+    n &#61; int(n)
+    if n &lt; 2 or n &gt; 35:
+        return &#34;-1&#34;
+
+    if not isValid(b_sub, n) or not isValid(sub, n):
+        return &#34;-1&#34;
+
+    b_sub_val &#61; int(b_sub, n)
+    sub_val &#61; int(sub, n)
+
+    diff &#61; toBase(abs(b_sub_val - sub_val), n)
+    sign &#61; &#34;0&#34; if b_sub_val &gt;&#61; sub_val else &#34;1&#34;
+
+    return sign &#43; &#34; &#34; &#43; str(diff)
+
+
+# 算法调用
+print(getResult(n, b_sub, sub))</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

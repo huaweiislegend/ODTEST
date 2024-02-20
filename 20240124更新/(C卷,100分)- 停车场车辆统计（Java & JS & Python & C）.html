@@ -1,0 +1,189 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 停车场车辆统计（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>特定大小的停车场&#xff0c;数组cars[]表示&#xff0c;其中1表示有车&#xff0c;0表示没车。</p> 
+<p>车辆大小不一&#xff0c;小车占一个车位&#xff08;长度1&#xff09;&#xff0c;货车占两个车位&#xff08;长度2&#xff09;&#xff0c;卡车占三个车位&#xff08;长度3&#xff09;。</p> 
+<p>统计停车场最少可以停多少辆车&#xff0c;返回具体的数目。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>整型字符串数组cars[]&#xff0c;其中1表示有车&#xff0c;0表示没车&#xff0c;数组长度小于1000。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>整型数字字符串&#xff0c;表示最少停车数目。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>1,0,1</td></tr><tr><td>输出</td><td>2</td></tr><tr><td>说明</td><td> <p>1个小车占第1个车位</p> <p>第二个车位空</p> <p>1个小车占第3个车位</p> <p>最少有两辆车</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:117px;">输入</td><td style="width:381px;">1,1,0,0,1,1,1,0,1</td></tr><tr><td style="width:117px;">输出</td><td style="width:381px;">3</td></tr><tr><td style="width:117px;">说明</td><td style="width:381px;"> <p>1个货车占第1、2个车位</p> <p>第3、4个车位空</p> <p>1个卡车占第5、6、7个车位</p> <p>第8个车位空</p> <p>1个小车占第9个车位</p> <p>最少3辆车</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这道题的意思应该是&#xff1a;给定了车位占用情况&#xff0c;如 1,1,0,0,1,1,1,0,1&#xff0c;这种车位占用情况&#xff0c;可能停了6辆车&#xff0c;即每个1都停了一个小车&#xff0c;这是最多的情况&#xff0c;但是现在要求最少可能停几辆车。</p> 
+<p>解题思路也很简单&#xff0c;先把卡车&#xff0c;即111的停车情况先弄出来&#xff0c;再将火车&#xff0c;即11的停车情况弄出来&#xff0c;最后再弄小车1的情况。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61;
+        sc.nextLine()
+            .replaceAll(&#34;,&#34;, &#34;&#34;)
+            .replaceAll(&#34;111&#34;, &#34;x&#34;)
+            .replaceAll(&#34;11&#34;, &#34;x&#34;)
+            .replaceAll(&#34;1&#34;, &#34;x&#34;);
+
+    int ans &#61; 0;
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      if (str.charAt(i) &#61;&#61; &#39;x&#39;) {
+        ans&#43;&#43;;
+      }
+    }
+
+    System.out.println(ans);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  let str &#61; line
+    .replaceAll(&#34;,&#34;, &#34;&#34;)
+    .replaceAll(&#34;111&#34;, &#34;x&#34;)
+    .replaceAll(&#34;11&#34;, &#34;x&#34;)
+    .replaceAll(&#34;1&#34;, &#34;x&#34;);
+
+  let count &#61; 0;
+
+  while (true) {
+    let index &#61; str.indexOf(&#34;x&#34;);
+    if (index !&#61;&#61; -1) {
+      count&#43;&#43;;
+      str &#61; str.slice(index &#43; 1);
+    } else {
+      break;
+    }
+  }
+
+  console.log(count);
+});
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">s &#61; input().replace(&#34;,&#34;, &#34;&#34;).replace(&#34;111&#34;, &#34;x&#34;).replace(&#34;11&#34;, &#34;x&#34;).replace(&#34;1&#34;, &#34;x&#34;)
+
+ans &#61; 0
+for c in s:
+    if c &#61;&#61; &#39;x&#39;:
+        ans &#43;&#61; 1
+
+print(ans)</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*!
+ * 字符串替换
+ * &#64;param s 主串
+ * &#64;param sub 目标子串
+ * &#64;param rep 替换子串
+ * &#64;return 一个新串&#xff0c;新串等价于主串将自身目标子串部分替换为rep串的结果
+ */
+char *replaceAll(char *s, char *sub, char *rep) {
+    // 新串
+    char *res &#61; (char *) calloc(strlen(s), sizeof(char));
+
+    // 目标子串长度
+    int len &#61; (int) strlen(sub);
+
+    // 在主串中找到目标子串第一次出现的位置
+    char *t &#61; strstr(s, sub);
+    while (t !&#61; NULL) {
+        t[0] &#61; &#39;\0&#39;;
+        strcat(res, s);
+        strcat(res, rep);
+        s &#61; t &#43; len;
+        t &#61; strstr(s, sub);
+    }
+
+    strcat(res, s);
+
+    return res;
+}
+
+int main() {
+    char s[1000] &#61; {&#39;\0&#39;};
+    int s_len &#61; 0;
+
+    char c;
+    while (scanf(&#34;%c&#34;, &amp;c)) {
+        s[s_len&#43;&#43;] &#61; c;
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    // 先把卡车&#xff0c;即111的停车情况先弄出来(替换为x)&#xff0c;再将火车&#xff0c;即11的停车情况弄出来(替换为x)&#xff0c;最后再弄小车1的情况(替换为x)。
+
+    char *res &#61; replaceAll(replaceAll(replaceAll(s, &#34;111&#34;, &#34;x&#34;), &#34;11&#34;, &#34;x&#34;), &#34;1&#34;, &#34;x&#34;);
+
+    int count &#61; 0;
+
+    // 统计x字符的数量&#xff0c;即为最少停车数量
+    int i &#61; 0;
+    while (res[i] !&#61; &#39;\0&#39;) {
+        if (res[i] &#61;&#61; &#39;x&#39;) {
+            count&#43;&#43;;
+        }
+        i&#43;&#43;;
+    }
+
+    printf(&#34;%d\n&#34;, count);
+
+    return 0;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

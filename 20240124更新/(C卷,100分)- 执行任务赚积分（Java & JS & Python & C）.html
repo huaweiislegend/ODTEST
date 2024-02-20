@@ -1,0 +1,523 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 执行任务赚积分（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>现有N个任务需要处理&#xff0c;同一时间只能处理一个任务&#xff0c;处理每个任务所需要的时间固定为1。</p> 
+<p>每个任务都有最晚处理时间限制和积分值&#xff0c;在最晚处理时间点之前处理完成任务才可获得对应的积分奖励。</p> 
+<p>可用于处理任务的时间有限&#xff0c;请问在有限的时间内&#xff0c;可获得的最多积分。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为一个数 N&#xff0c;表示有 N 个任务</p> 
+<ul><li>1 ≤ N ≤ 100</li></ul> 
+<p>第二行为一个数 T&#xff0c;表示可用于处理任务的时间</p> 
+<ul><li>1 ≤ T ≤ 100</li></ul> 
+<p>接下来 N 行&#xff0c;每行两个空格分隔的整数&#xff08;SLA 和 V&#xff09;&#xff0c;SLA 表示任务的最晚处理时间&#xff0c;V 表示任务对应的积分。</p> 
+<ul><li>1 ≤ SLA ≤ 100</li><li>0 ≤ V ≤ 100000</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>可获得的最多积分</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 3<br /> 1 2<br /> 1 3<br /> 1 4<br /> 1 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">虽然有3个单位的时间用于处理任务&#xff0c;可是所有任务在时刻1之后都无效。<br /> 所以在第1个时间单位内&#xff0c;选择处理有5个积分的任务。1-3时无任务处理。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 3<br /> 1 2<br /> 1 3<br /> 1 4<br /> 3 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">9</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>第1个时间单位内&#xff0c;处理任务3&#xff0c;获得4个积分</p> <p>第2个时间单位内&#xff0c;处理任务4&#xff0c;获得5个积分</p> <p>第3个时间单位内&#xff0c;无任务可处理</p> <p>共获得9个积分</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题类似于<a href="https://blog.csdn.net/qfc_128220/article/details/128856583?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522170134811216777224471551%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;170134811216777224471551&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-1-128856583-null-null.nonecase&amp;utm_term&#61;%E5%B7%A5%E5%8D%95%E8%B0%83%E5%BA%A6&amp;spm&#61;1018.2226.3001.4450" title="华为校招机试 - 工单调度策略&#xff08;20220413&#xff09;_伏城之外的博客-CSDN博客">华为校招机试 - 工单调度策略&#xff08;20220413&#xff09;_伏城之外的博客-CSDN博客</a></p> 
+<p>本题解析可以参考上面博客。</p> 
+<p></p> 
+<p>另外&#xff0c;本题增加了一个时限T&#xff0c;因为每个任务固定消耗1单位时间&#xff0c;因此时限T单位时间&#xff0c;最多可以完成T个任务。</p> 
+<p>我们只需要检查最后优先队列中记录的任务数量是否大于T&#xff0c;如果大于T&#xff0c;则将删除超出部分的任务&#xff0c;而被删除的任务都是积分小的。</p> 
+<p></p> 
+<p>本题使用到了优先队列&#xff0c;对于Java和Python而言&#xff0c;有内置的优先队列实现类。</p> 
+<p>而JS和C语言没有&#xff0c;因此我们需要手动实现一个优先队列&#xff0c;关于优先队列的实现可以参考&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127695013?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522170134830016800192256289%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;170134830016800192256289&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-1-127695013-null-null.nonecase&amp;utm_term&#61;%E8%8B%B9%E6%9E%9C&amp;spm&#61;1018.2226.3001.4450" title="LeetCode - 1705 吃苹果的最大数目-CSDN博客">LeetCode - 1705 吃苹果的最大数目-CSDN博客</a> 中对于优先队列的解释说明&#xff0c;了解优先队列的底层数据结构&#xff0c;以及上浮、下沉等行为函数</p> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+  const t &#61; parseInt(await readline());
+
+  const wos &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    wos.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+  console.log(getResult(wos, t));
+})();
+
+function getResult(wos, t) {
+  // 按照任务截止时间升序
+  wos.sort((a, b) &#61;&gt; a[0] - b[0]);
+
+  // pq用于按照积分对任务进行优先级排序&#xff0c;积分越小&#xff0c;优先级越高&#xff0c;目的是为了每次替换掉最少积分的工单
+  const pq &#61; new PriorityQueue((a, b) &#61;&gt; a - b);
+
+  // 当前时间
+  let curTime &#61; 0;
+  // 已获得的积分
+  let ans &#61; 0;
+
+  // 遍历任务 [任务截止时间, 任务积分]
+  for (let [endTime, score] of wos) {
+    // 如果 curTime &lt; 当前任务的截止时间&#xff0c;则curTime时刻可以指向当前任务
+    if (curTime &lt; endTime) {
+      pq.offer(score);
+      ans &#43;&#61; score;
+      curTime&#43;&#43;;
+    } else {
+      // 如果 curTime &gt;&#61; 当前任务的截止时间&#xff0c;则当前任务只能在curTime时刻之前找一个时间点执行
+
+      // pq中记录的就是curTime之前时刻执行的任务
+      if (pq.size() &#61;&#61; 0) {
+        continue;
+      }
+
+      // 此时取出pq记录的可执行的任务中最小积分的那个
+      const min_score &#61; pq.peek();
+
+      // 如果当前任务的积分 &gt; 前面时间内可执行的任务中最小积分
+      if (score &gt; min_score) {
+        // 则我们应该将执行pq中最小积分任务的时间&#xff0c;用于执行当前任务&#xff0c;因为这样可以获得更大积分
+        pq.poll();
+        pq.offer(score);
+        ans &#43;&#61; score - min_score;
+      }
+    }
+  }
+
+  // 由于时间限制为t单位&#xff0c;而每个任务花费1单位时间&#xff0c;因此最多完成t个任务&#xff0c;对于多出任务应该去除&#xff0c;且优先去除积分少的
+  while (pq.size() &gt; t) {
+    ans -&#61; pq.poll();
+  }
+
+  return ans;
+}
+
+// 基于堆实现优先队列
+class PriorityQueue {
+  constructor(cpr) {
+    this.queue &#61; [];
+    this.cpr &#61; cpr;
+  }
+
+  swap(a, b) {
+    const tmp &#61; this.queue[a];
+    this.queue[a] &#61; this.queue[b];
+    this.queue[b] &#61; tmp;
+  }
+
+  // 上浮
+  swim() {
+    let c &#61; this.queue.length - 1;
+
+    while (c &gt;&#61; 1) {
+      const f &#61; Math.floor((c - 1) / 2);
+
+      if (this.cpr(this.queue[c], this.queue[f]) &lt; 0) {
+        this.swap(c, f);
+        c &#61; f;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 入队
+  offer(val) {
+    this.queue.push(val);
+    this.swim();
+  }
+
+  // 下沉
+  sink() {
+    let f &#61; 0;
+
+    while (true) {
+      let c1 &#61; 2 * f &#43; 1;
+      let c2 &#61; c1 &#43; 1;
+
+      let c;
+      let val1 &#61; this.queue[c1];
+      let val2 &#61; this.queue[c2];
+      if (val1 !&#61; undefined &amp;&amp; val2 !&#61; undefined) {
+        c &#61; this.cpr(val1, val2) &lt; 0 ? c1 : c2;
+      } else if (val1 !&#61; undefined) {
+        c &#61; c1;
+      } else if (val2 !&#61; undefined) {
+        c &#61; c2;
+      } else {
+        break;
+      }
+
+      if (this.cpr(this.queue[c], this.queue[f]) &lt; 0) {
+        this.swap(c, f);
+        f &#61; c;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 出队
+  poll() {
+    this.swap(0, this.queue.length - 1);
+    const res &#61; this.queue.pop();
+    this.sink();
+    return res;
+  }
+
+  peek() {
+    return this.queue[0];
+  }
+
+  size() {
+    return this.queue.length;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int t &#61; sc.nextInt();
+
+    int[][] wos &#61; new int[n][2];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      wos[i][0] &#61; sc.nextInt();
+      wos[i][1] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(wos, t));
+  }
+
+  public static int getResult(int[][] wos, int t) {
+    // 按照任务截止时间升序
+    Arrays.sort(wos, (a, b) -&gt; a[0] - b[0]);
+
+    // pq用于按照积分对任务进行优先级排序&#xff0c;积分越小&#xff0c;优先级越高&#xff0c;目的是为了每次替换掉最少积分的工单
+    PriorityQueue&lt;Integer&gt; pq &#61; new PriorityQueue&lt;&gt;((a, b) -&gt; a - b);
+
+    // 当前时间
+    int curTime &#61; 0;
+    // 已获得的积分
+    int ans &#61; 0;
+
+    // 遍历任务
+    for (int[] wo : wos) {
+      int endTime &#61; wo[0]; // 任务截止时间
+      int score &#61; wo[1]; // 任务积分
+
+      if (curTime &lt; endTime) {
+        // 如果 curTime &lt; 当前任务的截止时间&#xff0c;则curTime时刻可以指向当前任务
+        pq.offer(score);
+        ans &#43;&#61; score;
+        curTime&#43;&#43;;
+      } else {
+        // 如果 curTime &gt;&#61; 当前任务的截止时间&#xff0c;则当前任务只能在curTime时刻之前找一个时间点执行
+
+        // pq中记录的就是curTime之前时刻执行的任务
+        if (pq.size() &#61;&#61; 0) {
+          continue;
+        }
+
+        // 此时取出pq记录的可执行的任务中最小积分的那个
+        int min_score &#61; pq.peek();
+
+        // 如果当前任务的积分 &gt; 前面时间内可执行的任务中最小积分
+        if (score &gt; min_score) {
+          // 则我们应该将执行pq中最小积分任务的时间&#xff0c;用于执行当前任务&#xff0c;因为这样可以获得更大积分
+          pq.poll();
+          pq.offer(score);
+          ans &#43;&#61; score - min_score;
+        }
+      }
+    }
+
+    // 由于时间限制为t单位&#xff0c;而每个任务花费1单位时间&#xff0c;因此最多完成t个任务&#xff0c;对于多出任务应该去除&#xff0c;且优先去除积分少的
+    while (pq.size() &gt; t &amp;&amp; t &gt; 0) {
+      ans -&#61; pq.poll();
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python">import queue
+
+# 输入获取
+n &#61; int(input())
+t &#61; int(input())
+wos &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+# 算法入口
+def getResult():
+    # 按照任务截止时间升序
+    wos.sort(key&#61;lambda x: x[0])
+
+    # pq用于按照积分对任务进行优先级排序&#xff0c;积分越小&#xff0c;优先级越高&#xff0c;目的是为了每次替换掉最少积分的工单
+    pq &#61; queue.PriorityQueue()
+
+    # ans 记录拿到的积分
+    ans &#61; 0
+    # curTime 记录当前时间
+    curTime &#61; 0
+
+    # 遍历任务
+    for wo in wos:
+        # 任务截止时间, 任务积分
+        endTime, score &#61; wo
+
+        if curTime &lt; endTime:
+            # 如果 curTime &lt; 当前任务的截止时间&#xff0c;则curTime时刻可以指向当前任务
+            pq.put(score)
+            ans &#43;&#61; score
+            curTime &#43;&#61; 1
+        else:
+            # 如果 curTime &gt;&#61; 当前任务的截止时间&#xff0c;则当前任务只能在curTime时刻之前找一个时间点执行
+
+            # pq中记录的就是curTime之前时刻执行的任务
+            if pq.qsize() &#61;&#61; 0:
+                continue
+
+            # 此时取出pq记录的可执行的任务中最小积分的那个
+            min_score &#61; pq.queue[0]
+
+            # 如果当前任务的积分 &gt; 前面时间内可执行的任务中最小积分
+            if score &gt; min_score:
+                # 则我们应该将执行pq中最小积分任务的时间&#xff0c;用于执行当前任务&#xff0c;因为这样可以获得更大积分
+                pq.get()
+                pq.put(score)
+                ans &#43;&#61; score - min_score
+
+    # 由于时间限制为t单位&#xff0c;而每个任务花费1单位时间&#xff0c;因此最多完成t个任务&#xff0c;对于多出任务应该去除&#xff0c;且优先去除积分少的
+    while pq.qsize() &gt; t:
+        ans -&#61; pq.get()
+
+    return ans
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/* 优先队列实现 */
+typedef struct PriorityQueue {
+    int *arr;
+    int size;
+
+    int (*cmp)(int, int);
+} PQ;
+
+PQ *new_PQ(int capacity, int (*cmp)(int, int)) {
+    PQ *pq &#61; (PQ *) malloc(sizeof(PQ));
+    pq-&gt;arr &#61; (int *) malloc(sizeof(int) * capacity);
+    pq-&gt;size &#61; 0;
+    pq-&gt;cmp &#61; cmp;
+    return pq;
+}
+
+void swap_PQ(PQ *pq, int a, int b) {
+    int tmp &#61; pq-&gt;arr[a];
+    pq-&gt;arr[a] &#61; pq-&gt;arr[b];
+    pq-&gt;arr[b] &#61; tmp;
+}
+
+// 上浮
+void swim_PQ(PQ *pq) {
+    int c &#61; pq-&gt;size - 1;
+
+    while (c &gt;&#61; 1) {
+        int f &#61; (c - 1) / 2;
+
+        if (pq-&gt;cmp(pq-&gt;arr[c], pq-&gt;arr[f]) &lt; 0) {
+            swap_PQ(pq, c, f);
+            c &#61; f;
+        } else {
+            break;
+        }
+    }
+}
+
+// 入队
+void offer_PQ(PQ *pq, int val) {
+    pq-&gt;arr[pq-&gt;size&#43;&#43;] &#61; val;
+    swim_PQ(pq);
+}
+
+// 下沉
+void sink_PQ(PQ *pq) {
+    int f &#61; 0;
+
+    while (1) {
+        int c1 &#61; 2 * f &#43; 1;
+        int c2 &#61; c1 &#43; 1;
+
+        int c;
+
+        if (pq-&gt;size &gt; c1 &amp;&amp; pq-&gt;size &gt; c2) {
+            if (pq-&gt;cmp(pq-&gt;arr[c1], pq-&gt;arr[c2]) &lt; 0) {
+                c &#61; c1;
+            } else {
+                c &#61; c2;
+            }
+        } else if (pq-&gt;size &gt; c1 &amp;&amp; pq-&gt;size &lt;&#61; c2) {
+            c &#61; c1;
+        } else if (pq-&gt;size &lt;&#61; c1 &amp;&amp; pq-&gt;size &gt; c2) {
+            c &#61; c2;
+        } else {
+            break;
+        }
+
+        if (pq-&gt;cmp(pq-&gt;arr[c], pq-&gt;arr[f]) &lt; 0) {
+            swap_PQ(pq, c, f);
+            f &#61; c;
+        } else {
+            break;
+        }
+    }
+}
+
+// 出队
+int poll_PQ(PQ *pq) {
+    swap_PQ(pq, 0, pq-&gt;size - 1);
+    int res &#61; pq-&gt;arr[--pq-&gt;size];
+    sink_PQ(pq);
+    return res;
+}
+
+// 获取堆顶元素值
+int peek_PQ(PQ *pq) {
+    return pq-&gt;arr[0];
+}
+
+typedef struct WorkOrder {
+    int endTime;
+    int score;
+} WO;
+
+int cmp(const void *a, const void *b) {
+    int *A &#61; (int*) a;
+    int *B &#61; (int*) b;
+    return A[0] - B[0];
+}
+
+int cmp_PQ(int a, int b) {
+    return a - b;
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int t;
+    scanf(&#34;%d&#34;, &amp;t);
+
+    int wos[n][2];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%d %d&#34;, &amp;wos[i][0], &amp;wos[i][1]);
+    }
+
+    // 按照任务截止时间升序
+    qsort(wos,  n,sizeof(int *), cmp);
+
+    // pq用于按照积分对任务进行优先级排序&#xff0c;积分越小&#xff0c;优先级越高&#xff0c;目的是为了每次替换掉最少积分的工单
+    PQ *pq &#61; new_PQ(n, cmp_PQ);
+
+    // 当前时间
+    int curTime &#61; 0;
+    // 已获得的积分
+    int ans &#61; 0;
+
+    // 遍历任务
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        int endTime &#61; wos[i][0]; // 任务截止时间
+        int score &#61; wos[i][1]; // 任务积分
+
+        if (curTime &lt; endTime) {
+            // 如果 curTime &lt; 当前任务的截止时间&#xff0c;则curTime时刻可以指向当前任务
+            offer_PQ(pq, score);
+            ans &#43;&#61; score;
+            curTime&#43;&#43;;
+        } else {
+            // 如果 curTime &gt;&#61; 当前任务的截止时间&#xff0c;则当前任务只能在curTime时刻之前找一个时间点执行
+
+            // pq中记录的就是curTime之前时刻执行的任务
+            if (pq-&gt;size &#61;&#61; 0) continue;
+
+            // 此时取出pq记录的可执行的任务中最小积分的那个
+            int min_score &#61; peek_PQ(pq);
+
+            // 如果当前任务的积分 &gt; 前面时间内可执行的任务中最小积分
+            if (score &gt; min_score) {
+                // 则我们应该将执行pq中最小积分任务的时间&#xff0c;用于执行当前任务&#xff0c;因为这样可以获得更大积分
+                poll_PQ(pq);
+                offer_PQ(pq, score);
+                ans &#43;&#61; score - min_score;
+            }
+        }
+    }
+
+    // 由于时间限制为t单位&#xff0c;而每个任务花费1单位时间&#xff0c;因此最多完成t个任务&#xff0c;对于多出任务应该去除&#xff0c;且优先去除积分少的
+    while (pq-&gt;size &gt; t) {
+        ans -&#61; poll_PQ(pq);
+    }
+
+    printf(&#34;%d\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

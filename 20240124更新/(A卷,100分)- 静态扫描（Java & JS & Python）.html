@@ -1,0 +1,188 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 静态扫描（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>静态扫描可以快速识别源代码的缺陷&#xff0c;静态扫描的结果以扫描报告作为输出&#xff1a;</p> 
+<p>1、文件扫描的成本和文件大小相关&#xff0c;如果文件大小为N&#xff0c;则扫描成本为N个金币</p> 
+<p>2、扫描报告的缓存成本和文件大小无关&#xff0c;每缓存一个报告需要M个金币</p> 
+<p>3、扫描报告缓存后&#xff0c;后继再碰到该文件则不需要扫描成本&#xff0c;直接获取缓存结果</p> 
+<p>给出源代码文件标识序列和文件大小序列&#xff0c;求解采用合理的缓存策略&#xff0c;最少需要的金币数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为缓存一个报告金币数M&#xff0c;L&lt;&#61; M &lt;&#61; 100</p> 
+<p>第二行为文件标识序列&#xff1a;F1,F2,F3,....,Fn。</p> 
+<p>第三行为文件大小序列&#xff1a;S1,S2,S3,....,Sn。</p> 
+<p></p> 
+<p>备注&#xff1a;</p> 
+<ul><li>1 &lt;&#61; N &lt;&#61; 10000</li><li>1 &lt;&#61; Fi &lt;&#61; 1000</li><li>1 &lt;&#61; Si &lt;&#61; 10</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>采用合理的缓存策略&#xff0c;需要的最少金币数</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 1 2 2 1 2 3 4<br /> 1 1 1 1 1 1 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">7</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">文件大小相同&#xff0c;扫描成本均为1个金币。缓存任意文件均不合算&#xff0c;因而最少成本为7金币。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:88px;">输入</td><td style="width:410px;">5<br /> 2 2 2 2 2 5 2 2 2<br /> 3 3 3 3 3 1 3 3 3</td></tr><tr><td style="width:88px;">输出</td><td style="width:410px;">9</td></tr><tr><td style="width:88px;">说明</td><td style="width:410px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的贪心思维逻辑题&#xff0c;解析请看代码注释。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m, f, s;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    m &#61; lines[0] - 0;
+    f &#61; lines[1].split(&#34; &#34;).map(Number);
+    s &#61; lines[2].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(m, f, s));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(m, f, s) {
+  // count用于保存每个文件出现的次数
+  const count &#61; {};
+  // size用于保存文件的大小&#xff0c;即扫描成本
+  const size &#61; {};
+  for (let i &#61; 0; i &lt; f.length; i&#43;&#43;) {
+    // k是文件标识
+    const k &#61; f[i];
+    count[k] ? count[k]&#43;&#43; : (count[k] &#61; 1);
+    if (!size[k]) {
+      size[k] &#61; s[i];
+    }
+  }
+
+  let ans &#61; 0;
+  for (let k in count) {
+    // 选择每次都重新扫描的成本  和  扫描一次&#43;缓存的成本  中最小的
+    ans &#43;&#61; Math.min(count[k] * size[k], size[k] &#43; m);
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; Integer.parseInt(sc.nextLine());
+    Integer[] f &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+    Integer[] s &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(m, f, s));
+  }
+
+  public static int getResult(int m, Integer[] f, Integer[] s) {
+    // count用于保存每个文件出现的次数
+    HashMap&lt;Integer, Integer&gt; count &#61; new HashMap&lt;&gt;();
+    // size用于保存文件的大小&#xff0c;即扫描成本
+    HashMap&lt;Integer, Integer&gt; size &#61; new HashMap&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; f.length; i&#43;&#43;) {
+      // k是文件标识
+      Integer k &#61; f[i];
+      count.put(k, count.getOrDefault(k, 0) &#43; 1);
+      size.putIfAbsent(k, s[i]);
+    }
+
+    int ans &#61; 0;
+    for (Integer k : count.keySet()) {
+      // 选择每次都重新扫描的成本  和  扫描一次&#43;缓存的成本  中最小的
+      ans &#43;&#61; Math.min(count.get(k) * size.get(k), size.get(k) &#43; m);
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+f &#61; list(map(int, input().split()))
+s &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(m, f, s):
+    # count用于保存每个文件出现的次数
+    count &#61; {}
+    # size用于保存文件的大小&#xff0c;即扫描成本
+    size &#61; {}
+
+    for i in range(len(f)):
+        # k是文件标识
+        k &#61; f[i]
+        if count.get(k) is None:
+            count[k] &#61; 1
+        else:
+            count[k] &#43;&#61; 1
+
+        if size.get(k) is None:
+            size[k] &#61; s[i]
+
+    ans &#61; 0
+    for k in count.keys():
+        # 选择每次都重新扫描的成本  和  扫描一次&#43;缓存的成本  中最小的
+        ans &#43;&#61; min(count[k] * size[k], size[k] &#43; m)
+    return ans
+
+
+print(getResult(m, f, s))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

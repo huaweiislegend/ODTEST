@@ -1,0 +1,387 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 创建二叉树（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>请按下列描述构建一颗二叉树&#xff0c;并返回该树的根节点&#xff1a;</p> 
+<p>1、先创建值为-1的根结点&#xff0c;根节点在第0层;</p> 
+<p>2、然后根据operations依次添加节点&#xff1a; operations[i] &#61; [height, index] 表示对第 height 层的第index 个节点node&#xff0c; 添加值为 i 的子节点&#xff1a;</p> 
+<ul><li>若node 无「左子节点」&#xff0c;则添加左子节点;</li><li>若node 有「左子节点」&#xff0c;但无「右子节点」&#xff0c;则添加右子节点&#xff1b;</li><li>否则不作任何处理。</li></ul> 
+<p>height、index 均从0开始计数&#xff1b;</p> 
+<p>index 指所在层的创建顺序。</p> 
+<p></p> 
+<p>注意&#xff1a;</p> 
+<ul><li>输入用例保证每次操作对应的节点已存在&#xff1b;</li><li>控制台输出的内容是根据返回的树根节点&#xff0c;按照层序遍历二叉树打印的结果。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>operations</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>根据返回的树根节点&#xff0c;按照层序遍历二叉树打印的结果</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 &lt;&#61; operations.length &lt;&#61; 100</li><li>operations[i].length &#61;&#61; 2</li><li>0 &lt;&#61; operations[i][0] &lt; 100</li><li>0 &lt;&#61; operations[i][1] &lt; 100</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">[[0, 0], [0, 0], [1, 1], [1, 0], [0, 0]]</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[-1, 0, 1, 3, null, 2]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>首个值是根节点的值&#xff0c;也是返回值&#xff1b;</p> <p>null 表示是空节点&#xff0c;此特殊层序遍历会遍历有值节点的 null 子节点</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">[[0, 0], [1, 0], [1, 0], [2, 1], [2, 1], [2, 1], [2, 0], [3, 1], [2, 0]]</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[-1, 0, null, 1, 2, 6, 8, 3, 4, null, null, null, null, null, null, 7]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>首个值是根节点的值&#xff0c;也是返回值&#xff1b;</p> <p>null 表示是空节点&#xff0c;此特殊层序遍历会遍历有值节点的 null 子节点</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>首先&#xff0c;解释下上面两个用例的输入&#xff0c;输出</p> 
+<p>用例1含义</p> 
+<p><img alt="" height="75" src="https://img-blog.csdnimg.cn/b201b94dd7b84f21a2866dd243eaad96.png" width="441" /></p> 
+<p>operations[0] &#61; [0, 0]</p> 
+<p>即&#xff1a;第0行第0个创建的节点插入子节点值0</p> 
+<p> ​​<img alt="" height="141" src="https://img-blog.csdnimg.cn/2e17522607b645f48bc0f784aeeac1c0.png" width="473" /></p> 
+<p>operations[1] &#61; [0, 0]  </p> 
+<p>即&#xff1a;第0行第0个创建的节点插入子节点值1</p> 
+<p> <img alt="" height="150" src="https://img-blog.csdnimg.cn/b7a3f2957c05415a9b203d5bf30cfab4.png" width="476" /></p> 
+<p>operations[2] &#61; [1, 1]  </p> 
+<p>即&#xff1a;第1行第1个创建的节点插入子节点值2</p> 
+<p> <img alt="" height="194" src="https://img-blog.csdnimg.cn/ba03bc890f8f4e2d91faa6a91f8ef6ef.png" width="473" /></p> 
+<p>operations[3] &#61; [1, 0]  </p> 
+<p>即&#xff1a;第1行第0个创建的节点插入子节点值3 </p> 
+<p> <img alt="" height="203" src="https://img-blog.csdnimg.cn/4087c44e55c24e478d3abd61a55cf0aa.png" width="474" /></p> 
+<p>operations[4] &#61; [0, 0]  </p> 
+<p>即&#xff1a;第0行第0个创建的节点插入子节点值4&#xff0c;但是由于第0行第0个创建的节点左右子节点都已有了&#xff0c;因此不插入</p> 
+<p> <img alt="" height="195" src="https://img-blog.csdnimg.cn/49f65c27c015471eaea7cd9483ee3db5.png" width="473" /></p> 
+<p> 上图就是用例1的二叉树&#xff0c;输出时&#xff0c;由于题目说&#xff1a;层序遍历会遍历有值节点的 null 子节点&#xff0c;因此为上面二叉树的有值节点加入null子节点&#xff0c;如下图所示</p> 
+<p><img alt="" height="260" src="https://img-blog.csdnimg.cn/08d09d9bcb094fbea17e777d8e453703.png" width="381" /></p> 
+<p> 层序遍历结果为&#xff1a;-1, 0, 1, 3, null, 2, null</p> 
+<p> 但是用例输出是&#xff1a;[-1, 0, 1, 3, null, 2]&#xff0c;因此最后一个null子节点可以不用输出。</p> 
+<p></p> 
+<hr /> 
+<p></p> 
+<p>用例2含义</p> 
+<p> <img alt="" height="67" src="https://img-blog.csdnimg.cn/071fff95bf6946178ea26cafe676bcc4.png" width="600" /></p> 
+<p></p> 
+<p> operations[0] &#61; [0, 0]</p> 
+<p>即&#xff1a;第0行第0个创建的节点插入子节点值0</p> 
+<p><img alt="" height="146" src="https://img-blog.csdnimg.cn/d5dd148325a24158b4bf1464a20ab069.png" width="465" /></p> 
+<p></p> 
+<p> operations[1] &#61; [1, 0]</p> 
+<p>即&#xff1a;第1行第0个创建的节点插入子节点值1</p> 
+<p><img alt="" height="190" src="https://img-blog.csdnimg.cn/1d978ba8bf434942b167ef8ed2b27fd8.png" width="448" /></p> 
+<p></p> 
+<p>  operations[2] &#61; [1, 0]</p> 
+<p>即&#xff1a;第1行第0个创建的节点插入子节点值2</p> 
+<p><img alt="" height="190" src="https://img-blog.csdnimg.cn/49af4d7e46d94bf5ab8f71716499d7dd.png" width="466" /></p> 
+<p></p> 
+<p>  operations[3] &#61; [2, 1]</p> 
+<p>即&#xff1a;第2行第1个创建的节点插入子节点值3</p> 
+<p><img alt="" height="244" src="https://img-blog.csdnimg.cn/4dfef1e3e93f442986a88f0817b8b0c3.png" width="446" /></p> 
+<p></p> 
+<p>  operations[4] &#61; [2, 1]</p> 
+<p>即&#xff1a;第2行第1个创建的节点插入子节点值4</p> 
+<p><img alt="" height="248" src="https://img-blog.csdnimg.cn/aabd4fb3092548009d6a7d42b3ad4a83.png" width="467" /></p> 
+<p></p> 
+<p> operations[5] &#61; [2, 1]</p> 
+<p>即&#xff1a;第2行第1个创建的节点插入子节点值5&#xff0c;但是由于第2行第1个创建的节点已经有了左右子节点&#xff0c;因此不插入</p> 
+<p><img alt="" height="259" src="https://img-blog.csdnimg.cn/f6e52e0576d14fcaae8760534a9025fd.png" width="476" /></p> 
+<p></p> 
+<p> operations[6] &#61; [2, 0]</p> 
+<p>即&#xff1a;第2行第0个创建的节点插入子节点值6</p> 
+<p><img alt="" height="254" src="https://img-blog.csdnimg.cn/35b6222487734dd1983cc2a4027c7964.png" width="475" /></p> 
+<p></p> 
+<p> operations[7] &#61; [3, 1]</p> 
+<p>即&#xff1a;第3行第1个创建的节点插入子节点值7</p> 
+<p><strong><span style="color:#fe2c24;">此时需要特别注意下&#xff0c;第3行第1个创建的</span></strong><strong><span style="color:#fe2c24;">节点是上图的值3节点吗&#xff1f;&#xff1f;&#xff1f;&#xff1f;</span></strong></p> 
+<p>为什么我要特别标注这句话呢&#xff1f;</p> 
+<p>因为题目中说&#xff1a;operations[i] &#61; [height, index]&#xff0c;而index 指所在层的<span style="color:#fe2c24;"><strong>创建顺序</strong></span>。</p> 
+<p> 我们回到  operations[4]&#xff0c;可以发现<strong><span style="color:#fe2c24;">第3行第1个创建的</span></strong><strong><span style="color:#fe2c24;">节点</span></strong><span style="color:#0d0016;">是值4节点&#xff0c;而值3节点是第3行第0个创建的节点。</span></p> 
+<p><span style="color:#0d0016;">因此此步图示如下</span></p> 
+<p><img alt="" height="418" src="https://img-blog.csdnimg.cn/4a97f1045afb4002a63afa7ae0f0a826.png" width="437" /></p> 
+<p></p> 
+<p> operations[8] &#61; [2, 0]</p> 
+<p>即&#xff1a;第2行第0个创建的节点插入子节点值8</p> 
+<p><img alt="" height="418" src="https://img-blog.csdnimg.cn/524e2239acb3464580367080e5db39fd.png" width="437" /></p> 
+<p></p> 
+<p>补充有值节点的null子节点</p> 
+<p><img alt="" height="418" src="https://img-blog.csdnimg.cn/407b3d920f6d49289747fd7c00290bb2.png" width="437" /></p> 
+<p>因此按照层序输出顺序是&#xff1a;</p> 
+<p>-1, 0, null, 1, 2, 6, 8, 3, 4, null, null, null, null, null, 7 </p> 
+<p></p> 
+<p></p> 
+<p>当我们了解完上面两个用例的含义后&#xff0c;就可以做题了。</p> 
+<p>本题的难点在于如何记录每层节点的创建顺序index&#xff0c;如果通过传统的二叉树结构&#xff0c;则很难实现&#xff0c;原因是&#xff1a;</p> 
+<ul><li>如何通过height&#xff08;层数&#xff09;&#xff0c;index&#xff08;该层第index个创建的&#xff09;对应到二叉树的点</li></ul> 
+<p>其中层数height可以通过层序遍历二叉树找到&#xff0c;但是index创建顺序却无法通过层序遍历找到&#xff0c;因此在构建二叉树时&#xff0c;还需要额外记录index到每个点自身&#xff0c;在层序遍历的时候&#xff0c;找到点&#xff0c;并取得它自身记录的index值&#xff0c;对比要查找的index值。</p> 
+<p>上面这个逻辑就非常麻烦了&#xff0c;因此不推荐这么做。</p> 
+<p></p> 
+<p>我的解题思路是&#xff0c;创建一个二维数组&#xff08;集合&#xff0c;列表&#xff09;tree&#xff0c;初始时为&#xff1a; [[node(-1)]]</p> 
+<p>即tree[0][0] &#61; node(-1)&#xff0c;这里tree[0][0]表示height &#61; 0, index &#61; 0</p> 
+<p>即tree的行索引就是height层数&#xff0c;列索引就是index创建顺序</p> 
+<p></p> 
+<p>tree[0][0]就代表二叉树根节点。</p> 
+<p><br /> 当我们遍历operations时&#xff0c;operations[i] &#61; [height, index] &#xff0c;其实就是找 tree[height][index]父节点&#xff0c;在该父节点下插入node(i)子节点&#xff0c;而在该父节点下插入node(i)子节点&#xff0c;其实就是向tree[height&#43;1]数组中加入node(i)节点&#xff0c;比如</p> 
+<p>插入逻辑是&#xff1a;</p> 
+<ul><li>若tree[height][index] 无「左子节点」&#xff0c;则添加左子节点;</li><li>若tree[height][index] 有「左子节点」&#xff0c;但无「右子节点」&#xff0c;则添加右子节点&#xff1b;</li><li>否则不作任何处理。</li></ul> 
+<p>如果tree[height&#43;1]不存在&#xff0c;需要先初始化一个数组&#xff0c;然后加入node(i)节点&#xff0c;此时node(i)节点在tree[height&#43;1]中的索引其实就是node(i)节点&#xff0c;在height&#43;1层的index创建顺序。</p> 
+<p></p> 
+<p>这样的话&#xff0c;我们就能依赖于tree二维数组结构来完成任意节点的height&#xff0c;index的记录了。这样用例2插入值7时&#xff0c;就可以快速找到第3行第1个创建的节点了。</p> 
+<p></p> 
+<p>但是&#xff0c;此时各节点之间并没有建立连续&#xff0c;因此我们还要设计Node类&#xff0c;来完成各节点之间的父子关系构建。这个就很简单了&#xff0c;具体实现看代码。</p> 
+<p></p> 
+<p>2023.03.15 经网友指正&#xff0c;有如下用例&#xff1a;</p> 
+<blockquote> 
+ <p>[[0,0],[0,0],[1,0],[1,0],[1,0],[1,1],[1,1],[2,2]]</p> 
+</blockquote> 
+<p>其中[2,2]应该对应哪个值得节点&#xff0c;大家可以先思考一下</p> 
+<p><img alt="" height="73" src="https://img-blog.csdnimg.cn/0add8ecba937418c9163e8547e845b9d.png" width="368" /></p> 
+<p> 其实如果按照上面思路&#xff0c;值4节点应该是二叉树的第二行第二个创建的节点&#xff0c;但是它没有成功插入到二叉树中。</p> 
+<p>因此它不能算二叉树的第二行第二个创建的节点&#xff0c;值5接待你才能算上二叉树的第二行第二个创建的节点。</p> 
+<p>因此&#xff0c;前面tree记录节点创建顺序时&#xff0c;应该注意这种情况&#xff0c;要排除掉加入二叉树失败的节点。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const operations &#61; JSON.parse(line);
+  console.log(getResult(operations));
+});
+
+function getResult(operations) {
+  const tree &#61; [[new Node(-1)]];
+
+  for (let i &#61; 0; i &lt; operations.length; i&#43;&#43;) {
+    const [height, index] &#61; operations[i];
+
+    if (!tree[height &#43; 1]) tree.push([]);
+
+    const ch &#61; new Node(i);
+
+    const fa &#61; tree[height][index];
+    // 注意&#xff0c;tree用于记录树中加入成功的节点是第几行第几个创建的&#xff0c;对于加入的失败的不应该记录
+    if (fa.lc &#61;&#61; null || fa.rc &#61;&#61; null) {
+      tree[height &#43; 1].push(ch);
+    }
+
+    if (!fa.lc) fa.lc &#61; ch;
+    else if (!fa.rc) fa.rc &#61; ch;
+  }
+
+  const ans &#61; [];
+  const queue &#61; [tree[0][0]];
+
+  while (queue.length) {
+    const node &#61; queue.shift();
+
+    if (node) {
+      ans.push(node.val);
+      queue.push(node.lc);
+      queue.push(node.rc);
+    } else {
+      ans.push(null);
+    }
+  }
+
+  while (true) {
+    if (ans.at(-1) &#61;&#61; null) ans.pop();
+    else break;
+  }
+
+  return JSON.stringify(ans).replace(/\,/g, &#34;, &#34;);
+}
+
+class Node {
+  constructor(val) {
+    this.val &#61; val;
+    this.lc &#61; null;
+    this.rc &#61; null;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61; sc.nextLine();
+
+    Integer[][] operations &#61;
+        Arrays.stream(str.substring(1, str.length() - 1).split(&#34;(?&lt;&#61;]), (?&#61;\\[)&#34;))
+            .map(
+                s -&gt;
+                    Arrays.stream(s.substring(1, s.length() - 1).split(&#34;, &#34;))
+                        .map(Integer::parseInt)
+                        .toArray(Integer[]::new))
+            .toArray(Integer[][]::new);
+
+    System.out.println(getResult(operations));
+  }
+
+  public static String getResult(Integer[][] operations) {
+    Node head &#61; new Node(-1);
+
+    ArrayList&lt;Node&gt; level0 &#61; new ArrayList&lt;&gt;();
+    level0.add(head);
+
+    ArrayList&lt;ArrayList&lt;Node&gt;&gt; tree &#61; new ArrayList&lt;&gt;();
+    tree.add(level0);
+
+    for (int i &#61; 0; i &lt; operations.length; i&#43;&#43;) {
+      int height &#61; operations[i][0];
+      int index &#61; operations[i][1];
+
+      if (tree.size() &lt;&#61; height &#43; 1) {
+        tree.add(new ArrayList&lt;&gt;());
+      }
+
+      Node ch &#61; new Node(i);
+
+      Node fa &#61; tree.get(height).get(index);
+      // 注意&#xff0c;tree用于记录树中加入成功的节点是第几行第几个创建的&#xff0c;对于加入的失败的不应该记录
+      if (fa.lc &#61;&#61; null || fa.rc &#61;&#61; null) {
+        tree.get(height &#43; 1).add(ch);
+      }
+
+      if (fa.lc &#61;&#61; null) fa.lc &#61; ch;
+      else if (fa.rc &#61;&#61; null) fa.rc &#61; ch;
+    }
+
+    LinkedList&lt;Integer&gt; ans &#61; new LinkedList&lt;&gt;();
+    LinkedList&lt;Node&gt; queue &#61; new LinkedList&lt;&gt;();
+    queue.add(tree.get(0).get(0));
+
+    while (queue.size() &gt; 0) {
+      Node node &#61; queue.removeFirst();
+
+      if (node !&#61; null) {
+        ans.add(node.val);
+        queue.add(node.lc);
+        queue.add(node.rc);
+      } else {
+        ans.add(null);
+      }
+    }
+
+    while (true) {
+      if (ans.getLast() &#61;&#61; null) ans.removeLast();
+      else break;
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34;, &#34;, &#34;[&#34;, &#34;]&#34;);
+    for (Integer an : ans) {
+      sj.add(an &#43; &#34;&#34;);
+    }
+
+    return sj.toString();
+  }
+}
+
+class Node {
+  int val;
+  Node lc;
+  Node rc;
+
+  public Node(int val) {
+    this.val &#61; val;
+    this.lc &#61; null;
+    this.rc &#61; null;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+operations &#61; eval(input())
+
+
+class Node:
+    def __init__(self, val):
+        self.val &#61; val
+        self.lc &#61; None
+        self.rc &#61; None
+
+
+# 算法入口
+def getResult(operations):
+    tree &#61; [[Node(-1)]]
+
+    for i in range(len(operations)):
+        height, index &#61; operations[i]
+
+        if len(tree) &lt;&#61; height &#43; 1:
+            tree.append([])
+
+        ch &#61; Node(i)
+
+        fa &#61; tree[height][index]
+        # 注意&#xff0c;tree用于记录树中加入成功的节点是第几行第几个创建的&#xff0c;对于加入的失败的不应该记录
+        if not fa.lc or not fa.rc:
+            tree[height &#43; 1].append(ch)
+
+        if not fa.lc:
+            fa.lc &#61; ch
+        elif not fa.rc:
+            fa.rc &#61; ch
+
+    ans &#61; []
+    queue &#61; [tree[0][0]]
+
+    while len(queue) &gt; 0:
+        node &#61; queue.pop(0)
+
+        if node is not None:
+            ans.append(node.val)
+            queue.append(node.lc)
+            queue.append(node.rc)
+        else:
+            ans.append(&#34;null&#34;)
+
+    while True:
+        if ans[-1] &#61;&#61; &#34;null&#34;:
+            ans.pop()
+        else:
+            break
+
+    return ans
+
+
+# 算法调用
+res &#61; str(getResult(operations))
+print(res.replace(&#34;&#39;&#34;, &#34;&#34;))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

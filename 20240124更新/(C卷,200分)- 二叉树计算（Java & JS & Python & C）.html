@@ -1,0 +1,652 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 二叉树计算（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <p id="main-toc"><strong>目录</strong></p> 
+<p id="main-toc-toc" style="margin-left:80px;"><a href="#main-toc" rel="nofollow">题目描述</a></p> 
+<p id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0-toc" style="margin-left:80px;"><a href="#%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0" rel="nofollow">输入描述</a></p> 
+<p id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0-toc" style="margin-left:80px;"><a href="#%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0" rel="nofollow">输出描述</a></p> 
+<p id="%E7%94%A8%E4%BE%8B-toc" style="margin-left:80px;"><a href="#%E7%94%A8%E4%BE%8B" rel="nofollow">用例</a></p> 
+<p id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90-toc" style="margin-left:80px;"><a href="#%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90" rel="nofollow">题目解析</a></p> 
+<p id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">JS算法源码</a></p> 
+<p id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">Java算法源码</a></p> 
+<p id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">Python算法源码</a></p> 
+<p id="C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">C算法源码</a></p> 
+<hr id="hr-toc" /> 
+<p></p> 
+<h4 id="main-toc">题目描述</h4> 
+<p>给出一个二叉树如下图所示&#xff1a;</p> 
+<p><img alt="" height="265" src="https://img-blog.csdnimg.cn/ed2a08ce745c47ab8e4af259b4d1216c.png" width="260" /></p> 
+<p>请由该二叉树生成一个新的二叉树&#xff0c;它满足其树中的每个节点将包含原始树中的左子树和右子树的和。</p> 
+<p><img alt="" height="280" src="https://img-blog.csdnimg.cn/037de229e9dc43d08af43a4c7944f8cc.png" width="302" /></p> 
+<p>左子树表示该节点左侧叶子节点为根节点的一颗新树&#xff1b;右子树表示该节点右侧叶子节点为根节点的一颗新树。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>2行整数&#xff0c;第1行表示二叉树的中序遍历&#xff0c;第2行表示二叉树的前序遍历&#xff0c;以空格分割</p> 
+<p>例如&#xff1a;</p> 
+<blockquote> 
+ <p>7 -2 6 6 9<br /> 6 7 -2 9 6</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>1行整数&#xff0c;表示求和树的中序遍历&#xff0c;以空格分割</p> 
+<p>例如&#xff1a;</p> 
+<blockquote> 
+ <p>-2 0 20 0 6</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">-3 12 6 8 9 -10 -7<br /> 8 12 -3 6 -10 9 -7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0 3 0 7 0 2 0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题主要是考察二叉树的中序遍历&#xff0c;前序遍历&#xff0c;以及根据中序遍历和前序遍历还原二叉树结构。</p> 
+<p></p> 
+<p>二叉树的中序遍历即&#xff1a;左根右&#xff0c;即先遍历左子树&#xff0c;再遍历根&#xff0c;最后遍历右子树</p> 
+<p>二叉树的前序遍历即&#xff1a;根左右&#xff0c;即先遍历根&#xff0c;再遍历左子树&#xff0c;最后遍历右子树</p> 
+<p></p> 
+<p>二叉树的前序遍历序列中首元素就是根节点&#xff0c;比如题目描述中的前序遍历序列&#xff1a;</p> 
+<blockquote> 
+ <p>6 7 -2 9 6</p> 
+</blockquote> 
+<p>其中首元素6就是根节点。</p> 
+<p></p> 
+<p>知道根节点后&#xff0c;我们就可以去中序遍历序列中找打根值对应的节点&#xff0c;比如题目描述中的中序遍历序列&#xff1a;</p> 
+<blockquote> 
+ <p>7 -2 <span style="color:#fe2c24;">6</span> <span style="color:#a2e043;">6</span> 9</p> 
+</blockquote> 
+<p>上面中序遍历序列中有两个值为6的元素&#xff0c;那么他们都有可能为根&#xff0c;我们需要一一判断&#xff1a;</p> 
+<ul><li>如果红色6&#xff08;第一个6&#xff09;是根&#xff0c;那么根据中序&#xff1a;“左根右” 的遍历特点&#xff0c;7 -2 就是左子树的中序遍历&#xff0c;6 9 就是右子树的中序遍历</li><li>如果绿色6&#xff08;第二个6&#xff09;是根&#xff0c;那么根据中序&#xff1a;“左根右” 的遍历特点&#xff0c;7 -2 6 就是左子树的中序遍历&#xff0c;9 就是右子树的中序遍历</li></ul> 
+<p>上面两个情况中&#xff0c;我们根据中序遍历特点&#xff0c;得到了左子树的长度、右子树长度。</p> 
+<p>而一颗二叉树&#xff08;子树&#xff09;的序列长度是固定的&#xff0c;即一颗二叉树&#xff08;子树&#xff09;的中序遍历序列和前序遍历序列长度是相同的。</p> 
+<p>因此&#xff0c;我们通过中序遍历得到左子树、右子树长度&#xff0c;那么就可以在前序遍历中划分出左子树、右子树范围&#xff1a;</p> 
+<p>比如按照中序遍历序列中红色6&#xff08;第一个6&#xff09;作为根的话&#xff0c;那么左子树&#xff08;7 -2&#xff09;长度为2&#xff0c;右子树&#xff08;6 9&#xff09; 长度2&#xff0c;则前序遍历序列可进行如下划分&#xff1a;</p> 
+<p><img alt="" height="150" src="https://img-blog.csdnimg.cn/a6a518056c6d490ca453d02c202c3364.png" width="285" /></p> 
+<p>此时&#xff0c;对比前序的左子树和中序的左子树是否节点相同&#xff0c;对比前序的右子树和中序的右子树是否相同</p> 
+<p><img alt="" height="150" src="https://img-blog.csdnimg.cn/18e868d5f9c243f3af9725465f89fcfe.png" width="330" /></p> 
+<p>如果左右子树都一致&#xff0c;则当前根是正确根。</p> 
+<p></p> 
+<p>如果我们选错根&#xff0c;比如选中序遍历序列中第二个6作为根&#xff0c;则</p> 
+<p><img alt="" height="316" src="https://img-blog.csdnimg.cn/862c51a549054b5ea9d6e71311f511f4.png" width="364" /></p> 
+<p>可以发现中序、前序的左右子树是不一致的。</p> 
+<hr /> 
+<p>综上所述&#xff0c;即我们通过前序序列找到二叉树的根节点值&#xff08;前序序列首元素&#xff09;&#xff0c;然后使用此根值&#xff0c;去中序序列中找根值位置&#xff0c;并划分出左子树长度&#xff0c;右子树长度&#xff0c;然后分别在前序、中序序列中&#xff0c;找出左子树序列、右子树序列&#xff0c;对比是否一致&#xff0c;如果一致&#xff0c;则中序序列中对应根值位置正确&#xff0c;否则错误。</p> 
+<hr /> 
+<p>根据前序、中序序列还原二叉树结构&#xff0c;也是按照上面逻辑&#xff0c;具体实现请看代码中buildTree函数&#xff0c;已添加详细注释。</p> 
+<p></p> 
+<p>另外&#xff0c;本题需要根据原始树&#xff08;即根据中序、前序还原出来的树&#xff09;&#xff0c;改造出一个新树&#xff0c;新树的每个节点的值 &#61; 其左右子树的所有节点值之和。</p> 
+<p>这里&#xff0c;我们可以在定义二叉树节点TreeNode结构时&#xff0c;多定义一个属性childSum用于记录节点的左右子树节点值之和。</p> 
+<p>这样在构造原始树的递归过程中&#xff0c;就可以完成每个节点的childSum值的计算。</p> 
+<p></p> 
+<p>最后输出新树的中序遍历序列即可&#xff0c;具体实现见代码中getMidOrder函数。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 中序遍历序列
+  const midOrder &#61; (await readline()).split(&#34; &#34;).map(Number);
+  // 前序遍历序列
+  const preOrder &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const n &#61; midOrder.length;
+
+  // 记录中序遍历序列中&#xff0c;序列元素值所在位置&#xff0c;本题中可能存在重复元素&#xff0c;因此某个序列元素值可能有多个位置
+  const midIndexMap &#61; {};
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    const num &#61; midOrder[i];
+
+    if (!midIndexMap[num]) {
+      midIndexMap[num] &#61; [];
+    }
+
+    midIndexMap[num].push(i);
+  }
+
+  class TreeNode {
+    constructor(num) {
+      this.num &#61; num; // 当前节点的值
+      this.childSum &#61; 0; // 当前节点的左子树&#43;右子树的和
+      this.leftChild &#61; null;
+      this.rightChild &#61; null;
+    }
+  }
+
+  /**
+   * 判断两个子数组是否相同&#xff08;元素相同&#xff0c;顺序可以不同&#xff09;
+   * &#64;param {*} midL 子数组1的左边界
+   * &#64;param {*} preL 子数组2的左边界
+   * &#64;param {*} size 子数组的长度
+   * &#64;returns 子数组1和子数组2是否相同
+   */
+  function notEquals(midL, preL, size) {
+    const arr1 &#61; midOrder.slice(midL, midL &#43; size).sort();
+    const arr2 &#61; preOrder.slice(preL, preL &#43; size).sort();
+
+    for (let i &#61; 0; i &lt; size; i&#43;&#43;) {
+      if (arr1[i] !&#61; arr2[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * 根据中序遍历序列、前序遍历序列还原树结构
+   * &#64;param {*} midL 中序遍历子序列的左边界
+   * &#64;param {*} midR 中序遍历子序列的右边界
+   * &#64;param {*} preL 前序遍历子序列的左边界
+   * &#64;param {*} preR 前序遍历子序列的右边界
+   * &#64;returns 树结构的根节点
+   */
+  function buildTree(midL, midR, preL, preR) {
+    // 某个节点&#xff08;子树&#xff09;对应一段子序列&#xff0c;如果对应子序列范围不存在&#xff0c;则子树也不存在
+    if (preL &gt; preR) return null;
+
+    // 先根据前序遍历序列得到根节点&#xff0c;前序序列的首元素就是根节点
+    const rootNum &#61; preOrder[preL];
+    const root &#61; new TreeNode(rootNum);
+
+    // 在中序遍历序列中&#xff0c;找到对应根值的位置&#xff0c;这个位置可能有多个&#xff0c;但是只有一个是正确的
+    for (let idx of midIndexMap[rootNum]) {
+      // 如果对应根值位置越界&#xff0c;则不是正确的
+      if (idx &lt; midL || idx &gt; midR) continue;
+
+      // 如果中序的左子树&#xff0c;和前序的左子树不同&#xff0c;则对应根值位置不正确
+      const leftLen &#61; idx - midL;
+      if (notEquals(midL, preL &#43; 1, leftLen)) continue;
+
+      // 如果中序的右子树&#xff0c;和前序的右子树不同&#xff0c;则对应根值位置不正确
+      const rightLen &#61; midR - idx;
+      if (notEquals(idx &#43; 1, preR - rightLen &#43; 1, rightLen)) continue;
+
+      // 找到正确根值位置后&#xff0c;开始分治递归处理左子树和右子树
+      root.leftChild &#61; buildTree(midL, idx - 1, preL &#43; 1, preL &#43; leftLen);
+      root.rightChild &#61; buildTree(idx &#43; 1, midR, preR - rightLen &#43; 1, preR);
+
+      // 记录该节点&#xff1a;左子树&#43;右子树的和&#xff08;本题新二叉树节点的值&#xff09;
+      root.childSum &#61;
+        (root.leftChild &#61;&#61; null
+          ? 0
+          : root.leftChild.num &#43; root.leftChild.childSum) &#43;
+        (root.rightChild &#61;&#61; null
+          ? 0
+          : root.rightChild.num &#43; root.rightChild.childSum);
+
+      break;
+    }
+
+    return root;
+  }
+
+  // 二叉树中序遍历
+  function getMidOrder(root, res) {
+    if (root &#61;&#61; null) return;
+
+    // 先遍历左子树
+    const leftChild &#61; root.leftChild;
+    if (leftChild !&#61; null) {
+      getMidOrder(leftChild, res);
+    }
+
+    // 再遍历根
+    res.push(root.childSum);
+
+    // 最后遍历右子树
+    const rightChild &#61; root.rightChild;
+    if (rightChild !&#61; null) {
+      getMidOrder(rightChild, res);
+    }
+  }
+
+  // 根据中序序列和前序序列还原树结构
+  const root &#61; buildTree(0, n - 1, 0, n - 1);
+
+  // 记录新的二叉树的的中序遍历序列
+  const res &#61; [];
+  getMidOrder(root, res);
+  console.log(res.join(&#34; &#34;));
+})();
+</code></pre> 
+<p> </p> 
+<h4 id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  static class TreeNode {
+    int num; // 当前节点的值
+    int childSum; // 当前节点的左子树&#43;右子树的和
+    TreeNode leftChild;
+    TreeNode rightChild;
+
+    public TreeNode(int num) {
+      this.num &#61; num;
+      this.childSum &#61; 0;
+      this.leftChild &#61; null;
+      this.rightChild &#61; null;
+    }
+  }
+
+  // 中序遍历序列
+  static int[] midOrder;
+
+  // 前序遍历序列
+  static int[] preOrder;
+
+  // 记录中序遍历序列中&#xff0c;序列元素值所在位置&#xff0c;本题中可能存在重复元素&#xff0c;因此某个序列元素值可能有多个位置
+  static HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; midIndexMap &#61; new HashMap&lt;&gt;();
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    midOrder &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    preOrder &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    int n &#61; midOrder.length;
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      int num &#61; midOrder[i];
+      midIndexMap.putIfAbsent(num, new ArrayList&lt;&gt;());
+      midIndexMap.get(num).add(i);
+    }
+
+    // 根据中序序列和前序序列还原树结构
+    TreeNode root &#61; buildTree(0, n - 1, 0, n - 1);
+
+    // 记录新的二叉树的的中序遍历序列
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    getMidOrder(root, sj);
+    System.out.println(sj);
+  }
+
+  // 二叉树中序遍历
+  public static void getMidOrder(TreeNode root, StringJoiner sj) {
+    if (root &#61;&#61; null) {
+      return;
+    }
+
+    // 先遍历左子树
+    TreeNode leftChild &#61; root.leftChild;
+    if (leftChild !&#61; null) {
+      getMidOrder(leftChild, sj);
+    }
+
+    // 再遍历根
+    sj.add(root.childSum &#43; &#34;&#34;);
+
+    // 最后遍历右子树
+    TreeNode rightChild &#61; root.rightChild;
+    if (rightChild !&#61; null) {
+      getMidOrder(rightChild, sj);
+    }
+  }
+
+  /**
+   * 根据中序遍历序列、前序遍历序列还原树结构
+   *
+   * &#64;param midL 中序遍历子序列的左边界
+   * &#64;param midR 中序遍历子序列的右边界
+   * &#64;param preL 前序遍历子序列的左边界
+   * &#64;param preR 前序遍历子序列的右边界
+   * &#64;return 树结构的根节点
+   */
+  public static TreeNode buildTree(int midL, int midR, int preL, int preR) {
+    // 某个节点&#xff08;子树&#xff09;对应一段子序列&#xff0c;如果对应子序列范围不存在&#xff0c;则子树也不存在
+    if (preL &gt; preR) return null;
+
+    // 先根据前序遍历序列得到根节点&#xff0c;前序序列的首元素就是根节点
+    int rootNum &#61; preOrder[preL];
+    TreeNode root &#61; new TreeNode(rootNum);
+
+    // 在中序遍历序列中&#xff0c;找到对应根值的位置&#xff0c;这个位置可能有多个&#xff0c;但是只有一个是正确的
+    for (int idx : midIndexMap.get(rootNum)) {
+      // 如果对应根值位置越界&#xff0c;则不是正确的
+      if (idx &lt; midL || idx &gt; midR) continue;
+
+      // 如果中序的左子树&#xff0c;和前序的左子树不同&#xff0c;则对应根值位置不正确
+      int leftLen &#61; idx - midL;
+      if (notEquals(midL, preL &#43; 1, leftLen)) continue;
+
+      // 如果中序的右子树&#xff0c;和前序的右子树不同&#xff0c;则对应根值位置不正确
+      int rightLen &#61; midR - idx;
+      if (notEquals(idx &#43; 1, preR - rightLen &#43; 1, rightLen)) continue;
+
+      // 找到正确根值位置后&#xff0c;开始分治递归处理左子树和右子树
+      root.leftChild &#61; buildTree(midL, idx - 1, preL &#43; 1, preL &#43; leftLen);
+      root.rightChild &#61; buildTree(idx &#43; 1, midR, preR - rightLen &#43; 1, preR);
+
+      // 记录该节点&#xff1a;左子树&#43;右子树的和&#xff08;本题新二叉树节点的值&#xff09;
+      root.childSum &#61;
+          (root.leftChild &#61;&#61; null ? 0 : (root.leftChild.num &#43; root.leftChild.childSum))
+              &#43; (root.rightChild &#61;&#61; null ? 0 : (root.rightChild.num &#43; root.rightChild.childSum));
+
+      break;
+    }
+
+    return root;
+  }
+
+  /**
+   * 判断两个子数组是否相同&#xff08;元素相同&#xff0c;顺序可以不同&#xff09;
+   *
+   * &#64;param midL 子数组1的左边界
+   * &#64;param preL 子数组2的左边界
+   * &#64;param size 子数组的长度
+   * &#64;return 子数组1和子数组2是否相同
+   */
+  public static boolean notEquals(int midL, int preL, int size) {
+    int[] arr1 &#61; Arrays.stream(Arrays.copyOfRange(midOrder, midL, midL &#43; size)).sorted().toArray();
+    int[] arr2 &#61; Arrays.stream(Arrays.copyOfRange(preOrder, preL, preL &#43; size)).sorted().toArray();
+
+    for (int i &#61; 0; i &lt; size; i&#43;&#43;) {
+      if (arr1[i] !&#61; arr2[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4 id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python">class TreeNode:
+    def __init__(self, num):
+        self.num &#61; num
+        self.childSum &#61; 0
+        self.leftChild &#61; None
+        self.rightChild &#61; None
+
+
+# 输入获取
+midOrder &#61; list(map(int, input().split()))  # 中序遍历序列
+preOrder &#61; list(map(int, input().split()))  # 前序遍历序列
+
+n &#61; len(midOrder)
+
+# 记录中序遍历序列中&#xff0c;序列元素值所在位置&#xff0c;本题中可能存在重复元素&#xff0c;因此某个序列元素值可能有多个位置
+midIndexMap &#61; {}
+for j in range(n):
+    num &#61; midOrder[j]
+    midIndexMap.setdefault(num, [])
+    midIndexMap[num].append(j)
+
+
+def notEquals(midL, preL, size):
+    &#34;&#34;&#34;
+    判断两个子数组是否相同&#xff08;元素相同&#xff0c;顺序可以不同&#xff09;
+    :param midL: 子数组1的左边界
+    :param preL: 子数组2的左边界
+    :param size: 子数组的长度
+    :return: 子数组1和子数组2是否相同
+    &#34;&#34;&#34;
+    arr1 &#61; sorted(midOrder[midL:midL&#43;size])
+    arr2 &#61; sorted(preOrder[preL:preL&#43;size])
+
+    for i in range(size):
+        if arr1[i] !&#61; arr2[i]:
+            return True
+
+    return False
+
+
+def buildTree(midL, midR, preL, preR):
+    &#34;&#34;&#34;
+    根据中序遍历序列、前序遍历序列还原树结构
+    :param midL: 中序遍历子序列的左边界
+    :param midR: 中序遍历子序列的右边界
+    :param preL: 前序遍历子序列的左边界
+    :param preR: 前序遍历子序列的右边界
+    :return: 树结构的根节点
+    &#34;&#34;&#34;
+
+    # 某个节点&#xff08;子树&#xff09;对应一段子序列&#xff0c;如果对应子序列范围不存在&#xff0c;则子树也不存在
+    if preL &gt; preR:
+        return None
+
+    # 先根据前序遍历序列得到根节点&#xff0c;前序序列的首元素就是根节点
+    rootNum &#61; preOrder[preL]
+    root &#61; TreeNode(rootNum)
+
+    # 在中序遍历序列中&#xff0c;找到对应根值的位置&#xff0c;这个位置可能有多个&#xff0c;但是只有一个是正确的
+    for idx in midIndexMap[rootNum]:
+        # 如果对应根值位置越界&#xff0c;则不是正确的
+        if idx &lt; midL or idx &gt; midR:
+            continue
+
+        # 如果中序的左子树&#xff0c;和前序的左子树不同&#xff0c;则对应根值位置不正确
+        leftLen &#61; idx - midL
+        if notEquals(midL, preL &#43; 1, leftLen):
+            continue
+
+        # 如果中序的右子树&#xff0c;和前序的右子树不同&#xff0c;则对应根值位置不正确
+        rightLen &#61; midR - idx
+        if notEquals(idx &#43; 1, preR - rightLen &#43; 1, rightLen):
+            continue
+
+        # 找到正确根值位置后&#xff0c;开始分治递归处理左子树和右子树
+        root.leftChild &#61; buildTree(midL, idx - 1, preL &#43; 1, preL &#43; leftLen)
+        root.rightChild &#61; buildTree(idx &#43; 1, midR, preR - rightLen &#43; 1, preR)
+
+        leftChildSum &#61; 0 if root.leftChild is None else (root.leftChild.num &#43; root.leftChild.childSum)
+        rightChildSUm &#61; 0 if root.rightChild is None else (root.rightChild.num &#43; root.rightChild.childSum)
+
+        # 记录该节点&#xff1a;左子树&#43;右子树的和&#xff08;本题新二叉树节点的值&#xff09;
+        root.childSum &#61; leftChildSum &#43; rightChildSUm
+
+        break
+
+    return root
+
+
+# 二叉树中序遍历
+def getMidOrder(root, res):
+    if root is None:
+        return
+
+    # 先遍历左子树
+    leftChild &#61; root.leftChild
+    if leftChild is not None:
+        getMidOrder(leftChild, res)
+
+    # 再遍历根
+    res.append(root.childSum)
+
+    # 最后遍历右子树
+    rightChild &#61; root.rightChild
+    if rightChild is not None:
+        getMidOrder(rightChild, res)
+
+
+def getResult():
+    # 根据中序序列和前序序列还原树结构
+    root &#61; buildTree(0, n - 1, 0, n - 1)
+
+    # 记录新的二叉树的的中序遍历序列
+    res &#61; []
+    getMidOrder(root, res)
+
+    return &#34; &#34;.join(map(str, res))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p> </p> 
+<h4 id="C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 10000
+
+typedef struct TreeNode {
+    int num; // 当前节点的值
+    int childSum; // 当前节点的左子树&#43;右子树的和
+    struct TreeNode *leftChild;
+    struct TreeNode *rightChild;
+} TreeNode;
+
+TreeNode *new_TreeNode(int num) {
+    TreeNode *node &#61; (TreeNode *) malloc(sizeof(TreeNode));
+    node-&gt;num &#61; num;
+    node-&gt;childSum &#61; 0;
+    node-&gt;leftChild &#61; NULL;
+    node-&gt;rightChild &#61; NULL;
+    return node;
+}
+
+// 中序遍历序列
+int midOrder[MAX_SIZE];
+
+// 前序遍历序列
+int preOrder[MAX_SIZE];
+
+int cmp(const void *a, const void *b) {
+    return *((int *) a) - *((int *) b);
+}
+
+/**
+ * 判断两个子数组是否相同&#xff08;元素相同&#xff0c;顺序可以不同&#xff09;
+ * &#64;param midL 子数组1的左边界
+ * &#64;param preL 子数组2的左边界
+ * &#64;param size 子数组的长度
+ * &#64;return 子数组1和子数组2是否相同
+ */
+int notEquals(int midL, int preL, int size) {
+    int arr1[size];
+    int arr2[size];
+    for (int i &#61; 0; i &lt; size; i&#43;&#43;) {
+        arr1[i] &#61; midOrder[midL &#43; i];
+        arr2[i] &#61; preOrder[preL &#43; i];
+    }
+
+    qsort(arr1, size, sizeof(int), cmp);
+    qsort(arr2, size, sizeof(int), cmp);
+
+    for (int i &#61; 0; i &lt; size; i&#43;&#43;) {
+        if (arr1[i] !&#61; arr2[i]) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * 根据中序遍历序列、前序遍历序列还原树结构
+ * &#64;param midL 中序遍历子序列的左边界
+ * &#64;param midR 中序遍历子序列的右边界
+ * &#64;param preL 前序遍历子序列的左边界
+ * &#64;param preR 前序遍历子序列的右边界
+ * &#64;return 树结构的根节点
+ */
+TreeNode *buildTree(int midL, int midR, int preL, int preR) {
+    // 某个节点&#xff08;子树&#xff09;对应一段子序列&#xff0c;如果对应子序列范围不存在&#xff0c;则子树也不存在
+    if (preL &gt; preR) return NULL;
+
+    // 先根据前序遍历序列得到根节点&#xff0c;前序序列的首元素就是根节点
+    int rootNum &#61; preOrder[preL];
+    TreeNode *root &#61; new_TreeNode(rootNum);
+
+    // 在中序遍历序列中&#xff0c;找到对应根值的位置&#xff0c;这个位置可能有多个&#xff0c;但是只有一个是正确的
+    for (int i &#61; midL; i &lt;&#61; midR; i&#43;&#43;) {
+        if (midOrder[i] !&#61; rootNum) continue;
+
+        // 如果中序的左子树&#xff0c;和前序的左子树不同&#xff0c;则对应根值位置不正确
+        int leftLen &#61; i - midL;
+        if (notEquals(midL, preL &#43; 1, leftLen)) continue;
+
+        // 如果中序的右子树&#xff0c;和前序的右子树不同&#xff0c;则对应根值位置不正确
+        int rightLen &#61; midR - i;
+        if (notEquals(i &#43; 1, preR - rightLen &#43; 1, rightLen)) continue;
+
+        // 找到正确根值位置后&#xff0c;开始分治递归处理左子树和右子树
+        root-&gt;leftChild &#61; buildTree(midL, i - 1, preL &#43; 1, preL &#43; leftLen);
+        root-&gt;rightChild &#61; buildTree(i &#43; 1, midR, preR - rightLen &#43; 1, preR);
+
+        // 记录该节点&#xff1a;左子树&#43;右子树的和&#xff08;本题新二叉树节点的值&#xff09;
+        root-&gt;childSum &#61; (root-&gt;leftChild &#61;&#61; NULL ? 0 : (root-&gt;leftChild-&gt;num &#43; root-&gt;leftChild-&gt;childSum)) &#43;
+                         (root-&gt;rightChild &#61;&#61; NULL ? 0 : (root-&gt;rightChild-&gt;num &#43; root-&gt;rightChild-&gt;childSum));
+
+        break;
+    }
+
+    return root;
+}
+
+// 二叉树中序遍历
+void getMidOrder(TreeNode* root) {
+    if (root &#61;&#61; NULL) return;
+
+    // 先遍历左子树
+    TreeNode* leftChild &#61; root-&gt;leftChild;
+    if(leftChild !&#61; NULL) {
+        getMidOrder(leftChild);
+    }
+
+    // 再遍历根
+    printf(&#34;%d &#34;, root-&gt;childSum);
+
+    // 最后遍历右子树
+    TreeNode* rightChild &#61; root-&gt;rightChild;
+    if(rightChild !&#61; NULL) {
+        getMidOrder(rightChild);
+    }
+}
+
+int main() {
+    int size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;midOrder[size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    for (int i &#61; 0; i &lt; size; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;preOrder[i]);
+    }
+
+    // 根据中序序列和前序序列还原树结构
+    TreeNode *root &#61; buildTree(0, size - 1, 0, size - 1);
+
+    // 打印新的二叉树的的中序遍历序列
+    getMidOrder(root);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

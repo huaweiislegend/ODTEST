@@ -1,0 +1,209 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 字符串加密（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给你一串未加密的字符串str&#xff0c;通过对字符串的每一个字母进行改变来实现加密&#xff0c;加密方式是在每一个字母str[i]偏移特定数组元素a[i]的量&#xff0c;数组a前三位已经赋值&#xff1a;a[0]&#61;1,a[1]&#61;2,a[2]&#61;4。</p> 
+<p>当i&gt;&#61;3时&#xff0c;数组元素a[i]&#61;a[i-1]&#43;a[i-2]&#43;a[i-3]。</p> 
+<p>例如&#xff1a;原文 abcde 加密后 bdgkr&#xff0c;其中偏移量分别是1,2,4,7,13。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为一个整数n&#xff08;1&lt;&#61;n&lt;&#61;1000&#xff09;&#xff0c;表示有n组测试数据&#xff0c;每组数据包含一行&#xff0c;原文str&#xff08;只含有小写字母&#xff0c;0&lt;长度&lt;&#61;50&#xff09;。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>每组测试数据输出一行&#xff0c;表示字符串的密文。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td> <p>1<br /> xy</p> </td></tr><tr><td>输出</td><td>ya</td></tr><tr><td>说明</td><td>第一个字符x偏移量是1&#xff0c;即为y&#xff0c;第二个字符y偏移量是2&#xff0c;即为a。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>首先是偏移量a[i]的计算&#xff0c;这里直接使用动态规划记忆化&#xff0c;具体实现看下面代码&#xff08;这里有的人会用分治递归实时计算&#xff0c;也可以&#xff0c;看考虑内存还是时间了&#xff09;</p> 
+<p>然后是字母的加密&#xff0c;这里字母加密其实就是s[i]的ASCII码 &#43; a[i]&#xff0c;但是需要注意的是a[i]偏移量会超过26&#xff0c;即加密后就不是字母了&#xff0c;题目也没说怎么处理&#xff0c;我猜测加密后的字符串也应该都是小写字母组成&#xff0c;因此越界后需要环形处理&#xff0c;即z 偏移一位后变为 a&#xff0c;这里处理公式为&#xff1a;</p> 
+<blockquote> 
+ <p>(s[i] &#43; ar[i] - 97) % 26 &#43; 97</p> 
+</blockquote> 
+<hr /> 
+<p>另外&#xff0c;本题还需要注意下&#xff0c;第50个字符的偏移量会达到10562230626642</p> 
+<p>这个值是超过int类型的&#xff0c;因此Java代码定义a数组时需要使用long[]类型。</p> 
+<p>而JS的整型安全值范围可以包含住10562230626642&#xff0c;Python则是天生支持大数&#xff08;不进行除法的话&#xff09;&#xff0c;因此无需考虑整型溢出问题。</p> 
+<hr /> 
+<p>2023.08.06</p> 
+<p>优化:</p> 
+<p>本题的偏移量a[i]不应该让其无限制增大&#xff0c;虽然本题的字符串最长是50&#xff0c;但是如果可以更长的话&#xff0c;肯定会继续发生整型溢出。</p> 
+<p>由于每位字母偏移超过26就会回头&#xff0c;因此a[i]偏移量超过26意义不大&#xff0c;因此我们可以对a[i] %&#61; 26&#xff0c;这样a[i]的大小就被限制在了26以内&#xff0c;且不会影响最终结果。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int n &#61; sc.nextInt();
+
+    String[] lines &#61; new String[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      lines[i] &#61; sc.next();
+    }
+
+    // 初始化a数组
+    int[] a &#61; new int[50];
+    a[0] &#61; 1;
+    a[1] &#61; 2;
+    a[2] &#61; 4;
+    for (int i &#61; 3; i &lt; 50; i&#43;&#43;) {
+      a[i] &#61; (a[i - 1] &#43; a[i - 2] &#43; a[i - 3]) % 26;
+    }
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      System.out.println(getResult(lines[i], a));
+    }
+  }
+
+  public static String getResult(String str, int[] a) {
+    // 为字符串的每一位字符添加a[i]偏移量
+    char[] cArr &#61; str.toCharArray();
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      cArr[i] &#61; (char) ((a[i] &#43; cArr[i] - 97) % 26 &#43; 97);
+    }
+    return new String(cArr);
+  }
+}
+</code></pre> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61; n &#43; 1) {
+    lines.shift();
+    lines.forEach((line) &#61;&gt; console.log(getResult(line)));
+    lines.length &#61; 0;
+  }
+});
+
+// 初始化a数组
+const a &#61; new Array(50);
+a[0] &#61; 1;
+a[1] &#61; 2;
+a[2] &#61; 4;
+for (let i &#61; 3; i &lt; 50; i&#43;&#43;) {
+  a[i] &#61; (a[i - 1] &#43; a[i - 2] &#43; a[i - 3]) % 26;
+}
+
+function getResult(str) {
+  const cArr &#61; [...str];
+  // 为字符串的每一位字符添加a[i]偏移量
+  return cArr
+    .map((c, i) &#61;&gt;
+      String.fromCharCode(((a[i] &#43; c.charCodeAt() - 97) % 26) &#43; 97)
+    )
+    .join(&#34;&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+lines &#61; [input() for _ in range(n)]
+
+# 初始化a数组
+a &#61; [0] * 50
+a[0] &#61; 1
+a[1] &#61; 2
+a[2] &#61; 4
+for i in range(3, 50):
+    a[i] &#61; (a[i - 1] &#43; a[i - 2] &#43; a[i - 3]) % 26
+
+
+# 算法入口
+def getResult(s):
+    ans &#61; []
+
+    # 为字符串的每一位字符添加a[i]偏移量
+    for i in range(len(s)):
+        ans.append((a[i] &#43; (ord(s[i]) - 97)) % 26 &#43; 97)
+
+    return &#34;&#34;.join(map(chr, ans))
+
+
+# 算法调用
+for i in range(n):
+    print(getResult(lines[i]))
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int a[50] &#61; {1, 2, 4};
+
+    for (int i &#61; 3; i &lt; 50; i&#43;&#43;) {
+        a[i] &#61; (a[i - 1] &#43; a[i - 2] &#43; a[i - 3]) % 26;
+    }
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        char s[51];
+        scanf(&#34;%s&#34;, s);
+
+        for (int j &#61; 0; j &lt; strlen(s); j&#43;&#43;) {
+            s[j] &#61; (char) ((a[j] &#43; s[j] - 97) % 26 &#43; 97);
+        }
+
+        puts(s);
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

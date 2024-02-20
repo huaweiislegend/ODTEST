@@ -1,0 +1,293 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 小明的幸运数（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小明在玩一个游戏&#xff0c;游戏规则如下&#xff1a;</p> 
+<p>在游戏开始前&#xff0c;小明站在坐标轴原点处&#xff08;坐标值为0&#xff09;.</p> 
+<p>给定一组指令和一个幸运数&#xff0c;每个指令都是一个整数&#xff0c;小明按照指令前进指定步数或者后退指定步数。前进代表朝坐标轴的正方向走&#xff0c;后退代表朝坐标轴的负方向走。</p> 
+<p>幸运数为一个整数&#xff0c;如果某个指令正好和幸运数相等&#xff0c;则小明行进步数&#43;1。</p> 
+<p></p> 
+<p>例如&#xff1a;</p> 
+<p>幸运数为3&#xff0c;指令为[2,3,0,-5]</p> 
+<p>指令为2&#xff0c;表示前进2步&#xff1b;</p> 
+<p>指令为3&#xff0c;正好和幸运数相等&#xff0c;前进3&#43;1&#61;4步&#xff1b;</p> 
+<p>指令为0&#xff0c;表示原地不动&#xff0c;既不前进&#xff0c;也不后退。</p> 
+<p>指令为-5&#xff0c;表示后退5步。</p> 
+<p></p> 
+<p>请你计算小明在整个游戏过程中&#xff0c;小明所处的最大坐标值。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入1个数字&#xff0c;代表指令的总个数 n&#xff08;1 ≤ n ≤ 100&#xff09;</p> 
+<p>第二行输入1个数字&#xff0c;代表幸运数m&#xff08;-100 ≤ m ≤ 100&#xff09;</p> 
+<p>第三行输入n个指令&#xff0c;每个指令的取值范围为&#xff1a;-100 ≤ 指令值 ≤ 100</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出在整个游戏过程中&#xff0c;小明所处的最大坐标值。异常情况下输出&#xff1a;12345</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:550px;"><tbody><tr><td style="width:66px;">输入</td><td style="width:482px;">2<br /> 1<br /> -5 1</td></tr><tr><td style="width:66px;">输出</td><td style="width:482px;">0</td></tr><tr><td style="width:66px;">说明</td><td style="width:482px;"> <p>总共2个指令&#xff0c;幸运数为1&#xff0c;按照指令行进&#xff0c;依次如下游戏开始前&#xff0c;站在坐标轴原点&#xff0c;此时坐标值为0&#xff1b;</p> <p>指令为-5&#xff0c;后退5步&#xff0c;此时坐标值为-5&#xff1b;</p> <p>指令为1&#xff0c;正好等于幸运数&#xff0c;前进1&#43;1&#61;2步&#xff0c;此时坐标值为-3&#xff1b;</p> <p>整个游戏过程中&#xff0c;小明所处的坐标值依次为[0, -5, -3]&#xff0c;最大坐标值为0。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:550px;"><tbody><tr><td style="width:67px;">输入</td><td style="width:481px;">5<br /> -5<br /> -5 1 6 0 -7</td></tr><tr><td style="width:67px;">输出</td><td style="width:481px;">1</td></tr><tr><td style="width:67px;">说明</td><td style="width:481px;"> <p>总共5个指令&#xff0c;幸运数为-5&#xff0c;依照指令行进&#xff0c;依次如下&#xff1a;</p> <p>游戏开始前&#xff0c;站在坐标轴原点&#xff0c;此时坐标值为0&#xff0c;</p> <p>指令为-5&#xff0c;正好等于幸运数&#xff0c;后退5&#43;1&#61;6步&#xff0c;此时坐标值为-6&#xff1b;</p> <p>指令为1&#xff0c;前进1步&#xff0c;此时坐标值为-5&#xff1b;</p> <p>指令为6&#xff0c;前进6步&#xff0c;此时坐标值为1&#xff1b;</p> <p>指令为0&#xff0c;既不前进&#xff0c;也不后退&#xff0c;此时坐标值为1&#xff1b;</p> <p>指令为-7&#xff0c;后退7步&#xff0c;此时坐标值为-6。</p> <p>整个游戏过程中&#xff0c;小明所处的坐标值依次为&#xff1a;</p> <p>[0, -6, -5, 1, 1, -6]&#xff0c;最大坐标值为1。</p> </td></tr></tbody></table> 
+<p> </p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题应该只是逻辑模拟题。逻辑比较简单&#xff0c;大家可以直接看代码。</p> 
+<p></p> 
+<p>本题主要是存在一些不明确的逻辑&#xff1a;</p> 
+<p>1、</p> 
+<p>幸运数为一个整数&#xff0c;如果某个指令正好和幸运数相等&#xff0c;则小明行进步数&#43;1。</p> 
+<p>如果幸运数是0&#xff0c;且存在指令为0的情况&#xff0c;那么此时小明是行进步数是&#43;1&#xff0c;还是-1&#xff0c;还是保持不动&#xff1f;</p> 
+<p>我理解是保持不动。</p> 
+<p></p> 
+<p>2、</p> 
+<p>输出描述中说&#xff1a;异常情况下输出&#xff1a;12345</p> 
+<p>本题应该没有啥异常情况&#xff0c;但是输入里面给了给个入参的范围限制&#xff0c;因此我做了对输入参数范围的校验&#xff0c;如果不满足&#xff0c;则输出异常码&#xff1a;12345</p> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+
+  if (n &lt; 1 || n &gt; 100) {
+    // 异常情况下输出&#xff1a;12345
+    console.log(&#34;12345&#34;);
+    return;
+  }
+
+  const m &#61; parseInt(await readline());
+
+  if (m &lt; -100 || m &gt; 100) {
+    // 异常情况下输出&#xff1a;12345
+    console.log(&#34;12345&#34;);
+    return;
+  }
+
+  let pos &#61; 0;
+  let maxPos &#61; 0;
+
+  const nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  for (let num of nums) {
+    if (num &lt; -100 || num &gt; 100) {
+      // 异常情况下输出&#xff1a;12345
+      console.log(&#34;12345&#34;);
+      return;
+    }
+
+    pos &#43;&#61; num;
+
+    if (num &#61;&#61; m) {
+      // 如果某个指令正好和幸运数相等&#xff0c;则小明行进步数&#43;1
+      // 注意&#xff0c;如果幸运数字为0&#xff0c;且存在指令为0&#xff0c;那么此时我理解小明应该继续保持不动
+      if (num &gt; 0) {
+        pos &#43;&#61; 1;
+      } else if (num &lt; 0) {
+        pos -&#61; 1;
+      }
+    }
+
+    // 比较本次移动后的坐标位置和最大坐标位置
+    maxPos &#61; Math.max(maxPos, pos);
+  }
+
+  console.log(maxPos);
+})();
+</code></pre> 
+<p> </p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    if (n &lt; 1 || n &gt; 100) {
+      // 异常情况下输出&#xff1a;12345
+      System.out.println(&#34;12345&#34;);
+      return;
+    }
+
+    int m &#61; sc.nextInt();
+
+    if (m &lt; -100 || m &gt; 100) {
+      // 异常情况下输出&#xff1a;12345
+      System.out.println(&#34;12345&#34;);
+      return;
+    }
+
+    int pos &#61; 0;
+    int maxPos &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      int num &#61; sc.nextInt();
+
+      if (num &lt; -100 || num &gt; 100) {
+        // 异常情况下输出&#xff1a;12345
+        System.out.println(&#34;12345&#34;);
+        return;
+      }
+
+      pos &#43;&#61; num;
+
+      if (num &#61;&#61; m) {
+        // 如果某个指令正好和幸运数相等&#xff0c;则小明行进步数&#43;1
+        // 注意&#xff0c;如果幸运数字为0&#xff0c;且存在指令为0&#xff0c;那么此时我理解小明应该继续保持不动
+        if (num &gt; 0) {
+          pos &#43;&#61; 1;
+        } else if (num &lt; 0) {
+          pos -&#61; 1;
+        }
+      }
+
+      // 比较本次移动后的坐标位置和最大坐标位置
+      maxPos &#61; Math.max(maxPos, pos);
+    }
+
+    System.out.println(maxPos);
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">def getResult():
+    n &#61; int(input())
+
+    # 异常情况下输出&#xff1a;12345
+    if n &lt; 1 or n &gt; 100:
+        print(&#34;12345&#34;)
+        return
+
+    m &#61; int(input())
+
+    # 异常情况下输出&#xff1a;12345
+    if m &lt; -100 or m &gt; 100:
+        print(&#34;12345&#34;)
+        return
+
+    pos &#61; 0
+    maxPos &#61; 0
+
+    nums &#61; list(map(int, input().split()))
+
+    for num in nums:
+        # 异常情况下输出&#xff1a;12345
+        if num &lt; -100 or num &gt; 100:
+            print(&#34;12345&#34;)
+            return
+
+        pos &#43;&#61; num
+
+        # 如果某个指令正好和幸运数相等&#xff0c;则小明行进步数&#43;1
+        # 注意&#xff0c;如果幸运数字为0&#xff0c;且存在指令为0&#xff0c;那么此时我理解小明应该继续保持不动
+        if num &#61;&#61; m:
+            if num &gt; 0:
+                pos &#43;&#61; 1
+            elif num &lt; 0:
+                pos -&#61; 1
+
+        # 比较本次移动后的坐标位置和最大坐标位置
+        maxPos &#61; max(maxPos, pos)
+
+    print(maxPos)
+
+
+getResult()
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    if (n &lt; 1 || n &gt; 100) {
+        // 异常情况下输出&#xff1a;12345
+        puts(&#34;12345&#34;);
+        return 0;
+    }
+
+    int m;
+    scanf(&#34;%d&#34;, &amp;m);
+    if (m &lt; -100 || m &gt; 100) {
+        // 异常情况下输出&#xff1a;12345
+        puts(&#34;12345&#34;);
+        return 0;
+    }
+
+    int pos &#61; 0;
+    int maxPos &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        int num;
+        scanf(&#34;%d&#34;, &amp;num);
+
+        if(num &lt; -100 || num &gt; 100) {
+            // 异常情况下输出&#xff1a;12345
+            puts(&#34;12345&#34;);
+            return 0;
+        }
+
+        pos &#43;&#61; num;
+
+        if(num &#61;&#61; m) {
+            // 如果某个指令正好和幸运数相等&#xff0c;则小明行进步数&#43;1
+            // 注意&#xff0c;如果幸运数字为0&#xff0c;且存在指令为0&#xff0c;那么此时我理解小明应该继续保持不动
+            if(num &gt; 0) {
+                pos &#43;&#61; 1;
+            } else if(num &lt; 0) {
+                pos -&#61; 1;
+            }
+        }
+
+        // 比较本次移动后的坐标位置和最大坐标位置
+        maxPos &#61; MAX(maxPos, pos);
+    }
+
+    printf(&#34;%d\n&#34;, maxPos);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

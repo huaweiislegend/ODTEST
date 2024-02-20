@@ -1,0 +1,189 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 运输时间（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>M&#xff08;1 ≤ M ≤ 20&#xff09;辆车需要在一条不能超车的单行道到达终点&#xff0c;起点到终点的距离为 N&#xff08;1 ≤ N ≤ 400&#xff09;。</p> 
+<p>速度快的车追上前车后&#xff0c;只能以前车的速度继续行驶&#xff0c;求最后一辆车到达目的地花费的时间。</p> 
+<p></p> 
+<p>注&#xff1a;每辆车固定间隔 1 小时出发&#xff0c;比如第一辆车 0 时出发&#xff0c;第二辆车 1 时出发&#xff0c;依次类推</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行两个数字&#xff1a;M N&#xff0c;分别代表车辆数和到终点的距离&#xff0c;以空格分隔</p> 
+<p>接下来 M 行&#xff0c;每行一个数字 S&#xff0c;代表每辆车的速度。0 &lt; S &lt; 30</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最后一辆车到达目的地花费的时间</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 11<br /> 3<br /> 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5.5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">2辆车&#xff0c;距离11&#xff0c;0时出发的车速度快&#xff0c;1时出发的车&#xff0c;到达目的地花费5.5</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题需要注意的是&#xff1a;速度快的车追上前车后&#xff0c;是可以和前车并行的。即本题的&#xff1a;</p> 
+<blockquote> 
+ <p>一条不能超车的单行道</p> 
+</blockquote> 
+<p>指的应该是&#34;单向&#34;车道&#xff0c;即可能有多条单向车道&#xff0c;支持多辆车并行。</p> 
+<p></p> 
+<p>因此本题的解题就很简单了&#xff0c;由于后车不能超过前车&#xff0c;因此&#xff1a;</p> 
+<ul><li>如果后车正常行驶情况下&#xff0c;比前车更早到达&#xff0c;则会被前车阻碍&#xff0c;此时后车到达终点时刻&#xff0c;和前车一致</li><li>如果后车正常行驶情况下&#xff0c;比前车更晚到达&#xff0c;则不会被前车阻碍&#xff0c;此时后车到达终点时刻&#xff0c;就是自己正常行驶到达终点的时刻</li></ul> 
+<p></p> 
+<p>本题要求输出的是&#xff1a;到达目的地花费的时间 &#61; 到达时刻 - 出发时刻</p> 
+<p></p> 
+<p>另外&#xff0c;需要注意&#xff0c;本题输出可能是小数&#xff0c;但是本题并没有说保留几位有效小数&#xff0c;我这边默认保留3位有效小数&#xff0c;四舍五入&#xff0c;实际考试时视情况改动。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [m, n] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 记录前车到达终点的时刻&#xff0c;本题后车不可能比前车更早到达&#xff0c;因此如果后车到达时刻 &lt; 前车到达时刻arrived&#xff0c;则后车也是按照前车arrived时刻达到
+  let arrived &#61; 0;
+
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    // 当前车的速度
+    const speed &#61; parseInt(await readline());
+    // 当前车到达终点的时刻
+    // * 当前车如果比前车更早到达&#xff0c;则被前车阻碍&#xff0c;按前车到达时间算
+    // * 当前车如果比前车更晚到达&#xff0c;则不被前车阻碍&#xff0c;按后车到达时间算
+    arrived &#61; Math.max(arrived, n / speed &#43; i); // n*1.0/speed是行驶花费时间&#xff1b; i是第i辆车的出发时间
+  }
+
+  // 到达时刻 - 出发时刻 &#61; 路上花费的时间
+  const cost &#61; arrived - (m - 1);
+
+  console.log(Number(cost.toFixed(3))); // 如果有小数位则至多保留3位
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.text.NumberFormat;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    // 记录前车到达终点的时刻&#xff0c;本题后车不可能比前车更早到达&#xff0c;因此如果后车到达时刻 &lt; 前车到达时刻arrived&#xff0c;则后车也是按照前车arrived时刻达到
+    double arrived &#61; 0;
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      // 当前车的速度
+      double speed &#61; sc.nextDouble();
+      // 当前车到达终点的时刻
+      // * 当前车如果比前车更早到达&#xff0c;则被前车阻碍&#xff0c;按前车到达时间算
+      // * 当前车如果比前车更晚到达&#xff0c;则不被前车阻碍&#xff0c;按后车到达时间算
+      arrived &#61; Math.max(arrived, n / speed &#43; i); // n*1.0/speed是行驶花费时间&#xff1b; i是第i辆车的出发时间
+    }
+
+    // 到达时刻 - 出发时刻 &#61; 路上花费的时间
+    double cost &#61; arrived - (m - 1);
+
+    // 格式化打印小数
+    NumberFormat nf &#61; NumberFormat.getInstance();
+    nf.setMinimumFractionDigits(0); // 没有小数位则不保留
+    nf.setMaximumFractionDigits(3); // 有小数位则至多保留3位
+
+    System.out.println(nf.format(cost));
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, n &#61; map(int, input().split())
+
+# 记录前车到达终点的时刻&#xff0c;本题后车不可能比前车更早到达&#xff0c;因此如果后车到达时刻 &lt; 前车到达时刻arrived&#xff0c;则后车也是按照前车arrived时刻达到
+arrived &#61; 0
+
+for i in range(m):
+    # 当前车的速度
+    speed &#61; int(input())
+    # 当前车到达终点的时刻
+    # * 当前车如果比前车更早到达&#xff0c;则被前车阻碍&#xff0c;按前车到达时间算
+    # * 当前车如果比前车更晚到达&#xff0c;则不被前车阻碍&#xff0c;按后车到达时间算
+    arrived &#61; max(arrived, n / speed &#43; i)  # n*1.0/speed是行驶花费时间&#xff1b; i是第i辆车的出发时间
+
+# 到达时刻 - 出发时刻 &#61; 路上花费的时间
+cost &#61; arrived - (m - 1)
+
+print(&#34;{:g}&#34;.format(round(cost, 3)))  # 如果有小数位则至多保留3位&#xff0c;:g 用于去除无效小数位
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main() {
+    int m, n;
+    scanf(&#34;%d %d&#34;, &amp;m, &amp;n);
+
+    // 记录前车到达终点的时刻&#xff0c;本题后车不可能比前车更早到达&#xff0c;因此如果后车到达时刻 &lt; 前车到达时刻arrived&#xff0c;则后车也是按照前车arrived时刻达到
+    double arrived &#61; 0;
+
+    for(int i&#61;0; i&lt;m; i&#43;&#43;) {
+        // 当前车的速度
+        double speed;
+        scanf(&#34;%lf&#34;, &amp;speed);
+
+        // 当前车到达终点的时刻
+        // * 当前车如果比前车更早到达&#xff0c;则被前车阻碍&#xff0c;按前车到达时间算
+        // * 当前车如果比前车更晚到达&#xff0c;则不被前车阻碍&#xff0c;按后车到达时间算
+        arrived &#61; fmax(arrived, n / speed &#43; i); // n*1.0/speed是行驶花费时间&#xff1b; i是第i辆车的出发时间
+    }
+
+    // 到达时刻 - 出发时刻 &#61; 路上花费的时间
+    double cost &#61; arrived - (m - 1);
+
+
+    // 至多保留3个小数位
+    char res[100];
+    sprintf(res, &#34;%.3f&#34;, cost);
+
+    // %g 格式 不会打印无效小数位
+    printf(&#34;%g&#34;, atof(res));
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

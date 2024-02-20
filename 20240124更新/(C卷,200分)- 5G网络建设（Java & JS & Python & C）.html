@@ -1,0 +1,909 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 5G网络建设（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>现需要在某城市进行5G网络建设&#xff0c;已经选取N个地点设置5G基站&#xff0c;编号固定为1到N&#xff0c;接下来需要各个基站之间使用光纤进行连接以确保基站能互联互通&#xff0c;不同基站之间假设光纤的成本各不相同&#xff0c;且有些节点之间已经存在光纤相连。</p> 
+<p>请你设计算法&#xff0c;计算出能联通这些基站的最小成本是多少。</p> 
+<p>注意&#xff1a;基站的联通具有传递性&#xff0c;比如基站A与基站B架设了光纤&#xff0c;基站B与基站C也架设了光纤&#xff0c;则基站A与基站C视为可以互相联通。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>第一行输入表示基站的个数N&#xff0c;其中&#xff1a;</p> 
+<ul><li>0 &lt; N ≤ 20</li></ul> 
+<p>第二行输入表示具备光纤直连条件的基站对的数目M&#xff0c;其中&#xff1a;</p> 
+<ul><li>0 &lt; M &lt; N * (N - 1) / 2</li></ul> 
+<p>从第三行开始连续输入M行数据&#xff0c;格式为</p> 
+<blockquote> 
+ <p>X Y Z P</p> 
+</blockquote> 
+<p>其中&#xff1a;</p> 
+<p>X&#xff0c;Y 表示基站的编号</p> 
+<ul><li>0 &lt; X ≤ N</li><li>0 &lt; Y ≤ N</li><li>X ≠ Y</li></ul> 
+<p>Z 表示在 X、Y之间架设光纤的成本</p> 
+<ul><li>0 &lt; Z &lt; 100</li></ul> 
+<p>P 表示是否已存在光纤连接&#xff0c;0 表示未连接&#xff0c;1表示已连接</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>如果给定条件&#xff0c;可以建设成功互联互通的5G网络&#xff0c;则输出最小的建设成本</p> 
+<p>如果给定条件&#xff0c;无法建设成功互联互通的5G网络&#xff0c;则输出 -1</p> 
+<p></p> 
+<h3 id="%E7%94%A8%E4%BE%8B">用例</h3> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 3<br /> 1 2 3 0<br /> 1 3 1 0<br /> 2 3 5 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">只需要在1&#xff0c;2以及1&#xff0c;3基站之间铺设光纤&#xff0c;其成本为3&#43;1&#61;4</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 1<br /> 1 2 5 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">3基站无法与其他基站连接&#xff0c;输出-1</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 3<br /> 1 2 3 0<br /> 1 3 1 0<br /> 2 3 5 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">2&#xff0c;3基站已有光纤相连&#xff0c;只要在1&#xff0c;3基站之间铺设光纤&#xff0c;其成本为1</td></tr></tbody></table> 
+<p></p> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h3> 
+<p>&#xff08;下图中&#xff0c;虚线代表节点之间可以铺设光纤&#xff0c;但是还没有铺设&#xff0c;实线表示已经铺好了&#xff09;</p> 
+<p>用例1图示</p> 
+<p><img alt="" height="256" src="https://img-blog.csdnimg.cn/direct/078241f3c3554edc8f86d3b2927c21bb.png" width="329" /></p> 
+<p></p> 
+<p>用例2图示</p> 
+<p><img alt="" height="283" src="https://img-blog.csdnimg.cn/direct/9bcd26994d074b81b65af0740724f64a.png" width="383" /></p> 
+<p>用例3图示</p> 
+<p><img alt="" height="265" src="https://img-blog.csdnimg.cn/direct/b4521b94ea09474fbc95e623d72cc3e3.png" width="378" /></p> 
+<p></p> 
+<p>本题是经典的最小生成树问题</p> 
+<p></p> 
+<h4>生成树概念</h4> 
+<p>而在了解最小生成树概念前&#xff0c;我们需要先了解生成树的概念&#xff1a;</p> 
+<blockquote> 
+ <p>在无向连通图中&#xff0c;生成树是指包含了全部顶点的极小连通子图。</p> 
+ <p>生成树包含原图全部的n个顶点和n-1条边。&#xff08;注意&#xff0c;边的数量一定是n-1&#xff09;</p> 
+</blockquote> 
+<p>比如下面无向连通图例子&#xff1a;</p> 
+<p><img alt="" height="280" src="https://img-blog.csdnimg.cn/417664559d374d71b72b89acd6f72a27.png" width="316" /></p> 
+<p>根据生成树概念&#xff0c;我们可以基于上面无向连通图&#xff0c;产生多个生成树&#xff0c;下面举几个生成树例子&#xff1a;</p> 
+<p><img alt="" height="300" src="https://img-blog.csdnimg.cn/5530cc699d8d48a8a152ce0acdb50ed8.png" width="346" /></p> 
+<p> <img alt="" height="293" src="https://img-blog.csdnimg.cn/8715fa9bd680447cb4eda3d4b41dddac.png" width="323" /></p> 
+<p>如上图我们用n-1条橙色边连接了n个顶点。这样就从无向连通图中产生了生成树。</p> 
+<blockquote> 
+ <p>为什么生成树只能由n-1条边呢&#xff1f;</p> 
+ <p>因为少一条边&#xff0c;则生成树就无法包含所有顶点。多一条边&#xff0c;则生成树就会形成环。</p> 
+ <p>而生成树最重要的两个特性就是&#xff1a;</p> 
+ <p>1、包含所有顶点</p> 
+ <p>2、无环</p> 
+</blockquote> 
+<p></p> 
+<h4 style="background-color:transparent;">最小生成树概念</h4> 
+<p>了解了生成树概念后&#xff0c;我们就可以进一步学习最小生成树了。</p> 
+<p>我们回头看看无向连通图&#xff0c;可以发现每条边都有权重值&#xff0c;比如v1-v2权重值是6&#xff0c;v3-v6权重值是4。</p> 
+<p>最小生成树指的是&#xff0c;生成树中n-1条边的权重值之和最小。</p> 
+<p></p> 
+<p>那么如何才能准确的找出一个无向连通图的最小生成树呢&#xff1f;</p> 
+<p>有两种算法&#xff1a;Prim算法和Kruskal算法。</p> 
+<p>Prim算法是基于顶点找最小生成树。Kruskal是基于边找最小生成树。</p> 
+<p></p> 
+<h4 style="background-color:transparent;">Prim算法</h4> 
+<p>首先&#xff0c;我们介绍Prim算法&#xff1a;</p> 
+<p>我们可以选择无向连通图中的任意一个顶点作为起始点&#xff0c;比如我们选v1顶点为起始点</p> 
+<p><img alt="" height="295" src="https://img-blog.csdnimg.cn/31ddd88256914b308ef93ff4c4b50c0d.png" width="348" /></p> 
+<p>从v1顶点出发&#xff0c;有三条边&#xff0c;我们选择权重最小的1&#xff0c;即将v1-v3相连</p> 
+<p> <img alt="" height="300" src="https://img-blog.csdnimg.cn/c5531624bec145079afaf584d7e96446.png" width="322" /></p> 
+<p>此时我们需要将v1-v3看成一个整体&#xff0c;然后继续找这个整体出发的所有边里面的最小的&#xff0c; </p> 
+<p><img alt="" height="272" src="https://img-blog.csdnimg.cn/bcd5d0d4773046968457e682d948d24d.png" width="325" /></p> 
+<p> 可以发现为最小权重为4&#xff0c;因此&#xff0c;将v3-v6相连</p> 
+<p><img alt="" height="284" src="https://img-blog.csdnimg.cn/3a9365df15e54482b69ad649522b6f8e.png" width="333" /></p> 
+<p>接着将v1-v3-v6看出一个整体&#xff0c;找这个整体出发的所有边里面的最小的&#xff0c;可以找到最小权重2&#xff0c;因此将v6-v4相连</p> 
+<p><img alt="" height="282" src="https://img-blog.csdnimg.cn/d173939f85944c118a1332b8a134539c.png" width="315" /></p> 
+<p>但是接下来&#xff0c;我们会发现&#xff0c;从v1-v3-v6-v4整体出发的所有边里面同时有三个最小权重5&#xff0c;那么该如何选择呢&#xff1f;</p> 
+<p><img alt="" height="281" src="https://img-blog.csdnimg.cn/edda156f686747b9b3f97f5727c134ec.png" width="309" /></p> 
+<p>其实不难看出&#xff0c;如果选择v4-v3&#xff0c;或者v4-v1相连&#xff0c;则对应的生成树就形成了环结构&#xff0c;因此就不符合生成树特性了&#xff0c;因此我们只能选择v3-v2。</p> 
+<blockquote> 
+ <p>&#xff08;注意&#xff1a;如果有多个相同的最小权重边可选&#xff0c;并且都不会产生环结构&#xff0c;则可以选择其中任意一条边&#xff0c;最终得到结果都是最小生成树&#xff09; </p> 
+</blockquote> 
+<p> 其实&#xff0c;不仅仅在上面遇到相同权重边时&#xff0c;需要判断是否形成环&#xff0c;在前选择每一条边时都需要判断是否形成环&#xff0c;一旦选择的边能够形成环&#xff0c;那么我们就应该舍弃它&#xff0c;选择第二小的权重边&#xff0c;并继续判断。</p> 
+<p><img alt="" height="294" src="https://img-blog.csdnimg.cn/88db4813972a4dd7abccc82fd09c982e.png" width="319" /></p> 
+<p>按照上面逻辑&#xff0c;我们可以继续找到v1-v2-v3-v4-v6整体出发所有边中的最小权重边3&#xff0c;即将v2-v5相连&#xff0c;并且连接后不会形成环</p> 
+<p> <img alt="" height="286" src="https://img-blog.csdnimg.cn/edb63470449d49008f86f3988a4c758f.png" width="291" /></p> 
+<p>此时选择的边数已经达到了n-1条&#xff0c;因此可以结束逻辑&#xff0c;而现在得到的就是最小生成树。我们可以将这个最小生成数的所有边的权重值之和计算出来为15。 </p> 
+<p>上面这种基于顶点的找最小生成树的方式就是Prim算法。</p> 
+<p>关于Prim算法具体实现细节请看代码实现&#xff0c;已添加详细注释。</p> 
+<p></p> 
+<h4>Kruskal算法</h4> 
+<p>接下来介绍Kruskal算法&#xff1a;</p> 
+<p>Kruskal算法要求我们将所有的边按照权重值升序排序&#xff0c;因此可得&#xff1a;</p> 
+<p><img alt="" height="508" src="https://img-blog.csdnimg.cn/6fb925d5eeba4a2ca1c402ad85785558.png" width="580" /></p> 
+<p>首先&#xff0c;我们将权重最小的边v1-v3加入&#xff0c;得到下图</p> 
+<p> <img alt="" height="515" src="https://img-blog.csdnimg.cn/f001e66e7292438a950b9b0470455463.png" width="586" /></p> 
+<p>接着将下个最小权重2的边v4-v6加入 </p> 
+<p><img alt="" height="504" src="https://img-blog.csdnimg.cn/69f379e9514c43239c891658622fea99.png" width="601" /></p> 
+<p>接着继续加最小权重边</p> 
+<p><img alt="" height="507" src="https://img-blog.csdnimg.cn/4629d10e602c403c91c73b3f8b109a83.png" width="566" /></p> 
+<p><img alt="" height="498" src="https://img-blog.csdnimg.cn/44843934b9fb4b67ba6f286fd800a5c0.png" width="568" /></p> 
+<p> <img alt="" height="494" src="https://img-blog.csdnimg.cn/cfe3a1c2dd154aaba4e30edb82cb7e87.png" width="563" /></p> 
+<p>此时边数已经达到n-1&#xff0c;而刚好这个过程中也没有环的形成&#xff0c;因此得到的就是最小生成树。</p> 
+<p>但是这里有巧合因素在里面&#xff0c;因为最后一步中&#xff0c;最小权重5的边有多条&#xff0c;如果并不是v2-v3排在前面呢&#xff0c;比如是v1-v4呢&#xff1f;</p> 
+<p><img alt="" height="497" src="https://img-blog.csdnimg.cn/74f85fb4c1474b6bb88166db6671837c.png" width="572" /></p> 
+<p>可以发现&#xff0c;形成了环&#xff0c;因此我们应该舍弃这条边&#xff0c;继续找剩下的最小权重边。最后总能找到v2-v3。</p> 
+<p></p> 
+<p>那么判断环的存在就是实现上面Prim算法和Kruskal算法的关键点&#xff01;</p> 
+<p>其实&#xff0c;生成树就是一个连通分量&#xff0c;初始时&#xff0c;生成树这个连通分量只有一个顶点&#xff08;Prim&#xff09;&#xff0c;或者两个顶点&#xff08;Kruskal&#xff09;&#xff0c;后面会不断合入新的顶点进来&#xff0c;来扩大连通分量范围。</p> 
+<p>而连通分量可以使用并查集表示&#xff0c;</p> 
+<p>并查集本质就是一个长度为n的数组&#xff08;n为无向图的顶点数&#xff09;&#xff0c;数组索引值代表图中某个顶点child&#xff0c;数组索引指向的元素值&#xff0c;代表child顶点的祖先顶点father。</p> 
+<blockquote> 
+ <p>初始时&#xff0c;每个child的father都是自己。即初始时&#xff0c;默认有n个连通分量。</p> 
+</blockquote> 
+<p>比如 arr &#61; [1,1,1,5,5,5] 数组就可以模拟出一个无向图</p> 
+<p><img alt="" height="395" src="https://img-blog.csdnimg.cn/8d0c0847b3a24cedae13eda384e0bad5.png" width="650" /></p> 
+<ul><li>0顶点&#xff08;索引值&#xff09;的祖先是1顶点&#xff08;元素值&#xff09;  </li><li>1顶点&#xff08;索引值&#xff09;的祖先是1顶点&#xff08;元素值&#xff09; </li><li>2顶点&#xff08;索引值&#xff09;的祖先是1顶点&#xff08;元素值&#xff09; </li></ul> 
+<p></p> 
+<p>我们可以用father指代一个连通分量。比如上面arr &#61; [1,1,1,5,5,5]就有两个连通分量&#xff0c;分别是father为1的连通分量和father为5的连通分量。</p> 
+<p>最小生成树中的顶点必然都处于同一个连通分量中&#xff0c;因此每加入一个新的顶点child_new&#xff0c;我们我们就可以看它的father是否已经是连通分量对应的father&#xff0c;如果是&#xff0c;则说明顶点child_new其实已经存在于最小生成树中了&#xff0c;因此就产生了环&#xff0c;比如下面例子&#xff1a;</p> 
+<p><img alt="" height="497" src="https://img-blog.csdnimg.cn/74f85fb4c1474b6bb88166db6671837c.png" width="572" />​</p> 
+<p>上面右图<span style="color:#0d0016;"><span style="background-color:#a2e043;">绿色部分</span></span>&#xff08;对应连通图中<span style="background-color:#ffd900;">橙色实线</span>&#xff09;&#xff0c;则arr变为</p> 
+<p><img alt="" height="135" src="https://img-blog.csdnimg.cn/78bced20b62746188173de9dbe335f19.png" width="506" />​</p> 
+<p>上面右图<span style="background-color:#f9eda6;">黄色部分</span>&#xff08;对应连通图中<span style="color:#f3f3f4;"><span style="background-color:#0d0016;">黑色实线</span></span>&#xff09;&#xff0c;即v4顶点的father改成v1&#xff0c;但是实际上v4的father已经是v1&#xff0c;那么此时如果再强行加入的话&#xff0c;那么就形成了环。</p> 
+<p></p> 
+<h4>Prim算法和Kruskal算法的适用场景</h4> 
+<p>Prim算法是基于节点操作的&#xff0c;因此Prim算法适用于节点少&#xff0c;边多的情况</p> 
+<p>Kruskal算法是基于边操作的&#xff0c;因此Kruskal算法适用于节点多&#xff0c;边少的情况。</p> 
+<p></p> 
+<h4>本题解析</h4> 
+<p>本题属于最小生成树的变种题&#xff0c;区别于板子题&#xff0c;本题中主要是存在一些已经关联好的节点。</p> 
+<p>比如下面连通图中&#xff0c;2-3是已经连通好的。</p> 
+<p><img alt="" height="265" src="https://img-blog.csdnimg.cn/direct/b4521b94ea09474fbc95e623d72cc3e3.png" width="378" /></p> 
+<p>其实处理起来也很简单&#xff0c;对于已经关联了的节点&#xff0c;我们可以认为他们之间的边权为0。</p> 
+<p>即上图中&#xff0c;2-3虽然边权为5&#xff0c;但是由于已经关联好了&#xff0c;因此可以认为实际边权为0。</p> 
+<p>这样的话&#xff0c;本题就变成最小生成树的板子题了。</p> 
+<p></p> 
+<h3 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h3> 
+<h4>Prim算法</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline()); // 基站数量&#xff08;节点数&#xff09;
+  const m &#61; parseInt(await readline()); // 基站对数量&#xff08;边数&#xff09;
+
+  // 邻接矩阵, 初始化默认各点之间互不联通&#xff0c;即i-j边权无限大
+  const graph &#61; new Array(n &#43; 1)
+    .fill(0)
+    .map(() &#61;&gt; new Array(n &#43; 1).fill(Infinity));
+
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    const [x, y, z, p] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+    if (p &#61;&#61; 0) {
+      // x-y边权为z
+      graph[x][y] &#61; z;
+      graph[y][x] &#61; z;
+    } else {
+      // 对应已经联通的两点&#xff0c;可以理解为边权为0
+      graph[x][y] &#61; 0;
+      graph[y][x] &#61; 0;
+    }
+  }
+
+  function prim() {
+    // 记录最小生成树的边权和
+    let minWeight &#61; 0;
+
+    // inTree[i] 表示 节点i 是否在最小生成树中
+    const inTree &#61; new Array(n &#43; 1).fill(false);
+
+    // 初始时任选一个节点作为最小生成树的初始节点&#xff0c;这里选择节点1
+    inTree[1] &#61; true;
+    // 记录最小生成树中点数量
+    let inTree_count &#61; 1;
+
+    // dis[i]表示 节点i 到最小生成树集合 的最短距离
+    // 初始时&#xff0c;最小生成树集合中只有节点1&#xff0c;因此其他节点到最小生成树的距离&#xff0c;其实就是到节点1的距离
+    const dis &#61; new Array(n &#43; 1).fill(0).map((_, i) &#61;&gt; graph[i][1]);
+
+    // 如果最小生成树中点数量达到n个&#xff0c;则结束循环
+    while (inTree_count &lt; n) {
+      // 现在我们需要从未纳入最小生成树的点中&#xff0c;找到一个距离最小生成树最近的
+      let minDis &#61; Infinity; // minDis 记录这个最近距离
+      let nodeIdx &#61; 0; // idx 记录距离最小生成树minDis个距离的节点
+
+      for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        // 从未纳入最小生成树的点中&#xff0c;找到一个距离最小生成树最近的
+        if (!inTree[i] &amp;&amp; dis[i] &lt; minDis) {
+          minDis &#61; dis[i];
+          nodeIdx &#61; i;
+        }
+      }
+
+      // 如果nodeIdx &#61;&#61; 0,则说明未纳入最小生成树的这些点到最小生成树的距离都是Integer.MAX_VALUE&#xff0c;即不与最小生成树存在关联
+      if (nodeIdx &#61;&#61; 0) {
+        // 则说明&#xff0c;当前所有点无法形成最小生成树
+        return -1;
+      }
+
+      inTree[nodeIdx] &#61; true; // 最小生成树需要纳入最短距离点nodeIdx
+      inTree_count&#43;&#43;; // 最小生成树中点数量&#43;1
+      minWeight &#43;&#61; dis[nodeIdx]; // 更新最小生成树的权重和
+
+      // dis[i] 初始时记录的是节点i 到 节点1 的距离&#xff08;初始的生成树中只有节点1&#xff09;
+      // 现在生成树纳入了新节点nodeIdx&#xff0c;则我们需要更新一下dis[i]&#xff0c;即有可能某些点到最小生成树中的nodeIdx点距离更近
+      for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        if (!inTree[i] &amp;&amp; graph[nodeIdx][i] &lt; dis[i]) {
+          // 注意&#xff0c;这是一个累进过程&#xff0c;初始时dis[i]记录的是节点i到节点1的距离&#xff0c;
+          // 之后&#xff0c;最小生成树纳入新点后&#xff0c;如果节点i到新点的距离更近&#xff0c;则dis[i]就更新为这个更短距离
+          // 总之&#xff0c;dis[i] 记录的是 节点 i 到最小生成树的最短距离
+          dis[i] &#61; graph[nodeIdx][i];
+        }
+      }
+    }
+
+    return minWeight;
+  }
+
+  console.log(prim());
+})();
+</code></pre> 
+<h4>Kruskal算法</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline()); // 基站数量&#xff08;节点数&#xff09;
+  const m &#61; parseInt(await readline()); // 基站对数量&#xff08;边数&#xff09;
+
+  const edges &#61; [];
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    // 边起点, 边终点&#xff0c;边权重&#xff0c;起点和终点是否已关联
+    const [x, y, z, p] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+    if (p &#61;&#61; 0) {
+      // 起点和终点未关联
+      edges.push([x, y, z]);
+    } else {
+      // 起点和终点已关联&#xff0c;则关联代价实际为0
+      edges.push([x, y, 0]);
+    }
+  }
+
+  function kruskal() {
+    let minWeight &#61; 0;
+
+    // 按照边权升序
+    edges.sort((a, b) &#61;&gt; a[2] - b[2]);
+
+    const ufs &#61; new UnionFindSet(n &#43; 1);
+
+    // 最先遍历出来是边权最小的边
+    for (const [x, y, z] of edges) {
+      // 如果edge.from节点 和 edge.to节点 是同一个连通分量&#xff08;即都在最小生成树中&#xff09;&#xff0c;则此时会产生环
+      // 因此只有当edge.from节点 和 edge.to节点不在同一个连通分量时&#xff0c;才能合并&#xff08;纳入最小生成树&#xff09;
+      if (ufs.find(x) !&#61; ufs.find(y)) {
+        minWeight &#43;&#61; z;
+        ufs.union(x, y);
+
+        // 需要注意的是&#xff0c;上面初始化并查集的节点数为n&#43;1个&#xff0c;因此并查集底层fa数组的长度就是n&#43;1&#xff0c;即索引范围是[0, n]&#xff0c;左闭右闭&#xff0c;
+        // 其中0索引是无用的&#xff0c;1~n索引对应最小生成树中各个节点&#xff0c;如果者n个节点可以变为最小生成树&#xff0c;那么1~n节点会被合并为一个连通分量
+        // 而0索引虽然无用&#xff0c;但是也会自己形成一个连通分量&#xff0c;因此最终如果能形成最小生成树&#xff0c;则并查集中会有两个连通分量
+        if (ufs.count &#61;&#61; 2) {
+          return minWeight;
+        }
+      }
+    }
+
+    return -1;
+  }
+
+  console.log(kruskal());
+})();
+
+// 并查集实现
+class UnionFindSet {
+  constructor(n) {
+    this.fa &#61; new Array(n).fill(true).map((_, idx) &#61;&gt; idx);
+    this.count &#61; n; // 初始时各站点互不相连&#xff0c;互相独立&#xff0c;因此需要给n个站点发送广播
+  }
+
+  // 查x站点对应的顶级祖先站点
+  find(x) {
+    while (x !&#61;&#61; this.fa[x]) {
+      x &#61; this.fa[x];
+    }
+    return x;
+  }
+
+  // 合并两个站点&#xff0c;其实就是合并两个站点对应的顶级祖先节点
+  union(x, y) {
+    let x_fa &#61; this.find(x);
+    let y_fa &#61; this.find(y);
+
+    if (x_fa !&#61;&#61; y_fa) {
+      // 如果两个站点祖先相同&#xff0c;则在一条链上&#xff0c;不需要合并
+      this.fa[y_fa] &#61; x_fa; // 合并站点&#xff0c;即让某条链的祖先指向另一条链的祖先
+      this.count--; // 一旦两个站点合并&#xff0c;则发送广播次数减1
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h3>Java算法源码</h3> 
+<h4>Prim算法</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt(); // 基站数量&#xff08;节点数&#xff09;
+    int m &#61; sc.nextInt(); // 基站对数量&#xff08;边数&#xff09;
+
+    // 邻接矩阵
+    int[][] graph &#61; new int[n &#43; 1][n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      for (int j &#61; 1; j &lt;&#61; n; j&#43;&#43;) {
+        // 初始化默认各点之间互不联通&#xff0c;即i-j边权无限大
+        graph[i][j] &#61; Integer.MAX_VALUE;
+      }
+    }
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      int x &#61; sc.nextInt();
+      int y &#61; sc.nextInt();
+      int z &#61; sc.nextInt();
+      int p &#61; sc.nextInt();
+
+      if (p &#61;&#61; 0) {
+        // x-y边权为z
+        graph[x][y] &#61; z;
+        graph[y][x] &#61; z;
+      } else {
+        // 对应已经联通的两点&#xff0c;可以理解为边权为0
+        graph[x][y] &#61; 0;
+        graph[y][x] &#61; 0;
+      }
+    }
+
+    System.out.println(prim(graph, n));
+  }
+
+  public static int prim(int[][] graph, int n) {
+    // 记录最小生成树的边权和
+    int minWeight &#61; 0;
+
+    // inTree[i] 表示 节点i 是否在最小生成树中
+    boolean[] inTree &#61; new boolean[n &#43; 1];
+
+    // 初始时任选一个节点作为最小生成树的初始节点&#xff0c;这里选择节点1
+    inTree[1] &#61; true;
+    // 记录最小生成树中点数量
+    int inTree_count &#61; 1;
+
+    // dis[i]表示 节点i 到最小生成树集合 的最短距离
+    int[] dis &#61; new int[n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      // 初始时&#xff0c;最小生成树集合中只有节点1&#xff0c;因此其他节点到最小生成树的距离&#xff0c;其实就是到节点1的距离
+      dis[i] &#61; graph[1][i];
+    }
+
+    // 如果最小生成树中点数量达到n个&#xff0c;则结束循环
+    while (inTree_count &lt; n) {
+      // 现在我们需要从未纳入最小生成树的点中&#xff0c;找到一个距离最小生成树最近的
+
+      // minDis 记录这个最近距离
+      int minDis &#61; Integer.MAX_VALUE;
+      // idx 记录距离最小生成树minDis个距离的节点
+      int nodeIdx &#61; 0;
+
+      for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        // 从未纳入最小生成树的点中&#xff0c;找到一个距离最小生成树最近的
+        if (!inTree[i] &amp;&amp; dis[i] &lt; minDis) {
+          minDis &#61; dis[i];
+          nodeIdx &#61; i;
+        }
+      }
+
+      // 如果nodeIdx &#61;&#61; 0,则说明未纳入最小生成树的这些点到最小生成树的距离都是Integer.MAX_VALUE&#xff0c;即不与最小生成树存在关联
+      if (nodeIdx &#61;&#61; 0) {
+        // 则说明&#xff0c;当前所有点无法形成最小生成树
+        return -1;
+      }
+
+      inTree[nodeIdx] &#61; true; // 最小生成树需要纳入最短距离点nodeIdx
+      inTree_count&#43;&#43;; // 最小生成树中点数量&#43;1
+      minWeight &#43;&#61; dis[nodeIdx]; // 更新最小生成树的权重和
+
+      // dis[i] 初始时记录的是节点i 到 节点1 的距离&#xff08;初始的生成树中只有节点1&#xff09;
+      // 现在生成树纳入了新节点nodeIdx&#xff0c;则我们需要更新一下dis[i]&#xff0c;即有可能某些点到最小生成树中的nodeIdx点距离更近
+      for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        if (!inTree[i] &amp;&amp; graph[nodeIdx][i] &lt; dis[i]) {
+          // 注意&#xff0c;这是一个累进过程&#xff0c;初始时dis[i]记录的是节点i到节点1的距离&#xff0c;
+          // 之后&#xff0c;最小生成树纳入新点后&#xff0c;如果节点i到新点的距离更近&#xff0c;则dis[i]就更新为这个更短距离
+          // 总之&#xff0c;dis[i] 记录的是 节点 i 到最小生成树的最短距离
+          dis[i] &#61; graph[nodeIdx][i];
+        }
+      }
+    }
+
+    return minWeight;
+  }
+}</code></pre> 
+<h4></h4> 
+<h4>Kruskal算法</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  // 边
+  static class Edge {
+    int from; // 边起点
+    int to; // 边终点
+    int weight; // 边权重
+
+    public Edge(int from, int to, int weight) {
+      this.from &#61; from;
+      this.to &#61; to;
+      this.weight &#61; weight;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt(); // 基站数量&#xff08;节点数&#xff09;
+    int m &#61; sc.nextInt(); // 基站对数量&#xff08;边数&#xff09;
+
+    Edge[] edges &#61; new Edge[m];
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      int x &#61; sc.nextInt();
+      int y &#61; sc.nextInt();
+      int z &#61; sc.nextInt();
+      int p &#61; sc.nextInt();
+
+      // 如果p&#61;&#61;1&#xff0c;则可以认为x-y边权为0
+      edges[i] &#61; new Edge(x, y, p &#61;&#61; 0 ? z : 0);
+    }
+
+    System.out.println(kruskal(edges, n));
+  }
+
+  public static int kruskal(Edge[] edges, int n) {
+    int minWeight &#61; 0;
+
+    // 按照边权升序
+    Arrays.sort(edges, (a, b) -&gt; a.weight - b.weight);
+
+    UnionFindSet ufs &#61; new UnionFindSet(n &#43; 1);
+
+    // 最先遍历出来是边权最小的边
+    for (Edge edge : edges) {
+      // 如果edge.from节点 和 edge.to节点 是同一个连通分量&#xff08;即都在最小生成树中&#xff09;&#xff0c;则此时会产生环
+      // 因此只有当edge.from节点 和 edge.to节点不在同一个连通分量时&#xff0c;才能合并&#xff08;纳入最小生成树&#xff09;
+      if (ufs.find(edge.from) !&#61; ufs.find(edge.to)) {
+        minWeight &#43;&#61; edge.weight;
+        ufs.union(edge.from, edge.to);
+
+        // 需要注意的是&#xff0c;上面初始化并查集的节点数为n&#43;1个&#xff0c;因此并查集底层fa数组的长度就是n&#43;1&#xff0c;即索引范围是[0, n]&#xff0c;左闭右闭&#xff0c;
+        // 其中0索引是无用的&#xff0c;1~n索引对应最小生成树中各个节点&#xff0c;如果者n个节点可以变为最小生成树&#xff0c;那么1~n节点会被合并为一个连通分量
+        // 而0索引虽然无用&#xff0c;但是也会自己形成一个连通分量&#xff0c;因此最终如果能形成最小生成树&#xff0c;则并查集中会有两个连通分量
+        if (ufs.count &#61;&#61; 2) {
+          return minWeight;
+        }
+      }
+    }
+
+    return -1;
+  }
+}
+
+// 并查集
+class UnionFindSet {
+  int[] fa;
+  int count;
+
+  public UnionFindSet(int n) {
+    this.fa &#61; new int[n];
+    this.count &#61; n;
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) this.fa[i] &#61; i;
+  }
+
+  public int find(int x) {
+    if (x !&#61; this.fa[x]) {
+      return (this.fa[x] &#61; this.find(this.fa[x]));
+    }
+    return x;
+  }
+
+  public void union(int x, int y) {
+    int x_fa &#61; this.find(x);
+    int y_fa &#61; this.find(y);
+
+    if (x_fa !&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+      this.count--;
+    }
+  }
+}</code></pre> 
+<h4></h4> 
+<p></p> 
+<h3>Python算法源码</h3> 
+<h4>Prim算法</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n &#61; int(input())  # 基站数量&#xff08;节点数&#xff09;
+m &#61; int(input())  # 基站对数量&#xff08;边数&#xff09;
+
+# 邻接矩阵, 初始化默认各点之间互不联通&#xff0c;即i-j边权无限大
+graph &#61; [[sys.maxsize for _ in range(n &#43; 1)] for _ in range(n &#43; 1)]
+
+for _ in range(m):
+    x, y, z, p &#61; map(int, input().split())
+
+    if p &#61;&#61; 0:
+        # x-y边权为z
+        graph[x][y] &#61; z
+        graph[y][x] &#61; z
+    else:
+        # 对应已经联通的两点&#xff0c;可以理解为边权为0
+        graph[x][y] &#61; 0
+        graph[y][x] &#61; 0
+
+
+# Prim算法
+def prim():
+    # 记录最小生成树的边权和
+    minWeight &#61; 0
+
+    # inTree[i] 表示 节点i 是否在最小生成树中
+    inTree &#61; [False] * (n &#43; 1)
+
+    # 初始时任选一个节点作为最小生成树的初始节点&#xff0c;这里选择节点1
+    inTree[1] &#61; True
+    # 记录最小生成树中点数量
+    inTree_count &#61; 1
+
+    # dis[i]表示 节点i 到最小生成树集合 的最短距离
+    # 初始时&#xff0c;最小生成树集合中只有节点1&#xff0c;因此其他节点到最小生成树的距离&#xff0c;其实就是到节点1的距离
+    dis &#61; [0] * (n &#43; 1)
+    for i in range(1, n &#43; 1):
+        dis[i] &#61; graph[1][i]
+
+    # 如果最小生成树中点数量达到n个&#xff0c;则结束循环
+    while inTree_count &lt; n:
+        # 现在我们需要从未纳入最小生成树的点中&#xff0c;找到一个距离最小生成树最近的
+        minDis &#61; sys.maxsize  # minDis 记录这个最近距离
+        nodeIdx &#61; 0  # idx 记录距离最小生成树minDis个距离的节点
+
+        for i in range(1, n&#43;1):
+            # 从未纳入最小生成树的点中&#xff0c;找到一个距离最小生成树最近的
+            if not inTree[i] and dis[i] &lt; minDis:
+                minDis &#61; dis[i]
+                nodeIdx &#61; i
+
+        # 如果nodeIdx &#61;&#61; 0,则说明未纳入最小生成树的这些点到最小生成树的距离都是Integer.MAX_VALUE&#xff0c;即不与最小生成树存在关联
+        if nodeIdx &#61;&#61; 0:
+            # 则说明&#xff0c;当前所有点无法形成最小生成树
+            return -1
+
+        inTree[nodeIdx] &#61; True  # 最小生成树需要纳入最短距离点nodeIdx
+        inTree_count &#43;&#61; 1  # 最小生成树中点数量&#43;1
+        minWeight &#43;&#61; dis[nodeIdx]  # 更新最小生成树的权重和
+
+        # dis[i] 初始时记录的是节点i 到 节点1 的距离&#xff08;初始的生成树中只有节点1&#xff09;
+        # 现在生成树纳入了新节点nodeIdx&#xff0c;则我们需要更新一下dis[i]&#xff0c;即有可能某些点到最小生成树中的nodeIdx点距离更近
+        for i in range(1, n&#43;1):
+            if not inTree[i] and graph[nodeIdx][i] &lt; dis[i]:
+                # 注意&#xff0c;这是一个累进过程&#xff0c;初始时dis[i]记录的是节点i到节点1的距离&#xff0c;
+                # 之后&#xff0c;最小生成树纳入新点后&#xff0c;如果节点i到新点的距离更近&#xff0c;则dis[i]就更新为这个更短距离
+                # 总之&#xff0c;dis[i] 记录的是 节点 i 到最小生成树的最短距离
+                dis[i] &#61; graph[nodeIdx][i]
+
+    return minWeight
+
+
+# 算法调用
+print(prim())
+</code></pre> 
+<h4>Kruskal算法</h4> 
+<pre><code class="language-python"># 并查集实现
+class UnionFindSet:
+    def __init__(self, n):
+        self.fa &#61; [i for i in range(n)]
+        self.count &#61; n
+
+    def find(self, x):
+        if x !&#61; self.fa[x]:
+            self.fa[x] &#61; self.find(self.fa[x])
+            return self.fa[x]
+        return x
+
+    def union(self, x, y):
+        x_fa &#61; self.find(x)
+        y_fa &#61; self.find(y)
+
+        if x_fa !&#61; y_fa:
+            self.fa[y_fa] &#61; x_fa
+            self.count -&#61; 1
+
+
+# 输入获取
+n &#61; int(input())  # 基站数量&#xff08;节点数&#xff09;
+m &#61; int(input())  # 基站对数量&#xff08;边数&#xff09;
+
+edges &#61; []
+for _ in range(m):
+    # 边起点&#xff0c;边终点&#xff0c;边权重&#xff08;起点和终点关联代价&#xff09;&#xff0c;起点是否已和终点关联
+    x, y, z, p &#61; map(int, input().split())
+
+    if p &#61;&#61; 0:
+        # 起点和终点未关联
+        edges.append([x, y, z])
+    else:
+        # 起点和终点已关联&#xff0c;则实际关联代价为0
+        edges.append([x, y, 0])
+
+
+# kruskal算法
+def kruskal():
+    minWeight &#61; 0
+
+    # 按照边权升序
+    edges.sort(key&#61;lambda x: x[2])
+
+    ufs &#61; UnionFindSet(n&#43;1)
+
+    # 最先遍历出来是边权最小的边
+    for x, y, z in edges:
+        # 如果x节点 和 y节点 是同一个连通分量&#xff08;即都在最小生成树中&#xff09;&#xff0c;则此时会产生环
+        # 因此只有当x节点 和 y节点不在同一个连通分量时&#xff0c;才能合并&#xff08;纳入最小生成树&#xff09;
+        if ufs.find(x) !&#61; ufs.find(y):
+            minWeight &#43;&#61; z
+            ufs.union(x, y)
+
+            # 需要注意的是&#xff0c;上面初始化并查集的节点数为n&#43;1个&#xff0c;因此并查集底层fa数组的长度就是n&#43;1&#xff0c;即索引范围是[0, n]&#xff0c;左闭右闭&#xff0c;
+            # 其中0索引是无用的&#xff0c;1~n索引对应最小生成树中各个节点&#xff0c;如果者n个节点可以变为最小生成树&#xff0c;那么1~n节点会被合并为一个连通分量
+            # 而0索引虽然无用&#xff0c;但是也会自己形成一个连通分量&#xff0c;因此最终如果能形成最小生成树&#xff0c;则并查集中会有两个连通分量
+            if ufs.count &#61;&#61; 2:
+                return minWeight
+
+    return -1
+
+
+# 算法入口
+print(kruskal())
+</code></pre> 
+<p></p> 
+<h3>C算法源码</h3> 
+<h4>Prim算法</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+int n, m; // 基站数量&#xff08;节点数&#xff09;,基站对数量&#xff08;边数&#xff09;
+int graph[21][21]; // 邻接矩阵
+
+int prim() {
+    // 记录最小生成树的边权和
+    int minWeight &#61; 0;
+
+    // inTree[i] 表示 节点i 是否在最小生成树中
+    int inTree[21] &#61; {0};
+
+    // 初始时任选一个节点作为最小生成树的初始节点&#xff0c;这里选择节点1
+    inTree[1] &#61; 1;
+    // 记录最小生成树中点数量
+    int inTree_count &#61; 1;
+
+    // dis[i]表示 节点i 到最小生成树集合 的最短距离
+    int dis[21];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        // 初始时&#xff0c;最小生成树集合中只有节点1&#xff0c;因此其他节点到最小生成树的距离&#xff0c;其实就是到节点1的距离
+        dis[i] &#61; graph[1][i];
+    }
+
+    // 如果最小生成树中点数量达到n个&#xff0c;则结束循环
+    while (inTree_count &lt; n) {
+        // 现在我们需要从未纳入最小生成树的点中&#xff0c;找到一个距离最小生成树最近的
+
+        int minDis &#61; INT_MAX; // minDis 记录这个最近距离
+        int nodeIdx &#61; 0; // idx 记录距离最小生成树minDis个距离的节点
+
+        for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+            // 从未纳入最小生成树的点中&#xff0c;找到一个距离最小生成树最近的
+            if (!inTree[i] &amp;&amp; dis[i] &lt; minDis) {
+                minDis &#61; dis[i];
+                nodeIdx &#61; i;
+            }
+        }
+
+        // 如果nodeIdx &#61;&#61; 0,则说明未纳入最小生成树的这些点到最小生成树的距离都是Integer.MAX_VALUE&#xff0c;即不与最小生成树存在关联
+        if (nodeIdx &#61;&#61; 0) {
+            // 则说明&#xff0c;当前所有点无法形成最小生成树
+            return -1;
+        }
+
+        inTree[nodeIdx] &#61; 1; // 最小生成树需要纳入最短距离点nodeIdx
+        inTree_count&#43;&#43;; // 最小生成树中点数量&#43;1
+        minWeight &#43;&#61; dis[nodeIdx]; // 更新最小生成树的权重和
+
+        // dis[i] 初始时记录的是节点i 到 节点1 的距离&#xff08;初始的生成树中只有节点1&#xff09;
+        // 现在生成树纳入了新节点nodeIdx&#xff0c;则我们需要更新一下dis[i]&#xff0c;即有可能某些点到最小生成树中的nodeIdx点距离更近
+        for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+            if (!inTree[i] &amp;&amp; graph[nodeIdx][i] &lt; dis[i]) {
+                // 注意&#xff0c;这是一个累进过程&#xff0c;初始时dis[i]记录的是节点i到节点1的距离&#xff0c;
+                // 之后&#xff0c;最小生成树纳入新点后&#xff0c;如果节点i到新点的距离更近&#xff0c;则dis[i]就更新为这个更短距离
+                // 总之&#xff0c;dis[i] 记录的是 节点 i 到最小生成树的最短距离
+                dis[i] &#61; graph[nodeIdx][i];
+            }
+        }
+    }
+
+    return minWeight;
+}
+
+int main() {
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        for (int j &#61; 1; j &lt;&#61; n; j&#43;&#43;) {
+            // 初始化默认各点之间互不联通&#xff0c;即i-j边权无限大
+            graph[i][j] &#61; INT_MAX;
+        }
+    }
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        int x, y, z, p;
+        scanf(&#34;%d %d %d %d&#34;, &amp;x, &amp;y, &amp;z, &amp;p);
+
+        if (p &#61;&#61; 0) {
+            // x-y边权为z
+            graph[x][y] &#61; z;
+            graph[y][x] &#61; z;
+        } else {
+            // 对应已经联通的两点&#xff0c;可以理解为边权为0
+            graph[x][y] &#61; 0;
+            graph[y][x] &#61; 0;
+        }
+    }
+
+    printf(&#34;%d\n&#34;, prim());
+
+    return 0;
+}</code></pre> 
+<h4>Kruskal算法</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/** 并查集定义 **/
+typedef struct {
+    int *fa;
+    int count;
+} UFS;
+
+UFS *new_UFS(int n) {
+    UFS *ufs &#61; (UFS *) malloc(sizeof(UFS));
+
+    ufs-&gt;fa &#61; (int *) malloc(sizeof(int) * n);
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        ufs-&gt;fa[i] &#61; i;
+    }
+
+    ufs-&gt;count &#61; n;
+
+    return ufs;
+}
+
+int find_UFS(UFS *ufs, int x) {
+    if (x !&#61; ufs-&gt;fa[x]) {
+        ufs-&gt;fa[x] &#61; find_UFS(ufs, ufs-&gt;fa[x]);
+        return ufs-&gt;fa[x];
+    }
+    return x;
+}
+
+void union_UFS(UFS *ufs, int x, int y) {
+    int x_fa &#61; find_UFS(ufs, x);
+    int y_fa &#61; find_UFS(ufs, y);
+
+    if (x_fa !&#61; y_fa) {
+        ufs-&gt;fa[y_fa] &#61; x_fa;
+        ufs-&gt;count--;
+    }
+}
+
+/*** 边定义 ***/
+typedef struct Edge {
+    int from; // 边起点
+    int to; // 边终点
+    int weight; // 边权重
+} Edge;
+
+int n, m;
+Edge *edges;
+
+int cmp(const void* a, const void* b) {
+    return ((Edge*) a)-&gt;weight - ((Edge*) b)-&gt;weight;
+}
+
+int kruskal() {
+    int minWeight &#61; 0;
+
+    // 按照边权升序
+    qsort(edges, m, sizeof(Edge), cmp);
+
+    UFS* ufs &#61; new_UFS(n &#43; 1);
+
+    // 最先遍历出来是边权最小的边
+    for(int i&#61;0; i&lt;m; i&#43;&#43;) {
+        int x &#61; edges[i].from;
+        int y &#61; edges[i].to;
+        int z &#61; edges[i].weight;
+
+        // 如果edge.from节点 和 edge.to节点 是同一个连通分量&#xff08;即都在最小生成树中&#xff09;&#xff0c;则此时会产生环
+        // 因此只有当edge.from节点 和 edge.to节点不在同一个连通分量时&#xff0c;才能合并&#xff08;纳入最小生成树&#xff09;
+        if(find_UFS(ufs, x) !&#61; find_UFS(ufs, y)) {
+            minWeight &#43;&#61; z;
+            union_UFS(ufs, x, y);
+
+            // 需要注意的是&#xff0c;上面初始化并查集的节点数为n&#43;1个&#xff0c;因此并查集底层fa数组的长度就是n&#43;1&#xff0c;即索引范围是[0, n]&#xff0c;左闭右闭&#xff0c;
+            // 其中0索引是无用的&#xff0c;1~n索引对应最小生成树中各个节点&#xff0c;如果者n个节点可以变为最小生成树&#xff0c;那么1~n节点会被合并为一个连通分量
+            // 而0索引虽然无用&#xff0c;但是也会自己形成一个连通分量&#xff0c;因此最终如果能形成最小生成树&#xff0c;则并查集中会有两个连通分量
+            if(ufs-&gt;count &#61;&#61; 2) {
+                return minWeight;
+            }
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    edges &#61; (Edge*) malloc(sizeof(Edge) * m);
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        int x, y, z, p;
+        scanf(&#34;%d %d %d %d&#34;, &amp;x, &amp;y, &amp;z, &amp;p);
+
+        edges[i].from &#61; x;
+        edges[i].to &#61; y;
+
+        if(p &#61;&#61; 0) {
+            edges[i].weight &#61; z;
+        } else {
+            // 如果p&#61;&#61;1&#xff0c;则可以认为x-y边权为0
+            edges[i].weight &#61; 0;
+        }
+    }
+
+    printf(&#34;%d\n&#34;, kruskal());
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

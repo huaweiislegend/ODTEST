@@ -1,0 +1,150 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 找出符合要求的字符串子串（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定两个字符串&#xff0c;从字符串2中找出字符串1中的所有字符&#xff0c;去重并按照ASCII值从小到大排序。</p> 
+<p>输入字符串1&#xff1a;长度不超过1024</p> 
+<p>输入字符串2&#xff1a;长度不超过1000000</p> 
+<p>字符范围满足ASCII编码要求&#xff0c;按照ASCII的值由小到大排序</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>bach<br /> bbaaccedfg</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>abc</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>输入字符串1 为给定字符串bach&#xff0c;输入字符串2 bbaaccedfg</p> 
+<p>从字符串2中找出字符串1的字符&#xff0c;去除重复的字符&#xff0c;并且按照ASCII值从小到大排序&#xff0c;得到输出的结果为abc。</p> 
+<p>字符串1中的字符h在字符串2中找不到不输出。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">fach<br /> bbaaccedfg</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">acf</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>无</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>求交集问题。主要考察Set的使用&#xff0c;以及数组的常用操作。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [str1, str2] &#61; lines;
+
+    console.log(getIntersections(str1, str2));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getIntersections(str1, str2) {
+  const set1 &#61; new Set(str1);
+  const set2 &#61; new Set(str2);
+
+  return [...set1]
+    .filter((c) &#61;&gt; set2.has(c))
+    .sort()
+    .join(&#34;&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String s1 &#61; sc.nextLine();
+    String s2 &#61; sc.nextLine();
+
+    System.out.println(getResult(s1, s2));
+  }
+
+  public static String getResult(String s1, String s2) {
+    HashSet&lt;Character&gt; set1 &#61; new HashSet&lt;&gt;();
+    for (char c : s1.toCharArray()) set1.add(c);
+
+    HashSet&lt;Character&gt; set2 &#61; new HashSet&lt;&gt;();
+    for (char c : s2.toCharArray()) set2.add(c);
+
+    Character[] characters &#61; set1.stream().filter(c -&gt; set2.contains(c)).toArray(Character[]::new);
+    Arrays.sort(characters);
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (Character c : characters) sb.append(c);
+
+    return sb.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s1 &#61; input()
+s2 &#61; input()
+
+
+# 算法入口
+def getResult():
+    set1 &#61; set(s1)
+    set2 &#61; set(s2)
+
+    set3 &#61; set1.intersection(set2)
+
+    ans &#61; list(set3)
+    ans.sort()
+
+    return &#34;&#34;.join(ans)
+
+
+# 调用算法
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

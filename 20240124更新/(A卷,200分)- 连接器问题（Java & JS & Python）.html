@@ -1,0 +1,231 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 连接器问题（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一组区间[a0&#xff0c;b0]&#xff0c;[a1&#xff0c;b1]&#xff0c;…&#xff08;a&#xff0c;b表示起点&#xff0c;终点&#xff09;&#xff0c;区间有可能重叠、相邻&#xff0c;重叠或相邻则可以合并为更大的区间&#xff1b;</p> 
+<p>给定一组连接器[x1&#xff0c;x2&#xff0c;x3&#xff0c;…]&#xff08;x表示连接器的最大可连接长度&#xff0c;即x&gt;&#61;gap&#xff09;&#xff0c;可用于将分离的区间连接起来&#xff0c;但两个分离区间之间只能使用1个连接器&#xff1b;</p> 
+<p>请编程实现使用连接器后&#xff0c;最少的区间数结果。</p> 
+<p>区间数量&lt;10000&#xff0c;a,b均 &lt;&#61;10000<br /> 连接器梳理&lt;10000&#xff1b;x &lt;&#61; 10000</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>区间组&#xff1a;[1,10],[15,20],[18,30],[33&#xff0c;40]<br /> 连接器组&#xff1a;[5,4,3,2]</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p><code>1</code></p> 
+<p><strong>说明&#xff1a;</strong></p> 
+<p>合并后&#xff1a;[1,10],[15,30],[33,40]&#xff0c;使用5, 3两个连接器连接后只剩下 [1, 40]。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"><code>[1,10],[15,20],[18,30],[33,40]</code><br /><code>[5,4,3,2]</code></td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">合并后&#xff1a;[1,10], [15,30], [33,40]&#xff0c;使用5, 3两个连接器连接后只剩下[1,40]。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;">[1,2],[3,5],[7,10],[15,20],[30,100]<br /> [5,4,3,2,1]</td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">2</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;">无重叠和相邻&#xff0c;使用1&#xff0c;2&#xff0c;5三个连接器连接后只剩下[1,20]&#xff0c;[30,100]</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先将第一行输入的区间ranges&#xff0c;按照起点值升序排序。然后进行区间合并。</p> 
+<p>区间合并的逻辑如下&#xff0c;创建一个辅助数组mergeRanges&#xff0c;将ranges[0]从ranges中出队&#xff0c;并加入mergeRanges&#xff0c;作为其初始值。</p> 
+<p>然后&#xff0c;循环遍历ranges中剩余区间&#xff0c;</p> 
+<ul><li>如果ranges[i]和mergeRanges.at(-1)栈顶元素可以合并&#xff0c;则将mergeRanges栈顶元素弹出&#xff0c;并加入合并后区间。</li><li>如果ranges[i]和mergeRanges.at(-1)栈顶元素无法合并&#xff0c;则先计算ranges[i]的终点和栈顶mergeRanges.at(-1)的起点的差值diff&#xff0c;加入diffs数组中&#xff0c;然后将ranges[i]压入mergeRanges</li></ul> 
+<p>以上逻辑运行完后&#xff0c;我们就得到了一个diffs数组。diffs保存的是合并后相邻区间之间的空隙大小。</p> 
+<p></p> 
+<p>现在想要最少的区间数&#xff0c;即我们应该尽量让连接器不要浪费&#xff0c;即最好找到一个空隙长度相等的连接器&#xff0c;这样就可以防止一个很长的连接器来连一个很短的空隙&#xff0c;导致后面遇到很长的空隙时&#xff0c;没有适合的连接器使用。</p> 
+<p></p> 
+<p>我们将diffs数组降序排序&#xff0c;将第二行输入的连接器connects数组降序排序。</p> 
+<p>然后不停的弹出connects栈顶元素&#xff0c;即最小长度的连接器&#xff0c;来对比diffs数组栈顶元素&#xff0c;即最短的空隙&#xff0c;如果最小长度的连接器 可以满足 最短的空隙&#xff0c;则将diffs栈顶元素弹出&#xff0c;否则不弹出&#xff0c;继续找下一个连接器。</p> 
+<p></p> 
+<p>最终&#xff0c;diffs数组长度 &#43; 1 就是区间数&#xff0c;因为两个区间有一个空隙&#xff0c;因此空隙个数&#43;1就是区间个数。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const ranges &#61; JSON.parse(&#96;[${lines[0]}]&#96;);
+    const connects &#61; JSON.parse(lines[1]);
+
+    console.log(getResult(ranges, connects));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(ranges, connects) {
+  ranges.sort((a, b) &#61;&gt; a[0] - b[0]);
+
+  const mergeRanges &#61; [ranges.shift()];
+  const diffs &#61; [];
+
+  for (let range of ranges) {
+    const [s1, e1] &#61; mergeRanges.at(-1);
+    const [s2, e2] &#61; range;
+
+    if (s2 &lt;&#61; e1) {
+      mergeRanges.pop();
+      mergeRanges.push([s1, Math.max(e1, e2)]);
+    } else {
+      diffs.push(s2 - e1);
+      mergeRanges.push(range);
+    }
+  }
+
+  diffs.sort((a, b) &#61;&gt; b - a);
+  connects.sort((a, b) &#61;&gt; b - a);
+
+  while (connects.length &amp;&amp; diffs.length) {
+    if (connects.pop() &gt;&#61; diffs.at(-1)) {
+      diffs.pop();
+    }
+  }
+
+  return diffs.length &#43; 1;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String f &#61; sc.nextLine();
+    Integer[][] ranges &#61;
+        Arrays.stream(f.substring(1, f.length() - 1).split(&#34;],\\[&#34;))
+            .map(
+                str -&gt; Arrays.stream(str.split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new))
+            .toArray(Integer[][]::new);
+
+    String s &#61; sc.nextLine();
+    List&lt;Integer&gt; connects &#61;
+        s.length() &#61;&#61; 2
+            ? new LinkedList&lt;&gt;()
+            : Arrays.stream(s.substring(1, s.length() - 1).split(&#34;,&#34;))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+    System.out.println(getResult(ranges, connects));
+  }
+
+  public static int getResult(Integer[][] ranges, List&lt;Integer&gt; connects) {
+    Arrays.sort(ranges, (a, b) -&gt; a[0] - b[0]);
+
+    LinkedList&lt;Integer[]&gt; mergeRanges &#61; new LinkedList&lt;&gt;();
+    mergeRanges.addLast(ranges[0]);
+
+    LinkedList&lt;Integer&gt; diffs &#61; new LinkedList&lt;&gt;();
+
+    for (int i &#61; 1; i &lt; ranges.length; i&#43;&#43;) {
+      Integer[] last &#61; mergeRanges.getLast();
+      int s1 &#61; last[0];
+      int e1 &#61; last[1];
+
+      Integer[] range &#61; ranges[i];
+      int s2 &#61; range[0];
+      int e2 &#61; range[1];
+
+      if (s2 &lt;&#61; e1) {
+        mergeRanges.removeLast();
+        mergeRanges.addLast(new Integer[] {s1, Math.max(e1, e2)});
+      } else {
+        diffs.addLast(s2 - e1);
+        mergeRanges.addLast(range);
+      }
+    }
+
+    diffs.sort((a, b) -&gt; b - a);
+    connects.sort((a, b) -&gt; b - a);
+
+    while (connects.size() &gt; 0 &amp;&amp; diffs.size() &gt; 0) {
+      if (connects.remove(connects.size() - 1) &gt;&#61; diffs.getLast()) {
+        diffs.removeLast();
+      }
+    }
+
+    return diffs.size() &#43; 1;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+rans &#61; eval(&#34;[&#34; &#43; input() &#43; &#34;]&#34;)
+connects &#61; eval(input())
+
+
+# 算法入口
+def getResult(rans, connects):
+    rans.sort(key&#61;lambda x: x[0])
+
+    mergeRan &#61; [rans.pop(0)]
+    diffs &#61; []
+
+    for ran in rans:
+        s1, e1 &#61; mergeRan[-1]
+        s2, e2 &#61; ran
+
+        if s2 &lt;&#61; e1:
+            mergeRan.pop()
+            mergeRan.append([s1, max(e1, e2)])
+        else:
+            diffs.append(s2 - e1)
+            mergeRan.append(ran)
+
+    diffs.sort(reverse&#61;True)
+    connects.sort(reverse&#61;True)
+
+    while len(connects) &gt; 0 and len(diffs) &gt; 0:
+        if connects.pop() &gt;&#61; diffs[-1]:
+            diffs.pop()
+
+    return len(diffs) &#43; 1
+
+
+# 算法调用
+print(getResult(rans, connects))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

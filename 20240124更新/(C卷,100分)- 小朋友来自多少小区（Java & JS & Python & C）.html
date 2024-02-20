@@ -1,0 +1,225 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 小朋友来自多少小区（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4>在线OJ刷题</h4> 
+<p><a href="https://hydro.ac/d/HWOD2023/p/OD397" rel="nofollow" title="题目详情 - 小朋友来自多少分区 - Hydro">题目详情 - 小朋友来自多少分区 - Hydro</a></p> 
+<p></p> 
+<h4 id="main-toc">题目描述</h4> 
+<p>幼儿园组织活动&#xff0c;老师布置了一个任务&#xff1a;</p> 
+<p>每个小朋友去了解与自己同一个小区的小朋友还有几个。</p> 
+<p>我们将这些数量汇总到数组 garden 中。</p> 
+<p>请根据这些小朋友给出的信息&#xff0c;计算班级小朋友至少来自几个小区&#xff1f;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入&#xff1a;garden[] &#61; {2, 2, 3}</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出&#xff1a;7</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>garden 数组长度最大为 999</li><li>每个小区的小朋友数量最多 1000 人&#xff0c;也就是 garden[i] 的范围为 [0, 999]</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 2 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">7</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>第一个小朋友反馈有两个小朋友和自己同一小区&#xff0c;即此小区有3个小朋友。</p> <p>第二个小朋友反馈有两个小朋友和自己同一小区&#xff0c;即此小区有3个小朋友。</p> <p>这两个小朋友&#xff0c;可能是同一小区的&#xff0c;且此小区的小朋友只有3个人。</p> <p>第三个小区反馈还有3个小朋友与自己同一小区&#xff0c;则这些小朋友只能是另外一个小区的。这个小区有4个小朋友。</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题的输出其实是至少的小朋友数量&#xff0c;而不是班级小朋友至少来自几个小区。</p> 
+<p></p> 
+<p>假设&#xff1a;</p> 
+<ul><li>小朋友A反馈有x个人与自己的小区相同</li><li>小朋友B反馈有y个人与自己的小区相同</li></ul> 
+<p>那么&#xff0c;在什么情况下&#xff0c;可以假设小朋友A和小朋友B是同一个小区的&#xff1f;</p> 
+<p>答案&#xff1a;只有当x &#61;&#61; y时&#xff0c;A和B的小区才可能是相同的。</p> 
+<blockquote> 
+ <p>比如&#xff1a;</p> 
+ <p>小朋友A反馈有1个人和自己小区相同&#xff0c;小朋友B反馈有2个人和自己小区相同。</p> 
+ <p>那么此时小朋友A和小朋友B的小区必然不同。</p> 
+</blockquote> 
+<blockquote> 
+ <p>比如&#xff1a;</p> 
+ <p>小朋友A反馈有1个人和自己小区相同&#xff0c;小朋友B也反馈有1个人和自己小区相同。</p> 
+ <p>那么此时小朋友A&#xff0c;B可能是同一个小区的。并且可以进一步假设该小区只有A&#xff0c;B两个小朋友&#xff0c;即我们可以认为A&#xff0c;B发生了合并。</p> 
+</blockquote> 
+<p></p> 
+<p>假设&#xff1a;有x个小朋友都反馈有y个人与自己小区相同</p> 
+<p>那么此时“至多”有 x * (y&#43;1) 个小朋友&#xff0c;即这x个小朋友的小区各不相同&#xff0c;而这x个小朋友的每一个人都反馈还有y个人的小区和自己相同&#xff0c;即每一个小区都有 y &#43; 1 人。</p> 
+<p>那么“至少”情况该如何分析呢&#xff1f;此时需要利用到前面的“合并”操作。</p> 
+<p>由于这x个小朋友都各自反馈有y个人和自己小区相同。因此我们可以将这x个小朋友&#xff0c;分成多段&#xff0c;每段y&#43;1个小朋友&#xff0c;而每段的这些小朋友是可以合并的&#xff0c;即最终会有&#xff1a;</p> 
+<blockquote> 
+ <p>ceil( x / (y &#43; 1) ) * (y&#43;1)</p> 
+</blockquote> 
+<p>其中 ceil( x / (y&#43;1) ) 就是分段数&#xff0c;这里向上取整的原因是&#xff0c;对于某一段不足y&#43;1个小朋友时&#xff0c;</p> 
+<p>比如有4个小朋友都反馈有2个人和自己小区相同&#xff0c;那么这4个小朋友中&#xff0c;可以选择3人组成一段&#xff0c;剩余的4-3&#61;1人单独组成一段&#xff0c;如下所示&#xff0c;3人组成一段的小区都是A&#xff0c;而单独组成一段的小区是B</p> 
+<blockquote> 
+ <p>A  A  A | B</p> 
+</blockquote> 
+<p>其中 A A A 三个小朋友互相弥补&#xff0c;组成一段&#xff0c;因此不需要外人加入。而B小朋友说还有2个人和自己小区一样&#xff0c;而当前进行反馈的小朋友已经组合完了&#xff0c;因此需要额外加入2个外人。</p> 
+<blockquote> 
+ <p>A A A | B B B</p> 
+</blockquote> 
+<p></p> 
+<p>上面策略其实就是求出&#xff0c;根据反馈相同小区y的小朋友的数量x&#xff0c;求出至少的分段数&#xff0c;而每个分段就是y&#43;1人。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const cnts &#61; {};
+
+  // num是反馈&#xff0c;cnts[num]是给出相同反馈的&#xff08;小朋友&#xff09;数量
+  for (let num of nums) {
+    // ?? 是es6高级语法&#xff0c;如果??左边是null或undefined&#xff0c;则返回??右边
+    cnts[num] &#61; (cnts[num] ?? 0) &#43; 1;
+  }
+
+  // ans 记录题解
+  let ans &#61; 0;
+
+  Object.keys(cnts).forEach((key) &#61;&gt; {
+    // key是反馈&#xff0c;假设某小朋友反馈有key个人和自己一个小区&#xff0c;那么该小区总人数为total &#61; key&#43;1
+    const total &#61; parseInt(key) &#43; 1;
+    ans &#43;&#61; Math.ceil(cnts[key] / total) * total;
+  });
+
+  console.log(ans);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    try {
+      int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+      System.out.println(getResult(nums));
+    } catch (Exception e) {
+      System.out.println(&#34;0&#34;);
+    }
+  }
+
+  public static int getResult(int[] nums) {
+    // num是反馈&#xff0c;cnts[num]是给出相同反馈的&#xff08;小朋友&#xff09;数量
+    HashMap&lt;Integer, Integer&gt; cnts &#61; new HashMap&lt;&gt;();
+
+    for (int num : nums) {
+      cnts.put(num, cnts.getOrDefault(num, 0) &#43; 1);
+    }
+
+    // ans 记录题解
+    int ans &#61; 0;
+    for (int key : cnts.keySet()) {
+      // key是反馈&#xff0c;假设某小朋友反馈有key个人和自己一个小区&#xff0c;那么该小区总人数为total &#61; key&#43;1
+      int total &#61; key &#43; 1;
+      ans &#43;&#61; Math.ceil(cnts.get(key) * 1.0 / total) * total;
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import math
+
+# 输入获取
+nums &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    # num是反馈&#xff0c;cnts[num]是给出相同反馈的&#xff08;小朋友&#xff09;数量
+    cnts &#61; {}
+
+    for num in nums:
+        cnts[num] &#61; cnts.get(num, 0) &#43; 1
+
+    # ans 记录题解
+    ans &#61; 0
+    for key in cnts.keys():
+        # key是反馈&#xff0c;假设某小朋友反馈有key个人和自己一个小区&#xff0c;那么该小区总人数为total &#61; key&#43;1
+        total &#61; key &#43; 1
+        ans &#43;&#61; math.ceil(cnts[key] / total) * total
+
+    return ans
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+#define MAX_SIZE 1000
+
+int main() {
+    int nums[MAX_SIZE] &#61; {0};
+    int nums_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    // num是反馈&#xff0c;cnts[num]是给出相同反馈的&#xff08;小朋友&#xff09;数量
+    int cnts[MAX_SIZE] &#61; {0};
+    for (int i &#61; 0; i &lt; nums_size; i&#43;&#43;) {
+        int num &#61; nums[i];
+        cnts[num]&#43;&#43;;
+    }
+
+    // ans 记录题解
+    int ans &#61; 0;
+    for (int i &#61; 0; i &lt; MAX_SIZE; i&#43;&#43;) {
+        // i是反馈&#xff0c;假设某小朋友反馈有i个人和自己一个小区&#xff0c;那么该小区总人数为total &#61; i&#43;1
+        int total &#61; i &#43; 1;
+        ans &#43;&#61; (int) ceil(cnts[i] * 1.0 / total) * total;
+    }
+
+    printf(&#34;%d\n&#34;, ans);
+
+    return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,316 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 字母组合（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>每个数字关联多个字母&#xff0c;关联关系如下&#xff1a;</p> 
+<ul><li>0 关联 “a”,”b”,”c”</li><li>1 关联 “d”,”e”,”f”</li><li>2 关联 “g”,”h”,”i”</li><li>3 关联 “j”,”k”,”l”</li><li>4 关联 “m”,”n”,”o”</li><li>5 关联 “p”,”q”,”r”</li><li>6 关联 “s”,”t”</li><li>7 关联 “u”,”v”</li><li>8 关联 “w”,”x”</li><li>9 关联 “y”,”z”</li></ul> 
+<p>输入一串数字后&#xff0c;通过数字和字母的对应关系可以得到多个字母字符串&#xff08;要求按照数字的顺序组合字母字符串&#xff09;&#xff1b;</p> 
+<p>屏蔽字符串&#xff1a;屏蔽字符串中的所有字母不能同时在输出的字符串出现&#xff0c;如屏蔽字符串是abc&#xff0c;则要求字符串中不能同时出现a,b,c&#xff0c;但是允许同时出现a,b或a,c或b,c等&#xff1b;</p> 
+<p>给定一个数字字符串和一个屏蔽字符串&#xff0c;输出所有可能的字符组合&#xff1b;</p> 
+<p>例如输入数字字符串78和屏蔽字符串ux&#xff0c;输出结果为uw&#xff0c;vw&#xff0c;vx&#xff1b;数字字符串78&#xff0c;可以得到如下字符串uw&#xff0c;ux&#xff0c;vw&#xff0c;vx&#xff1b;由于ux是屏蔽字符串&#xff0c;因此排除ux&#xff0c;最终的输出是uw&#xff0c;vw&#xff0c;vx;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为一串数字字符串&#xff0c;数字字符串中的数字不允许重复&#xff0c;数字字符串的长度大于0&#xff0c;小于等于5&#xff1b;</p> 
+<p>第二行输入是屏蔽字符串&#xff0c;屏蔽字符串的长度一定小于数字字符串的长度&#xff0c;屏蔽字符串中字符不会重复&#xff1b;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出可能的字符串组合</p> 
+<p>注&#xff1a;字符串之间使用逗号隔开&#xff0c;最后一个字符串后携带逗号</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">78<br /> ux</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">uw,vw,vx,</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;"> <p>78<br /> x</p> </td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">uw,vw,</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题由两块逻辑组成&#xff1a;</p> 
+<p>1、根据提供的数字字符串&#xff0c;得到字母组合字符串。这块其实就是求组合问题&#xff0c;可以使用回溯算法&#xff0c;逻辑可以参考&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/127293561" title="LeetCode - 17 电话号码的字母组合_伏城之外的博客-CSDN博客">LeetCode - 17 电话号码的字母组合_伏城之外的博客-CSDN博客</a></p> 
+<p>2、排除包含屏蔽字符串的字母组合字符串&#xff0c;而本题中判断一个字符串是否包含另一个字符串的逻辑是&#xff1a;屏蔽字符串中的所有字母不能同时在输出的字符串中出现</p> 
+<blockquote> 
+ <p>数字字符串中的数字不允许重复</p> 
+ <p>屏蔽字符串中字符不会重复</p> 
+</blockquote> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const nums &#61; await readline();
+  const filter &#61; await readline();
+
+  const map &#61; [
+    &#34;abc&#34;,
+    &#34;def&#34;,
+    &#34;ghi&#34;,
+    &#34;jkl&#34;,
+    &#34;mno&#34;,
+    &#34;pqr&#34;,
+    &#34;st&#34;,
+    &#34;uv&#34;,
+    &#34;wx&#34;,
+    &#34;yz&#34;,
+  ];
+
+  const result &#61; [];
+
+  /**
+   * 回溯算法求组合
+   * &#64;param {*} level 组合的层级
+   * &#64;param {*} path 记录组合字符串
+   */
+  function dfs(level, path) {
+    // 组合层数到达要求时&#xff0c;当前组合字符串完成
+    if (level &#61;&#61; nums.length) {
+      const set &#61; new Set(path);
+
+      for (let c of filter) {
+        if (!set.has(c)) {
+          result.push(path.join(&#34;&#34;));
+          return;
+        }
+      }
+
+      return;
+    }
+
+    // 当前层级的数字
+    const num &#61; nums[level] - &#34;0&#34;;
+    // 该数字关联的多个字母
+    const letters &#61; map[num];
+
+    // 遍历当前层级可选的字母
+    for (let i &#61; 0; i &lt; letters.length; i&#43;&#43;) {
+      // 选择字母加入当前组合
+      const letter &#61; letters[i];
+
+      path.push(letter);
+      // 继续组合下一个层级的字母选择
+      dfs(level &#43; 1, path);
+      path.pop();
+    }
+  }
+
+  // 回溯算法求组合
+  dfs(0, [], result);
+
+  // 拼接结果字符串
+  console.log(result.join(&#34;,&#34;) &#43; &#34;,&#34;);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  static String nums;
+  static String filter;
+  static String[] map &#61; {&#34;abc&#34;, &#34;def&#34;, &#34;ghi&#34;, &#34;jkl&#34;, &#34;mno&#34;, &#34;pqr&#34;, &#34;st&#34;, &#34;uv&#34;, &#34;wx&#34;, &#34;yz&#34;};
+
+  static ArrayList&lt;String&gt; result &#61; new ArrayList&lt;&gt;();
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    nums &#61; sc.nextLine();
+    filter &#61; sc.nextLine();
+
+    System.out.println(getResult());
+  }
+
+  public static String getResult() {
+    // 回溯算法求组合
+    dfs(0, new LinkedList&lt;&gt;());
+
+    // 拼接结果字符串
+    StringBuilder sb &#61; new StringBuilder();
+    result.forEach(s -&gt; sb.append(s).append(&#34;,&#34;));
+    return sb.toString();
+  }
+
+  /**
+   * 回溯算法求组合
+   *
+   * &#64;param level 组合的层级
+   * &#64;param path 记录组合字符串
+   */
+  public static void dfs(int level, LinkedList&lt;Character&gt; path) {
+    // 组合层数到达要求时&#xff0c;当前组合字符串完成
+    if (level &#61;&#61; nums.length()) {
+      HashSet&lt;Character&gt; set &#61; new HashSet&lt;&gt;(path);
+
+      for (int i &#61; 0; i &lt; filter.length(); i&#43;&#43;) {
+        if (!set.contains(filter.charAt(i))) {
+          StringBuilder sb &#61; new StringBuilder();
+          path.forEach(sb::append);
+          result.add(sb.toString());
+          return;
+        }
+      }
+
+      return;
+    }
+
+    // 当前层级的数字
+    int num &#61; nums.charAt(level) - &#39;0&#39;;
+    // 该数字关联的多个字母
+    String letters &#61; map[num];
+
+    // 遍历当前层级可选的字母
+    for (int i &#61; 0; i &lt; letters.length(); i&#43;&#43;) {
+      // 选择字母加入当前组合
+      char letter &#61; letters.charAt(i);
+
+      path.addLast(letter);
+      // 继续组合下一个层级的字母选择
+      dfs(level &#43; 1, path);
+      path.removeLast();
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+numsStr &#61; input()
+filterStr &#61; input()
+
+dic &#61; [&#34;abc&#34;, &#34;def&#34;, &#34;ghi&#34;, &#34;jkl&#34;, &#34;mno&#34;, &#34;pqr&#34;, &#34;st&#34;, &#34;uv&#34;, &#34;wx&#34;, &#34;yz&#34;]
+result &#61; []
+
+
+# 算法入口
+def getResult():
+    # 回溯算法求组合
+    dfs(0, [])
+    # 拼接结果字符串
+    return &#34;,&#34;.join(result) &#43; &#34;,&#34;
+
+
+def dfs(level, path):
+    &#34;&#34;&#34;
+    回溯算法求组合
+    :param level: 组合的层级
+    :param path: 记录组合字符串
+    &#34;&#34;&#34;
+    if level &#61;&#61; len(numsStr):  # 组合层数到达要求时&#xff0c;当前组合字符串完成
+        pathSet &#61; set(path)
+
+        for c in filterStr:
+            if c not in pathSet:
+                result.append(&#34;&#34;.join(path))
+                return
+
+        return
+
+    # 当前层级的数字
+    num &#61; ord(numsStr[level]) - ord(&#39;0&#39;)
+    # 该数字关联的多个字母
+    letters &#61; dic[num]
+
+    # 遍历当前层级可选的字母
+    for letter in letters:
+        # 选择字母加入当前组合
+        path.append(letter)
+        # 继续组合下一个层级的字母选择
+        dfs(level &#43; 1, path)
+        path.pop()
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_SIZE 6
+
+char nums[MAX_SIZE];
+char filter[MAX_SIZE];
+
+char *map[] &#61; {&#34;abc&#34;, &#34;def&#34;, &#34;ghi&#34;, &#34;jkl&#34;, &#34;mno&#34;, &#34;pqr&#34;, &#34;st&#34;, &#34;uv&#34;, &#34;wx&#34;, &#34;yz&#34;};
+
+void dfs(int level, char path[], int path_size) {
+    // 组合层数到达要求时&#xff0c;当前组合字符串完成
+    if (nums[level] &#61;&#61; &#39;\0&#39;) {
+        int i &#61; 0;
+        while (filter[i] !&#61; &#39;\0&#39;) {
+            if (strchr(path, filter[i]) &#61;&#61; NULL) {
+                printf(&#34;%s,&#34;, path);
+                return;
+            }
+            i&#43;&#43;;
+        }
+        return;
+    }
+
+    // 当前层级的数字
+    int num &#61; nums[level] - &#39;0&#39;;
+    // 该数字关联的多个字母
+    char *letters &#61; map[num];
+
+    // 遍历当前层级可选的字母
+    int i &#61; 0;
+    while (letters[i] !&#61; &#39;\0&#39;) {
+        // 选择字母加入当前组合
+        path[path_size&#43;&#43;] &#61; letters[i];
+        // 继续组合下一个层级的字母选择
+        dfs(level &#43; 1, path, path_size);
+        path_size--;
+        i&#43;&#43;;
+    }
+}
+
+int main() {
+    gets(nums);
+    gets(filter);
+
+    char path[MAX_SIZE] &#61; {&#39;\0&#39;};
+
+    // 回溯算法求组合
+    dfs(0, path, 0);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

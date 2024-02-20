@@ -1,0 +1,452 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 矩阵稀疏扫描（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>如果矩阵中的许多系数都为零&#xff0c;那么该矩阵就是稀疏的。对稀疏现象有兴趣是因为它的开发可以带来巨大的计算节省&#xff0c;并且在许多大的实践中都会出现矩阵稀疏的问题。</p> 
+<p>给定一个矩阵&#xff0c;现在需要逐行和逐列地扫描矩阵&#xff0c;如果某一行或者某一列内&#xff0c;存在连续出现的0的个数超过了行宽或者列宽的一半 [W /2] (整除) &#xff0c;则认为该行或者该列是稀疏的。</p> 
+<p>扫描给定的矩阵&#xff0c;输出稀疏的行数和列数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为M和N&#xff0c;表示矩阵的大小M*N&#xff0c;0 &#xff1c; M ≤ 100&#xff0c;0 &#xff1c; N ≤ 100</p> 
+<p>接下来M行输入为矩阵的成员&#xff0c;每行N个成员&#xff0c;矩阵成员都是有符号整数&#xff0c;范围-32,768到32,767</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出两行&#xff0c;第一行表示稀疏行的个数&#xff0c;第二行表示稀疏列的个数</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 3<br /> 1 0 0<br /> 0 1 0<br /> 0 0 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"> <p>3<br /> 3</p> </td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">给定的3*3矩阵里&#xff0c;每一行和每一列内都存在2个0&#xff0c;行宽3&#xff0c;列宽3&#xff0c;[3/2] &#61; 1&#xff0c;因此稀疏行有3个&#xff0c;稀疏列有3个。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 3<br /> -1 0 1<br /> 0 0 0<br /> -1 0 0<br /> 0 -1 0<br /> 0 0 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"> <p>5</p> <p>3</p> </td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">给定的5*3矩阵&#xff0c;每行里面0的个数大于等于1表示稀疏行&#xff0c;每列里面0的个数大于等于2表示稀疏行&#xff0c;所以有5个稀疏行,3个稀疏列。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题题目中说&#xff1a;</p> 
+<blockquote> 
+ <p>如果某一行或者某一列内&#xff0c;存在<span style="color:#fe2c24;">连续出现的0</span>的个数超过了行宽或者列宽的一半 [W /2] (整除) &#xff0c;则认为该行或者该列是稀疏的。</p> 
+</blockquote> 
+<p>而用例里面对于稀疏行和稀疏列的确认&#xff0c;却不是根据连续0的个数&#xff0c;而是以0的个数&#xff08;即不连续也可以&#xff09;。</p> 
+<p></p> 
+<h3>以用例说明为准&#xff08;不以连续0为判断标准&#xff09;&#xff08;可得100%通过率&#xff09;</h3> 
+<p>我的解题思路是定义两个数组&#xff1a;</p> 
+<ul><li>rowZeroCount数组&#xff0c;长度为m&#xff0c;rowZeroCount[i] 代表第 i 行中含0个数</li><li>colZeroCount数组&#xff0c;长度为n&#xff0c;colZeroCount[j] 代表第 j 列中含0个数</li></ul> 
+<p>这样的话&#xff0c;只要遍历输入的矩阵matrix的每一个元素matrix[i][j]&#xff0c;</p> 
+<p>如果matrix[i][j]&#61;&#61;0&#xff0c;那么说明在第 i 行找到一个0&#xff0c;此时rowZeroCount[i]&#43;&#43;&#xff0c;以及在第 j 列找到一个0&#xff0c;此时colZeroCount[j]&#43;&#43;。</p> 
+<p>最后&#xff0c;只要分别统计rowZeroCount中有多少个大于 n / 2&#xff0c;注意一行有n个元素&#xff0c;以及colZeroCount中有多个大于 m / 2&#xff0c;注意一列有m个元素。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[] rowZeroCount &#61; new int[m];
+    int[] colZeroCount &#61; new int[n];
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        if (sc.nextInt() &#61;&#61; 0) {
+          rowZeroCount[i]&#43;&#43;;
+          colZeroCount[j]&#43;&#43;;
+        }
+      }
+    }
+
+    System.out.println(Arrays.stream(rowZeroCount).filter(val -&gt; val &gt;&#61; n / 2).count());
+    System.out.println(Arrays.stream(colZeroCount).filter(val -&gt; val &gt;&#61; m / 2).count());
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    [m, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (m &amp;&amp; lines.length &#61;&#61; m &#43; 1) {
+    lines.shift();
+    const matrix &#61; lines.map((s) &#61;&gt; s.split(&#34; &#34;).map(Number));
+    getResult(m, n, matrix);
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(m, n, matrix) {
+  const rowZeroCount &#61; new Array(m).fill(0);
+  const colZeroCount &#61; new Array(n).fill(0);
+
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+      if (matrix[i][j] &#61;&#61; 0) {
+        rowZeroCount[i]&#43;&#43;;
+        colZeroCount[j]&#43;&#43;;
+      }
+    }
+  }
+
+  console.log(rowZeroCount.filter((val) &#61;&gt; val &gt;&#61; Math.floor(n / 2)).length);
+  console.log(colZeroCount.filter((val) &#61;&gt; val &gt;&#61; Math.floor(m / 2)).length);
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, n &#61; map(int, input().split())
+matrix &#61; [list(map(int, input().split())) for _ in range(m)]
+
+
+# 算法入口
+def getResult():
+    rowZeroCount &#61; [0] * m
+    colZeroCount &#61; [0] * n
+
+    for i in range(m):
+        for j in range(n):
+            if matrix[i][j] &#61;&#61; 0:
+                rowZeroCount[i] &#43;&#61; 1
+                colZeroCount[j] &#43;&#61; 1
+
+    print(len(list(filter(lambda val: val &gt;&#61; n // 2, rowZeroCount))))
+    print(len(list(filter(lambda val: val &gt;&#61; m // 2, colZeroCount))))
+
+
+# 算法调用
+getResult()
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_ROWS 100
+#define MAX_COLS 100
+
+int filter(int* arr, int arr_length, int threhold);
+
+int main()
+{
+	// 输入获取
+	int m, n;
+	scanf(&#34;%d %d&#34;, &amp;m, &amp;n);
+	
+	// 记录对应行中值为0的元素的个数
+	int rowZeroCount[MAX_ROWS] &#61; {0};
+	// 记录对应列中值为0的元素的个数
+	int colZeroCount[MAX_COLS] &#61; {0};
+	
+	for(int i &#61; 0; i &lt; m; i&#43;&#43;) {
+		for(int j &#61; 0; j &lt; n; j&#43;&#43;) {
+			// 矩阵元素获取
+			int num;
+			scanf(&#34;%d&#34;, &amp;num);
+			
+			// 如果矩阵元素值为0&#xff0c;则对应行&#xff08;第 i 行&#xff09;含0个数&#43;&#43;&#xff0c;对应列&#xff08;第 j 列&#xff09;含0个数&#43;&#43;
+			if(num &#61;&#61; 0) {
+				rowZeroCount[i]&#43;&#43;;
+				colZeroCount[j]&#43;&#43;;
+			}
+		}
+	}
+	
+	// 一行共有n个元素&#xff0c;如果对应行值为0的元素超过n/2个&#xff0c;即为稀疏行
+	printf(&#34;%d\n&#34;, filter(rowZeroCount, m, n / 2));
+	// 一列共有m个元素&#xff0c;只要对应列值为0的元素超过m/2个&#xff0c;即为稀疏列
+	printf(&#34;%d\n&#34;, filter(colZeroCount, n, m / 2));
+	
+	return 0;
+}
+
+// 统计数组arr中大于等于threhold的元素的个数
+int filter(int* arr, int arr_length, int threhold)
+{
+	int count &#61; 0;
+	
+	for(int i&#61;0; i&lt;arr_length; i&#43;&#43;) {
+		if(arr[i] &gt;&#61; threhold) {
+			count&#43;&#43;;
+		}
+	}
+	
+	return count;
+}</code></pre> 
+<p></p> 
+<h3>以题目描述为准&#xff08;以连续0为判断标准&#xff09;</h3> 
+<p>我的解题思路是定义两个数组&#xff1a;</p> 
+<ul><li>rowZeroConstant<span style="color:#fe2c24;">Max</span>Count数组&#xff0c;长度为m&#xff0c;rowZeroConstant<span style="color:#fe2c24;">Max</span>Count[i] 代表第 i 行中连续0的最大个数</li><li>colZeroConstant<span style="color:#fe2c24;">Max</span>Count数组&#xff0c;长度为n&#xff0c;colZeroConstant<span style="color:#fe2c24;">Max</span>Count[j] 代表第 j 列中连续0的最大个数</li></ul> 
+<p>同时定义两个中间数组&#xff1a;</p> 
+<ul><li>rowZeroConstantCount数组&#xff0c;长度为m&#xff0c;rowZeroConstantCount[i] 代表第 i 行中各段连续0的个数</li><li>colZeroConstantCount数组&#xff0c;长度为n&#xff0c;colZeroConstantCount[j] 代表第 j 列中各段连续0的个数</li></ul> 
+<p>这样的话&#xff0c;只要遍历输入的矩阵matrix的每一个元素matrix[i][j]&#xff0c;</p> 
+<p>如果matrix[i][j]&#61;&#61;0&#xff0c;那么说明&#xff1a;</p> 
+<ul><li>在第 i 行找到一个0&#xff0c;此时rowZeroConstantCount[i]&#43;&#43;&#xff0c;即第i行的连续0个数&#43;1&#xff0c;另外还要比较记录最大连续0个数&#xff0c;更新rowZeroConstant<span style="color:#fe2c24;">Max</span>Count[i]中</li><li>在第 j 列找到一个0&#xff0c;此时colZeroConstantCount[j]&#43;&#43;&#xff0c;即第i列的连续0个数&#43;1&#xff0c;另外还要比较记录最大连续0个数&#xff0c;更新colZeroConstant<span style="color:#fe2c24;">Max</span>Count[i]中</li></ul> 
+<p>如果matrix[i][j] !&#61; 0&#xff0c;那么说明&#xff1a;</p> 
+<ul><li>在第 i 行连续0中断&#xff0c;此时rowZeroConstantCount[i]&#61;0</li><li>在第 j 列连续0中断&#xff0c;此时colZeroConstantCount[j]&#61;0</li></ul> 
+<p>最后&#xff0c;只要分别统计rowZeroConstant<span style="color:#fe2c24;">Max</span>Count中有多少个大于 n / 2&#xff0c;注意一行有n个元素&#xff0c;以及olZeroConstant<span style="color:#fe2c24;">Max</span>Count中有多个大于 m / 2&#xff0c;注意一列有m个元素。</p> 
+<h3></h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    // 临时记录每行的连续0个数
+    int[] rowConstantZeroCount &#61; new int[m];
+    // 临时记录每列的连续0个数
+    int[] colConstantZeroCount &#61; new int[n];
+
+    // 记录每行的最大连续0个数
+    int[] rowConstantZeroMaxCount &#61; new int[m];
+    // 记录每列的最大连续0个数
+    int[] colConstantZeroMaxCount &#61; new int[n];
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        if (sc.nextInt() &#61;&#61; 0) {
+          // 如果第i行&#xff0c;第j列为0, 则第i行连续0个数&#43;1&#xff0c;第j列连续0个数&#43;1
+          rowConstantZeroCount[i] &#43;&#61; 1;
+          rowConstantZeroMaxCount[i] &#61;
+              Math.max(rowConstantZeroMaxCount[i], rowConstantZeroCount[i]);
+
+          colConstantZeroCount[j] &#43;&#61; 1;
+          colConstantZeroMaxCount[j] &#61;
+              Math.max(colConstantZeroMaxCount[j], colConstantZeroCount[j]);
+        } else {
+          // 如果如果第i行&#xff0c;第j列不为0,则第i行连续0中断&#xff0c;第j列连续0中断
+          rowConstantZeroCount[i] &#61; 0;
+          colConstantZeroCount[j] &#61; 0;
+        }
+      }
+    }
+
+    System.out.println(Arrays.stream(rowConstantZeroMaxCount).filter(val -&gt; val &gt;&#61; n / 2).count());
+    System.out.println(Arrays.stream(colConstantZeroMaxCount).filter(val -&gt; val &gt;&#61; m / 2).count());
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    [m, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (m &amp;&amp; lines.length &#61;&#61; m &#43; 1) {
+    lines.shift();
+    const matrix &#61; lines.map((s) &#61;&gt; s.split(&#34; &#34;).map(Number));
+    getResult(m, n, matrix);
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(m, n, matrix) {
+  // 临时记录每行的连续0个数
+  const rowConstantZeroCount &#61; new Array(m).fill(0);
+  // 临时记录每列的连续0个数
+  const colConstantZeroCount &#61; new Array(n).fill(0);
+
+  // 记录每行的最大连续0个数
+  const rowConstantZeroMaxCount &#61; new Array(m).fill(0);
+  // 记录每列的最大连续0个数
+  const colConstantZeroMaxCount &#61; new Array(n).fill(0);
+
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+      if (matrix[i][j] &#61;&#61; 0) {
+        // 如果第i行&#xff0c;第j列为0, 则第i行连续0个数&#43;1&#xff0c;第j列连续0个数&#43;1
+        rowConstantZeroCount[i]&#43;&#43;;
+        rowConstantZeroMaxCount[i] &#61; Math.max(
+          rowConstantZeroMaxCount[i],
+          rowConstantZeroCount[i]
+        );
+
+        colConstantZeroCount[j]&#43;&#43;;
+        colConstantZeroMaxCount[j] &#61; Math.max(
+          colConstantZeroMaxCount[j],
+          colConstantZeroCount[j]
+        );
+      } else {
+        // 如果如果第i行&#xff0c;第j列不为0,则第i行连续0中断&#xff0c;第j列连续0中断
+        rowConstantZeroCount[i] &#61; 0;
+        colConstantZeroCount[j] &#61; 0;
+      }
+    }
+  }
+
+  console.log(
+    rowConstantZeroMaxCount.filter((val) &#61;&gt; val &gt;&#61; Math.floor(n / 2)).length
+  );
+  console.log(
+    colConstantZeroMaxCount.filter((val) &#61;&gt; val &gt;&#61; Math.floor(m / 2)).length
+  );
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, n &#61; map(int, input().split())
+matrix &#61; [list(map(int, input().split())) for _ in range(m)]
+
+
+# 算法入口
+def getResult():
+    # 临时记录每行的连续0个数
+    rowConstantZeroCount &#61; [0] * m
+    # 临时记录每列的连续0个数
+    colConstantZeroCount &#61; [0] * n
+
+    # 记录每行的最大连续0个数
+    rowConstantZeroMaxCount &#61; [0] * m
+    # 记录每列的最大连续0个数
+    colConstantZeroMaxCount &#61; [0] * n
+
+    for i in range(m):
+        for j in range(n):
+            if matrix[i][j] &#61;&#61; 0:
+                # 如果第i行&#xff0c;第j列为0, 则第i行连续0个数&#43;1&#xff0c;第j列连续0个数&#43;1
+                rowConstantZeroCount[i] &#43;&#61; 1
+                rowConstantZeroMaxCount[i] &#61; max(rowConstantZeroMaxCount[i], rowConstantZeroCount[i])
+
+                colConstantZeroCount[j] &#43;&#61; 1
+                colConstantZeroMaxCount[j] &#61; max(colConstantZeroMaxCount[j], colConstantZeroCount[j])
+            else:
+                # 如果如果第i行&#xff0c;第j列不为0,则第i行连续0中断&#xff0c;第j列连续0中断
+                rowConstantZeroCount[i] &#61; 0
+                colConstantZeroCount[j] &#61; 0
+
+    print(len(list(filter(lambda val: val &gt;&#61; n // 2, rowConstantZeroMaxCount))))
+    print(len(list(filter(lambda val: val &gt;&#61; m // 2, colConstantZeroMaxCount))))
+
+
+# 算法调用
+getResult()
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_ROWS 100
+#define MAX_COLS 100
+
+#define MAX(a,b) a &gt; b ? a : b
+
+int filter(int* arr, int arr_length, int threhold);
+
+int main()
+{
+	// 输入获取
+	int m, n;
+	scanf(&#34;%d %d&#34;, &amp;m, &amp;n);
+	
+	// 临时记录每行的连续0个数
+	int rowConstantZeroCount[MAX_ROWS] &#61; {0};
+	// 临时记录每列的连续0个数
+	int colConstantZeroCount[MAX_COLS] &#61; {0};
+	
+	// 记录每行的最大连续0个数
+	int rowConstantZeroMaxCount[MAX_ROWS] &#61; {0};
+	// 记录每列的最大连续0个数
+	int colConstantZeroMaxCount[MAX_COLS] &#61; {0};
+	
+	for(int i&#61;0; i&lt;m; i&#43;&#43;) {
+		for(int j&#61;0; j&lt;n; j&#43;&#43;) {
+			int num;
+			scanf(&#34;%d&#34;, &amp;num);
+			
+			if(num &#61;&#61; 0) {
+				// 如果第i行&#xff0c;第j列为0, 则第i行连续0个数&#43;1&#xff0c;第j列连续0个数&#43;1
+				rowConstantZeroCount[i] &#43;&#61; 1;
+				rowConstantZeroMaxCount[i] &#61; MAX(rowConstantZeroMaxCount[i], rowConstantZeroCount[i]);
+				
+				colConstantZeroCount[j] &#43;&#61; 1;
+                colConstantZeroMaxCount[j] &#61; MAX(colConstantZeroMaxCount[j], colConstantZeroCount[j]);
+			} else {
+				// 如果如果第i行&#xff0c;第j列不为0,则第i行连续0中断&#xff0c;第j列连续0中断
+				rowConstantZeroCount[i] &#61; 0;
+				colConstantZeroCount[j] &#61; 0;
+			}
+		}
+	}
+	
+	// 一行共有n个元素&#xff0c;如果对应行最大连续0的元素超过n/2个&#xff0c;即为稀疏行
+	printf(&#34;%d\n&#34;, filter(rowConstantZeroMaxCount, m, n / 2));
+	// 一列共有m个元素&#xff0c;只要对应列最大连续0的元素超过m/2个&#xff0c;即为稀疏列
+	printf(&#34;%d\n&#34;, filter(colConstantZeroMaxCount, n, m / 2));
+	
+	return 0;
+}
+
+// 统计数组arr中大于等于threhold的元素的个数
+int filter(int* arr, int arr_length, int threhold)
+{
+	int count &#61; 0;
+	
+	for(int i&#61;0; i&lt;arr_length; i&#43;&#43;) {
+		if(arr[i] &gt;&#61; threhold) {
+			count&#43;&#43;;
+		}
+	}
+	
+	return count;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

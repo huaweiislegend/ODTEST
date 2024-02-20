@@ -1,0 +1,181 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 寻找相似单词（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个可存储若干单词的字典&#xff0c;找出指定单词的所有相似单词&#xff0c;并且按照单词名称从小到大排序输出。</p> 
+<p>单词仅包括字母&#xff0c;但可能大小写并存&#xff08;大写不一定只出现在首字母&#xff09;。</p> 
+<p>相似单词说明&#xff1a;给定一个单词X&#xff0c;如果通过任意交换单词中字母的位置得到不同的单词Y&#xff0c;那么定义Y是X的相似单词&#xff0c;如abc、bca即为相似单词&#xff08;大小写是不同的字母&#xff0c;如a和A算两个不同字母&#xff09;。</p> 
+<p>字典序排序&#xff1a; 大写字母&lt;小写字母。同样大小写的字母&#xff0c;遵循26字母顺序大小关系。</p> 
+<p>即<em>A&lt;B&lt;C&lt;…&lt;X&lt;Y&lt;Z&lt;a&lt;b&lt;c&lt;…&lt;x&lt;y&lt;z</em>. 如<em>Bac&lt;aBc&lt;acB&lt;cBa</em>.</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为给定的单词个数N&#xff08;N为非负整数&#xff09;</p> 
+<p>从第二行到地N&#43;1行是具体的单词&#xff08;每行一个单词&#xff09;</p> 
+<p>最后一行是指定的待检测单词&#xff08;用于检测上面给定的单词中哪些是与该指定单词是相似单词&#xff0c;该单词可以不是上面给定的单词&#xff09;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>从给定的单词组中&#xff0c;找出指定单词的相似单词&#xff0c;并且按照从小到大字典序排列输出&#xff0c;中间以空格隔开</p> 
+<p>如果不存在&#xff0c;则输出null&#xff08;字符串null&#xff09;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> abc<br /> dasd<br /> tad<br /> bca<br /> abc</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">abc bca</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">在给定的输入种&#xff0c;与abc是兄弟单词的是abc bca&#xff0c;且输出按照字典序大小排序&#xff0c;输出的所有单词以空格隔开</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> abc<br /> dasd<br /> tad<br /> bca<br /> abd</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">null</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">给定的单词组中&#xff0c;没有与给定单词abd是兄弟单词&#xff0c;输出为null&#xff08;字符串null&#xff09;</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的排序题&#xff0c;逻辑请看代码。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 2) {
+    lines.shift();
+    const target &#61; lines.pop();
+    console.log(getResult(lines, target));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(words, target) {
+  const sorted_target &#61; [...target].sort().join(&#34;&#34;);
+
+  const ans &#61; [];
+  for (let word of words) {
+    const sorted_word &#61; [...word].sort().join(&#34;&#34;);
+
+    if (sorted_target &#61;&#61;&#61; sorted_word) {
+      ans.push(word);
+    }
+  }
+
+  if (ans.length) return ans.sort().join(&#34; &#34;);
+  else return &#34;null&#34;;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    String[] words &#61; new String[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      words[i] &#61; sc.next();
+    }
+
+    String target &#61; sc.next();
+
+    System.out.println(getResult(words, target));
+  }
+
+  public static String getResult(String[] words, String target) {
+    String sorted_target &#61; sortStr(target);
+
+    ArrayList&lt;String&gt; ans &#61; new ArrayList&lt;&gt;();
+    for (String word : words) {
+      String sorted_word &#61; sortStr(word);
+
+      if (sorted_target.equals(sorted_word)) {
+        ans.add(word);
+      }
+    }
+
+    if (ans.size() &gt; 0) {
+      ans.sort(String::compareTo);
+
+      StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+      for (String an : ans) sj.add(an);
+      return sj.toString();
+    } else {
+      return &#34;null&#34;;
+    }
+  }
+
+  public static String sortStr(String word) {
+    char[] chars &#61; word.toCharArray();
+    Arrays.sort(chars);
+    return new String(chars);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">n &#61; int(input())
+
+words &#61; []
+for i in range(n):
+    words.append(input())
+
+target &#61; input()
+
+sorted_target &#61; sorted(target)
+
+ans &#61; []
+
+for word in words:
+    sorted_word &#61; sorted(word)
+
+    if sorted_target &#61;&#61; sorted_word:
+        ans.append(word)
+
+if len(ans) &gt; 0:
+    ans.sort()
+    print(&#34; &#34;.join(ans))
+else:
+    print(&#34;null&#34;)
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

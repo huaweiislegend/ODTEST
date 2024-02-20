@@ -1,0 +1,518 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 获取最大软件版本号（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p><em>Maven </em>版本号定义&#xff0c;&lt;主版本&gt;.&lt;次版本&gt;.&lt;增量版本&gt;-&lt;里程碑版本&gt;&#xff0c;举例3.1.4-beta</p> 
+<p>其中&#xff0c;主版本和次版本都是必须的&#xff0c;主版本&#xff0c;次版本&#xff0c;增量版本由多位数字组成&#xff0c;可能包含前导零&#xff0c;里程碑版本由字符串组成。<br /> &lt;主版本&gt;.&lt;次版本&gt;.&lt;增量版本&gt;&#xff1a;基于<strong>数字</strong>比较&#xff1b;</p> 
+<p>里程碑版本&#xff1a;基于<strong>字符串</strong>比较&#xff0c;采用<strong>字典序&#xff1b;</strong></p> 
+<p>比较版本号时&#xff0c;按从左到右的顺序依次比较。</p> 
+<p>基于数字比较&#xff0c; 只需比较<strong>忽略任何前导零后的整数值</strong> 。<br /> 输入2个版本号&#xff0c;输出<strong>最大版本号</strong>。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入2个版本号&#xff0c;换行分割&#xff0c;每个版本的最大长度小于50</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>版本号相同时输出第一个输入版本号</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2.5.1-C<br /> 1.4.2-D</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2.5.1-C</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td> <p>1.05.1<br /> 1.5.01</p> </td></tr><tr><td>输出</td><td>1.05.1</td></tr><tr><td>说明</td><td>版本号相同&#xff0c;输出第一个版本号</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:84px;">输入</td><td style="width:414px;">1.5<br /> 1.5.0</td></tr><tr><td style="width:84px;">输出</td><td style="width:414px;">1.5.0</td></tr><tr><td style="width:84px;">说明</td><td style="width:414px;">主次相同&#xff0c;存在增量版本大于不存在</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:83px;">输入</td><td style="width:415px;">1.5.1-A<br /> 1.5.1-a</td></tr><tr><td style="width:83px;">输出</td><td style="width:415px;">1.5.1-a</td></tr><tr><td style="width:83px;">说明</td><td style="width:415px;">里程碑版本号&#xff0c;基于字典序比较&#xff0c;a 大于 A</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单排序题&#xff0c;考察数组排序</p> 
+<p>本题和<a href="https://blog.csdn.net/qfc_128220/article/details/128179974" title="华为机试 - 比较两个版本号的大小_伏城之外的博客-CSDN博客">华为机试 - 比较两个版本号的大小_伏城之外的博客-CSDN博客</a></p> 
+<p>类似&#xff0c;做完本题&#xff0c;可以再试试上面这个真题</p> 
+<p></p> 
+<blockquote> 
+ <p>2022.12.20 补充</p> 
+ <p>这题看走眼了。</p> 
+ <p>题目中说&#xff1a;“主版本和次版本都是必须的”&#xff0c;也就说后面几个版本可能是没有的&#xff0c;因此如下正则表达式&#xff1a;const regExp &#61; /^(\d&#43;)\.(\d&#43;)\.(\d&#43;)\-(.&#43;)$/;</p> 
+ <p>获取缺失了增量版本和里程碑版本的字符串时&#xff0c;是存在问题的。</p> 
+ <p>这里更新了下正则</p> 
+ <p>const reg &#61; /^(\d&#43;)(\.(\d&#43;))<span style="color:#fe2c24;">(\.(\d&#43;))</span>?<span style="color:#fe2c24;">(\-.&#43;)</span>?$/;</p> 
+ <p>在增量版本捕获组后面加了&#xff1f;&#xff0c;以及在里程碑版本后面加了?&#xff0c;表示这两个版本可以没有。</p> 
+ <p>同时为了直到缺失的增量版本&#xff0c;还是里程碑版本&#xff0c;我们需要将&#34;.&#34; 和 “-” 加入捕获组中&#xff0c;来帮助我们辨别。</p> 
+ <p>最终效果如下&#xff1a;</p> 
+ <p><img alt="" height="222" src="https://img-blog.csdnimg.cn/b79dc8808ffa4f62bab3d18dc7ac82e1.png" width="690" /></p> 
+ <p>需要注意的是捕获组的顺序就是正则中括号从左到右的顺序&#xff0c;比如</p> 
+ <p><img alt="" height="254" src="https://img-blog.csdnimg.cn/21a9adb084a6400b9cd8e3adfc8a487a.png" width="745" /></p> 
+ <p></p> 
+</blockquote> 
+<p></p> 
+<h3>字符串操作解法</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String s1 &#61; sc.next();
+    String s2 &#61; sc.next();
+
+    System.out.println(getResult(s1, s2));
+  }
+
+  public static String getResult(String s1, String s2) {
+    String[] v1 &#61; getVersion(s1);
+    String[] v2 &#61; getVersion(s2);
+
+    /*
+     * 主要版本比较
+     * */
+    int major1 &#61; Integer.parseInt(v1[0]), major2 &#61; Integer.parseInt(v2[0]);
+    if (major1 &gt; major2) return s1;
+    else if (major1 &lt; major2) return s2;
+
+    /*
+     * 次要版本比较
+     * */
+    int minor1 &#61; Integer.parseInt(v1[1]), minor2 &#61; Integer.parseInt(v2[1]);
+    if (minor1 &gt; minor2) return s1;
+    else if (minor1 &lt; minor2) return s2;
+
+    /*
+     * 增量版本比较
+     * */
+    String patch1 &#61; v1[2], patch2 &#61; v2[2];
+    if (!&#34;&#34;.equals(patch1) || !&#34;&#34;.equals(patch2)) {
+      if (&#34;&#34;.equals(patch2)) return s1;
+      else if (&#34;&#34;.equals(patch1)) return s2; // 走到这步&#xff0c;s2的增量版本确定不是空串&#xff0c;则如果只有s1的增量版本是空串&#xff0c;则返回s2
+
+      // 走到此步&#xff0c;说明s1,s2的增量版本都不是空串&#xff0c;此当成数字进行比较
+      int v1_patch &#61; Integer.parseInt(patch1);
+      int v2_patch &#61; Integer.parseInt(patch2);
+      if (v1_patch &gt; v2_patch) return s1;
+      else if (v1_patch &lt; v2_patch) return s2;
+    }
+
+    /*
+     * 里程碑版本比较
+     * */
+    String mile1 &#61; v1[3], mile2 &#61; v2[3];
+    // s1,s2的里程碑的空串判断&#xff0c;同增量版本
+    if (&#34;&#34;.equals(mile2)) {
+      return s1;
+    } else if (&#34;&#34;.equals(mile1)) {
+      return s2;
+    }
+
+    // 如果s1&#xff0c;s2的里程碑版本都不是空串&#xff0c;则按照字典序比较
+    return mile1.compareTo(mile2) &gt;&#61; 0 ? s1 : s2;
+  }
+
+  public static String[] getVersion(String s) {
+    String major &#61; &#34;&#34;;
+    String minor &#61; &#34;&#34;;
+    String patch &#61; &#34;&#34;;
+    String mile &#61; &#34;&#34;;
+
+    // 找到第一个“-”,先把里程碑解析出来&#xff0c;因为里程碑中可能含有&#34;-&#34;和&#34;.&#34;,因此必须先处理掉
+    int i &#61; s.indexOf(&#34;-&#34;);
+
+    String major_minor_patch &#61; &#34;&#34;;
+    if (i !&#61; -1) {
+      mile &#61; s.substring(i &#43; 1);
+      major_minor_patch &#61; s.substring(0, i);
+    } else {
+      major_minor_patch &#61; s;
+    }
+
+    // 之后再处理非里程碑部分
+    String[] split &#61; major_minor_patch.split(&#34;\\.&#34;);
+    major &#61; split[0];
+    minor &#61; split[1];
+
+    if (split.length &gt; 2) {
+      patch &#61; split[2];
+    }
+
+    return new String[] {major, minor, patch, mile};
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    console.log(getResult(lines[0], lines[1]));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(s1, s2) {
+  const [major1, minor1, patch1, mile1] &#61; getVersion(s1);
+  const [major2, minor2, patch2, mile2] &#61; getVersion(s2);
+
+  if (major1 &gt; major2) return s1;
+  else if (major1 &lt; major2) return s2;
+
+  if (minor1 &gt; minor2) return s1;
+  else if (minor1 &lt; minor2) return s2;
+
+  /**
+   * 注意下面JS判断与空串是否相同时&#xff0c;必须要使用&#61;&#61;&#61;&#xff0c;不能使用&#61;&#61;&#xff0c;因为 0 &#61;&#61; &#34;&#34; 为true
+   */
+
+  if (patch1 !&#61;&#61; &#34;&#34; || patch2 !&#61;&#61; &#34;&#34;) {
+    if (patch2 &#61;&#61;&#61; &#34;&#34;) {
+      return s1;
+    } else if (patch1 &#61;&#61;&#61; &#34;&#34;) {
+      return s2;
+    }
+
+    // 走到此步&#xff0c;说明s1,s2的增量版本都不是空串&#xff0c;此当成数字进行比较
+    if (patch1 &gt; patch2) {
+      return s1;
+    } else if (patch1 &lt; patch2) {
+      return s2;
+    }
+  }
+
+  // s1,s2的里程碑的空串判断&#xff0c;同增量版本
+  if (mile2 &#61;&#61;&#61; &#34;&#34;) {
+    return s1;
+  } else if (mile1 &#61;&#61;&#61; &#34;&#34;) {
+    return s2;
+  }
+
+  // 如果s1&#xff0c;s2的里程碑版本都不是空串&#xff0c;则按照字典序比较
+  return mile1 &gt;&#61; mile2 ? s1 : s2;
+}
+
+function getVersion(s) {
+  let major &#61; &#34;&#34;;
+  let minor &#61; &#34;&#34;;
+  let patch &#61; &#34;&#34;;
+  let mile &#61; &#34;&#34;;
+
+  // 找到第一个“-”,先把里程碑解析出来&#xff0c;因为里程碑中可能含有&#34;-&#34;和&#34;.&#34;,因此必须先处理掉
+  const i &#61; s.indexOf(&#34;-&#34;);
+
+  let major_minor_pathc &#61; &#34;&#34;;
+  if (i !&#61; -1) {
+    mile &#61; s.slice(i &#43; 1);
+    major_minor_pathc &#61; s.slice(0, i);
+  } else {
+    major_minor_pathc &#61; s;
+  }
+
+  // 之后再处理非里程碑部分
+  const tmp &#61; major_minor_pathc.split(&#34;.&#34;);
+  major &#61; Number(tmp[0]);
+  minor &#61; Number(tmp[1]);
+
+  if (tmp.length &gt; 2) {
+    patch &#61; Number(tmp[2]);
+  }
+
+  return [major, minor, patch, mile];
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s1 &#61; input()
+s2 &#61; input()
+
+
+# 解析版本号字符串s
+def getVersion(s):
+    patch &#61; &#34;&#34;
+    mile &#61; &#34;&#34;
+
+    i &#61; s.find(&#34;-&#34;)
+
+    # 找到第一个“-”,先把里程碑解析出来&#xff0c;因为里程碑中可能含有&#34;-&#34;和&#34;.&#34;,因此必须先处理掉
+    major_minor_patch &#61; &#34;&#34;
+    if i !&#61; -1:
+        mile &#61; s[i &#43; 1:]
+        major_minor_patch &#61; s[0:i]
+    else:
+        major_minor_patch &#61; s
+
+    # 之后再处理非里程碑部分
+    tmp &#61; major_minor_patch.split(&#34;.&#34;)
+    major &#61; int(tmp[0])
+    minor &#61; int(tmp[1])
+
+    if len(tmp) &gt; 2:
+        patch &#61; int(tmp[2])
+
+    return major, minor, patch, mile
+
+
+# 算法入口
+def getResult(s1, s2):
+    major1, minor1, patch1, mile1 &#61; getVersion(s1)
+    major2, minor2, patch2, mile2 &#61; getVersion(s2)
+
+    if major1 &gt; major2:
+        return s1
+    elif major1 &lt; major2:
+        return s2
+
+    if minor1 &gt; minor2:
+        return s1
+    elif minor1 &lt; minor2:
+        return s2
+
+    if patch1 !&#61; &#34;&#34; or patch2 !&#61; &#34;&#34;:
+        if patch2 &#61;&#61; &#34;&#34;:
+            return s1
+        elif patch1 &#61;&#61; &#34;&#34;:
+            return s2
+
+        # 走到此步&#xff0c;说明s1,s2的增量版本都不是空串&#xff0c;此当成数字进行比较
+        if patch1 &gt; patch2:
+            return s1
+        elif patch1 &lt; patch2:
+            return s2
+
+    # s1,s2的里程碑的空串判断&#xff0c;同增量版本
+    if mile2 &#61;&#61; &#34;&#34;:
+        return s1
+    elif mile1 &#61;&#61; &#34;&#34;:
+        return s2
+
+    # 如果s1&#xff0c;s2的里程碑版本都不是空串&#xff0c;则按照字典序比较
+    return s1 if mile1 &gt;&#61; mile2 else s2
+
+
+# 算法调用
+print(getResult(s1, s2))
+</code></pre> 
+<p></p> 
+<h3>正则解法</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    console.log(getResult(lines));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(versions) {
+  const reg &#61; /^(\d&#43;)(\.(\d&#43;))(\.(\d&#43;))?(\-.&#43;)?$/;
+  return versions.sort((v1, v2) &#61;&gt; {
+    let [_1, major1, _11, minor1, _111, patch1, mile1] &#61; reg.exec(v1);
+    let [_2, major2, _22, minor2, _222, patch2, mile2] &#61; reg.exec(v2);
+
+    major1 &#61; Number(major1);
+    major2 &#61; Number(major2);
+
+    if (major1 !&#61;&#61; major2) return major2 - major1;
+
+    minor1 &#61; Number(minor1);
+    minor2 &#61; Number(minor2);
+
+    if (minor1 !&#61;&#61; minor2) return minor2 - minor1;
+
+    if (patch1 !&#61;&#61; undefined &amp;&amp; patch2 !&#61;&#61; undefined) {
+      patch1 &#61; Number(patch1);
+      patch2 &#61; Number(patch2);
+      if (patch1 !&#61;&#61; patch2) return patch2 - patch1;
+    } else if (patch1 !&#61;&#61; undefined &amp;&amp; !patch2) {
+      return -1;
+    } else if (patch2 !&#61;&#61; undefined &amp;&amp; !patch1) {
+      return 1;
+    }
+
+    if (mile1 &amp;&amp; mile2) {
+      return mile1 &#61;&#61;&#61; mile2 ? 0 : mile2 &gt; mile1 ? 1 : -1;
+    } else if (mile1 &amp;&amp; !mile2) {
+      return -1;
+    } else if (!mile1 &amp;&amp; mile2) {
+      return 1;
+    } else {
+      return 0;
+    }
+  })[0];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc &#61; new Scanner(System.in);
+
+        String str1 &#61; sc.next();
+        String str2 &#61; sc.next();
+
+        System.out.println(getResult(new String[]{str1, str2}));
+    }
+
+    public static String getResult(String[] versions) {
+        String reg &#61; &#34;^(\\d&#43;)(\\.(\\d&#43;))(\\.(\\d&#43;))?(\\-.&#43;)?$&#34;;
+        Pattern p &#61; Pattern.compile(reg);
+
+        Arrays.sort(versions, (v1, v2) -&gt; {
+            Matcher m1 &#61; p.matcher(v1);
+            Matcher m2 &#61; p.matcher(v2);
+
+            if (m1.find() &amp;&amp; m2.find()) {
+                Integer major1 &#61; Integer.parseInt(m1.group(1));
+                Integer major2 &#61; Integer.parseInt(m2.group(1));
+
+                if(major1 !&#61; major2) return major2 - major1;
+
+                Integer minor1 &#61; Integer.parseInt(m1.group(3));
+                Integer minor2 &#61; Integer.parseInt(m2.group(3));
+
+                if(minor1 !&#61; minor2) return minor2 - minor1;
+
+                String patch1 &#61; m1.group(5);
+                String patch2 &#61; m2.group(5);
+
+                if(patch1 !&#61; null &amp;&amp; patch2 !&#61; null) {
+                    int patch1_intVal &#61; Integer.parseInt(patch1);
+                    int patch2_intVal &#61; Integer.parseInt(patch2);
+                    if(patch1_intVal !&#61; patch2_intVal) {
+                        return Integer.parseInt(patch2) - Integer.parseInt(patch1);
+                    }
+                } else if(patch1 !&#61; null) {
+                    return -1;
+                } else if(patch2 !&#61; null) {
+                    return 1;
+                }
+
+
+                String mile1 &#61; m1.group(6);
+                String mile2 &#61; m2.group(6);
+
+                if(mile1 !&#61; null &amp;&amp; mile2 !&#61; null) {
+                    return mile2.compareTo(mile1);
+                } else if(mile1 !&#61; null) {
+                    return -1;
+                } else if(mile2 !&#61; null) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+
+            return 0;
+        });
+
+        return versions[0];
+    }
+
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+v1 &#61; input()
+v2 &#61; input()
+
+
+# 算法入口
+def getResult(v1, v2):
+    pattern &#61; r&#34;^(\d&#43;)(?:\.(\d&#43;))(?:\.(\d&#43;))?(?:\-(.&#43;))?$&#34;
+
+    major1, minor1, patch1, mile1 &#61; re.findall(pattern, v1)[0]
+    major2, minor2, patch2, mile2 &#61; re.findall(pattern, v2)[0]
+
+    if major1 !&#61; major2:
+        if int(major1) &gt; int(major2):
+            return v1
+        else:
+            return v2
+
+    if int(minor1) !&#61; int(minor2):
+        if int(minor1) &gt; int(minor2):
+            return v1
+        else:
+            return v2
+
+    if patch1 !&#61; patch2:
+        if patch1 !&#61; &#34;&#34; and patch2 !&#61; &#34;&#34;:
+            if int(patch1) &gt; int(patch2):
+                return v1
+            elif int(patch1) &lt; int(patch2):
+                return v2
+        elif patch1 !&#61; &#34;&#34; and patch2 &#61;&#61; &#34;&#34;:
+            return v1
+        elif patch1 &#61;&#61; &#34;&#34; and patch2 !&#61; &#34;&#34;:
+            return v2
+
+    if mile1 !&#61; mile2:
+        if mile1 !&#61; &#34;&#34; and mile2 !&#61; &#34;&#34;:
+            if mile1 &gt; mile2:
+                return v1
+            elif mile1 &lt; mile2:
+                return v2
+        elif mile1 !&#61; &#34;&#34; and mile2 &#61;&#61; &#34;&#34;:
+            return v1
+        elif mile1 &#61;&#61; &#34;&#34; and mile2 !&#61; &#34;&#34;:
+            return v2
+
+    return v1
+
+
+# 算法调用
+print(getResult(v1, v2))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

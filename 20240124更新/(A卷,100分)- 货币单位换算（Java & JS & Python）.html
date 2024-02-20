@@ -1,0 +1,386 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 货币单位换算（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>记账本上记录了若干条多国货币金额&#xff0c;需要转换成人民币分&#xff08;fen&#xff09;&#xff0c;汇总后输出。<br /> 每行记录一条金额&#xff0c;金额带有货币单位&#xff0c;格式为数字&#43;单位&#xff0c;可能是单独元&#xff0c;或者单独分&#xff0c;或者元与分的组合。<br /> 要求将这些货币全部换算成人民币分&#xff08;fen&#xff09;后进行汇总&#xff0c;汇总结果仅保留整数&#xff0c;小数部分舍弃。<br /> 元和分的换算关系都是1:100&#xff0c;如下&#xff1a;</p> 
+<p>1CNY&#61;100fen&#xff08;1元&#61;100分&#xff09;<br /> 1HKD&#61;100cents&#xff08;1港元&#61;100港分&#xff09;<br /> 1JPY&#61;100sen&#xff08;1日元&#61;100仙&#xff09;<br /> 1EUR&#61;100eurocents&#xff08;1欧元&#61;100欧分&#xff09;<br /> 1GBP&#61;100pence&#xff08;1英镑&#61;100便士&#xff09;</p> 
+<p>汇率表如下&#xff1a;</p> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>CNY</td><td>JPY</td><td>HKD</td><td>EUR</td><td>GBP</td></tr><tr><td>100</td><td>1825</td><td>123</td><td>14</td><td>12</td></tr></tbody></table> 
+<p>即&#xff1a;100CNY &#61; 1825JPY &#61; 123HKD &#61; 14EUR &#61; 12GBP</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为N&#xff0c;N表示记录数。0&lt;N&lt;100</p> 
+<p>之后N行&#xff0c;每行表示一条货币记录&#xff0c;且该行只会是一种货币。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>将每行货币转换成人民币分&#xff08;fen&#xff09;后汇总求和&#xff0c;只保留整数部分。<br /> 输出格式只有整数数字&#xff0c;不带小数&#xff0c;不带单位。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> 100CNY</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">10000</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">100CNY转换后是10000fen&#xff0c;所以输出结果为10000</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:83px;">输入</td><td style="width:415px;">1<br /> 3000fen</td></tr><tr><td style="width:83px;">输出</td><td style="width:415px;">3000</td></tr><tr><td style="width:83px;">说明</td><td style="width:415px;">3000fen&#xff0c;结果就是3000</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:80px;">输入</td><td style="width:418px;">1<br /> 123HKD</td></tr><tr><td style="width:80px;">输出</td><td style="width:418px;">10000</td></tr><tr><td style="width:80px;">说明</td><td style="width:418px;">HKD与CNY的汇率关系是123:100&#xff0c;所以换算后&#xff0c;输出结果为10000</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:79px;">输入</td><td style="width:419px;">2<br /> 20CNY53fen<br /> 53HKD87cents</td></tr><tr><td style="width:79px;">输出</td><td style="width:419px;">6432</td></tr><tr><td style="width:79px;">说明</td><td style="width:419px;">20元53分 &#43; 53港元87港分&#xff0c;换算成人民币分后汇总&#xff0c;为6432</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>纯逻辑题。</p> 
+<p>本题唯一的难度应该在于如何解析输入字符串中的金额和单位&#xff0c;这里最好是使用正则表达式&#xff1a;</p> 
+<p><img alt="" height="205" src="https://img-blog.csdnimg.cn/e5701e4dccf04fdf9e28098494902009.png" width="731" /></p> 
+<p> 剩下的就是将不同单位转换成人民币分的汇率计算工作了&#xff0c;如下源码中exchange记录的不同单位转成人民币分的汇率。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<p>正则解法</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    console.log(getResult(lines));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr) {
+  const regExp &#61;
+    /(\d&#43;)((CNY)|(JPY)|(HKD)|(EUR)|(GBP)|(fen)|(cents)|(sen)|(eurocents)|(pence))/g;
+
+  const exchange &#61; {
+    CNY: 100,
+    JPY: (100 / 1825) * 100,
+    HKD: (100 / 123) * 100,
+    EUR: (100 / 14) * 100,
+    GBP: (100 / 12) * 100,
+    fen: 1,
+    cents: 100 / 123,
+    sen: 100 / 1825,
+    eurocents: 100 / 14,
+    pence: 100 / 12,
+  };
+
+  let ans &#61; 0;
+  arr.forEach((str) &#61;&gt; {
+    while (true) {
+      const res &#61; regExp.exec(str);
+      if (!res) break;
+      const [_, amount, unit] &#61; res;
+
+      ans &#43;&#61; amount * exchange[unit];
+    }
+  });
+
+  return Math.floor(ans);
+}
+</code></pre> 
+<p></p> 
+<p>非正则解法</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    console.log(getResult(lines));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr) {
+  const exchange &#61; {
+    CNY: 100,
+    JPY: (100 / 1825) * 100,
+    HKD: (100 / 123) * 100,
+    EUR: (100 / 14) * 100,
+    GBP: (100 / 12) * 100,
+    fen: 1,
+    cents: 100 / 123,
+    sen: 100 / 1825,
+    eurocents: 100 / 14,
+    pence: 100 / 12,
+  };
+
+  const str &#61; arr.join(&#34;&#34;) &#43; &#34;0&#34;;
+
+  let ans &#61; 0;
+  let num &#61; &#34;&#34;;
+  let unit &#61; &#34;&#34;;
+  for (let c of str) {
+    if (c &gt;&#61; &#34;0&#34; &amp;&amp; c &lt;&#61; &#34;9&#34;) {
+      if (unit !&#61; &#34;&#34;) {
+        ans &#43;&#61; Number(num) * exchange[unit];
+        num &#61; &#34;&#34;;
+        unit &#61; &#34;&#34;;
+      }
+      num &#43;&#61; c;
+    } else if ((c &gt;&#61; &#34;a&#34; &amp;&amp; c &lt;&#61; &#34;z&#34;) || (c &gt;&#61; &#34;A&#34; &amp;&amp; c &lt;&#61; &#34;Z&#34;)) {
+      unit &#43;&#61; c;
+    }
+  }
+
+  return Math.floor(ans);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<p>正则解法</p> 
+<pre><code class="language-java">import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc &#61; new Scanner(System.in);
+        int n &#61; sc.nextInt();
+
+        String[] arr &#61; new String[n];
+        for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+            arr[i] &#61; sc.next();
+        }
+
+        System.out.println(getResult(arr));
+    }
+
+    public static int getResult(String[] arr) {
+        String reg &#61; &#34;(\\d&#43;)((CNY)|(JPY)|(HKD)|(EUR)|(GBP)|(fen)|(cents)|(sen)|(eurocents)|(pence))&#34;;
+
+        HashMap&lt;String, Double&gt; exchange &#61; new HashMap&lt;&gt;();
+        exchange.put(&#34;CNY&#34;, 100.0);
+        exchange.put(&#34;JPY&#34;, 100.0 / 1825 * 100);
+        exchange.put(&#34;HKD&#34;, 100.0 / 123 * 100);
+        exchange.put(&#34;EUR&#34;, 100.0 / 14 * 100);
+        exchange.put(&#34;GBP&#34;, 100.0 / 12 * 100);
+        exchange.put(&#34;fen&#34;, 1.0);
+        exchange.put(&#34;cents&#34;, 100.0 / 123);
+        exchange.put(&#34;sen&#34;, 100.0 / 1825);
+        exchange.put(&#34;eurocents&#34;, 100.0 / 14);
+        exchange.put(&#34;pence&#34;, 100.0 / 12);
+
+        double ans &#61; 0.0;
+        Pattern p &#61; Pattern.compile(reg);
+
+        for (String s : arr) {
+            Matcher m &#61; p.matcher(s);
+            while (true) {
+                if (m.find()) {
+                    Double amount &#61; Double.parseDouble(m.group(1));
+                    String unit &#61; m.group(2);
+                    ans &#43;&#61; amount * exchange.get(unit);
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return (int) ans;
+    }
+
+}</code></pre> 
+<p></p> 
+<p>非正则解法</p> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int n &#61; sc.nextInt();
+
+    String[] arr &#61; new String[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      arr[i] &#61; sc.next();
+    }
+
+    System.out.println(getResult(arr));
+  }
+
+  public static int getResult(String[] arr) {
+    HashMap&lt;String, Double&gt; exchange &#61; new HashMap&lt;&gt;();
+    exchange.put(&#34;CNY&#34;, 100.0);
+    exchange.put(&#34;JPY&#34;, 100.0 / 1825 * 100);
+    exchange.put(&#34;HKD&#34;, 100.0 / 123 * 100);
+    exchange.put(&#34;EUR&#34;, 100.0 / 14 * 100);
+    exchange.put(&#34;GBP&#34;, 100.0 / 12 * 100);
+    exchange.put(&#34;fen&#34;, 1.0);
+    exchange.put(&#34;cents&#34;, 100.0 / 123);
+    exchange.put(&#34;sen&#34;, 100.0 / 1825);
+    exchange.put(&#34;eurocents&#34;, 100.0 / 14);
+    exchange.put(&#34;pence&#34;, 100.0 / 12);
+
+    double ans &#61; 0.0;
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (String s : arr) sb.append(s);
+    String str &#61; sb.toString() &#43; &#34;0&#34;;
+
+    StringBuilder num &#61; new StringBuilder();
+    StringBuilder unit &#61; new StringBuilder();
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      char c &#61; str.charAt(i);
+
+      if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+        if (unit.length() !&#61; 0) {
+          ans &#43;&#61; Integer.parseInt(num.toString()) * exchange.get(unit.toString());
+          num &#61; new StringBuilder();
+          unit &#61; new StringBuilder();
+        }
+        num.append(c);
+      } else if ((c &gt;&#61; &#39;a&#39; &amp;&amp; c &lt;&#61; &#39;z&#39;) || (c &gt;&#61; &#39;A&#39; &amp;&amp; c &lt;&#61; &#39;Z&#39;)) {
+        unit.append(c);
+      }
+    }
+
+    return (int) ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<p>正则解法</p> 
+<pre><code class="language-python">import math
+import re
+
+# 输入获取
+n &#61; int(input())
+arr &#61; [input() for i in range(n)]
+
+
+# 算法入口
+def getResult(arr):
+    pattern &#61; r&#34;(\d&#43;)((CNY)|(JPY)|(HKD)|(EUR)|(GBP)|(fen)|(cents)|(sen)|(eurocents)|(pence))&#34;
+
+    exchage &#61; {
+        &#34;CNY&#34;: 100,
+        &#34;JPY&#34;: 100 / 1825 * 100,
+        &#34;HKD&#34;: 100 / 123 * 100,
+        &#34;EUR&#34;: 100 / 14 * 100,
+        &#34;GBP&#34;: 100 / 12 * 100,
+        &#34;fen&#34;: 1,
+        &#34;cents&#34;: 100 / 123,
+        &#34;sen&#34;: 100 / 1825,
+        &#34;eurocents&#34;: 100 / 14,
+        &#34;pence&#34;: 100 / 12
+    }
+
+    ans &#61; 0
+
+    for s in arr:
+        result &#61; re.findall(pattern, s)
+        for item in result:
+            amount &#61; item[0]
+            unit &#61; item[1]
+            ans &#43;&#61; int(amount) * exchage[unit]
+
+    return math.floor(ans)
+
+
+# 算法调用
+print(getResult(arr))
+</code></pre> 
+<p></p> 
+<p>非正则解法</p> 
+<pre><code class="language-python">import math
+import re
+
+# 输入获取
+n &#61; int(input())
+arr &#61; [input() for i in range(n)]
+
+
+# 算法入口
+def getResult(arr):
+    exchage &#61; {
+        &#34;CNY&#34;: 100,
+        &#34;JPY&#34;: 100 / 1825 * 100,
+        &#34;HKD&#34;: 100 / 123 * 100,
+        &#34;EUR&#34;: 100 / 14 * 100,
+        &#34;GBP&#34;: 100 / 12 * 100,
+        &#34;fen&#34;: 1,
+        &#34;cents&#34;: 100 / 123,
+        &#34;sen&#34;: 100 / 1825,
+        &#34;eurocents&#34;: 100 / 14,
+        &#34;pence&#34;: 100 / 12
+    }
+
+    ans &#61; 0
+
+    s &#61; &#34;&#34;.join(arr) &#43; &#34;0&#34;
+    num &#61; &#34;&#34;
+    unit &#61; &#34;&#34;
+
+    for c in s:
+        if &#34;0&#34; &lt;&#61; c &lt;&#61; &#34;9&#34;:
+            if unit !&#61; &#34;&#34;:
+                ans &#43;&#61; int(num) * exchage[unit]
+                num &#61; &#34;&#34;
+                unit &#61; &#34;&#34;
+            num &#43;&#61; c
+        elif &#34;a&#34; &lt;&#61; c &lt;&#61; &#34;z&#34; or &#34;A&#34; &lt;&#61; c &lt;&#61; &#34;Z&#34;:
+            unit &#43;&#61; c
+
+    return math.floor(ans)
+
+
+# 算法调用
+print(getResult(arr))
+</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

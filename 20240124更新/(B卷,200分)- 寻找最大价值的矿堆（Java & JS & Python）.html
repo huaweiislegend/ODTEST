@@ -1,0 +1,659 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 寻找最大价值的矿堆（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给你一个由 &#39;0&#39; (空地)、&#39;1&#39; (银矿)、&#39;2&#39;(金矿) 组成的的地图&#xff0c;矿堆只能由上下左右相邻的金矿或银矿连接形成。超出地图范围可以认为是空地。</p> 
+<p>假设银矿价值1&#xff0c;金矿价值2 &#xff0c;请你找出地图中最大价值的矿堆并输出该矿堆的价值。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>地图元素信息如&#xff1a;</p> 
+<blockquote> 
+ <p>22220<br /> 00000<br /> 00000<br /> 11111</p> 
+</blockquote> 
+<ul><li>地图范围最大 300*300</li><li>0 ≤ 地图元素 ≤ 2</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>矿堆的最大价值</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">22220<br /> 00000<br /> 00000<br /> 01111</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">8</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">22220<br /> 00020<br /> 00010<br /> 01111</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">15</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">20000<br /> 00020<br /> 00000<br /> 00111</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用深度优先搜索解决。</p> 
+<p>首先&#xff0c;根据输入得到一个地图矩阵。</p> 
+<p>然后&#xff0c;定义一个visited集合&#xff0c;用于记录访问过的点的坐标&#xff0c;或者将访问过的点赋值为0&#xff0c;避免一些点被二次访问。</p> 
+<p>之后&#xff0c;开始遍历矩阵的每一个元素&#xff0c;如果</p> 
+<ul><li>该元素的值&gt;0&#xff08;代表有价值&#xff09;</li><li>该元素位置未被访问过</li></ul> 
+<p>那么就可以从该点向上、下、左、右四个方向开始深搜&#xff0c;对于新点依旧按照上面规则判断是否可以继续深搜。</p> 
+<hr /> 
+<p>2023.05.25</p> 
+<p>经过测试&#xff0c;本题的深度优先搜索&#xff08;递归实现&#xff09;在地图矩阵达到50*50以上时就会发生栈内存溢出&#xff0c;因此本题可以使用深度优先搜索&#xff08;栈实现&#xff09;。</p> 
+<p>深度优先搜索的栈实现&#xff0c;非常类似于广度优先搜索&#xff0c;其实就是将广度优先搜索的队列结构&#xff0c;换成栈结构&#xff0c;具体区别可以看&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/127711317" rel="nofollow" title="华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客">华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h4>在线OJ地址</h4> 
+<p><a href="https://hydro.ac/d/HWOD2023/p/OD131" rel="nofollow" title="在线OJ - 寻找最大价值的矿堆">在线OJ - 寻找最大价值的矿堆</a></p> 
+<p></p> 
+<h3>深度优先搜索-栈实现</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class Main {
+  // 地图矩阵
+  static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix;
+
+  // 记录地图矩阵的行数row&#xff0c;列数col
+  static int row;
+  static int col;
+
+  // 上下左右&#xff0c;四个方向的偏移量
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    matrix &#61; new ArrayList&lt;&gt;();
+
+    // 假设存在空行作为输入截止条件
+    //    while (sc.hasNextLine()) {
+    //      String line &#61; sc.nextLine();
+    //
+    //      // 由于本题没有说明输入截止条件&#xff0c;因此使用空行作为输入截止条件
+    //      if (&#34;&#34;.equals(line)) {
+    //        System.out.println(getResult());
+    //        break;
+    //      } else {
+    //        matrix.add(
+    //            new ArrayList&lt;&gt;(
+    //
+    // Arrays.stream(line.split(&#34;&#34;)).map(Integer::parseInt).collect(Collectors.toList())));
+    //      }
+    //    }
+
+    // 没有空行作为输入截止条件
+    while (sc.hasNextLine()) {
+      matrix.add(
+          new ArrayList&lt;&gt;(
+              Arrays.stream(sc.nextLine().split(&#34;&#34;))
+                  .map(Integer::parseInt)
+                  .collect(Collectors.toList())));
+    }
+
+    System.out.println(getResult());
+  }
+
+  public static int getResult() {
+    row &#61; matrix.size();
+    if (row &#61;&#61; 0) return 0;
+
+    col &#61; matrix.get(0).size();
+
+    // 记录最大矿堆价值
+    int ans &#61; 0;
+
+    // 遍历矩阵元素
+    for (int i &#61; 0; i &lt; row; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; col; j&#43;&#43;) {
+        // 如果点(i,j)没有被访问过&#xff0c;且点(i,j)上有矿&#xff0c;则进入深搜
+        if (matrix.get(i).get(j) &gt; 0) {
+          ans &#61; Math.max(ans, dfs(i, j));
+        }
+      }
+    }
+
+    return ans;
+  }
+
+  public static int dfs(int i, int j) {
+    int sum &#61; matrix.get(i).get(j);
+    matrix.get(i).set(j, 0);
+
+    LinkedList&lt;int[]&gt; stack &#61; new LinkedList&lt;&gt;();
+    stack.add(new int[] {i, j});
+
+    while (stack.size() &gt; 0) {
+      int[] pos &#61; stack.removeLast();
+      int x &#61; pos[0], y &#61; pos[1];
+
+      for (int[] offset : offsets) {
+        int newX &#61; x &#43; offset[0];
+        int newY &#61; y &#43; offset[1];
+
+        if (newX &gt;&#61; 0 &amp;&amp; newX &lt; row &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; col &amp;&amp; matrix.get(newX).get(newY) &gt; 0) {
+          sum &#43;&#61; matrix.get(newX).get(newY);
+          matrix.get(newX).set(newY, 0);
+          stack.add(new int[] {newX, newY});
+        }
+      }
+    }
+
+    return sum;
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 地图矩阵
+  const matrix &#61; [];
+
+  // 假设存在空行作为输入截止条件
+  // while (true) {
+  //   const line &#61; await readline();
+
+  //   if (line !&#61; &#34;&#34;) {
+  //     matrix.push([...(await readline())].map(Number));
+  //   } else {
+  //     break;
+  //   }
+  // }
+
+  // 没有空行作为输入截止条件
+  while (true) {
+    try {
+      matrix.push([...(await readline())].map(Number));
+    } catch (error) {
+      break;
+    }
+  }
+
+  console.log(getResult(matrix));
+})();
+
+// 记录地图矩阵的行数row&#xff0c;列数col
+let row, col;
+
+function getResult(matrix) {
+  // 记录地图矩阵的行数row
+  row &#61; matrix.length;
+  if (row &#61;&#61; 0) return 0;
+
+  // 记录地图矩阵的列数col
+  col &#61; matrix[0].length;
+
+  // 记录最大矿堆价值
+  let ans &#61; 0;
+
+  // 遍历矩阵元素
+  for (let i &#61; 0; i &lt; row; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; col; j&#43;&#43;) {
+      if (matrix[i][j] &gt; 0) {
+        ans &#61; Math.max(ans, dfs(i, j, matrix));
+      }
+    }
+  }
+
+  return ans;
+}
+
+// 上下左右&#xff0c;四个方向的偏移量
+const offsets &#61; [
+  [-1, 0],
+  [1, 0],
+  [0, -1],
+  [0, 1],
+];
+
+function dfs(x, y, matrix) {
+  let sum &#61; matrix[x][y];
+  matrix[x][y] &#61; 0;
+
+  const stack &#61; [[x, y]];
+
+  while (stack.length &gt; 0) {
+    const [x, y] &#61; stack.pop();
+
+    for (let offset of offsets) {
+      const newX &#61; x &#43; offset[0];
+      const newY &#61; y &#43; offset[1];
+
+      if (
+        newX &gt;&#61; 0 &amp;&amp;
+        newX &lt; row &amp;&amp;
+        newY &gt;&#61; 0 &amp;&amp;
+        newY &lt; col &amp;&amp;
+        matrix[newX][newY] &gt; 0
+      ) {
+        sum &#43;&#61; matrix[newX][newY];
+        matrix[newX][newY] &#61; 0;
+        stack.push([newX, newY]);
+      }
+    }
+  }
+
+  return sum;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 上下左右&#xff0c;四个方向的偏移量
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+
+# 广搜
+def dfs(x, y, matrix, row, col):
+    total &#61; matrix[x][y]
+    matrix[x][y] &#61; 0
+
+    stack &#61; [[x, y]]
+
+    while len(stack) &gt; 0:
+        x, y &#61; stack.pop()
+
+        for offset in offsets:
+            newX &#61; x &#43; offset[0]
+            newY &#61; y &#43; offset[1]
+
+            if row &gt; newX &gt;&#61; 0 and col &gt; newY &gt;&#61; 0 and matrix[newX][newY] &gt; 0:
+                total &#43;&#61; matrix[newX][newY]
+                matrix[newX][newY] &#61; 0
+                stack.append([newX, newY])
+
+    return total
+
+
+# 算法入口
+def getResult(matrix):
+    # 记录地图矩阵的行数row
+    row &#61; len(matrix)
+
+    if row &#61;&#61; 0:
+        return 0
+
+    # 记录地图矩阵的行数col
+    col &#61; len(matrix[0])
+
+    # 记录最大矿堆价值
+    ans &#61; 0
+
+    # 遍历矩阵元素
+    for i in range(row):
+        for j in range(col):
+            # 如果点(i,j)没有被访问过&#xff0c;且点(i,j)上有矿&#xff0c;则进入深搜
+            if matrix[i][j] &gt; 0:
+                ans &#61; max(ans, dfs(i, j, matrix, row, col))
+
+    return ans
+
+
+# 输入获取
+matrix &#61; []
+
+# 假设存在空行作为输入截止条件
+# while True:
+#     line &#61; input()
+#
+#     if line &#61;&#61; &#34;&#34;:
+#         print(getResult(matrix))
+#         break
+#     else:
+#         matrix.append(list(map(int, list(line))))
+
+# 没有空行作为输入截止条件
+while True:
+    try:
+        matrix.append(list(map(int, list(input()))))
+    except:
+        break
+print(getResult(matrix))
+</code></pre> 
+<p></p> 
+<h3>并查集解法</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class Main {
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix &#61; new ArrayList&lt;&gt;();
+
+    // 假设存在空行作为输入截止条件
+    //    while (sc.hasNextLine()) {
+    //      String line &#61; sc.nextLine();
+    //
+    //      // 由于本题没有说明输入截止条件&#xff0c;因此使用空行作为输入截止条件
+    //      if (&#34;&#34;.equals(line)) {
+    //        System.out.println(getResult());
+    //        break;
+    //      } else {
+    //        matrix.add(
+    //            new ArrayList&lt;&gt;(
+    //
+    // Arrays.stream(line.split(&#34;&#34;)).map(Integer::parseInt).collect(Collectors.toList())));
+    //      }
+    //    }
+
+    // 没有空行作为输入截止条件
+    while (sc.hasNextLine()) {
+      matrix.add(
+          new ArrayList&lt;&gt;(
+              Arrays.stream(sc.nextLine().split(&#34;&#34;))
+                  .map(Integer::parseInt)
+                  .collect(Collectors.toList())));
+    }
+
+    System.out.println(getResult(matrix));
+  }
+
+  public static int getResult(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix) {
+    int row &#61; matrix.size();
+    if (row &#61;&#61; 0) return 0;
+
+    int col &#61; matrix.get(0).size();
+
+    // 并查集
+    UnionFindSet ufs &#61; new UnionFindSet(row * col);
+
+    // 只需要向下、向右合并即可&#xff0c;offsets就是向下、向右的偏移量
+    int[][] offsets &#61; {<!-- -->{1, 0}, {0, 1}};
+
+    // 遍历矩阵元素
+    for (int i &#61; 0; i &lt; row; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; col; j&#43;&#43;) {
+        if (matrix.get(i).get(j) &gt; 0) {
+          for (int[] offset : offsets) {
+            int newI &#61; i &#43; offset[0];
+            int newJ &#61; j &#43; offset[1];
+            if (newI &gt;&#61; 0
+                &amp;&amp; newI &lt; row
+                &amp;&amp; newJ &gt;&#61; 0
+                &amp;&amp; newJ &lt; col
+                &amp;&amp; matrix.get(newI).get(newJ) &gt; 0) {
+              ufs.union(i * col &#43; j, newI * col &#43; newJ);
+            }
+          }
+        }
+      }
+    }
+
+    // worth的key就是每个连通分量的根&#xff0c;value就是该根的矿堆价值
+    HashMap&lt;Integer, Integer&gt; worth &#61; new HashMap&lt;&gt;();
+
+    // 遍历每一个节点&#xff0c;找到他们的根&#xff0c;将每个节点的矿堆价值集中到根上
+    for (int pos &#61; 0; pos &lt; row * col; pos&#43;&#43;) {
+      int i &#61; pos / col;
+      int j &#61; pos % col;
+
+      int fa &#61; ufs.find(ufs.fa[pos]);
+      worth.put(fa, worth.getOrDefault(fa, 0) &#43; matrix.get(i).get(j));
+    }
+
+    // 选出最大价值的根
+    return worth.values().stream().max((a, b) -&gt; a - b).orElse(0);
+  }
+}
+
+class UnionFindSet {
+  int[] fa;
+
+  public UnionFindSet(int n) {
+    this.fa &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) this.fa[i] &#61; i;
+  }
+
+  public int find(int x) {
+    if (x !&#61; this.fa[x]) {
+      return (this.fa[x] &#61; this.find(this.fa[x]));
+    }
+    return x;
+  }
+
+  public void union(int x, int y) {
+    int x_fa &#61; this.find(x);
+    int y_fa &#61; this.find(y);
+
+    if (x_fa !&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+    }
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 地图矩阵
+  const matrix &#61; [];
+
+  // 假设存在空行作为输入截止条件
+  // while (true) {
+  //   const line &#61; await readline();
+
+  //   if (line !&#61; &#34;&#34;) {
+  //     matrix.push([...(await readline())].map(Number));
+  //   } else {
+  //     break;
+  //   }
+  // }
+
+  // 没有空行作为输入截止条件
+  while (true) {
+    try {
+      matrix.push([...(await readline())].map(Number));
+    } catch (error) {
+      break;
+    }
+  }
+
+  console.log(getResult(matrix));
+})();
+
+function getResult(matrix) {
+  // 记录地图矩阵的行数row
+  const row &#61; matrix.length;
+  if (row &#61;&#61; 0) return 0;
+
+  // 记录地图矩阵的列数col
+  const col &#61; matrix[0].length;
+
+  // 并查集
+  const ufs &#61; new UnionFindSet(row * col);
+
+  // 只需要向下、向右合并即可&#xff0c;offsets就是向下、向右的偏移量
+  const offsets &#61; [
+    [1, 0],
+    [0, 1],
+  ];
+
+  // 遍历矩阵元素
+  for (let i &#61; 0; i &lt; row; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; col; j&#43;&#43;) {
+      if (matrix[i][j] &gt; 0) {
+        for (let [offsetI, offsetJ] of offsets) {
+          const newI &#61; i &#43; offsetI;
+          const newJ &#61; j &#43; offsetJ;
+
+          if (
+            newI &gt;&#61; 0 &amp;&amp;
+            newI &lt; row &amp;&amp;
+            newJ &gt;&#61; 0 &amp;&amp;
+            newJ &lt; col &amp;&amp;
+            matrix[newI][newJ] &gt; 0
+          ) {
+            ufs.union(i * col &#43; j, newI * col &#43; newJ);
+          }
+        }
+      }
+    }
+  }
+
+  // worth的key就是每个连通分量的根&#xff0c;value就是该根的矿堆价值
+  const worth &#61; {};
+
+  // 遍历每一个节点&#xff0c;找到他们的根&#xff0c;将每个节点的矿堆价值集中到根上
+  for (let pos &#61; 0; pos &lt; row * col; pos&#43;&#43;) {
+    const i &#61; Math.floor(pos / col);
+    const j &#61; pos % col;
+
+    const fa &#61; ufs.find(ufs.fa[pos]);
+
+    if (!worth[fa]) worth[fa] &#61; 0;
+    worth[fa] &#43;&#61; matrix[i][j];
+  }
+
+  // 选出最大价值的根
+  return Math.max(...Object.values(worth));
+}
+
+class UnionFindSet {
+  constructor(n) {
+    this.fa &#61; new Array(n).fill(0).map((_, i) &#61;&gt; i);
+  }
+
+  find(x) {
+    if (x !&#61;&#61; this.fa[x]) {
+      return (this.fa[x] &#61; this.find(this.fa[x]));
+    }
+    return x;
+  }
+
+  union(x, y) {
+    const x_fa &#61; this.find(x);
+    const y_fa &#61; this.find(y);
+
+    if (x_fa !&#61;&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+    }
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 并查集
+class UnionFindSet:
+    def __init__(self, n):
+        self.fa &#61; [idx for idx in range(n)]
+
+    def find(self, x):
+        if x !&#61; self.fa[x]:
+            self.fa[x] &#61; self.find(self.fa[x])
+            return self.fa[x]
+        return x
+
+    def union(self, x, y):
+        x_fa &#61; self.find(x)
+        y_fa &#61; self.find(y)
+
+        if x_fa !&#61; y_fa:
+            self.fa[y_fa] &#61; x_fa
+
+
+# 算法入口
+def getResult(matrix):
+    # 记录地图矩阵的行数row
+    row &#61; len(matrix)
+
+    if row &#61;&#61; 0:
+        return 0
+
+    # 记录地图矩阵的行数col
+    col &#61; len(matrix[0])
+
+    # 并查集
+    ufs &#61; UnionFindSet(row * col)
+
+    # 只需要向下、向右合并即可&#xff0c;offsets就是向下、向右的偏移量
+    offsets &#61; ((1, 0), (0, 1))
+
+    # 遍历矩阵元素
+    for i in range(row):
+        for j in range(col):
+            if matrix[i][j] &gt; 0:
+                for offsetI, offsetJ in offsets:
+                    newI &#61; i &#43; offsetI
+                    newJ &#61; j &#43; offsetJ
+
+                    if row &gt; newI &gt;&#61; 0 and col &gt; newJ &gt;&#61; 0 and matrix[newI][newJ] &gt; 0:
+                        ufs.union(i * col &#43; j, newI * col &#43; newJ)
+
+    # worth的key就是每个连通分量的根&#xff0c;value就是该根的矿堆价值
+    worth &#61; {}
+
+    # 遍历每一个节点&#xff0c;找到他们的根&#xff0c;将每个节点的矿堆价值集中到根上
+    for pos in range(row * col):
+        i &#61; pos // col
+        j &#61; pos % col
+
+        fa &#61; ufs.find(ufs.fa[pos])
+
+        worth.setdefault(fa, 0)
+        worth[fa] &#43;&#61; matrix[i][j]
+
+    # 选出最大价值的根
+    return max(worth.values())
+
+
+# 输入获取
+matrix &#61; []
+
+# 假设存在空行作为输入截止条件
+# while True:
+#     line &#61; input()
+#
+#     if line &#61;&#61; &#34;&#34;:
+#         print(getResult(matrix))
+#         break
+#     else:
+#         matrix.append(list(map(int, list(line))))
+
+# 没有空行作为输入截止条件
+while True:
+    try:
+        matrix.append(list(map(int, list(input()))))
+    except:
+        break
+
+print(getResult(matrix))
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

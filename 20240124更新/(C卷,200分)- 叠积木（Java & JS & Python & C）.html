@@ -1,0 +1,388 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 叠积木（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一堆长方体积木&#xff0c;它们的宽度和高度都相同&#xff0c;但长度不一。</p> 
+<p>小橙想把这堆积木叠成一面墙&#xff0c;墙的每层可以放一个积木&#xff0c;也可以将两个积木拼接起来&#xff0c;要求每层的长度相同。</p> 
+<p>若必须用完这些积木&#xff0c;叠成的墙最多为多少层&#xff1f;</p> 
+<p><img alt="" src="https://img-blog.csdnimg.cn/img_convert/35b527e2c0a6887b4c5b6d3c95383a7a.png" /></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为一行&#xff0c;为各个积木的长度&#xff0c;数字为正整数&#xff0c;并由空格分隔。积木的数量和长度都不超过5000。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个数字&#xff0c;为墙的最大层数&#xff0c;如果无法按要求叠成每层长度一致的墙&#xff0c;则输出-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 6 6 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">可以每层都是长度3和6的积木拼接起来&#xff0c;这样每层的长度为9&#xff0c;层数为2&#xff1b;也可以其中两层直接用长度6的积木&#xff0c;两个长度3的积木拼接为一层&#xff0c;这样层数为3&#xff0c;故输出3。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 4 2 3 6</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无法用这些积木叠成每层长度一致的墙&#xff0c;故输出-1。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题限制了一层最多只能有两个积木&#xff0c;最少有一个积木。</p> 
+<p></p> 
+<p>如果没有这个上面限制条件&#xff0c;那么本题需要换另一种解法&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/127710334" title="华为OD机试 - 叠积木Ⅱ&#xff08;Java &amp; JS &amp; Python&#xff09;_华为od叠积木_伏城之外的博客-CSDN博客">华为OD机试 - 叠积木Ⅱ&#xff08;Java &amp; JS &amp; Python&#xff09;_华为od叠积木_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>有了这个限制&#xff0c;本题的难度就降低很多了&#xff0c;我的解题思路如下&#xff1a;</p> 
+<ul><li>如果只有一个积木&#xff0c;那么最大高度就是1</li><li>如果只有两个积木&#xff0c;那么</li></ul> 
+<ol><li>两个积木长度相同时&#xff0c;最大高度为2</li><li>两个积木长度不同时&#xff0c;最大高度为1</li></ol> 
+<ul><li>如果有三个及以上积木&#xff0c;我的思路如下&#xff0c;假设输入的积木长度数组为nums&#xff1a;</li></ul> 
+<ol><li>将所有积木按照长度降序</li><li>求出一层长度的取值范围&#xff0c;一层长度至少为nums[0]&#xff0c;至多为nums[0] &#43; nums[1]&#xff0c;由于nums已经降序&#xff0c;因此nums[0]就是最长的积木&#xff0c;nums[1]就是第二长的积木</li><li>遍历nums[0] ~ nums[0] &#43; nums[1]的值length作为一层长度去尝试&#xff1a;</li></ol> 
+<blockquote> 
+ <p>定义两个指针L&#xff0c;R&#xff0c;初始时L&#61;0&#xff0c;R&#61;nums.length-1</p> 
+ <ul><li>如果nums[L] &#61;&#61; length&#xff0c;则说明L积木可以独立一层&#xff0c;层高&#43;1&#xff0c;然后L&#43;&#43;&#xff0c;如此循环&#xff0c;直到nums[L] &lt; length</li></ul> 
+ <p>接着&#xff0c;计算nums[L] &#43; nums[R]的和sum&#xff0c;</p> 
+ <ul><li>如果sum !&#61; length&#xff0c;则有两种可能&#xff1a;</li></ul> 
+ <ol><li>假设nums[l] &#43; nums[r] &gt; length&#xff0c;则必然nums[l] &#43; nums[r-1] &gt; length&#xff0c;因为nums已降序&#xff0c;nums[r-1] &gt;&#61; nums[r]&#xff0c;即必然l积木无法和其他积木组成一层</li><li>假设nums[l] &#43; nums[r] &lt; length&#xff0c;则必然nums[l&#43;1] &#43; nums[r] &lt; length&#xff0c;因为nums已降序&#xff0c;nums[l&#43;1] &lt;&#61; nums[l]&#xff0c;即必然r积木无法和其他积木组成一层</li></ol> 
+ <ul><li>如果sum &#61;&#61; length&#xff0c;则L&#xff0c;R积木组成一层&#xff0c;层高&#43;1&#xff0c;然后继续尝试L&#43;&#43;&#xff0c;R--</li></ul> 
+</blockquote> 
+<p></p> 
+<p>本题要求最大的高度&#xff0c;那么一层的长度就要尽量小&#xff0c;而上面的length是从nums[0] ~ nums[0] &#43; nums[1]&#xff0c;因此一旦发现了遍历的length&#xff0c;可以让所有的积木搭建起来&#xff0c;那么该length就是最优的&#xff0c;即能够形成最大高度的。</p> 
+<p></p> 
+<hr /> 
+<p>2023.10.13</p> 
+<p>上面逻辑分析时&#xff1a;</p> 
+<p>假设nums已经降序&#xff0c;则一层长度范围是&#xff1a; nums[0] ~ nums[0] &#43; nums[1]&#xff0c;nums.length &gt; 1</p> 
+<p>这里对于一层的长度最大值 nums[0] &#43; nums[1] 是有冗余的</p> 
+<p>因为&#xff0c;一旦一层长度定义为 nums[0] &#43; nums[1]&#xff0c; </p> 
+<p>则可以确定的是任意两个积木长度之和&#xff1a; </p> 
+<p>nums[i] &#43; nums[j] 必然小于 nums[0] &#43; nums[1] &#xff0c;其中 1 &lt; i,j &lt; nums.length&#xff0c;且所有积木不都相等。</p> 
+<p>此时后续遍历一层长度范围是&#xff1a; nums[0] ~ nums[0] &#43; nums[1]时&#xff0c;会产生冗余判断。</p> 
+<p></p> 
+<p>更优的策略是&#xff0c;将一层长度最大值定义为 nums[0] &#43; nums[-1]&#xff0c;即单个积木最大长度 &#43; 单个积木最小长度&#xff0c;此时才能保证 nums[i] &#43; nums[j] 不是必然小于 nums[0] &#43; nums[1]的。</p> 
+<p></p> 
+<p>比如积木长度降序列表为&#xff1a;5 4 3 3 2 1</p> 
+<p>如果一层两个积木取5&#43;4&#61;9&#xff0c;则必然没有任意其他两个积木和&#61;9的</p> 
+<p>但是如果一层两个积木取5&#43;1&#61;6&#xff0c;则有4&#43;2&#xff0c;3&#43;3可以组成相同长度的一层</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const nums &#61; line.split(&#34; &#34;).map(Number);
+  console.log(getResult(nums));
+});
+
+function getResult(nums) {
+  const n &#61; nums.length;
+
+  // 如果只有一个积木&#xff0c;那么只能是一层高度
+  if (n &#61;&#61; 1) return 1;
+
+  // 如果有两个积木
+  // 如果两个积木长度相同&#xff0c;则最大高度为2
+  // 如果两个积木长度不同&#xff0c;则最大高度为1
+  if (n &#61;&#61; 2) return nums[0] !&#61; nums[1] ? 1 : 2;
+
+  // 积木按长度降序
+  nums.sort((a, b) &#61;&gt; b - a);
+
+  // 一层的最小长度&#xff0c;即最长的积木的长度
+  const minLen &#61; nums[0];
+  // 一层的最大长度
+  const maxLen &#61; nums[0] &#43; nums.at(-1);
+
+  // 尝试minLen和maxLen中每一个值作为一层长度
+  for (let len &#61; minLen; len &lt;&#61; maxLen; len&#43;&#43;) {
+    // 对应一层长度限制下的最大高度
+    let height &#61; 0;
+
+    // 通过l,r指针去选择组成一层的一个或两个积木
+    // l指针指向最大长度的积木
+    let l &#61; 0;
+    // r指针指向最小长度的积木
+    let r &#61; n - 1;
+
+    // 如果最大长度的积木&#xff0c;可以独立一层&#xff0c;则l&#43;&#43;&#xff0c;height&#43;&#43;
+    while (l &lt; n &amp;&amp; nums[l] &#61;&#61; len) {
+      l&#43;&#43;;
+      height&#43;&#43;;
+    }
+
+    // 如果 l,r积木无法组成一层
+    // 假设nums[l] &#43; nums[r] &gt; length&#xff0c;则必然nums[l] &#43; nums[r-1] &gt; length&#xff0c;
+    // 因为nums已降序&#xff0c;nums[r-1] &gt;&#61; nums[r]&#xff0c;即必然l积木无法和其他积木组成一层
+    // 假设nums[l] &#43; nums[r] &lt; length&#xff0c;则必然nums[l&#43;1] &#43; nums[r] &lt; length&#xff0c;
+    // 因为nums已降序&#xff0c;nums[l&#43;1] &lt;&#61; nums[l]&#xff0c;即必然r积木无法和其他积木组成一层
+    while (l &lt; r) {
+      if (nums[l] &#43; nums[r] !&#61; len) break;
+
+      l&#43;&#43;;
+      r--;
+      height&#43;&#43;;
+    }
+
+    // 如果正常结束&#xff0c;则必然l &gt; r&#xff0c;否则就是异常结束
+    if (l &lt;&#61; r) continue;
+
+    return height;
+  }
+
+  return -1;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] nums &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(nums));
+  }
+
+  public static int getResult(Integer[] nums) {
+    int n &#61; nums.length;
+
+    // 如果只有一个积木&#xff0c;那么只能是一层高度
+    if (n &#61;&#61; 1) {
+      return 1;
+    }
+
+    // 如果有两个积木
+    if (n &#61;&#61; 2) {
+      // 如果两个积木长度相同&#xff0c;则最大高度为2
+      // 如果两个积木长度不同&#xff0c;则最大高度为1
+      return nums[0] - nums[1] !&#61; 0 ? 1 : 2;
+    }
+
+    // 积木按长度降序
+    Arrays.sort(nums, (a, b) -&gt; b - a);
+
+    // 一层的最小长度&#xff0c;即最长的积木的长度
+    int minLen &#61; nums[0];
+    // 一层的最大长度
+    int maxLen &#61; nums[0] &#43; nums[nums.length-1];
+
+    // 尝试minLen和maxLen中每一个值作为一层长度
+    for (int len &#61; minLen; len &lt;&#61; maxLen; len&#43;&#43;) {
+      // 对应一层长度限制下的最大高度
+      int height &#61; 0;
+
+      // 通过l,r指针去选择组成一层的一个或两个积木
+      // l指针指向最大长度的积木
+      int l &#61; 0;
+      // r指针指向最小长度的积木
+      int r &#61; n - 1;
+
+      // 如果最大长度的积木&#xff0c;可以独立一层&#xff0c;则l&#43;&#43;&#xff0c;height&#43;&#43;
+      while (l &lt; n &amp;&amp; nums[l] &#61;&#61; len) {
+        l&#43;&#43;;
+        height&#43;&#43;;
+      }
+
+      // 如果 l,r积木无法组成一层
+      // 假设nums[l] &#43; nums[r] &gt; length&#xff0c;则必然nums[l] &#43; nums[r-1] &gt; length&#xff0c;
+      // 因为nums已降序&#xff0c;nums[r-1] &gt;&#61; nums[r]&#xff0c;即必然l积木无法和其他积木组成一层
+      // 假设nums[l] &#43; nums[r] &lt; length&#xff0c;则必然nums[l&#43;1] &#43; nums[r] &lt; length&#xff0c;
+      // 因为nums已降序&#xff0c;nums[l&#43;1] &lt;&#61; nums[l]&#xff0c;即必然r积木无法和其他积木组成一层
+      while (l &lt; r) {
+        if (nums[l] &#43; nums[r] !&#61; len) break;
+
+        l&#43;&#43;;
+        r--;
+        height&#43;&#43;;
+      }
+
+      // 如果正常结束&#xff0c;则必然l &gt; r&#xff0c;否则就是异常结束
+      if (l &lt;&#61; r) continue;
+
+      return height;
+    }
+
+    return -1;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+nums &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    # 如果只有一个积木&#xff0c;那么只能是一层高度
+    if len(nums) &#61;&#61; 1:
+        return 1
+
+    # 如果有两个积木
+    if len(nums) &#61;&#61; 2:
+        # 如果两个积木长度相同&#xff0c;则最大高度为2
+        # 如果两个积木长度不同&#xff0c;则最大高度为1
+        return 1 if nums[0] !&#61; nums[1] else 2
+
+    # 积木按长度降序
+    nums.sort(reverse&#61;True)
+
+    # 一层的最小长度&#xff0c;即最长的积木的长度
+    minLen &#61; nums[0]
+    # 一层的最大长度
+    maxLen &#61; nums[0] &#43; nums[-1]
+
+    # 尝试minLen和maxLen中每一个值作为一层长度
+    for length in range(minLen, maxLen &#43; 1):
+        # 对应一层长度限制下的最大高度
+        height &#61; 0
+
+        # 通过l,r指针去选择组成一层的一个或两个积木
+        # l指针指向最大长度的积木
+        l &#61; 0
+        # r指针指向最小长度的积木
+        r &#61; len(nums) - 1
+
+        # 如果最大长度的积木&#xff0c;可以独立一层&#xff0c;则l&#43;&#43;&#xff0c;height&#43;&#43;
+        while l &lt; len(nums) and nums[l] &#61;&#61; length:
+            l &#43;&#61; 1
+            height &#43;&#61; 1
+
+        while l &lt; r:
+            # 如果 l,r积木无法组成一层
+            # 假设nums[l] &#43; nums[r] &gt; length&#xff0c;则必然nums[l] &#43; nums[r-1] &gt; length&#xff0c;因为nums已降序&#xff0c;nums[r-1] &gt;&#61; nums[r]&#xff0c;即必然l积木无法和其他积木组成一层
+            # 假设nums[l] &#43; nums[r] &lt; length&#xff0c;则必然nums[l&#43;1] &#43; nums[r] &lt; length&#xff0c;因为nums已降序&#xff0c;nums[l&#43;1] &lt;&#61; nums[l]&#xff0c;即必然r积木无法和其他积木组成一层
+            if nums[l] &#43; nums[r] !&#61; length:
+                break
+            else:
+                l &#43;&#61; 1
+                r -&#61; 1
+                height &#43;&#61; 1
+
+        # 如果正常结束&#xff0c;则必然l &gt; r&#xff0c;否则就是异常结束
+        if l &lt;&#61; r:
+            continue
+
+        return height
+
+    return -1
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 5000
+
+int getResult();
+int cmp(const void *a, const void *b);
+
+int nums[MAX_SIZE];
+int nums_size &#61; 0;
+
+int main() {
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    printf(&#34;%d\n&#34;, getResult());
+
+    return 0;
+}
+
+int getResult() {
+    // 如果只有一个积木&#xff0c;那么只能是一层高度
+    if (nums_size &#61;&#61; 1) {
+        return 1;
+    }
+
+    // 如果有两个积木
+    if (nums_size &#61;&#61; 2) {
+        // 如果两个积木长度相同&#xff0c;则最大高度为2
+        // 如果两个积木长度不同&#xff0c;则最大高度为1
+        return nums[0] !&#61; nums[1] ? 1 : 2;
+    }
+
+    // 积木按长度降序
+    qsort(nums, nums_size, sizeof(int), cmp);
+
+    // 一层的最小长度&#xff0c;即最长的积木的长度
+    int minLen &#61; nums[0];
+    // 一层的最大长度&#xff0c;即最长的两个积木的长度之和
+    int maxLen &#61; nums[0] &#43; nums[nums_size - 1];
+
+    // 尝试minLen和maxLen中每一个值作为一层长度
+    for (int len &#61; minLen; len &lt;&#61; maxLen; len&#43;&#43;) {
+        // 对应一层长度限制下的最大高度
+        int height &#61; 0;
+
+        // 通过l,r指针去选择组成一层的一个或两个积木
+        // l指针指向最大长度的积木
+        int l &#61; 0;
+        // r指针指向最小长度的积木
+        int r &#61; nums_size - 1;
+
+        // 如果最大长度的积木&#xff0c;可以独立一层&#xff0c;则l&#43;&#43;&#xff0c;height&#43;&#43;
+        while (l &lt; nums_size &amp;&amp; nums[l] &#61;&#61; len) {
+            l&#43;&#43;;
+            height&#43;&#43;;
+        }
+
+        while (l &lt; r) {
+            // 如果 l,r积木无法组成一层
+            // 假设nums[l] &#43; nums[r] &gt; length&#xff0c;则必然nums[l] &#43; nums[r-1] &gt; length&#xff0c;因为nums已降序&#xff0c;nums[r-1] &gt;&#61; nums[r]&#xff0c;即必然l积木无法和其他积木组成一层
+            // 假设nums[l] &#43; nums[r] &lt; length&#xff0c;则必然nums[l&#43;1] &#43; nums[r] &lt; length&#xff0c;因为nums已降序&#xff0c;nums[l&#43;1] &lt;&#61; nums[l]&#xff0c;即必然r积木无法和其他积木组成一层
+            if (nums[l] &#43; nums[r] !&#61; len) break;
+
+            l&#43;&#43;;
+            r--;
+            height&#43;&#43;;
+        }
+
+        // 如果正常结束&#xff0c;则必然l &gt; r&#xff0c;否则就是异常结束
+        if (l &lt;&#61; r) continue;
+
+        return height;
+    }
+
+    return -1;
+}
+
+int cmp(const void *a, const void *b) {
+    return (*(int *) b) - (*(int *) a);
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,248 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 高效的任务规划（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>你有 n 台机器&#xff0c;编号为 1~n&#xff0c;每台都需要完成一项工作&#xff0c;机器经过配置后都能独立完成一项工作。</p> 
+<p>假设第 i 台机器你需要花 Bi 分钟进行设置&#xff0c;然后开始运行&#xff0c;Ji 分钟后完成任务。</p> 
+<p>现在&#xff0c;你需要选择布置工作的顺序&#xff0c;使得用最短的时间完成所有工作。</p> 
+<p>注意&#xff0c;不能同时对两台进行配置&#xff0c;但配置完成的机器们可以同时执行他们各自的工作。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入代表总共有 M 组任务数据&#xff08;1&lt;M&lt;&#61;10&#xff09;。</p> 
+<p>每组数第一行为一个整数指定机器的数量 N&#xff08;0&lt;N&lt;&#61;1000&#xff09;。随后的 N 行每行两个整数&#xff0c;第一个表示 B&#xff08;0&lt;&#61;B&lt;&#61;10000&#xff09;&#xff0c;第二个表示 J&#xff08;0&lt;&#61;J&lt;&#61;10000&#xff09;。</p> 
+<p>每组数据连续输入&#xff0c;不会用空行分隔。各组任务单独计时。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>对于每组任务&#xff0c;输出最短完成时间&#xff0c;且每组的结果独占一行。例如&#xff0c;两组任务就应该有两行输出。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:569px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:479px;">1<br /> 1<br /> 2 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:479px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:479px;">输入共3行数据&#xff0c;<br /> 第一行代表只有1组任务&#xff1b;<br /> 第二行代表本组任务只有1台机器&#xff1b;<br /> 第三行代表本机器&#xff1a;配置需要2分钟&#xff0c;执行任务需要2分钟&#xff0c;<br /> 输出共一行数据&#xff0c;代表执行结果为4分钟</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:593px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:503px;">2<br /> 2<br /> 1 1<br /> 2 2<br /> 3<br /> 1 1<br /> 2 2<br /> 3 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:503px;">4<br /> 7</td></tr><tr><td style="width:86px;">说明</td><td style="width:503px;"> <p>第1行 2代表有2组任务&#xff1b;<br /> 2~4行代表第1组数据&#xff0c;为2台机器的配置、执行信息<br /> 第1台&#xff1a;配置1分钟&#xff0c;执行1分钟<br /> 第2台&#xff1a;配置2分钟&#xff0c;执行2分钟</p> <p><br /> 5~8行代表第2组数据&#xff0c;为3台机器的配置、执行信息<br /> 第1台&#xff1a;配置1分钟&#xff0c;执行1分钟<br /> 第2台&#xff1a;配置2分钟&#xff0c;执行2分钟<br /> 第3台&#xff1a;配置3分钟&#xff0c;执行3分钟</p> <p><br /> 输出共2行&#xff0c;分别代表第1组任务共需要4分钟和第2组任务共需要7分钟<br /> 先配置3&#xff0c;再配置2&#xff0c;再配置1&#xff0c;执行1分钟&#xff0c;共7分钟</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p><img alt="" height="258" src="https://img-blog.csdnimg.cn/3f35b187147b41b4a03dd532910484e2.png" width="399" /></p> 
+<p>如上图是两个机器执行的两种方案&#xff0c;我们可以发现&#xff1a;绿色机器先执行的话&#xff0c;总用时最少。</p> 
+<p>因为&#xff0c;绿色机器的运行时间更长&#xff0c;而橙色机器可以在绿色机器运行过程中完成配置和执行。</p> 
+<blockquote> 
+ <p>得出结论&#xff1a;如果想让任务总用时最少&#xff0c;则优先配置&#34;运行时间长&#34;的机器。</p> 
+</blockquote> 
+<p></p> 
+<p>那么&#xff0c;如果两个机器的运行时间相同&#xff0c;但是配置时间不同呢&#xff1f;</p> 
+<p><img alt="" height="238" src="https://img-blog.csdnimg.cn/9784f367aa874d84ab92b8b7884962af.png" width="473" /></p> 
+<p>可以发现&#xff0c;两种配置方式的总用时是相同的。</p> 
+<blockquote> 
+ <p>得出结论&#xff1a;如果两个机器运行时间相同&#xff0c;则谁先配置都可以&#xff0c;对结果总用时无影响。</p> 
+</blockquote> 
+<p></p> 
+<p>因此&#xff0c;对各个机器进行配置先后优先级排序后&#xff0c;再算出<span style="color:#fe2c24;">每个机器的配置结束时间 </span></p> 
+<p><img alt="" height="255" src="https://img-blog.csdnimg.cn/ffbbf8e745cd4ba78bc3866277f9a158.png" width="443" /></p> 
+<p>此时&#xff0c;总用时 &#61; max(&#34;<span style="color:#fe2c24;">每个机器的配置结束时间 &#43; 该机器的运行时间</span>&#34;) </p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+    // Write your code here
+    const m &#61; (await readline()) - 0; // 获取总任务数m
+    const tasks &#61; [];
+
+    // 循环m次,每次获取一个任务下的机器详情
+    for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+        const n &#61; (await readline()) - 0; //获取机器数n
+        const machines &#61; [];
+
+        //循环n次&#xff0c;每次获取一个机器的 配置时间、运行时间
+        for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+            const machine &#61; await readline(); // 获取机器的 配置时间、运行时间
+            machines.push(machine.split(&#34; &#34;).map(Number));
+        }
+
+        // tasks中存放的是task&#xff0c;每个task下又存放多个机器信息&#xff0c;每个机器信息包括&#xff1a;配置时间、运行时间
+        tasks.push(machines);
+    }
+
+    // 业务逻辑
+    for (let task of tasks) {
+        // 将每个任务中的机器工作顺序&#xff0c;按照运行时间降序排序
+        task.sort((a, b) &#61;&gt; b[1] - a[1]);
+
+        let config_endTime &#61; 0;
+        let ans &#61; 0;
+
+        for (let [config_cost, run_cost] of task) {
+            config_endTime &#43;&#61; config_cost;
+            ans &#61; Math.max(ans, config_endTime &#43; run_cost);
+        }
+
+        console.log(ans);
+    }
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+
+    int[][][] tasks &#61; new int[m][][];
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      int n &#61; sc.nextInt();
+      int[][] task &#61; new int[n][2];
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        task[j][0] &#61; sc.nextInt();
+        task[j][1] &#61; sc.nextInt();
+      }
+      tasks[i] &#61; task;
+    }
+
+    getResult(tasks);
+  }
+
+  // 算法入口
+  public static void getResult(int[][][] tasks) {
+    for (int[][] task : tasks) {
+      // 将每个任务中的机器工作顺序&#xff0c;按照运行时间降序排序
+      Arrays.sort(task, (a, b) -&gt; b[1] - a[1]);
+
+      int config_endTime &#61; 0;
+      int ans &#61; 0;
+      for (int[] info : task) {
+        int config_cost &#61; info[0];
+        int run_cost &#61; info[1];
+
+        config_endTime &#43;&#61; config_cost;
+        ans &#61; Math.max(ans, config_endTime &#43; run_cost);
+      }
+
+      System.out.println(ans);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+
+tasks &#61; [[] for _ in range(m)]
+
+for i in range(m):
+    n &#61; int(input())
+    task &#61; [[] for _ in range(n)]
+    for j in range(n):
+        task[j] &#61; list(map(int, input().split()))
+    tasks[i] &#61; task
+
+
+# 算法入口
+def getResult():
+    for task in tasks:
+        # 将每个任务中的机器工作顺序&#xff0c;按照运行时间降序排序
+        task.sort(key&#61;lambda x: -x[1])
+
+        config_endTime &#61; 0
+        ans &#61; 0
+
+        for config_cost, run_cost in task:
+            config_endTime &#43;&#61; config_cost
+            ans &#61; max(ans, config_endTime &#43; run_cost)
+
+        print(ans)
+
+
+# 算法调用
+getResult()
+</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+typedef struct {
+    int config_cost;
+    int run_cost;
+} Task;
+
+int cmp(const void *a, const void *b) {
+    return ((Task *) b)-&gt;run_cost - ((Task *) a)-&gt;run_cost;
+}
+
+int main() {
+    // 总共有 M 组任务数据
+    int m;
+    scanf(&#34;%d&#34;, &amp;m);
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        // 机器的数量 N
+        int n;
+        scanf(&#34;%d&#34;, &amp;n);
+
+        Task *tasks &#61; (Task *) malloc(sizeof(Task) * n);
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            // 配置时间&#xff0c;运行时间
+            scanf(&#34;%d %d&#34;, &amp;tasks[j].config_cost, &amp;tasks[j].run_cost);
+        }
+
+        // 将每个任务中的机器工作顺序&#xff0c;按照运行时间降序排序
+        qsort(tasks, n, sizeof(Task), cmp);
+
+        int config_endTime &#61; 0;
+        int ans &#61; 0;
+
+        // 总用时 &#61; max(&#34;每个机器的配置结束时间 &#43; 该机器的运行时间&#34;)
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            config_endTime &#43;&#61; tasks[j].config_cost;
+            ans &#61; MAX(ans, config_endTime &#43; tasks[j].run_cost);
+        }
+
+        printf(&#34;%d\n&#34;, ans);
+    }
+
+    return 0;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

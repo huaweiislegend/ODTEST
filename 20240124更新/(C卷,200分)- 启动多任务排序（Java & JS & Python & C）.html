@@ -1,0 +1,433 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 启动多任务排序（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>一个应用启动时&#xff0c;会有多个初始化任务需要执行&#xff0c;并且任务之间有依赖关系&#xff0c;例如A任务依赖B任务&#xff0c;那么必须在B任务执行完成之后&#xff0c;才能开始执行A任务。</p> 
+<p>现在给出多条任务依赖关系的规则&#xff0c;请输入任务的顺序执行序列&#xff0c;规则采用贪婪策略&#xff0c;即一个任务如果没有依赖的任务&#xff0c;则立刻开始执行&#xff0c;如果同时有多个任务要执行&#xff0c;则根据任务名称字母顺序排序。</p> 
+<p>例如&#xff1a;B任务依赖A任务&#xff0c;C任务依赖A任务&#xff0c;D任务依赖B任务和C任务&#xff0c;同时&#xff0c;D任务还依赖E任务。那么执行任务的顺序由先到后是&#xff1a;</p> 
+<blockquote> 
+ <p>A任务&#xff0c;E任务&#xff0c;B任务&#xff0c;C任务&#xff0c;D任务</p> 
+</blockquote> 
+<p>这里A和E任务都是没有依赖的&#xff0c;立即执行。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入参数每个元素都表示任意两个任务之间的依赖关系&#xff0c;输入参数中符号&#34;-&gt;&#34;表示依赖方向&#xff0c;例如&#xff1a;</p> 
+<blockquote> 
+ <p>A-&gt;B&#xff1a;表示A依赖B</p> 
+</blockquote> 
+<p>多个依赖之间用单个空格分隔</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出排序后的启动任务列表&#xff0c;多个任务之间用单个空格分隔</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">A-&gt;B C-&gt;B</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">B A C</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是拓扑排序问题&#xff0c;本题解析可以参考下面博客&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/127804547" rel="nofollow" title="LeetCode - 207 课程表_leetcode207课程表-CSDN博客">LeetCode - 207 课程表_leetcode207课程表-CSDN博客</a></p> 
+<p>本题没有说明循环依赖的情况该如何处理&#xff0c;因此我认为本题没有循环依赖的情况。实际考试需要注意下。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const relations &#61; (await readline()).split(&#34; &#34;).map((s) &#61;&gt; s.split(&#34;-&gt;&#34;));
+
+  const inDegree &#61; {};
+  const next &#61; {};
+
+  // a依赖b, 即b执行完&#xff0c;才能执行a
+  for (let [a, b] of relations) {
+    // b的入度不变
+    inDegree[b] &#61; inDegree[b] ?? 0;
+    // a的入度&#43;1
+    inDegree[a] &#61; (inDegree[a] ?? 0) &#43; 1;
+
+    // b的后继节点集合添加a
+    if (next[b] &#61;&#61; undefined) next[b] &#61; [];
+    next[b].push(a);
+
+    // a的后继节点集合不变
+    if (next[a] &#61;&#61; undefined) next[a] &#61; [];
+  }
+
+  // queue收集第一层入度为0的点
+  let queue &#61; [];
+  for (let task in inDegree) {
+    if (inDegree[task] &#61;&#61; 0) {
+      queue.push(task);
+    }
+  }
+
+  // 记录任务执行的顺序
+  const ans &#61; [];
+
+  while (queue.length &gt; 0) {
+    // 如果同时有多个任务要执行&#xff0c;则根据任务名称字母顺序排序
+    queue.sort();
+
+    // newQueue用于记录下一层入度为0的点
+    const newQueue &#61; [];
+    for (let fa of queue) {
+      // fa执行&#xff0c;则加入已完成的任务列表
+      ans.push(fa);
+
+      for (let ch of next[fa]) {
+        // fa是父任务&#xff0c;ch是子任务, 即fa执行完&#xff0c;才能执行ch
+        // fa执行完&#xff0c;则对应ch的入度-1
+        inDegree[ch] -&#61; 1;
+
+        // 如果ch的入度变为0&#xff0c;则加入新一层入度0的点集
+        if (inDegree[ch] &#61;&#61; 0) {
+          newQueue.push(ch);
+        }
+      }
+    }
+
+    queue &#61; newQueue;
+  }
+
+  console.log(ans.join(&#34; &#34;));
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[][] relations &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(s -&gt; s.split(&#34;-&gt;&#34;)).toArray(String[][]::new);
+
+    HashMap&lt;String, Integer&gt; inDegree &#61; new HashMap&lt;&gt;();
+    HashMap&lt;String, ArrayList&lt;String&gt;&gt; next &#61; new HashMap&lt;&gt;();
+
+    for (String[] relation : relations) {
+      // a依赖b, 即b执行完&#xff0c;才能执行a
+      String a &#61; relation[0];
+      String b &#61; relation[1];
+
+      // b的入度不变
+      inDegree.put(b, inDegree.getOrDefault(b, 0));
+      // a的入度&#43;1
+      inDegree.put(a, inDegree.getOrDefault(a, 0) &#43; 1);
+
+      // b的后继节点集合添加a
+      next.putIfAbsent(b, new ArrayList&lt;&gt;());
+      next.get(b).add(a);
+      // a的后继节点集合不变
+      next.putIfAbsent(a, new ArrayList&lt;&gt;());
+    }
+
+    // queue收集第一层入度为0的点
+    ArrayList&lt;String&gt; queue &#61; new ArrayList&lt;&gt;();
+    for (String task : inDegree.keySet()) {
+      if (inDegree.get(task) &#61;&#61; 0) {
+        queue.add(task);
+      }
+    }
+
+    // 记录任务执行的顺序
+    StringJoiner ans &#61; new StringJoiner(&#34; &#34;);
+
+    while (queue.size() &gt; 0) {
+      // 如果同时有多个任务要执行&#xff0c;则根据任务名称字母顺序排序
+      queue.sort(String::compareTo);
+
+      // newQueue用于记录下一层入度为0的点
+      ArrayList&lt;String&gt; newQueue &#61; new ArrayList&lt;&gt;();
+
+      for (String fa : queue) {
+        // fa执行&#xff0c;则加入已完成的任务列表
+        ans.add(fa);
+
+        for (String ch : next.get(fa)) {
+          // fa是父任务&#xff0c;ch是子任务, 即fa执行完&#xff0c;才能执行ch
+          // fa执行完&#xff0c;则对应ch的入度-1
+          inDegree.put(ch, inDegree.get(ch) - 1);
+
+          // 如果ch的入度变为0&#xff0c;则加入新一层入度0的点集
+          if (inDegree.get(ch) &#61;&#61; 0) {
+            newQueue.add(ch);
+          }
+        }
+      }
+
+      queue &#61; newQueue;
+    }
+
+    System.out.println(ans);
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+relations &#61; list(map(lambda s: s.split(&#34;-&gt;&#34;), input().split()))
+
+
+# 算法入口
+def getResult():
+    inDegree &#61; {}
+    next &#61; {}
+
+    # a依赖b, 即b执行完&#xff0c;才能执行a
+    for a, b in relations:
+        # b的入度不变
+        inDegree[b] &#61; inDegree.get(b, 0)
+        # a的入度&#43;1
+        inDegree[a] &#61; inDegree.get(a, 0) &#43; 1
+
+        # b的后继节点集合添加a
+        next[b] &#61; next.get(b, [])
+        next[b].append(a)
+
+        # a的后继节点集合不变
+        next[a] &#61; next.get(a, [])
+
+    # queue收集第一层入度为0的点
+    queue &#61; []
+    for task in inDegree:
+        if inDegree[task] &#61;&#61; 0:
+            queue.append(task)
+
+    # 记录任务执行的顺序
+    ans &#61; []
+
+    while len(queue) &gt; 0:
+        # 如果同时有多个任务要执行&#xff0c;则根据任务名称字母顺序排序
+        queue.sort()
+
+        # newQueue用于记录下一层入度为0的点
+        newQueue &#61; []
+        for fa in queue:
+            # fa执行&#xff0c;则加入已完成的任务列表
+            ans.append(fa)
+
+            for ch in next[fa]:
+                # fa是父任务&#xff0c;ch是子任务, 即fa执行完&#xff0c;才能执行ch
+                # fa执行完&#xff0c;则对应ch的入度-1
+                inDegree[ch] -&#61; 1
+
+                # 如果ch的入度变为0&#xff0c;则加入新一层入度0的点集
+                if inDegree[ch] &#61;&#61; 0:
+                    newQueue.append(ch)
+
+        queue &#61; newQueue
+
+    return &#34; &#34;.join(ans)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<p> 本题没有说明任务名的长度&#xff0c;可能不是单个字母&#xff0c;因此C语言下面代码写的有点复杂</p> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_TASK_SIZE 50000
+#define MAX_TASK_NAME_LEN 10
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode *prev;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+    node-&gt;ele &#61; ele;
+    node-&gt;prev &#61; NULL;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        node-&gt;prev &#61; link-&gt;tail;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+// 缓存输入
+char s[MAX_TASK_SIZE * MAX_TASK_NAME_LEN];
+
+// 任务名数组&#xff0c;task[i]记录的是任务名&#xff0c;方便后续将任务名映射为索引i
+char tasks[MAX_TASK_SIZE][MAX_TASK_NAME_LEN];
+int tasks_size &#61; 0;
+
+// 记录每个任务的入度&#xff0c;inDegree[i] 表示任务i的入度
+int inDegree[MAX_TASK_SIZE] &#61; {0};
+// 记录每个任务的子任务&#xff0c;next[i] 表示任务i的子任务集合
+LinkedList *next[MAX_TASK_SIZE];
+
+int cmp(const void *a, const void *b) {
+    int a_index &#61; *((int *) a);
+    int b_index &#61; *((int *) b);
+    return strcmp(tasks[a_index], tasks[b_index]);
+}
+
+int main() {
+    gets(s);
+
+    char *token &#61; strtok(s, &#34; &#34;);
+    while (token !&#61; NULL) {
+        char *tmp &#61; strstr(token, &#34;-&gt;&#34;);
+        tmp[0] &#61; &#39;\0&#39;;
+        tmp[1] &#61; &#39;\0&#39;;
+
+        // a依赖b, 即b执行完&#xff0c;才能执行a
+        // a任务
+        char *a &#61; token;
+        // b任务
+        char *b &#61; tmp &#43; 2;
+
+        // a任务的索引号
+        int a_index &#61; -1;
+        // b任务的索引号
+        int b_index &#61; -1;
+
+        for (int i &#61; 0; i &lt; tasks_size; i&#43;&#43;) {
+            if (strcmp(tasks[i], a) &#61;&#61; 0) {
+                a_index &#61; i;
+            }
+
+            if (strcmp(tasks[i], b) &#61;&#61; 0) {
+                b_index &#61; i;
+            }
+        }
+
+        if (a_index &#61;&#61; -1) {
+            a_index &#61; tasks_size;
+            strcpy(tasks[tasks_size&#43;&#43;], a);
+        }
+
+        if (b_index &#61;&#61; -1) {
+            b_index &#61; tasks_size;
+            strcpy(tasks[tasks_size&#43;&#43;], b);
+        }
+
+        // b的入度不变
+        // a的入度&#43;1
+        inDegree[a_index]&#43;&#43;;
+
+        // b的后继节点集合添加a
+        if (next[b_index] &#61;&#61; NULL) {
+            next[b_index] &#61; new_LinkedList();
+        }
+        addLast_LinkedList(next[b_index], a_index);
+
+        token &#61; strtok(NULL, &#34; &#34;);
+    }
+
+    // queue收集第一层入度为0的点
+    int* queue &#61; (int*) malloc(sizeof(int) * tasks_size);
+    int queue_size &#61; 0;
+
+    for (int i &#61; 0; i &lt; tasks_size; i&#43;&#43;) {
+        if (inDegree[i] &#61;&#61; 0) {
+            queue[queue_size&#43;&#43;] &#61; i;
+        }
+    }
+
+    while (queue_size &gt; 0) {
+        // 如果同时有多个任务要执行&#xff0c;则根据任务名称字母顺序排序
+        qsort(queue, queue_size, sizeof(queue[0]), cmp);
+
+        // newQueue用于记录下一层入度为0的点
+        int* newQueue &#61; (int*) malloc(sizeof(int) * tasks_size);
+        int newQueue_size &#61; 0;
+
+        for (int i &#61; 0; i &lt; queue_size; i&#43;&#43;) {
+            int fa &#61; queue[i];
+
+            // fa执行完成&#xff0c;则打印
+            printf(&#34;%s &#34;, tasks[fa]);
+
+            if(next[fa] !&#61; NULL) {
+                ListNode* cur &#61; next[fa]-&gt;head;
+                while (cur !&#61; NULL) {
+                    // fa是父任务&#xff0c;ch是子任务, 即fa执行完&#xff0c;才能执行ch
+                    // fa执行完&#xff0c;则对应ch的入度-1
+                    int ch &#61; cur-&gt;ele;
+
+                    inDegree[ch] -&#61; 1;
+
+                    // 如果ch的入度变为0&#xff0c;则加入新一层入度0的点集
+                    if(inDegree[ch] &#61;&#61; 0) {
+                        newQueue[newQueue_size&#43;&#43;] &#61; ch;
+                    }
+
+                    cur &#61; cur-&gt;next;
+                }
+            }
+        }
+
+        queue &#61; newQueue;
+        queue_size &#61; newQueue_size;
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,200 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 回文字符串（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>如果一个字符串正读和反渎都一样&#xff08;大小写敏感&#xff09;&#xff0c;则称它为一个「回文串」&#xff0c;例如&#xff1a;</p> 
+<ul><li>leVel是一个「回文串」&#xff0c;因为它的正读和反读都是leVel&#xff1b;同理a也是「回文串」</li><li>art不是一个「回文串」&#xff0c;因为它的反读tra与正读不同</li><li>Level不是一个「回文串」&#xff0c;因为它的反读leveL与正读不同&#xff08;因大小写敏感&#xff09;</li></ul> 
+<p>给你一个仅包含大小写字母的字符串&#xff0c;请用这些字母构造出一个最长的回文串&#xff0c;若有多个最长的&#xff0c;返回其中字典序最小的回文串。</p> 
+<p>字符串中的每个位置的字母最多备用一次&#xff0c;也可以不用。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abczcccddzz</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">ccdzazdcc</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">ABabBabA</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">ABabbaBA</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>回文串必然是对称的&#xff0c;可以分为三部分&#xff0c;即&#xff1a; 左边部分&#xff0c; 中间部分&#xff0c; 右边部分</p> 
+<p>其中左边部分 和 右边部分 互为倒序</p> 
+<p>而中间部分 可以是空串&#xff0c;可以是单字母。</p> 
+<p></p> 
+<p>比如 aba&#xff0c;其中左边部分是a&#xff0c;右边部分也是a&#xff0c;而中间部分是b</p> 
+<p>再比如 aa&#xff0c;其中左边部分是a&#xff0c;右边部分也是a&#xff0c;而中间部分是”“</p> 
+<p></p> 
+<p>因此&#xff0c;我的解题思路如下&#xff1a;</p> 
+<p>统计输入字符串各字母出现的次数&#xff1a;</p> 
+<ul><li>如果字母出现次数&gt;&#61;2&#xff1a;</li></ul> 
+<ol><li>字母出现次数为偶数&#xff0c;则可以平均分到左边部分&#xff0c;和右边部分</li><li>字母出现次数为奇数&#xff0c;则平均分到左&#xff0c;右部分后&#xff0c;必然还会剩余一个无法成对</li></ol> 
+<ul><li>如果字母出现次数 &#61;&#61; 1&#xff0c;则无法成对</li></ul> 
+<p>对于剩余无法成对的字母&#xff0c;我们记录字典序最小的到mid中&#xff08;题目要求返回其中字典序最小的回文串&#xff09;</p> 
+<p>对于可以平均分配到左&#xff0c;右部分的字母&#xff0c;我们可以将可以成对的字母记录到ans数组&#xff0c;将ans字典序升序&#xff0c;拼接字符串即为回文串左边部分&#xff0c;ans字典序降序&#xff0c;拼接字符串即为回文串右边部分。</p> 
+<p></p> 
+<p>最终拼接&#xff1a;回文串左边部分 &#43; 中间部分 &#43; 回文串右边部分&#xff0c;即为题解。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  const count &#61; {};
+
+  // 统计各字母个数
+  for (let c of str) {
+    count[c] ? count[c]&#43;&#43; : (count[c] &#61; 1);
+  }
+
+  const half &#61; [];
+  let mid &#61; &#34;&#34;;
+
+  for (let c in count) {
+    // 如果字母数量大于等于2&#xff0c;则可以成对出现&#xff0c;
+    if (count[c] &gt;&#61; 2) {
+      let n &#61; Math.floor(count[c] / 2); // 对数
+      half.push(...new Array(n).fill(c));
+    }
+
+    // 如果字母数量只有1个&#xff0c;或者字母数量大于2但是为奇数&#xff0c;则最后必然只剩单个字母可用&#xff0c;此时我们应该在这些无法成对的单字母中选择一个字典序最小的
+    if (count[c] % 2 !&#61; 0 &amp;&amp; (mid &#61;&#61; &#34;&#34; || c &lt; mid)) {
+      mid &#61; c;
+    }
+  }
+
+  half.sort();
+
+  return half.join(&#34;&#34;) &#43; mid &#43; half.reverse().join(&#34;&#34;); // 回文串左边部分 &#43; 中间单字母 &#43; 回文串右边部分
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String str &#61; sc.next();
+    System.out.println(getResult(str));
+  }
+
+  private static String getResult(String str) {
+    HashMap&lt;Character, Integer&gt; count &#61; new HashMap&lt;&gt;();
+
+    // 统计各字母个数
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      char c &#61; str.charAt(i);
+      count.put(c, count.getOrDefault(c, 0) &#43; 1);
+    }
+
+    ArrayList&lt;Character&gt; half &#61; new ArrayList&lt;&gt;();
+    String mid &#61; &#34;&#34;;
+
+    for (char c : count.keySet()) {
+      int n &#61; count.get(c);
+      // 如果字母数量大于等于2&#xff0c;则可以成对出现&#xff0c;
+      if (n &gt;&#61; 2) {
+        for (int i &#61; 0; i &lt; n / 2; i&#43;&#43;) half.add(c);
+      }
+
+      // 如果字母数量只有1个&#xff0c;或者字母数量大于2但是为奇数&#xff0c;则最后必然只剩单个字母可用&#xff0c;此时我们应该在这些无法成对的单字母中选择一个字典序最小的
+      if (n % 2 !&#61; 0 &amp;&amp; (&#34;&#34;.equals(mid) || mid.compareTo(c &#43; &#34;&#34;) &gt; 0)) {
+        mid &#61; c &#43; &#34;&#34;;
+      }
+    }
+
+    half.sort((a, b) -&gt; a - b);
+    StringBuilder sb &#61; new StringBuilder();
+    for (Character c : half) sb.append(c);
+
+    return sb &#43; mid &#43; sb.reverse(); // 回文串左边部分 &#43; 中间单字母 &#43; 回文串右边部分
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    count &#61; {}
+
+    # 统计各字母个数
+    for c in s:
+        if count.get(c) is None:
+            count[c] &#61; 0
+        count[c] &#43;&#61; 1
+
+    ans &#61; []
+    mid &#61; &#34;&#34;
+
+    for c in count.keys():
+        # 如果字母数量大于等于2&#xff0c;则可以成对出现&#xff0c;
+        if count[c] &gt;&#61; 2:
+            n &#61; count[c] // 2
+            ans.extend([c] * n)
+
+        # 如果字母数量只有1个&#xff0c;或者字母数量大于2但是为奇数&#xff0c;则最后必然只剩单个字母可用&#xff0c;此时我们应该在这些无法成对的单字母中选择一个字典序最小的
+        if count[c] % 2 !&#61; 0 and (mid &#61;&#61; &#34;&#34; or c &lt; mid):
+            mid &#61; c
+
+    ans.sort()
+    left &#61; &#34;&#34;.join(ans)
+
+    ans.reverse()
+    right &#61; &#34;&#34;.join(ans)
+
+    return left &#43; mid &#43; right  # 回文串左边部分 &#43; 中间单字母 &#43; 回文串右边部分
+
+
+# 调用算法
+print(getResult(s))
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,165 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 最快到达医院的方法（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>新型冠状病毒疫情的肆虐&#xff0c;使得家在武汉的大壮不得不思考自己家和附近定点医院的具体情况。</p> 
+<p>经过一番调查&#xff0c;大壮明白了距离自己家最近的定点医院有两家。其中&#xff1a;</p> 
+<ul><li>医院A和自己的距离是X公里</li><li>医院B和自己的距离是Y公里</li></ul> 
+<p>由于武汉封城&#xff0c;公交停运&#xff0c;私家车不能上路&#xff0c;交通十分不便。现在&#xff1a;</p> 
+<ul><li>到达医院A只能搭乘志愿者计程车&#xff0c;已知计程车的平均速度是M米/分钟&#xff0c;上车平均等待时间为L分钟。</li><li>到达医院B只能步行&#xff0c;平均速度是N米/分钟&#xff1b;</li></ul> 
+<p>给出X&#xff0c;Y&#xff0c;M&#xff0c;L&#xff0c;N的数据&#xff0c;请问大壮到达哪家医院最快&#xff1f;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>一行&#xff0c;5个数。</p> 
+<p>分别是到达A医院的距离&#xff0c;到达B医院的距离&#xff0c;计程车平均速度&#xff0c;上车等待时间&#xff0c;步行速度。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>一行&#xff0c;计程车&#xff08;Taxi&#xff09;、步行&#xff08;Walk&#xff09;、相等&#xff08;Same&#xff09;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">50 5 500 30 90</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">Walk</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题简单的有点过分。</p> 
+<p>根据题目意思&#xff0c;去A只能Taxi&#xff0c;去B只能Walk&#xff0c;而对应的距离和速度都给出来了&#xff0c;因此解题逻辑应该没有什么悬念。</p> 
+<p>这题难道在考察细心程度&#xff1f;就是距离单位是公里&#xff0c;速度单位是米/分钟&#xff1f;</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [x, y, m, l, n] &#61; line.split(&#34; &#34;).map(Number);
+  console.log(getResult(x, y, m, l, n));
+});
+
+/**
+ * &#64;param {*} x 到达A医院的距离 (公里)
+ * &#64;param {*} y 到达B医院的距离 (公里)
+ * &#64;param {*} m 计程车平均速度  (米/分钟)
+ * &#64;param {*} l 上车等待时间    (分钟)
+ * &#64;param {*} n 步行速度        (米/分钟)
+ */
+function getResult(x, y, m, l, n) {
+  const taxiToA &#61; (x * 1000) / m &#43; l;
+  const walkToB &#61; (y * 1000) / n;
+
+  if (taxiToA &#61;&#61; walkToB) {
+    return &#34;Same&#34;;
+  } else if (taxiToA &gt; walkToB) {
+    return &#34;Walk&#34;;
+  } else {
+    return &#34;Taxi&#34;;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    double x &#61; sc.nextDouble();
+    double y &#61; sc.nextDouble();
+    double m &#61; sc.nextDouble();
+    double l &#61; sc.nextDouble();
+    double n &#61; sc.nextDouble();
+
+    System.out.println(getResult(x, y, m, l, n));
+  }
+
+  /**
+   * &#64;param x 到达A医院的距离 (公里)
+   * &#64;param y 到达B医院的距离 (公里)
+   * &#64;param m 计程车平均速度 (米/分钟)
+   * &#64;param l 上车等待时间 (分钟)
+   * &#64;param n 步行速度 (米/分钟)
+   * &#64;return 请问大壮到达哪家医院最快
+   */
+  public static String getResult(double x, double y, double m, double l, double n) {
+    double taxiToA &#61; x * 1000 / m &#43; l;
+    double walkToB &#61; y * 1000 / n;
+
+    if (taxiToA &#61;&#61; walkToB) {
+      return &#34;Same&#34;;
+    } else if (taxiToA &gt; walkToB) {
+      return &#34;Walk&#34;;
+    } else {
+      return &#34;Taxi&#34;;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+x, y, m, l, n &#61; map(float, input().split())
+
+
+# 算法入口
+def getResult(x, y, m, l, n):
+    &#34;&#34;&#34;
+    :param x: 到达A医院的距离 (公里)
+    :param y: 到达B医院的距离 (公里)
+    :param m: 计程车平均速度  (米/分钟)
+    :param l: 上车等待时间    (分钟)
+    :param n: 步行速度        (米/分钟)
+    :return: 请问大壮到达哪家医院最快
+    &#34;&#34;&#34;
+    taxiToA &#61; x * 1000 / m &#43; l
+    walkToB &#61; y * 1000 / n
+
+    if taxiToA &#61;&#61; walkToB:
+        return &#34;Same&#34;
+    elif taxiToA &gt; walkToB:
+        return &#34;Walk&#34;
+    else:
+        return &#34;Taxi&#34;
+
+
+# 算法调用
+print(getResult(x, y, m, l, n))
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

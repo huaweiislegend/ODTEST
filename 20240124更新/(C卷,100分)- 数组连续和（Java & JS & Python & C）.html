@@ -1,0 +1,242 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 数组连续和（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个含有N个正整数的数组, 求出有多少个连续区间&#xff08;包括单个正整数&#xff09;, 它们的和大于等于x。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行两个整数N x&#xff08;0 &lt; N &lt;&#61; 100000, 0 &lt;&#61; x &lt;&#61; 10000000)</p> 
+<p>第二行有N个正整数&#xff08;每个正整数小于等于100)。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个整数&#xff0c;表示所求的个数。</p> 
+<p>注意&#xff1a;此题对效率有要求&#xff0c;暴力解法通过率不高&#xff0c;请考虑高效的实现方式。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:59px;"><strong>输入</strong></td><td style="width:439px;"> <p>3 7<br /> 3 4 7</p> </td></tr><tr><td style="width:59px;"><strong>输出</strong></td><td style="width:439px;">4</td></tr><tr><td style="width:59px;"><strong>说明</strong></td><td style="width:439px;">第一行的3表示第二行数组输入3个数&#xff0c;第一行的7是比较数&#xff0c;用于判断连续数组是否大于该数&#xff1b;组合为 3 &#43; 4; 3 &#43; 4 &#43; 7; 4 &#43; 7; 7; 都大于等于指定的7&#xff1b;所以共四组。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:59px;"><strong>输入</strong></td><td style="width:439px;"> <p>10 10000<br /> 1 2 3 4 5 6 7 8 9 10</p> </td></tr><tr><td style="width:59px;"><strong>输出</strong></td><td style="width:439px;">0</td></tr><tr><td style="width:59px;"><strong>说明</strong></td><td style="width:439px;">所有元素的和小于10000&#xff0c;所以返回0。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>区间和&#xff0c;最快的计算方式就是利用&#xff1a;一维前缀和&#xff0c;关于一维前缀和请看&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/128976936" rel="nofollow" title="算法设计 - 前缀和 &amp; 差分数列_伏城之外的博客-CSDN博客">算法设计 - 前缀和 &amp; 差分数列_伏城之外的博客-CSDN博客</a></p> 
+<p>因此&#xff0c;我们只需要计算出第二行输入数组的前缀和&#xff0c;即可快速计算出任意区间范围的和&#xff0c;比如求解arr数组的[L,R]范围的元素之和&#xff0c;只需要计算 preSum[R] - preSum[L-1]即可。</p> 
+<p></p> 
+<p>本题中说区间可以是单个元素&#xff0c;因此preSum需要初始化为 arr.length &#43; 1 长度&#xff0c;其中preSum[0] &#61; 0&#xff0c;因为这样的话&#xff0c;才能基于preSum描述出第一个元素单独作为区间时的区间和&#xff0c;即preSum[1] - preSum[0]。</p> 
+<p></p> 
+<p>本题描述第二行输入是&#xff1a;N个正整数的数组。</p> 
+<p>即arr数组元素都是正整数&#xff0c;因此preSum数组必然是一个升序的数组。</p> 
+<p>这意味着&#xff0c;如果preSum[R] - preSum[L] &gt;&#61; x的话&#xff0c;则必然成立&#xff1a;preSum[i] - preSum[L] &gt;&#61;x &#xff0c;其中 i &gt;&#61; R。</p> 
+<p>这样的话&#xff0c;如果preSum[R] - preSum[L] &gt;&#61; x&#xff0c;那么对于区间左边界固定为L的&#xff0c;且区间和大于等于x的区间个数就有 arr.length - R &#43; 1 个&#xff0c;此时只需要O(1)时间。</p> 
+<p>下一次&#xff0c;我们继续找左边界固定为L&#43;1的情况。注意保证R&gt;L。</p> 
+<p>由于R必须大于L&#xff0c;因此当R越界时&#xff0c;即R&gt;arr.length时&#xff0c;结束。</p> 
+<p></p> 
+<hr /> 
+<p>2023.06.16</p> 
+<p>本题的Python使用input()获取第二行输入时可能会超时&#xff0c;建议使用</p> 
+<pre>sys.stdin.readline()
+</pre> 
+<p>实现大数据量的高效获取</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int x &#61; sc.nextInt();
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) arr[i] &#61; sc.nextInt();
+    System.out.println(getResult(n, x, arr));
+  }
+
+  public static long getResult(int n, int x, int[] arr) {
+    int[] preSum &#61; new int[n &#43; 1];
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      preSum[i] &#61; preSum[i - 1] &#43; arr[i - 1];
+    }
+
+    int l &#61; 0;
+    int r &#61; 1;
+    long ans &#61; 0;
+
+    while (r &lt;&#61; n) {
+      if (preSum[r] - preSum[l] &gt;&#61; x) {
+        ans &#43;&#61; n - r &#43; 1;
+        l&#43;&#43;;
+        r &#61; l &#43; 1;
+      } else {
+        r&#43;&#43;;
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+let lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [n, x] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(n, x, arr));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, x, arr) {
+  const preSum &#61; new Array(n &#43; 1);
+
+  preSum[0] &#61; 0;
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+    preSum[i] &#61; preSum[i - 1] &#43; arr[i - 1];
+  }
+
+  let l &#61; 0;
+  let r &#61; 1;
+  let ans &#61; 0;
+
+  while (r &lt;&#61; n) {
+    if (preSum[r] - preSum[l] &gt;&#61; x) {
+      ans &#43;&#61; n - r &#43; 1;
+      l&#43;&#43;;
+      r &#61; l &#43; 1;
+    } else {
+      r&#43;&#43;;
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n, x &#61; map(int, input().split())
+arr &#61; list(map(int, sys.stdin.readline().split()))
+ 
+ 
+# 算法入口
+def getResult():
+    preSum &#61; [0]*(n&#43;1)
+ 
+    for i in range(1, n&#43;1):
+        preSum[i] &#61; preSum[i-1] &#43; arr[i-1]
+ 
+    l &#61; 0
+    r &#61; 1
+    ans &#61; 0
+ 
+    while r &lt;&#61; n:
+        if preSum[r] - preSum[l] &gt;&#61; x:
+            ans &#43;&#61; n - r &#43; 1
+            l &#43;&#61; 1
+            r &#61; l &#43; 1
+        else:
+            r &#43;&#61; 1
+ 
+    return ans
+ 
+ 
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+long getResult(int n, int x, int arr[]);
+
+int main() {
+    int n, x;
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;x);
+
+    int arr[n];
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;arr[i]);
+    }
+
+    printf(&#34;%ld&#34;, getResult(n, x, arr));
+
+    return 0;
+}
+
+long getResult(int n, int x, int arr[]) {
+    int preSum[n&#43;1];
+
+    preSum[0] &#61; 0;
+    for(int i&#61;1; i&lt;&#61;n; i&#43;&#43;) {
+        preSum[i] &#61; preSum[i-1] &#43; arr[i-1];
+    }
+
+    int l &#61; 0;
+    int r &#61; 1;
+    long ans &#61; 0;
+
+    while(r &lt;&#61; n) {
+        if(preSum[r] - preSum[l] &gt;&#61; x) {
+            ans &#43;&#61; n - r &#43; 1;
+            l&#43;&#43;;
+            r &#61; l &#43; 1;
+        } else {
+            r&#43;&#43;;
+        }
+    }
+
+    return ans;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,505 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 快递员的烦恼（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>快递公司每日早晨&#xff0c;给每位快递员推送需要送到客户手中的快递以及路线信息&#xff0c;快递员自己又查找了一些客户与客户之间的路线距离信息&#xff0c;请你依据这些信息&#xff0c;给快递员设计一条最短路径&#xff0c;告诉他最短路径的距离。</p> 
+<p></p> 
+<p>注意&#xff1a;</p> 
+<ul><li>不限制快递包裹送到客户手中的顺序&#xff0c;但必须保证都送到客户手中</li><li>用例保证一定存在投递站到每位客户之间的路线&#xff0c;但不保证客户与客户之间有路线&#xff0c;客户位置及投递站均允许多次经过</li><li>所有快递送完后&#xff0c;快递员需回到投递站</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>首行输入两个正整数n、m</p> 
+<p>接下来 n 行&#xff0c;输入快递公司发布的客户快递信息&#xff0c;格式为&#xff1a;</p> 
+<blockquote> 
+ <p>客户id  投递站到客户之间的距离distance</p> 
+</blockquote> 
+<p>再接下俩的 m 行&#xff0c;是快递员自行查找的客户与客户之间的距离信息&#xff0c;格式为</p> 
+<blockquote> 
+ <p>客户id1  客户id2  distance</p> 
+</blockquote> 
+<p>在每行数据中&#xff0c;数据与数据之间均以单个空格分隔</p> 
+<p></p> 
+<p>规格&#xff1a;</p> 
+<ul><li>0 &lt; n ≤ 10</li><li>0 ≤ m ≤ 10</li><li>0 &lt; 客户id ≤ 1000</li><li>0 &lt; distance ≤ 10000</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最短路径距离&#xff0c;如无法找到&#xff0c;请输出-1</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 1<br /> 1 1000<br /> 2 1200<br /> 1 2 300</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2500</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>路径1&#xff1a;快递员先把快递送到客户1中&#xff0c;接下来直接走客户1到客户2之间的直通路线&#xff0c;最后走投递站和客户2之间的路&#xff0c;回到投递站&#xff0c;距离为 1000 &#43; 300 &#43; 1200 &#61; 2500</p> <p></p> <p>路径2&#xff1a;快递员先把快递送到客户1手中&#xff0c;接下来回到快递站&#xff0c;再出发把客户2的快递送过去&#xff0c;再回到快递站&#xff0c;距离为 1000 &#43; 1000 &#43; 1200 &#43; 1200 &#61; 4400</p> <p></p> <p>路径3&#xff1a;快递员先把快递送到客户2手中&#xff0c;接下来直接走客户2到客户1之间的直通线路&#xff0c;最后走投递站和客户1之间的路&#xff0c;回到投递站&#xff0c;距离为 1200 &#43; 300 &#43; 1000 &#61; 2500</p> <p></p> <p>其他路径......</p> <p></p> <p>所有路径中&#xff0c;最短路径距离为 2500</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 1<br /> 5 1000<br /> 9 1200<br /> 17 300<br /> 132 700<br /> 500 2300<br /> 5 9 400</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">9200</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">在所有可行的路径中&#xff0c;最短路径长度为 1000 &#43; 400 &#43; 1200 &#43; 300 &#43; 300 &#43; 700 &#43; 700 &#43; 2300 &#43; 2300 &#61; 9200</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>下图中 0节点 代表快递站。</p> 
+<p></p> 
+<p>用例1图示</p> 
+<p><img alt="" height="198" src="https://img-blog.csdnimg.cn/direct/e7581ef9811d422bb913c005c6d9087a.png" width="331" /></p> 
+<p></p> 
+<p>用例2图示</p> 
+<p><img alt="" height="301" src="https://img-blog.csdnimg.cn/direct/8b13e24f20c049318463006f3d79f5e1.png" width="518" /></p> 
+<p></p> 
+<p>本题的原型题应该是&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/135721608?spm&#61;1001.2014.3001.5502" rel="nofollow" title="POJ - 3311 Hie with the Pie&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;-CSDN博客">POJ - 3311 Hie with the Pie&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;-CSDN博客</a></p> 
+<p>具体解析可以参考上面链接博客。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [n, m] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // floyd算法需要基于dist和path矩阵求解
+  //  dist[i][j] 用于记录点 i-&gt;j 的最短距离&#xff0c;初始时等价于邻接矩阵, 对与不直连的两点&#xff0c;距离为无穷大
+  const dist &#61; new Array(n &#43; 1)
+    .fill(0)
+    .map(() &#61;&gt; new Array(n &#43; 1).fill(Infinity));
+
+  // path[i][j] 用于记录点 i-&gt;j 最短距离情况下需要经过的中转点&#xff0c;初始时默认任意两点间无中转点&#xff0c;即默认path[i][j] &#61; -1
+  const path &#61; new Array(n &#43; 1).fill(0).map(() &#61;&gt; new Array(n &#43; 1).fill(-1));
+
+  // 由于本题的客户id不是顺序的&#xff0c;因此这里需要将客户id离散化处理
+  const map &#61; {};
+
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+    const [id, dis] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+    // 离散化处理
+    map[id] &#61; i;
+
+    // 投递站到客户之间的距离distance
+    dist[0][i] &#61; dis;
+    dist[i][0] &#61; dis;
+  }
+
+  for (let i &#61; 1; i &lt;&#61; m; i&#43;&#43;) {
+    const [id1, id2, dis] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+    const i1 &#61; map[id1];
+    const i2 &#61; map[id2];
+
+    // 客户与客户之间的距离信息
+    dist[i1][i2] &#61; dis;
+    dist[i2][i1] &#61; dis;
+  }
+
+  // floyd算法调用
+  floyd();
+
+  // ans记录经过所有点后回到出发点的最短距离
+  let ans &#61; Infinity;
+  // 全排列模拟经过所有点的路径
+  dfs(0, 0, new Array(n &#43; 1).fill(false), 0);
+
+  console.log(ans);
+
+  // floyd算法求解图中任意两点之间的最短路径
+  function floyd() {
+    for (let k &#61; 0; k &lt; n &#43; 1; k&#43;&#43;) {
+      for (let i &#61; 0; i &lt; n &#43; 1; i&#43;&#43;) {
+        for (let j &#61; 0; j &lt; n &#43; 1; j&#43;&#43;) {
+          // newDist是经过k后&#xff0c;i-&gt;j的距离
+          const newDist &#61; dist[i][k] &#43; dist[k][j];
+          // 如果newDist是i-&gt;j的更短路径
+          if (newDist &lt; dist[i][j]) {
+            // 则更新i-&gt;j的最短距离
+            dist[i][j] &#61; newDist;
+            // 且此更短距离需要经过k, path[i][j]即记录 i-&gt;j 最短距离下需要经过点 k
+            path[i][j] &#61; k;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * 找一条经过所有点的最短路径&#xff0c;我们可以求解所有点形成的全排列&#xff0c;每一个全排列都对应一条经过所有点的路径&#xff0c;只是经过点的先后顺序不同 //
+   * 求某个全排列过程中&#xff0c;可以通过dist数组&#xff0c;累计上一个点i到下一个点j的最短路径dist[i][j]
+   *
+   * &#64;param pre 上一个点, 初始为0&#xff0c;表示从快递站出发
+   * &#64;param sum 当前全排列路径累计的路径权重
+   * &#64;param used 全排列used数组&#xff0c;用于标记哪些点已使用过
+   * &#64;param level 用于记录排列的长度
+   */
+  function dfs(pre, sum, used, level) {
+    if (level &#61;&#61; n) {
+      // 此时pre是最后一个客户所在点&#xff0c;送完最后一个客户后&#xff0c;快递员需要回到快递站&#xff0c;因此最终累计路径权重为 sum &#43; dist[pre][0]
+      // 我们保留最小权重路径
+      ans &#61; Math.min(ans, sum &#43; dist[pre][0]);
+      return;
+    }
+
+    for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      if (used[i]) continue;
+
+      used[i] &#61; true;
+      dfs(i, sum &#43; dist[pre][i], used, level &#43; 1);
+      used[i] &#61; false;
+    }
+  }
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  static int n;
+  static int[][] dist;
+  static int[][] path;
+
+  static int ans;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    n &#61; sc.nextInt();
+    int m &#61; sc.nextInt();
+
+    // floyd算法需要基于dist和path矩阵求解
+    // dist[i][j] 用于记录点 i-&gt;j 的最短距离&#xff0c;初始时等价于邻接矩阵
+    dist &#61; new int[n &#43; 1][n &#43; 1];
+    // path[i][j] 用于记录点 i-&gt;j 最短距离情况下需要经过的中转点&#xff0c;初始时默认任意两点间无中转点&#xff0c;即默认path[i][j] &#61; -1
+    path &#61; new int[n &#43; 1][n &#43; 1];
+
+    for (int i &#61; 0; i &lt; n &#43; 1; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n &#43; 1; j&#43;&#43;) {
+        // 初始时默认i,j不相连&#xff0c;即i,j之间距离无穷大
+        if (i !&#61; j) {
+          dist[i][j] &#61; Integer.MAX_VALUE;
+        }
+        path[i][j] &#61; -1;
+      }
+    }
+
+    // 由于本题的客户id不是顺序的&#xff0c;因此这里需要将客户id离散化处理
+    HashMap&lt;Integer, Integer&gt; map &#61; new HashMap&lt;&gt;();
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      int id &#61; sc.nextInt();
+      int dis &#61; sc.nextInt();
+
+      // 离散化处理
+      map.put(id, i);
+
+      // 投递站到客户之间的距离distance
+      dist[0][i] &#61; dis;
+      dist[i][0] &#61; dis;
+    }
+
+    for (int i &#61; 1; i &lt;&#61; m; i&#43;&#43;) {
+      int id1 &#61; sc.nextInt();
+      int id2 &#61; sc.nextInt();
+      int dis &#61; sc.nextInt();
+
+      int i1 &#61; map.get(id1);
+      int i2 &#61; map.get(id2);
+
+      // 客户与客户之间的距离信息
+      dist[i1][i2] &#61; dis;
+      dist[i2][i1] &#61; dis;
+    }
+
+    // floyd算法调用
+    floyd();
+
+    // ans记录经过所有点后回到出发点的最短距离
+    ans &#61; Integer.MAX_VALUE;
+    // 全排列模拟经过所有点的路径
+    dfs(0, 0, new boolean[n &#43; 1], 0);
+
+    System.out.println(ans);
+  }
+
+  // floyd算法求解图中任意两点之间的最短路径
+  public static void floyd() {
+    for (int k &#61; 0; k &lt; n &#43; 1; k&#43;&#43;) {
+      for (int i &#61; 0; i &lt; n &#43; 1; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; n &#43; 1; j&#43;&#43;) {
+          // newDist是经过k后&#xff0c;i-&gt;j的距离
+          int newDist &#61; dist[i][k] &#43; dist[k][j];
+          // 如果newDist是i-&gt;j的更短路径
+          if (newDist &lt; dist[i][j]) {
+            // 则更新i-&gt;j的最短距离
+            dist[i][j] &#61; newDist;
+            // 且此更短距离需要经过k, path[i][j]即记录 i-&gt;j 最短距离下需要经过点 k
+            path[i][j] &#61; k;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * 找一条经过所有点的最短路径&#xff0c;我们可以求解所有点形成的全排列&#xff0c;每一个全排列都对应一条经过所有点的路径&#xff0c;只是经过点的先后顺序不同 //
+   * 求某个全排列过程中&#xff0c;可以通过dist数组&#xff0c;累计上一个点i到下一个点j的最短路径dist[i][j]
+   *
+   * &#64;param pre 上一个点, 初始为0&#xff0c;表示从快递站出发
+   * &#64;param sum 当前全排列路径累计的路径权重
+   * &#64;param used 全排列used数组&#xff0c;用于标记哪些点已使用过
+   * &#64;param level 用于记录排列的长度
+   */
+  public static void dfs(int pre, int sum, boolean[] used, int level) {
+    if (level &#61;&#61; n) {
+      // 此时pre是最后一个客户所在点&#xff0c;送完最后一个客户后&#xff0c;快递员需要回到快递站&#xff0c;因此最终累计路径权重为 sum &#43; dist[pre][0]
+      // 我们保留最小权重路径
+      ans &#61; Math.min(ans, sum &#43; dist[pre][0]);
+      return;
+    }
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      if (used[i]) continue;
+
+      used[i] &#61; true;
+      dfs(i, sum &#43; dist[pre][i], used, level &#43; 1);
+      used[i] &#61; false;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n, m &#61; map(int, input().split())
+
+# floyd算法需要基于dist和path矩阵求解
+# dist[i][j] 用于记录点 i-&gt;j 的最短距离&#xff0c;初始时等价于邻接矩阵
+dist &#61; [[sys.maxsize] * (n &#43; 1) for _ in range(n &#43; 1)]
+# path[i][j] 用于记录点 i-&gt;j 最短距离情况下需要经过的中转点&#xff0c;初始时默认任意两点间无中转点&#xff0c;即默认path[i][j] &#61; -1
+path &#61; [[-1] * (n &#43; 1) for _ in range(n &#43; 1)]
+
+# 由于本题的客户id不是顺序的&#xff0c;因此这里需要将客户id离散化处理
+dic &#61; {}
+
+for i in range(1, n &#43; 1):
+    idx, dis &#61; map(int, input().split())
+
+    # 离散化处理
+    dic[idx] &#61; i
+
+    # 投递站到客户之间的距离distance
+    dist[0][i] &#61; dis
+    dist[i][0] &#61; dis
+
+for i in range(1, m &#43; 1):
+    idx1, idx2, dis &#61; map(int, input().split())
+
+    i1 &#61; dic[idx1]
+    i2 &#61; dic[idx2]
+
+    # 客户与客户之间的距离信息
+    dist[i1][i2] &#61; dis
+    dist[i2][i1] &#61; dis
+
+# ans记录经过所有点后回到出发点的最短距离
+ans &#61; sys.maxsize
+
+
+# floyd算法求解图中任意两点之间的最短路径
+def floyd():
+    for k in range(n &#43; 1):
+        for i in range(n &#43; 1):
+            for j in range(n &#43; 1):
+                # newDist是经过k后&#xff0c;i-&gt;j的距离
+                newDist &#61; dist[i][k] &#43; dist[k][j]
+                # 如果newDist是i-&gt;j的更短路径
+                if newDist &lt; dist[i][j]:
+                    # 则更新i-&gt;j的最短距离
+                    dist[i][j] &#61; newDist
+                    # 且此更短距离需要经过k, path[i][j]即记录 i-&gt;j 最短距离下需要经过点 k
+                    path[i][j] &#61; k
+
+
+def dfs(pre, sumDis, used, level):
+    &#34;&#34;&#34;
+    找一条经过所有点的最短路径&#xff0c;我们可以求解所有点形成的全排列&#xff0c;每一个全排列都对应一条经过所有点的路径&#xff0c;只是经过点的先后顺序不同 //
+    求某个全排列过程中&#xff0c;可以通过dist数组&#xff0c;累计上一个点i到下一个点j的最短路径dist[i][j]
+    :param pre: 上一个点, 初始为0&#xff0c;表示从披萨店出发
+    :param sumDis: 当前全排列路径累计的路径权重
+    :param used: 全排列used数组&#xff0c;用于标记哪些点已使用过
+    :param level: 用于记录排列的长度
+    &#34;&#34;&#34;
+    global ans
+
+    if level &#61;&#61; n:
+        # 此时pre是最后一个客户所在点&#xff0c;送完最后一个客户后&#xff0c;司机需要回到披萨店&#xff0c;因此最终累计路径权重为 sum &#43; dist[pre][0]
+        # 我们保留最小权重路径
+        ans &#61; min(ans, sumDis &#43; dist[pre][0])
+        return
+
+    for i in range(1, n &#43; 1):
+        if used[i]:
+            continue
+
+        used[i] &#61; True
+        dfs(i, sumDis &#43; dist[pre][i], used, level &#43; 1)
+        used[i] &#61; False
+
+
+# 算法入口
+def main():
+    # floyd算法调用
+    floyd()
+
+    # 全排列模拟经过所有点的路径
+    dfs(0, 0, [False] * (n &#43; 1), 0)
+
+    print(ans)
+
+
+# 算法调用
+main()
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+#define MIN(a, b) ((a) &lt; (b) ? (a) : (b))
+
+#define MAX_SIZE 11
+#define MAX_ID 1000
+
+int n;
+int dist[MAX_SIZE][MAX_SIZE];
+int path[MAX_SIZE][MAX_SIZE];
+
+int ans;
+
+
+/**
+   * 找一条经过所有点的最短路径&#xff0c;我们可以求解所有点形成的全排列&#xff0c;每一个全排列都对应一条经过所有点的路径&#xff0c;只是经过点的先后顺序不同 //
+   * 求某个全排列过程中&#xff0c;可以通过dist数组&#xff0c;累计上一个点i到下一个点j的最短路径dist[i][j]
+   *
+   * &#64;param pre 上一个点, 初始为0&#xff0c;表示从披萨店出发
+   * &#64;param sum 当前全排列路径累计的路径权重
+   * &#64;param used 全排列used数组&#xff0c;用于标记哪些点已使用过
+   * &#64;param level 用于记录排列的长度
+   */
+void dfs(int pre, int sum, int used[], int level) {
+    if (level &#61;&#61; n) {
+        // 此时pre是最后一个客户所在点&#xff0c;送完最后一个客户后&#xff0c;司机需要回到披萨店&#xff0c;因此最终累计路径权重为 sum &#43; dist[pre][0]
+        // 我们保留最小权重路径
+        ans &#61; MIN(ans, sum &#43; dist[pre][0]);
+        return;
+    }
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        if (used[i]) continue;
+
+        used[i] &#61; 1;
+        dfs(i, sum &#43; dist[pre][i], used, level &#43; 1);
+        used[i] &#61; 0;
+    }
+}
+
+// floyd算法求解图中任意两点之间的最短路径
+void floyd() {
+    for (int k &#61; 0; k &lt; n &#43; 1; k&#43;&#43;) {
+        for (int i &#61; 0; i &lt; n &#43; 1; i&#43;&#43;) {
+            for (int j &#61; 0; j &lt; n &#43; 1; j&#43;&#43;) {
+                // newDist是经过k后&#xff0c;i-&gt;j的距离
+                int newDist &#61; dist[i][k] &#43; dist[k][j];
+                // 如果newDist是i-&gt;j的更短路径
+                if (newDist &lt; dist[i][j]) {
+                    // 则更新i-&gt;j的最短距离
+                    dist[i][j] &#61; newDist;
+                    // 且此更短距离需要经过k, path[i][j]即记录 i-&gt;j 最短距离下需要经过点 k
+                    path[i][j] &#61; k;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int m;
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    for (int i &#61; 0; i &lt; n &#43; 1; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; n &#43; 1; j&#43;&#43;) {
+            // 初始时默认i,j不相连&#xff0c;即i,j之间距离无穷大
+            if (i !&#61; j) {
+                dist[i][j] &#61; INT_MAX;
+            }
+            path[i][j] &#61; -1;
+        }
+    }
+
+    // 由于本题的客户id不是顺序的&#xff0c;因此这里需要将客户id离散化处理
+    int map[MAX_ID];
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        int id, dis;
+        scanf(&#34;%d %d&#34;, &amp;id, &amp;dis);
+
+        // 离散化处理
+        map[id] &#61; i;
+
+        // 投递站到客户之间的距离distance
+        dist[0][i] &#61; dis;
+        dist[i][0] &#61; dis;
+    }
+
+    for (int i &#61; 1; i &lt;&#61; m; i&#43;&#43;) {
+        int id1, id2, dis;
+        scanf(&#34;%d %d %d&#34;, &amp;id1, &amp;id2, &amp;dis);
+
+        int i1 &#61; map[id1];
+        int i2 &#61; map[id2];
+
+        // 客户与客户之间的距离信息
+        dist[i1][i2] &#61; dis;
+        dist[i2][i1] &#61; dis;
+    }
+
+    // floyd算法调用
+    floyd();
+
+    // ans记录经过所有点后回到出发点的最短距离
+    ans &#61; INT_MAX;
+
+    // 全排列模拟经过所有点的路径
+    int used[MAX_SIZE] &#61; {0};
+    dfs(0, 0, used, 0);
+
+    printf(&#34;%d\n&#34;, ans);
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

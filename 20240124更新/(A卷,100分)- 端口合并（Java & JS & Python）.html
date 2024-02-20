@@ -1,0 +1,567 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 端口合并（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有M个端口组(1&lt;&#61;M&lt;&#61;10)&#xff0c;<br /> 每个端口组是长度为N的整数数组(1&lt;&#61;N&lt;&#61;100)&#xff0c;<br /> 如果端口组间存在2个及以上不同端口相同&#xff0c;则认为这2个端口组互相关联&#xff0c;可以合并。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入端口组个数M&#xff0c;再输入M行&#xff0c;每行逗号分割&#xff0c;代表端口组。</p> 
+<p>备注&#xff1a;端口组内数字可以重复。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出合并后的端口组&#xff0c;用二维数组表示。</p> 
+<ul><li>组内相同端口仅保留一个&#xff0c;从小到达排序。</li><li>组外顺序保持输入顺序</li></ul> 
+<p>备注&#xff1a;M,N不在限定范围内&#xff0c;统一输出一组空数组[[]]</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 4<br /> 2,3,2<br /> 1,2<br /> 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[[4],[2,3],[1,2],[5]]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">仅有一个端口2相同&#xff0c;不可以合并。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 2,3,1<br /> 4,3,2<br /> 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[[1,2,3,4],[5]]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6<br /> 10<br /> 4,2,1<br /> 9<br /> 3,6,9,2<br /> 6,3,4<br /> 8</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">[[10],[1,2,3,4,6,9],[9],[8]]</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;">11</td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">[[]]</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题有一个疑点&#xff1a;</p> 
+<blockquote> 
+ <p>如果端口组间存在2个及以上<span style="color:#fe2c24;">不同端口</span>相同&#xff0c;则认为这2个端口组互相关联&#xff0c;可以合并。</p> 
+</blockquote> 
+<p>那就是上面这句话中“不同端口”指的是什么&#xff1f;</p> 
+<p></p> 
+<p>比如下面用例中两个端口组都有端口3 3&#xff0c;那么是否可以合并呢&#xff1f;</p> 
+<blockquote> 
+ <p>2<br /> 3 3 5<br /> 1 3 3</p> 
+</blockquote> 
+<p>我们假设 a &#61; [3,3,5]&#xff0c;b &#61; [1,3,3]&#xff0c;那么a[0]和b[1]相同&#xff0c;a[1]和b[2]相同&#xff0c;这种端口所在位置不同&#xff0c;但是端口值相同的&#xff0c;是否也能算2个不同端口相同呢&#xff1f;</p> 
+<p></p> 
+<p>这里搞不清楚&#xff0c;就会产生两种解题思路&#xff1a;</p> 
+<p>1、两个端口组&#xff0c;如果可以形成2对端口值相同的端口对&#xff0c;那么也可以合并</p> 
+<p>2、两个端口组&#xff0c;只有形成2对端口值不同的端口对&#xff0c;那么才可以合并</p> 
+<p></p> 
+<h3>如果能形成2个端口值相同的端口对&#xff0c;那么也可以合并</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    m &#61; lines[0] - 0;
+
+    // M,N不在限定范围内&#xff0c;统一输出一组空数组[[]]
+    if (m &gt; 10 || m &lt; 1) {
+      console.log(&#34;[[]]&#34;);
+      lines.length &#61; 0;
+      return;
+    }
+  }
+
+  if (m &amp;&amp; lines.length &#61;&#61;&#61; m &#43; 1) {
+    lines.shift();
+    const ports &#61; lines.map((line) &#61;&gt; line.split(&#34;,&#34;).map(Number));
+
+    for (let port of ports) {
+      const n &#61; port.length;
+      // M,N不在限定范围内&#xff0c;统一输出一组空数组[[]]
+      if (n &lt; 1 || n &gt; 100) {
+        console.log(&#34;[[]]&#34;);
+        lines.length &#61; 0;
+        return;
+      }
+    }
+
+    console.log(getResult(ports));
+    lines.length &#61; 0;
+  }
+});
+
+// 算法入口
+function getResult(ports) {
+  outer: while (true) {
+    // 这里倒序遍历端口组是为了实现&#xff1a;组外顺序保持输入顺序
+    for (let i &#61; ports.length - 1; i &gt;&#61; 0; i--) {
+      for (let j &#61; i - 1; j &gt;&#61; 0; j--) {
+        // 判断两个端口是否可以合并
+        if (canUnion(ports[i], ports[j])) {
+          // 将后面的端口组&#xff0c;并入前面的端口组&#xff0c;这样就不会破坏组外顺序
+          ports[j].push(...ports[i]);
+          ports.splice(i, 1);
+          continue outer;
+        }
+      }
+    }
+    break;
+  }
+
+  const ans &#61; ports.map((port) &#61;&gt; [...new Set(port)].sort((a, b) &#61;&gt; a - b));
+  return JSON.stringify(ans);
+}
+
+// 如果端口组间存在2个及以上不同端口相同&#xff0c;则认为这2个端口组互相关联&#xff0c;可以合并。
+// 下面方法实现中&#xff1a;对于“不同端口”的理解是&#xff1a;端口位置不同&#xff0c;端口值可以相同&#xff0c;即以不同位置的端口视为不同端口
+function canUnion(port1, port2) {
+  port1.sort((a, b) &#61;&gt; a - b);
+  port2.sort((a, b) &#61;&gt; a - b);
+
+  let same &#61; 0;
+  let i &#61; 0;
+  let j &#61; 0;
+
+  while (i &lt; port1.length &amp;&amp; j &lt; port2.length) {
+    if (port1[i] &#61;&#61; port2[j]) {
+      i&#43;&#43;;
+      j&#43;&#43;;
+      if (&#43;&#43;same &gt;&#61; 2) return true;
+    } else if (port1[i] &gt; port2[j]) {
+      j&#43;&#43;;
+    } else {
+      i&#43;&#43;;
+    }
+  }
+
+  return false;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; Integer.parseInt(sc.nextLine());
+
+    // M,N不在限定范围内&#xff0c;统一输出一组空数组[[]]
+    if (m &gt; 10 || m &lt; 1) {
+      System.out.println(&#34;[[]]&#34;);
+      return;
+    }
+
+    // 这里使用ArrayList接收端口组&#xff0c;是为了后面更方便进行端口组之间的合并
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ports &#61; new ArrayList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      Integer[] tmp &#61;
+          Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+      // M,N不在限定范围内&#xff0c;统一输出一组空数组[[]]
+      int n &#61; tmp.length;
+      if (n &lt; 1 || n &gt; 100) {
+        System.out.println(&#34;[[]]&#34;);
+        return;
+      }
+
+      ArrayList&lt;Integer&gt; tmpList &#61; new ArrayList&lt;&gt;(Arrays.asList(tmp));
+      ports.add(tmpList);
+    }
+
+    System.out.println(getResult(ports));
+  }
+
+  // 算法入口
+  public static String getResult(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ports) {
+    outer:
+    while (true) {
+      // 这里倒序遍历端口组是为了实现&#xff1a;组外顺序保持输入顺序
+      for (int i &#61; ports.size() - 1; i &gt;&#61; 0; i--) {
+        for (int j &#61; i - 1; j &gt;&#61; 0; j--) {
+
+          // 判断两个端口是否可以合并
+          if (canUnion(ports.get(i), ports.get(j))) {
+            // 将后面的端口组&#xff0c;并入前面的端口组&#xff0c;这样就不会破坏组外顺序
+            ports.get(j).addAll(ports.get(i));
+            ports.remove(i);
+            continue outer;
+          }
+        }
+      }
+
+      break;
+    }
+
+    StringJoiner out &#61; new StringJoiner(&#34;,&#34;, &#34;[&#34;, &#34;]&#34;);
+    for (ArrayList&lt;Integer&gt; port : ports) {
+      StringJoiner in &#61; new StringJoiner(&#34;,&#34;, &#34;[&#34;, &#34;]&#34;);
+      for (Integer v : new TreeSet&lt;Integer&gt;(port)) { // 这里使用TreeSet是为了实现&#xff1a;组内相同端口仅保留一个&#xff0c;从小到达排序。
+        in.add(v &#43; &#34;&#34;);
+      }
+      out.add(in.toString());
+    }
+
+    return out.toString();
+  }
+
+  // 如果端口组间存在2个及以上不同端口相同&#xff0c;则认为这2个端口组互相关联&#xff0c;可以合并。
+  // 下面方法实现中&#xff1a;对于“不同端口”的理解是&#xff1a;端口位置不同&#xff0c;端口值可以相同&#xff0c;即以不同位置的端口视为不同端口
+  public static boolean canUnion(ArrayList&lt;Integer&gt; port1, ArrayList&lt;Integer&gt; port2) {
+    port1.sort((a, b) -&gt; a - b);
+    port2.sort((a, b) -&gt; a - b);
+
+    int same &#61; 0;
+    int i &#61; 0;
+    int j &#61; 0;
+
+    while (i &lt; port1.size() &amp;&amp; j &lt; port2.size()) {
+      if (port1.get(i) - port2.get(j) &#61;&#61; 0) {
+        i&#43;&#43;;
+        j&#43;&#43;;
+        if (&#43;&#43;same &gt;&#61; 2) return true;
+      } else if (port1.get(i) &gt; port2.get(j)) {
+        j&#43;&#43;;
+      } else {
+        i&#43;&#43;;
+      }
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 如果端口组间存在2个及以上不同端口相同&#xff0c;则认为这2个端口组互相关联&#xff0c;可以合并。
+# 下面方法实现中&#xff1a;对于“不同端口”的理解是&#xff1a;端口位置不同&#xff0c;端口值可以相同&#xff0c;即以不同位置的端口视为不同端口
+def canUnion(port1, port2):
+    port1.sort()
+    port2.sort()
+
+    same &#61; 0
+    i &#61; 0
+    j &#61; 0
+
+    while i &lt; len(port1) and j &lt; len(port2):
+        if port1[i] &#61;&#61; port2[j]:
+            i &#43;&#61; 1
+            j &#43;&#61; 1
+            same &#43;&#61; 1
+            if same &gt;&#61; 2:
+                return True
+        elif port1[i] &gt; port2[j]:
+            j &#43;&#61; 1
+        else:
+            i &#43;&#61; 1
+
+    return False
+
+
+# 从头开始尝试合并端口组
+def forPorts(ports):
+    # 这里倒序遍历端口组是为了实现&#xff1a;组外顺序保持输入顺序
+    for i in range(len(ports) - 1, -1, -1):
+        for j in range(i - 1, -1, -1):
+            # 判断两个端口是否可以合并
+            if canUnion(ports[i], ports[j]):
+                # 将后面的端口组&#xff0c;并入前面的端口组&#xff0c;这样就不会破坏组外顺序
+                ports[j].extend(ports[i])
+                ports.pop(i)
+                return True  # 继续尝试合并
+
+    return False  # 合并尝试结束
+
+
+# 组内相同端口仅保留一个&#xff0c;从小到达排序
+def distinctAndSort(port):
+    tmp &#61; list(set(port))
+    tmp.sort()
+    return tmp
+
+
+# 算法入口
+def getResult(ports):
+    while True:
+        if not forPorts(ports):
+            break
+
+    # return list(map(distinctAndSort, ports)) # 如果输出内容不去除空格&#xff0c;可得83.33%通过率
+    return re.sub(f&#34;\\s&#34;, &#34;&#34;, str(list(map(distinctAndSort, ports))))
+
+
+# 输入获取
+m &#61; int(input())
+
+if m &lt; 1 or m &gt; 10:
+    print(&#34;[[]]&#34;)
+else:
+    ports &#61; [list(map(int, input().split(&#34;,&#34;))) for _ in range(m)]
+    if len(list(filter(lambda p: len(p) &lt; 1 or len(p) &gt; 100, ports))) &gt; 0:
+        print(&#34;[[]]&#34;)
+    else:
+        print(getResult(ports))
+</code></pre> 
+<p></p> 
+<h3>只有形成2对端口值不同的端口对&#xff0c;那么才可以合并</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; Integer.parseInt(sc.nextLine());
+
+    // M,N不在限定范围内&#xff0c;统一输出一组空数组[[]]
+    if (m &gt; 10 || m &lt; 1) {
+      System.out.println(&#34;[[]]&#34;);
+      return;
+    }
+
+    // 这里使用ArrayList接收端口组&#xff0c;是为了后面更方便进行端口组之间的合并
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ports &#61; new ArrayList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      Integer[] tmp &#61;
+          Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+      // M,N不在限定范围内&#xff0c;统一输出一组空数组[[]]
+      int n &#61; tmp.length;
+      if (n &lt; 1 || n &gt; 100) {
+        System.out.println(&#34;[[]]&#34;);
+        return;
+      }
+
+      ArrayList&lt;Integer&gt; tmpList &#61; new ArrayList&lt;&gt;(Arrays.asList(tmp));
+      ports.add(tmpList);
+    }
+
+    System.out.println(getResult(ports));
+  }
+
+  // 算法入口
+  public static String getResult(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ports) {
+    outer:
+    while (true) {
+      // 这里倒序遍历端口组是为了实现&#xff1a;组外顺序保持输入顺序
+      for (int i &#61; ports.size() - 1; i &gt;&#61; 0; i--) {
+        for (int j &#61; i - 1; j &gt;&#61; 0; j--) {
+
+          // 判断两个端口是否可以合并
+          if (canUnion(ports.get(i), ports.get(j))) {
+            // 将后面的端口组&#xff0c;并入前面的端口组&#xff0c;这样就不会破坏组外顺序
+            ports.get(j).addAll(ports.get(i));
+            ports.remove(i);
+            continue outer;
+          }
+        }
+      }
+
+      break;
+    }
+
+    StringJoiner out &#61; new StringJoiner(&#34;,&#34;, &#34;[&#34;, &#34;]&#34;);
+    for (ArrayList&lt;Integer&gt; port : ports) {
+      StringJoiner in &#61; new StringJoiner(&#34;,&#34;, &#34;[&#34;, &#34;]&#34;);
+      for (Integer v : new TreeSet&lt;Integer&gt;(port)) { // 这里使用TreeSet是为了实现&#xff1a;组内相同端口仅保留一个&#xff0c;从小到达排序。
+        in.add(v &#43; &#34;&#34;);
+      }
+      out.add(in.toString());
+    }
+
+    return out.toString();
+  }
+
+  // 如果端口组间存在2个及以上不同端口相同&#xff0c;则认为这2个端口组互相关联&#xff0c;可以合并。
+  // 下面方法实现中&#xff1a;要形成两对“端口值不同的端口对”&#xff0c;即 a &#61; [1,2,3]&#xff0c;b&#61;[2,3,4]可以合并&#xff0c;但是a &#61; [1,3,3]&#xff0c;b&#61;[3,3,4]不可以合并
+  public static boolean canUnion(ArrayList&lt;Integer&gt; port1, ArrayList&lt;Integer&gt; port2) {
+    HashSet&lt;Integer&gt; set1 &#61; new HashSet&lt;&gt;(port1);
+    HashSet&lt;Integer&gt; set2 &#61; new HashSet&lt;&gt;(port2);
+
+    int same &#61; 0;
+    for (Integer v1 : set1) {
+      if (set2.contains(v1)) {
+        if (&#43;&#43;same &gt;&#61; 2) return true;
+      }
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    m &#61; lines[0] - 0;
+
+    // M,N不在限定范围内&#xff0c;统一输出一组空数组[[]]
+    if (m &gt; 10 || m &lt; 1) {
+      console.log(&#34;[[]]&#34;);
+      lines.length &#61; 0;
+      return;
+    }
+  }
+
+  if (m &amp;&amp; lines.length &#61;&#61;&#61; m &#43; 1) {
+    lines.shift();
+    const ports &#61; lines.map((line) &#61;&gt; line.split(&#34;,&#34;).map(Number));
+
+    for (let port of ports) {
+      const n &#61; port.length;
+      // M,N不在限定范围内&#xff0c;统一输出一组空数组[[]]
+      if (n &lt; 1 || n &gt; 100) {
+        console.log(&#34;[[]]&#34;);
+        lines.length &#61; 0;
+        return;
+      }
+    }
+
+    console.log(getResult(ports));
+    lines.length &#61; 0;
+  }
+});
+
+// 算法入口
+function getResult(ports) {
+  outer: while (true) {
+    // 这里倒序遍历端口组是为了实现&#xff1a;组外顺序保持输入顺序
+    for (let i &#61; ports.length - 1; i &gt;&#61; 0; i--) {
+      for (let j &#61; i - 1; j &gt;&#61; 0; j--) {
+        // 判断两个端口是否可以合并
+        if (canUnion(ports[i], ports[j])) {
+          // 将后面的端口组&#xff0c;并入前面的端口组&#xff0c;这样就不会破坏组外顺序
+          ports[j].push(...ports[i]);
+          ports.splice(i, 1);
+          continue outer;
+        }
+      }
+    }
+    break;
+  }
+
+  const ans &#61; ports.map((port) &#61;&gt; [...new Set(port)].sort((a, b) &#61;&gt; a - b));
+  return JSON.stringify(ans);
+}
+
+// 如果端口组间存在2个及以上不同端口相同&#xff0c;则认为这2个端口组互相关联&#xff0c;可以合并。
+// 下面方法实现中&#xff1a;要形成两对“端口值不同的端口对”&#xff0c;即 a &#61; [1,2,3]&#xff0c;b&#61;[2,3,4]可以合并&#xff0c;但是a &#61; [1,3,3]&#xff0c;b&#61;[3,3,4]不可以合并
+function canUnion(port1, port2) {
+  const set1 &#61; new Set(port1);
+  const set2 &#61; new Set(port2);
+
+  let same &#61; 0;
+  for (let v1 of set1) {
+    if (set2.has(v1)) {
+      if (&#43;&#43;same &gt;&#61; 2) return true;
+    }
+  }
+
+  return false;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 如果端口组间存在2个及以上不同端口相同&#xff0c;则认为这2个端口组互相关联&#xff0c;可以合并。
+# 下面方法实现中&#xff1a;要形成两对“端口值不同的端口对”&#xff0c;即 a &#61; [1,2,3]&#xff0c;b&#61;[2,3,4]可以合并&#xff0c;但是a &#61; [1,3,3]&#xff0c;b&#61;[3,3,4]不可以合并
+def canUnion(port1, port2):
+    set1 &#61; set(port1)
+    set2 &#61; set(port2)
+
+    same &#61; 0
+    for v in set1:
+        if v in set2:
+            same &#43;&#61; 1
+            if same &gt;&#61; 2:
+                return True
+
+    return False
+
+
+# 从头开始尝试合并端口组
+def forPorts(ports):
+    # 这里倒序遍历端口组是为了实现&#xff1a;组外顺序保持输入顺序
+    for i in range(len(ports) - 1, -1, -1):
+        for j in range(i - 1, -1, -1):
+            # 判断两个端口是否可以合并
+            if canUnion(ports[i], ports[j]):
+                # 将后面的端口组&#xff0c;并入前面的端口组&#xff0c;这样就不会破坏组外顺序
+                ports[j].extend(ports[i])
+                ports.pop(i)
+                return True  # 继续尝试合并
+
+    return False  # 合并尝试结束
+
+
+# 组内相同端口仅保留一个&#xff0c;从小到达排序
+def distinctAndSort(port):
+    tmp &#61; list(set(port))
+    tmp.sort()
+    return tmp
+
+
+# 算法入口
+def getResult(ports):
+    while True:
+        if not forPorts(ports):
+            break
+
+    # return list(map(distinctAndSort, ports))
+    return re.sub(f&#34;\\s&#34;, &#34;&#34;, str(list(map(distinctAndSort, ports))))
+
+
+# 输入获取
+m &#61; int(input())
+
+if m &lt; 1 or m &gt; 10:
+    print(&#34;[[]]&#34;)
+else:
+    ports &#61; [list(map(int, input().split(&#34;,&#34;))) for _ in range(m)]
+    if len(list(filter(lambda p: len(p) &lt; 1 or len(p) &gt; 100, ports))) &gt; 0:
+        print(&#34;[[]]&#34;)
+    else:
+        print(getResult(ports))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

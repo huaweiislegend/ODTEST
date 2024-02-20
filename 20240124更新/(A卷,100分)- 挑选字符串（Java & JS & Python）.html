@@ -1,0 +1,193 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 挑选字符串（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定a-z&#xff0c;26个英文字母小写字符串组成的字符串A和B&#xff0c;其中A可能存在重复字母&#xff0c;B不会存在重复字母&#xff0c;现从字符串A中按规则挑选一些字母可以组成字符串B。</p> 
+<p>挑选规则如下&#xff1a;</p> 
+<ul><li>同一个位置的字母只能挑选一次&#xff0c;</li><li>被挑选字母的相对先后顺序不能被改变&#xff0c;</li><li>求最多可以同时从A中挑选多少组能组成B的字符串。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为2行&#xff0c;第一行输入字符串a,第二行输入字符串b&#xff0c;行首行尾<strong>没有多余空格</strong></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一行&#xff0c;包含一个数字&#xff0c;表示最多可以同时从a中挑选多少组能组成b的字符串&#xff0c;行末没有多余空格</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">badc<br /> bac</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题求解可以参考</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/128046193?spm&#61;1001.2014.3001.5501" title="LeetCode - 1419 数青蛙_伏城之外的博客-CSDN博客">LeetCode - 1419 数青蛙_伏城之外的博客-CSDN博客</a></p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/128025593?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522167071715816782390557565%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;167071715816782390557565&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-1-128025593-null-null.nonecase&amp;utm_term&#61;%E6%95%B0%E5%A4%A7%E9%9B%81&amp;spm&#61;1018.2226.3001.4450" title="华为机试 - 数大雁_伏城之外的博客-CSDN博客">华为机试 - 数大雁_伏城之外的博客-CSDN博客</a></p> 
+<p>题目的用例不能说明问题&#xff0c;我们可以通过下面用例</p> 
+<blockquote> 
+ <p>bbadcbacdaccccbac<br /> bac</p> 
+</blockquote> 
+<p><img alt="" height="206" src="https://img-blog.csdnimg.cn/f050f243d6b7498ea05d46e8a809fc36.png" width="1092" /></p> 
+<p><img alt="" height="215" src="https://img-blog.csdnimg.cn/b472be0db2ae4661b6068fe5f85edf60.png" width="1080" /></p> 
+<p><img alt="" height="179" src="https://img-blog.csdnimg.cn/cde01ad4d24049fbbf9f3305fc4e64e5.png" width="1086" /></p> 
+<p> <img alt="" height="179" src="https://img-blog.csdnimg.cn/61ba3897e0bc4d1d87111c926417ee1e.png" width="1098" /></p> 
+<p><img alt="" height="181" src="https://img-blog.csdnimg.cn/3d912d307202429d89b144803585130a.png" width="1100" /> <img alt="" height="174" src="https://img-blog.csdnimg.cn/10649af2bf27438ebe6d25f9f2315b2f.png" width="1106" /></p> 
+<p> <img alt="" height="177" src="https://img-blog.csdnimg.cn/d938a2f991574c96ba0b9b1cef9eb22c.png" width="1063" /></p> 
+<p><img alt="" height="162" src="https://img-blog.csdnimg.cn/bd417720d7e644c4ac3b22e688ec6134.png" width="1067" /> <img alt="" height="170" src="https://img-blog.csdnimg.cn/3fdbb54b86d7499fab79b1f3369989e9.png" width="1067" /></p> 
+<p><img alt="" height="172" src="https://img-blog.csdnimg.cn/b6620a085d284fffab96abdc237f1724.png" width="1070" /> <img alt="" height="162" src="https://img-blog.csdnimg.cn/c5bb78246b404f31b113346d50f5b7d6.png" width="1068" /></p> 
+<p><img alt="" height="161" src="https://img-blog.csdnimg.cn/ec8cd1b6c8d64b54b7a81117a9556601.png" width="1072" /> <img alt="" height="185" src="https://img-blog.csdnimg.cn/6e12f47160ba41f9b1827e22dfff953e.png" width="1079" /></p> 
+<p> 注意&#xff1a;统计时&#xff0c;a的数量应该小于等于b的数量&#xff0c;c的数量应该小于等于a的数量&#xff0c;这样才能满足顺序要求&#xff1a;</p> 
+<blockquote> 
+ <p>被挑选字母的相对先后顺序不能被改变</p> 
+</blockquote> 
+<p>因此上面这步统计到的c不应该被计入。</p> 
+<p> <img alt="" height="180" src="https://img-blog.csdnimg.cn/a704d71247304775be20edc7962ecc0f.png" width="1075" /></p> 
+<p> <img alt="" height="174" src="https://img-blog.csdnimg.cn/db5bcf5bb19f4c4ab72cf634bda2e458.png" width="1070" /></p> 
+<p> <img alt="" height="174" src="https://img-blog.csdnimg.cn/f7346e8b87b3408982b3f34b4cac0f6f.png" width="1079" /></p> 
+<p><img alt="" height="171" src="https://img-blog.csdnimg.cn/f732ec6e22d9463f87bf84f832ff9a63.png" width="1079" /> <img alt="" height="159" src="https://img-blog.csdnimg.cn/2e1fc1681dc84d6e92f871eb816ddb32.png" width="1076" /></p> 
+<p>由于c &lt;&#61; b &lt;&#61; a&#xff0c;因此有几个c&#xff0c;字符串a中就能挑选出几个字符串b。  </p> 
+<p></p> 
+<p>上面算法只需要一次遍历&#xff0c;即可完成题解&#xff0c;时间复杂度O&#xff08;n&#xff09;</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    console.log(getResult(lines[0], lines[1]));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(a, b) {
+  // idxs对象记录字符串b中每个字符的索引
+  const idxs &#61; {};
+  for (let i &#61; 0; i &lt; b.length; i&#43;&#43;) {
+    idxs[b[i]] &#61; i;
+  }
+
+  // count对象用于记录遍历字符串a每个字符串过程中&#xff0c;统计到的符合顺序要求的字符串b中字符出现次数
+  const count &#61; new Array(b.length).fill(0);
+
+  for (let c of a) {
+    const idx &#61; idxs[c];
+    // 下面判断逻辑请看图解
+    if (idx !&#61;&#61; undefined &amp;&amp; (idx &#61;&#61;&#61; 0 || count[idx] &lt; count[idx - 1])) {
+      count[idx]&#43;&#43;;
+    }
+  }
+
+  return count.at(-1);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String a &#61; sc.next();
+    String b &#61; sc.next();
+
+    System.out.println(getResult(a, b));
+  }
+
+  public static int getResult(String a, String b) {
+    // idxs对象记录字符串b中每个字符的索引
+    HashMap&lt;Character, Integer&gt; idxs &#61; new HashMap&lt;&gt;();
+    for (int i &#61; 0; i &lt; b.length(); i&#43;&#43;) {
+      Character c &#61; b.charAt(i);
+      idxs.put(c, i); // B不会存在重复字母
+    }
+
+    // count对象用于记录遍历字符串a每个字符串过程中&#xff0c;统计到的符合顺序要求的字符串b中字符出现次数
+    int[] count &#61; new int[b.length()];
+    for (int i &#61; 0; i &lt; a.length(); i&#43;&#43;) {
+      Character c &#61; a.charAt(i);
+
+      if (idxs.containsKey(c)) {
+        int idx &#61; idxs.get(c);
+        // 下面判断逻辑请看图解
+        if (idx &#61;&#61; 0 || count[idx] &lt; count[idx - 1]) {
+          count[idx]&#43;&#43;;
+        }
+      }
+    }
+
+    return count[count.length - 1];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+a &#61; input()
+b &#61; input()
+
+
+# 算法入口
+def getResult(a, b):
+    # idxs对象记录字符串b中每个字符的索引
+    idxs &#61; {}
+    for i in range(len(b)):
+        idxs[b[i]] &#61; i
+
+    # count对象用于记录遍历字符串a每个字符串过程中&#xff0c;统计到的符合顺序要求的字符串b中字符出现次数
+    count &#61; [0] * len(b)
+    for c in a:
+        idx &#61; idxs.get(c)
+
+        # 下面判断逻辑请看图解
+        if idx is not None and (idx &#61;&#61; 0 or count[idx] &lt; count[idx - 1]):
+            count[idx] &#43;&#61; 1
+
+    return count[-1]
+
+
+# 算法调用
+print(getResult(a, b))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

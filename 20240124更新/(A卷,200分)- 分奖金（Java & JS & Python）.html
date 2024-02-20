@@ -1,0 +1,318 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 分奖金（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>公司老板做了一笔大生意&#xff0c;想要给每位员工分配一些奖金&#xff0c;想通过游戏的方式来决定每个人分多少钱。<br /> 按照员工的工号顺序&#xff0c;每个人随机抽取一个数字。<br /> 按照工号的顺序往后排列&#xff0c;遇到第一个数字比自己数字大的&#xff0c;那么&#xff0c;前面的员工就可以获得“距离*数字差值”的奖金。<br /> 如果遇不到比自己数字大的&#xff0c;就给自己分配随机数数量的奖金。<br /> 例如&#xff0c;按照工号顺序的随机数字是&#xff1a;2,10,3。<br /> 那么第2个员工的数字10比第1个员工的数字2大&#xff0c;<br /> 所以&#xff0c;第1个员工可以获得1*&#xff08;10-2&#xff09;&#61;8。第2个员工后面没有比他数字更大的员工&#xff0c;<br /> 所以&#xff0c;他获得他分配的随机数数量的奖金&#xff0c;就是10。<br /> 第3个员工是最后一个员工&#xff0c;后面也没有比他更大数字的员工&#xff0c;所以他得到的奖金是3。</p> 
+<p>请帮老板计算一下每位员工最终分到的奖金都是多少钱。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行n表示员工数量&#xff08;包含最后一个老板&#xff09;<br /> 第二是每位员工分配的随机数字</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最终每位员工分到的奖金数量</p> 
+<p></p> 
+<p>注&#xff1a;随机数字不重复&#xff0c;员工数量&#xff08;包含老板&#xff09;范围1~10000&#xff0c;随机数范围1~100000</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 2 10 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">8 10 3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题最简单的思路是双重for&#xff0c;但是时间复杂度是O(m^2)&#xff0c;而m取值1~10000&#xff0c;这个数量级非常有可能超时。</p> 
+<p>因此我们需要考虑更优的解法&#xff1a;</p> 
+<p>上面算法其实就是找每个数组元素的下一个更大值&#xff0c;因此可以参考</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127342018?spm&#61;1001.2014.3001.5501" title="华为机试 - 找朋友_伏城之外的博客-CSDN博客_找朋友算法">华为机试 - 找朋友_伏城之外的博客-CSDN博客_找朋友算法</a></p> 
+<p>的解题思路&#xff0c;利用栈结构通过O(n)时间&#xff0c;找出数组每一个元素的下一个更大值。</p> 
+<p></p> 
+<h3>暴力解法&#xff08;100%通过&#xff09;</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+
+    int[] arr &#61; new int[m];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      arr[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(arr, m));
+  }
+
+  public static String getResult(int[] arr, int m) {
+    ArrayList&lt;Integer&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    outer:
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; i &#43; 1; j &lt; m; j&#43;&#43;) {
+        if (arr[j] &gt; arr[i]) {
+          ans.add((j - i) * (arr[j] - arr[i]));
+          continue outer;
+        }
+      }
+      ans.add(arr[i]);
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (Integer an : ans) sj.add(an &#43; &#34;&#34;);
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const m &#61; lines[0] - 0;
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(arr, m));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, m) {
+  const ans &#61; [];
+
+  outter: for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    for (let j &#61; i &#43; 1; j &lt; m; j&#43;&#43;) {
+      if (arr[j] &gt; arr[i]) {
+        ans.push((j-i) * (arr[j] - arr[i])); // 距离 * 数字差值
+        continue outter;
+      }
+    }
+    ans.push(arr[i]);
+  }
+
+  return ans.join(&#34; &#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(arr, m):
+    ans &#61; []
+    for i in range(m):
+        flag &#61; True
+        for j in range(i&#43;1, m):
+            if arr[j] &gt; arr[i]:
+                flag &#61; False
+                ans.append((j-i) * (arr[j] - arr[i]))
+                break
+
+        if flag:
+            ans.append(arr[i])
+
+    return &#34; &#34;.join(map(str, ans))
+
+
+# 算法调用
+print(getResult(arr, m))
+</code></pre> 
+<p></p> 
+<h3>单调栈解法</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const m &#61; lines[0] - 0;
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(arr, m));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, m) {
+  const stack &#61; [];
+  const nextBigger &#61; new Array(m).fill(-1);
+
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    while (stack.length) {
+      const [idx, val] &#61; stack.at(-1);
+      if (arr[i] &gt; val) {
+        stack.pop();
+        nextBigger[idx] &#61; i;
+      } else {
+        break;
+      }
+    }
+    stack.push([i, arr[i]]);
+  }
+
+  const ans &#61; [];
+
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    const idx &#61; nextBigger[i];
+
+    if (idx &#61;&#61;&#61; -1) {
+      ans.push(arr[i]);
+    } else {
+      ans.push((idx - i) * (arr[idx] - arr[i])); // 距离 * 数字差值
+    }
+  }
+
+  return ans.join(&#34; &#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc &#61; new Scanner(System.in);
+
+        int m &#61; sc.nextInt();
+
+        int[] arr &#61; new int[m];
+        for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+            arr[i] &#61; sc.nextInt();
+        }
+
+        System.out.println(getResult(arr, m));
+    }
+
+    public static String getResult(int[] arr, int m) {
+        LinkedList&lt;Integer[]&gt; stack &#61; new LinkedList&lt;&gt;();
+        Integer[] nextBigger &#61; new Integer[m];
+        Arrays.fill(nextBigger, -1);
+
+        for (int i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+            while (stack.size() &gt; 0) {
+                Integer[] top &#61; stack.peek();
+                int idx &#61; top[0];
+                int val &#61; top[1];
+
+                if (arr[i] &gt; val) {
+                    stack.pop();
+                    nextBigger[idx] &#61; i;
+                } else {
+                    break;
+                }
+            }
+
+            Integer[] ele &#61; {i, arr[i]};
+            stack.push(ele);
+        }
+
+        ArrayList&lt;Integer&gt; ans &#61; new ArrayList&lt;&gt;();
+
+        for (int i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+            Integer idx &#61; nextBigger[i];
+
+            if (idx &#61;&#61; -1) {
+                ans.add(arr[i]);
+            } else {
+                ans.add((idx - i) * (arr[idx] - arr[i])); // 距离 * 数字差值
+            }
+        }
+
+        StringJoiner sj &#61; new StringJoiner(&#34; &#34;, &#34;&#34;, &#34;&#34;);
+        for (Integer an : ans) sj.add(an &#43; &#34;&#34;);
+        return sj.toString();
+    }
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(arr, m):
+    stack &#61; []
+    nextBigger &#61; [-1] * m
+
+    for i in range(m):
+        while len(stack) &gt; 0:
+            idx, val &#61; stack[-1]
+            if arr[i] &gt; val:
+                stack.pop()
+                nextBigger[idx] &#61; i
+            else:
+                break
+
+        stack.append([i, arr[i]])
+
+    ans &#61; []
+
+    for i in range(m):
+        idx &#61; nextBigger[i]
+
+        if idx &#61;&#61; -1:
+            ans.append(arr[i])
+        else:
+            ans.append((idx - i) * (arr[idx] - arr[i]))  # 距离 * 数字差值
+
+    return &#34; &#34;.join(map(str, ans))
+
+
+# 算法调用
+print(getResult(arr, m))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

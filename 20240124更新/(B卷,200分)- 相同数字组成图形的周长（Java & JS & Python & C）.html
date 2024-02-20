@@ -1,0 +1,406 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 相同数字组成图形的周长（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一个64×64的矩阵&#xff0c;每个元素的默认值为0&#xff0c;现在向里面填充数字&#xff0c;相同的数字组成一个实心图形&#xff0c;如下图所示是矩阵的局部&#xff08;空白表示填充0&#xff09;&#xff1a;</p> 
+<p><img alt="" height="559" src="https://img-blog.csdnimg.cn/52ca08262cb9437dab0b430f7f370a9b.png" width="627" /></p> 
+<p>数字1组成了蓝色边框的实心图形&#xff0c;数字2组成了红色边框的实心图形。</p> 
+<p>单元格的边长规定为1个单位。</p> 
+<p>请根据输入&#xff0c;计算每个非0值填充出来的实心图形的周长。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<ol><li>第一行输入N&#xff0c;表示N个图形&#xff0c;N &gt; 0 且 N &lt; 64 × 64</li><li>矩阵左上角单元格坐标记作(0, 0)&#xff0c;第一个数字表示行号&#xff0c;第二个数字表示列号</li><li>接下来是N行&#xff0c;每行第一个数是矩阵单元格填充的数字&#xff0c;后续每两个一组&#xff0c;表示填充该数字的单元格坐标</li><li>答题者无需考虑数据格式非法的场景&#xff0c;题目用例不考察数据格式</li><li>题目用例保证同一个填充值只会有一行输入数据</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<ul><li>一共输出N个数值&#xff0c;每个数值表示某一行输入表示图形的周长</li><li>输出顺序需和输入的隔行顺序保持一致&#xff0c;即第1个数是输入的第1个图形的周长&#xff0c;第2个数是输入的第2个图形的周长&#xff0c;以此类推。</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:620px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:530px;">2<br /> 1 1 3 2 2 2 3 2 4 3 2 3 3 3 4 4 1 4 2 4 3 4 4 5 2 5 3<br /> 2 3 7 3 8 4 5 4 6 4 7 4 8 5 4 5 5 5 6 5 7 5 8 6 4 6 5 6 6 6 7 6 8 7 4 7 5 7 6 7 7 7 8</td></tr><tr><td style="width:86px;">输出</td><td style="width:530px;">18 20</td></tr><tr><td style="width:86px;">说明</td><td style="width:530px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先初始化一个64×64的二维数组&#xff0c;数组元素初始化为0。</p> 
+<p>然后&#xff0c;根据输入将二维数组指定坐标上的元素的值修改为指定值。</p> 
+<p></p> 
+<p>接着&#xff0c;继续遍历每个图形下的元素&#xff0c;看该元素的四个方向上的元素的值是否为当前图形的值&#xff0c;比如图形中某元素值为1&#xff0c;但是其上方元素的值为0&#xff0c;那么此时图形的周长&#43;1。</p> 
+<p>另外&#xff0c;需要注意的是&#xff0c;如果图形元素的上下左右方向的元素越界了&#xff0c;那么也要为对应图形的周长&#43;1。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61; n &#43; 1) {
+    lines.shift();
+    const tmp &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    console.log(getResult(tmp));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(lines) {
+  // 记录每个图形的边长
+  const ans &#61; [];
+
+  // 定义一个64*64的矩阵
+  const matrix &#61; new Array(64).fill(0).map(() &#61;&gt; new Array(64).fill(0));
+
+  // 向64*64的矩阵中填充数字
+  for (let line of lines) {
+    // 每行第一个数是矩阵单元格填充的数字
+    const num &#61; line[0];
+
+    // 后续每两个一组&#xff0c;表示填充该数字的单元格坐标
+    for (let i &#61; 1; i &lt; line.length; i &#43;&#61; 2) {
+      const x &#61; line[i];
+      const y &#61; line[i &#43; 1];
+      matrix[x][y] &#61; num; // 填充数字
+    }
+  }
+
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  // 遍历每个图形的坐标
+  for (let line of lines) {
+    const num &#61; line[0];
+    let p &#61; 0; // 周长
+
+    for (let i &#61; 1; i &lt; line.length; i &#43;&#61; 2) {
+      const x &#61; line[i];
+      const y &#61; line[i &#43; 1];
+
+      // 遍历图形中元素的上下左右
+      for (let [offsetX, offsetY] of offsets) {
+        const newX &#61; x &#43; offsetX;
+        const newY &#61; y &#43; offsetY;
+
+        // 如果图形元素的上或下或左或右没有越界
+        if (newX &gt;&#61; 0 &amp;&amp; newX &lt; 64 &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; 64) {
+          // 则如果图形元素的上或下或左或右不是图形值&#xff0c;那么当前图形的边长&#43;1
+          if (matrix[newX][newY] !&#61; num) p&#43;&#43;;
+        } else {
+          // 如果图形元素的上或下或左或右越界了&#xff0c;则当前图形边长也&#43;1
+          p&#43;&#43;;
+        }
+      }
+    }
+
+    ans.push(p);
+  }
+
+  return ans.join(&#34; &#34;);
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+
+    Integer[][] lines &#61; new Integer[n][];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      lines[i] &#61;
+          Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+    }
+
+    System.out.println(getResult(lines));
+  }
+
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  public static String getResult(Integer[][] lines) {
+    // 记录每个图形的边长
+    ArrayList&lt;Integer&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    // 定义一个64*64的矩阵
+    int[][] matrix &#61; new int[64][64];
+
+    // 向64*64的矩阵中填充数字
+    for (Integer[] line : lines) {
+      // 每行第一个数是矩阵单元格填充的数字
+      int num &#61; line[0];
+
+      // 后续每两个一组&#xff0c;表示填充该数字的单元格坐标
+      for (int i &#61; 1; i &lt; line.length; i &#43;&#61; 2) {
+        int x &#61; line[i];
+        int y &#61; line[i &#43; 1];
+        matrix[x][y] &#61; num; // 填充数字
+      }
+    }
+
+    // 遍历每个图形的坐标
+    for (Integer[] line : lines) {
+      int num &#61; line[0];
+      int p &#61; 0; // 周长
+
+      for (int i &#61; 1; i &lt; line.length; i &#43;&#61; 2) {
+        int x &#61; line[i];
+        int y &#61; line[i &#43; 1];
+
+        // 遍历图形中元素的上下左右
+        for (int[] offset : offsets) {
+          int offsetX &#61; offset[0];
+          int offsetY &#61; offset[1];
+
+          int newX &#61; x &#43; offsetX;
+          int newY &#61; y &#43; offsetY;
+
+          // 如果图形元素的上或下或左或右没有越界
+          if (newX &gt;&#61; 0 &amp;&amp; newX &lt; 64 &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; 64) {
+            // 则如果图形元素的上或下或左或右不是图形值&#xff0c;那么当前图形的边长&#43;1
+            if (matrix[newX][newY] !&#61; num) p&#43;&#43;;
+          } else {
+            // 如果图形元素的上或下或左或右越界了&#xff0c;则当前图形边长也&#43;1
+            p&#43;&#43;;
+          }
+        }
+      }
+
+      ans.add(p);
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (Integer an : ans) {
+      sj.add(an &#43; &#34;&#34;);
+    }
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+lines &#61; [list(map(int, input().split())) for _ in range(n)]
+
+
+# 算法入口
+def getResult():
+    # 记录每个图形的边长
+    ans &#61; []
+
+    # 定义一个64*64的矩阵
+    matrix &#61; [[0] * 64 for _ in range(64)]
+
+    # 向64*64的矩阵中填充数字
+    for line in lines:
+        # 每行第一个数是矩阵单元格填充的数字
+        num &#61; line[0]
+
+        # 后续每两个一组&#xff0c;表示填充该数字的单元格坐标
+        for i in range(1, len(line), 2):
+            x &#61; line[i]
+            y &#61; line[i &#43; 1]
+            matrix[x][y] &#61; num  # 填充数字
+
+    offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    # 遍历每个图形的坐标
+    for line in lines:
+        num &#61; line[0]
+        p &#61; 0  # 周长
+
+        for i in range(1, len(line), 2):
+            x &#61; line[i]
+            y &#61; line[i &#43; 1]
+
+            # 遍历图形中元素的上下左右
+            for offsetX, offsetY in offsets:
+                newX &#61; x &#43; offsetX
+                newY &#61; y &#43; offsetY
+
+                # 如果图形元素的上或下或左或右没有越界
+                if 64 &gt; newX &gt;&#61; 0 and 64 &gt; newY &gt;&#61; 0:
+                    # 则如果图形元素的上或下或左或右不是图形值&#xff0c;那么当前图形的边长&#43;1
+                    if matrix[newX][newY] !&#61; num:
+                        p &#43;&#61; 1
+                else:
+                    # 如果图形元素的上或下或左或右越界了&#xff0c;则当前图形边长也&#43;1
+                    p &#43;&#61; 1
+
+        ans.append(p)
+
+    return &#34; &#34;.join(map(str, ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// 链表节点
+typedef struct ListNode {
+    int x; // 点的横坐标
+    int y; // 点的纵坐标
+    struct ListNode* next;
+} ListNode;
+
+// 链表
+typedef struct LinkedList {
+    int size;
+    ListNode* head;
+    ListNode* tail;
+} LinkedList;
+
+// 创建和初始化链表
+LinkedList* new_LinkedList();
+// 尾插节点
+void add_LinkedList(LinkedList* link, int x, int y);
+
+// 上&#xff0c;下&#xff0c;左&#xff0c;右 四个方向的偏移量
+int offsets[4][2] &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+int main() {
+    // N个图形
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    // res数组记录每个图形的周长
+    int res[n];
+
+    // 64x64矩阵
+    int matrix[64][64] &#61; {0};
+
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        // 每行第一个数是矩阵单元格填充的数字
+        int num;
+        scanf(&#34;%d&#34;, &amp;num);
+
+        // 将空格获取掉
+        getchar();
+
+        // 定义一个链表&#xff0c;记录该num数字图形的所有点坐标
+        LinkedList* link &#61; new_LinkedList();
+
+        // 获取点坐标
+        int x, y;
+        while(scanf(&#34;%d %d&#34;, &amp;x, &amp;y)) {
+            // 点坐标位置填充对应数字
+            matrix[x][y] &#61; num;
+            // 将该点坐标加入链表缓存
+            add_LinkedList(link, x, y);
+            if(getchar() !&#61; &#39; &#39;) break;
+        }
+
+        // 初始化该num数字图形的周长为0
+        res[i] &#61; 0;
+
+        // 取出链表中缓存的点
+        ListNode* cur &#61; link-&gt;head;
+        while(cur !&#61; NULL) {
+            for(int j &#61; 0; j &lt; 4; j&#43;&#43;) {
+                int offsetX &#61; offsets[j][0];
+                int offsetY &#61; offsets[j][1];
+
+                int newX &#61; cur-&gt;x &#43; offsetX;
+                int newY &#61; cur-&gt;y &#43; offsetY;
+
+                // 1、如果该点的上、下、左、右位置 越界了
+                // 2、如果该点上、下、左、右位置 没有越界&#xff0c;但是值不为num
+                // 则当前图形周长&#43;1
+                if(newX &lt; 0 || newX &gt;&#61; 64 || newY &lt; 0 || newY &gt;&#61; 64 || matrix[newX][newY] !&#61; num) {
+                    res[i]&#43;&#43;;
+                }
+            }
+
+            cur &#61; cur-&gt;next;
+        }
+    }
+
+    // 按照输入顺序打印各个图形的周长
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        printf(&#34;%d &#34;, res[i]);
+    }
+
+    return 0;
+}
+
+LinkedList* new_LinkedList() {
+    LinkedList* link &#61; (LinkedList*) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void add_LinkedList(LinkedList* link, int x, int y) {
+    ListNode* node &#61; (ListNode*) malloc(sizeof(ListNode));
+    node-&gt;x &#61; x;
+    node-&gt;y &#61; y;
+    node-&gt;next &#61; NULL;
+
+    if(link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

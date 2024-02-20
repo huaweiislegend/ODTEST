@@ -1,0 +1,318 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 计算最接近的数（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个数组X和正整数K&#xff0c;请找出使表达式&#xff1a;</p> 
+<blockquote> 
+ <p>X[i] - X[i &#43; 1] -  ... - X[i &#43; K - 1]</p> 
+</blockquote> 
+<p>结果最接近于数组中位数的下标 i &#xff0c;如果有多个 i 满足条件&#xff0c;请返回最大的 i.</p> 
+<p>其中&#xff0c;数组中位数&#xff1a;长度为N的数组&#xff0c;按照元素的值大小升序排列后&#xff0c;下标为 N/2 元素的值</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4>备注</h4> 
+<ol><li>数组X的元素均为正整数</li><li>X的长度n取值范围&#xff1a;2 ≤ n ≤ 1000</li><li>K大于0目小于数组的大小</li><li>i 的取值范围: 0 ≤ i &lt; 1000</li><li>题目的排序数组X[N]的中位数是X[N/2]</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">[50,50,2,3],2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> 
+    <ol><li>中位数为50&#xff1a;[50,50,2,3]升序排序后变成[2,3,50,50]&#xff0c;中位数为下标4/2&#61;2的元素50</li><li>计算结果为1&#xff1a;X [50,50,2,3] 根据题目计算X[i] - ... - X[i &#43; k - 1] 得出三个数0 (X[0] - X[1] &#61; 50 - 50) 、48 (X[1] - X[2] &#61; 50 - 2) 和 -1 (X[2]-X[3] &#61; 2 - 3) &#xff0c;其中48最接近50&#xff0c;因此返回下标1。</li></ol></td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题应该是采用核心代码模式&#xff0c;非ACM模式&#xff0c;因此不需要我们处理输入输出。</p> 
+<p>下面代码仍然以ACM模式实现&#xff0c;但是会将输入输出处理 和 核心代码 分离。考试时&#xff0c;只需要写出核心代码即可。</p> 
+<p></p> 
+<p>本题可以使用滑动窗口解题。</p> 
+<p>本题其实就是要遍历所有长度为k的滑窗&#xff0c;滑窗内部元素需要按照表达式</p> 
+<blockquote> 
+ <p>X[i] - X[i &#43; 1] -  ... - X[i &#43; K - 1]</p> 
+</blockquote> 
+<p>来求得该滑窗对应得表达式计算结果window。</p> 
+<p>然后&#xff0c;求解window和数组x中位数mid的差距&#xff0c;差距绝对值越小&#xff0c;则说明二者越接近</p> 
+<blockquote> 
+ <p>结果最接近于数组中位数的下标 i &#xff0c;如果有多个 i 满足条件&#xff0c;请返回最大的 i.</p> 
+</blockquote> 
+<p></p> 
+<p>本题的难点在于滑窗右移时&#xff0c;新、旧滑窗的状态转移。</p> 
+<p><img alt="" height="206" src="https://img-blog.csdnimg.cn/cacefa7e8335451a9751164135b3c13b.png" width="1078" /></p> 
+<p>假设旧滑窗的表达式计算结果为window&#xff0c;那么新滑窗的表达式计算结果应该是&#xff1a;</p> 
+<blockquote> 
+ <p>window - x[i-1] &#43; x[i] * 2 - x[i &#43; k -1]</p> 
+</blockquote> 
+<p> 其中 x[i] * 2 的原因是&#xff0c;新滑窗中x[i]是正的&#xff0c;而旧滑窗中x[i]是负的&#xff0c;为了将-x[i] 变为 &#43;x[i]&#xff0c; 则需要为 -x[i] &#43; x[i] * 2</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const i &#61; line.lastIndexOf(&#34;,&#34;);
+
+  const x &#61; line
+    .slice(1, i - 1)
+    .split(&#34;,&#34;)
+    .map(Number);
+
+  const k &#61; parseInt(line.slice(i &#43; 1));
+
+  console.log(getResult(x, k));
+});
+
+function getResult(x, k) {
+  const n &#61; x.length;
+
+  const midIdx &#61; Math.floor(n / 2);
+  // x数组的中位数
+  const mid &#61; [...x].sort((a, b) &#61;&gt; a - b)[midIdx];
+
+  // 初始化滑窗0~k-1, window为滑窗内部元素的表达式计算结果
+  let window &#61; x[0];
+  for (let i &#61; 1; i &lt; k; i&#43;&#43;) {
+    window -&#61; x[i];
+  }
+
+  // window和中位数的差距
+  let minDiff &#61; Math.abs(mid - window);
+  // window滑窗起始索引
+  let idx &#61; 0;
+
+  // 滑窗右移
+  for (let i &#61; 1; i &lt;&#61; n - k; i&#43;&#43;) {
+    // 右移一格后&#xff0c;新滑窗的表达式计算结果
+    window &#43;&#61; -x[i - 1] &#43; 2 * x[i] - x[i &#43; k - 1];
+
+    // 新滑窗window值和中位数的差距
+    const diff &#61; Math.abs(mid - window);
+
+    // 结果最接近于数组中位数的下标 i &#xff0c;如果有多个 i 满足条件&#xff0c;请返回最大的 i
+    if (diff &lt;&#61; minDiff) {
+      minDiff &#61; diff;
+      idx &#61; i;
+    }
+  }
+
+  return idx;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String line &#61; sc.nextLine();
+
+    int i &#61; line.lastIndexOf(&#34;,&#34;);
+
+    int[] x &#61;
+        Arrays.stream(line.substring(1, i - 1).split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int k &#61; Integer.parseInt(line.substring(i &#43; 1));
+
+    System.out.println(getResult(x, k));
+  }
+
+  public static int getResult(int[] x, int k) {
+    int n &#61; x.length;
+
+    // x数组的中位数
+    int mid &#61; Arrays.stream(x).sorted().toArray()[n / 2];
+
+    // 初始化滑窗0~k-1, window为滑窗内部元素的表达式计算结果
+    int window &#61; x[0];
+    for (int i &#61; 1; i &lt; k; i&#43;&#43;) {
+      window -&#61; x[i];
+    }
+
+    // window和中位数的差距
+    int minDiff &#61; Math.abs(mid - window);
+    // window滑窗起始索引
+    int idx &#61; 0;
+
+    // 滑窗右移
+    for (int i &#61; 1; i &lt;&#61; n - k; i&#43;&#43;) {
+      // 右移一格后&#xff0c;新滑窗的表达式计算结果
+      window &#43;&#61; -x[i - 1] &#43; 2 * x[i] - x[i &#43; k - 1];
+
+      // 新滑窗window值和中位数的差距
+      int diff &#61; Math.abs(mid - window);
+
+      // 结果最接近于数组中位数的下标 i &#xff0c;如果有多个 i 满足条件&#xff0c;请返回最大的 i
+      if (diff &lt;&#61; minDiff) {
+        minDiff &#61; diff;
+        idx &#61; i;
+      }
+    }
+
+    return idx;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+tmp &#61; input()
+
+i &#61; tmp.rfind(&#34;,&#34;)
+
+x &#61; list(map(int, tmp[1:i-1].split(&#34;,&#34;)))
+k &#61; int(tmp[i&#43;1:])
+
+
+# 核心代码
+def getResult():
+    n &#61; len(x)
+
+    # x数组的中位数
+    mid &#61; sorted(x)[n // 2]
+
+    # 初始化滑窗0~k-1, window为滑窗内部元素的表达式计算结果
+    window &#61; x[0]
+    for j in range(1, k):
+        window -&#61; x[j]
+
+    # window和中位数的差距
+    minDiff &#61; abs(mid - window)
+    # window滑窗起始索引
+    idx &#61; 0
+
+    # 滑窗右移
+    for i in range(1, n-k&#43;1):
+        # 右移一格后&#xff0c;新滑窗的表达式计算结果
+        window &#43;&#61; -x[i-1] &#43; 2 * x[i] - x[i &#43; k -1]
+
+        # 新滑窗window值和中位数的差距
+        diff &#61; abs(mid - window)
+
+        # 结果最接近于数组中位数的下标 i &#xff0c;如果有多个 i 满足条件&#xff0c;请返回最大的 i
+        if diff &lt;&#61; minDiff:
+            minDiff &#61; diff
+            idx &#61; i
+
+    return idx
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 1000
+
+int getResult(const int x[], int n, int k);
+
+int cmp(const void *a, const void *b) {
+    return (*(int *) a) - (*(int *) b);
+}
+
+int main() {
+    char s[100000];
+    scanf(&#34;%s&#34;, s);
+
+    char *p &#61; strrchr(s, &#39;,&#39;);
+    *p &#61; &#39;\0&#39;;
+
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+
+    char *token &#61; strtok(s &#43; 1, &#34;,&#34;);
+    while (token !&#61; NULL) {
+        nums[nums_size&#43;&#43;] &#61; atoi(token);
+        token &#61; strtok(NULL, &#34;,&#34;);
+    }
+
+    int k &#61; atoi(p &#43; 1);
+
+    printf(&#34;%d\n&#34;, getResult(nums, nums_size, k));
+
+    return 0;
+}
+
+int getResult(const int x[], int n, int k) {
+    int x_cp[n];
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) x_cp[i] &#61; x[i];
+
+    // 这里排序的是x_cp数组&#xff0c;不能改变原数组x
+    qsort(x_cp, n, sizeof(int), cmp);
+
+    // x数组的中位数
+    int mid &#61; x_cp[n / 2];
+
+    // 初始化滑窗0~k-1, window为滑窗内部元素的表达式计算结果
+    int window &#61; x[0];
+    for (int i &#61; 1; i &lt; k; i&#43;&#43;) {
+        window -&#61; x[i];
+    }
+
+    // window和中位数的差距
+    int minDiff &#61; abs(mid - window);
+
+    // window滑窗起始索引
+    int idx &#61; 0;
+
+    // 滑窗右移
+    for (int i &#61; 1; i &lt;&#61; n - k; i&#43;&#43;) {
+        // 右移一格后&#xff0c;新滑窗的表达式计算结果
+        window &#43;&#61; -x[i - 1] &#43; 2 * x[i] - x[i &#43; k - 1];
+
+        // 新滑窗window值和中位数的差距
+        int diff &#61; abs(mid - window);
+
+        // 结果最接近于数组中位数的下标 i &#xff0c;如果有多个 i 满足条件&#xff0c;请返回最大的 i
+        if (diff &lt;&#61; minDiff) {
+            minDiff &#61; diff;
+            idx &#61; i;
+        }
+    }
+
+    return idx;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

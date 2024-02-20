@@ -1,0 +1,202 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 最大利润（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>商人经营一家店铺&#xff0c;有number种商品&#xff0c;<br /> 由于仓库限制每件商品的最大持有数量是item[index]<br /> 每种商品的价格是item-price[item_index][day]<br /> 通过对商品的买进和卖出获取利润<br /> 请给出商人在days天内能获取的最大的利润<br /> 注&#xff1a;同一件商品可以反复买进和卖出</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入商品的数量number&#xff0c;比如3<br /> 第二行输入商品售货天数 days&#xff0c;比如3<br /> 第三行输入仓库限制每件商品的最大持有数量是item[index]&#xff0c;比如4 5 6</p> 
+<p>后面继续输入number行days列&#xff0c;含义如下&#xff1a;<br /> 第一件商品每天的价格&#xff0c;比如1 2 3<br /> 第二件商品每天的价格&#xff0c;比如4 3 2<br /> 第三件商品每天的价格&#xff0c;比如1 5 3</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出商人在这段时间内的最大利润。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 3<br /> 4 5 6<br /> 1 2 3<br /> 4 3 2<br /> 1 5 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">32</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例含义如下所示</p> 
+<p><img alt="" height="500" src="https://img-blog.csdnimg.cn/ae8e678fa8d94f6d99df3d3aec22291f.png" width="1200" /></p> 
+<p> 因此最多可以赚8 &#43; 24 &#61; 32元。</p> 
+<p></p> 
+<p>另外&#xff0c;本题描述说&#xff1a;同一件商品可以反复买进和卖出&#xff0c;因此上面图示买卖操作还可以变为这样&#xff1a;</p> 
+<p><img alt="" height="532" src="https://img-blog.csdnimg.cn/5ce15a58d89d49e0bf93aac06bbcf39e.png" width="1200" /></p> 
+<p></p> 
+<p>本题算是<a href="https://fcqian.blog.csdn.net/article/details/128049942?spm&#61;1001.2014.3001.5502" rel="nofollow" title="华为机试 - 最大股票收益_伏城之外的博客-CSDN博客">华为机试 - 最大股票收益_伏城之外的博客-CSDN博客</a> 的变种题。</p> 
+<p>我们只要找到商品价格走势的上升区段&#xff0c;然后低价all in买入&#xff0c;高价all out卖出即可求得最大利润。</p> 
+<p>那么如何找到上升区段呢&#xff1f;</p> 
+<p>我们假设商品1的第 i 天的价格为 price1[i]&#xff0c;那么只要price1[i] &lt; price1[i&#43;1]&#xff0c;则说明当前处于上升区段的低价位&#xff0c;因此可以all in&#xff0c;然后到i&#43;1天的时候all out。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<blockquote> 
+ <p>根据网友20221207的优化补充&#xff0c;下面代码中25~27行会将代码正确率从40%提高到70%</p> 
+</blockquote> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let number, days, maxCount;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    number &#61; lines[0] - 0;
+    days &#61; lines[1] - 0;
+    maxCount &#61; lines[2].split(&#34; &#34;).map(Number);
+  }
+
+  if (number &amp;&amp; lines.length &#61;&#61;&#61; number &#43; 3) {
+    const prices &#61; lines.slice(3).map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    console.log(getResult(number, days, maxCount, prices));
+    lines.length &#61; 0;
+  }
+  /* else {
+    console.log(&#34;0&#34;); // 如果通过率只有40%&#xff0c;可以解开这个else的注释&#xff0c;通过率会有所提升
+  } */
+});
+
+/**
+ *
+ * &#64;param {*} number 几种商品
+ * &#64;param {*} days 几天
+ * &#64;param {*} maxCount 每种商品的最大囤货数量
+ * &#64;param {*} prices 每种商品的在days天内的价格变动情况
+ */
+function getResult(number, days, maxCount, prices) {
+  let ans &#61; 0;
+  for (let i &#61; 0; i &lt; number; i&#43;&#43;) {
+    const price &#61; prices[i];
+    for (let j &#61; 0; j &lt; days - 1; j&#43;&#43;) {
+      if (price[j] &lt; price[j &#43; 1]) {
+        ans &#43;&#61; (price[j &#43; 1] - price[j]) * maxCount[i];
+      }
+    }
+  }
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int number &#61; sc.nextInt();
+    int days &#61; sc.nextInt();
+
+    int[] maxCount &#61; new int[number];
+    for (int i &#61; 0; i &lt; number; i&#43;&#43;) {
+      maxCount[i] &#61; sc.nextInt();
+    }
+
+    int[][] prices &#61; new int[number][days];
+    for (int i &#61; 0; i &lt; number; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; days; j&#43;&#43;) {
+        prices[i][j] &#61; sc.nextInt();
+      }
+      // System.out.println(0); // 如果通过率未达100%&#xff0c;可以尝试解开这行注释&#xff0c;应该会有所提升
+    }
+
+    System.out.println(getResult(number, days, maxCount, prices));
+  }
+
+  /**
+   * &#64;param number 几种商品
+   * &#64;param days 几天
+   * &#64;param maxCount 每种商品的最大囤货数量
+   * &#64;param prices 每种商品的在days天内的价格变动情况
+   * &#64;return 最大利润
+   */
+  public static int getResult(int number, int days, int[] maxCount, int[][] prices) {
+    int ans &#61; 0;
+    for (int i &#61; 0; i &lt; number; i&#43;&#43;) {
+      int[] price &#61; prices[i];
+      for (int j &#61; 0; j &lt; days - 1; j&#43;&#43;) {
+        if (price[j] &lt; price[j &#43; 1]) {
+          ans &#43;&#61; (price[j &#43; 1] - price[j]) * maxCount[i];
+        }
+      }
+    }
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+number &#61; int(input())
+days &#61; int(input())
+item &#61; list(map(int, input().split()))
+prices &#61; [list(map(int, input().split())) for i in range(number)]
+
+
+# 如果当前解法通过率较低&#xff0c;可以尝试将第5行的prices的初始化&#xff0c;改为下面这种&#xff0c;通过率应该会有所上升
+# prices &#61; []
+# for i in range(number):
+#     prices.append(list(map(int, input().split())))
+#     print(0)
+
+# 算法入口
+def getResult(number, days, item, prices):
+    &#34;&#34;&#34;
+    :param number: 几种商品
+    :param days: 几天
+    :param item: 每种商品的最大囤货数量
+    :param prices: 每种商品的在days天内的价格变动情况
+    :return: 最大利润
+    &#34;&#34;&#34;
+    ans &#61; 0
+    for i in range(number):
+        price &#61; prices[i]
+        for j in range(days - 1):
+            if price[j] &lt; price[j &#43; 1]:
+                ans &#43;&#61; (price[j &#43; 1] - price[j]) * item[i]
+    return ans
+
+
+# 算法调用
+print(getResult(number, days, item, prices))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,360 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 无向图染色（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给一个无向图染色&#xff0c;可以填红黑两种颜色&#xff0c;必须保证相邻两个节点不能同时为红色&#xff0c;输出有多少种不同的染色方案&#xff1f;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入M(图中节点数) N(边数)</p> 
+<p>后续N行格式为&#xff1a;V1 V2表示一个V1到V2的边。</p> 
+<p>数据范围&#xff1a;1 &lt;&#61; M &lt;&#61; 15,0 &lt;&#61; N &lt;&#61; M * 3&#xff0c;不能保证所有节点都是连通的。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个数字表示染色方案的个数。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4 4<br /> 1 2<br /> 2 4<br /> 3 4<br /> 1 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">7</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>4个节点&#xff0c;4条边&#xff0c;1号节点和2号节点相连&#xff0c;</p> <p>2号节点和4号节点相连&#xff0c;3号节点和4号节点相连&#xff0c;</p> <p>1号节点和3号节点相连&#xff0c;</p> <p>若想必须保证相邻两个节点不能同时为红色&#xff0c;总共7种方案。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">3 3<br /> 1 2<br /> 1 3<br /> 2 3</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">4</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">4 3<br /> 1 2<br /> 2 3<br /> 3 4</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">8</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">4 3<br /> 1 2<br /> 1 3<br /> 2 3</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">8</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<blockquote> 
+ <p>2022.12.25 更正解析说明&#xff0c;感谢Andy___Zhong指出错误。</p> 
+</blockquote> 
+<p>本题其实就是求解连通图的染色方案&#xff0c;</p> 
+<p>目前我想到的最好方式是暴力法&#xff0c;即通过回溯算法&#xff0c;求解出染红节点的全组合&#xff0c;</p> 
+<blockquote> 
+ <p>n个数的全组合数量一共有 (2^n) - 1。</p> 
+ <p>比如&#xff1a;1,2,3的全组合情况有&#xff1a;1、2、3、12、13、23、123&#xff0c;即 (2^3) - 1 &#61; 7个。</p> 
+</blockquote> 
+<p>本题中节点一共有m个&#xff0c;而1 &lt;&#61; m &lt;&#61; 15&#xff0c;即最多有 (2^15) - 1 &#61; 32767 个组合情况&#xff0c;这个数量级不算多。 因此暴力法可行。</p> 
+<p></p> 
+<p>我们需要尝试对组合中的节点进行染红色&#xff0c;但是相邻节点不能同时染成红色。因此&#xff0c;在求解全组合时&#xff0c;还可以进行剪枝优化&#xff0c;即判断新加入的节点  是否和 已存在的节点相邻&#xff0c;如果相邻&#xff0c;则剪枝&#xff0c;如果不相邻则继续递归。</p> 
+<pre><code class="language-javascript">// 连通图的染色方案数求解
+function getDyeCount(arr, m) {
+  // connect用于存放每个节点的相邻节点
+  const connect &#61; {};
+
+  for (let [v1, v2] of arr) {
+    connect[v1] ? connect[v1].add(v2) : (connect[v1] &#61; new Set([v2]));
+    connect[v2] ? connect[v2].add(v1) : (connect[v2] &#61; new Set([v1]));
+  }
+
+  // 必有一种全黑的染色方案
+  let count &#61; 1;
+
+  // 求解染红节点的全组合情况
+  function dfs(m, index, path) {
+    if (path.length &#61;&#61;&#61; m) return;
+
+    outer: for (let i &#61; index; i &lt;&#61; m; i&#43;&#43;) {
+      // 如果新加入节点和已有节点相邻&#xff0c;则说明新加入节点不能染成红色&#xff0c;需要进行剪枝
+      for (let j &#61; 0; j &lt; path.length; j&#43;&#43;) {
+        if (path[j].has(i)) continue outer;
+      }
+
+      count&#43;&#43;;
+
+      path.push(connect[i]);
+      dfs(m, i &#43; 1, path);
+      path.pop();
+    }
+  }
+
+  // 节点从1开始
+  dfs(m, 1, []);
+
+  return count;
+}</code></pre> 
+<p></p> 
+<p>本题&#xff0c;到此还未结束&#xff0c;因为题目中有一句话&#xff1a;</p> 
+<blockquote> 
+ <p>不能保证所有节点都是连通的</p> 
+</blockquote> 
+<p>这说明什么呢&#xff1f;即对应用例4的情况&#xff0c;用例4对应的无向图如下&#xff1a;</p> 
+<p><img alt="" height="187" src="https://img-blog.csdnimg.cn/810539b239694346b281b9103b5df1e8.png" width="266" /></p> 
+<p> 此时一共有8种染色方案如下&#xff1a;</p> 
+<p><img alt="" height="432" src="https://img-blog.csdnimg.cn/0e54ed81030543c9b6fd3d709e4ebdec.png" width="1200" /></p> 
+<p></p> 
+<p></p> 
+<p>其实就是先求解无向图的各个连通分量&#xff0c;比如用例4的无向图就有两个连通分量&#xff0c;分别是&#xff1a;</p> 
+<ul><li>{4}</li><li>{1&#xff0c;2&#xff0c;3}</li></ul> 
+<p>然后求解各连通分量各自的染色方案&#xff0c;比如</p> 
+<ul><li>{4}  有2种染色方案</li><li>{1&#xff0c;2&#xff0c;3} 有4种染色方案</li></ul> 
+<p>那么总染色方案数目就是2*4&#61;8种</p> 
+<p></p> 
+<p>因此&#xff0c;本题还考察了连通分量的求解。</p> 
+<p>连通分量的求解可以使用并查集&#xff0c;关于并查集知识请看&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/127588130?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522167032807416782429780468%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;167032807416782429780468&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-2-127588130-null-null.nonecase&amp;utm_term&#61;%E5%B9%B6%E6%9F%A5%E9%9B%86&amp;spm&#61;1018.2226.3001.4450" title="华为机试 - 发广播_伏城之外的博客-CSDN博客">华为机试 - 发广播_伏城之外的博客-CSDN博客</a> </p> 
+<p></p> 
+<p>但是本题实现上可以取巧&#xff0c;即不需要使用并查集去求解连通分量&#xff0c;而是完全依赖于暴力&#xff0c;因为不管节点是否在一个连通分量中&#xff0c;还是不在一个连通分量中&#xff0c;他们的染色都要满足&#xff1a;</p> 
+<blockquote> 
+ <p>相邻节点不能同时为红色</p> 
+</blockquote> 
+<p>因此&#xff0c;处于两个连通分量中的节点必然不相连&#xff0c;则必然可以同时染红&#xff0c;因此直接用前面求染红节点组合就可以&#xff0c;不需要用并查集。</p> 
+<p></p> 
+<p>补充一个边界用例情况&#xff1a;</p> 
+<blockquote> 
+ <p>4 3<br /> 2 3<br /> 2 4<br /> 3 4</p> 
+</blockquote> 
+<p>输出应该是8</p> 
+<p></p> 
+<p>但是节点1和任何其他节点不相连&#xff0c;也没有在边&#xff0c;因此下面代码&#xff0c;统计connect时&#xff0c;即统计每个节点的相邻节点&#xff0c;必然统计不到节点1&#xff0c;即connect[1] 的值为null&#xff0c;因此后续获取节点1的相邻节点时会得到null&#xff0c;此时我们应该要特殊处理null。</p> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<p>直接利用节点间相邻关系暴力枚举所有染色方案。该方案实现上更简单&#xff0c;但是性能没有基于并查集求出各连通分量后分别求解染色方案的好。</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [m, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n !&#61;&#61; undefined &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    const arr &#61; lines.slice(1).map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+
+    console.log(getResult(arr, m));
+
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} arr 边&#xff0c;即[v1, v2]
+ * &#64;param {*} m 点数量
+ */
+function getResult(arr, m) {
+  // connect用于存放每个节点的相邻节点
+  const connect &#61; {};
+
+  for (let [v1, v2] of arr) {
+    connect[v1] ? connect[v1].add(v2) : (connect[v1] &#61; new Set([v2]));
+    connect[v2] ? connect[v2].add(v1) : (connect[v2] &#61; new Set([v1]));
+  }
+
+  // 必有一种全黑的染色方案
+  let count &#61; 1;
+
+  // 求解染红节点的全组合情况
+  function dfs(m, index, path) {
+    if (path.length &#61;&#61;&#61; m) return;
+
+    outer: for (let i &#61; index; i &lt;&#61; m; i&#43;&#43;) {
+      // 如果新加入节点和已有节点相邻&#xff0c;则说明新加入节点不能染成红色&#xff0c;需要进行剪枝
+      for (let j &#61; 0; j &lt; path.length; j&#43;&#43;) {
+        if (path[j].has(i)) continue outer;
+      }
+
+      count&#43;&#43;;
+
+      if (connect[i] !&#61; undefined) {
+        path.push(connect[i]);
+        dfs(m, i &#43; 1, path);
+        path.pop();
+      } else {
+        dfs(m, i &#43; 1, path);
+      }
+    }
+  }
+
+  // 节点从1开始
+  dfs(m, 1, []);
+
+  return count;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<p>直接利用节点间相邻关系暴力枚举所有染色方案。该方案实现上更简单&#xff0c;但是性能没有基于并查集求出各连通分量后分别求解染色方案的好。</p> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[][] edges &#61; new int[n][2];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      edges[i][0] &#61; sc.nextInt();
+      edges[i][1] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(edges, m));
+  }
+
+  /**
+   * &#64;param edges 边&#xff0c;即[v1, v2]
+   * &#64;param m 点数量
+   * &#64;return
+   */
+  public static int getResult(int[][] edges, int m) {
+    // connect用于存放每个节点的相邻节点
+    HashMap&lt;Integer, HashSet&lt;Integer&gt;&gt; connect &#61; new HashMap&lt;&gt;();
+
+    for (int[] edge : edges) {
+      connect.putIfAbsent(edge[0], new HashSet&lt;&gt;());
+      connect.get(edge[0]).add(edge[1]);
+
+      connect.putIfAbsent(edge[1], new HashSet&lt;&gt;());
+      connect.get(edge[1]).add(edge[0]);
+    }
+
+    // 节点从index&#61;1开始&#xff0c;必有count&#61;1个的全黑染色方案
+    return dfs(connect, m, 1, 1, new LinkedList&lt;&gt;());
+  }
+
+  // 该方法用于求解给定多个节点染红的全组合数
+  public static int dfs(
+      HashMap&lt;Integer, HashSet&lt;Integer&gt;&gt; connect,
+      int m,
+      int index,
+      int count,
+      LinkedList&lt;HashSet&lt;Integer&gt;&gt; path) {
+    if (path.size() &#61;&#61; m) return count;
+
+    outer:
+    for (int i &#61; index; i &lt;&#61; m; i&#43;&#43;) {
+      // 如果新加入节点i和已有节点j相邻&#xff0c;则说明新加入节点不能染成红色&#xff0c;需要进行剪枝
+      for (HashSet&lt;Integer&gt; p : path) {
+        if (p.contains(i)) continue outer;
+      }
+
+      count&#43;&#43;;
+
+      if (connect.containsKey(i)) {
+        path.addLast(connect.get(i));
+        count &#61; dfs(connect, m, i &#43; 1, count, path);
+        path.removeLast();
+      } else {
+        count &#61; dfs(connect, m, i &#43; 1, count, path);
+      }
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, n &#61; map(int, input().split())
+arr &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+# 算法入口
+def getResult(arr, m):
+    &#34;&#34;&#34;
+    :param arr: 边&#xff0c;即[v1, v2]
+    :param m: 点数量
+    :return: 染色方案数
+    &#34;&#34;&#34;
+
+    # connect用于存放每个节点的相邻节点
+    connect &#61; {}
+
+    for v1, v2 in arr:
+        if connect.get(v1) is None:
+            connect[v1] &#61; set()
+        connect[v1].add(v2)
+
+        if connect.get(v2) is None:
+            connect[v2] &#61; set()
+        connect[v2].add(v1)
+
+    # 节点从1开始
+    return dfs(m, 1, [], 1, connect)
+
+
+# 求解染红节点的全组合情况
+def dfs(m, index, path, count, connect):
+    &#34;&#34;&#34;
+    :param m: 点数量&#xff0c;点从1计数
+    :param index: 当前第几个点
+    :param path: 保存点的容器
+    :param count: 染色方案数量
+    :param connect: 每个节点的相邻节点
+    :return: 染色方案数量
+    &#34;&#34;&#34;
+    if len(path) &#61;&#61; m:
+        return count
+
+    flag &#61; False
+
+    for i in range(index, m &#43; 1):
+        #  如果新加入节点和已有节点相邻&#xff0c;则说明新加入节点不能染成红色&#xff0c;需要进行剪枝
+        for p in path:
+            if i in p:
+                flag &#61; True
+                break
+
+        if flag:
+            flag &#61; False
+            continue
+
+        count &#43;&#61; 1
+
+        if connect.get(i) is not None:
+            path.append(connect.get(i))
+            count &#61; dfs(m, i &#43; 1, path, count, connect)
+            path.pop()
+        else:
+            count &#61; dfs(m, i &#43; 1, path, count, connect)
+
+    return count
+
+
+# 算法调用
+print(getResult(arr, m))</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

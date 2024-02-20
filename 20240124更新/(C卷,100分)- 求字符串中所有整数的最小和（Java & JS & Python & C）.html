@@ -1,0 +1,250 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 求字符串中所有整数的最小和（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>输入字符串s&#xff0c;输出s中包含所有整数的最小和。</p> 
+<p>说明&#xff1a;</p> 
+<p>字符串s&#xff0c;只包含 a-z A-Z ± &#xff1b;<br /> 合法的整数包括</p> 
+<p>1&#xff09; 正整数 一个或者多个0-9组成&#xff0c;如 0 2 3 002 102<br /> 2&#xff09;负整数 负号 – 开头&#xff0c;数字部分由一个或者多个0-9组成&#xff0c;如 -0 -012 -23 -00023</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>包含数字的字符串</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>所有整数的最小和</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">bb1234aa</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">10</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">bb12-34aa</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-31</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">1&#43;2&#43;&#xff08;-34&#xff09; &#61; -31</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题看上去很难&#xff0c;其实想清楚三点那就很简单</p> 
+<ul><li>正数字符串的最小值如何计算&#xff1f;比如1234的最小值是多少&#xff0c;那肯定是1&#43;2&#43;3&#43;4&#xff0c;即每位都是一个独立数&#xff0c;且都是一个小于10的数&#xff0c;它们之和就是最小的。</li><li>负数字符串的最小值如何计算&#xff1f;比如-34&#xff0c;那肯定是整体当成一个负数时&#xff0c;最小。</li><li>正数负数混合字符串最小值如何计算&#xff1f;比如12-34&#xff0c;那肯定是正数部分12每位单独计算&#xff0c;负数部分当成整体</li></ul> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>定义一个容器negative&#xff0c;用于存储负数的数字字符</p> 
+<p>定义一个标识isNegative&#xff0c;用来记录是否遇到负数&#xff0c;初始化为false&#xff0c;标识一开始没有遇到负数</p> 
+<p>遍历输入字符串s的每一个字符c</p> 
+<ul><li>如果 c &#61;&#61; &#39;-&#39;&#xff0c;则说明负数要开始了&#xff0c;因此更新isNegative &#61; true</li><li>如果 c 是数字字符&#xff0c;则此时需要分情况讨论&#xff1a;</li></ul> 
+<ol><li>isNegative &#61;&#61; false&#xff0c;则此时直接将c字符转成对应的数值合入结果&#xff0c;ans &#43;&#61; parseInt(c)</li><li>isNegative &#61;&#61; true&#xff0c;则说明c是负数的字符&#xff0c;此时应该将c加入缓存容器negative中</li></ol> 
+<ul><li>如果 c 是字母字母&#xff0c;若isNegative &#61;&#61; true&#xff0c;则需要将negative容器中内容拼接&#xff0c;然后转化为负数合入结果&#xff0c;ans -&#61; parseInt(negative.join(&#34;&#34;))&#xff0c;完成后&#xff0c;将isNeagtive &#61; false&#xff0c;并且清空negative容器。</li></ul> 
+<p>需要注意的是&#xff0c;当c &#61;&#61; &#39;-&#39;&#xff0c;也需要注意出现 “-34-40” 这种情况&#xff0c;即 c &#61;&#61; &#39;-&#39;&#xff0c;也需要先判断isNegative &#61;&#61; true&#xff0c;则需要将negative容器中内容拼接&#xff0c;然后转化为负数合入结果&#xff0c;ans -&#61; parseInt(negative.join(&#34;&#34;))&#xff0c;完成后&#xff0c;将isNeagtive &#61; false&#xff0c;并且清空negative容器。</p> 
+<hr /> 
+<p>2023.06.01</p> 
+<p>本题没有说明数字长度&#xff0c;因此Java和JS需要使用大数处理。</p> 
+<hr /> 
+<p>2023.12.08</p> 
+<p>修复一个问题&#xff0c;比如用例</p> 
+<blockquote> 
+ <p>bb12<span style="color:#fe2c24;">-</span><span style="color:#0d0016;">a</span>-34aa</p> 
+</blockquote> 
+<p>可能会出现不完整负数情况&#xff0c;即只有一个符号的情况&#xff0c;此时我们应该过滤掉这种不完整负数场景</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.math.BigInteger;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  public static String getResult(String s) {
+    boolean isNegative &#61; false;
+    StringBuilder negative &#61; new StringBuilder();
+
+    //    int ans &#61; 0;
+    BigInteger ans &#61; new BigInteger(&#34;0&#34;);
+
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+
+      if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+        if (isNegative) {
+          negative.append(c);
+        } else {
+          //          ans &#43;&#61; Integer.parseInt(c &#43; &#34;&#34;);
+          ans &#61; ans.add(new BigInteger(c &#43; &#34;&#34;));
+        }
+      } else {
+        if (isNegative &amp;&amp; negative.length() &gt; 0) {
+          //          ans -&#61; Integer.parseInt(negative.toString());
+          ans &#61; ans.subtract(new BigInteger(negative.toString()));
+          negative &#61; new StringBuilder();
+        }
+
+        isNegative &#61; c &#61;&#61; &#39;-&#39;;
+      }
+    }
+
+    if (negative.length() &gt; 0) {
+      //      ans -&#61; Integer.parseInt(negative.toString());
+      ans &#61; ans.subtract(new BigInteger(negative.toString()));
+    }
+
+    return ans.toString();
+  }
+}
+</code></pre> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  let isNegative &#61; false;
+  const negative &#61; [];
+
+  // let ans &#61; 0;
+  let ans &#61; BigInt(0);
+  for (let c of s) {
+    if (c &gt;&#61; &#34;0&#34; &amp;&amp; c &lt;&#61; &#34;9&#34;) {
+      if (isNegative) {
+        negative.push(c);
+      } else {
+        // ans &#43;&#61; parseInt(c);
+        ans &#43;&#61; BigInt(c);
+      }
+    } else {
+      if (isNegative &amp;&amp; negative.length &gt; 0) {
+        // ans -&#61; parseInt(negative.join(&#34;&#34;));
+        ans -&#61; BigInt(negative.join(&#34;&#34;));
+        negative.length &#61; 0;
+      }
+
+      isNegative &#61; c &#61;&#61; &#34;-&#34;;
+    }
+  }
+
+  if (negative.length &gt; 0) {
+    // ans -&#61; parseInt(negative.join(&#34;&#34;));
+    ans -&#61; BigInt(negative.join(&#34;&#34;));
+  }
+
+  return ans.toString();
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    isNegative &#61; False
+    negative &#61; []
+
+    ans &#61; 0
+    for c in s:
+        if &#39;0&#39; &lt;&#61; c &lt;&#61; &#39;9&#39;:
+            if isNegative:
+                negative.append(c)
+            else:
+                ans &#43;&#61; int(c)
+        else:
+            if isNegative and len(negative) &gt; 0:
+                ans -&#61; int(&#34;&#34;.join(negative))
+                negative.clear()
+            isNegative &#61; c &#61;&#61; &#39;-&#39;
+
+    if len(negative) &gt; 0:
+        ans -&#61; int(&#34;&#34;.join(negative))
+
+    return ans
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_SIZE 10000
+
+int main() {
+    char s[MAX_SIZE];
+    gets(s);
+
+    int isNegative &#61; 0;
+
+    char negative[MAX_SIZE];
+    int negative_size &#61; 0;
+
+    long long ans &#61; 0;
+    int i &#61; 0;
+    while (s[i] !&#61; &#39;\0&#39;) {
+        char c &#61; s[i];
+
+        if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+            if (isNegative) {
+                negative[negative_size&#43;&#43;] &#61; c;
+            } else {
+                ans &#43;&#61; c - &#39;0&#39;;
+            }
+        } else {
+            if (isNegative &amp;&amp; negative_size &gt; 0) {
+                ans -&#61; atol(negative);
+                memset(negative, &#39;\0&#39;, MAX_SIZE);
+                negative_size &#61; 0;
+            }
+
+            isNegative &#61; c &#61;&#61; &#39;-&#39;;
+        }
+
+        i&#43;&#43;;
+    }
+
+    if (negative_size &gt; 0) {
+        ans -&#61; atol(negative);
+    }
+
+    printf(&#34;%lld\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

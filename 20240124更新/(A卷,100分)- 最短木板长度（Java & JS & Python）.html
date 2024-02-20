@@ -1,0 +1,427 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 最短木板长度（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小明有 n 块木板&#xff0c;第 i ( 1 ≤ i ≤ n ) 块木板长度为 ai。<br /> 小明买了一块长度为 m 的木料&#xff0c;这块木料可以切割成任意块&#xff0c;拼接到已有的木板上&#xff0c;用来加长木板。<br /> 小明想让最短的模板尽量长。请问小明加长木板后&#xff0c;最短木板的长度可以为多少&#xff1f;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的第一行包含两个正整数&#xff0c; n ( 1 ≤ n ≤ 10^3 ), m ( 1 ≤ m ≤ 10^6 )&#xff0c;n 表示木板数&#xff0c; m 表示木板长度。<br /> 输入的第二行包含 n 个正整数&#xff0c; a1, a2,…an ( 1 ≤ ai ≤ 10^6 )。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出的唯一一行包含一个正整数&#xff0c;表示加长木板后&#xff0c;最短木板的长度最大可以为多少&#xff1f;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 3<br /> 4 5 3 5 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">给第1块木板长度增加1&#xff0c;给第3块木板长度增加2后&#xff0c;<br /> 这5块木板长度变为[5,5,5,5,5]&#xff0c;最短的木板的长度最大为5。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:88px;">输入</td><td style="width:410px;">5 2<br /> 4 5 3 5 5</td></tr><tr><td style="width:88px;">输出</td><td style="width:410px;">4</td></tr><tr><td style="width:88px;">说明</td><td style="width:410px;">给第3块木板长度增加1后&#xff0c;这5块木板长度变为[4,5,4,5,5]&#xff0c;剩余木料的长度为1。此时剩余木料无论给哪块木板加长&#xff0c;最短木料的长度都为4。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题的题意是比较明确的&#xff0c;我的解题思路如下&#xff1a;</p> 
+<p>要想让最短的木板尽可能长&#xff0c;那么我们就要不停地递进式补足最短板&#xff0c;比如用例输入有5个板&#xff1a;4 5 3 5 5&#xff0c;可用材料m&#61;3</p> 
+<p>最短的板长度是3&#xff0c;只有一个&#xff0c;那么我们就将他补足到4&#xff0c;此时消耗了一单位长度的材料&#xff0c;m&#61;2</p> 
+<p>这样的话&#xff0c;只剩下两种长度的板4&#xff0c;5&#xff0c;</p> 
+<p>且4长度有两个&#xff0c;5长度有三个&#xff0c;最短板是长度4.</p> 
+<p>接下来我们应该尽量将最短板4长度的板补足到5长度&#xff0c;而刚好剩余材料m&#61;2&#xff0c;可以将所有4长度的板补足到5长度&#xff0c;此时所有板都是5长度&#xff0c;且材料耗尽。</p> 
+<p></p> 
+<p>我们还需要考虑一种特殊情况&#xff0c;那就是m还有值&#xff0c;但是只剩下一种长度的板&#xff0c;此时我们应该平分材料到每一个板&#xff0c;</p> 
+<p>假设只剩一种长度的板有count个&#xff0c;则平均分的话&#xff0c;每个板能分得 m / count 长度&#xff0c;这个值有可能是小数&#xff0c;我们举个例子&#xff1a;</p> 
+<p>5个一样长度x的板&#xff0c;m &#61; 13&#xff0c;则 13 / 5 &#61; 2...3&#xff0c;因此最短板长度就是x&#43;2&#xff0c;</p> 
+<p>再比如</p> 
+<p>5个一样长度x的板&#xff0c;m &#61; 15&#xff0c;则 13 / 5 &#61; 3&#xff0c;因此最短板长度就是x&#43;3。</p> 
+<p></p> 
+<p>本题有点贪心思维&#xff0c;即优先分配m的长度给最短板。</p> 
+<p></p> 
+<p>关于算法的时间复杂度&#xff0c;由于板子数量最多1000个&#xff0c;因此统计相同长度板子数量的时间复杂度很低。</p> 
+<p>然后m的长度达到了10^6&#xff0c;这就比较大了&#xff0c;但是我们通过不断递进式累计最短板数量&#xff0c;最终不会受到m长度的影响&#xff0c;只会受到板子数量的影响。</p> 
+<p>因此下面整体复杂度是O(N)&#xff0c;且N取值最多是1000。</p> 
+<p></p> 
+<h3>贪心思维解法</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [n, m] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const a &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(m, a));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(m, a) {
+  // 统计每种长度板的数量&#xff0c;记录到count中&#xff0c;属性是板长度&#xff0c;属性值是板数量
+  const count &#61; {};
+  for (let ai of a) {
+    count[ai] ? count[ai]&#43;&#43; : (count[ai] &#61; 1);
+  }
+
+  // 将统计到的板&#xff0c;按板长度升序
+  const arr &#61; [];
+  for (let ai in count) {
+    arr.push([ai - 0, count[ai]]);
+  }
+  arr.sort((a, b) &#61;&gt; a[0] - b[0]);
+
+  // 只要还有剩余的m长度&#xff0c;就将他补到最短板上
+  while (m &gt; 0) {
+    // 如果只有一种板长度&#xff0c;那么就尝试将m平均分配到各个板上
+    if (arr.length &#61;&#61;&#61; 1) {
+      const [len, count] &#61; arr[0];
+      return len &#43; Math.floor(m / count);
+    }
+
+    // 如果有多种板长度
+    // min1是最短板
+    let min1 &#61; arr.shift();
+    // min2是第二最短板
+    let min2 &#61; arr[0];
+
+    // diff是最短板和第二最短板的差距
+    let diff &#61; min2[0] - min1[0];
+
+    // 将所有最短板补足到第二短板的长度&#xff0c;所需要总长度total
+    let total &#61; diff * min1[1];
+
+    // 如果m的长度不够补足所有最短板&#xff0c;那么说明此时最短板的长度就是题解
+    if (total &gt; m) {
+      return min1[0] &#43; Math.floor(m / min1[1]);
+    }
+    // 如果m的长度刚好可以补足所有最短板&#xff0c;那么说明最短板可以全部升级到第二短板&#xff0c;且刚好用完m&#xff0c;因此第二短板的长度就是题解
+    else if (total &#61;&#61;&#61; m) {
+      return min2[0];
+    }
+    // 如果m的长度足够长&#xff0c;能补足所有最短板到第二短板&#xff0c;还能有剩余&#xff0c;则将最短的数量加到第二短板的数量上&#xff0c;继续下轮循环
+    else {
+      m -&#61; total;
+      min2[1] &#43;&#61; min1[1];
+    }
+  }
+
+  return arr[0][0];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int m &#61; sc.nextInt();
+
+    int[] a &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      a[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(m, a));
+  }
+
+  public static int getResult(int m, int[] a) {
+    // 统计每种长度板的数量&#xff0c;记录到woods中&#xff0c;key是板长度&#xff0c;val是板数量
+    HashMap&lt;Integer, Integer&gt; woods &#61; new HashMap&lt;&gt;();
+    for (Integer ai : a) {
+      if (woods.containsKey(ai)) {
+        Integer val &#61; woods.get(ai);
+        woods.put(ai, &#43;&#43;val);
+      } else {
+        woods.put(ai, 1);
+      }
+    }
+
+    // 将统计到的板&#xff0c;按板长度排优先级&#xff0c;长度越短优先级越高&#xff0c;这里使用优先队列来实现优先级
+    PriorityQueue&lt;Integer[]&gt; pq &#61; new PriorityQueue&lt;&gt;((b, c) -&gt; b[0] - c[0]);
+    for (Integer wood : woods.keySet()) {
+      pq.offer(new Integer[] {wood, woods.get(wood)});
+    }
+
+    // 只要还有剩余的m长度&#xff0c;就将他补到最短板上
+    while (m &gt; 0) {
+      // 如果只有一种板长度&#xff0c;那么就尝试将m平均分配到各个板上
+      if (pq.size() &#61;&#61; 1) {
+        Integer[] info &#61; pq.poll();
+        int len &#61; info[0];
+        int count &#61; info[1];
+        return len &#43; m / count;
+      }
+
+      // 如果有多种板长度
+      // min1是最短板
+      Integer[] min1 &#61; pq.poll();
+      // min2是第二最短板
+      Integer[] min2 &#61; pq.peek();
+
+      // diff是最短板和第二最短板的差距
+      int diff &#61; min2[0] - min1[0];
+      // 将所有最短板补足到第二短板的长度&#xff0c;所需要总长度total
+      int total &#61; diff * min1[1];
+
+      // 如果m的长度不够补足所有最短板&#xff0c;那么说明此时最短板的长度就是题解
+      if (total &gt; m) {
+        return min1[0] &#43; m / min1[1];
+      }
+      // 如果m的长度刚好可以补足所有最短板&#xff0c;那么说明最短板可以全部升级到第二短板&#xff0c;且刚好用完m&#xff0c;因此第二短板的长度就是题解
+      else if (total &#61;&#61; m) {
+        return min2[0];
+      }
+      // 如果m的长度足够长&#xff0c;能补足所有最短板到第二短板&#xff0c;还能有剩余&#xff0c;则将最短的数量加到第二短板的数量上&#xff0c;继续下轮循环
+      else {
+        m -&#61; total;
+        min2[1] &#43;&#61; min1[1];
+      }
+    }
+
+    return pq.peek()[0];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import math
+
+n, m &#61; map(int, input().split())
+a &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(m, a):
+    # 统计每种长度板的数量&#xff0c;记录到count中&#xff0c;属性是板长度&#xff0c;属性值是板数量
+    count &#61; {}
+    for ai in a:
+        if count.get(ai) is None:
+            count[ai] &#61; 1
+        else:
+            count[ai] &#43;&#61; 1
+
+    # 将统计到的板&#xff0c;按板长度升序
+    arr &#61; []
+    for ai in count.keys():
+        arr.append([int(ai), count[ai]])
+
+    arr.sort(key&#61;lambda x: x[0])
+
+    # 只要还有剩余的m长度&#xff0c;就将他补到最短板上
+    while m &gt; 0:
+        # 如果只有一种板长度&#xff0c;那么就尝试将m平均分配到各个板上
+        if len(arr) &#61;&#61; 1:
+            lenV, count &#61; arr[0]
+            return lenV &#43; math.floor(m / count)
+
+        # 如果有多种板长度
+        min1 &#61; arr.pop(0) # min1是最短板
+        min2 &#61; arr[0] # min2是第二最短板
+
+        # diff是最短板和第二最短板的差距
+        diff &#61; min2[0] - min1[0]
+
+        # 将所有最短板补足到第二短板的长度&#xff0c;所需要总长度total
+        total &#61; diff * min1[1]
+
+        # 如果m的长度不够补足所有最短板&#xff0c;那么说明此时最短板的长度就是题解
+        if total &gt; m:
+            return min1[0] &#43; math.floor(m / min1[1])
+        # 如果m的长度刚好可以补足所有最短板&#xff0c;那么说明最短板可以全部升级到第二短板&#xff0c;且刚好用完m&#xff0c;因此第二短板的长度就是题解
+        elif total &#61;&#61; m:
+            return min2[0]
+        # 如果m的长度足够长&#xff0c;能补足所有最短板到第二短板&#xff0c;还能有剩余&#xff0c;则将最短的数量加到第二短板的数量上&#xff0c;继续下轮循环
+        else:
+            m -&#61; total
+            min2[1] &#43;&#61; min1[1]
+
+    return arr[0][0]
+
+
+# 算法调用
+print(getResult(m, a))
+</code></pre> 
+<p></p> 
+<h3>动态规划解法</h3> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [n, m] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(n, m, arr));
+
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} n 木板数量
+ * &#64;param {*} m 可用的木料长度
+ * &#64;param {*} arr 木板长度数组
+ * &#64;returns 最短木板长度
+ */
+function getResult(n, m, arr) {
+  // 木板长度升序
+  arr.sort((a, b) &#61;&gt; a - b);
+
+  // dp用于保存将所有arr[i-1]长度的木板补足到arr[i]长度&#xff0c;所需要的木料长度
+  let dp &#61; 0;
+  for (let i &#61; 1; i &lt; n; i&#43;&#43;) {
+    // 比如将arr[0]长度的木板补足到arr[1]所需的木料长度为arr[1] - arr[0]
+    // 比如将arr[1]长度的木板补足到arr[2]所需的木料长度为(arr[2] - arr[1]) * 2&#xff0c;注意这里*2的原因是arr[0]已经被补足到arr[1]长度了&#xff0c;因此arr[1]长度此时有2个
+    const need &#61; (arr[i] - arr[i - 1]) * i;
+
+    // 如果m可用木料不满足上面&#xff0c;则将剩余可用m-dp的材料均分给i根木料&#xff0c;返回此时的最短木料
+    if (dp &#43; need &gt; m) {
+      return Math.floor((m - dp) / i) &#43; arr[i - 1];
+    }
+
+    dp &#43;&#61; need;
+  }
+
+  // 如果将所有木板都补足到最长木板的长度了&#xff0c;还有剩余木料可用&#xff0c;则均分
+  return Math.floor((m - dp) / n) &#43; arr.at(-1);
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int m &#61; sc.nextInt();
+
+    int[] a &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      a[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(n, m, a));
+  }
+
+  /**
+   * &#64;param n 木板数量
+   * &#64;param m 可用的木料长度
+   * &#64;param arr 木板长度数组
+   * &#64;return 最短木板长度
+   */
+  public static int getResult(int n, int m, int[] arr) {
+    // 木板长度升序
+    Arrays.sort(arr);
+
+    // dp用于保存将所有arr[i-1]长度的木板补足到arr[i]长度&#xff0c;所需要的木料长度
+    int dp &#61; 0;
+    for (int i &#61; 1; i &lt; n; i&#43;&#43;) {
+      // 比如将arr[0]长度的木板补足到arr[1]所需的木料长度为arr[1] - arr[0]
+      // 比如将arr[1]长度的木板补足到arr[2]所需的木料长度为(arr[2] - arr[1]) *
+      // 2&#xff0c;注意这里*2的原因是arr[0]已经被补足到arr[1]长度了&#xff0c;因此arr[1]长度此时有2个
+      int need &#61; (arr[i] - arr[i - 1]) * i;
+
+      // 如果m可用木料不满足上面&#xff0c;则将剩余可用m-dp的材料均分给i根木料&#xff0c;返回此时的最短木料
+      if (dp &#43; need &gt; m) {
+        return (m - dp) / i &#43; arr[i - 1];
+      }
+
+      dp &#43;&#61; need;
+    }
+
+    // 如果将所有木板都补足到最长木板的长度了&#xff0c;还有剩余木料可用&#xff0c;则均分
+    return (m - dp) / n &#43; arr[n - 1];
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import math
+
+n, m &#61; map(int, input().split())
+a &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(n, m, arr):
+    &#34;&#34;&#34;
+    :param n: 木板数量
+    :param m: 可用的木料长度
+    :param arr: 木板长度数组
+    :return: 最短木板长度
+    &#34;&#34;&#34;
+    # 木板长度升序
+    arr.sort()
+
+    # dp用于保存将所有arr[i-1]长度的木板补足到arr[i]长度&#xff0c;所需要的木料长度
+    dp &#61; 0
+    for i in range(1, n):
+        # 比如将arr[0]长度的木板补足到arr[1]所需的木料长度为arr[1] - arr[0]
+        # 比如将arr[1]长度的木板补足到arr[2]所需的木料长度为(arr[2] - arr[1]) * 2&#xff0c;注意这里*2的原因是arr[0]已经被补足到arr[1]长度了&#xff0c;因此arr[1]长度此时有2个
+        need &#61; (arr[i] - arr[i-1]) * i
+
+        # 如果m可用木料不满足上面&#xff0c;则将剩余可用m-dp的材料均分给i根木料&#xff0c;返回此时的最短木料
+        if dp &#43; need &gt; m:
+            return (m - dp) // i &#43; arr[i-1]
+
+        dp &#43;&#61; need
+
+    # 如果将所有木板都补足到最长木板的长度了&#xff0c;还有剩余木料可用&#xff0c;则均分
+    return (m - dp) // n &#43; arr[-1]
+
+
+# 算法调用
+print(getResult(n, m, a))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

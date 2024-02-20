@@ -1,0 +1,423 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 矩阵匹配（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>从一个 N * M&#xff08;N ≤ M&#xff09;的矩阵中选出 N 个数&#xff0c;任意两个数字不能在同一行或同一列&#xff0c;求选出来的 N 个数中第 K 大的数字的最小值是多少。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入矩阵要求&#xff1a;1 ≤ K ≤ N ≤ M ≤ 150</p> 
+<p>输入格式&#xff1a;</p> 
+<blockquote> 
+ <p>N M K</p> 
+ <p>N*M矩阵</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>N*M 的矩阵中可以选出 M! / N! 种组合数组&#xff0c;每个组合数组种第 K 大的数中的最小值。无需考虑重复数字&#xff0c;直接取字典排序结果即可。</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>注意&#xff1a;结果是第 K 大的数字的最小值</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 4 2<br /> 1 5 6 6<br /> 8 3 4 3<br /> 6 8 6 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>N*M的矩阵中可以选出 M&#xff01;/ N&#xff01;种组合数组&#xff0c;每个组合数组种第 K 大的数中的最小值&#xff1b;</p> <p>上述输入中选出数组组合为&#xff1a;</p> <p>1,3,6;</p> <p>1,3,3;</p> <p>1,4,8;</p> <p>1,4,3;</p> <p>......</p> <p>上述输入样例中选出的组合数组有24种&#xff0c;最小数组为1,3,3&#xff0c;则第2大的最小值为3</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题需要我们从矩阵中选取N个元素&#xff0c;这个N元素的特点是&#xff1a;任意两个不能同行同列。</p> 
+<p>而满足上面条件的N个元素存在多组&#xff0c;我们需要找到着各个组中第K大元素的最小值。</p> 
+<p></p> 
+<blockquote> 
+ <p>难点一&#xff1a;如何从矩阵中找到N个互相不同行同列的元素呢&#xff1f;</p> 
+</blockquote> 
+<p>暴力枚举的话&#xff0c;肯定会超时&#xff0c;因此需要寻找更优解法。</p> 
+<p>根据要求&#xff0c;每行每列只能有一个元素被选择&#xff0c;即可以认为每个行号只能和一个列号进行配对&#xff0c;且配对过的列号不能再和其他行号配对&#xff0c;而形成了配对关系的行号&#xff0c;列号&#xff0c;其实就是一个元素的坐标位置。</p> 
+<p>因此&#xff0c;找N个互相不同行同列的元素&#xff0c;其实就是在二分图&#xff08;所有行号一部分&#xff0c;所有列号一部分&#xff09;找N个边的匹配。</p> 
+<p>如下图所示</p> 
+<p><img alt="" height="406" src="https://img-blog.csdnimg.cn/direct/4349f02f95c745e9bfe18aa9d731accf.png" width="703" /></p> 
+<p>关于二分图的知识可以看下&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/135420801" rel="nofollow" title="HDU - 2063 过山车&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;-CSDN博客">HDU - 2063 过山车&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;-CSDN博客</a></p> 
+<p></p> 
+<p>看完上面博客后&#xff0c;我们就可以继续后面说明了。</p> 
+<p>现在我们已经有了二分图了&#xff0c;也就可以找到具有N个边的&#34;匹配&#34;&#xff0c;但是这种&#34;匹配&#34;可能非常多&#xff0c;难道要全部找出来&#xff0c;然后对比每个&#34;匹配&#34;中第K大&#xff0c;那不还是暴力吗&#xff1f;</p> 
+<p></p> 
+<p>题目需要我们多组N个元素中的第K大元素的最小取值&#xff0c;</p> 
+<p>换位思考一下&#xff0c;假设我们已经知道了第K大的最小取值是kth&#xff0c;那么&#xff1a;</p> 
+<ul><li>检查矩阵中是否至多找到&#xff08;N - K &#43; 1 个&#xff09; ≤ kth 的元素值&#xff0c;且这些元素值互不同行同列</li></ul> 
+<blockquote> 
+ <p>N个数中&#xff0c;有K-1个数比kth大&#xff0c;那么相对应的有 (N - (K-1)) &#61; (N - K &#43; 1 ) 个数 ≤ kth。</p> 
+ <p>即找的 N - K &#43; 1 个数中包含了 kth&#xff08;第K大值&#xff09;本身。</p> 
+</blockquote> 
+<p></p> 
+<p></p> 
+<p>而kth的大小和二分图最大匹配是正相关的&#xff0c;因为&#xff1a;</p> 
+<blockquote> 
+ <p>每个匹配边 其实就是 行号到列号的配对连线</p> 
+</blockquote> 
+<blockquote> 
+ <p>而行号和列号的组合其实就是坐标位置&#xff0c;根据坐标位置可以得到一个矩阵元素值</p> 
+</blockquote> 
+<p>因此kth越小&#xff0c;意味着可以找到的 ≤ kth 的矩阵元素越少&#xff0c;相反的&#xff0c;kth 越大&#xff0c;则找到的 ≤ kth 的矩阵元素越多。</p> 
+<p></p> 
+<p>因此kth值大小和二分图最大匹配数是线性关系&#xff0c;我们可以使用二分法&#xff0c;来枚举kth。</p> 
+<p></p> 
+<p>二分枚举的范围是&#xff1a;1 ~ 矩阵元素最大值&#xff0c;这里不用担心二分枚举到kth不是矩阵元素&#xff0c;因为这种情况会被过滤掉&#xff0c;原因是&#xff1a;我们要找 N - K &#43; 1 个 &lt;&#61; kth 的矩阵元素&#xff0c;最后把关的必然是 kth 本身&#xff0c;即我们必然要在矩阵中找到一个 kth 值&#xff0c;如果二分枚举到的 kth 不是矩阵元素&#xff0c;则无法满足这个要求。</p> 
+<p></p> 
+<p>二分枚举到一个kth值&#xff1a;</p> 
+<ul><li>如果kth使得二分图最大匹配 &gt;&#61; N-K&#43;1 个&#xff0c;则说明当前kth取大了&#xff0c;我们应该尝试更小的kth值&#xff0c;即缩小二分右边界为kth-1</li><li>如果kth使得二分图最大匹配 &lt; N-K&#43;1 个&#xff0c;则说明当前kth取小了&#xff0c;我们应该继续尝试更大的kth值&#xff0c;即扩大二分左边界为kth&#43;1</li></ul> 
+<p>当二分左右边界重合时的kth值即为题解。</p> 
+<p></p> 
+<p>关于二分法&#xff0c;可以看下&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/130097676" rel="nofollow" title="算法设计 - 二分法和三分法&#xff0c;洛谷P3382_二分法与三分法-CSDN博客">算法设计 - 二分法和三分法&#xff0c;洛谷P3382_二分法与三分法-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [n, m, k] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  let min &#61; 1;
+  let max &#61; -Infinity;
+
+  const matrix &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    matrix.push((await readline()).split(&#34; &#34;).map(Number));
+    max &#61; Math.max(max, ...matrix[i]);
+  }
+
+  // 二分枚举第K大的最小取值
+  while (min &lt;&#61; max) {
+    // mid就是被枚举出来的N个数中的第K大的最小取值
+    const mid &#61; (min &#43; max) &gt;&gt; 1;
+
+    // 检查mid作为N个数中第K大值时&#xff0c;是否存在N-K&#43;1个&lt;&#61;它的值
+    if (check(mid)) {
+      max &#61; mid - 1;
+    } else {
+      min &#61; mid &#43; 1;
+    }
+  }
+
+  console.log(min);
+
+  function check(kth) {
+    // 利用二分图最大匹配来求解&#xff0c;小于等于kth&#xff08;第K大值&#xff09;的元素个数&#xff08;即二分图最大匹配&#xff09;
+    let smallerCount &#61; 0;
+
+    // 记录每个行号的匹配成功的列号
+    // 初始时每个行号都处于未配对状态&#xff0c;此时将行号配对的列号赋值为-1
+    const match &#61; new Array(m).fill(-1);
+
+    // 遍历列号&#xff0c;每个列号对互相心仪的行号发起配对请求
+    for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 记录增广路访问过的行号
+      const vis &#61; new Array(m).fill(false);
+      if (dfs(i, kth, match, vis)) {
+        smallerCount&#43;&#43;;
+      }
+    }
+
+    return smallerCount &gt;&#61; n - k &#43; 1;
+  }
+
+  function dfs(i, kth, match, vis) {
+    // 列号 i 发起了配对请求
+
+    // 遍历每一个行号j
+    for (let j &#61; 0; j &lt; m; j&#43;&#43;) {
+      // 如果当前行号j未被增广路探索过 &amp;&amp; 当前行j列号i可以配对&#xff08;如果行列号位置(i,j)对应矩阵元素值小于等于kth&#xff08;第K大值&#xff09;&#xff0c;则可以配对&#xff09;
+      if (!vis[j] &amp;&amp; matrix[i][j] &lt;&#61; kth) {
+        vis[j] &#61; true;
+
+        // 如果对应行号j未配对&#xff0c;或者&#xff0c;已配对但是配对的雷浩match[j]可以找到其他行号重新配对
+        if (match[j] &#61;&#61; -1 || dfs(match[j], kth, match, vis)) {
+          // 则当前列号i 和 行号j 可以配对
+          match[j] &#61; i;
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  static int n;
+  static int m;
+  static int k;
+  static int[][] matrix;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    n &#61; sc.nextInt();
+    m &#61; sc.nextInt();
+    k &#61; sc.nextInt();
+
+    int min &#61; 1;
+    int max &#61; Integer.MIN_VALUE;
+
+    matrix &#61; new int[n][m];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+        max &#61; Math.max(max, matrix[i][j]);
+      }
+    }
+
+    // 二分枚举第K大值
+    while (min &lt;&#61; max) {
+      // mid就是被枚举出来的N个数中的第K大值
+      int mid &#61; (min &#43; max) &gt;&gt; 1;
+
+      // 检查mid作为N个数中第K大值时&#xff0c;是否存在N-K&#43;1个不大于它的值
+      if (check(mid)) {
+        max &#61; mid - 1;
+      } else {
+        min &#61; mid &#43; 1;
+      }
+    }
+
+    System.out.println(min);
+  }
+
+  public static boolean check(int kth) {
+    // 利用二分图最大匹配来求解&#xff0c;小于等于kth&#xff08;第K大值&#xff09;的元素个数&#xff08;即二分图最大匹配&#xff09;
+    int smallerCount &#61; 0;
+
+    // 记录每个行号的匹配成功的列号
+    int[] match &#61; new int[m];
+    // 初始时每个行号都处于未配对状态&#xff0c;此时将行号配对的列号赋值为-1
+    Arrays.fill(match, -1);
+
+    // 遍历列号&#xff0c;每个列号对互相心仪的行号发起配对请求
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 记录增广路访问过的行号
+      boolean[] vis &#61; new boolean[m];
+      if (dfs(i, kth, match, vis)) smallerCount&#43;&#43;;
+    }
+
+    return smallerCount &gt;&#61; n - k &#43; 1;
+  }
+
+  public static boolean dfs(int i, int kth, int[] match, boolean[] vis) {
+    // 列号 i 发起了配对请求
+
+    // 遍历每一个行号j
+    for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+      // 如果当前行号j未被增广路探索过 &amp;&amp; 当前行j列号i可以配对&#xff08;如果行列号位置(i,j)对应矩阵元素值小于等于kth&#xff08;第K大值&#xff09;&#xff0c;则可以配对&#xff09;
+      if (!vis[j] &amp;&amp; matrix[i][j] &lt;&#61; kth) {
+        vis[j] &#61; true;
+
+        // 如果对应行号j未配对&#xff0c;或者&#xff0c;已配对但是配对的雷浩match[j]可以找到其他行号重新配对
+        if (match[j] &#61;&#61; -1 || dfs(match[j], kth, match, vis)) {
+          // 则当前列号i 和 行号j 可以配对
+          match[j] &#61; i;
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n, m, k &#61; map(int, input().split())
+matrix &#61; [list(map(int, input().split())) for _ in range(n)]
+
+
+def dfs(i, kth, match, vis):
+    # 列号 i 发起了配对请求
+
+    # 遍历每一个行号j
+    for j in range(m):
+        # 如果当前行号j未被增广路探索过 &amp;&amp; 当前行j列号i可以配对&#xff08;如果行列号位置(i,j)对应矩阵元素值小于等于kth&#xff08;第K大值&#xff09;&#xff0c;则可以配对&#xff09;
+        if not vis[j] and matrix[i][j] &lt;&#61; kth:
+            vis[j] &#61; True
+
+            # 如果对应行号j未配对&#xff0c;或者&#xff0c;已配对但是配对的雷浩match[j]可以找到其他行号重新配对
+            if match[j] &#61;&#61; -1 or dfs(match[j], kth, match, vis):
+                # 则当前列号i 和 行号j 可以配对
+                match[j] &#61; i
+                return True
+
+    return False
+
+
+def check(kth):
+    # 利用二分图最大匹配来求解&#xff0c;小于等于kth&#xff08;第K大值&#xff09;的元素个数&#xff08;即二分图最大匹配&#xff09;
+    smallerCount &#61; 0
+
+    # 记录每个行号的匹配成功的列号
+    # 初始时每个行号都处于未配对状态&#xff0c;此时将行号配对的列号赋值为-1
+    match &#61; [-1] * m
+
+    # 遍历列号&#xff0c;每个列号对互相心仪的行号发起配对请求
+    for i in range(n):
+        # 记录增广路访问过的行号
+        vis &#61; [False] * m
+        if dfs(i, kth, match, vis):
+            smallerCount &#43;&#61; 1
+
+    return smallerCount &gt;&#61; n - k &#43; 1
+
+
+# 算法入口
+def getResult():
+    low &#61; 1
+    high &#61; -sys.maxsize
+
+    for i in range(n):
+        for j in range(m):
+            high &#61; max(high, matrix[i][j])
+
+    # 二分枚举第K大值
+    while low &lt;&#61; high:
+        # mid就是被枚举出来的N个数中的第K大值
+        mid &#61; (low &#43; high) &gt;&gt; 1
+
+        # 检查mid作为N个数中第K大值时&#xff0c;是否存在N-K&#43;1个&lt;&#61;它的值
+        if check(mid):
+            high &#61; mid - 1
+        else:
+            low &#61; mid &#43; 1
+
+    return low
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;math.h&gt;
+
+#define MAX_SIZE 150
+
+#define bool int
+#define TRUE 1
+#define FALSE 0
+
+int n, m, k;
+int matrix[MAX_SIZE][MAX_SIZE];
+
+bool dfs(int i, int kth, int match[], int vis[]) {
+    // 列号 i 发起了配对请求
+    // 遍历每一个行号j
+    for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        // 如果当前行号j未被增广路探索过 &amp;&amp; 当前行j列号i可以配对&#xff08;如果行列号位置(i,j)对应矩阵元素值小于等于kth&#xff08;第K大值&#xff09;&#xff0c;则可以配对&#xff09;
+        if (!vis[j] &amp;&amp; matrix[i][j] &lt;&#61; kth) {
+            vis[j] &#61; TRUE;
+
+            // 如果对应行号j未配对&#xff0c;或者&#xff0c;已配对但是配对的雷浩match[j]可以找到其他行号重新配对
+            if (match[j] &#61;&#61; -1 || dfs(match[j], kth, match, vis)) {
+                // 则当前列号i 和 行号j 可以配对
+                match[j] &#61; i;
+                return TRUE;
+            }
+        }
+    }
+
+    return FALSE;
+}
+
+bool check(int kth) {
+    // 利用二分图最大匹配来求解&#xff0c;小于等于kth&#xff08;第K大值&#xff09;的元素个数&#xff08;即二分图最大匹配&#xff09;
+    int smallerCount &#61; 0;
+
+    // 记录每个行号的匹配成功的列号
+    int match[m];
+    // 初始时每个行号都处于未配对状态&#xff0c;此时将行号配对的列号赋值为-1
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) match[i] &#61; -1;
+
+    // 遍历列号&#xff0c;每个列号对互相心仪的行号发起配对请求
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        // 记录增广路访问过的行号
+        int vis[MAX_SIZE] &#61; {FALSE};
+        if (dfs(i, kth, match, vis)) {
+            smallerCount&#43;&#43;;
+        }
+    }
+
+    return smallerCount &gt;&#61; (n - k &#43; 1);
+}
+
+int main() {
+    scanf(&#34;%d %d %d&#34;, &amp;n, &amp;m, &amp;k);
+
+    int min &#61; 1;
+    int max &#61; INT_MIN;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            scanf(&#34;%d&#34;, &amp;matrix[i][j]);
+            max &#61; (int) fmax(max, matrix[i][j]);
+        }
+    }
+
+    // 二分枚举第K大值
+    while (min &lt;&#61; max) {
+        // mid就是被枚举出来的N个数中的第K大值
+        int mid &#61; (min &#43; max) &gt;&gt; 1;
+
+        // 检查mid作为N个数中第K大值时&#xff0c;是否存在N-K&#43;1个&lt;&#61;它的值
+        if (check(mid)) {
+            max &#61; mid - 1;
+        } else {
+            min &#61; mid &#43; 1;
+        }
+    }
+
+    printf(&#34;%d\n&#34;, min);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,397 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 排队游戏（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4>题目描述</h4> 
+<p>新来的老师给班里的同学排一个队。</p> 
+<p>每个学生有一个影力值。</p> 
+<p>一些学生是刺头&#xff0c;不会听老师的话&#xff0c;自己选位置&#xff0c;非刺头同学在剩下的位置按照能力值从小到大排。</p> 
+<p>对于非刺头同学&#xff0c;如果发现他前面有能力值比自己高的同学&#xff0c;他不满程度就增加&#xff0c;增加的数量等于前面能力值比他大的同学的个数。</p> 
+<p>刺头不会产生不满。</p> 
+<p>如果整个班级累计的不满程度超过k&#xff0c;那么老师就没有办法教这个班级了。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入有三行&#xff1a;</p> 
+<p>第一行为n,m,k,空格隔开&#xff0c;分别表示班级总人数&#xff0c;刺头人数&#xff0c;最大不满程度k。</p> 
+<p>第二行为刺头所在位置(从0开始&#xff0c;即排队数组的下标&#xff0c;比如1代表队伍中第2个同学是刺头)&#xff0c;位置的数组也是排序的。</p> 
+<p>第三行有n个数&#xff0c;空格隔开&#xff0c;表示老师排好的队中每个人的能力值&#xff0c;其中非刺头同学一定按照能力值从小到大排好序的。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>0 表示老师可以继续教这个班级</p> 
+<p>1 表示老师无法继续教这个班级</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>n 范围是[1,100000]</li><li>m 范围是 [1,n]</li><li>k 范国是[1,1000000000]</li><li>每位同学的能力值范围是[1000,100000]</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1"><tbody><tr><td style="width:68px;">输入</td><td style="width:620px;">4 2 3<br /> 0 1<br /> 1810 1809 1801 1802</td></tr><tr><td style="width:68px;">输出</td><td style="width:620px;">1</td></tr><tr><td style="width:68px;">说明</td><td style="width:620px;">刺头在0,1位置&#xff0c;2号同学不满程度2(前面两个刺头能力值都比他大)&#xff0c;3号同学不满程度2&#xff0c;总不满程度4&#xff0c;大于3。输出不能教这班(1)。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1"><tbody><tr><td style="width:67px;">输入</td><td style="width:621px;">4 2 4<br /> 0 1<br /> 1810 1809 1801 1802</td></tr><tr><td style="width:67px;">输出</td><td style="width:621px;">0</td></tr><tr><td style="width:67px;">说明</td><td style="width:621px;">同前&#xff0c;4不大于4&#xff0c;输出能教这个班 (0)</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用二分查找解题。</p> 
+<p></p> 
+<p>题目说&#xff1a;</p> 
+<blockquote> 
+ <p>非刺头同学在剩下的位置按照能力值从小到大排。</p> 
+</blockquote> 
+<p>因此&#xff0c;每个非刺头学生&#xff0c;其实只需要关注他前面的刺头学生即可&#xff0c;因为他前面的非刺头学生的能力值一定不大于他。</p> 
+<p></p> 
+<p>我们可以定义一个集合 pricks 来记录刺头学生的能力值。</p> 
+<p>因此&#xff0c;我们遍历所有学生能力值时&#xff1a;</p> 
+<ul><li>如果当前位置是刺头学生&#xff08;根据第二行输入的刺头学生位置判断&#xff09;&#xff0c;那么就将当前学生能力值ability加入到pricks中&#xff0c;这里我们需要保证有序插入到 pricks 中。</li><li>如果当前位置是非刺头学生&#xff0c;那么我们需要找到当前学生能力值ability在pricks中的排名rank&#xff08;其实也是有序插入位置&#xff09;&#xff0c;找到排名后&#xff0c;范围[rank, pricks.length - 1]内刺头学生都是能力比当前学生高的</li></ul> 
+<p>按此逻辑&#xff0c;我们只要收集非刺头学生 前面 能力比自己高的 非刺头学生个数&#xff0c;如果最后总个数 &gt; k&#xff0c;则老师无法教此班级&#xff0c;否则就可以。</p> 
+<p></p> 
+<p>上面逻辑中&#xff0c;我们有两个动作&#xff1a;</p> 
+<ul><li>向 pricks 中有序插入 ability&#xff08;注意&#xff0c;本题pricks从空开始有序插入&#xff0c;因此可以保证一直有序&#xff09;</li><li>在 pricks 中找到 ability 的排名 &#xff08;最后一个有序插入位置&#xff09;</li></ul> 
+<p>而这可以基于二分查找实现。</p> 
+<p>但是&#xff0c;pricks 中是有可能存在多个相同能力值的&#xff0c;对于这种情况&#xff0c;我们应该将ability插入到pricks中和ability相同的最后一个能力值的后面&#xff0c;这样才能保证 ability 被插入后&#xff0c;其后面值都比 ability 高。</p> 
+<p>关于在pricks中寻找和ability相同的最后一个能力值的位置&#xff0c;具体实现可以参考下面博客中searchLast方法&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/130669841" rel="nofollow" title="LeetCode - 34 在排序数组中查找元素的第一个和最后一个位置_伏城之外的博客-CSDN博客">LeetCode - 34 在排序数组中查找元素的第一个和最后一个位置_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 班级总人数, 刺头人数, 最大不满程度
+  const [n, m, k] &#61; (await readline()).split(&#34; &#34;).map(Number);
+  // 刺头所在位置
+  const pricks_idx &#61; new Set((await readline()).split(&#34; &#34;).map(Number));
+  // 所有学生的能力值
+  const all &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 总不满意程度
+  let unHappy &#61; 0;
+
+  // 记录所有刺头的能力
+  const pricks &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // 当前学生能力
+    const ablity &#61; all[i];
+
+    // 当前学生能力在刺头中的排名, 这里使用二分查找pricks中最后一个等于ability的位置&#xff0c;如果pricks中没有等于ability的值&#xff0c;则返回第一个大于ability的位置
+    let rank &#61; searchLast(pricks, ablity);
+
+    if (rank &lt; 0) {
+      rank &#61; -rank - 1;
+    } else {
+      rank &#43;&#61; 1;
+    }
+
+    if (pricks_idx.has(i)) {
+      // 如果当前学生是刺头&#xff0c;那么就&#xff08;有序&#xff09;插入到刺头学生中
+      pricks.splice(rank, 0, ablity);
+    } else {
+      // 如果当前学生是非刺头&#xff0c;那么 [rank ~ pricks.size() - 1] 范围的所有刺头学生都是能力值比当前学生高的
+      unHappy &#43;&#61; pricks.length - rank;
+    }
+  }
+
+  console.log(unHappy &gt; k ? 1 : 0);
+})();
+
+function searchLast(arr, target) {
+  let low &#61; 0;
+  let high &#61; arr.length - 1;
+
+  while (low &lt;&#61; high) {
+    const mid &#61; (low &#43; high) &gt;&gt; 1;
+    const midVal &#61; arr[mid];
+
+    if (midVal &gt; target) {
+      high &#61; mid - 1;
+    } else if (midVal &lt; target) {
+      low &#61; mid &#43; 1;
+    } else {
+      // 向右延伸判断&#xff0c;mid是否为target数域的右边界&#xff0c;即最后一次出现的位置
+      if (mid &#61;&#61; arr.length - 1 || arr[mid] !&#61; arr[mid &#43; 1]) {
+        return mid;
+      } else {
+        low &#61; mid &#43; 1;
+      }
+    }
+  }
+
+  return -low - 1; // 找不到则返回插入位置
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Scanner;
+
+public class Main {
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    // 班级总人数
+    int n &#61; sc.nextInt();
+    // 刺头人数
+    int m &#61; sc.nextInt();
+    // 最大不满程度
+    int k &#61; sc.nextInt();
+
+    // 刺头所在位置
+    HashSet&lt;Integer&gt; pricks_idx &#61; new HashSet&lt;&gt;();
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      pricks_idx.add(sc.nextInt());
+    }
+
+    // 总不满意程度
+    int unHappy &#61; 0;
+
+    // 记录所有刺头的能力
+    ArrayList&lt;Integer&gt; pricks &#61; new ArrayList&lt;&gt;();
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 当前学生能力
+      int ability &#61; sc.nextInt();
+
+      // 当前学生能力在刺头中的排名, 这里使用二分查找pricks中最后一个等于ability的位置&#xff0c;如果pricks中没有等于ability的值&#xff0c;则返回第一个大于ability的位置
+      int rank &#61; searchLast(pricks, ability);
+
+      if (rank &lt; 0) {
+        rank &#61; -rank - 1;
+      } else {
+        rank &#43;&#61; 1;
+      }
+
+      if (pricks_idx.contains(i)) {
+        // 如果当前学生是刺头&#xff0c;那么就&#xff08;有序&#xff09;插入到刺头学生中
+        pricks.add(rank, ability);
+      } else {
+        // 如果当前学生是非刺头&#xff0c;那么 [rank ~ pricks.size() - 1] 范围的所有刺头学生都是能力值比当前学生高的
+        unHappy &#43;&#61; pricks.size() - rank;
+      }
+    }
+
+    System.out.println(unHappy &gt; k ? 1 : 0);
+  }
+
+  public static int searchLast(ArrayList&lt;Integer&gt; list, int target) {
+    int low &#61; 0;
+    int high &#61; list.size() - 1;
+
+    while (low &lt;&#61; high) {
+      int mid &#61; (low &#43; high) &gt;&gt; 1;
+      int midVal &#61; list.get(mid);
+
+      if (midVal &gt; target) {
+        high &#61; mid - 1;
+      } else if (midVal &lt; target) {
+        low &#61; mid &#43; 1;
+      } else {
+        // 向右延伸判断&#xff0c;mid是否为target数域的右边界&#xff0c;即最后一次出现的位置
+        if (mid &#61;&#61; list.size() - 1 || list.get(mid) - list.get(mid &#43; 1) !&#61; 0) {
+          return mid;
+        } else {
+          low &#61; mid &#43; 1;
+        }
+      }
+    }
+
+    return -low - 1; // 找不到则返回插入位置
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">n, m, k &#61; map(int, input().split())  # 班级总人数, 刺头人数, 最大不满程度
+pricks_idx &#61; set(map(int, input().split()))  # 刺头所在位置
+all_ability &#61; list(map(int, input().split()))  # 所有学生能力
+
+
+def searchLast(arr, target):
+    low &#61; 0
+    high &#61; len(arr) - 1
+
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) &gt;&gt; 1
+        midVal &#61; arr[mid]
+
+        if midVal &gt; target:
+            high &#61; mid - 1
+        elif midVal &lt; target:
+            low &#61; mid &#43; 1
+        else:
+            if mid &#61;&#61; len(arr) - 1 or arr[mid] !&#61; arr[mid &#43; 1]:
+                return mid
+            else:
+                low &#61; mid &#43; 1
+
+    return -low - 1
+
+
+def getResult():
+    # 总不满意程度
+    unHappy &#61; 0
+
+    # 记录所有刺头的能力
+    pricks &#61; []
+    for i in range(n):
+        # 当前学生能力
+        ability &#61; all_ability[i]
+
+        # 当前学生能力在刺头中的排名, 这里使用二分查找pricks中最后一个等于ability的位置&#xff0c;如果pricks中没有等于ability的值&#xff0c;则返回第一个大于ability的位置
+        rank &#61; searchLast(pricks, ability)
+
+        if rank &lt; 0:
+            rank &#61; -rank - 1
+        else:
+            rank &#43;&#61; 1
+
+        if i in pricks_idx:
+            # 如果当前学生是刺头&#xff0c;那么就&#xff08;有序&#xff09;插入到刺头学生中
+            pricks.insert(rank, ability)
+        else:
+            # 如果当前学生是非刺头&#xff0c;那么 [rank ~ pricks.size() - 1] 范围的所有刺头学生都是能力值比当前学生高的
+            unHappy &#43;&#61; len(pricks) - rank
+
+    return 1 if unHappy &gt; k else 0
+
+
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 100000
+
+typedef int bool;
+#define TRUE 1
+#define FALSE 0
+
+int searchLast(int* arr, int arr_size, int target);
+void insert(int* arr, int* arr_size, int insert_idx, int insert_val);
+
+int main()
+{
+	// 班级总人数, 刺头人数, 最大不满程度
+	int n, m, k;
+	scanf(&#34;%d %d %d&#34;, &amp;n, &amp;m, &amp;k);
+	
+	// 刺头所在位置
+	bool isPrick[MAX_SIZE] &#61; {FALSE};
+	for(int i&#61;0; i&lt;m; i&#43;&#43;) {
+		int idx;
+		scanf(&#34;%d&#34;, &amp;idx);
+		isPrick[idx] &#61; TRUE;
+	}
+	
+	// 总不满意程度
+	int unHappy &#61; 0;
+	
+	// 记录所有刺头的能力
+	int pricks[MAX_SIZE];
+	int pricks_size &#61; 0;
+	
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		// 当前学生能力
+		int ability;
+		scanf(&#34;%d&#34;, &amp;ability);
+		
+		// 当前学生能力在刺头中的排名, 这里使用二分查找pricks中最后一个等于ability的位置&#xff0c;如果pricks中没有等于ability的值&#xff0c;则返回第一个大于ability的位置
+		int rank &#61; searchLast(pricks, pricks_size, ability);
+		
+		if(rank &lt; 0) {
+			rank &#61; -rank - 1;
+		} else {
+			rank &#43;&#61; 1;
+		}
+		
+		if(isPrick[i]) {
+			// 如果当前学生是刺头&#xff0c;那么就&#xff08;有序&#xff09;插入到刺头学生中
+			insert(pricks, &amp;pricks_size, rank, ability);
+		} else {
+			// 如果当前学生是非刺头&#xff0c;那么 [rank ~ pricks.size() - 1] 范围的所有刺头学生都是能力值比当前学生高的
+			unHappy &#43;&#61; pricks_size - rank;
+		}
+	}
+	
+	printf(&#34;%d\n&#34;, unHappy &gt; k ? 1 : 0);
+	
+	return 0;
+}
+
+int searchLast(int* arr, int arr_size, int target)
+{
+	int low &#61; 0;
+	int high &#61; arr_size- 1;
+	
+	while(low &lt;&#61; high) {
+		int mid &#61; (low &#43; high) &gt;&gt; 1;
+		int midVal &#61; arr[mid];
+		
+		if(midVal &gt; target)
+		{
+			high &#61; mid - 1;
+		} 
+		else if(midVal &lt; target)
+		{
+			low &#61; mid &#43; 1;
+		}
+		else
+		{
+			// 向右延伸判断&#xff0c;mid是否为target数域的右边界&#xff0c;即最后一次出现的位置
+			if(mid &#61;&#61; arr_size - 1 || arr[mid] - arr[mid&#43;1] !&#61; 0)
+			{
+				return mid;
+			}
+			else
+			{
+				low &#61; mid &#43; 1;
+			}
+		}
+	}
+	
+	return -low - 1; // 找不到则返回插入位置
+}
+
+void insert(int* arr, int* arr_size, int insert_idx, int insert_val)
+{
+	for(int i &#61; *arr_size - 1; i &gt;&#61; insert_idx; i--) {
+		arr[i&#43;1] &#61; arr[i];
+	}
+	
+	arr[insert_idx] &#61; insert_val;
+	
+	(*arr_size)&#43;&#43;;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

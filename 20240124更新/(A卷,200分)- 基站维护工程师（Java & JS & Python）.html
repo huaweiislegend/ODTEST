@@ -1,0 +1,385 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 基站维护工程师（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小王是一名基站维护工程师&#xff0c;负责某区域的基站维护。<br /> 某地方有  n  个基站(1 &lt; n &lt; 10)&#xff0c;已知各基站之间的距离 s(0 &lt; s &lt; 500)&#xff0c;并且基站 x 到基站 y 的距离&#xff0c;与基站 y 到基站 x 的距离并不一定会相同。<br /> 小王从基站 1 出发&#xff0c;途经每个基站 1 次&#xff0c;然后返回基站 1 &#xff0c;需要请你为他选择一条距离最短的路。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>站点数n和各站点之间的距离(均为整数)</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最短路程的数值</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 0 2 1<br /> 1 0 2<br /> 2 1 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例输入含义是&#xff0c;</p> 
+<p>3            //有3个基站&#xff0c;<br /> 0 2 1      // <strong>站点1</strong>到站点1的距离0&#xff0c;到站点2的距离2&#xff0c;到站点3的距离1<br /> 1 0 2      // <strong>站点2</strong>到站点1的距离1&#xff0c;到站点2的距离0&#xff0c;到站点3的距离2<br /> 2 1 0      // <strong>站点3</strong>到站点1的距离2&#xff0c;到站点2的距离1&#xff0c;到站点3的距离0</p> 
+<p>图示如下</p> 
+<p><img alt="" height="295" src="https://img-blog.csdnimg.cn/4c59f4d2ca534b07be056d7c8becde6d.png" width="387" /></p> 
+<p>可以发现&#xff0c;1 → 3  → 2  → 1 的路线距离是最短的&#xff0c;只有3距离。</p> 
+<p></p> 
+<p>题目中说&#xff1a;</p> 
+<blockquote> 
+ <p>小王从基站 1 出发&#xff0c;<strong>途经每个基站 1 次</strong>&#xff0c;然后返回基站 1</p> 
+</blockquote> 
+<p>并且按照题目输入来看&#xff0c;每个站点都与剩下的其他站点相连&#xff0c;因此本题其实就是求解n-1个站点&#xff08;即2~n站点&#xff0c;起始站点1&#xff09;的全排列。</p> 
+<p>比如用例一共三个站点&#xff0c;从1站点出发&#xff0c;即求2&#xff0c;3站点的全排列&#xff1a;23&#xff0c;32</p> 
+<p>因此一共有两种途径选择&#xff1a;1 → 2 → 3 → 1 和  1 → 3 → 2 → 1</p> 
+<p>我们只要比较各排列路径中距离最小的即为题解。</p> 
+<p>两个站点i&#xff0c;j之间距离&#xff0c;即为matrix[i-1][j-1]&#xff0c;比如求解1 → 2距离&#xff0c;起始就是matrix[0][1]。</p> 
+<p></p> 
+<p>题目中说 1 &lt; n &lt; 10 &#xff0c;也就是说最多有9个站点&#xff0c;而我们求解n-1个站点的全排列&#xff0c;即8个站点的全排列&#xff0c;一共有8&#xff01;&#61; 40320 个&#xff0c;每个排列求解距离要进行一个O(n)的遍历&#xff0c;即9次遍历。因此一共是差不多40w次循环&#xff0c;好在没什么计算量。</p> 
+<p>我测试了一下10*10矩阵的用时为200ms左右&#xff0c;应该符合要求。</p> 
+<p><img alt="" height="312" src="https://img-blog.csdnimg.cn/7b4c4dd21daf40e4ba5fe4bb55efeea7.png" width="393" /></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    const matrix &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    console.log(getResult(matrix, n));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(matrix, n) {
+  const res &#61; [];
+  dfs(n, [], [], res);
+
+  let ans &#61; Infinity;
+
+  for (let path of res) {
+    let dis &#61; matrix[0][path[0]];
+    path.reduce((p, c) &#61;&gt; {
+      dis &#43;&#61; matrix[p][c];
+      return c;
+    });
+    dis &#43;&#61; matrix[path.at(-1)][0];
+    ans &#61; Math.min(ans, dis);
+  }
+
+  return ans;
+}
+
+function dfs(n, used, path, res) {
+  if (path.length &#61;&#61;&#61; n - 1) return res.push([...path]);
+
+  for (let i &#61; 1; i &lt; n; i&#43;&#43;) {
+    if (!used[i]) {
+      path.push(i);
+      used[i] &#61; true;
+      dfs(n, used, path, res);
+      used[i] &#61; false;
+      path.pop();
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<p>上面代码可能会爆内存&#xff0c;改进代码如下</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    const matrix &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    console.log(getResult(matrix, n));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(matrix, n) {
+  const ans &#61; { val: Infinity };
+  dfs(n, [], [], ans, matrix);
+
+  return ans.val;
+}
+
+function dfs(n, used, path, ans, matrix) {
+  if (path.length &#61;&#61;&#61; n - 1) {
+    let dis &#61; matrix[0][path[0]];
+    path.reduce((p, c) &#61;&gt; {
+      dis &#43;&#61; matrix[p][c];
+      return c;
+    });
+    dis &#43;&#61; matrix[path.at(-1)][0];
+    ans.val &#61; Math.min(ans.val, dis);
+    return;
+  }
+
+  for (let i &#61; 1; i &lt; n; i&#43;&#43;) {
+    if (!used[i]) {
+      path.push(i);
+      used[i] &#61; true;
+      dfs(n, used, path, ans, matrix);
+      used[i] &#61; false;
+      path.pop();
+    }
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc &#61; new Scanner(System.in);
+
+        int n &#61; sc.nextInt();
+
+        int[][] matrix &#61; new int[n][n];
+        for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+            for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+                matrix[i][j] &#61; sc.nextInt();
+            }
+        }
+
+        System.out.println(getResult(matrix, n));
+    }
+
+    public static int getResult(int[][] matrix, int n) {
+        boolean[] used &#61; new boolean[n];
+        LinkedList&lt;Integer&gt; path &#61; new LinkedList&lt;&gt;();
+        ArrayList&lt;LinkedList&lt;Integer&gt;&gt; res &#61; new ArrayList&lt;&gt;();
+
+        dfs(n, used, path, res);
+
+        int ans &#61; Integer.MAX_VALUE;
+
+        for (LinkedList&lt;Integer&gt; pa : res) {
+            int dis &#61; matrix[0][pa.get(0)];
+            for (int i &#61; 0; i &lt; pa.size() - 1; i&#43;&#43;) {
+                int p &#61; pa.get(i);
+                int c &#61; pa.get(i &#43; 1);
+                dis &#43;&#61; matrix[p][c];
+            }
+            dis &#43;&#61; matrix[pa.getLast()][0];
+            ans &#61; Math.min(ans, dis);
+        }
+
+        return ans;
+    }
+
+    public static void dfs(int n, boolean[] used, LinkedList&lt;Integer&gt; path, ArrayList&lt;LinkedList&lt;Integer&gt;&gt; res) {
+        if (path.size() &#61;&#61; n - 1) {
+            res.add((LinkedList&lt;Integer&gt;)path.clone());
+            return;
+        }
+
+        for (int i &#61; 1; i &lt; n; i&#43;&#43;) {
+            if (!used[i]) {
+                path.push(i);
+                used[i] &#61; true;
+                dfs(n, used, path, res);
+                used[i] &#61; false;
+                path.pop();
+            }
+        }
+    }
+
+}</code></pre> 
+<p></p> 
+<p>上面代码有爆内存的风险&#xff0c;改进代码如下</p> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[][] matrix &#61; new int[n][n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    System.out.println(getResult(matrix, n));
+  }
+
+  public static int getResult(int[][] matrix, int n) {
+    boolean[] used &#61; new boolean[n];
+    LinkedList&lt;Integer&gt; path &#61; new LinkedList&lt;&gt;();
+    int[] ans &#61; {Integer.MAX_VALUE};
+
+    dfs(n, used, path, ans, matrix);
+
+    return ans[0];
+  }
+
+  public static void dfs(
+      int n, boolean[] used, LinkedList&lt;Integer&gt; path, int[] ans, int[][] matrix) {
+    if (path.size() &#61;&#61; n - 1) {
+      int dis &#61; matrix[0][path.get(0)];
+      for (int i &#61; 0; i &lt; path.size() - 1; i&#43;&#43;) {
+        int p &#61; path.get(i);
+        int c &#61; path.get(i &#43; 1);
+        dis &#43;&#61; matrix[p][c];
+      }
+      dis &#43;&#61; matrix[path.getLast()][0];
+      ans[0] &#61; Math.min(ans[0], dis);
+      return;
+    }
+
+    for (int i &#61; 1; i &lt; n; i&#43;&#43;) {
+      if (!used[i]) {
+        path.push(i);
+        used[i] &#61; true;
+        dfs(n, used, path, ans, matrix);
+        used[i] &#61; false;
+        path.pop();
+      }
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n &#61; int(input())
+matrix &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+# 算法入口
+def getResult(matrix, n):
+    res &#61; []
+    dfs(n, [False] * n, [], res)
+
+    ans &#61; sys.maxsize
+
+    for path in res:
+        dis &#61; matrix[0][path[0]]
+        for i in range(len(path) - 1):
+            dis &#43;&#61; matrix[path[i]][path[i &#43; 1]]
+        dis &#43;&#61; matrix[path[-1]][0]
+        ans &#61; min(ans, dis)
+
+    return ans
+
+
+def dfs(n, used, path, res):
+    if len(path) &#61;&#61; n - 1:
+        return res.append(path[:])
+
+    for i in range(1, n):
+        if not used[i]:
+            path.append(i)
+            used[i] &#61; True
+            dfs(n, used, path, res)
+            used[i] &#61; False
+            path.pop()
+
+
+# 算法调用
+print(getResult(matrix, n))
+</code></pre> 
+<p>上面代码有爆内存的风险&#xff0c;改进代码如下&#xff1a;</p> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n &#61; int(input())
+matrix &#61; [list(map(int, input().split())) for i in range(n)]
+
+
+# 算法入口
+def getResult():
+    ans &#61; [sys.maxsize]
+    dfs(n, [False] * n, [], ans)
+
+    return ans[0]
+
+
+def dfs(n, used, path, ans):
+    if len(path) &#61;&#61; n - 1:
+        dis &#61; matrix[0][path[0]]
+        for i in range(len(path) - 1):
+            dis &#43;&#61; matrix[path[i]][path[i &#43; 1]]
+        dis &#43;&#61; matrix[path[-1]][0]
+        ans[0] &#61; min(ans[0], dis)
+        return
+
+    for i in range(1, n):
+        if not used[i]:
+            path.append(i)
+            used[i] &#61; True
+            dfs(n, used, path, ans)
+            used[i] &#61; False
+            path.pop()
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

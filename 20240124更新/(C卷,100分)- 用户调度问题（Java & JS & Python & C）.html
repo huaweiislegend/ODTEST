@@ -1,0 +1,380 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 用户调度问题（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>在通信系统中&#xff0c;一个常见的问题是对用户进行不同策略的调度&#xff0c;会得到不同的系统消耗和性能。</p> 
+<p>假设当前有n个待串行调度用户&#xff0c;每个用户可以使用A/B/C三种不同的调度策略&#xff0c;不同的策略会消耗不同的系统资源。请你根据如下规则进行用户调度&#xff0c;并返回总的消耗资源数。</p> 
+<p>规则&#xff1a;</p> 
+<ol><li>相邻的用户不能使用相同的调度策略&#xff0c;例如&#xff0c;第1个用户使用了A策略&#xff0c;则第2个用户只能使用B或者C策略。</li><li>对单个用户而言&#xff0c;不同的调度策略对系统资源的消耗可以归一化后抽象为数值。例如&#xff0c;某用户分别使用A/B/C策略的系统消耗分别为15/8/17。</li><li>每个用户依次选择当前所能选择的对系统资源消耗最少的策略&#xff08;局部最优&#xff09;&#xff0c;如果有多个满足要求的策略&#xff0c;选最后一个。</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行表示用户个数n</p> 
+<p>接下来每一行表示一个用户分别使用三个策略的系统消耗resA resB resC</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最优策略组合下的总的系统资源消耗数</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:56px;">输入</td><td style="width:442px;"> <p>3<br /> 15 8 17<br /> 12 20 9<br /> 11 7 5</p> </td></tr><tr><td style="width:56px;">输出</td><td style="width:442px;">24</td></tr><tr><td style="width:56px;">说明</td><td style="width:442px;">1号用户使用B策略&#xff0c;2号用户使用C策略&#xff0c;3号用户使用B策略。系统资源消耗: 8 &#43; 9 &#43; 7 &#61; 24。</td></tr></tbody></table> 
+<p></p> 
+<h3>局部最优解法</h3> 
+<p>本题第3个条件如下&#xff1a;</p> 
+<blockquote> 
+ <p>每个用户依次选择当前所能选择的对系统资源消耗最少的策略&#xff08;<span style="color:#fe2c24;">局部最优</span>&#xff09;&#xff0c;如果有多个满足要求的策略&#xff0c;选最后一个。</p> 
+</blockquote> 
+<p>其中&#xff0c;每个用户选择得策略&#xff0c;只需要满足局部最优即可&#xff0c;比如题目用例&#xff1a;</p> 
+<p>第1个用户&#xff0c;局部最优应该选[15, 8, 17]中最小值8</p> 
+<p>第2个用户&#xff0c;由于受限于相邻用户不能选相同位置得策略&#xff0c;因此只能选择[12, 9]中局部最优的9</p> 
+<p>第3个用户&#xff0c;由于受限于相邻用户不能选相同位置得策略&#xff0c;因此只能选择[11, 7]中局部最优的7</p> 
+<p>因此&#xff0c;最终总消耗为&#xff1a;8 &#43; 9 &#43; 7 &#61; 24</p> 
+<p>因此&#xff0c;有了这个局部最优的条件&#xff0c;本题的难度大大降低了。</p> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; parseInt(lines[0]);
+  }
+
+  if (n !&#61; undefined &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    const res &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+
+    console.log(getResult(n, res));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, res) {
+  let last &#61; -1;
+  let sum &#61; 0;
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    last &#61; getMinEleIdx(res[i], last);
+    sum &#43;&#61; res[i][last];
+  }
+
+  return sum;
+}
+
+function getMinEleIdx(arr, excludeIdx) {
+  let minEleVal &#61; Infinity;
+  let minEleIdx &#61; -1;
+
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    if (i &#61;&#61; excludeIdx) continue;
+
+    if (arr[i] &lt;&#61; minEleVal) {
+      minEleVal &#61; arr[i];
+      minEleIdx &#61; i;
+    }
+  }
+
+  return minEleIdx;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[][] res &#61; new int[n][3];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      res[i][0] &#61; sc.nextInt();
+      res[i][1] &#61; sc.nextInt();
+      res[i][2] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(n, res));
+  }
+
+  public static int getResult(int n, int[][] res) {
+    int last &#61; -1;
+    int sum &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      last &#61; getMinEleIdx(res[i], last);
+      sum &#43;&#61; res[i][last];
+    }
+
+    return sum;
+  }
+
+  public static int getMinEleIdx(int[] arr, int excludeIdx) {
+    int minEleVal &#61; Integer.MAX_VALUE;
+    int minEleIdx &#61; -1;
+
+    for (int i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+      if (i &#61;&#61; excludeIdx) continue;
+
+      if (arr[i] &lt;&#61; minEleVal) {
+        minEleVal &#61; arr[i];
+        minEleIdx &#61; i;
+      }
+    }
+
+    return minEleIdx;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n &#61; int(input())
+res &#61; [list(map(int, input().split())) for _ in range(n)]
+
+
+def getMinEleIdx(arr, excludeIdx):
+    minEleVal &#61; sys.maxsize
+    minEleIdx &#61; -1
+
+    for i in range(len(arr)):
+        if i &#61;&#61; excludeIdx:
+            continue
+
+        if arr[i] &lt;&#61; minEleVal:
+            minEleVal &#61; arr[i]
+            minEleIdx &#61; i
+
+    return minEleIdx
+
+
+# 算法入口
+def getResult():
+    last &#61; -1
+    total &#61; 0
+
+    for i in range(n):
+        last &#61; getMinEleIdx(res[i], last)
+        total &#43;&#61; res[i][last]
+
+    return total
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p> </p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+int getMinEleIdx(int arr[], int arr_size, int excludeIdx);
+int getResult(int n, int res[][3]);
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int res[n][3];
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        scanf(&#34;%d %d %d&#34;, &amp;res[i][0], &amp;res[i][1], &amp;res[i][2]);
+    }
+
+    printf(&#34;%d\n&#34;, getResult(n, res));
+
+    return 0;
+}
+
+int getResult(int n, int res[n][3]) {
+    int last &#61; -1;
+    int sum &#61; 0;
+
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        last &#61; getMinEleIdx(res[i], 3, last);
+        sum &#43;&#61; res[i][last];
+    }
+
+    return sum;
+}
+
+int getMinEleIdx(int arr[], int arr_size, int excludeIdx) {
+    int minEleVal &#61; INT_MAX;
+    int minEleIdx &#61; -1;
+
+    for(int i&#61;0; i&lt;arr_size; i&#43;&#43;) {
+        if(i &#61;&#61; excludeIdx) continue;
+
+        if(arr[i] &lt;&#61; minEleVal) {
+            minEleVal &#61; arr[i];
+            minEleIdx &#61; i;
+        }
+    }
+
+    return minEleIdx;
+}</code></pre> 
+<p></p> 
+<p></p> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">全局最优解法&#xff08;不符合本题要求&#xff0c;仅供学习参考&#xff09;</h3> 
+<p>如果本题<span style="color:#fe2c24;">没有</span>下面这个要求</p> 
+<blockquote> 
+ <p>每个用户依次选择当前所能选择的对系统资源消耗最少的策略&#xff08;局部最优&#xff09;&#xff0c;如果有多个满足要求的策略&#xff0c;选最后一个。</p> 
+</blockquote> 
+<p>则要求的最少系统资源消耗数就是要全局最优的。</p> 
+<p>此时&#xff0c;我们可以通过回溯算法&#xff0c;求出所有组合情况&#xff0c;比较得出其中最小资源消耗的组合。</p> 
+<p></p> 
+<p>而本题回溯算法求解组合逻辑如下&#xff1a;</p> 
+<p>按照题目意思&#xff0c;用户是串行调度的&#xff0c;因此执行顺序不能改变&#xff0c;比如题目用例中&#xff0c;第一层必须选15 8 17&#xff0c;第二层必须选12 20 9&#xff0c;第三层必须选11 7 5。</p> 
+<p>另外&#xff0c;题目要求相邻层级间不能使用相同系统消耗策略&#xff0c;即&#xff1a;</p> 
+<ul><li>第一层选了15&#xff0c;</li><li>第二层就不能选12&#xff0c;但是可以选20或9&#xff0c;如果第二层选了20&#xff0c;</li><li>则第三层就不能选7&#xff0c;但是可以选11或5.</li></ul> 
+<p>因此回溯算法的递归层数、每层节点的筛选条件我们就都有了。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    m &#61; parseInt(lines[0]);
+  }
+
+  if (m !&#61; undefined &amp;&amp; lines.length &#61;&#61;&#61; m &#43; 1) {
+    lines.shift();
+    const res &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    const ans &#61; [Infinity];
+    dfs(res, m, 0, -1, 0, ans);
+    console.log(ans[0]);
+
+    lines.length &#61; 0;
+  }
+});
+
+function dfs(res, m, level, index, total, ans) {
+  if (level &#61;&#61; m) {
+    ans[0] &#61; Math.min(ans[0], total);
+    return;
+  }
+
+  const r &#61; res[level];
+  for (let i &#61; 0; i &lt; r.length; i&#43;&#43;) {
+    if (i !&#61; index) {
+      dfs(res, m, level &#43; 1, i, total &#43; r[i], ans);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+
+    int[][] res &#61; new int[m][3];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      res[i][0] &#61; sc.nextInt();
+      res[i][1] &#61; sc.nextInt();
+      res[i][2] &#61; sc.nextInt();
+    }
+
+    int[] ans &#61; {Integer.MAX_VALUE};
+    dfs(res, m, 0, -1, 0, ans);
+    System.out.println(ans[0]);
+  }
+
+  public static void dfs(int[][] res, int m, int level, int index, int total, int[] ans) {
+    if (level &#61;&#61; m) {
+      ans[0] &#61; Math.min(ans[0], total);
+      return;
+    }
+
+    int[] r &#61; res[level];
+    for (int i &#61; 0; i &lt; r.length; i&#43;&#43;) {
+      if (i !&#61; index) {
+        dfs(res, m, level &#43; 1, i, total &#43; r[i], ans);
+      }
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+m &#61; int(input())
+res &#61; [list(map(int, input().split())) for _ in range(m)]
+
+
+# 算法入口
+def dfs(level, index, total, ans):
+    if level &#61;&#61; m:
+        ans[0] &#61; min(ans[0], total)
+        return
+
+    r &#61; res[level]
+    for i in range(len(r)):
+        if i !&#61; index:
+            dfs(level &#43; 1, i, total &#43; r[i], ans)
+
+
+# 算法调用
+ans &#61; [sys.maxsize]
+dfs(0, -1, 0, ans)
+print(ans[0])
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

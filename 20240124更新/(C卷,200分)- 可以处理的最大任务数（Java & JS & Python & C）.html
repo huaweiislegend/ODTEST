@@ -1,0 +1,925 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 可以处理的最大任务数（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>在某个项目中有多个任务&#xff08;用task数组表示&#xff09;需要你进行处理&#xff0c;其中&#xff1a;</p> 
+<ul><li>task[i] &#61; [si, ei]</li></ul> 
+<p>你可以在 si ≤ day ≤ ei 中的任意一天处理该任务&#xff0c;请返回你可以处理的最大任务数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为任务数量 n</p> 
+<ul><li>1 ≤ n ≤ 100000</li></ul> 
+<p>后面 n 行表示各个任务的开始时间和终止时间&#xff0c;使用 si&#xff0c;ei 表示</p> 
+<ul><li>1 ≤ si ≤ ei ≤ 100000</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出为一个整数&#xff0c;表示可以处理的最大任务数。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 1 1<br /> 1 2<br /> 1 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以利用贪心思维&#43;优先队列来求解。</p> 
+<p></p> 
+<p>我们可以将所有任务时间区间按照&#xff1a;优先按照结束时间降序&#xff0c;如果结束时间相同&#xff0c;则按照开始时间降序。这样排序的原因如下&#xff1a;</p> 
+<p></p> 
+<p>首先&#xff0c;任务优先按照结束时间降序后&#xff0c;那么第一个任务的结束时间就是最晚的&#xff08;最大的&#xff09;&#xff0c;此时我们可以让第一个任务就在最晚时刻执行&#xff0c;如下面例子&#xff1a;</p> 
+<blockquote> 
+ <p>3<br /> 1 4<br /> 2 3<br /> 1 2</p> 
+</blockquote> 
+<p>按照结束时间降序后&#xff1a;[1,4] , [2, 3],  [1, 2] &#xff0c;第一个任务[1,4]在时刻4执行</p> 
+<p><img alt="" height="220" src="https://img-blog.csdnimg.cn/direct/e913b4d4f78b4614a46a0bfaeeda7de9.png" width="336" /></p> 
+<p>这样做的好处是&#xff0c;避免第一个任务抢夺后面任务的执行时间&#xff0c;如下图所示&#xff1a;</p> 
+<ul><li>如果第一个任务在时刻4执行&#xff0c;则第二个任务就有两个选择&#xff0c;时刻2或时刻3</li></ul> 
+<p><img alt="" height="232" src="https://img-blog.csdnimg.cn/direct/4b05d15a26524c13826f430c63840dc4.png" width="470" /></p> 
+<ul><li>如果第一个任务在时刻3执行&#xff0c;则第二个任务就只有一个选择&#xff0c;只能在时刻2执行</li></ul> 
+<p><img alt="" height="207" src="https://img-blog.csdnimg.cn/direct/a0a0daffcd164e9e9d85fd1e4fd0734a.png" width="479" /></p> 
+<p></p> 
+<p>如果存在多个任务的结束时间都相同的话&#xff0c;则还需要对这些任务按照开始时间降序&#xff0c;这么做的原因是&#xff1a;</p> 
+<ul><li>&#34;时间长&#34; 的任务 &#34;可选执行时刻&#34; 多</li><li>&#34;时间短&#34; 的任务 &#34;可选执行时刻&#34; 少</li></ul> 
+<p>因此应该优先让时间跨度短的任务先执行&#xff0c;如下图所示&#xff1a;</p> 
+<ul><li>如果优先时间短的任务&#xff0c;则三个任务都能执行</li></ul> 
+<p><img alt="" height="202" src="https://img-blog.csdnimg.cn/direct/0e424a05e7fa40fe940f947a88c14fad.png" width="317" /></p> 
+<ul><li>如果优先时间长的任务&#xff0c;则只能执行两个任务</li></ul> 
+<p><img alt="" height="192" src="https://img-blog.csdnimg.cn/direct/063a1cf176fe4a358114283fb4ba39a2.png" width="299" /></p> 
+<p></p> 
+<p>但是上面逻辑是存在问题的&#xff0c;请看下面图示&#xff1a;</p> 
+<p>此时按照前面逻辑的话&#xff0c;只能执行三个任务</p> 
+<p><img alt="" height="234" src="https://img-blog.csdnimg.cn/direct/d41e9ce2afbc4fb28f70d50b5055d0d6.png" width="493" /></p> 
+<p>但是其实可以执行四个任务&#xff0c;执行策略如下&#xff1a;</p> 
+<p><img alt="" height="244" src="https://img-blog.csdnimg.cn/direct/1bc9f7e5d674431c8f1eab1a72476f66.png" width="515" /></p> 
+<p>主要问题是&#xff0c;当我们按照结束时间降序后&#xff0c;第一个任务选择时刻8执行完&#xff0c;此时后面三个任务的截止时间其实都是相同的&#xff0c;变为了时刻7。</p> 
+<p><img alt="" height="273" src="https://img-blog.csdnimg.cn/direct/047ba081cf504e41aee87d9cff9d0040.png" width="570" /></p> 
+<p>因此&#xff0c;此时我们应该对后面三个任务重新按照时间跨度降序&#xff0c;再优先执行短的任务。</p> 
+<p></p> 
+<p>本题数量级较大&#xff0c;因此如果每次执行完一个任务&#xff0c;都对剩余任务进行更新结束时间&#xff0c;并重新排序的话&#xff0c;会超时。</p> 
+<p>改进策略是&#xff0c;使用优先队列&#xff0c;即&#xff1a;</p> 
+<blockquote> 
+ <p>如果当前任务的结束时间end &gt;&#61; 上一个任务的执行时刻last_end&#xff0c;则更新当前任务的结束为last_end - 1。如果 last_end - 1 &gt; 当前任务开始时间start&#xff0c;则将当前任务重新入队排优先级。否则当前任务不可执行。</p> 
+</blockquote> 
+<p></p> 
+<p>Java和Python有内置的优先队列类&#xff0c;而JS和C没有&#xff0c;因此JS和C需要手动实现一个优先队列&#xff0c;关于优先队列的实现原理请看&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127695013?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522170352427616800184171884%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;170352427616800184171884&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-11-127695013-null-null.nonecase&amp;utm_term&#61;%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97&amp;spm&#61;1018.2226.3001.4450" title="LeetCode - 1705 吃苹果的最大数目-CSDN博客">LeetCode - 1705 吃苹果的最大数目-CSDN博客</a></p> 
+<p></p> 
+<hr /> 
+<p>经过测试&#xff0c;下面逻辑在本题数量级下会超时&#xff1a;</p> 
+<blockquote> 
+ <p>如果当前任务的结束时间end &gt;&#61; 上一个任务的执行时刻last_end&#xff0c;则更新当前任务的结束为last_end - 1。如果 last_end - 1 &gt; 当前任务开始时间start&#xff0c;则将当前任务重新入队排优先级。否则当前任务不可执行。</p> 
+</blockquote> 
+<p>因为&#xff0c;我们需要频繁更新任务的结束时间&#xff0c;并且入队出队。</p> 
+<p></p> 
+<p>为了避免频繁的更新任务结束时间&#xff0c;以及入队出队&#xff0c;我们可以做如下改动&#xff1a;</p> 
+<p>1、统计输入的所有任务的时间段&#xff0c;仅按照结束时间降序&#xff0c;得到数组ranges</p> 
+<p>2、定义一个优先队列pq&#xff0c;仅用于保存任务的开始时间&#xff08;开始时间越大&#xff0c;优先级越高&#xff09;&#xff0c;我们可以认为优先队列中保存的任务&#xff08;的开始时间&#xff09;对应的结束时间都是相同的&#xff0c;我们定义这个公共结束时间为pq_end</p> 
+<p>3、遍历ranges&#xff0c;得到每一个任务的开始&#xff0c;结束时间range&#xff1a;[start, end]&#xff0c;然后比较遍历到任务的end 和 优先队列中所有任务的公共结束时间pq_end&#xff1a;</p> 
+<ul><li>如果 end &lt; pq_end&#xff0c;则在end ~ pq_end 这段间隔时间内&#xff0c;我们可以从pq中挑选出pq_end - end 个 较短任务进行执行&#xff0c;执行前需要检查 对应任务的开始时间 start &lt;&#61; pq_end&#xff0c;若不满足则不执行。每执行一个任务&#xff0c;则pq_end -&#61; 1&#xff0c;count &#43;&#61; 1&#xff08;count是已执行的任务数量&#xff09;。当pq_end &#61;&#61; end时&#xff0c;则将当前遍历的任务的start 加入 优先队列。</li></ul> 
+<p>具体过程如下图所示&#xff1a;</p> 
+<p><img alt="" height="392" src="https://img-blog.csdnimg.cn/direct/a00790d70c8045ec870620fd9417e048.png" width="680" /></p> 
+<p><img alt="" height="403" src="https://img-blog.csdnimg.cn/direct/610e2fb8e36d40f4b023601e07f14616.png" width="897" /></p> 
+<p><img alt="" height="418" src="https://img-blog.csdnimg.cn/direct/decc36b605684341b60ca096540c4a6b.png" width="876" /></p> 
+<p><img alt="" height="436" src="https://img-blog.csdnimg.cn/direct/f391a1d4a70d4c3aae6dfc868f75f4d7.png" width="853" /></p> 
+<p><img alt="" height="428" src="https://img-blog.csdnimg.cn/direct/44e3296a7a63455f9b5816fae7ad61e2.png" width="916" /></p> 
+<p><img alt="" height="507" src="https://img-blog.csdnimg.cn/direct/56a9320f4d954e85a87f7daa403aecc5.png" width="928" /></p> 
+<p><img alt="" height="449" src="https://img-blog.csdnimg.cn/direct/ef56234a73e74f6d8da2707f3f028753.png" width="871" /></p> 
+<p><img alt="" height="466" src="https://img-blog.csdnimg.cn/direct/67eeb444921a48a48cfd548767c6c364.png" width="934" /></p> 
+<p><img alt="" height="403" src="https://img-blog.csdnimg.cn/direct/5c1da1e4605d439683e6e2a0f60b1d7f.png" width="892" /></p> 
+<p><img alt="" height="457" src="https://img-blog.csdnimg.cn/direct/e93983ce326c467e8979d9feea9fdf2b.png" width="861" /></p> 
+<p><img alt="" height="460" src="https://img-blog.csdnimg.cn/direct/d9c4a159b5824c588f54d4687c487c0e.png" width="869" /></p> 
+<p><img alt="" height="416" src="https://img-blog.csdnimg.cn/direct/e8851322b5c54c10b5cb47f3e952c79a.png" width="845" /></p> 
+<p><img alt="" height="437" src="https://img-blog.csdnimg.cn/direct/313fd781f71748b5b36be550a27a5adb.png" width="932" /></p> 
+<p><img alt="" height="446" src="https://img-blog.csdnimg.cn/direct/89b2f25ec6654592bf91c4a09ab06864.png" width="887" /></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">JS算法源码</h4> 
+<h5>超时解法&#xff0c;但是好理解&#xff0c;是下一种解法的基础</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+
+  // 结束时间越大&#xff08;越晚&#xff09;优先级越高&#xff0c;结束时间相同时&#xff0c;开始时间越大&#xff08;越晚&#xff09;优先级越高
+  const pq &#61; new PriorityQueue((a, b) &#61;&gt;
+    a.end !&#61; b.end ? b.end - a.end : b.start - a.start
+  );
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    const [start, end] &#61; (await readline()).split(&#34; &#34;).map(Number);
+    pq.offer(new Range(start, end));
+  }
+
+  // 记录最大任务数
+  let count &#61; 0;
+
+  // 记录上一个任务的执行时刻
+  let last_end &#61; Infinity;
+
+  while (pq.size() &gt; 0) {
+    const range &#61; pq.poll();
+
+    if (range.end &lt; last_end) {
+      // 当前任务结束时刻end &lt; 上个任务结束时刻last_end&#xff0c;则当前任务选择在end时刻执行
+      last_end &#61; range.end;
+      count&#43;&#43;;
+    } else if (last_end &gt; range.start) {
+      // 当前任务结束时刻end ≥ 上个任务结束时刻last_end&#xff0c;则更新当前任务的结束时间为last_end-1&#xff0c;后重新加入优先队列排队
+      // 同时注意range新的结束时间last_end - 1不能小于range.start&#xff0c;否则该任务无法执行
+      range.end &#61; last_end - 1;
+      pq.offer(range);
+    }
+  }
+
+  console.log(count);
+})();
+
+class Range {
+  constructor(start, end) {
+    this.start &#61; start;
+    this.end &#61; end;
+  }
+}
+
+// 基于堆实现优先队列
+class PriorityQueue {
+  constructor(cpr) {
+    this.queue &#61; [];
+    this.cpr &#61; cpr;
+  }
+
+  swap(a, b) {
+    const tmp &#61; this.queue[a];
+    this.queue[a] &#61; this.queue[b];
+    this.queue[b] &#61; tmp;
+  }
+
+  // 上浮
+  swim() {
+    let c &#61; this.queue.length - 1;
+
+    while (c &gt;&#61; 1) {
+      const f &#61; Math.floor((c - 1) / 2);
+
+      if (this.cpr(this.queue[c], this.queue[f]) &lt; 0) {
+        this.swap(c, f);
+        c &#61; f;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 入队
+  offer(val) {
+    this.queue.push(val);
+    this.swim();
+  }
+
+  // 下沉
+  sink() {
+    let f &#61; 0;
+
+    while (true) {
+      let c1 &#61; 2 * f &#43; 1;
+      let c2 &#61; c1 &#43; 1;
+
+      let c;
+      let val1 &#61; this.queue[c1];
+      let val2 &#61; this.queue[c2];
+      if (val1 !&#61; undefined &amp;&amp; val2 !&#61; undefined) {
+        c &#61; this.cpr(val1, val2) &lt; 0 ? c1 : c2;
+      } else if (val1 !&#61; undefined) {
+        c &#61; c1;
+      } else if (val2 !&#61; undefined) {
+        c &#61; c2;
+      } else {
+        break;
+      }
+
+      if (this.cpr(this.queue[c], this.queue[f]) &lt; 0) {
+        this.swap(c, f);
+        f &#61; c;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 出队
+  poll() {
+    this.swap(0, this.queue.length - 1);
+    const res &#61; this.queue.pop();
+    this.sink();
+    return res;
+  }
+
+  peek() {
+    return this.queue[0];
+  }
+
+  size() {
+    return this.queue.length;
+  }
+}
+</code></pre> 
+<h5>不超时解法</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+
+  const ranges &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    ranges.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  // 将所有任务按照结束时间降序
+  ranges.sort((a, b) &#61;&gt; b[1] - a[1]);
+
+  // 优先队列中记录的是任务的开始时间&#xff0c;并且开始时间越大&#xff0c;优先级越高
+  const pq &#61; new PriorityQueue((a, b) &#61;&gt; b - a);
+
+  // 优先队列中记录的是结束时间相同的任务的开始时间&#xff0c;pq_end就是优先队列中任务的相同结束时间
+  let pq_end &#61; Infinity;
+
+  // 最大任务数
+  let count &#61; 0;
+
+  // 当前任务的开始和结束时间
+  for (let [start, end] of ranges) {
+    // 如果当前任务的结束时间 小于 优先队列中记录的任务的结束时间&#xff0c;则两个结束时间之间的间隔时间段&#xff0c;可以处理一些紧急任务
+    while (pq.size() &gt; 0 &amp;&amp; end &lt; pq_end) {
+      // 这里的紧急任务即指时间短的任务&#xff0c;即开始时间比较大的任务
+      if (pq.poll() &lt;&#61; pq_end) {
+        // 如果紧急任务的开始时间未超过其结束时间&#xff0c;则可以执行
+        count&#43;&#43;;
+        pq_end--; // 一个时刻只执行一个任务
+      }
+    }
+
+    // 间隔时间消耗完后&#xff0c;优先队列中的任务的结束时间全部更新为当前任务的结束时间
+    pq.offer(start);
+    pq_end &#61; end;
+  }
+
+  // 收尾处理
+  while (pq.size() &gt; 0) {
+    if (pq.poll() &lt;&#61; pq_end) {
+      count&#43;&#43;;
+      pq_end--;
+    }
+  }
+
+  console.log(count);
+})();
+
+// 基于堆实现优先队列
+class PriorityQueue {
+  constructor(cpr) {
+    this.queue &#61; [];
+    this.cpr &#61; cpr;
+  }
+
+  swap(a, b) {
+    const tmp &#61; this.queue[a];
+    this.queue[a] &#61; this.queue[b];
+    this.queue[b] &#61; tmp;
+  }
+
+  // 上浮
+  swim() {
+    let c &#61; this.queue.length - 1;
+
+    while (c &gt;&#61; 1) {
+      const f &#61; Math.floor((c - 1) / 2);
+
+      if (this.cpr(this.queue[c], this.queue[f]) &lt; 0) {
+        this.swap(c, f);
+        c &#61; f;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 入队
+  offer(val) {
+    this.queue.push(val);
+    this.swim();
+  }
+
+  // 下沉
+  sink() {
+    let f &#61; 0;
+
+    while (true) {
+      let c1 &#61; 2 * f &#43; 1;
+      let c2 &#61; c1 &#43; 1;
+
+      let c;
+      let val1 &#61; this.queue[c1];
+      let val2 &#61; this.queue[c2];
+      if (val1 !&#61; undefined &amp;&amp; val2 !&#61; undefined) {
+        c &#61; this.cpr(val1, val2) &lt; 0 ? c1 : c2;
+      } else if (val1 !&#61; undefined) {
+        c &#61; c1;
+      } else if (val2 !&#61; undefined) {
+        c &#61; c2;
+      } else {
+        break;
+      }
+
+      if (this.cpr(this.queue[c], this.queue[f]) &lt; 0) {
+        this.swap(c, f);
+        f &#61; c;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 出队
+  poll() {
+    this.swap(0, this.queue.length - 1);
+    const res &#61; this.queue.pop();
+    this.sink();
+    return res;
+  }
+
+  peek() {
+    return this.queue[0];
+  }
+
+  size() {
+    return this.queue.length;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<h5 style="background-color:transparent;">超时解法&#xff0c;但是好理解&#xff0c;是下一种解法的基础</h5> 
+<pre><code class="language-java">import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class Main {
+  static class Range {
+    int start;
+    int end;
+
+    public Range(int start, int end) {
+      this.start &#61; start;
+      this.end &#61; end;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    // 结束时间越大&#xff08;越晚&#xff09;优先级越高&#xff0c;结束时间相同时&#xff0c;开始时间越大&#xff08;越晚&#xff09;优先级越高
+    PriorityQueue&lt;Range&gt; pq &#61;
+        new PriorityQueue&lt;&gt;((a, b) -&gt; a.end !&#61; b.end ? b.end - a.end : b.start - a.start);
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      pq.offer(new Range(sc.nextInt(), sc.nextInt()));
+    }
+
+    // 记录最大任务数
+    int count &#61; 0;
+
+    // 记录上一个任务的执行时刻
+    int last_end &#61; Integer.MAX_VALUE;
+
+    while (pq.size() &gt; 0) {
+      Range range &#61; pq.poll();
+
+      if (range.end &lt; last_end) {
+        // 当前任务结束时刻end &lt; 上个任务结束时刻last_end&#xff0c;则当前任务选择在end时刻执行
+        last_end &#61; range.end;
+        count&#43;&#43;;
+      } else if (last_end &gt; range.start) {
+        // 当前任务结束时刻end ≥ 上个任务结束时刻last_end&#xff0c;则更新当前任务的结束时间为last_end-1&#xff0c;后重新加入优先队列排队
+        // 同时注意range新的结束时间last_end - 1不能小于range.start&#xff0c;否则该任务无法执行
+        range.end &#61; last_end - 1;
+        pq.offer(range);
+      }
+    }
+
+    System.out.println(count);
+  }
+}
+</code></pre> 
+<h5 style="background-color:transparent;">不超时解法</h5> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[][] ranges &#61; new int[n][2];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      ranges[i][0] &#61; sc.nextInt();
+      ranges[i][1] &#61; sc.nextInt();
+    }
+
+    // 将所有任务按照结束时间降序
+    Arrays.sort(ranges, (a, b) -&gt; b[1] - a[1]);
+
+    // 优先队列中记录的是任务的开始时间&#xff0c;并且开始时间越大&#xff0c;优先级越高
+    PriorityQueue&lt;Integer&gt; pq &#61; new PriorityQueue&lt;&gt;((a, b) -&gt; b - a);
+
+    // 优先队列中记录的是结束时间相同的任务的开始时间&#xff0c;pq_end就是优先队列中任务的相同结束时间
+    int pq_end &#61; Integer.MAX_VALUE;
+
+    // 最大任务数
+    int count &#61; 0;
+
+    for (int[] range : ranges) {
+      // 当前任务的开始和结束时间
+      int start &#61; range[0];
+      int end &#61; range[1];
+
+      // 如果当前任务的结束时间 小于 优先队列中记录的任务的结束时间&#xff0c;则两个结束时间之间的间隔时间段&#xff0c;可以处理一些紧急任务
+      while (pq.size() &gt; 0 &amp;&amp; end &lt; pq_end) {
+        // 这里的紧急任务即指时间短的任务&#xff0c;即开始时间比较大的任务
+        if (pq.poll() &lt;&#61; pq_end) {
+          // 如果紧急任务的开始时间未超过其结束时间&#xff0c;则可以执行
+          count&#43;&#43;;
+          pq_end--; // 一个时刻只执行一个任务
+        }
+      }
+
+      // 间隔时间消耗完后&#xff0c;优先队列中的任务的结束时间全部更新为当前任务的结束时间
+      pq.add(start);
+      pq_end &#61; end;
+    }
+
+    // 收尾处理
+    while (pq.size() &gt; 0) {
+      if (pq.poll() &lt;&#61; pq_end) {
+        count&#43;&#43;;
+        pq_end--;
+      }
+    }
+
+    System.out.println(count);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<h5>超时解法&#xff0c;但是好理解&#xff0c;是下一种解法的基础</h5> 
+<pre><code class="language-python">import heapq
+import sys
+
+
+class Range:
+    def __init__(self, start, end):
+        self.start &#61; start
+        self.end &#61; end
+
+    # 结束时间越大&#xff08;越晚&#xff09;优先级越高&#xff0c;结束时间相同时&#xff0c;开始时间越大&#xff08;越晚&#xff09;优先级越高
+    def __gt__(self, other):
+        if self.end !&#61; other.end:
+            return other.end &gt; self.end
+        else:
+            return other.start &gt; self.start
+
+
+# 输入获取
+n &#61; int(input())
+
+pq &#61; []
+for _ in range(n):
+    start, end &#61; map(int, input().split())
+    heapq.heappush(pq, Range(start, end))
+
+
+# 算法入口
+def getResult():
+    # 记录最大任务数
+    count &#61; 0
+
+    # 记录上一个任务的执行时刻
+    last_end &#61; sys.maxsize
+
+    while len(pq) &gt; 0:
+        ran &#61; heapq.heappop(pq)
+
+        if ran.end &lt; last_end:
+            # 当前任务结束时刻end &lt; 上个任务结束时刻last_end&#xff0c;则当前任务选择在end时刻执行
+            last_end &#61; ran.end
+            count &#43;&#61; 1
+        elif last_end &gt; ran.start:
+            # 当前任务结束时刻end ≥ 上个任务结束时刻last_end&#xff0c;则更新当前任务的结束时间为last_end-1&#xff0c;后重新加入优先队列排队
+            # 同时注意range新的结束时间last_end - 1不能小于range.start&#xff0c;否则该任务无法执行
+            ran.end &#61; last_end - 1
+            heapq.heappush(pq, ran)
+
+    return count
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<h5 style="background-color:transparent;">不超时解法</h5> 
+<pre><code class="language-python">import heapq
+import sys
+
+# 输入获取
+n &#61; int(input())
+ranges &#61; [list(map(int, input().split())) for _ in range(n)]
+
+
+# 算法入口
+def getResult():
+    # 将所有任务按照结束时间降序
+    ranges.sort(key&#61;lambda x: -x[1])
+
+    # 优先队列中记录的是任务的开始时间&#xff0c;并且开始时间越大&#xff0c;优先级越高
+    # 由于heapq默认是数值越小&#xff0c;优先级越大&#xff0c;因此这里存入负数的开始时间到pq
+    pq &#61; []
+
+    # 优先队列中记录的是结束时间相同的任务的开始时间&#xff0c;pq_end就是优先队列中任务的相同结束时间
+    pq_end &#61; sys.maxsize
+
+    # 最大任务数
+    count &#61; 0
+
+    # 当前任务的开始和结束时间
+    for start, end in ranges:
+        # 如果当前任务的结束时间 小于 优先队列中记录的任务的结束时间&#xff0c;则两个结束时间之间的间隔时间段&#xff0c;可以处理一些紧急任务
+        while len(pq) &gt; 0 and end &lt; pq_end:
+            # 这里的紧急任务即指时间短的任务&#xff0c;即开始时间比较大的任务
+            if -heapq.heappop(pq) &lt;&#61; pq_end:
+                # 如果紧急任务的开始时间未超过其结束时间&#xff0c;则可以执行
+                count &#43;&#61; 1
+                pq_end -&#61; 1  # 一个时刻只执行一个任务
+
+        # 间隔时间消耗完后&#xff0c;优先队列中的任务的结束时间全部更新为当前任务的结束时间
+        heapq.heappush(pq, -start)
+        pq_end &#61; end
+
+    # 收尾处理
+    while len(pq) &gt; 0:
+        if -heapq.heappop(pq) &lt;&#61; pq_end:
+            count &#43;&#61; 1
+            pq_end -&#61; 1
+
+    return count
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<h5>超时解法&#xff0c;但是好理解&#xff0c;是下一种解法的基础</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
+
+/* 任务时间段 */
+typedef struct {
+    int start;
+    int end;
+} Range;
+
+Range* new_Range(int start, int end) {
+    Range* range &#61; (Range*) malloc(sizeof(Range));
+    range-&gt;start &#61; start;
+    range-&gt;end &#61; end;
+    return range;
+}
+
+typedef Range E;
+
+/* 优先队列实现 */
+typedef struct PriorityQueue {
+    E **arr;
+    int size;
+    int (*cmp)(const void *, const void *);
+} PQ;
+
+PQ *new_PQ(int capacity, int (*cmp)(const void *, const void *)) {
+    PQ *pq &#61; (PQ *) malloc(sizeof(PQ));
+    pq-&gt;arr &#61; (E **) malloc(sizeof(E *) * capacity);
+    pq-&gt;size &#61; 0;
+    pq-&gt;cmp &#61; cmp;
+    return pq;
+}
+
+void swap_PQ(PQ *pq, int a, int b) {
+    E *tmp &#61; pq-&gt;arr[a];
+    pq-&gt;arr[a] &#61; pq-&gt;arr[b];
+    pq-&gt;arr[b] &#61; tmp;
+}
+
+// 上浮
+void swim_PQ(PQ *pq) {
+    int c &#61; pq-&gt;size - 1;
+
+    while (c &gt;&#61; 1) {
+        int f &#61; (c - 1) / 2;
+
+        if (pq-&gt;cmp(pq-&gt;arr[c], pq-&gt;arr[f]) &lt; 0) {
+            swap_PQ(pq, c, f);
+            c &#61; f;
+        } else {
+            break;
+        }
+    }
+}
+
+// 入队
+void offer_PQ(PQ *pq, E *val) {
+    pq-&gt;arr[pq-&gt;size&#43;&#43;] &#61; val;
+    swim_PQ(pq);
+}
+
+// 下沉
+void sink_PQ(PQ *pq) {
+    int f &#61; 0;
+
+    while (1) {
+        int c1 &#61; 2 * f &#43; 1;
+        int c2 &#61; c1 &#43; 1;
+
+        int c;
+
+        if (pq-&gt;size &gt; c1 &amp;&amp; pq-&gt;size &gt; c2) {
+            if (pq-&gt;cmp(pq-&gt;arr[c1], pq-&gt;arr[c2]) &lt; 0) {
+                c &#61; c1;
+            } else {
+                c &#61; c2;
+            }
+        } else if (pq-&gt;size &gt; c1 &amp;&amp; pq-&gt;size &lt;&#61; c2) {
+            c &#61; c1;
+        } else if (pq-&gt;size &lt;&#61; c1 &amp;&amp; pq-&gt;size &gt; c2) {
+            c &#61; c2;
+        } else {
+            break;
+        }
+
+        if (pq-&gt;cmp(pq-&gt;arr[c], pq-&gt;arr[f]) &lt; 0) {
+            swap_PQ(pq, c, f);
+            f &#61; c;
+        } else {
+            break;
+        }
+    }
+}
+
+// 出队
+E *poll_PQ(PQ *pq) {
+    swap_PQ(pq, 0, pq-&gt;size - 1);
+    E *res &#61; pq-&gt;arr[--pq-&gt;size];
+    sink_PQ(pq);
+    return res;
+}
+
+int cmp(const void *a, const void *b) {
+    Range *A &#61; (Range *) a;
+    Range *B &#61; (Range *) b;
+    // 结束时间越大&#xff08;越晚&#xff09;优先级越高&#xff0c;结束时间相同时&#xff0c;开始时间越大&#xff08;越晚&#xff09;优先级越高
+    return A-&gt;end !&#61; B-&gt;end ? B-&gt;end - A-&gt;end : B-&gt;start - A-&gt;start;
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    // 结束时间越大&#xff08;越晚&#xff09;优先级越高&#xff0c;结束时间相同时&#xff0c;开始时间越大&#xff08;越晚&#xff09;优先级越高
+    PQ* pq &#61; new_PQ(n, cmp);
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        int start, end;
+        scanf(&#34;%d %d&#34;, &amp;start, &amp;end);
+        offer_PQ(pq, new_Range(start, end));
+    }
+
+    // 记录最大任务数
+    int count &#61; 0;
+
+    // 记录上一个任务的执行时刻
+    int last_end &#61; INT_MAX;
+
+    while (pq-&gt;size &gt; 0) {
+        Range* range &#61; poll_PQ(pq);
+
+        if (range-&gt;end &lt; last_end) {
+            // 当前任务结束时刻end &lt; 上个任务结束时刻last_end&#xff0c;则当前任务选择在end时刻执行
+            last_end &#61; range-&gt;end;
+            count&#43;&#43;;
+        } else if (last_end &gt; range-&gt;start) {
+            // 当前任务结束时刻end ≥ 上个任务结束时刻last_end&#xff0c;则更新当前任务的结束时间为last_end-1&#xff0c;后重新加入优先队列排队
+            // 同时注意range新的结束时间last_end - 1不能小于range.start&#xff0c;否则该任务无法执行
+            range-&gt;end &#61; last_end - 1;
+            offer_PQ(pq, range);
+        }
+    }
+
+    printf(&#34;%d\n&#34;, count);
+
+    return 0;
+}</code></pre> 
+<h5 style="background-color:transparent;">不超时解法</h5> 
+<p> </p> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
+
+typedef int E;
+
+/* 优先队列实现 */
+typedef struct PriorityQueue {
+    E *arr;
+    int size;
+
+    int (*cmp)(E, E);
+} PQ;
+
+PQ *new_PQ(int capacity, int (*cmp)(E, E)) {
+    PQ *pq &#61; (PQ *) malloc(sizeof(PQ));
+    pq-&gt;arr &#61; (E *) malloc(sizeof(E) * capacity);
+    pq-&gt;size &#61; 0;
+    pq-&gt;cmp &#61; cmp;
+    return pq;
+}
+
+void swap_PQ(PQ *pq, int a, int b) {
+    E tmp &#61; pq-&gt;arr[a];
+    pq-&gt;arr[a] &#61; pq-&gt;arr[b];
+    pq-&gt;arr[b] &#61; tmp;
+}
+
+// 上浮
+void swim_PQ(PQ *pq) {
+    int c &#61; pq-&gt;size - 1;
+
+    while (c &gt;&#61; 1) {
+        int f &#61; (c - 1) / 2;
+
+        if (pq-&gt;cmp(pq-&gt;arr[c], pq-&gt;arr[f]) &lt; 0) {
+            swap_PQ(pq, c, f);
+            c &#61; f;
+        } else {
+            break;
+        }
+    }
+}
+
+// 入队
+void offer_PQ(PQ *pq, E val) {
+    pq-&gt;arr[pq-&gt;size&#43;&#43;] &#61; val;
+    swim_PQ(pq);
+}
+
+// 下沉
+void sink_PQ(PQ *pq) {
+    int f &#61; 0;
+
+    while (1) {
+        int c1 &#61; 2 * f &#43; 1;
+        int c2 &#61; c1 &#43; 1;
+
+        int c;
+
+        if (pq-&gt;size &gt; c1 &amp;&amp; pq-&gt;size &gt; c2) {
+            if (pq-&gt;cmp(pq-&gt;arr[c1], pq-&gt;arr[c2]) &lt; 0) {
+                c &#61; c1;
+            } else {
+                c &#61; c2;
+            }
+        } else if (pq-&gt;size &gt; c1 &amp;&amp; pq-&gt;size &lt;&#61; c2) {
+            c &#61; c1;
+        } else if (pq-&gt;size &lt;&#61; c1 &amp;&amp; pq-&gt;size &gt; c2) {
+            c &#61; c2;
+        } else {
+            break;
+        }
+
+        if (pq-&gt;cmp(pq-&gt;arr[c], pq-&gt;arr[f]) &lt; 0) {
+            swap_PQ(pq, c, f);
+            f &#61; c;
+        } else {
+            break;
+        }
+    }
+}
+
+// 出队
+E poll_PQ(PQ *pq) {
+    swap_PQ(pq, 0, pq-&gt;size - 1);
+    E res &#61; pq-&gt;arr[--pq-&gt;size];
+    sink_PQ(pq);
+    return res;
+}
+
+int cmp(const void *a, const void *b) {
+    int *A &#61; (int *) a;
+    int *B &#61; (int *) b;
+    return B[1] - A[1];
+}
+
+int cmp_PQ(int a, int b) {
+    return b - a;
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int ranges[n][2];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%d %d&#34;, &amp;ranges[i][0], &amp;ranges[i][1]);
+    }
+
+    // 将所有任务按照结束时间降序
+    qsort(ranges, n, sizeof(ranges[0]), cmp);
+
+    // 优先队列中记录的是任务的开始时间&#xff0c;并且开始时间越大&#xff0c;优先级越高
+    PQ *pq &#61; new_PQ(n, cmp_PQ);
+
+    // 优先队列中记录的是结束时间相同的任务的开始时间&#xff0c;pq_end就是优先队列中任务的相同结束时间
+    int pq_end &#61; INT_MAX;
+
+    // 记录最大任务数
+    int count &#61; 0;
+
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        // 当前任务的开始和结束时间
+        int start &#61; ranges[i][0];
+        int end &#61; ranges[i][1];
+
+        // 如果当前任务的结束时间 小于 优先队列中记录的任务的结束时间&#xff0c;则两个结束时间之间的间隔时间段&#xff0c;可以处理一些紧急任务
+        while (pq-&gt;size &gt; 0 &amp;&amp; end &lt; pq_end) {
+            // 这里的紧急任务即指时间短的任务&#xff0c;即开始时间比较大的任务
+            if (poll_PQ(pq) &lt;&#61; pq_end) {
+                // 如果紧急任务的开始时间未超过其结束时间&#xff0c;则可以执行
+                count&#43;&#43;;
+                pq_end--;// 一个时刻只执行一个任务
+            }
+        }
+
+        // 间隔时间消耗完后&#xff0c;优先队列中的任务的结束时间全部更新为当前任务的结束时间
+        offer_PQ(pq, start);
+        pq_end &#61; end;
+    }
+
+    // 收尾处理
+    while (pq-&gt;size &gt; 0) {
+        if (poll_PQ(pq) &lt;&#61; pq_end) {
+            count&#43;&#43;;
+            pq_end--;
+        }
+    }
+
+    printf(&#34;%d\n&#34;, count);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

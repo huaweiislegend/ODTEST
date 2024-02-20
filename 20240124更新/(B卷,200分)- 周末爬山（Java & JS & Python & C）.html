@@ -1,0 +1,519 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 周末爬山（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>周末小明准备去爬山锻炼&#xff0c;0代表平地&#xff0c;山的高度使用1到9来表示&#xff0c;小明每次爬山或下山高度只能相差k及k以内&#xff0c;每次只能上下左右一个方向上移动一格&#xff0c;小明从左上角(0,0)位置出发</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入m n k(空格分隔)</p> 
+<ul><li>代表m*n的二维山地图&#xff0c;k为小明每次爬山或下山高度差的最大值&#xff0c;</li></ul> 
+<p>然后接下来输入山地图&#xff0c;一共m行n列&#xff0c;均以空格分隔。取值范围&#xff1a;</p> 
+<ul><li>0 &lt; m ≤ 500</li><li>0&lt; n ≤ 500</li><li>0 &lt; k &lt; 5</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>请问小明能爬到的最高峰多高&#xff0c;到该最高峰的最短步数&#xff0c;输出以空格分隔。</p> 
+<p>同高度的山峰输出较短步数。</p> 
+<p>如果没有可以爬的山峰&#xff0c;则高度和步数都返回0。</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>所有用例输入均为正确格式&#xff0c;且在取值范围内&#xff0c;考生不需要考虑不合法的输入格式。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 4 1<br /> 0 1 2 0<br /> 1 0 0 0<br /> 1 0 1 2<br /> 1 3 1 0<br /> 0 0 0 9</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2 2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">根据山地图可知&#xff0c;能爬到的最高峰在(0,2)位置&#xff0c;高度为2&#xff0c;最短路径为(0,0)-(0,1)-(0,2)&#xff0c;最短步数为2。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 4 3<br /> 0 0 0 0<br /> 0 0 0 0<br /> 0 9 0 0<br /> 0 0 0 0<br /> 0 0 0 9</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0 0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">根据山地图可知&#xff0c;每次爬山距离3&#xff0c;无法爬到山峰上&#xff0c;步数为0。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用广度优先搜索进行解题。</p> 
+<p>初始时&#xff0c;小明位于(0, 0)位置&#xff0c;此时走的步数step &#61; 0&#xff0c;假设地图为matrix&#xff0c;则到高度matrix[0][0]的最短步数为step&#61;0。</p> 
+<p>我们可以假设&#xff0c;爬山的最大高度为maxHeight&#xff0c;到达此高度的最小步数为minStep&#xff0c;则初始时&#xff0c;maxHeight &#61; maxtrix[0][0]&#xff0c;minStep &#61; 0。</p> 
+<p></p> 
+<p>对于任意当前位置(x, y)&#xff0c;假设其下一步位置是(newX, newY)</p> 
+<blockquote> 
+ <p>本题需要注意的是&#xff1a;向四个方向进行深搜时&#xff0c;需要注意当前位置的高度值&#xff0c;和下一个位置的高度值&#xff0c;之间的差值需要小于等于k&#xff0c;才能进入下一个位置继续广搜。</p> 
+</blockquote> 
+<p>如果可以进入下一步&#xff0c;则step&#43;&#43;&#xff0c;假设(newX, newY)位置的山高度为curHeight, 则&#xff1a;</p> 
+<ul><li>如果 curHeight &gt; maxHeight 的话&#xff0c;则爬到了更高的山&#xff0c;此时直接更新 maxHeight &#61; curHeight&#xff0c;minStep &#61; step&#xff1b;</li><li>如果 curHeight &#61;&#61; maxHeight 的话&#xff0c;则需要继续比较step和minStep&#xff0c;我们需要保留step和minStep中较小步数作为 maxHeight&#xff08;&#61;&#61;curHeight&#xff09;山高度的步数。</li><li>如果 curHeight &lt; maxHeight 的话&#xff0c;则无需处理</li></ul> 
+<p>在广搜过程&#xff0c;为了避免走回头路&#xff0c;我们应该记录走过的节点&#xff0c;我们可以定义一个visited数组来标记走过的路。</p> 
+<p></p> 
+<p>关于广搜的原理&#xff0c;大家可以看&#xff1a;<a href="https://fcqian.blog.csdn.net/article/details/127711317" rel="nofollow" title="华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;_伏城之外的博客-CSDN博客">华为OD机试 - 计算疫情扩散时间&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<hr /> 
+<p>2023.11.2</p> 
+<p>输出描述中说&#xff1a;如果没有可以爬的山峰&#xff0c;则高度和步数都返回0。</p> 
+<p>其中“没有可以爬的山峰”&#xff0c;结合用例2来理解的话&#xff0c;应该是没有可爬的更高的山峰。即当只有可爬平级的山峰&#xff0c;也要高度和步数都返回0。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  static int m;
+  static int n;
+  static int k;
+  static int[][] matrix;
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  static int maxHeight;
+  static int minStep;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    m &#61; sc.nextInt();
+    n &#61; sc.nextInt();
+    k &#61; sc.nextInt();
+
+    matrix &#61; new int[m][n];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    System.out.println(getResult());
+  }
+
+  public static String getResult() {
+    // 到达matrix[0][0]高度的山峰&#xff0c;最短步数是0
+    maxHeight &#61; matrix[0][0];
+    minStep &#61; 0;
+
+    // 广搜
+    bfs();
+
+    if (minStep &#61;&#61; 0) {
+      // 输出描述&#xff1a;如果没有可以爬的山峰&#xff0c;则高度和步数都返回0。
+      return &#34;0 0&#34;;
+    } else {
+      return maxHeight &#43; &#34; &#34; &#43; minStep;
+    }
+  }
+
+  public static void bfs() {
+    // 广搜队列
+    LinkedList&lt;int[]&gt; queue &#61; new LinkedList&lt;&gt;();
+    // 访问记录
+    boolean[][] visited &#61; new boolean[m][n];
+
+    // 首先是(0,0)位置进入队列&#xff0c;且被标记为访问过
+    queue.add(new int[] {0, 0});
+    visited[0][0] &#61; true;
+
+    // 此时消耗步数为0
+    int step &#61; 0;
+
+    while (queue.size() &gt; 0) {
+      // 这里没有用queue.removeFirst来控制广搜&#xff0c;而是使用newQueue来控制广搜&#xff0c;因为这样更方便操作step
+      LinkedList&lt;int[]&gt; newQueue &#61; new LinkedList&lt;&gt;();
+      step&#43;&#43;;
+
+      // 遍历同一层的所有节点
+      for (int[] lastPos : queue) {
+        int x &#61; lastPos[0];
+        int y &#61; lastPos[1];
+
+        int lastHeight &#61; matrix[x][y];
+
+        // 四个方向位置
+        for (int[] offset : offsets) {
+          int newX &#61; x &#43; offset[0];
+          int newY &#61; y &#43; offset[1];
+
+          // 新位置越界则无法继续广搜
+          if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n) continue;
+
+          // 新位置已访问过&#xff0c;则无需重复广搜
+          if (visited[newX][newY]) continue;
+
+          int curHeight &#61; matrix[newX][newY];
+
+          // 前后位置高度差在k以内, 则可以进入新位置
+          if (Math.abs(curHeight - lastHeight) &lt;&#61; k) {
+            // 标记新位置已访问
+            visited[newX][newY] &#61; true;
+
+            // 如果此时到达新位置高度的步数step更小&#xff0c;则更新对应高度的最小步数
+            if (curHeight &gt; maxHeight || (curHeight &#61;&#61; maxHeight &amp;&amp; step &lt; minStep)) {
+              maxHeight &#61; curHeight;
+              minStep &#61; step;
+            }
+
+            // 新位置加入下一层广搜队列
+            newQueue.add(new int[] {newX, newY});
+          }
+        }
+      }
+
+      queue &#61; newQueue;
+    }
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // Write your code here
+  const [m, n, k] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const matrix &#61; [];
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    matrix.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  // 到达matrix[0][0]高度的山峰&#xff0c;最短步数是0
+  let maxHeight &#61; matrix[0][0];
+  let minStep &#61; 0;
+
+  // 广搜
+  bfs();
+
+  if (minStep &#61;&#61; 0) {
+    // 输出描述&#xff1a;如果没有可以爬的山峰&#xff0c;则高度和步数都返回0。
+    console.log(&#34;0 0&#34;);
+  } else {
+    console.log(maxHeight &#43; &#34; &#34; &#43; minStep);
+  }
+
+  function bfs() {
+    // 广搜队列
+    let queue &#61; [];
+    // 访问记录
+    const visited &#61; new Array(m).fill(0).map(() &#61;&gt; new Array(n).fill(false));
+
+    // 首先是(0,0)位置进入队列&#xff0c;且被标记为访问过
+    queue.push([0, 0]);
+    visited[0][0] &#61; true;
+
+    // 此时消耗步数为0
+    let step &#61; 0;
+
+    while (queue.length &gt; 0) {
+      // 这里没有用queue.removeFirst来控制广搜&#xff0c;而是使用newQueue来控制广搜&#xff0c;因为这样更方便操作step
+      const newQueue &#61; [];
+      step&#43;&#43;;
+
+      // 遍历同一层的所有节点
+      for (let [x, y] of queue) {
+        const lastHeight &#61; matrix[x][y];
+
+        // 四个方向位置
+        for (let [offsetX, offsetY] of offsets) {
+          const newX &#61; x &#43; offsetX;
+          const newY &#61; y &#43; offsetY;
+
+          // 新位置越界则无法继续广搜
+          if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n) continue;
+
+          // 新位置已访问过&#xff0c;则无需重复广搜
+          if (visited[newX][newY]) continue;
+
+          const curHeight &#61; matrix[newX][newY];
+
+          // 前后位置高度差在k以内, 则可以进入新位置
+          if (Math.abs(curHeight - lastHeight) &lt;&#61; k) {
+            // 标记新位置已访问
+            visited[newX][newY] &#61; true;
+
+            // 如果此时到达新位置高度的步数step更小&#xff0c;则更新对应高度的最小步数
+            if (
+              curHeight &gt; maxHeight ||
+              (curHeight &#61;&#61; maxHeight &amp;&amp; step &lt; minStep)
+            ) {
+              maxHeight &#61; curHeight;
+              minStep &#61; step;
+            }
+
+            // 新位置加入下一层广搜队列
+            newQueue.push([newX, newY]);
+          }
+        }
+      }
+
+      queue &#61; newQueue;
+    }
+  }
+})();
+</code></pre> 
+<p> </p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, n, k &#61; map(int, input().split())
+matrix &#61; [list(map(int, input().split())) for _ in range(m)]
+
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+# 到达matrix[0][0]高度的山峰&#xff0c;最短步数是0
+maxHeight &#61; matrix[0][0]
+minStep &#61; 0
+
+
+def bfs():
+    global maxHeight, minStep
+
+    # 广搜队列
+    queue &#61; []
+    # 访问记录
+    visited &#61; [[False] * n for _ in range(m)]
+
+    # 首先是(0,0)位置进入队列&#xff0c;且被标记为访问过
+    queue.append((0, 0))
+    visited[0][0] &#61; True
+
+    # 此时消耗步数为0
+    step &#61; 0
+
+    while len(queue) &gt; 0:
+        # 这里没有用queue.removeFirst来控制广搜&#xff0c;而是使用newQueue来控制广搜&#xff0c;因为这样更方便操作step
+        newQueue &#61; []
+        step &#43;&#61; 1
+
+        # 遍历同一层的所有节点
+        for x, y in queue:
+            lastHeight &#61; matrix[x][y]
+
+            # 四个方向位置
+            for offsetX, offsetY in offsets:
+                newX &#61; x &#43; offsetX
+                newY &#61; y &#43; offsetY
+
+                # 新位置越界则无法继续广搜
+                if newX &lt; 0 or newX &gt;&#61; m or newY &lt; 0 or newY &gt;&#61; n:
+                    continue
+
+                # 新位置已访问过&#xff0c;则无需重复广搜
+                if visited[newX][newY]:
+                    continue
+
+                curHeight &#61; matrix[newX][newY]
+
+                # 前后位置高度差在k以内, 则可以进入新位置
+                if abs(curHeight - lastHeight) &lt;&#61; k:
+                    visited[newX][newY] &#61; True
+
+                    # 如果此时到达新位置高度的步数step更小&#xff0c;则更新对应高度的最小步数
+                    if curHeight &gt; maxHeight or (curHeight &#61;&#61; maxHeight and step &lt; minStep):
+                        maxHeight &#61; curHeight
+                        minStep &#61; step
+
+                    # 新位置加入下一层广搜队列
+                    newQueue.append((newX, newY))
+
+        queue &#61; newQueue
+
+
+# 算法入口
+def getResult():
+    # 广搜
+    bfs()
+
+    if minStep &#61;&#61; 0:
+        # 输出描述&#xff1a;如果没有可以爬的山峰&#xff0c;则高度和步数都返回0。
+        return &#34;0 0&#34;
+    else:
+        return f&#34;{maxHeight} {minStep}&#34;
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 500
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode *prev;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList();
+
+void addLast_LinkedList(LinkedList *link, int ele);
+
+int m, n, k;
+int matrix[MAX_SIZE][MAX_SIZE] &#61; {0};
+int visited[MAX_SIZE][MAX_SIZE] &#61; {0};
+int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                     {1,  0},
+                     {0,  -1},
+                     {0,  1}};
+
+int maxHeight;
+int minStep;
+
+int getResult();
+
+void bfs();
+
+int main() {
+    scanf(&#34;%d %d %d&#34;, &amp;m, &amp;n, &amp;k);
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            scanf(&#34;%d&#34;, &amp;matrix[i][j]);
+        }
+    }
+
+    // 到达matrix[0][0]高度的山峰&#xff0c;最短步数是0
+    maxHeight &#61; matrix[0][0];
+    minStep &#61; 0;
+
+    // 广搜
+    bfs();
+
+    if (minStep &#61;&#61; 0) {
+        // 输出描述&#xff1a;如果没有可以爬的山峰&#xff0c;则高度和步数都返回0。
+        puts(&#34;0 0&#34;);
+    } else {
+        printf(&#34;%d %d&#34;, maxHeight, minStep);
+    }
+
+    return 0;
+}
+
+void bfs() {
+    // 广搜队列
+    LinkedList *queue &#61; new_LinkedList();
+
+    // 首先是(0,0)位置进入队列&#xff0c;且被标记为访问过
+    addLast_LinkedList(queue, 0 * n &#43; 0);
+    visited[0][0] &#61; 1;
+
+    // 此时消耗步数为0
+    int step &#61; 0;
+
+    while (queue-&gt;size &gt; 0) {
+        // 这里没有用queue.removeFirst来控制广搜&#xff0c;而是使用newQueue来控制广搜&#xff0c;因为这样更方便操作step
+        LinkedList *newQueue &#61; new_LinkedList();
+        step&#43;&#43;;
+
+        // 遍历同一层的所有节点
+        ListNode *cur &#61; queue-&gt;head;
+        while (cur !&#61; NULL) {
+            int x &#61; cur-&gt;ele / n;
+            int y &#61; cur-&gt;ele % n;
+
+            int lastHeight &#61; matrix[x][y];
+
+            // 四个方向位置
+            for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+                int newX &#61; x &#43; offsets[i][0];
+                int newY &#61; y &#43; offsets[i][1];
+
+                // 新位置越界则无法继续广搜
+                if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n) continue;
+
+                // 新位置已访问过&#xff0c;则无需重复广搜
+                if (visited[newX][newY]) continue;
+
+                // 前后位置高度差在k以内, 则可以进入新位置
+                int curHeight &#61; matrix[newX][newY];
+
+                if (abs(curHeight - lastHeight) &lt;&#61; k) {
+                    // 标记新位置已访问
+                    visited[newX][newY] &#61; 1;
+
+                    // 如果此时到达新位置高度的步数step更小&#xff0c;则更新对应高度的最小步数
+                    if (curHeight &gt; maxHeight || (curHeight &#61;&#61; maxHeight &amp;&amp; step &lt; minStep)) {
+                        maxHeight &#61; curHeight;
+                        minStep &#61; step;
+                    }
+
+                    // 新位置加入下一层广搜队列
+                    addLast_LinkedList(newQueue, newX * n &#43; newY);
+                }
+            }
+
+            cur &#61; cur-&gt;next;
+        }
+
+        queue &#61; newQueue;
+    }
+}
+
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+
+    node-&gt;ele &#61; ele;
+    node-&gt;prev &#61; NULL;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        node-&gt;prev &#61; link-&gt;tail;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

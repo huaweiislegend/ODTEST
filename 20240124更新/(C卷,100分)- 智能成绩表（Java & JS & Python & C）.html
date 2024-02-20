@@ -1,0 +1,358 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 智能成绩表（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小明来到某学校当老师&#xff0c;需要将学生按考试总分或单科分数进行排名&#xff0c;你能帮帮他吗&#xff1f;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第 1 行输入两个整数&#xff0c;学生人数 n 和科目数量 m。</p> 
+<ul><li>0 &lt; n &lt; 100</li><li>0 &lt; m &lt; 10</li></ul> 
+<p>第 2 行输入 m 个科目名称&#xff0c;彼此之间用空格隔开。</p> 
+<ul><li>科目名称只由英文字母构成&#xff0c;单个长度不超过10个字符。</li><li>科目的出现顺序和后续输入的学生成绩一一对应。</li><li>不会出现重复的科目名称。</li></ul> 
+<p>第 3 行开始的 n 行&#xff0c;每行包含一个学生的姓名和该生 m 个科目的成绩&#xff08;空格隔开&#xff09;</p> 
+<ul><li>学生不会重名。</li><li>学生姓名只由英文字母构成&#xff0c;长度不超过10个字符。</li><li>成绩是0~100的整数&#xff0c;依次对应第2行种输入的科目。</li></ul> 
+<p>第n&#43;2行&#xff0c;输入用作排名的科目名称。若科目不存在&#xff0c;则按总分进行排序。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一行&#xff0c;按成绩排序后的学生名字&#xff0c;空格隔开。成绩相同的按照学生姓名字典顺序排序。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 2<br /> yuwen shuxue<br /> fangfang 95 90<br /> xiaohua 88 95<br /> minmin 100 82<br /> shuxue</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">xiaohua fangfang minmin</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">按shuxue成绩排名&#xff0c;依次是xiaohua、fangfang、minmin</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;">3 2<br /> yuwen shuxue<br /> fangfang 95 90<br /> xiaohua 88 95<br /> minmin 90 95<br /> zongfen</td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">fangfang minmin xiaohua</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;">排序科目不存在&#xff0c;按总分排序&#xff0c;fangfang和minmin总分相同&#xff0c;按姓名的字典顺序&#xff0c;fangfang排在前面</td></tr></tbody></table> 
+<p> </p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是一道排序题。难度在于排序规则是动态的&#xff0c;不是固定的。</p> 
+<p>本题要求按照最后一行输入的科目的分数进行排序&#xff0c;如果对应科目不存在&#xff0c;则按照总分进行排序。</p> 
+<p></p> 
+<p>我的解题思路是&#xff1a;</p> 
+<p>首先&#xff0c;定义一个排名要素数组rank&#xff0c;分别记录各科成绩以及总分&#xff0c;即该排名要素数组rank的长度为 m &#43; 1。</p> 
+<ul><li>第rank[0]~rank[m-1]上&#xff0c;记录的是第二行输入科目顺序对应科目分数。</li><li>第rank[m]上&#xff0c;记录的是所有科目的总分。</li></ul> 
+<p>然后&#xff0c;定义一个有效要素索引&#xff08;即最终用于指定规则的排序要素的索引&#xff09;&#xff0c;比如&#xff1a;</p> 
+<ul><li>最后一行输入了shuxue&#xff0c;那么我就去第二行输入&#xff1a;yuwen shuxue&#xff0c;中去找对应出现序号为 1&#xff0c;那么有效要素的索引就是1&#xff0c;最终用于制定排序规则的值就是 rank[1]。</li><li>如果最后一行输入的科目&#xff0c;在第二行中不存在&#xff0c;那么就是按照总分制定排序规则&#xff0c;此时排序要素取 rank[m]。</li></ul> 
+<p>如果排序要素值相同&#xff08;可能是某科成绩&#xff0c;可能是总分&#xff09;&#xff0c;那么就再按照学生姓名的字典序排序。</p> 
+<p>更多实现细节请看代码&#xff0c;已添加详细注释。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  class Student {
+    constructor(name, rank) {
+      this.name &#61; name; // 学生姓名
+      this.rank &#61; rank; // 排名要素
+    }
+  }
+
+  // 学生人数, 科目数量
+  const [n, m] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // key是科目名称&#xff0c;val是科目出现顺序的序号
+  const subject_rankIdx &#61; {};
+
+  // 输入的m个科目
+  const subjects &#61; (await readline()).split(&#34; &#34;);
+
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    subject_rankIdx[subjects[i]] &#61; i;
+  }
+
+  const students &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    const tmp &#61; (await readline()).split(&#34; &#34;);
+
+    // 学生姓名
+    const name &#61; tmp[0];
+
+    // 学生给定科目的分数&#xff08;m个&#xff09;
+    const scores &#61; tmp.slice(1).map(Number);
+    // 学生所有科目的总分
+    const score_sum &#61; scores.reduce((a, b) &#61;&gt; a &#43; b);
+
+    // 排名要素&#xff0c;0~m-1索引上的是给定科目成绩&#xff0c;m索引上的是总分
+    const rank &#61; [...scores, score_sum];
+
+    students.push(new Student(name, rank));
+  }
+
+  // 用作排名的科目名称
+  const subject &#61; await readline();
+
+  // 用作排名的科目名称的排名要素序号
+  let rankIdx &#61; subject_rankIdx[subject];
+  // 如果用作排名的科目名称不存在&#xff0c;则按总分排名&#xff0c;对应序号是m
+  if (rankIdx &#61;&#61; undefined) {
+    rankIdx &#61; m;
+  }
+
+  // 按照排名要素排名&#xff0c;如果排名要素值相同&#xff0c;则按照学生姓名字典序排序
+  students.sort((a, b) &#61;&gt;
+    a.rank[rankIdx] !&#61; b.rank[rankIdx]
+      ? b.rank[rankIdx] - a.rank[rankIdx]
+      : strcmp(a.name, b.name)
+  );
+
+  console.log(students.map((a) &#61;&gt; a.name).join(&#34; &#34;));
+})();
+
+function strcmp(a, b) {
+  if (a &#61;&#61; b) {
+    return 0;
+  } else if (a &gt; b) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  static class Student {
+    String name; // 学生姓名
+    int[] rank; // 排名要素
+
+    public Student(String name, int[] rank) {
+      this.name &#61; name;
+      this.rank &#61; rank;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    // 学生人数
+    int n &#61; sc.nextInt();
+
+    // 科目数量
+    int m &#61; sc.nextInt();
+
+    // key是科目名称&#xff0c;val是科目出现顺序的序号
+    HashMap&lt;String, Integer&gt; subject_rankIdx &#61; new HashMap&lt;&gt;();
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      subject_rankIdx.put(sc.next(), i);
+    }
+
+    ArrayList&lt;Student&gt; students &#61; new ArrayList&lt;&gt;();
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 学生姓名
+      String name &#61; sc.next();
+
+      // rank记录学生排名的要素&#xff08;0~m-1索引上记录的是各科成绩&#xff0c;m索引上记录的是总分&#xff09;
+      int[] rank &#61; new int[m &#43; 1];
+      // 学生的总分
+      int score_sum &#61; 0;
+
+      // m 个科目成绩
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        rank[j] &#61; sc.nextInt();
+        score_sum &#43;&#61; rank[j];
+      }
+
+      rank[m] &#61; score_sum;
+
+      students.add(new Student(name, rank));
+    }
+
+    // 输入用作排名的科目名称
+    // 根据用作排名的科目名称获取对应排名要素序号&#xff0c;如果不存在&#xff0c;则按总分排序&#xff0c;排名要素序号取m
+    int rankIdx &#61; subject_rankIdx.getOrDefault(sc.next(), m);
+
+    students.sort(
+        (a, b) -&gt;
+            a.rank[rankIdx] !&#61; b.rank[rankIdx]
+                ? b.rank[rankIdx] - a.rank[rankIdx]
+                : a.name.compareTo(b.name));
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (Student student : students) {
+      sj.add(student.name);
+    }
+
+    System.out.println(sj);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Python算法源码</h4> 
+<pre><code class="language-python">class Student:
+    def __init__(self, name, rank):
+        self.name &#61; name
+        self.rank &#61; rank
+
+
+# 学生人数, 科目数量
+n, m &#61; map(int, input().split())
+
+# key是科目名称&#xff0c;val是科目出现顺序的序号
+subject_rankIdx &#61; {}
+
+# 输入的m个科目
+subjects &#61; input().split()
+
+for i in range(m):
+    subject_rankIdx[subjects[i]] &#61; i
+
+students &#61; []
+for i in range(n):
+    tmp &#61; input().split()
+
+    # 学生姓名
+    name &#61; tmp[0]
+    # 学生给定科目的分数&#xff08;m个&#xff09;
+    scores &#61; list(map(int, tmp[1:]))
+
+    # 排名要素&#xff0c;0~m-1索引上的是给定科目成绩&#xff0c;m索引上的是总分
+    rank &#61; []
+    rank.extend(scores)
+    rank.append(sum(scores))
+
+    students.append(Student(name, rank))
+
+# 用作排名的科目名称
+subject &#61; input()
+
+#  用作排名的科目名称的排名要素序号, 如果用作排名的科目名称不存在&#xff0c;则按总分排名&#xff0c;对应序号是m
+rankIdx &#61; subject_rankIdx.get(subject, m)
+
+# 按照排名要素排名&#xff0c;如果排名要素值相同&#xff0c;则按照学生姓名字典序排序
+students.sort(key&#61;lambda x: (-x.rank[rankIdx], x.name))
+
+print(&#34; &#34;.join(map(lambda x: x.name, students)))
+</code></pre> 
+<p></p> 
+<h4 id="C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_N 100
+#define MAX_M 10
+#define MAX_SUBJECT_LEN 11
+#define MAX_STU_NAME_LEN 11
+
+typedef struct {
+    char name[MAX_STU_NAME_LEN]; // 学生姓名
+    int *rank; // 排名要素
+} Student;
+
+Student *new_Student(char *name, int *rank) {
+    Student *student &#61; (Student *) malloc(sizeof(Student));
+    strcpy(student-&gt;name, name);
+    student-&gt;rank &#61; rank;
+    return student;
+}
+
+int rankIdx;
+
+int cmp(const void* a, const void* b) {
+    Student* A &#61; *((Student**) a);
+    Student* B &#61; *((Student**) b);
+
+    if(A-&gt;rank[rankIdx] !&#61; B-&gt;rank[rankIdx]) {
+        return B-&gt;rank[rankIdx] - A-&gt;rank[rankIdx];
+    } else {
+        return strcmp(A-&gt;name, B-&gt;name);
+    }
+}
+
+int main() {
+    // 学生人数, 科目数量
+    int n, m;
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    // 记录科目出现顺序
+    char subjects[MAX_M][MAX_SUBJECT_LEN];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        scanf(&#34;%s&#34;, subjects[i]);
+    }
+
+    Student *students[MAX_N] &#61; {NULL};
+    int students_size &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        // 学生姓名
+        char name[MAX_STU_NAME_LEN];
+        scanf(&#34;%s&#34;, name);
+
+        // rank记录学生排名的要素&#xff08;0~m-1索引上记录的是各科成绩&#xff0c;m索引上记录的是总分&#xff09;
+        int *rank &#61; (int *) calloc(m &#43; 1, sizeof(int));
+
+        // 学生的总分
+        int score_sum &#61; 0;
+        // m 个科目成绩
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            scanf(&#34;%d&#34;, &amp;rank[j]);
+            score_sum &#43;&#61; rank[j];
+        }
+
+        rank[m] &#61; score_sum;
+
+        students[students_size&#43;&#43;] &#61; new_Student(name, rank);
+    }
+
+    char subject[MAX_STU_NAME_LEN];
+    scanf(&#34;%s&#34;, subject);
+
+    // 输入用作排名的科目名称
+    // 根据用作排名的科目名称获取对应排名要素序号&#xff0c;如果不存在&#xff0c;则按总分排序&#xff0c;排名要素序号取m
+    rankIdx &#61; m;
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        if (strcmp(subject, subjects[i]) &#61;&#61; 0) {
+            rankIdx &#61; i;
+            break;
+        }
+    }
+
+    qsort(students, students_size, sizeof(Student*), cmp);
+
+    printf(&#34;%s&#34;, students[0]-&gt;name);
+    for(int i&#61;1; i&lt;students_size; i&#43;&#43;) {
+        printf(&#34; %s&#34;,students[i]-&gt;name);
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

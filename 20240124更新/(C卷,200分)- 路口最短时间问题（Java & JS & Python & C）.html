@@ -1,0 +1,616 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 路口最短时间问题（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>假定街道是棋盘型的&#xff0c;每格距离相等&#xff0c;车辆通过每格街道需要时间均为 timePerRoad&#xff1b;</p> 
+<p>街道的街口&#xff08;交叉点&#xff09;有交通灯&#xff0c;灯的周期 T&#xff08;&#61;lights[row][col]&#xff09;各不相同&#xff1b;</p> 
+<p>车辆可直行、左转和右转&#xff0c;其中直行和左转需要等相应 T 时间的交通灯才可通行&#xff0c;右转无需等待。</p> 
+<p>现给出 n * m 个街口的交通灯周期&#xff0c;以及起止街口的坐标&#xff0c;计算车辆经过两个街口的最短时间。</p> 
+<p></p> 
+<p>其中&#xff1a;</p> 
+<ol><li>起点和终点的交通灯不计入时间&#xff0c;且可以在任意方向经过街口</li><li>不可超出 n * m 个街口&#xff0c;不可跳跃&#xff0c;但边线也是道路&#xff08;即&#xff1a;lights[0][0] -&gt; lights[0][1] 是有效路径&#xff09;</li></ol> 
+<p></p> 
+<p>入口函数定义&#xff1a;</p> 
+<pre>/**
+ * &#64;param lights&#xff1a;n*m个街口每个交通灯的周期&#xff0c;值范围<strong><span style="color:#fe2c24;">[0, 120]</span></strong>&#xff0c;n和m的范围为<span style="color:#fe2c24;"><strong>[1,9]</strong></span>
+ * &#64;param timePreRoad&#xff1a;相邻两个街口之间街道的通行时间&#xff0c;范围为<span style="color:#fe2c24;"><strong>[0,600]</strong></span>
+ * &#64;param rowStart&#xff1a;起点的行号
+ * &#64;param colStart&#xff1a;起点的列号
+ * &#64;param rowEnd&#xff1a;终点的行号
+ * &#64;param colEnd&#xff1a;终点的列号
+ * &#64;return lights[rowStart][colStart] 与 lights[rowEnd][colEnd] 两个街口之间的最短通行时间
+ */
+int calcTime(int[][] lights, int timePreRoad, int rowStart, int colStart, int rowEnd, int colEnd)</pre> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入 n 和 m&#xff0c;以空格分隔</p> 
+<p>之后 n 行输入 lights矩阵&#xff0c;矩阵每行m个整数&#xff0c;以空格分隔</p> 
+<p>之后一行输入 timePerRoad</p> 
+<p>之后一行输入 rowStart colStart&#xff0c;以空格分隔</p> 
+<p>最后一行输入 rowEnd colEnd&#xff0c;以空格分隔</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>lights[rowStart][colStart] 与 lights[rowEnd][colEnd] 两个街口之间的最短通行时间</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 3<br /> 1 2 3<br /> 4 5 6<br /> 7 8 9<br /> 60<br /> 0 0<br /> 2 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">245</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">行走路线为 (0,0) -&gt; (0,1) -&gt; (1,1) -&gt; (1,2) -&gt; (2,2) 走了4格路&#xff0c;2个右转&#xff0c;1个左转&#xff0c;共耗时 60&#43;0&#43;60&#43;5&#43;60&#43;0&#43;60&#61;245</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例图示如下&#xff1a;</p> 
+<p><img alt="" height="227" src="https://img-blog.csdnimg.cn/direct/8feafd2511f645538336013bce048a41.png" width="260" /></p> 
+<p></p> 
+<p>(0,0)是起点&#xff0c;(2,2)是终点</p> 
+<p>上面红色路径是起点到终点的最短时间路径&#xff0c;各线段花费时间如下&#xff1a;</p> 
+<ul><li>(0,0) → (0,1) 由于是初始&#xff0c;因此不需要等待&#xff0c;仅花费 timePerRoad &#61; 60 单位时间</li><li>(0,1) → (1,1) 发生了右拐&#xff0c;因此不需要等待&#xff0c;仅花费 timePerRoad &#61; 60 单位时间</li><li>(1,1) → (1,2) 发生了左拐&#xff0c;因此需要等待&#xff0c;花费时间为 timePerRoad &#43; lights[1][1] &#61; 60 &#43; 5 单位时间</li><li>(1,2) → (2,2) 发生了右拐&#xff0c;因此不需要等待&#xff0c;仅花费 timePerRoad &#61; 60 单位时间</li></ul> 
+<p>最终总耗时为&#xff1a;60 &#43; 60 &#43; (60 &#43; 5) &#43; 60 &#61; 245</p> 
+<p></p> 
+<p>本题看上去是单源最短路径问题&#xff0c;但是实际操作起来是<span style="color:#fe2c24;"><strong>不可以的</strong></span>&#xff0c;</p> 
+<p></p> 
+<p>比如基于题目用例&#xff0c;我们通过Dijistra算法模拟&#xff0c;过程如下&#xff1a;</p> 
+<p>初始定义一个dist数组&#xff0c;dist[i][j]用于记录 起点 到 (i, j)点 的最短时间。</p> 
+<p>初始时&#xff0c;起点到达自身位置的时间为0&#xff0c;到达其余点的时间为无限大MAX&#xff0c;如下图所示&#xff1a;</p> 
+<p><img alt="" height="254" src="https://img-blog.csdnimg.cn/direct/e94a9f190c084ecab50d67eb816c43cd.png" width="281" /></p> 
+<p></p> 
+<p>然后我们从起点出发&#xff0c;此时可以向上下左右四个方向探索&#xff1a;</p> 
+<p><img alt="" height="291" src="https://img-blog.csdnimg.cn/direct/db1c1f2ed80b4926a02ad755370429b5.png" width="743" /></p> 
+<p>由于探索位置不能越界&#xff0c;因此当前用例起点只能向下和向右探索&#xff0c;由于是初始探索&#xff0c;因此不需要等待&#xff0c;到达新位置只需要花费timePerRoad时间</p> 
+<p><img alt="" height="275" src="https://img-blog.csdnimg.cn/direct/44c93b986f534ca9879201db6f006c7c.png" width="669" /></p> 
+<p>接下来有两个点可以当成新的源点&#xff0c;根据Dijistra算法&#xff0c;我们可以选择其中较小权重&#xff08;时间&#xff09;的点作为源点&#xff0c;此时由于两点权重&#xff08;时间&#xff09;相同&#xff0c;因此任选一个都可以</p> 
+<p><img alt="" height="306" src="https://img-blog.csdnimg.cn/direct/80211b125a804e95afbb7e78696d3102.png" width="758" /></p> 
+<p>比如我们选择(1,0)点作为新的源点&#xff0c;此时该点可以向下和向右探索&#xff1a;</p> 
+<ul><li>向下的话&#xff0c;则是直线运动&#xff0c;需要等待&#xff0c;此时需要花费 timePerRod &#43; lights[1][1] 的时间</li><li>向右的话&#xff0c;则是左转运动&#xff0c;需要等待&#xff0c;此时需要花费 timePerRod &#43; lights[1][1] 的时间</li></ul> 
+<p><img alt="" height="288" src="https://img-blog.csdnimg.cn/direct/b94fdb7e3b044cdbbfa77b0042ce5c00.png" width="674" /></p> 
+<p></p> 
+<p>接下来&#xff0c;需要从124&#xff0c;124&#xff0c;60中选择最小的60作为源点进行探索&#xff0c;该点只能向右和向下探索</p> 
+<p><img alt="" height="317" src="https://img-blog.csdnimg.cn/direct/7975d14a0fb7425fba304ee86717e97c.png" width="728" /></p> 
+<ul><li>向右的话&#xff0c;则是直线运动&#xff0c;需要等待&#xff0c;此时需要花费 timePerRod &#43; lights[0][1] 的时间</li><li>向下的话&#xff0c;则是右转运动&#xff0c;不需要等待&#xff0c;此时仅需要花费 timePerRod 时间&#xff0c;即起点(0,0)到达(1,1)沿当前路径只需要120时间&#xff0c;要比之前探索的124小&#xff0c;根据Dijistra算法&#xff0c;更新dist[]</li></ul> 
+<p><img alt="" height="311" src="https://img-blog.csdnimg.cn/direct/9b07feebdd314a9ca5c3bbac55b24f92.png" width="630" /></p> 
+<p></p> 
+<p>接下来&#xff0c;需要从124&#xff0c;120&#xff0c;122中选择最小的120作为源点进行探索&#xff0c;该点只能向右和向下探索</p> 
+<p><img alt="" height="303" src="https://img-blog.csdnimg.cn/direct/690e31f92bb94d4baff8296567ef5573.png" width="663" /></p> 
+<ul><li>向右的话&#xff0c;则是左转运动&#xff0c;需要等待&#xff0c;此时需要花费 timePerRod &#43; lights[1][1] 的时间</li><li>向下的话&#xff0c;则是直线运动&#xff0c;需要等待&#xff0c;此时需要花费 timePerRod &#43; lights[1][1] 的时间</li></ul> 
+<p><img alt="" height="262" src="https://img-blog.csdnimg.cn/direct/ad379292052e45e9aff970a62fba2fd5.png" width="663" /></p> 
+<p></p> 
+<p>接下来&#xff0c;需要从124&#xff0c;122&#xff0c;185&#xff0c;185中选择最小的122作为源点进行探索&#xff0c;该点只能向下探索</p> 
+<p><img alt="" height="329" src="https://img-blog.csdnimg.cn/direct/9e48cf27b7034157b5c84445071723aa.png" width="635" /></p> 
+<p>向右的话&#xff0c;则是右转运动&#xff0c;不需要等待&#xff0c;仅需要花费 timePerRod 时间&#xff0c;此时起点到达(1, 2)位置需要122&#43;60 &#61; 182时间&#xff0c;要比(1,2)当前记录的185时间更短&#xff0c;因此根据Dijistra算法&#xff0c;会更新dist[1][2] &#61; 182&#xff0c;<span style="color:#fe2c24;"><strong>但是此时就会出问题&#xff01;&#xff01;&#xff01;&#xff01;</strong></span></p> 
+<p><img alt="" height="259" src="https://img-blog.csdnimg.cn/direct/21e4c95764854a9cbbada1e5bff9b60b.png" width="596" /></p> 
+<p>我们快速走完后续流程&#xff0c;看下结果&#xff1a;</p> 
+<p><img alt="" height="317" src="https://img-blog.csdnimg.cn/direct/7e3a1490ef524d01804b4012e7088763.png" width="723" /></p> 
+<p><img alt="" height="252" src="https://img-blog.csdnimg.cn/direct/c78eb8cec2cb49daa287b147368a4bf9.png" width="830" /></p> 
+<p><img alt="" height="306" src="https://img-blog.csdnimg.cn/direct/3ce2f9e8491141d486b32dc7160d3737.png" width="813" /></p> 
+<p>即按照Dijistra算法的逻辑&#xff0c;最终起点(0,0)到终点(2,2)的最短时间为248&#xff0c;但是这是有问题的&#xff0c;我们回到之前锚定问题的状态&#xff1a;</p> 
+<p><img alt="" height="329" src="https://img-blog.csdnimg.cn/direct/9e48cf27b7034157b5c84445071723aa.png" width="635" /></p> 
+<p>如果上面绿色箭头选择不更新(1,2)位置的时间的话&#xff0c;即保持dist[1][2] &#61; 185&#xff0c;那么结果如下&#xff1a;</p> 
+<p><img alt="" height="328" src="https://img-blog.csdnimg.cn/direct/b14223252bb94e54b020f43810dd0f70.png" width="786" /></p> 
+<p><img alt="" height="288" src="https://img-blog.csdnimg.cn/direct/9b9b879c40194600904432f7a683bbd0.png" width="784" /></p> 
+<p>最终起点(0,0)到终点(2,2)的最短时间为245&#xff0c;相较于Dijistra算法得出的最优选择&#xff0c;时间更短。</p> 
+<p></p> 
+<p>本题的街道本质上&#xff0c;是一个动态边权的有权图&#xff0c;两个点之间的边权&#xff0c;会因为第三个点的加入而改变&#xff0c;因此边权是动态的。而Dijistra算法无法处理这种情况。</p> 
+<p>我理解&#xff0c;本题只能进行暴力搜索所有起点到终点的路径&#xff0c;并根据拐弯规则计算动态边权&#xff0c;得出最短时间的路径。</p> 
+<p></p> 
+<p>本题的n和m的范围为<span style="color:#fe2c24;"><strong>[1,9]</strong></span><span style="color:#0d0016;">&#xff0c;不是很大&#xff0c;因此暴力搜索&#xff08;如DFS&#xff09;应该不会超时。</span></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [n, m] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const lights &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    lights.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  const timePerRoad &#61; parseInt(await readline());
+
+  const [rowStart, colStart] &#61; (await readline()).split(&#34; &#34;).map(Number);
+  const [rowEnd, colEnd] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 记录访问过的点&#xff0c;防止走回路
+  const visited &#61; new Array(n).fill(0).map(() &#61;&gt; new Array(m).fill(false));
+
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  function getResult() {
+    // 初始时起点位置标记为访问过
+    visited[rowStart][colStart] &#61; true;
+
+    // 记录起点到终点的最小花费时间&#xff0c;这里minCost定义为数组&#xff0c;是为了其在dfs函数调用结束后&#xff0c;不会被释放内存&#xff0c;因为它是引用类型变量
+    const minCost &#61; [Infinity];
+    // 开始暴搜所有起点到终点的路径
+    dfs(rowStart, colStart, -1, -1, 0, minCost);
+    return minCost[0];
+  }
+
+  /**
+   * 暴力搜索
+   *
+   * &#64;param curX 当前位置横坐标
+   * &#64;param curY 当前位置纵坐标
+   * &#64;param preX 上一个位置横坐标
+   * &#64;param preY 上一个位置纵坐标
+   * &#64;param cost 到达当前位置花费的时间
+   * &#64;param minCost 记录起点到终点的最小花费时间
+   */
+  function dfs(curX, curY, preX, preY, cost, minCost) {
+    // 如果到达当前前花费的时间cost 达到了 已知minCost&#xff0c;那么后续路径就没必要探索了&#xff0c;因为必然要比minCost大
+    if (cost &gt;&#61; minCost[0]) {
+      return;
+    }
+
+    // 如果当前点是终点&#xff0c;且花费的时间cost更少&#xff0c;则更新minCost
+    if (curX &#61;&#61; rowEnd &amp;&amp; curY &#61;&#61; colEnd) {
+      minCost[0] &#61; cost;
+      return;
+    }
+
+    // 否则&#xff0c;从当前位置的四个方向继续探索路径
+    for (let [offsetX, offsetY] of offsets) {
+      // 新位置
+      const nextX &#61; curX &#43; offsetX;
+      const nextY &#61; curY &#43; offsetY;
+
+      // 新位置越界或者已经访问过&#xff0c;则不能访问&#xff0c;继续其他方向探索
+      if (
+        nextX &lt; 0 ||
+        nextX &gt;&#61; n ||
+        nextY &lt; 0 ||
+        nextY &gt;&#61; m ||
+        visited[nextX][nextY]
+      )
+        continue;
+
+      // 标记新位置访问过
+      visited[nextX][nextY] &#61; true;
+
+      // 根据pre,cur,next三点&#xff0c;判断拐弯方向
+      const direction &#61; getDirection(preX, preY, curX, curY, nextX, nextY);
+
+      // cur到达next位置必须要增加timePreRoad个时间
+      let increment &#61; timePerRoad;
+      // preX&#61;-1, preY&#61;-1 表示pre位置不存在&#xff0c;此时探索下一个位置不需要花费等待周期
+      if (preX &gt;&#61; 0 &amp;&amp; preY &gt;&#61; 0 &amp;&amp; direction &gt;&#61; 0) {
+        // pre位置存在&#xff0c;且cur-&gt;next是左拐或者直行&#xff0c;则需要增加当前位置对应的等待周期时间
+        increment &#43;&#61; lights[curX][curY];
+      }
+
+      // 递归进入新位置
+      dfs(nextX, nextY, curX, curY, cost &#43; increment, minCost);
+
+      // 回溯
+      visited[nextX][nextY] &#61; false;
+    }
+  }
+
+  /**
+   * 根据三点坐标&#xff0c;确定拐弯方向
+   *
+   * &#64;param preX 前一个点横坐标
+   * &#64;param preY 前一个点纵坐标
+   * &#64;param curX 当前点横坐标
+   * &#64;param curY 当前点纵坐标
+   * &#64;param nextX 下一个点横坐标
+   * &#64;param nextY 下一个点纵坐标
+   * &#64;return cur到next的拐弯方向&#xff0c; &gt;0 表示向左拐&#xff0c; &#61;&#61;0 表示直行&#xff08;含调头&#xff09;&#xff0c; &lt;0 表示向右拐
+   */
+  function getDirection(preX, preY, curX, curY, nextX, nextY) {
+    // 向量 pre-&gt;cur
+    const dx1 &#61; curX - preX;
+    const dy1 &#61; curY - preY;
+
+    // 向量 cur-&gt;next
+    const dx2 &#61; nextX - curX;
+    const dy2 &#61; nextY - curY;
+
+    // 两个向量的叉积 &gt;0 表示向左拐&#xff0c; &#61;&#61;0 表示直行&#xff08;含调头&#xff09;&#xff0c; &lt;0 表示向右拐
+    return dx1 * dy2 - dx2 * dy1;
+  }
+
+  console.log(getResult());
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  static int n;
+  static int m;
+  static int[][] lights;
+  static int timePreRoad;
+  static int rowStart;
+  static int colStart;
+  static int rowEnd;
+  static int colEnd;
+
+  static boolean[][] visited;
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    n &#61; sc.nextInt();
+    m &#61; sc.nextInt();
+
+    lights &#61; new int[n][m];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        lights[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    timePreRoad &#61; sc.nextInt();
+
+    rowStart &#61; sc.nextInt();
+    colStart &#61; sc.nextInt();
+
+    rowEnd &#61; sc.nextInt();
+    colEnd &#61; sc.nextInt();
+
+    System.out.println(getResult());
+  }
+
+  public static int getResult() {
+    // 记录访问过的点&#xff0c;防止走回路
+    visited &#61; new boolean[n][m];
+    // 初始时起点位置标记为访问过
+    visited[rowStart][colStart] &#61; true;
+
+    // 记录起点到终点的最小花费时间&#xff0c;这里minCost定义为数组&#xff0c;是为了其在dfs函数调用结束后&#xff0c;不会被释放内存&#xff0c;因为它是引用类型变量
+    int[] minCost &#61; {Integer.MAX_VALUE};
+    // 开始暴搜所有起点到终点的路径
+    dfs(rowStart, colStart, -1, -1, 0, minCost);
+    return minCost[0];
+  }
+
+  /**
+   * 暴力搜索
+   *
+   * &#64;param curX 当前位置横坐标
+   * &#64;param curY 当前位置纵坐标
+   * &#64;param preX 上一个位置横坐标
+   * &#64;param preY 上一个位置纵坐标
+   * &#64;param cost 到达当前位置花费的时间
+   * &#64;param minCost 记录起点到终点的最小花费时间
+   */
+  public static void dfs(int curX, int curY, int preX, int preY, int cost, int[] minCost) {
+    // 如果到达当前前花费的时间cost 达到了 已知minCost&#xff0c;那么后续路径就没必要探索了&#xff0c;因为必然要比minCost大
+    if (cost &gt;&#61; minCost[0]) {
+      return;
+    }
+
+    // 如果当前点是终点&#xff0c;且花费的时间cost更少&#xff0c;则更新minCost
+    if (curX &#61;&#61; rowEnd &amp;&amp; curY &#61;&#61; colEnd) {
+      minCost[0] &#61; cost;
+      return;
+    }
+
+    // 否则&#xff0c;从当前位置的四个方向继续探索路径
+    for (int[] offset : offsets) {
+      // 新位置
+      int nextX &#61; curX &#43; offset[0];
+      int nextY &#61; curY &#43; offset[1];
+
+      // 新位置越界或者已经访问过&#xff0c;则不能访问&#xff0c;继续其他方向探索
+      if (nextX &lt; 0 || nextX &gt;&#61; n || nextY &lt; 0 || nextY &gt;&#61; m || visited[nextX][nextY]) continue;
+
+      // 标记新位置访问过
+      visited[nextX][nextY] &#61; true;
+
+      // 根据pre,cur,next三点&#xff0c;判断拐弯方向
+      int direction &#61; getDirection(preX, preY, curX, curY, nextX, nextY);
+
+      // cur到达next位置必须要增加timePreRoad个时间
+      int increment &#61; timePreRoad;
+      // preX&#61;-1, preY&#61;-1 表示pre位置不存在&#xff0c;此时探索下一个位置不需要花费等待周期
+      if (preX &gt;&#61; 0 &amp;&amp; preY &gt;&#61; 0 &amp;&amp; direction &gt;&#61; 0) {
+        // pre位置存在&#xff0c;且cur-&gt;next是左拐或者直行&#xff0c;则需要增加当前位置对应的等待周期时间
+        increment &#43;&#61; lights[curX][curY];
+      }
+
+      // 递归进入新位置
+      dfs(nextX, nextY, curX, curY, cost &#43; increment, minCost);
+
+      // 回溯
+      visited[nextX][nextY] &#61; false;
+    }
+  }
+
+  /**
+   * 根据三点坐标&#xff0c;确定拐弯方向
+   *
+   * &#64;param preX 前一个点横坐标
+   * &#64;param preY 前一个点纵坐标
+   * &#64;param curX 当前点横坐标
+   * &#64;param curY 当前点纵坐标
+   * &#64;param nextX 下一个点横坐标
+   * &#64;param nextY 下一个点纵坐标
+   * &#64;return cur到next的拐弯方向&#xff0c; &gt;0 表示向左拐&#xff0c; &#61;&#61;0 表示直行&#xff08;含调头&#xff09;&#xff0c; &lt;0 表示向右拐
+   */
+  public static int getDirection(int preX, int preY, int curX, int curY, int nextX, int nextY) {
+    // 向量 pre-&gt;cur
+    int dx1 &#61; curX - preX;
+    int dy1 &#61; curY - preY;
+
+    // 向量 cur-&gt;next
+    int dx2 &#61; nextX - curX;
+    int dy2 &#61; nextY - curY;
+
+    // 两个向量的叉积 &gt;0 表示向左拐&#xff0c; &#61;&#61;0 表示直行&#xff08;含调头&#xff09;&#xff0c; &lt;0 表示向右拐
+    return dx1 * dy2 - dx2 * dy1;
+  }
+}
+</code></pre> 
+<h5></h5> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n, m &#61; map(int, input().split())
+lights &#61; [list(map(int, input().split())) for _ in range(n)]
+timePerRoad &#61; int(input())
+rowStart, colStart &#61; map(int, input().split())
+rowEnd, colEnd &#61; map(int, input().split())
+
+offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+visited &#61; [[False] * m for _ in range(n)]
+
+
+# 根据三点坐标&#xff0c;确定拐弯方向
+def getDirection(preX, preY, curX, curY, nextX, nextY):
+    &#34;&#34;&#34;
+    :param preX: 前一个点横坐标
+    :param preY: 前一个点纵坐标
+    :param curX: 当前点横坐标
+    :param curY: 当前点纵坐标
+    :param nextX: 下一个点横坐标
+    :param nextY: 下一个点纵坐标
+    :return: cur到next的拐弯方向&#xff0c; &gt;0 表示向左拐&#xff0c; &#61;&#61;0 表示直行&#xff08;含调头&#xff09;&#xff0c; &lt;0 表示向右拐
+    &#34;&#34;&#34;
+    # 向量 pre-&gt;cur
+    dx1 &#61; curX - preX
+    dy1 &#61; curY - preY
+
+    # 向量 cur-&gt;next
+    dx2 &#61; nextX - curX
+    dy2 &#61; nextY - curY
+
+    #  两个向量的叉积 &gt;0 表示向左拐&#xff0c; &#61;&#61;0 表示直行&#xff08;含调头&#xff09;&#xff0c; &lt;0 表示向右拐
+    return dx1 * dy2 - dx2 * dy1
+
+
+# 暴力搜索
+def dfs(curX, curY, preX, preY, cost, minCost):
+    &#34;&#34;&#34;
+    :param curX: 当前位置横坐标
+    :param curY: 当前位置纵坐标
+    :param preX: 上一个位置横坐标
+    :param preY: 上一个位置纵坐标
+    :param cost: 到达当前位置花费的时间
+    :param minCost: 记录起点到终点的最小花费时间
+    &#34;&#34;&#34;
+    # 如果到达当前前花费的时间cost 达到了 已知minCost&#xff0c;那么后续路径就没必要探索了&#xff0c;因为必然要比minCost大
+    if cost &gt;&#61; minCost[0]:
+        return
+
+    # 如果当前点是终点&#xff0c;且花费的时间cost更少&#xff0c;则更新minCost
+    if curX &#61;&#61; rowEnd and curY &#61;&#61; colEnd:
+        minCost[0] &#61; cost
+        return
+
+    # 否则&#xff0c;从当前位置的四个方向继续探索路径
+    for offsetX, offsetY in offsets:
+        # 新位置
+        nextX &#61; curX &#43; offsetX
+        nextY &#61; curY &#43; offsetY
+
+        # 新位置越界或者已经访问过&#xff0c;则不能访问&#xff0c;继续其他方向探索
+        if nextX &lt; 0 or nextX &gt;&#61; n or nextY &lt; 0 or nextY &gt;&#61; m or visited[nextX][nextY]:
+            continue
+
+        # 标记新位置访问过
+        visited[nextX][nextY] &#61; True
+
+        # 根据pre,cur,next三点&#xff0c;判断拐弯方向
+        direction &#61; getDirection(preX, preY, curX, curY, nextX, nextY)
+
+        # cur到达next位置必须要增加timePreRoad个时间
+        increment &#61; timePerRoad
+        # preX&#61;-1, preY&#61;-1 表示pre位置不存在&#xff0c;此时探索下一个位置不需要花费等待周期
+        if preX &gt;&#61; 0 and preY &gt;&#61; 0 and direction &gt;&#61; 0:
+            # pre位置存在&#xff0c;且cur-&gt;next是左拐或者直行&#xff0c;则需要增加当前位置对应的等待周期时间
+            increment &#43;&#61; lights[curX][curY]
+
+        # 递归进入新位置
+        dfs(nextX, nextY, curX, curY, cost &#43; increment, minCost)
+
+        # 回溯
+        visited[nextX][nextY] &#61; False
+
+
+# 算法入口
+def getResult():
+    visited[rowStart][colStart] &#61; True
+
+    minCost &#61; [sys.maxsize]
+    dfs(rowStart, colStart, -1, -1, 0, minCost)
+
+    return minCost[0]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+#define MAX_SIZE 10
+
+int n, m;
+int lights[MAX_SIZE][MAX_SIZE];
+int timePerRoad;
+int rowStart, colStart;
+int rowEnd, colEnd;
+
+int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                     {1,  0},
+                     {0,  -1},
+                     {0,  1}};
+
+int visited[MAX_SIZE][MAX_SIZE] &#61; {0};
+
+/*!
+ * 根据三点坐标&#xff0c;确定拐弯方向
+ * &#64;param preX 前一个点横坐标
+ * &#64;param preY 前一个点纵坐标
+ * &#64;param curX 当前点横坐标
+ * &#64;param curY 当前点纵坐标
+ * &#64;param nextX 下一个点横坐标
+ * &#64;param nextY 下一个点纵坐标
+ * &#64;return cur到next的拐弯方向&#xff0c; &gt;0 表示向左拐&#xff0c; &#61;&#61;0 表示直行&#xff08;含调头&#xff09;&#xff0c; &lt;0 表示向右拐
+ */
+int getDirection(int preX, int preY, int curX, int curY, int nextX, int nextY) {
+    // 向量 pre-&gt;cur
+    int dx1 &#61; curX - preX;
+    int dy1 &#61; curY - preY;
+
+    // 向量 cur-&gt;next
+    int dx2 &#61; nextX - curX;
+    int dy2 &#61; nextY - curY;
+
+    // 两个向量的叉积 &gt;0 表示向左拐&#xff0c; &#61;&#61;0 表示直行&#xff08;含调头&#xff09;&#xff0c; &lt;0 表示向右拐
+    return dx1 * dy2 - dx2 * dy1;
+}
+
+/*!
+ * 暴力搜索
+ * &#64;param curX 当前位置横坐标
+ * &#64;param curY 当前位置纵坐标
+ * &#64;param preX 上一个位置横坐标
+ * &#64;param preY 上一个位置纵坐标
+ * &#64;param cost 到达当前位置花费的时间
+ * &#64;param minCost 记录起点到终点的最小花费时间
+ */
+void dfs(int curX, int curY, int preX, int preY, int cost, int minCost[]) {
+    // 如果到达当前前花费的时间cost 达到了 已知minCost&#xff0c;那么后续路径就没必要探索了&#xff0c;因为必然要比minCost大
+    if (cost &gt;&#61; minCost[0]) {
+        return;
+    }
+
+    // 如果当前点是终点&#xff0c;且花费的时间cost更少&#xff0c;则更新minCost
+    if (curX &#61;&#61; rowEnd &amp;&amp; curY &#61;&#61; colEnd) {
+        minCost[0] &#61; cost;
+        return;
+    }
+
+    // 否则&#xff0c;从当前位置的四个方向继续探索路径
+    for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+        // 新位置
+        int nextX &#61; curX &#43; offsets[i][0];
+        int nextY &#61; curY &#43; offsets[i][1];
+
+        // 新位置越界或者已经访问过&#xff0c;则不能访问&#xff0c;继续其他方向探索
+        if (nextX &lt; 0 || nextX &gt;&#61; n || nextY &lt; 0 || nextY &gt;&#61; m || visited[nextX][nextY]) {
+            continue;
+        }
+
+        // 标记新位置访问过
+        visited[nextX][nextY] &#61; 1;
+
+        // 根据pre,cur,next三点&#xff0c;判断拐弯方向
+        int direction &#61; getDirection(preX, preY, curX, curY, nextX, nextY);
+
+        // cur到达next位置必须要增加timePreRoad个时间
+        int increment &#61; timePerRoad;
+        // preX&#61;-1, preY&#61;-1 表示pre位置不存在&#xff0c;此时探索下一个位置不需要花费等待周期
+        if (preX &gt;&#61; 0 &amp;&amp; preY &gt;&#61; 0 &amp;&amp; direction &gt;&#61; 0) {
+            // pre位置存在&#xff0c;且cur-&gt;next是左拐或者直行&#xff0c;则需要增加当前位置对应的等待周期时间
+            increment &#43;&#61; lights[curX][curY];
+        }
+
+        // 递归进入新位置
+        dfs(nextX, nextY, curX, curY, cost &#43; increment, minCost);
+
+        // 回溯
+        visited[nextX][nextY] &#61; 0;
+    }
+}
+
+int getResult() {
+    // 记录访问过的点&#xff0c;防止走回路
+    // 初始时起点位置标记为访问过
+    visited[rowStart][colStart] &#61; 1;
+
+    // 记录起点到终点的最小花费时间&#xff0c;这里minCost定义为数组&#xff0c;是为了其在dfs函数调用结束后&#xff0c;不会被释放内存&#xff0c;因为它是引用类型变量
+    int minCost[] &#61; {INT_MAX};
+    // 开始暴搜所有起点到终点的路径
+    dfs(rowStart, colStart, -1, -1, 0, minCost);
+    return minCost[0];
+}
+
+int main() {
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            scanf(&#34;%d&#34;, &amp;lights[i][j]);
+        }
+    }
+
+    scanf(&#34;%d&#34;, &amp;timePerRoad);
+
+    scanf(&#34;%d %d&#34;, &amp;rowStart, &amp;colStart);
+
+    scanf(&#34;%d %d&#34;, &amp;rowEnd, &amp;colEnd);
+
+    printf(&#34;%d\n&#34;, getResult());
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,176 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 组装新的数组（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给你一个整数M和数组N&#xff0c;N中的元素为连续整数&#xff0c;要求根据N中的元素组装成新的数组R&#xff0c;组装规则&#xff1a;</p> 
+<ol><li>R中元素总和加起来等于M</li><li>R中的元素可以从N中重复选取</li><li>R中的元素最多只能有1个不在N中&#xff0c;且比N中的数字都要小&#xff08;不能为负数&#xff09;</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入是连续数组N&#xff0c;采用空格分隔<br /> 第二行输入数字M</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出的是组装办法数量&#xff0c;int类型</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 ≤ M ≤ 30</li><li>1 ≤ N.length ≤ 1000</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">只有1种组装办法&#xff0c;就是[2,2,1]</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 3<br /> 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">一共两种组装办法&#xff0c;分别是[2,2,1]&#xff0c;[2,3]</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我们可以换个说法来看本题&#xff0c;</p> 
+<p>在数组N任意选取多个元素&#xff0c;且同一个元素可以重复选取&#xff0c;只要最终选取的所有元素之和等于m&#xff0c;或者&#xff1a;小于m但是差值不超过N.min()。</p> 
+<p>现在是不是感觉本题简单多了。</p> 
+<p>我们可以使用回溯算法来在N中选取多个元素&#xff08;同一个元素可以重复选取&#xff09;&#xff0c;这个逻辑其实就是求可重复元素组合情况&#xff0c;每得到一个组合就看其和sum是否等于m&#xff0c;或者m - sum 是否已经小于 N.min&#xff0c;若是&#xff0c;则该组合是符合要求的&#xff0c;count&#43;&#43;&#xff0c;否则不符合要求&#xff0c;继续找。当sum &gt; m时&#xff0c;则说明往后的组合已经无法符合要求&#xff0c;此时需要进行回溯了。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const arr &#61; lines[0].split(&#34; &#34;).map(Number);
+    const m &#61; lines[1] - 0;
+    console.log(getResult(arr, m));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, m) {
+  const min &#61; arr[0];
+
+  arr &#61; arr.filter((val) &#61;&gt; val &lt;&#61; m); // 只过滤出比m小的连续整数
+
+  return dfs(arr, 0, 0, min, m, 0);
+}
+
+function dfs(arr, index, sum, min, m, count) {
+  if (sum &gt; m) {
+    return count;
+  }
+
+  if (sum &#61;&#61;&#61; m || (m - sum &lt; min &amp;&amp; m - sum &gt; 0)) {
+    return count &#43; 1;
+  }
+
+  for (let i &#61; index; i &lt; arr.length; i&#43;&#43;) {
+    count &#61; dfs(arr, i, sum &#43; arr[i], min, m, count);
+  }
+
+  return count;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] arr &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    int m &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(arr, m));
+  }
+
+  public static int getResult(Integer[] arr, int m) {
+    Integer[] newArr &#61; Arrays.stream(arr).filter(val -&gt; val &lt;&#61; m).toArray(Integer[]::new);
+
+    return dfs(newArr, 0, 0, arr[0], m, 0);
+  }
+
+  public static int dfs(Integer[] arr, int index, int sum, int min, int m, int count) {
+    if (sum &gt; m) {
+      return count;
+    }
+
+    if (sum &#61;&#61; m || (m - sum &lt; min &amp;&amp; m - sum &gt; 0)) {
+      return count &#43; 1;
+    }
+
+    for (int i &#61; index; i &lt; arr.length; i&#43;&#43;) {
+      count &#61; dfs(arr, i, sum &#43; arr[i], min, m, count);
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(int, input().split()))
+m &#61; int(input())
+
+
+def dfs(arr, index, sumV, minV, m, count):
+    if sumV &gt; m:
+        return count
+
+    if sumV &#61;&#61; m or 0 &lt; m - sumV &lt; minV:
+        return count &#43; 1
+
+    for i in range(index, len(arr)):
+        count &#61; dfs(arr, i, sumV &#43; arr[i], minV, m, count)
+
+    return count
+
+
+# 算法入口
+def getResult(arr, m):
+    tmp &#61; list(filter(lambda x: x &lt;&#61; m, arr))
+
+    return dfs(tmp, 0, 0, arr[0], m, 0)
+
+
+# 调用算法
+print(getResult(arr, m))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

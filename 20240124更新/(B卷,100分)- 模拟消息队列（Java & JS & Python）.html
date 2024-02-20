@@ -1,0 +1,243 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 模拟消息队列（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>让我们来模拟一个消息队列的运作&#xff0c;有一个发布者和若干消费者&#xff0c;发布者会在给定的时刻向消息队列发送消息&#xff0c;</p> 
+<ul><li>若此时消息队列有消费者订阅&#xff0c;这个消息会被发送到订阅的消费者中优先级最高&#xff08;输入中消费者按优先级升序排列&#xff09;的一个&#xff1b;</li><li>若此时没有订阅的消费者&#xff0c;该消息被消息队列丢弃。</li></ul> 
+<p>消费者则会在给定的时刻订阅消息队列或取消订阅。</p> 
+<ul><li>当消息发送和订阅发生在同一时刻时&#xff0c;先处理订阅操作&#xff0c;即同一时刻订阅的消费者成为消息发送的候选。</li><li>当消息发送和取消订阅发生在同一时刻时&#xff0c;先处理取消订阅操作&#xff0c;即消息不会被发送到同一时刻取消订阅的消费者。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为两行。</p> 
+<p>第一行为2N个正整数&#xff0c;代表发布者发送的N个消息的时刻和内容&#xff08;为方便解折&#xff0c;消息内容也用正整数表示&#xff09;。第一个数字是第一个消息的发送时刻&#xff0c;第二个数字是第一个消息的内容&#xff0c;以此类推。用例保证发送时刻不会重复&#xff0c;但注意消息并没有按照发送时刻排列。</p> 
+<p>第二行为2M个正整数&#xff0c;代表M个消费者订阅和取消订阅的时刻。第一个数字是第一个消费者订阅的时刻&#xff0c;第二个数字是第一个消费者取消订阅的时刻&#xff0c;以此类推。用例保证每个消费者的取消订阅时刻大于订阅时刻&#xff0c;消费者按优先级升序排列。</p> 
+<p>两行的数字都由空格分隔。N不超过100&#xff0c;M不超过10&#xff0c;每行的长度不超过1000字符。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出为M行&#xff0c;依次为M个消费者收到的消息内容&#xff0c;消息内容按收到的顺序排列&#xff0c;且由空格分隔&#xff1b;</p> 
+<p>若某个消费者没有收到任何消息&#xff0c;则对应的行输出-1.</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 22 1 11 4 44 5 55 3 33<br /> 1 7 2 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"> <p>11 33 44 55</p> <p>22</p> </td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>消息11在1时刻到达&#xff0c;此时只有第一个消费者订阅&#xff0c;消息发送给它&#xff1b;</p> <p>消息22在2时刻到达&#xff0c;此时两个消费者都订阅了&#xff0c;消息发送给优先级最高的第二个消费者&#xff1b;</p> <p>消息33在时刻3到达&#xff0c;此时只有第一个消费者订阅&#xff0c;消息发送给它&#xff1b;</p> <p>余下的消息按规则也是发送给第一个消费者。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 64 11 64 9 97<br /> 9 11 4 9</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"> <p>97</p> <p>64</p> </td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>消息64在5时刻到达&#xff0c;此时只有第二个消费者订阅&#xff0c;消息发送给它&#xff1b;</p> <p>消息97在9时刻到达&#xff0c;此时只有第一消费者订阅(因为第二个消费者刚好在9时刻取消订阅)&#xff0c;消息发送给它;</p> <p>11时刻也到达了一个内容为64的消息&#xff0c;不过因为没有消费者订阅&#xff0c;消息被丢弃。</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题应该就是逻辑分析题。</p> 
+<p>具体解析请看代码注释&#xff0c;已为代码添加详细注释。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] pubArr &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int[] subArr &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    getResult(pubArr, subArr);
+  }
+
+  public static void getResult(int[] pubArr, int[] subArr) {
+    int n &#61; pubArr.length;
+    int m &#61; subArr.length;
+
+    // 将第一行输入两个一组&#xff0c;收集到&#xff1a;发布者数组中
+    int[][] publisher &#61; new int[n / 2][];
+    for (int i &#61; 0, k &#61; 0; i &lt; n; i &#43;&#61; 2) {
+      publisher[k&#43;&#43;] &#61; new int[] {pubArr[i], pubArr[i &#43; 1]}; // [发布时刻&#xff0c; 发布内容]
+    }
+
+    // 将第二行输入两个一组&#xff0c;收集到&#xff1a;订阅者数组中
+    int[][] subscriber &#61; new int[m / 2][];
+    for (int j &#61; 0, k &#61; 0; j &lt; m; j &#43;&#61; 2) {
+      subscriber[k&#43;&#43;] &#61; new int[] {subArr[j], subArr[j &#43; 1]}; // [订阅时刻&#xff0c; 取消订阅时刻]
+    }
+
+    // 按照发布时刻升序&#xff1a;发布者数组
+    Arrays.sort(publisher, (a, b) -&gt; a[0] - b[0]);
+
+    // 为每一个订阅者构造一个的订阅内容集合
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; subContent &#61; new ArrayList&lt;&gt;();
+    for (int j &#61; 0; j &lt; subscriber.length; j&#43;&#43;) subContent.add(new ArrayList&lt;&gt;());
+
+    // 遍历发布者
+    for (int[] pub : publisher) {
+      int pubTime &#61; pub[0]; // 发布时刻
+      int pubContent &#61; pub[1]; // 发布内容
+
+      // 倒序遍历订阅者&#xff0c;因为后面的订阅者优先级更高&#xff0c;因此倒序可以实现高优先级的订阅者先匹配到发布者
+      for (int j &#61; subscriber.length - 1; j &gt;&#61; 0; j--) {
+        int subTime &#61; subscriber[j][0]; // 订阅时刻
+        int unSubTime &#61; subscriber[j][1]; // 取消订阅时刻
+
+        // 如果 订阅时刻 &lt;&#61; 发布时刻 &lt; 取消订阅时刻
+        if (pubTime &gt;&#61; subTime &amp;&amp; pubTime &lt; unSubTime) {
+          // 那么该订阅者就可以收到发布的内容
+          subContent.get(j).add(pubContent);
+          // 题目说&#xff0c;发布内容只会被最高优先级的订阅者收到
+          break;
+        }
+      }
+    }
+
+    // 打印
+    for (ArrayList&lt;Integer&gt; contents : subContent) {
+      if (contents.size() &#61;&#61; 0) {
+        System.out.println(&#34;-1&#34;);
+      } else {
+        StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+        for (Integer content : contents) sj.add(content &#43; &#34;&#34;);
+        System.out.println(sj.toString());
+      }
+    }
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    const pubArr &#61; lines[0].split(&#34; &#34;).map(Number);
+    const subArr &#61; lines[1].split(&#34; &#34;).map(Number);
+    getResult(pubArr, subArr);
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(pubArr, subArr) {
+  // 将第一行输入两个一组&#xff0c;收集到&#xff1a;发布者数组中
+  const publisher &#61; [];
+  for (let i &#61; 0; i &lt; pubArr.length; i &#43;&#61; 2) {
+    publisher.push([pubArr[i], pubArr[i &#43; 1]]);
+  }
+
+  // 将第二行输入两个一组&#xff0c;收集到&#xff1a;订阅者数组中
+  const subscrier &#61; [];
+  for (let j &#61; 0; j &lt; subArr.length; j &#43;&#61; 2) {
+    subscrier.push([subArr[j], subArr[j &#43; 1]]);
+  }
+
+  // 按照发布时刻升序&#xff1a;发布者数组
+  publisher.sort((a, b) &#61;&gt; a[0] - b[0]);
+  // 为每一个订阅者构造一个的订阅内容集合
+  const subContent &#61; new Array(subscrier.length).fill(0).map(() &#61;&gt; new Array());
+
+  // 遍历发布者
+  for (let [pubTime, pubContent] of publisher) {
+    // 倒序遍历订阅者&#xff0c;因为后面的订阅者优先级更高&#xff0c;因此倒序可以实现高优先级的订阅者先匹配到发布者
+    for (let j &#61; subscrier.length - 1; j &gt;&#61; 0; j--) {
+      let [subTime, unSubTime] &#61; subscrier[j];
+
+      // 如果 订阅时刻 &lt;&#61; 发布时刻 &lt; 取消订阅时刻
+      if (pubTime &gt;&#61; subTime &amp;&amp; pubTime &lt; unSubTime) {
+        // 那么该订阅者就可以收到发布的内容
+        subContent[j].push(pubContent);
+        // 题目说&#xff0c;发布内容只会被最高优先级的订阅者收到
+        break;
+      }
+    }
+  }
+
+  // 打印
+  for (let contents of subContent) {
+    if (contents.length &#61;&#61; 0) console.log(&#34;-1&#34;);
+    else console.log(contents.join(&#34; &#34;));
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+pubArr &#61; list(map(int, input().split()))
+subArr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    # 将第一行输入两个一组&#xff0c;收集到&#xff1a;发布者数组中
+    publisher &#61; []
+    for i in range(0, len(pubArr), 2):
+        publisher.append([pubArr[i], pubArr[i &#43; 1]])
+
+    # 将第二行输入两个一组&#xff0c;收集到&#xff1a;订阅者数组中
+    subscriber &#61; []
+    for i in range(0, len(subArr), 2):
+        subscriber.append([subArr[i], subArr[i &#43; 1]])
+
+    # 按照发布时刻升序&#xff1a;发布者数组
+    publisher.sort(key&#61;lambda x: x[0])
+    # 为每一个订阅者构造一个的订阅内容集合
+    subContent &#61; [[] for _ in range(len(subscriber))]
+
+    # 遍历发布者
+    for pubTime, pubContent in publisher:
+        # 倒序遍历订阅者&#xff0c;因为后面的订阅者优先级更高&#xff0c;因此倒序可以实现高优先级的订阅者先匹配到发布者
+        for j in range(len(subscriber) - 1, -1, -1):
+            subTime, unSubTime &#61; subscriber[j]
+
+            # 如果 订阅时刻 &lt;&#61; 发布时刻 &lt; 取消订阅时刻
+            if unSubTime &gt; pubTime &gt;&#61; subTime:
+                # 那么该订阅者就可以收到发布的内容
+                subContent[j].append(pubContent)
+                # 题目说&#xff0c;发布内容只会被最高优先级的订阅者收到
+                break
+
+    # 打印
+    for contents in subContent:
+        if len(contents) &#61;&#61; 0:
+            print(&#34;-1&#34;)
+        else:
+            print(&#34; &#34;.join(map(str, contents)))
+
+
+# 算法调用
+getResult()
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

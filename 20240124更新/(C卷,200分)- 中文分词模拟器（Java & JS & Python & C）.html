@@ -1,0 +1,494 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 中文分词模拟器（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个连续不包含空格的字符串&#xff0c;该字符串仅包含英文小写字母及英文标点符号&#xff08;逗号、分号、句号&#xff09;&#xff0c;同时给定词库&#xff0c;对该字符串进行精确分词。</p> 
+<p>说明&#xff1a;</p> 
+<ol><li>精确分词&#xff1a;字符串分词后&#xff0c;不会出现重叠。即&#34;ilovechina&#34;&#xff0c;不同词库可分割为&#34;i,love,china&#34;&#xff0c;&#34;ilove,china&#34;&#xff0c;不能分割出现重叠的&#34;i,ilove,china&#34;&#xff0c;i 出现重叠</li><li>标点符号不成词&#xff0c;仅用于断句</li><li>词库&#xff1a;根据外部知识库统计出来的常用词汇例&#xff1a;dictionary &#61; [&#34;i&#34;, &#34;love&#34;, &#34;china&#34;, &#34;lovechina&#34;, &#34;ilove&#34;]</li><li>分词原则&#xff1a;采用分词顺序优先且最长匹配原则<br /><br /> &#34;ilovechina&#34;&#xff0c;假设分词结果 [i,ilove,lo,love,ch,china,lovechina]&#xff0c;则输出 [ilove,china]<br /><br /> 错误输出&#xff1a;[i,lovechina]&#xff0c;原因&#xff1a;&#34;ilove&#34; &gt; 优先于 &#34;lovechina&#34; 成词<br /><br /> 错误输出&#xff1a;[i,love,china]&#xff0c;原因&#xff1a;&#34;ilove&#34; &gt; &#34;i&#34;遵循最长匹配原则</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入待分词语句 &#34;ilovechina&#34;</p> 
+<ul><li>字符串长度限制&#xff1a;0 &lt; length &lt; 256</li></ul> 
+<p>第二行输入中文词库 &#34;i,love,china,ch,na,ve,lo,this,is,this,word&#34;</p> 
+<ul><li>词库长度限制&#xff1a;1 &lt; length &lt; 100000</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>按顺序输出分词结果 &#34;i,love,china&#34;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">ilovechina<br /> i,love,china,ch,na,ve,lo,this,is,the,word</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">i,love,china</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">iat<br /> i,love,china,ch,na,ve,lo,this,is,the,word,beauti,tiful,ful</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">i,a,t</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>单个字母&#xff0c;</p> <p>不在词库中且不成词则输出单个字母</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">ilovechina,thewordisbeautiful<br /> i,love,china,ch,na,ve,lo,this,is,the,word,beauti,tiful,ful</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">i,love,china the,word,is,beauti,ful</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">标点符号为英文标点符号</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题感觉题意不是很清晰。</p> 
+<p></p> 
+<p>我对题目的理解是&#xff1a;</p> 
+<p>句子&#xff1a;ilovechina</p> 
+<p>词库&#xff1a;[i,love,china,ch,na,ve,lo,this,is,the,word]</p> 
+<p>现在要用词库里面的词汇组成句子。并且选择词汇时&#xff0c;优先选择词库中靠前的&#xff0c;且长度最长的。</p> 
+<p>比如组成句子“ilovechina”的第一个词汇&#xff0c;必然是 &#34;i&#34; 开头的&#xff0c;因此我们去词库中找 &#34;i&#34; 开头的词汇&#xff0c;按词库顺序依次是&#xff1a;</p> 
+<ul><li>i</li><li>is</li></ul> 
+<p>其中 is 虽然是 i 开头&#xff0c;但是不符合句子后续部分要求&#xff0c;因此选择词库中词汇 “i”。</p> 
+<p></p> 
+<p>此时句子还剩下 &#34;lovechina&#34; 没有分词&#xff0c;则继续在词库中查找 &#34;l&#34; 开头的词汇&#xff0c;按词库顺序依次是&#xff1a;</p> 
+<ul><li>love</li><li>lo</li></ul> 
+<p>其中 &#34;love&#34; 是顺序靠前&#xff0c;且长度较长的&#xff0c;因此选择词库中词汇 &#34;love&#34;。</p> 
+<p></p> 
+<p>此时句子还剩下 &#34;china&#34; 没有分词&#xff0c;则继续在词库中查找 &#34;c&#34; 开头的词汇&#xff0c;按词库顺序依次是&#xff1a;</p> 
+<ul><li>china</li><li>ch</li></ul> 
+<p>其中 &#34;china&#34; 是顺序靠前&#xff0c;且长度较长的&#xff0c;因此选择词库中词汇 &#34;china&#34;。</p> 
+<p></p> 
+<p>此时句子&#34;ilovechina&#34; 完成分词&#xff0c;分词结果为&#xff1a;[&#34;i&#34;, &#34;love&#34;, &#34;china&#34;]。</p> 
+<hr /> 
+<p></p> 
+<p>本题&#xff0c;我的疑惑主要在于用例2&#xff1a;</p> 
+<blockquote> 
+ <p>句子&#xff1a;&#34;iat&#34;</p> 
+ <p>词库&#xff1a;[i,love,china,ch,na,ve,lo,this,is,the,word,beauti,tiful,ful]</p> 
+</blockquote> 
+<p>按照之前的逻辑&#xff0c;首先找到组成句子的第一个词汇&#xff0c;该词汇必然以&#34;i&#34;开头&#xff0c;则匹配到词库中的词汇&#34;i&#34;。</p> 
+<p>接下来句子还剩&#34;at&#34;&#xff0c;再去词库中查找&#34;a&#34;开头的词汇&#xff0c;发现没有。那么此时我的疑问来了&#xff1a;</p> 
+<ul><li>是只针对句子剩余部分&#34;at&#34;&#xff0c;进行输出单个字母的操作</li><li>还是针对整个句子&#34;iat&#34;&#xff0c;进行输出单个字母的操作</li></ul> 
+<p>对于这个用例&#xff0c;两种策略的输出结果都是一样&#xff0c;因为这个用例给的太有歧义了。</p> 
+<p></p> 
+<p>比如我给个例子&#xff1a;</p> 
+<p>句子&#xff1a;iloveat</p> 
+<p>词库&#xff1a;[i,love,china,ch,na,ve,lo,this,is,the,word,beauti,tiful,ful]</p> 
+<p>此时输出&#xff1a;i,love,a,t </p> 
+<p>还是输出&#xff1a;i,l,o,v,e,a,t</p> 
+<p></p> 
+<blockquote> 
+ <p>不在词库中且不成词则输出单个字母</p> 
+</blockquote> 
+<p>上面我给的例子&#xff0c;i 在词库中&#xff0c;love在词库中&#xff0c;at不在词库中&#xff0c;因此只针对at执行输出单个字母操作。</p> 
+<p>一次你&#xff0c;我理解是输出&#xff1a;i,love,a,t </p> 
+<p></p> 
+<p>另外&#xff0c;不成词是什么意思呢&#xff1f;</p> 
+<p>题目中关于&#34;不成词&#34;&#xff0c;只有一个相关描述&#xff1a;标点符号不成词&#xff0c;仅用于断句</p> 
+<p>那么是不是就是说&#xff0c;标点符号不成词&#xff0c;英文小写字母成词呢&#xff1f;我理解应该是的。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入输出处理
+void (async function () {
+  const sentences &#61; (await readline()).split(/[,.;]/);
+  const words &#61; (await readline()).split(/[,.;]/);
+
+  console.log(getResult(sentences, words));
+})();
+
+function getResult(sentences, words) {
+  // wordSet 记录词库词汇
+  const wordSet &#61; new Set(words);
+
+  // ans记录最终分词结果
+  const ans &#61; [];
+
+  while (sentences.length &gt; 0) {
+    const sentence &#61; sentences.shift();
+
+    let r &#61; sentence.length;
+    for (; r &gt; 0; r--) {
+      // 截取句子 [0,r) 范围子串词汇, 这样的就能实现优先最长匹配&#xff0c;并且由于是必须从0索引开始截取&#xff0c;因此满足了分词顺序优先
+      const fragment &#61; sentence.slice(0, r);
+
+      // 若词库中是否存在该子串词汇
+      if (wordSet.has(fragment)) {
+        // 则将对应子串词汇纳入结果
+        ans.push(fragment);
+        wordSet.delete(fragment); // 我理解词库中每个词汇只能使用一次&#xff0c;因此这里将词库中使用过的词汇移除
+
+        // 若子串词汇只是句子部分&#xff0c;则句子剩余部分还要继续去词库中查找
+        if (r &lt; sentence.length) {
+          sentences.unshift(sentence.slice(r));
+        }
+
+        break;
+      }
+    }
+
+    // 没有在词库中找到对应子串词汇&#xff0c;则输出单个字母
+    if (r &#61;&#61; 0) {
+      // 注意&#xff0c;这里只放一个字母到结果中&#xff0c;句子剩余部分继续去词库中查找
+      ans.push(sentence[0]);
+
+      if (sentence.length &gt; 1) {
+        sentences.unshift(sentence.slice(1));
+      }
+    }
+  }
+
+  return ans.join(&#34;,&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] sentences &#61; sc.nextLine().split(&#34;[,.;]&#34;);
+    String[] words &#61; sc.nextLine().split(&#34;[,.;]&#34;);
+
+    System.out.println(getResult(sentences, words));
+  }
+
+  public static String getResult(String[] sentences, String[] words) {
+    // wordSet 记录词库词汇
+    HashSet&lt;String&gt; wordSet &#61; new HashSet&lt;&gt;(Arrays.asList(words));
+
+    // queue记录待分词语句
+    LinkedList&lt;String&gt; queue &#61; new LinkedList&lt;&gt;(Arrays.asList(sentences));
+
+    // ans记录最终分词结果
+    LinkedList&lt;String&gt; ans &#61; new LinkedList&lt;&gt;();
+
+    while (queue.size() &gt; 0) {
+      // 待分词的句子
+      String sentence &#61; queue.removeFirst();
+
+      int r &#61; sentence.length();
+      for (; r &gt; 0; r--) {
+        // 截取句子 [0,r) 范围子串词汇, 这样的就能实现优先最长匹配&#xff0c;并且由于是必须从0索引开始截取&#xff0c;因此满足了分词顺序优先
+        String fragment &#61; sentence.substring(0, r);
+
+        // 若词库中是否存在该子串词汇
+        if (wordSet.contains(fragment)) {
+          // 则将对应子串词汇纳入结果
+          ans.addLast(fragment);
+          wordSet.remove(fragment); // 我理解词库中每个词汇只能使用一次&#xff0c;因此这里将词库中使用过的词汇移除
+
+          // 若子串词汇只是句子部分&#xff0c;则句子剩余部分还要继续去词库中查找
+          if (r &lt; sentence.length()) {
+            queue.addFirst(sentence.substring(r));
+          }
+
+          break;
+        }
+      }
+
+      // 没有在词库中找到对应子串词汇&#xff0c;则输出单个字母
+      if (r &#61;&#61; 0) {
+        // 注意&#xff0c;这里只放一个字母到结果中&#xff0c;句子剩余部分继续去词库中查找
+        ans.add(sentence.charAt(0) &#43; &#34;&#34;);
+
+        if (sentence.length() &gt; 1) {
+          queue.addFirst(sentence.substring(1));
+        }
+      }
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+    ans.forEach(sj::add);
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+sentences &#61; re.split(r&#34;[,.;]&#34;, input())
+words &#61; re.split(r&#34;[,.;]&#34;, input())
+
+
+def getResult():
+    # wordSet 记录词库词汇
+    wordSet &#61; set(words)
+    # ans记录最终分词结果
+    ans &#61; []
+
+    while len(sentences) &gt; 0:
+        # 待分词的句子
+        sentence &#61; sentences.pop(0)
+
+        r &#61; len(sentence)
+        while r &gt; 0:
+            # 截取句子 [0,r) 范围子串词汇, 这样的就能实现优先最长匹配&#xff0c;并且由于是必须从0索引开始截取&#xff0c;因此满足了分词顺序优先
+            fragment &#61; sentence[0:r]
+
+            # 若词库中是否存在该子串词汇
+            if fragment in wordSet:
+                # 则将对应子串词汇纳入结果
+                ans.append(fragment)
+                wordSet.remove(fragment)  # 我理解词库中每个词汇只能使用一次&#xff0c;因此这里将词库中使用过的词汇移除
+
+                # 若子串词汇只是句子部分&#xff0c;则句子剩余部分还要继续去词库中查找
+                if r &lt; len(sentence):
+                    sentences.insert(0, sentence[r:])
+
+                break
+
+            r -&#61; 1
+
+        # 没有在词库中找到对应子串词汇&#xff0c;则输出单个字母
+        if r &#61;&#61; 0:
+            # 注意&#xff0c;这里只放一个字母到结果中&#xff0c;句子剩余部分继续去词库中查找
+            ans.append(sentence[0])
+
+            if len(sentence) &gt; 1:
+                sentences.insert(0, sentence[1:])
+
+    return &#34;,&#34;.join(ans)
+
+
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_LENGTH 256
+#define MAX_WORDS_LENGTH 100000
+#define delimiter &#34;,.;&#34;
+#define TRUE 1
+#define FALSE 0
+
+/** 实现双向链表 **/
+typedef struct ListNode {
+    char *val;
+    struct ListNode *prev;
+    struct ListNode *next;
+} ListNode;
+
+ListNode *new_ListNode(char *val) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+    node-&gt;val &#61; (char *) calloc(MAX_LENGTH, sizeof(char));
+    strcpy(node-&gt;val, val);
+    node-&gt;prev &#61; NULL;
+    node-&gt;next &#61; NULL;
+    return node;
+}
+
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    return link;
+}
+
+void addFirst_LinkedList(LinkedList *link, char *val) {
+    ListNode *node &#61; new_ListNode(val);
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        node-&gt;next &#61; link-&gt;head;
+        link-&gt;head-&gt;prev &#61; node;
+        link-&gt;head &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+void addLast_LinkedList(LinkedList *link, char *val) {
+    ListNode *node &#61; new_ListNode(val);
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        node-&gt;prev &#61; link-&gt;tail;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+char *removeFirst_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;head;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+        link-&gt;head-&gt;prev &#61; NULL;
+    }
+
+    link-&gt;size--;
+
+    char *res &#61; (char *) calloc(MAX_LENGTH, sizeof(char));
+    strcpy(res, removed-&gt;val);
+
+    free(removed);
+
+    return res;
+}
+
+char *removeLast_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;tail;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;tail &#61; link-&gt;tail-&gt;prev;
+        link-&gt;tail-&gt;next &#61; NULL;
+    }
+
+    link-&gt;size--;
+
+    char *res &#61; (char *) calloc(MAX_LENGTH, sizeof(char));
+    strcpy(res, removed-&gt;val);
+
+    free(removed);
+
+    return res;
+}
+
+/** 实现字符串截取 **/
+char *substr(char *s, int l, int r) {
+    int len &#61; r - l;
+    char *res &#61; (char *) calloc(len &#43; 1, sizeof(char));
+    strncpy(res, s &#43; l, len);
+    return res;
+}
+
+int main() {
+    char s1[MAX_LENGTH];
+    gets(s1);
+
+    // sentences记录待分词语句
+    LinkedList *sentences &#61; new_LinkedList();
+    char *token1 &#61; strtok(s1, delimiter);
+    while (token1 !&#61; NULL) {
+        addLast_LinkedList(sentences, token1);
+        token1 &#61; strtok(NULL, delimiter);
+    }
+
+    char s2[MAX_WORDS_LENGTH];
+    gets(s2);
+
+    // words 记录词库词汇
+    LinkedList *words &#61; new_LinkedList();
+    char *token2 &#61; strtok(s2, delimiter);
+    while (token2 !&#61; NULL) {
+        addLast_LinkedList(words, token2);
+        token2 &#61; strtok(NULL, delimiter);
+    }
+
+    // ans记录最终分词结果
+    LinkedList *ans &#61; new_LinkedList();
+
+    while (sentences-&gt;size &gt; 0) {
+        char *sentence &#61; removeFirst_LinkedList(sentences);
+
+        int len &#61; (int) strlen(sentence);
+        int r &#61; len;
+
+        for (; r &gt; 0; r--) {
+            // 截取句子 [0,r) 范围子串词汇, 这样的就能实现优先最长匹配&#xff0c;并且由于是必须从0索引开始截取&#xff0c;因此满足了分词顺序优先
+            char *fragment &#61; substr(sentence, 0, r);
+
+            int find &#61; FALSE;
+
+            ListNode *cur &#61; words-&gt;head;
+            while (cur !&#61; NULL) {
+                // 若词库中是否存在该子串词汇
+                if (strcmp(cur-&gt;val, fragment) &#61;&#61; 0) {
+                    // 则将对应子串词汇纳入结果
+                    addLast_LinkedList(ans, fragment);
+                    strcpy(cur-&gt;val, &#34;&#34;); // 我理解词库中每个词汇只能使用一次&#xff0c;因此这里将词库中使用过的词汇移除
+
+                    // 若子串词汇只是句子部分&#xff0c;则句子剩余部分还要继续去词库中查找
+                    if (r &lt; len) {
+                        addFirst_LinkedList(sentences, substr(sentence, r, len));
+                    }
+
+                    find &#61; TRUE;
+
+                    break;
+                }
+                cur &#61; cur-&gt;next;
+            }
+
+            if (find) {
+                break;
+            }
+        }
+
+        // 没有在词库中找到对应子串词汇&#xff0c;则输出单个字母
+        if (r &#61;&#61; 0) {
+            // 注意&#xff0c;这里只放一个字母到结果中&#xff0c;句子剩余部分继续去词库中查找
+            char tmp[] &#61; {sentence[0], &#39;\0&#39;};
+            addLast_LinkedList(ans, tmp);
+
+            if (len &gt; 1) {
+                addFirst_LinkedList(sentences, substr(sentence, 1, len));
+            }
+        }
+    }
+
+    ListNode *cur &#61; ans-&gt;head;
+
+    while (cur !&#61; NULL) {
+        printf(&#34;%s&#34;, cur-&gt;val);
+        cur &#61; cur-&gt;next;
+        if (cur !&#61; NULL) {
+            printf(&#34;,&#34;);
+        }
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

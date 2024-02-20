@@ -1,0 +1,193 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 堆栈中的剩余数字（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>向一个空栈中依次存入正整数&#xff0c;假设入栈元素 n(1&lt;&#61;n&lt;&#61;2^31-1)按顺序依次为 nx…n4、 n3、n2、 n1, 每当元素入栈时&#xff0c;如果 n1&#61;n2&#43;…&#43;ny(y 的范围[2,x]&#xff0c; 1&lt;&#61;x&lt;&#61;1000)&#xff0c;则 n1~ny 全部元素出栈&#xff0c;重新入栈新元素 m(m&#61;2*n1)。</p> 
+<p>如&#xff1a;依次向栈存入 6、 1、 2、 3, 当存入 6、 1、 2 时&#xff0c;栈底至栈顶依次为[6、 1、 2]&#xff1b;当存入 3时&#xff0c; 3&#61;2&#43;1&#xff0c; 3、 2、 1 全部出栈&#xff0c;重新入栈元素 6(6&#61;2*3)&#xff0c;此时栈中有元素 6&#xff1b;</p> 
+<p>因为 6&#61;6&#xff0c;所以两个 6 全部出栈&#xff0c;存入 12&#xff0c;最终栈中只剩一个元素 12。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>使用单个空格隔开的正整数的字符串&#xff0c;如”5 6 7 8″&#xff0c; 左边的数字先入栈&#xff0c;输入的正整数个数为 x&#xff0c; 1&lt;&#61;x&lt;&#61;1000。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最终栈中存留的元素值&#xff0c;元素值使用空格隔开&#xff0c;如”8 7 6 5″&#xff0c; 栈顶数字在左边。 6 1 2 3</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 10 20 50 85 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1 170</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">5&#43;10&#43;20&#43;50&#61;85&#xff0c; 输入 85 时&#xff0c; 5、 10、 20、 50、 85 全部出栈&#xff0c;入栈 170&#xff0c;最终依次出栈的数字为 1 和 170。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6 7 8 13 9</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">9 13 8 7 6</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 2 5 7 9 1 2 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4 1 9 14 1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题较为简单的解题思路是&#xff1a;</p> 
+<p>每当有元素num将要入栈前&#xff0c;都尝试num去依次减去栈顶到栈底方向的栈中元素&#xff08;注意这只是遍历栈的过程&#xff0c;而不是弹栈过程&#xff09;&#xff1a;</p> 
+<ol><li>如果有出现num &#61;&#61; 0&#xff0c;则将遍历过栈元素全部弹栈&#xff0c;并压入num * 2。</li><li>如果没有出现num &#61;&#61; 0&#xff0c;则栈不做变动&#xff0c;只压栈num</li></ol> 
+<p>但是需要注意的是&#xff0c;对于情况1而言&#xff0c;我们需要注意题目描述中的这句话&#xff1a;</p> 
+<blockquote> 
+ <p>每当元素入栈时&#xff0c;如果 n1&#61;n2&#43;…&#43;ny(y 的范围[2,x]&#xff0c; 1&lt;&#61;x&lt;&#61;1000)&#xff0c;则 n1~ny 全部元素出栈&#xff0c;重新入栈新元素 m(m&#61;2*n1)</p> 
+</blockquote> 
+<p>那么压栈 num * 2 是否也算新元素入栈呢&#xff1f;是否需要继续检查等价栈元素呢&#xff1f;</p> 
+<p>我理解是需要的&#xff0c;即这个压栈num * 2 的过程是一个需要递归的过程。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    System.out.println(getResult(nums));
+  }
+
+  public static String getResult(int[] nums) {
+    LinkedList&lt;Integer&gt; stack &#61; new LinkedList&lt;&gt;();
+    stack.add(nums[0]);
+
+    for (int i &#61; 1; i &lt; nums.length; i&#43;&#43;) {
+      push(nums[i], stack);
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    while (stack.size() &gt; 0) {
+      sj.add(stack.removeLast() &#43; &#34;&#34;);
+    }
+    return sj.toString();
+  }
+
+  public static void push(int num, LinkedList&lt;Integer&gt; stack) {
+    int sum &#61; num;
+
+    for (int i &#61; stack.size() - 1; i &gt;&#61; 0; i--) {
+      sum -&#61; stack.get(i);
+
+      if (sum &#61;&#61; 0) {
+        stack.subList(i, stack.size()).clear();
+        push(num * 2, stack);
+        return;
+      } else if (sum &lt; 0) {
+        break;
+      }
+    }
+
+    stack.add(num);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const nums &#61; line.split(&#34; &#34;).map(Number);
+  console.log(getResult(nums));
+});
+
+function getResult(nums) {
+  const stack &#61; [nums[0]];
+
+  for (let i &#61; 1; i &lt; nums.length; i&#43;&#43;) {
+    push(nums[i], stack);
+  }
+
+  return stack.reverse().join(&#34; &#34;);
+}
+
+function push(num, stack) {
+  let sum &#61; num;
+
+  for (let i &#61; stack.length - 1; i &gt;&#61; 0; i--) {
+    sum -&#61; stack[i];
+
+    if (sum &#61;&#61; 0) {
+      stack.splice(i);
+      push(num * 2, stack);
+      return;
+    } else if (sum &lt; 0) {
+      break;
+    }
+  }
+
+  stack.push(num);
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+nums &#61; list(map(int, input().split()))
+
+
+def push(num, stack):
+    total &#61; num
+
+    for i in range(len(stack)-1, -1, -1):
+        total -&#61; stack[i]
+
+        if total &#61;&#61; 0:
+            del stack[i:]
+            push(num * 2, stack)
+            return
+        elif total &lt; 0:
+            break
+
+    stack.append(num)
+
+
+# 算法入口
+def getResult():
+    stack &#61; [nums[0]]
+
+    for i in range(1, len(nums)):
+        push(nums[i], stack)
+
+    stack.reverse()
+
+    return &#34; &#34;.join(map(str, stack))
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

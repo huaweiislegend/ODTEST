@@ -1,0 +1,235 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 数字涂色（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>疫情过后&#xff0c;希望小学终于又重新开学了&#xff0c;三年二班开学第一天的任务是将后面的黑板报重新制作。</p> 
+<p>黑板上已经写上了N个正整数&#xff0c;同学们需要给这每个数分别上一种颜色。</p> 
+<p>为了让黑板报既美观又有学习意义&#xff0c;老师要求同种颜色的所有数都可以被这种颜色中最小的那个数整除。</p> 
+<p>现在请你帮帮小朋友们&#xff0c;算算最少需要多少种颜色才能给这N个数进行上色。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行有一个正整数N&#xff0c;其中。</p> 
+<p>第二行有N个int型数(保证输入数据在[1,100]范围中)&#xff0c;表示黑板上各个正整数的值。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出只有一个整数&#xff0c;为最少需要的颜色种数。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>3<br /> 2 4 6</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">所有数都能被2整除</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 2 3 4 9</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">2与4涂一种颜色&#xff0c;4能被2整除&#xff1b;3与9涂另一种颜色&#xff0c;9能被3整除。不能4个数涂同一个颜色&#xff0c;因为3与9不能被2整除。所以最少的颜色是两种。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的逻辑题&#xff0c;题目要求&#xff1a;“同种颜色的所有数都可以被这种颜色中最小的那个数整除”。</p> 
+<p>因此我们可以直接将输入数列进行升序排序&#xff0c;则数列从左到右&#xff0c;元素依次增大&#xff0c;我们每次取最左边的数arr[i]&#xff0c;然后遍历它后面的所有数arr[j]去除它&#xff0c;若可以整除&#xff0c;则为一种颜色&#xff0c;若不可以整除&#xff0c;则为不同颜色。</p> 
+<p>本题难点主要在于&#xff0c;如何标记一个元素已经涂色了&#xff0c;我这里直接定义了一个长度和输入数列arr相同的数组color&#xff0c;color所有元素默认未初始化&#xff0c;一旦arr[j]可以整除arr[i]&#xff0c;则color[j] &#61; true。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+
+    int[] arr &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(n, arr));
+  }
+
+  public static int getResult(int n, int[] arr) {
+    Arrays.sort(arr);
+
+    if (arr[0] &#61;&#61; 1) {
+      return 1;
+    }
+
+    boolean[] color &#61; new boolean[n];
+    int count &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (color[i]) continue;
+
+      color[i] &#61; true;
+      for (int j &#61; i &#43; 1; j &lt; n; j&#43;&#43;) {
+        if (!color[j] &amp;&amp; arr[j] % arr[i] &#61;&#61; 0) {
+          color[j] &#61; true;
+        }
+      }
+
+      count&#43;&#43;;
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    let n &#61; parseInt(lines[0]);
+    let arr &#61; lines[1].split(&#34; &#34;).slice(0, n);
+
+    console.log(getMinColorCount(arr));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getMinColorCount(arr) {
+  arr.sort((a, b) &#61;&gt; a - b);
+
+  if (arr[0] &#61;&#61;&#61; 1) {
+    return 1;
+  }
+
+  let color &#61; new Array(arr.length);
+  let count &#61; 0;
+
+  for (let i &#61; 0; i &lt; arr.length; i&#43;&#43;) {
+    if (color[i]) continue;
+    color[i] &#61; true;
+    for (let j &#61; i &#43; 1; j &lt; arr.length; j&#43;&#43;) {
+      if (!color[j] &amp;&amp; arr[j] % arr[i] &#61;&#61;&#61; 0) {
+        color[j] &#61; true;
+      }
+    }
+    count&#43;&#43;;
+  }
+
+  return count;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    arr.sort()
+
+    if arr[0] &#61;&#61; 1:
+        return 1
+
+    color &#61; [False]*n
+    count &#61; 0
+
+    for i in range(n):
+        if color[i]:
+            continue
+
+        color[i] &#61; True
+        for j in range(i&#43;1, n):
+            if not color[j] and arr[j] % arr[i] &#61;&#61; 0:
+                color[j] &#61; True
+
+        count &#43;&#61; 1
+
+    return count
+
+
+# 调用算法
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int getResult(int nums[], int nums_size);
+
+int cmp(const void* a, const void* b) {
+    return (*(int*) a)  - (*(int*) b);
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int nums[n];
+    for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;nums[i]);
+    }
+
+    printf(&#34;%d\n&#34;, getResult(nums, n));
+
+    return 0;
+}
+
+int getResult(int nums[], int nums_size) {
+    qsort(nums, nums_size, sizeof(int), cmp);
+
+    if(nums[0] &#61;&#61; 1) {
+        return 1;
+    }
+
+    int* color &#61; (int*) calloc(nums_size, sizeof(int));
+
+    int count &#61; 0;
+    for(int i&#61;0; i&lt;nums_size; i&#43;&#43;) {
+        if(color[i]) continue;
+
+        color[i] &#61; 1;
+        for(int j&#61;i&#43;1; j&lt;nums_size; j&#43;&#43;) {
+            if(!color[j] &amp;&amp; nums[j] % nums[i] &#61;&#61; 0) {
+                color[j] &#61; 1;
+            }
+        }
+
+        count&#43;&#43;;
+    }
+
+    return count;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,233 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 判断一组不等式是否满足约束并输出最大差（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一组不等式&#xff0c;判断是否成立并输出不等式的最大差(输出浮点数的整数部分)</p> 
+<p>要求:</p> 
+<ol><li>不等式系数为 double类型&#xff0c;是一个二维数组</li><li>不等式的变量为 int类型&#xff0c;是一维数组;</li><li>不等式的目标值为 double类型&#xff0c;是一维数组</li><li>不等式约束为字符串数组&#xff0c;只能是:“&gt;”,“&gt;&#61;”,“&lt;”,“&lt;&#61;”,“&#61;”&#xff0c;</li></ol> 
+<p>例如&#xff0c;不等式组:</p> 
+<p><code>a11x1&#43;a12x2&#43;a13x3&#43;a14x4&#43;a15x5&lt;&#61;b1;</code></p> 
+<p><code>a21x1&#43;a22x2&#43;a23x3&#43;a24x4&#43;a25x5&lt;&#61;b2;</code></p> 
+<p><code>a31x1&#43;a32x2&#43;a33x3&#43;a34x4&#43;a35x5&lt;&#61;b3;</code></p> 
+<p>最大差 &#61; <span style="color:#98c091;">max{(a11x1&#43;a12x2&#43;a13x3&#43;a14x4&#43;a15x5-b1),(a21x1&#43;a22x2&#43;a23x3&#43;a24x4&#43; a25x5-b2),(a31x1&#43;a32x2&#43;a33x3&#43;a34x4&#43;a35x5-b3)}</span>,</p> 
+<p>类型为整数(输出浮点数的整数部分)</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>a11,a12,a13,a14,a15,a21,a22,a23,a24,a25, a31,a32,a33,a34,a35,x1,x2,x3,x4,x5,b1,b2,b3,&lt;&#61;,&lt;&#61;,&lt;&#61;</p> 
+<p>1)不等式组系数(double类型):</p> 
+<p>a11,a12,a13,a14,a15</p> 
+<p>a21,a22,a23,a24,a25</p> 
+<p>a31,a32,a33,a34,a35</p> 
+<p>2)不等式变量(int类型):x1,x2,x3,x4,x5</p> 
+<p>3)不等式目标值(double类型):b1,b2,b3</p> 
+<p>4)不等式约束(字符串类型):&lt;&#61;,&lt;&#61;,&lt;&#61;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>true或者 false&#xff0c;最大差</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:650px;"><tbody><tr><td style="width:62px;">输入</td><td style="width:586px;">2.3,3,5.6,7,6;11,3,8.6,25,1;0.3,9,5.3,66,7.8;1,3,2,7,5;340,670,80.6;&lt;&#61;,&lt;&#61;,&lt;&#61;</td></tr><tr><td style="width:62px;">输出</td><td style="width:586px;">false 458</td></tr><tr><td style="width:62px;">说明</td><td style="width:586px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:650px;"><tbody><tr><td style="width:61px;">输入</td><td style="width:587px;">2.36,3,6,7.1,6;1,30,8.6,2.5,21;0.3,69,5.3,6.6,7.8;1,13,2,17,5;340,67,300.6;&lt;&#61;,&gt;&#61;,&lt;&#61;</td></tr><tr><td style="width:61px;">输出</td><td style="width:587px;">false 758</td></tr><tr><td style="width:61px;">说明</td><td style="width:587px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这题是个纸老虎&#xff0c;大家不要怕。</p> 
+<p>答案都在题目里。</p> 
+<hr /> 
+<p>2023.06.09</p> 
+<p>本题注意最大差输出的是&#xff1a;输出浮点数的整数部分</p> 
+<p>这个不是向下取整&#xff0c;如果采用向下取整&#xff0c;负数最大差会有问题。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34;;&#34;).map((str) &#61;&gt; str.split(&#34;,&#34;));
+
+  const [a11, a12, a13, a14, a15] &#61; arr[0].map(Number);
+  const [a21, a22, a23, a24, a25] &#61; arr[1].map(Number);
+  const [a31, a32, a33, a34, a35] &#61; arr[2].map(Number);
+  const [x1, x2, x3, x4, x5] &#61; arr[3].map(Number);
+  const [b1, b2, b3] &#61; arr[4].map(Number);
+  const [y1, y2, y3] &#61; arr[5];
+
+  let diff1 &#61; a11 * x1 &#43; a12 * x2 &#43; a13 * x3 &#43; a14 * x4 &#43; a15 * x5 - b1;
+  let diff2 &#61; a21 * x1 &#43; a22 * x2 &#43; a23 * x3 &#43; a24 * x4 &#43; a25 * x5 - b2;
+  let diff3 &#61; a31 * x1 &#43; a32 * x2 &#43; a33 * x3 &#43; a34 * x4 &#43; a35 * x5 - b3;
+
+  const flag &#61;
+    compareWithZero(diff1, y1) &amp;&amp;
+    compareWithZero(diff2, y2) &amp;&amp;
+    compareWithZero(diff3, y3);
+
+  const maxDiff &#61; Math.max(diff1, diff2, diff3);
+
+  console.log(&#96;${flag} ${parseInt(maxDiff)}&#96;);
+});
+
+function compareWithZero(val, constraint) {
+  let flag;
+  switch (constraint) {
+    case &#34;&gt;&#34;:
+      flag &#61; val &gt; 0;
+      break;
+    case &#34;&gt;&#61;&#34;:
+      flag &#61; val &gt;&#61; 0;
+      break;
+    case &#34;&lt;&#34;:
+      flag &#61; val &lt; 0;
+      break;
+    case &#34;&lt;&#61;&#34;:
+      flag &#61; val &lt;&#61; 0;
+      break;
+    case &#34;&#61;&#34;:
+      flag &#61; val &#61;&#61;&#61; 0;
+      break;
+  }
+  return flag;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[][] arr &#61;
+        Arrays.stream(sc.nextLine().split(&#34;;&#34;)).map(s -&gt; s.split(&#34;,&#34;)).toArray(String[][]::new);
+
+    double[] a1 &#61; Arrays.stream(arr[0]).mapToDouble(Double::parseDouble).toArray();
+    double[] a2 &#61; Arrays.stream(arr[1]).mapToDouble(Double::parseDouble).toArray();
+    double[] a3 &#61; Arrays.stream(arr[2]).mapToDouble(Double::parseDouble).toArray();
+    double[] x &#61; Arrays.stream(arr[3]).mapToDouble(Double::parseDouble).toArray();
+    double[] b &#61; Arrays.stream(arr[4]).mapToDouble(Double::parseDouble).toArray();
+
+    String[] y &#61; arr[5];
+
+    double diff1 &#61; a1[0] * x[0] &#43; a1[1] * x[1] &#43; a1[2] * x[2] &#43; a1[3] * x[3] &#43; a1[4] * x[4] - b[0];
+    double diff2 &#61; a2[0] * x[0] &#43; a2[1] * x[1] &#43; a2[2] * x[2] &#43; a2[3] * x[3] &#43; a2[4] * x[4] - b[1];
+    double diff3 &#61; a3[0] * x[0] &#43; a3[1] * x[1] &#43; a3[2] * x[2] &#43; a3[3] * x[3] &#43; a3[4] * x[4] - b[2];
+
+    boolean flag &#61;
+        compareWithZero(diff1, y[0])
+            &amp;&amp; compareWithZero(diff2, y[1])
+            &amp;&amp; compareWithZero(diff3, y[2]);
+
+    double maxDiff &#61; Math.max(Math.max(diff1, diff2), diff3);
+
+    System.out.println(flag &#43; &#34; &#34; &#43; (int) maxDiff);
+  }
+
+  public static boolean compareWithZero(double val, String constraint) {
+    boolean flag &#61; false;
+
+    switch (constraint) {
+      case &#34;&gt;&#34;:
+        flag &#61; val &gt; 0;
+        break;
+      case &#34;&gt;&#61;&#34;:
+        flag &#61; val &gt;&#61; 0;
+        break;
+      case &#34;&lt;&#34;:
+        flag &#61; val &lt; 0;
+        break;
+      case &#34;&lt;&#61;&#34;:
+        flag &#61; val &lt;&#61; 0;
+        break;
+      case &#34;&#61;&#34;:
+        flag &#61; val &#61;&#61; 0;
+        break;
+    }
+
+    return flag;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(lambda s: s.split(&#34;,&#34;), input().split(&#34;;&#34;)))
+
+
+def compareWithZero(val, constraint):
+    if constraint &#61;&#61; &#34;&gt;&#34;:
+        return val &gt; 0
+    elif constraint &#61;&#61; &#34;&gt;&#61;&#34;:
+        return val &gt;&#61; 0
+    elif constraint &#61;&#61; &#34;&lt;&#34;:
+        return val &lt; 0
+    elif constraint &#61;&#61; &#34;&lt;&#61;&#34;:
+        return val &lt;&#61; 0
+    elif constraint &#61;&#61; &#34;&#61;&#34;:
+        return val &#61;&#61; 0
+    else:
+        return False
+
+
+# 算法入口
+def getResult(arr):
+    a11, a12, a13, a14, a15 &#61; map(float, arr[0])
+    a21, a22, a23, a24, a25 &#61; map(float, arr[1])
+    a31, a32, a33, a34, a35 &#61; map(float, arr[2])
+    x1, x2, x3, x4, x5 &#61; map(float, arr[3])
+    b1, b2, b3 &#61; map(float, arr[4])
+    y1, y2, y3 &#61; arr[5]
+
+    diff1 &#61; a11 * x1 &#43; a12 * x2 &#43; a13 * x3 &#43; a14 * x4 &#43; a15 * x5 - b1
+    diff2 &#61; a21 * x1 &#43; a22 * x2 &#43; a23 * x3 &#43; a24 * x4 &#43; a25 * x5 - b2
+    diff3 &#61; a31 * x1 &#43; a32 * x2 &#43; a33 * x3 &#43; a34 * x4 &#43; a35 * x5 - b3
+
+    flag &#61; compareWithZero(diff1, y1) and compareWithZero(diff2, y2) and compareWithZero(diff3, y3)
+
+    maxDiff &#61; max(diff1, diff2, diff3)
+
+    print(f&#34;{flag} {int(maxDiff)}&#34;.lower())
+
+
+# 算法调用
+getResult(arr)
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

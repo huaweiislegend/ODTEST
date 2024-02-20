@@ -1,0 +1,305 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 机器人走迷宫（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<ol><li>房间由XY的方格组成&#xff0c;例如下图为6*4的大小。每一个方格以坐标(x&#xff0c;y)描述。</li><li>机器人固定从方格(0&#xff0c;0)出发&#xff0c;只能向东或者向北前进。出口固定为房间的最东北角&#xff0c;如下图的方格(5&#xff0c;3)。用例保证机器人可以从入口走到出口。</li><li>房间有些方格是墙壁&#xff0c;如(4&#xff0c;1)&#xff0c;机器人不能经过那儿。</li><li>有些地方是一旦到达就无法走到出口的&#xff0c;如标记为B的方格&#xff0c;称之为陷阱方格。</li><li>有些地方是机器人无法到达的的&#xff0c;如标记为A的方格&#xff0c;称之为不可达方格&#xff0c;不可达方格不包括墙壁所在的位置。</li><li>如下示例图中&#xff0c;陷阱方格有2个&#xff0c;不可达方格有3个。</li><li> 请为该机器人实现路径规划功能&#xff1a;给定房间大小、墙壁位置&#xff0c;请计算出陷阱方格与不可达方格分别有多少个。</li></ol> 
+<p class="img-center"><img alt="" height="293" src="https://img-blog.csdnimg.cn/170a796301fe490bac53249f390187ec.png" width="560" /></p> 
+<p></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<ul><li>第一行为房间的X和Y&#xff08;0 &lt; X,Y &lt;&#61; 1000&#xff09;</li><li>第二行为房间中墙壁的个数N&#xff08;0 &lt;&#61; N &lt; X*Y&#xff09;</li><li>接着下面会有N行墙壁的坐标</li></ul> 
+<p>同一行中如果有多个数据以一个空格隔开&#xff0c;用例保证所有的输入数据均合法。&#xff08;结尾不带回车换行&#xff09;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>陷阱方格与不可达方格数量&#xff0c;两个信息在一行中输出&#xff0c;以一个空格隔开。&#xff08;结尾不带回车换行&#xff09;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>6 4<br /> 5<br /> 0 2<br /> 1 2<br /> 2 2<br /> 4 1<br /> 5 1</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2 3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">该输入对应上图示例中的迷宫&#xff0c;陷阱方格有2个&#xff0c;不可达方格有3个</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>6 4<br /> 4<br /> 2 0<br /> 2 1<br /> 3 0<br /> 3 1</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0 4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>该输入对应的迷宫如下图&#xff0c;没有陷阱方格&#xff0c;不可达方格有4个&#xff0c;分别是(4,0) (4,1) (5,0) (5,1)</p> <p><img alt="" height="286" src="https://img-blog.csdnimg.cn/8715eacbb3bb4a6fb91ee3e17cd910e0.png" width="551" /></p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题要求的并不是入口到出口的路径&#xff0c;而是找陷阱位置和不可达位置。</p> 
+<p></p> 
+<p>陷阱位置的特点是&#xff0c;它的北边位置和东边位置都是死路&#xff0c;我们可以认为越界位置和墙位置是死路&#xff0c;另外陷阱本身也是死路。</p> 
+<p>不可达位置的特点是&#xff0c;从起点位置开始&#xff0c;只能朝东或者朝北进行dfs&#xff0c;到过的点就标记一下&#xff0c;如果dfs结束&#xff0c;矩阵中任然存在着未被标记过的点&#xff0c;那么就是不可达点。</p> 
+<p></p> 
+<p>了解了陷阱和不可达位置特点后&#xff0c;我们就可以开始初始化地图了&#xff0c;初始化地图主要是为了标记出墙的位置和非墙位置。我们用1标记墙&#xff0c;用0标记非墙。</p> 
+<p></p> 
+<p>另外地图我们应该这样看&#xff1a;</p> 
+<p><img alt="" height="610" src="https://img-blog.csdnimg.cn/dd9a8ce35b9a4663b9db73491230654f.png" width="360" /></p> 
+<p> 这样的话&#xff0c;x就是矩阵的行数&#xff0c;y就是矩阵的列数</p> 
+<p></p> 
+<p>比如&#xff0c;根据用例1初始化完地图后&#xff0c;如下图所示</p> 
+<p><img alt="" height="318" src="https://img-blog.csdnimg.cn/993175b286554f16a4fc667013da8aa8.png" width="272" /></p> 
+<p></p> 
+<p>下面我们要做的工作是&#xff0c;从起点开始dfs&#xff0c;即找起点的 东边点&#xff08;下边&#xff09;以及北边点&#xff08;右边&#xff09;</p> 
+<p> <img alt="" height="320" src="https://img-blog.csdnimg.cn/c1eaa8bfd73544908595e7a6ae12c588.png" width="264" /></p> 
+<p></p> 
+<p>如果这东边点和北边点有一个可达&#xff0c;那么起点就可达。但是我们并不知道这两个点是否可达&#xff0c;因此将这两个进行dfs</p> 
+<p><img alt="" height="318" src="https://img-blog.csdnimg.cn/11ab1dafe7fe4eeb8d26dd5f36b22052.png" width="270" /></p> 
+<p></p> 
+<p>如果发现当前点的东点和北点都是死路&#xff0c;则当前点就是死路&#xff0c;如果只有一边是死路&#xff0c;则不能说明什么&#xff0c;即还需要继续dfs。当然&#xff0c;死路点不需要dfs。</p> 
+<p> 最终&#xff0c;我们必然会dfs到终点位置</p> 
+<p></p> 
+<p>如果根据前面判断逻辑&#xff0c;则此时终点的东边、北边都是死路&#xff0c;因此会错误判断终点也是死路&#xff0c;从而影响前面所有的点&#xff0c;因此&#xff0c;我们在从起点dfs之前&#xff0c;就要将终点位置设为活路&#xff0c;即标记为2</p> 
+<p> <img alt="" height="322" src="https://img-blog.csdnimg.cn/5360d29e8c3543ae9f30908c7ebdef85.png" width="271" /></p> 
+<p></p> 
+<p> ​​​​​​这样的话&#xff0c;就可以正确影响前面的点了</p> 
+<p> ​​​​​​​<img alt="" height="317" src="https://img-blog.csdnimg.cn/38aa7ea79103422cac4b36aa7a9c7e68.png" width="269" /></p> 
+<p></p> 
+<p> 最终得到如下图</p> 
+<p> ​​​​​​​<img alt="" height="320" src="https://img-blog.csdnimg.cn/5d30777580024238a3f94a8cbae8e85d.png" width="270" /></p> 
+<p>矩阵中&#xff0c;-1值的元素个数作为陷阱数量&#xff0c;0值的元素个数作为不可达数量 </p> 
+<p></p> 
+<hr /> 
+<p>2023.06.16</p> 
+<p>本题Python代码可能会出现递归过深而报错的情况&#xff0c;注意是递归过深&#xff0c;而不是Stack Overflow&#xff0c;因此我们可以适当增大Python递归的最大深度限制&#xff0c;如下面代码色湖之最大递归深度为2500</p> 
+<pre>import sys
+sys.setrecursionlimit(2500)</pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let x, y, n, poses;
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    [x, y] &#61; lines[0].split(&#34; &#34;).map(Number);
+    n &#61; lines[1] - 0;
+  }
+
+  if (n !&#61;&#61; undefined &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 2) {
+    poses &#61; lines.slice(2).map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    console.log(getResult());
+    lines.length &#61; 0;
+  }
+});
+
+function getResult() {
+  const matrix &#61; new Array(x).fill(0).map(() &#61;&gt; new Array(y).fill(0));
+
+  for (let [i, j] of poses) {
+    matrix[i][j] &#61; 1; // 墙标记为1&#xff0c;非墙标记为0
+  }
+
+  matrix[x - 1][y - 1] &#61; 2; // 可达点标记为2
+
+  dfs(0, 0, matrix);
+
+  let trap &#61; 0; // 陷阱数量
+  let unreach &#61; 0; //  不可达点数量
+
+  for (let i &#61; 0; i &lt; x; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; y; j&#43;&#43;) {
+      if (matrix[i][j] &#61;&#61; 0) unreach&#43;&#43;;
+      else if (matrix[i][j] &#61;&#61; -1) trap&#43;&#43;;
+    }
+  }
+
+  return &#96;${trap} ${unreach}&#96;;
+}
+
+function dfs(cx, cy, matrix) {
+  if (cx &gt;&#61; x || cy &gt;&#61; y) return false; // 如果下一步越界&#xff0c;则下一步不可达
+
+  if (matrix[cx][cy] &#61;&#61; 1) return false; // 如果下一步为墙&#xff0c;则下一步不可达
+  if (matrix[cx][cy] &#61;&#61; -1) return false; // 如果下一步为不可达点&#xff0c;则下一步不可达
+  if (matrix[cx][cy] &#61;&#61; 2) return true; // 如果下一步为可达点&#xff0c;则下一步可达
+
+  if (matrix[cx][cy] &#61;&#61; 0) {
+    const east &#61; dfs(cx &#43; 1, cy, matrix); // 向东走下一步
+    const north &#61; dfs(cx, cy &#43; 1, matrix); // 向北走下一步
+
+    if (east || north) {
+      matrix[cx][cy] &#61; 2; // 如果向东可达或者向北可达&#xff0c;则当前点可达&#xff0c;标记2
+    } else {
+      matrix[cx][cy] &#61; -1; // 如果向东&#xff0c;向北都不可达&#xff0c;则当前前也是不可达点&#xff0c;标记-1
+    }
+  }
+
+  return matrix[cx][cy] &#61;&#61; 2;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  static int x;
+  static int y;
+  static int n;
+  static int[][] poses;
+  static int[][] matrix;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    x &#61; sc.nextInt(); // 行数
+    y &#61; sc.nextInt(); // 列数
+    n &#61; sc.nextInt(); // 墙数
+
+    poses &#61; new int[n][2]; // 墙位置
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      poses[i][0] &#61; sc.nextInt();
+      poses[i][1] &#61; sc.nextInt();
+    }
+
+    getResult();
+  }
+
+  public static void getResult() {
+    matrix &#61; new int[x][y];
+
+    for (int[] pos : poses) {
+      int i &#61; pos[0];
+      int j &#61; pos[1];
+      matrix[i][j] &#61; 1; // 墙点值为1&#xff0c;非墙点值为0
+    }
+
+    matrix[x - 1][y - 1] &#61; 2; // 可达点值为2
+
+    dfs(0, 0);
+
+    int trap &#61; 0; // 陷阱数量
+    int unreach &#61; 0; // 不可达点数量
+
+    for (int i &#61; 0; i &lt; x; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; y; j&#43;&#43;) {
+        if (matrix[i][j] &#61;&#61; 0) unreach&#43;&#43;;
+        else if (matrix[i][j] &#61;&#61; -1) trap&#43;&#43;;
+      }
+    }
+
+    System.out.println(trap &#43; &#34; &#34; &#43; unreach);
+  }
+
+  public static boolean dfs(int cx, int cy) {
+    if (cx &gt;&#61; x || cy &gt;&#61; y) return false;
+    if (matrix[cx][cy] &#61;&#61; 1) return false;
+    if (matrix[cx][cy] &#61;&#61; -1) return false;
+    if (matrix[cx][cy] &#61;&#61; 2) return true;
+
+    if (matrix[cx][cy] &#61;&#61; 0) {
+      boolean east &#61; dfs(cx &#43; 1, cy);
+      boolean north &#61; dfs(cx, cy &#43; 1);
+
+      if (east || north) {
+        matrix[cx][cy] &#61; 2; // 如果向东可达或者向北可达&#xff0c;则当前点可达&#xff0c;将值设为2
+      } else {
+        matrix[cx][cy] &#61; -1; // 如果向东&#xff0c;向北都不可达&#xff0c;则当前前也是不可达点&#xff0c;将值设为-1
+      }
+    }
+
+    return matrix[cx][cy] &#61;&#61; 2;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+sys.setrecursionlimit(2500)
+
+# 输入获取
+x, y &#61; map(int, input().split())
+n &#61; int(input())
+poses &#61; [list(map(int, input().split())) for _ in range(n)]
+
+
+# 深搜
+def dfs(cx, cy, matrix):
+    if cx &gt;&#61; x or cy &gt;&#61; y:
+        return False
+
+    if matrix[cx][cy] &#61;&#61; 1:  # 如果下一步为墙&#xff0c;则下一步不可达
+        return False
+
+    if matrix[cx][cy] &#61;&#61; -1:  # 如果下一步为不可达点&#xff0c;则下一步不可达
+        return False
+
+    if matrix[cx][cy] &#61;&#61; 2:   # 如果下一步为可达点&#xff0c;则下一步可达
+        return True
+
+    if matrix[cx][cy] &#61;&#61; 0:
+        east &#61; dfs(cx &#43; 1, cy, matrix)  # 向东走下一步
+        north &#61; dfs(cx, cy &#43; 1, matrix)  # 下北走下一步
+
+        if east or north:
+            matrix[cx][cy] &#61; 2  # 如果向东可达或者向北可达&#xff0c;则当前点可达&#xff0c;标记2
+        else:
+            matrix[cx][cy] &#61; -1  # 如果向东&#xff0c;向北都不可达&#xff0c;则当前前也是不可达点&#xff0c;标记-1
+
+    return matrix[cx][cy] &#61;&#61; 2
+
+
+# 算法入口
+def getResult():
+    matrix &#61; [[0 for _ in range(y)] for _ in range(x)]
+
+    for i, j in poses:
+        matrix[i][j] &#61; 1  # 墙标记为1&#xff0c;非墙标记为0
+
+    matrix[x - 1][y - 1] &#61; 2  # 可达点标记为2
+
+    dfs(0, 0, matrix)
+
+    trap &#61; 0  # 陷阱数量
+    unreach &#61; 0  # 不可达点数量
+
+    for i in range(x):
+        for j in range(y):
+            if matrix[i][j] &#61;&#61; 0:
+                unreach &#43;&#61; 1
+            elif matrix[i][j] &#61;&#61; -1:
+                trap &#43;&#61; 1
+
+    return f&#34;{trap} {unreach}&#34;
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

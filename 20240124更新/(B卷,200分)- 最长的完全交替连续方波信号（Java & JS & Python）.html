@@ -1,0 +1,209 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 最长的完全交替连续方波信号（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>输入一串方波信号&#xff0c;求取最长的完全连续交替方波信号&#xff0c;并将其输出&#xff0c;</p> 
+<p>如果有相同长度的交替方波信号&#xff0c;输出任一即可&#xff0c;</p> 
+<p>方波信号高位用1标识&#xff0c;低位用0标识&#xff0c;如图&#xff1a;</p> 
+<p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/6e8c54d18c1b4472b054746ae1eb82fd.png" /></p> 
+<p>说明&#xff1a;</p> 
+<ol><li>一个完整的信号一定以0开始然后以0结尾&#xff0c;即010是一个完整信号&#xff0c;但101&#xff0c;1010&#xff0c;0101不是</li><li>输入的一串方波信号是由一个或多个完整信号组成</li><li>两个相邻信号之间可能有0个或多个低位&#xff0c;如0110010&#xff0c;011000010</li><li>同一个信号中可以有连续的高位&#xff0c;如01110101011110001010&#xff0c;前14位是一个具有连续高位的信号</li><li>完全连续交替方波是指10交替&#xff0c;如01010是完全连续交替方波&#xff0c;0110不是</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入信号字符串&#xff08;长度 &gt;&#61; 3 且 &lt;&#61; 1024&#xff09;&#xff1a;<br /> 0010101010110000101000010<br /> 注&#xff1a;输入总是合法的&#xff0c;不用考虑异常情况</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出最长的完全连续交替方波信号串&#xff1a;01010<br /> 若不存在完全连续交替方波信号串&#xff0c;输出 -1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">00101010101100001010010</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">01010</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入信号串中有三个信号&#xff1a;</p> <p>0 010101010110(第一个信号段)</p> <p>00 01010(第二个信号段)</p> <p>010(第三个信号段)</p> <p>第一个信号虽然有交替的方波信号段&#xff0c;但出现了11部分的连续高位&#xff0c;不算完全连续交替方波&#xff0c;<br /> 在剩下的连续方波信号串中01010最长</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题要求“最长的完全交替连续方波信号”&#xff0c;</p> 
+<p>其中形成“完全交替连续方波信号”由两个要点&#xff1a;</p> 
+<ul><li>“完全交替连续方波”&#xff1a;完全连续交替方波是指10交替</li><li>“信号”&#xff1a;一个完整的信号一定以0开始然后以0结尾</li></ul> 
+<p>因此&#xff0c;“完全交替连续方波信号”&#xff0c;可以有两种描述方式&#xff1a;</p> 
+<ol><li>一个以0开头&#xff0c;之后有一个或多个10的字符串&#xff0c;用正则表示的话&#xff0c;即为 ^0(10)&#43;$</li><li>开头是一个或多个01&#xff0c;结尾是0的字符串&#xff0c;用正则表示的话&#xff0c;即为 ^(01)&#43;0$</li></ol> 
+<p>下面代码我们用了第二种描述方式的正则来判断一个字符串是否为“完全交替连续方波信号”</p> 
+<p></p> 
+<p>题目中还描述&#xff1a;</p> 
+<blockquote> 
+ <p>输入的一串方波信号是由一个或多个完整信号组成</p> 
+</blockquote> 
+<blockquote> 
+ <p>两个相邻信号之间可能有0个或多个低位</p> 
+</blockquote> 
+<p>因此&#xff0c;当遇到相邻的两个0时&#xff0c;就是出现的两个信号&#xff08;输入总是合法的&#xff0c;不用考虑异常情况&#xff09;</p> 
+<p>另外&#xff0c;输入中的信号&#xff0c;不仅有可能是“完全交替信号”&#xff0c;也可能是“不完全交替信号”&#xff0c;如0110&#xff0c;是一个完整信号&#xff0c;但是是非完全交替信号。</p> 
+<p></p> 
+<p>因此&#xff0c;我的解题思路如下&#xff0c;定义一个栈stack&#xff0c;然后遍历输入字符串的字符c&#xff1a;</p> 
+<ul><li>如果stack为空&#xff0c;则c直接压入stack</li><li>如果stack不为空&#xff0c;假设stack栈顶字符为top</li></ul> 
+<ol><li>如果c &#61;&#61; &#39;0&#39;&#xff0c;且 top &#61;&#61; &#39;0&#39;&#xff0c;则说明c可能是新信号组成&#xff0c;而stack中已保存的字符组成的字符串可能是一个完全交替信号&#xff0c;我们用之前的正则来验证即可&#xff0c;如果验证OK&#xff0c;则记录此完全交替信号的长度&#xff0c;和本身。完成记录后&#xff0c;清空stack&#xff0c;记录新信号的c。</li><li>如果c &#61;&#61; &#39;0&#39;&#xff0c;而 top &#61;&#61; ‘1’&#xff0c;则c直接压入stack</li><li>如果c &#61;&#61; &#39;1&#39; &#xff0c;则c直接压入satck</li></ol> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.regex.Pattern;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String s &#61; sc.nextLine();
+
+    System.out.println(getResult(s));
+  }
+
+  public static String getResult(String s) {
+    Pattern reg &#61; Pattern.compile(&#34;^(01)&#43;0$&#34;);
+
+    int maxLen &#61; 0;
+    String ans &#61; &#34;-1&#34;;
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+
+      if (c &#61;&#61; &#39;0&#39;) {
+        if (sb.length() &gt; 0 &amp;&amp; sb.charAt(sb.length() - 1) &#61;&#61; &#39;0&#39;) {
+          if (reg.matcher(sb.toString()).find() &amp;&amp; sb.length() &gt; maxLen) {
+            maxLen &#61; sb.length();
+            ans &#61; sb.toString();
+          }
+          sb &#61; new StringBuilder();
+        }
+      }
+
+      sb.append(c);
+    }
+
+    if (sb.length() &gt; 0) {
+      if (reg.matcher(sb.toString()).find() &amp;&amp; sb.length() &gt; maxLen) {
+        return sb.toString();
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  const reg &#61; /^(01)&#43;0$/;
+
+  let maxLen &#61; 0;
+  let ans &#61; &#34;-1&#34;;
+
+  const stack &#61; [];
+
+  for (let c of s) {
+    if (c &#61;&#61; &#34;0&#34;) {
+      const len &#61; stack.length;
+      if (len &gt; 0 &amp;&amp; stack.at(-1) &#61;&#61; &#34;0&#34;) {
+        const str &#61; stack.join(&#34;&#34;);
+        if (reg.test(str) &amp;&amp; len &gt; maxLen) {
+          maxLen &#61; len;
+          ans &#61; str;
+        }
+        stack.length &#61; 0;
+      }
+    }
+
+    stack.push(c);
+  }
+
+  if (stack.length &gt; 0) {
+    const str &#61; stack.join(&#34;&#34;);
+    if (reg.test(str) &amp;&amp; stack.length &gt; maxLen) {
+      return stack.join(&#34;&#34;);
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    reg &#61; re.compile(r&#34;^(01)&#43;0$&#34;)
+
+    maxLen &#61; 0
+    ans &#61; &#34;-1&#34;
+
+    stack &#61; []
+
+    for c in s:
+        if c &#61;&#61; &#34;0&#34;:
+            if len(stack) &gt; 0 and stack[-1] &#61;&#61; &#34;0&#34;:
+                tmp &#61; &#34;&#34;.join(stack)
+                if reg.match(tmp) is not None and len(stack) &gt; maxLen:
+                    maxLen &#61; len(stack)
+                    ans &#61; tmp
+                stack.clear()
+        stack.append(c)
+
+    if len(stack) &gt; 0:
+        tmp &#61; &#34;&#34;.join(stack)
+        if reg.match(tmp) is not None and len(stack) &gt; maxLen:
+            return tmp
+
+    return ans
+
+
+# 算法调用
+print(getResult())</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

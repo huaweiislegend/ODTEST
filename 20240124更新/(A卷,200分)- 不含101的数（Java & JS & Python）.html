@@ -1,0 +1,208 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 不含101的数（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小明在学习二进制时&#xff0c;发现了一类不含 101的数&#xff0c;也就是&#xff1a;</p> 
+<p>将数字用二进制表示&#xff0c;不能出现 101 。<br /> 现在给定一个整数区间 [l,r] &#xff0c;请问这个区间包含了多少个不含 101 的数&#xff1f;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的唯一一行包含两个正整数 l&#xff0c; r&#xff08; 1 ≤ l ≤ r ≤ 10^9&#xff09;。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出的唯一一行包含一个整数&#xff0c;表示在 [l,r] 区间内一共有几个不含 101 的数。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">8</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">区间 [1,10] 内&#xff0c; 5 的二进制表示为 101 &#xff0c;10的二进制表示为 1010 &#xff0c;因此区间 [ 1 , 10 ] 内有 10−2&#61;8 个不含 101的数。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">10 20</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">7</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">区间 [10,20] 内&#xff0c;满足条件的数字有 [12,14,15,16,17,18,19] 因此答案为 7。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题如果用暴力法求解&#xff0c;很简单</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [l, r] &#61; line.split(&#34; &#34;).map(Number);
+
+  console.log(getResult(l, r));
+});
+
+function getResult(l, r) {
+  let count &#61; r - l &#43; 1;
+  for (let i &#61; l; i &lt;&#61; r; i&#43;&#43;) {
+    if (Number(i).toString(2).indexOf(&#34;101&#34;) !&#61;&#61; -1) {
+      count--;
+    }
+  }
+  return count;
+}
+</code></pre> 
+<p>但是本题的1 ≤ l ≤ r ≤ 10^9&#xff0c;也就是说区间范围最大是 1 ~ 10^9&#xff0c;那么上面O(n)时间复杂度的算法会超时。</p> 
+<p>因此&#xff0c;我们需要找到一个性能更优的算法。</p> 
+<p>本题需要使用数位DP算法&#xff0c;具体逻辑原理请看</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/128128007" title="数位DP - 带3的数_伏城之外的博客-CSDN博客">数位DP - 带3的数_伏城之外的博客-CSDN博客</a></p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/128139171?csdn_share_tail&#61;%7B%22type%22%3A%22blog%22%2C%22rType%22%3A%22article%22%2C%22rId%22%3A%22128139171%22%2C%22source%22%3A%22qfc_128220%22%7D" title="数位DP - 带49的数_伏城之外的博客-CSDN博客">数位DP - 带49的数_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [L, R] &#61; line.split(&#34; &#34;).map(Number);
+  const count &#61; digitSearch(R) - digitSearch(L - 1);
+
+  console.log(count);
+});
+
+function digitSearch(num) {
+  const arr &#61; num.toString(2).split(&#34;&#34;).map(Number);
+  const f &#61; new Array(arr.length)
+    .fill(0)
+    .map(() &#61;&gt; new Array(2).fill(0).map(() &#61;&gt; new Array(2)));
+
+  return dfs(0, true, f, arr, 0, 0);
+}
+
+function dfs(p, limit, f, arr, pre, prepre) {
+  if (p &#61;&#61;&#61; arr.length) return 1;
+
+  if (!limit &amp;&amp; f[p][pre][prepre]) return f[p][pre][prepre];
+
+  const max &#61; limit ? arr[p] : 1;
+  let count &#61; 0;
+
+  for (let i &#61; 0; i &lt;&#61; max; i&#43;&#43;) {
+    if (i &#61;&#61;&#61; 1 &amp;&amp; pre &#61;&#61;&#61; 0 &amp;&amp; prepre &#61;&#61;&#61; 1) continue;
+    count &#43;&#61; dfs(p &#43; 1, limit &amp;&amp; i &#61;&#61;&#61; max, f, arr, i, pre);
+  }
+
+  if (!limit) f[p][pre][prepre] &#61; count;
+
+  return count;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int L &#61; sc.nextInt();
+    int R &#61; sc.nextInt();
+    int count &#61; digitSearch(R) - digitSearch(L - 1);
+    System.out.println(count);
+  }
+
+  public static int digitSearch(int num) {
+    Integer[] arr &#61;
+        Arrays.stream(Integer.toBinaryString(num).split(&#34;&#34;))
+            .map(Integer::parseInt)
+            .toArray(Integer[]::new);
+
+    int[][][] f &#61; new int[arr.length][2][2];
+
+    return dfs(0, true, f, arr, 0, 0);
+  }
+
+  public static int dfs(int p, boolean limit, int[][][] f, Integer[] arr, int pre, int prepre) {
+    if (p &#61;&#61; arr.length) return 1;
+
+    if (!limit &amp;&amp; f[p][pre][prepre] !&#61; 0) return f[p][pre][prepre];
+
+    int max &#61; limit ? arr[p] : 1;
+    int count &#61; 0;
+
+    for (int i &#61; 0; i &lt;&#61; max; i&#43;&#43;) {
+      if (i &#61;&#61; 1 &amp;&amp; pre &#61;&#61; 0 &amp;&amp; prepre &#61;&#61; 1) continue;
+      count &#43;&#61; dfs(p &#43; 1, limit &amp;&amp; i &#61;&#61; max, f, arr, i, pre);
+    }
+
+    if (!limit) f[p][pre][prepre] &#61; count;
+
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 算法实现
+def dfs(p, limit, f, arr, pre, prepre):
+    if p &#61;&#61; len(arr):
+        return 1
+
+    if not limit and f[p][pre][prepre] &gt; 0:
+        return f[p][pre][prepre]
+
+    maxV &#61; arr[p] if limit else 1
+    count &#61; 0
+
+    for i in range(maxV &#43; 1):
+        if i &#61;&#61; 1 and pre &#61;&#61; 0 and prepre &#61;&#61; 1:
+            continue
+        count &#43;&#61; dfs(p &#43; 1, limit and i &#61;&#61; maxV, f, arr, i, pre)
+
+    if not limit:
+        f[p][pre][prepre] &#61; count
+
+    return count
+
+
+def digitSearch(num):
+    arr &#61; list(map(int, list(format(num, &#39;b&#39;))))
+    f &#61; [[[0 for k in range(2)] for j in range(2)] for i in range(len(arr))]
+    return dfs(0, True, f, arr, 0, 0)
+
+
+# 输入获取
+L, R &#61; map(int, input().split())
+
+# 算法调用
+print(digitSearch(R) - digitSearch(L - 1))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,360 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 第k个排列（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定参数n&#xff0c;从1到n会有n个整数&#xff1a;1,2,3,…,n,这n个数字共有n!种排列。</p> 
+<p>按大小顺序升序列出所有排列的情况&#xff0c;并一一标记&#xff0c;</p> 
+<p>当n&#61;3时,所有排列如下:</p> 
+<p>“123” “132” “213” “231” “312” “321”</p> 
+<p>给定n和k&#xff0c;返回第k个排列。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入两行&#xff0c;第一行为n&#xff0c;第二行为k&#xff0c;</p> 
+<p>给定n的范围是[1,9],给定k的范围是[1,n!]。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出排在第k位置的数字。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td> <p>3<br /> 3</p> </td></tr><tr><td>输出</td><td>213</td></tr><tr><td>说明</td><td>3的排列有123,132,213…,那么第三位置就是213</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:64px;">输入</td><td style="width:434px;"> <p>2<br /> 2</p> </td></tr><tr><td style="width:64px;">输出</td><td style="width:434px;">21</td></tr><tr><td style="width:64px;">说明</td><td style="width:434px;">2的排列有12,21&#xff0c;那么第二位置的为21。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>通过上面n&#61;3的全排列可以分析&#xff0c;以1开头、以2开头、以3开头的排列个数各有两个&#xff0c;因为固定开头为1的&#xff0c;则其排列情况就是n&#61;2的排列情况&#xff0c;即有两个23、32。</p> 
+<p>因此以1开头的排列个数有 2!个&#xff0c;以2&#xff0c;3开头的排列个数求解同理。</p> 
+<p>因此我们要求n&#61;3的第k个排列&#xff0c;完全可以推断出第k个排列的开头数字是几。</p> 
+<p>比如n&#61;3的第1个和第2个排列的开头数字prefix就是1&#xff0c;第3、4个排列的开头数字prefix就是2&#xff0c;第5、6个排列的开头数字prefix就是3。</p> 
+<p>推导一下&#xff0c;可得公式&#xff1a;Math.ceil(<span style="color:#fe2c24;">k / (n-1)!</span>)</p> 
+<p>但是这里我不想根据k、n来直接推导出排列的开头数字prefix&#xff0c;因为这个逻辑不适用于后面的递归&#xff0c;我们会将组成排列的数字按大小升序存入一个数组 arr中&#xff0c;比如n&#61;3的排列元素为 arr &#61; [1,2,3]&#xff0c;此时我们要求n&#61;3的第k个排列的开头数字&#xff0c;公式为&#xff1a;<span style="color:#a2e043;">arr [ </span>Math.floor(<span style="color:#fe2c24;">(k-1) / (n-1)!</span>) <span style="color:#a2e043;">] </span></p> 
+<p>知道了第k个排列的开头数字prefix后&#xff0c;我们就可以缩小排列的查找范围&#xff0c;比如n&#61;3&#xff0c;k&#61;3的排列查找就可以在以下范围中查找&#xff1a;</p> 
+<ul><li><span style="color:#fe2c24;">213</span></li><li>231</li></ul> 
+<p>而此时k&#61;3值就不适用了&#xff0c;因为k&#61;3是相对于下面情况的</p> 
+<ul><li>123</li><li>132</li><li><span style="color:#fe2c24;">213</span></li><li>231</li><li>312</li><li>321</li></ul> 
+<p>我们需要将k值转换为1&#xff0c;转换公式如下&#xff1a;</p> 
+<p>newK &#61; k % (n-1)!</p> 
+<p>但是这个公式不普适&#xff0c;比如n&#61;3,k&#61;4时&#xff0c;经过上面公式转换newK就变为0&#xff0c;而实际上newK应该为2,因此我们需要附加判断</p> 
+<p>newK &#61;&#61;&#61; 0 ? (n-1)! : newK</p> 
+<p>此时就完成了大问题</p> 
+<blockquote> 
+ <p>n&#61;3, k&#61;3, arr&#61;[1,2,3]</p> 
+</blockquote> 
+<p>的简化&#xff0c;简化为了</p> 
+<blockquote> 
+ <p>n&#61;2, k&#61;1 ,arr&#61;[1,3] 且 prefix&#61;2</p> 
+</blockquote> 
+<p>因此我们可以使用递归来解决此题&#xff0c;而当k&#61;1时&#xff0c;表示当前arr&#61;[1,3]的排列就是需要的排列&#xff0c;因此最终要找的排列就是 prefix &#43; arr.join(&#39;&#39;) &#61; 213。</p> 
+<p>因此 k &#61;1就是递归的出口条件。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  static int[] fact;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int k &#61; sc.nextInt();
+
+    fact &#61; new int[n &#43; 1];
+    fact[1] &#61; 1;
+    for (int i &#61; 2; i &lt;&#61; n; i&#43;&#43;) {
+      fact[i] &#61; fact[i - 1] * i;
+    }
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) arr[i] &#61; i &#43; 1;
+
+    System.out.println(getNK(n, k, arr));
+  }
+
+  public static String getNK(int n, int k, int[] arr) {
+    if (n &#61;&#61; 1) return &#34;1&#34;;
+
+    int f &#61; fact[n - 1];
+    int prefix &#61; arr[(k - 1) / f];
+    k %&#61; f;
+    k &#61; k &#61;&#61; 0 ? f : k;
+
+    arr &#61; Arrays.stream(arr).filter(ele -&gt; ele !&#61; prefix).toArray();
+
+    if (k &#61;&#61; 1) {
+      StringBuilder sb &#61; new StringBuilder();
+      for (int v : arr) sb.append(v);
+      return prefix &#43; sb.toString();
+    } else {
+      return prefix &#43; getNK(n - 1, k, arr);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let factorial &#61; [0, 1];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    let [n, k] &#61; lines.map((ele) &#61;&gt; parseInt(ele));
+
+    for (let i &#61; 2; i &lt;&#61; n; i&#43;&#43;) {
+      factorial[i] &#61; factorial[i - 1] * i;
+    }
+
+    let arr &#61; new Array(n).fill(0).map((_, index) &#61;&gt; index &#43; 1);
+    console.log(getNK(n, k, arr));
+
+    lines.length &#61; 0;
+  }
+});
+
+/* 算法 */
+function getNK(n, k, arr) {
+  if (n &#61;&#61;&#61; 1) {
+    return &#34;1&#34;;
+  }
+
+  let f &#61; factorial[n - 1];
+  let prefix &#61; arr[Math.floor((k - 1) / f)];
+  k &#61; k % f;
+  k &#61; k &#61;&#61;&#61; 0 ? f : k;
+
+  arr &#61; arr.filter((ele) &#61;&gt; ele !&#61;&#61; prefix);
+
+  if (k &#61;&#61;&#61; 1) {
+    return prefix &#43; arr.join(&#34;&#34;);
+  } else {
+    return prefix &#43; getNK(n - 1, k, arr);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+k &#61; int(input())
+arr &#61; [i &#43; 1 for i in range(n)]
+
+fact &#61; [0] * (n &#43; 1)
+fact[1] &#61; 1
+for i in range(2, n &#43; 1):
+    fact[i] &#61; fact[i - 1] * i
+
+
+# 算法入口
+def getResult(n, k, arr):
+    if n &#61;&#61; 1:
+        return &#34;1&#34;
+
+    f &#61; fact[n - 1]
+    prefix &#61; arr[(k - 1) // f]
+    k %&#61; f
+    k &#61; f if k &#61;&#61; 0 else k
+
+    arr &#61; list(filter(lambda x: x !&#61; prefix, arr))
+
+    if k &#61;&#61; 1:
+        return str(prefix) &#43; &#34;&#34;.join(map(str, arr))
+    else:
+        return str(prefix) &#43; getResult(n - 1, k, arr)
+
+
+# 算法调用
+print(getResult(n, k, arr))
+</code></pre> 
+<p></p> 
+<h4>解法二&#xff1a;不用递归</h4> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  static int[] fact;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int k &#61; sc.nextInt();
+
+    fact &#61; new int[n &#43; 1];
+    fact[1] &#61; 1;
+    for (int i &#61; 2; i &lt;&#61; n; i&#43;&#43;) {
+      fact[i] &#61; fact[i - 1] * i;
+    }
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) arr[i] &#61; i &#43; 1;
+
+    System.out.println(getResult(n, k, arr));
+  }
+
+  public static String getResult(int n, int k, int[] arr) {
+    if (n &#61;&#61; 1) return &#34;1&#34;;
+
+    StringBuilder sb &#61; new StringBuilder();
+
+    while (true) {
+      int f &#61; fact[n - 1];
+      int prefix &#61; arr[(k - 1) / f];
+      sb.append(prefix);
+
+      k &#61; k % f;
+      if (k &#61;&#61; 0) k &#61; f;
+
+      arr &#61; Arrays.stream(arr).filter(ele -&gt; ele !&#61; prefix).toArray();
+      n--;
+      if (k &#61;&#61; 1) {
+        for (int v : arr) sb.append(v);
+        break;
+      }
+    }
+
+    return sb.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E4%B8%8D%E7%94%A8%E9%80%92%E5%BD%92%E7%9A%84%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    let [n, k] &#61; lines.map((ele) &#61;&gt; parseInt(ele));
+
+    console.log(getPermutation(n, k));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getPermutation(n, k) {
+  if (n &#61;&#61;&#61; 1) return &#34;1&#34;;
+
+  // 记录n!排列组合需要的成员
+  let arr &#61; new Array(n).fill(0).map((_, idx) &#61;&gt; idx &#43; 1);
+
+  // 记录阶乘值
+  let factorial &#61; [0, 1];
+  for (let i &#61; 2; i &lt;&#61; n; i&#43;&#43;) {
+    factorial[i] &#61; factorial[i - 1] * i;
+  }
+
+  let res &#61; &#34;&#34;;
+
+  while (true) {
+    // 第k个排列的开头数字prefix
+    let prefix &#61; arr[Math.floor((k - 1) / factorial[n - 1])];
+    res &#43;&#61; prefix;
+    // 对应排列在开头为prefix的排列中的序号
+    k &#61; k % factorial[n - 1];
+    if (k &#61;&#61;&#61; 0) {
+      k &#61; factorial[n - 1];
+    }
+
+    // 开头为prefix的排列所需的成员
+    arr &#61; arr.filter((ele) &#61;&gt; ele !&#61;&#61; prefix);
+    n--;
+    if (k &#61;&#61;&#61; 1) {
+      res &#43;&#61; arr.join(&#34;&#34;);
+      break;
+    }
+  }
+  return res;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+k &#61; int(input())
+arr &#61; [i &#43; 1 for i in range(n)]
+
+fact &#61; [0] * (n &#43; 1)
+fact[1] &#61; 1
+for i in range(2, n &#43; 1):
+    fact[i] &#61; fact[i - 1] * i
+
+
+# 算法入口
+def getResult(n, k, arr):
+    if n &#61;&#61; 1:
+        return &#34;1&#34;
+
+    res &#61; []
+
+    while True:
+        prefix &#61; arr[(k - 1) // fact[n-1]]
+        res.append(str(prefix))
+
+        k &#61; k % fact[n-1]
+        if k &#61;&#61; 0:
+            k &#61; fact[n-1]
+
+        arr &#61; list(filter(lambda x: x !&#61; prefix, arr))
+        n -&#61; 1
+        if k &#61;&#61; 1:
+            res.append(&#34;&#34;.join(map(str, arr)))
+            break
+
+    return &#34;&#34;.join(res)
+
+
+# 算法调用
+print(getResult(n, k, arr))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

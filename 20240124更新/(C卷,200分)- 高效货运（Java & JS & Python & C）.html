@@ -1,0 +1,499 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 高效货运（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>老李是货运公司承运人&#xff0c;老李的货车额定载货重量为 wt。</p> 
+<p>现有两种货物&#xff1a;</p> 
+<ul><li>货物 A 单件重量为 wa&#xff0c;单件运费利润为 pa</li><li>货物 B 单件重量为 wb&#xff0c;单件运费利润为 pb</li></ul> 
+<p>老李每次发车时载货总重量刚好为货车额定的载货重量 wt&#xff0c;车上必须同时有货物 A 和货物 B &#xff0c;货物A、B不可切割。</p> 
+<p>老李单次满载运输可获得的最高利润是多少&#xff1f;</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>第一列输入为货物 A 的单件重量 wa</p> 
+<ul><li>0 &lt; wa &lt; 10000</li></ul> 
+<p>第二列输入为货物 B 的单件重量 wb</p> 
+<ul><li>0 &lt; wb &lt; 10000</li></ul> 
+<p>第三列输入为货车的额定载重 wt</p> 
+<ul><li>0 &lt; wt &lt; 100000</li></ul> 
+<p>第四列输入为货物 A 的单件运费利润 pa</p> 
+<ul><li>0 &lt; pa &lt; 1000</li></ul> 
+<p>第五列输入为货物 B 的单件运费利润 pb</p> 
+<ul><li>0 &lt; pb &lt; 1000</li></ul> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>单次满载运输的最高利润</p> 
+<p></p> 
+<h3 id="%E7%94%A8%E4%BE%8B">用例</h3> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">10 8 36 15 7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">44</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 1 2 1 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h3>题目解析 </h3> 
+<p>本题其实第一眼看过去就是完全背包问题&#xff0c;且是需要装满背包的完全背包问题。</p> 
+<p>但是具体读题后&#xff0c;发现这题的货物只有两种&#xff0c;因此使用完全背包解题反而有点复杂了。</p> 
+<p>如果货物有多种的话&#xff0c;那么此题用完全背包解题是非常合适的。</p> 
+<p></p> 
+<p>因此&#xff0c;我这里提供了两种解法&#xff0c;一种是暴力枚举&#xff0c;一种是完全背包。其中完全背包解法&#xff0c;主要是让大家熟悉下背包问题中&#xff0c;需要恰好装满背包时的dp初始化逻辑。</p> 
+<p>但是本题考试时可以选择更简单的暴力枚举方式。</p> 
+<p></p> 
+<h3>暴力枚举解法</h3> 
+<p>假设 x 件A货物&#xff0c;和 y 件B货物&#xff0c;可以装满货车&#xff0c;那么有关系式如下&#xff1a;</p> 
+<blockquote> 
+ <p>wa * x &#43; wb * y &#61; wt</p> 
+</blockquote> 
+<p>我们可以选择其中的 x 或者 y 进行枚举可能数量&#xff0c;比如 A 货物的件数 x 至少有1件&#xff0c;至多有(wt - wb) / wa 件。</p> 
+<p>我们枚举A货物数量范围的所有值作为&#xff58;去尝试&#xff0c;那么只要  (wt - wa * x) % wb &#61;&#61; 0&#xff08;即y是整数&#xff09;&#xff0c;那么就找到了一组可能解x,y。计算此时的货物利润 pa * x &#43; pb * y 。</p> 
+<p>最后保留最大的利润即可。</p> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入输出处理
+void (async function () {
+  let [wa, wb, wt, pa, pb] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 装入货车的A货物数量至少1件&#xff0c;至多(wt - wb) / wa件
+  const minX &#61; 1;
+  const maxX &#61; Math.floor((wt - wb) / wa);
+
+  // 记录最大利润
+  let ans &#61; 0;
+
+  // 枚举A货物的可能数量
+  for (let x &#61; minX; x &lt;&#61; maxX; x&#43;&#43;) {
+    // B货物可能的总重量
+    const remain &#61; wt - wa * x;
+
+    if (remain % wb &#61;&#61; 0) {
+      // B货物的数量
+      const y &#61; remain / wb;
+
+      // 计算利润&#xff0c;保留最大利润
+      ans &#61; Math.max(ans, pa * x &#43; pb * y);
+    }
+  }
+
+  console.log(ans);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  // 输入输出处理
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int wa &#61; sc.nextInt();
+    int wb &#61; sc.nextInt();
+    int wt &#61; sc.nextInt();
+    int pa &#61; sc.nextInt();
+    int pb &#61; sc.nextInt();
+
+    // 装入货车的A货物数量至少1件&#xff0c;至多(wt - wb) / wa件
+    int minX &#61; 1;
+    int maxX &#61; (wt - wb) / wa;
+
+    // 记录最大利润
+    int ans &#61; 0;
+
+    // 枚举A货物的可能数量
+    for (int x &#61; minX; x &lt;&#61; maxX; x&#43;&#43;) {
+      // B货物可能的总重量
+      int remain &#61; wt - wa * x;
+
+      if (remain % wb &#61;&#61; 0) {
+        // B货物的数量
+        int y &#61; remain / wb;
+
+        // 计算利润&#xff0c;保留最大利润
+        ans &#61; Math.max(ans, pa * x &#43; pb * y);
+      }
+    }
+
+    System.out.println(ans);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+wa, wb, wt, pa, pb &#61; map(int, input().split())
+
+# 装入货车的A货物数量至少1件&#xff0c;至多(wt - wb) / wa件
+minX &#61; 1
+maxX &#61; (wt - wb) // wa
+
+# 记录最大利润
+ans &#61; 0
+
+# 枚举A货物的可能数量
+for x in range(minX, maxX &#43; 1):
+    # B货物可能的总重量
+    remain &#61; wt - wa * x
+
+    if remain % wb &#61;&#61; 0:
+        # B货物的数量
+        y &#61; remain // wb
+
+        # 计算利润&#xff0c;保留最大利润
+        ans &#61; max(ans, pa * x &#43; pb * y)
+
+print(ans)
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+int main() {
+    int wa, wb, wt, pa, pb;
+    scanf(&#34;%d %d %d %d %d&#34;, &amp;wa, &amp;wb, &amp;wt, &amp;pa, &amp;pb);
+
+    // 装入货车的A货物数量至少1件&#xff0c;至多(wt - wb) / wa件
+    int minX &#61; 1;
+    int maxX &#61; (wt - wb) / wa;
+
+    // 记录最大利润
+    int ans &#61; 0;
+
+    // 枚举A货物的可能数量
+    for (int x &#61; minX; x &lt;&#61; maxX; x&#43;&#43;) {
+        // B货物可能的总重量
+        int remain &#61; wt - wa * x;
+
+        if (remain % wb &#61;&#61; 0) {
+            // B货物的数量
+            int y &#61; remain / wb;
+
+            // 计算利润&#xff0c;保留最大利润
+            ans &#61; MAX(ans, pa * x &#43; pb * y);
+        }
+    }
+
+    printf(&#34;%d\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<p></p> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">完全背包解法</h3> 
+<p>本题可以转化为完全背包问题。</p> 
+<p></p> 
+<p>完全背包问题是指&#xff1a;</p> 
+<ul><li>有 N 件物品&#xff0c;每件物品的重量为w[i]&#xff0c;价值为p[i]&#xff0c;数量不限。</li><li>有一个背包&#xff0c;背包承重为 W</li></ul> 
+<p>问&#xff1a;<span style="color:#fe2c24;"><strong>不超出</strong></span>背包承重的情况下&#xff0c;装入背包物品的最大价值是多少&#xff1f;</p> 
+<p></p> 
+<p>本题中&#xff1a;</p> 
+<ul><li>货物A&#xff0c;B &#61;&gt; 物品</li><li>货车 &#61;&gt; 背包</li><li>货物A&#xff0c;B的单件重量 &#61;&gt; 物品的重量</li><li>货物A&#xff0c;B的单件利润 &#61;&gt; 物品的价值</li><li>货车的载重 &#61;&gt; 背包的载重</li></ul> 
+<p></p> 
+<p>另外&#xff0c;本题作了如下改动&#xff1a;</p> 
+<ol><li>本题要求货车上必须装入A&#xff0c;B货物</li><li>本题要求货车必须装满</li></ol> 
+<p></p> 
+<p>对于改动1&#xff0c;我们可以预先给货车装一件A&#xff0c;一件B&#xff0c;此时&#xff1a;</p> 
+<ul><li>货车承重 &#61; wt -&#xff08;wa &#43; wb&#xff09;</li><li>已获得利润 &#61; pa &#43; pb</li></ul> 
+<p></p> 
+<p>即可转化为完全背包问题为&#xff1a;</p> 
+<ul><li>背包承重&#xff1a;wt -&#xff08;wa &#43; wb&#xff09;</li><li>物品重量&#xff1a;wa、wb</li><li>物品价值&#xff1a;pa、pb</li><li>物品数量&#xff1a;无限</li></ul> 
+<p></p> 
+<p>对于改动2&#xff0c;要求装满背包&#xff0c;而装满背包和不装满背包的区别仅在于dp初始化&#xff1a;</p> 
+<ul><li>不强制装满背包的问题&#xff0c;dp数组元素可以全部初始化为0&#xff0c;</li><li>强制装满背包的问题&#xff0c;dp数组元素只有dp[0][0]初始化为0&#xff0c;其余dp元素需要初始化为负无穷</li></ul> 
+<p></p> 
+<p>对于要求装满背包的场景&#xff0c;关于dp元素&#xff08;除dp[0][0&#xff09;初始化为负无穷的原因&#xff0c;在解释之前&#xff0c;我们应该对dp数组有个初步的了解&#xff1a;</p> 
+<hr /> 
+<p>dp[i][j] 表示&#xff1a;从前 i 种物品选择&#xff0c;装满承重为 j 的背包&#xff0c;所能获得的最大价值&#xff0c;而 dp[i][j] 可以由之前的dp状态递推得到&#xff0c;递推公式&#xff08;状态转移方程&#xff09;如下&#xff1a;</p> 
+<blockquote> 
+ <p>dp[i][j] &#61; max(dp[i-1][j], dp[i-1][j - w[i]] &#43; p[i])</p> 
+</blockquote> 
+<p>上面递推公式的含义为&#xff1a;</p> 
+<p>对于第 i 个物品&#xff0c;我们可以选择装或者不装&#xff1a;</p> 
+<ul><li>如果不装的话&#xff0c;则 dp[i][j] &#61; dp[i-1][j]</li><li>如果装的话&#xff0c;则 dp[i][j] &#61; dp[i-1][j - w[i]] &#43; p[i]</li></ul> 
+<p>更多细节请看&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/128307663" rel="nofollow" title="算法设计 - 01背包问题_01背包算法-CSDN博客">算法设计 - 01背包问题_01背包算法-CSDN博客</a></p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/128903531" rel="nofollow" title="算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_背包问题状态转移方程-CSDN博客">算法设计 - 01背包问题的状态转移方程优化&#xff0c;以及完全背包问题_背包问题状态转移方程-CSDN博客</a></p> 
+<hr /> 
+<p>在前面状态转移方程中&#xff0c;如果我们选择装入第 i 个物品&#xff0c;那么&#xff1a;</p> 
+<p>如果 dp[i-1][j - w[i]] 等于负无穷的话&#xff0c;则 dp[i-1][j - w[i]] &#43; p[i] 结果也是负无穷&#xff0c;即dp[i][j]为负无穷。</p> 
+<p>而dp元素值负无穷的含义是&#xff0c;对应物品选择范围下&#xff0c;不存在可以装满背包的方案。</p> 
+<p>因此如果前 i - 1 个物品选择组合&#xff0c;不存在可以装满 j - w[i] 承重的背包的方案&#xff0c;那么即使我们后面选择加入了第 i 个物品&#xff0c;也无法装满 j 承重的背包。</p> 
+<p>相反的&#xff0c;如果 dp[i-1][j - w[i]] ≥ 0 的话&#xff0c;则说明前 i - 1 个物品选择组合&#xff0c;存在可以装满 j - w[i] 承重的背包的方案&#xff0c;且获得的最大价值为dp[i-1][j - w[i]]。</p> 
+<p>那么我们后面选择加入第 i 个物品的话&#xff0c;也一定可以装满 j 承重的背包。此时 dp[i-1][j - w[i]] &#43; p[i] 也必然 ≥ 0。</p> 
+<p>因此&#xff0c;dp元素值初始化为负无穷的作用就是&#xff0c;对于无法装满背包的情况进行标记&#xff0c;如果用于递推dp[i][j]的dp值无法装满背包&#xff0c;则dp[i][j]也必然无法装满背包。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入输出处理
+void (async function () {
+  let [wa, wb, wt, pa, pb] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 背包承重, 这里减去必然需要装入的一件A货物和一件B货物
+  wt -&#61; wa &#43; wb;
+
+  // 物品的重量
+  const w &#61; [wa, wb];
+
+  // 物品的价值
+  const p &#61; [pa, pb];
+
+  // maxP是装满承重为 wt 的背包的最大价值
+  const maxP &#61; getResult(wt, 2, w, p);
+
+  if (maxP &gt;&#61; 0) {
+    // 如果maxP是非负数&#xff0c;则存在装满背包的方案&#xff0c;注意最后返回结果需要加上初始装上车的一件A和一件B的利润
+    console.log(maxP &#43; pa &#43; pb);
+  } else {
+    // 如果maxP是负数&#xff0c;则说明不存在装满wt的方案&#xff0c;此时直接直接0
+    console.log(0);
+  }
+})();
+
+/**
+ * 完全背包
+ *
+ * &#64;param bag 背包承重
+ * &#64;param n 物品种数
+ * &#64;param w 物品的重量数组
+ * &#64;param p 物品的价值数组
+ * &#64;return 装满背包的最大价值
+ */
+function getResult(bag, n, w, p) {
+  // dp[i]表示装满承重为 i 的背包的最大价值
+  // 装满背包的背包问题&#xff0c;初始化时需要将除了dp[0]外的dp元素值设为负无穷
+  const dp &#61; new Array(bag &#43; 1).fill(-Infinity);
+  dp[0] &#61; 0;
+
+  // 遍历物品
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // 遍历背包承重&#xff0c;完全背包这里要正序遍历
+    for (let j &#61; w[i]; j &lt;&#61; bag; j&#43;&#43;) {
+      dp[j] &#61; Math.max(dp[j], dp[j - w[i]] &#43; p[i]);
+    }
+  }
+
+  // 返回装满承重为bag的背包的最大价值
+  return dp[bag];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  // 输入输出处理
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int wa &#61; sc.nextInt();
+    int wb &#61; sc.nextInt();
+    int wt &#61; sc.nextInt();
+    int pa &#61; sc.nextInt();
+    int pb &#61; sc.nextInt();
+
+    // 背包承重, 这里减去必然需要装入的一件A货物和一件B货物
+    wt -&#61; wa &#43; wb;
+
+    // 物品的重量
+    int[] w &#61; new int[] {wa, wb};
+
+    // 物品的价值
+    int[] p &#61; new int[] {pa, pb};
+
+    // maxP是装满承重为 wt 的背包的最大价值
+    int maxP &#61; getResult(wt, 2, w, p);
+
+    if (maxP &gt;&#61; 0) {
+      // 如果maxP是非负数&#xff0c;则存在装满背包的方案&#xff0c;注意最后返回结果需要加上初始装上车的一件A和一件B的利润
+      System.out.println(maxP &#43; pa &#43; pb);
+    } else {
+      // 如果maxP是负数&#xff0c;则说明不存在装满wt的方案&#xff0c;此时直接直接0
+      System.out.println(0);
+    }
+  }
+
+  /**
+   * 完全背包
+   *
+   * &#64;param bag 背包承重
+   * &#64;param n 物品种数
+   * &#64;param w 物品的重量数组
+   * &#64;param p 物品的价值数组
+   * &#64;return 装满背包的最大价值
+   */
+  public static int getResult(int bag, int n, int[] w, int[] p) {
+    // dp[i]表示装满承重为 i 的背包的最大价值
+    int[] dp &#61; new int[bag &#43; 1];
+
+    // 装满背包的背包问题&#xff0c;初始化时需要将除了dp[0]外的dp元素值设为负无穷
+    Arrays.fill(dp, Integer.MIN_VALUE);
+    dp[0] &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) { // 遍历物品
+      for (int j &#61; w[i]; j &lt;&#61; bag; j&#43;&#43;) { // 遍历背包承重&#xff0c;完全背包这里要正序遍历
+        dp[j] &#61; Math.max(dp[j], dp[j - w[i]] &#43; p[i]);
+      }
+    }
+
+    // 返回装满承重为bag的背包的最大价值
+    return dp[bag];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+wa, wb, wt, pa, pb &#61; map(int, input().split())
+
+
+# 算法入口
+def getResult(bag, n, w, p):
+    &#34;&#34;&#34;
+    完全背包
+    :param bag: 背包承重
+    :param n: 物品种数
+    :param w: 物品的重量数组
+    :param p: 物品的价值数组
+    :return: 装满背包的最大价值
+    &#34;&#34;&#34;
+
+    # dp[i]表示装满承重为 i 的背包的最大价值
+    # 装满背包的背包问题&#xff0c;初始化时需要将除了dp[0]外的dp元素值设为负无穷
+    dp &#61; [-sys.maxsize for _ in range(bag &#43; 1)]
+    dp[0] &#61; 0
+
+    # 遍历物品
+    for i in range(n):
+        # 遍历背包承重&#xff0c;完全背包这里要正序遍历
+        for j in range(w[i], bag &#43; 1):
+            dp[j] &#61; max(dp[j], dp[j - w[i]] &#43; p[i])
+
+    # 返回装满承重为bag的背包的最大价值
+    return dp[bag]
+
+
+# 算法调用
+# 背包承重, 这里减去必然需要装入的一件A货物和一件B货物
+wt -&#61; wa &#43; wb
+
+# 物品的重量
+w &#61; [wa, wb]
+# 物品的价值
+p &#61; [pa, pb]
+
+# maxP是装满承重为 wt 的背包的最大价值
+maxP &#61; getResult(wt, 2, w, p)
+
+if maxP &gt;&#61; 0:
+    # 如果maxP是非负数&#xff0c;则存在装满背包的方案&#xff0c;注意最后返回结果需要加上初始装上车的一件A和一件B的利润
+    print(maxP &#43; pa &#43; pb)
+else:
+    # 如果maxP是负数&#xff0c;则说明不存在装满wt的方案&#xff0c;此时直接直接0
+    print(0)
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+/**
+ * 完全背包
+ *
+ * &#64;param bag 背包承重
+ * &#64;param n 物品种数
+ * &#64;param w 物品的重量数组
+ * &#64;param p 物品的价值数组
+ * &#64;return 装满背包的最大价值
+ */
+int getResult(int bag, int n, const int w[], const int p[]) {
+    // dp[i]表示装满承重为 i 的背包的最大价值
+    int dp[bag &#43; 1];
+
+    // 装满背包的背包问题&#xff0c;初始化时需要将除了dp[0]外的dp元素值设为负无穷
+    dp[0] &#61; 0;
+    for (int i &#61; 1; i &lt;&#61; bag; i&#43;&#43;) {
+        dp[i] &#61; INT_MIN;
+    }
+
+    // 遍历物品
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        // 遍历背包承重&#xff0c;完全背包这里要正序遍历
+        for (int j &#61; w[i]; j &lt;&#61; bag; j&#43;&#43;) {
+            dp[j] &#61; MAX(dp[j], dp[j - w[i]] &#43; p[i]);
+        }
+    }
+
+    // 返回装满承重为bag的背包的最大价值
+    return dp[bag];
+}
+
+int main() {
+    int wa, wb, wt, pa, pb;
+    scanf(&#34;%d %d %d %d %d&#34;, &amp;wa, &amp;wb, &amp;wt, &amp;pa, &amp;pb);
+
+    // 背包承重, 这里减去必然需要装入的一件A货物和一件B货物
+    wt -&#61; wa &#43; wb;
+
+    // 物品的重量
+    int w[] &#61; {wa, wb};
+
+    // 物品的价值
+    int p[] &#61; {pa, pb};
+
+    // maxP是装满承重为 wt 的背包的最大价值
+    int maxP &#61; getResult(wt, 2, w, p);
+
+    if (maxP &gt;&#61; 0) {
+        // 如果maxP是非负数&#xff0c;则存在装满背包的方案&#xff0c;注意最后返回结果需要加上初始装上车的一件A和一件B的利润
+        printf(&#34;%d\n&#34;, maxP &#43; pa &#43; pb);
+    } else {
+        // 如果maxP是负数&#xff0c;则说明不存在装满wt的方案&#xff0c;此时直接直接0
+        puts(&#34;0&#34;);
+    }
+
+    return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

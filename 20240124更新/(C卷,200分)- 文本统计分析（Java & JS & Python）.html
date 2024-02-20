@@ -1,0 +1,275 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 文本统计分析（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一个文件&#xff0c;包含以一定规则写作的文本&#xff0c;请统计文件中包含的文本数量。</p> 
+<p>规则如下&#xff1a;</p> 
+<p>1. 文本以”;”分隔&#xff0c;最后一条可以没有”;”&#xff0c;但空文本不能算语句&#xff0c;比如”COMMAND A; ;”只能算一条语句。注意&#xff0c;无字符/空白字符/制表符都算作”空”文本&#xff1b;</p> 
+<p>2. 文本可以跨行&#xff0c;比如下面&#xff0c;是一条文本&#xff0c;而不是三条&#xff1b;</p> 
+<p>COMMAND A</p> 
+<p>AND</p> 
+<p>COMMAND B;</p> 
+<p>3. 文本支持字符串&#xff0c;字符串为成对的单引号(&#39;)或者成对的双引号(&#34;)&#xff0c;字符串可能出现用转义字符(\)处理的单双引号(&#34;your input is\&#34;&#34;)和转义字符本身&#xff0c;比如</p> 
+<p>COMMAND A &#34;Say \&#34;hello\&#34;&#34;;</p> 
+<p>4. 支持注释&#xff0c;可以出现在字符串之外的任意位置注释以”-“开头&#xff0c;到换行结束&#xff0c;比如&#xff1a;</p> 
+<p>COMMAND A; -this is comment</p> 
+<p>COMMAND -comment</p> 
+<p>A AND COMMAND B;</p> 
+<p>注意字符串内的”-“&#xff0c;不是注释。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>文本文件</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>包含的文本数量</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>COMMAND TABLE IF EXISTS &#34;UNITED STATE&#34;;<br /> COMMAND A GREAT (<br /> ID ADSAB,<br /> download_length INTE-GER, -- test<br /> file_name TEXT,<br /> guid TEXT,<br /> mime_type TEXT,<br /> notifica-tionid INTEGER,<br /> original_file_name TEXT,<br /> pause_reason_type INTEGER,<br /> resumable_flag INTEGER,<br /> start_time INTEGER,<br /> state INTEGER,<br /> folder TEXT,<br /> path TEXT,<br /> total_length INTE-GER,<br /> url TEXT<br /> );</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>梳理一下题目信息&#xff1a;</p> 
+<ul><li>一行中可以有多条文本&#xff0c;比如一行输入为&#xff1a;<span style="color:#fe2c24;">abc;abc;abc;</span> 此时该行有三条文本。</li><li>一条文本以分号结束</li><li>成对双引号、成对单引号中的分号&#xff0c;无法作为一条文本结束的标志</li><li>注释符号后面的分号&#xff0c;无法作为一条文本结束的标志</li><li>成对双引号、成对单引号中的注释符号失效</li><li>成对双引号、成对单引号中可能存在转义字符</li></ul> 
+<p></p> 
+<p>本题要我们求解文本条数&#xff0c;其实可以转化为求解<span style="color:#fe2c24;">有效</span>分号个数。</p> 
+<p>而无效分号&#xff0c;其实就是&#xff1a;</p> 
+<ul><li>成对双引号、成对单引号中的分号</li><li>注释符号后面的分号</li></ul> 
+<p></p> 
+<p>我的解题思路如下&#xff0c;假设一行字符串为line&#xff1a;</p> 
+<ol><li>首先&#xff0c;将line中的转义双引号、转义单引号去掉&#xff0c;避免影响成对双引号、成对单引号的判断</li><li>然后&#xff0c;将line中的成对双引号及其中内容、成对单引号及其中内容去除&#xff0c;这样可以简单粗暴的去除成对双引号、成对单引号中的注释符号、分号</li><li>之后&#xff0c;将line中注释内容&#xff08;即&#xff1a;‘-’及其后内容&#xff09;去掉&#xff0c;这样可以简单粗暴的去除注释中的分号</li><li>此时line中就只会剩下分号&#xff0c;我们需要处理一些特殊情况&#xff0c;比如空文本不能算语句&#xff0c;我们可以将line中的空白字符去除掉</li><li>经过上一步处理&#xff0c;如果line中存在空白文本&#xff0c;则去除空白字符后&#xff0c;必然会出现类似于 <span style="color:#fe2c24;">abc;;</span> 这种连续分号的现象&#xff0c;此时我们应该将连续分号替换为单个分号</li><li>经过上一步处理&#xff0c;还有一种特殊情况&#xff0c;比如 <span style="color:#fe2c24;">;abc</span> 这种&#xff0c;我们需要去除开头分号</li><li>最后&#xff0c;line中剩余几个分号&#xff0c;就代表此行存在几个文本</li></ol> 
+<p>上面逻辑&#xff0c;如果使用字符串操作来写&#xff0c;则较为复杂&#xff0c;我这里直接使用了正则表达式来处理。</p> 
+<p></p> 
+<p>另外&#xff0c;需要注意的是&#xff0c;题目描述中说</p> 
+<blockquote> 
+ <p>文本以”;”分隔&#xff0c;最后一条可以没有”;”</p> 
+</blockquote> 
+<p>这句话的意思应该是&#xff0c;最后一行输入中的最后一条文本&#xff0c;可以没有分号。</p> 
+<p>比如最后一行为 <span style="color:#fe2c24;">abc;abc</span></p> 
+<p>此时最后一行其实有两条文本&#xff0c;因为最后一条可以没有分号。</p> 
+<p>关于最后一行&#xff0c;我们可以粗暴的直接给它拼接一个分号&#xff0c;这样话&#xff0c;无论最后一行的最后一条有没有分号&#xff0c;我们都能保证前面的逻辑可以统计到最后一行。</p> 
+<hr /> 
+<p>2023.09.05 根据考友提示&#xff0c;上面逻辑存在漏洞&#xff0c;成对双引号、成对单引号之间的内容不能直接替换为空串&#xff0c;因为对于如下情况&#xff1a;</p> 
+<blockquote> 
+ <p>&#34;abc&#34;;&#34;abc&#34;;&#34;abc&#34;;</p> 
+</blockquote> 
+<p>其实应该是3行。</p> 
+<p>我们可以将成对双引号、成对单引号之间的内容替换为简单串&#xff0c;比如a</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  if (line &#61;&#61;&#61; &#34;&#34;) {
+    console.log(getResult(lines));
+    lines.length &#61; 0;
+  } else {
+    lines.push(line);
+  }
+});
+
+function getResult(lines) {
+  let s &#61; lines
+    .map(
+      (line) &#61;&gt;
+        line
+          .replaceAll(/\\\\[\&#34;&#39;]/g, &#34;&#34;) // 替换\&#34;和\&#39;为空串
+          .replaceAll(/&#34;.*?&#34;/g, &#34;a&#34;) // 将成对双引号及其中内容替换为空串
+          .replaceAll(/&#39;.*?&#39;/g, &#34;a&#34;) // 将成对单引号及其中内容替换为空串
+          .replaceAll(/-.&#43;/g, &#34;&#34;) // 将-往后的注释替换为空串
+          .replaceAll(/\s&#43;/g, &#34;&#34;) // 将空白字符替换为空串
+          .replaceAll(/;&#43;/g, &#34;;&#34;) // 将连续分号替换为单个分号
+    )
+    .join(&#34;&#34;);
+
+  // 题目描述说&#xff1a;文本以”;”分隔&#xff0c;最后一条可以没有”;”
+  // 为了避免复杂处理&#xff0c;这里无论最后一条文本有没有分号&#xff0c;都加一个
+  s &#43;&#61; &#34;;&#34;;
+
+  // 下面处理主要是为了处理跨行文本
+  /***
+   * 比如
+   * aaaa;
+   * ;aaaa
+   *
+   * 比如
+   * ;aaaa
+   * ;aaaa
+   */
+  s &#61; s.replaceAll(/;&#43;/g, &#34;;&#34;).replaceAll(/^;/g, &#34;&#34;);
+
+  // 记录文本条数
+  let count &#61; 0;
+
+  for (let c of s) {
+    if (c &#61;&#61; &#34;;&#34;) count&#43;&#43;; // 此时一行有几个分号&#xff0c;就代表几条文本
+  }
+
+  return count;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+ 
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+ 
+    LinkedList&lt;String&gt; lines &#61; new LinkedList&lt;&gt;();
+    while (sc.hasNextLine()) {
+      String line &#61; sc.nextLine();
+ 
+      if (&#34;&#34;.equals(line)) {
+        System.out.println(getResult(lines));
+        sc.close();
+        break;
+      } else {
+        lines.add(line);
+      }
+    }
+  }
+ 
+  // 算法入口
+  public static int getResult(LinkedList&lt;String&gt; lines) {
+    StringBuilder sb &#61; new StringBuilder();
+ 
+    for (String line : lines) {
+      line &#61;
+          line.replaceAll(&#34;\\\\[\&#34;&#39;]&#34;, &#34;&#34;) // 替换\&#34;和\&#39;为空串
+              .replaceAll(&#34;\&#34;.*?\&#34;&#34;, &#34;a&#34;) // 将成对双引号及其中内容替换为空串
+              .replaceAll(&#34;&#39;.*?&#39;&#34;, &#34;a&#34;) // 将成对单引号及其中内容替换为空串
+              .replaceAll(&#34;-.&#43;&#34;, &#34;&#34;) // 将-往后的注释替换为空串
+              .replaceAll(&#34;\\s&#43;&#34;, &#34;&#34;) // 将空白字符替换为空串
+              .replaceAll(&#34;;&#43;&#34;, &#34;;&#34;); // 将连续分号替换为单个分号
+ 
+      sb.append(line);
+    }
+ 
+    // 题目描述说&#xff1a;文本以”;”分隔&#xff0c;最后一条可以没有”;”
+    // 为了避免复杂处理&#xff0c;这里无论最后一条文本有没有分号&#xff0c;都加一个
+    sb.append(&#34;;&#34;);
+ 
+    // 下面处理主要是为了处理跨行文本
+    /***
+     * 比如
+     * aaaa;
+     * ;aaaa
+     *
+     * 比如
+     * ;aaaa
+     * ;aaaa
+     */
+    String s &#61; sb.toString().replaceAll(&#34;;&#43;&#34;, &#34;;&#34;).replaceAll(&#34;^;&#34;, &#34;&#34;);
+ 
+    // 记录文本条数
+    int count &#61; 0;
+ 
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      if (s.charAt(i) &#61;&#61; &#39;;&#39;) count&#43;&#43;;
+    }
+ 
+    return count;
+  }
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 算法入口
+import re
+
+
+def fn(s):
+    s &#61; re.sub(&#34;\\[\&#34;&#39;]&#34;, &#34;&#34;, s)  # 替换\&#34;和\&#39;为空串
+    s &#61; re.sub(&#34;\&#34;.*?\&#34;&#34;, &#34;a&#34;, s)  # 将成对双引号及其中内容替换为空串
+    s &#61; re.sub(&#34;&#39;.*?&#39;&#34;, &#34;a&#34;, s)  # 将成对单引号及其中内容替换为空串
+    s &#61; re.sub(&#34;-.&#43;&#34;, &#34;&#34;, s)  # 将-往后的注释替换为空串
+    s &#61; re.sub(&#34;\\s&#43;&#34;, &#34;&#34;, s)  # 将空白字符替换为空串
+    s &#61; re.sub(&#34;;&#43;&#34;, &#34;;&#34;, s)  # 将连续分号替换为单个分号
+    return s
+
+
+def getResult(lines):
+    s &#61; &#34;&#34;.join(map(fn, lines))
+
+    # 题目描述说&#xff1a;文本以”;”分隔&#xff0c;最后一条可以没有”;”
+    # 为了避免复杂处理&#xff0c;这里无论最后一条文本有没有分号&#xff0c;都加一个
+    s &#43;&#61; &#34;;&#34;
+
+    # 下面处理主要是为了处理跨行文本
+    &#34;&#34;&#34;
+    比如
+    aaaa;
+    ;aaaa
+
+    比如
+    ;aaaa
+    ;aaaa
+    &#34;&#34;&#34;
+    s &#61; re.sub(&#34;;&#43;&#34;, &#34;;&#34;, s)
+    s &#61; re.sub(&#34;^;&#34;, &#34;&#34;, s)
+
+    # 记录文本条数
+    count &#61; 0
+
+    for c in s:
+        if c &#61;&#61; &#39;;&#39;:
+            count &#43;&#61; 1  # 此时一行有几个分号&#xff0c;就代表几条文本
+
+    return count
+
+
+# 输入获取
+lines &#61; []
+
+while True:
+    line &#61; input()
+
+    if line !&#61; &#34;&#34;:
+        lines.append(line)
+    else:
+        print(getResult(lines))
+        break
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

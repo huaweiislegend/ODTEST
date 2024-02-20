@@ -1,0 +1,560 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 人气最高的店铺（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某购物城有m个商铺&#xff0c;现决定举办一场活动选出人气最高店铺。</p> 
+<p>活动共有n位市民参与&#xff0c;每位市民只能投一票&#xff0c;但1号店铺如果给该市民发放 q 元的购物补贴&#xff0c;该市民会改为投1号店铺。</p> 
+<p>请计算1号店铺需要最少发放多少元购物补贴才能成为人气最高店铺&#xff08;即获得的票数要大于其他店铺&#xff09;&#xff0c;如果1号店铺本身就是票数最高店铺&#xff0c;返回0。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为小写逗号分割的两个整数n&#xff0c;m&#xff0c;其中&#xff1a;</p> 
+<ul><li>第一个整数n表示参与的市民总数</li><li>第二个整数m代表店铺总数</li><li>1 ≤ n,m ≤ 3000</li></ul> 
+<p>第2到n&#43;1行&#xff0c;每行为小写逗号分割的两个整数p&#xff0c;q&#xff0c;表示市民的意向投票情况&#xff0c;其中每行的&#xff1a;</p> 
+<ul><li>第一个整数p表示该市民意向投票给p号店铺</li><li>第二个整数q表示其改投1号店铺所需给予的q元购物补贴</li><li>1 ≤ p ≤ m</li><li>1 ≤ g ≤ 10^9</li></ul> 
+<p></p> 
+<p>不考虑输入的格式问题</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>1号店铺需要最少发放购物补贴金额</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1"><tbody><tr><td style="width:70px;">输入</td><td style="width:618px;">5,5<br /> 2,10<br /> 3,20<br /> 4,30<br /> 5,40<br /> 5,90</td></tr><tr><td style="width:70px;">输出</td><td style="width:618px;">50</td></tr><tr><td style="width:70px;">说明</td><td style="width:618px;"> <p>有5个人参与&#xff0c;共5个店铺。<br /> 如果选择发放 10元&#43;20元&#43;30元&#61;60元 的补贴来抢2,3.4号店铺的票&#xff0c;总共发放了60元补贴&#xff08;5号店铺有2票&#xff0c;1号店铺要3票才能胜出&#xff09;</p> <p>如果选择发放 10元&#43;40元&#61;50元 的补贴来抢2,5号店铺的票&#xff0c;总共发放了50元补贴&#xff08;抢了5号店铺的票后&#xff0c;现在1号店铺只要2票就能胜出&#xff09;</p> <p>所以最少发放50元补贴</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1"><tbody><tr><td style="width:69px;">输入</td><td style="width:619px;">5,5<br /> 2,10<br /> 3,20<br /> 4,30<br /> 5,80<br /> 5,90</td></tr><tr><td style="width:69px;">输出</td><td style="width:619px;">60</td></tr><tr><td style="width:69px;">说明</td><td style="width:619px;"> <p>有5个人参与&#xff0c;共5个店铺。</p> <p>如果选择发放 10元&#43;20元&#43;30元&#61;60元 的补贴来抢2,3,4号店铺的票&#xff0c;总共发放了60元补贴(5号店铺有2票&#xff0c;1号店铺要3票才能胜出)</p> <p>如果选择发放 10元&#43;80元&#61;90元 的补贴来抢2,5号店铺的票&#xff0c;总共发放了90元补贴(抢了5号店铺的票后&#xff0c;现在1号店铺只要2票就能胜出)</p> <p>所以最少发放60元补贴</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题就是</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/131966448" rel="nofollow" title="51nod - 1494 选举拉票&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客">51nod - 1494 选举拉票&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客</a></p> 
+<p>的换皮题&#xff0c;具体解析请看该博客的。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 市民数量, 店铺数量
+  const [n, m] &#61; (await readline()).split(&#34;,&#34;).map(Number);
+
+  // shop_costs是一个字典&#xff0c;key为店铺id&#xff0c;value为该店铺名下的市民
+  const shop_costs &#61; {};
+
+  // 记录所有市民中最大的改选花费&#xff0c;用于后面构造权值线段树
+  let max_cost &#61; 0;
+
+  // 记录自己店铺胜选所需要的花费
+  let ans &#61; 0;
+
+  // 获取n行输入
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // 店铺id, 改选自己店铺的花费
+    const [shop, cost] &#61; (await readline()).split(&#34;,&#34;).map(Number);
+
+    // 如果改选花费为0&#xff0c;则说明选的就是自己店铺
+    if (cost &#61;&#61; 0 || shop &#61;&#61; 1) continue;
+
+    // 记录不选自己店铺的市民中最大的改选花费
+    max_cost &#61; Math.max(max_cost, cost);
+
+    // ans记录的是自己店铺胜选所需要的花费&#xff0c;初始时&#xff0c;我们假设让所有不选自己店铺的人都改选自己店铺&#xff0c;那么自己店铺就获得所有选票&#xff0c;此时肯定胜选
+    ans &#43;&#61; cost;
+
+    // shop_costs是一个字典&#xff0c;key为店铺id&#xff0c;value为该店铺名下的市民
+    if (!shop_costs[shop]) shop_costs[shop] &#61; [];
+    shop_costs[shop].push(cost);
+  }
+
+  // scan是扫描线矩阵
+  const scan &#61; [];
+  for (let costs of Object.values(shop_costs)) {
+    costs.sort((a, b) &#61;&gt; b - a);
+
+    for (let i &#61; 0; i &lt; costs.length; i&#43;&#43;) {
+      if (scan.length &lt;&#61; i) scan.push([]);
+      scan[i].push(costs[i]);
+    }
+  }
+
+  // 我手中的票&#xff0c;初始时&#xff0c;假设我们想获得所有票
+  let my_ticket_count &#61; n;
+  // 获得所有票的花费
+  let my_ticket_cost &#61; ans;
+
+  // 构建权值线段树
+  const tree &#61; new WSegmentTree(max_cost);
+
+  // 开始扫描
+  for (let i &#61; 0; i &lt; scan.length; i&#43;&#43;) {
+    //  被扫描线扫到的都是每个店铺名下改选花费最大的市民&#xff0c;对于这部分市民&#xff0c;我们放弃
+    const line &#61; scan[i];
+
+    for (let cost of line) {
+      // 将被放弃的市民的改选费用加入权值线段树&#xff0c;后面如果自己店铺票数不够&#xff0c;还需要复活一些市民
+      tree.add(1, 1, max_cost, cost);
+      // 由于放弃了这部分市民&#xff0c;因此可以去除他们的改选花费
+      my_ticket_cost -&#61; cost;
+      // 由于放弃了这部分市民&#xff0c;因此相应票数也要去除
+      my_ticket_count -&#61; 1;
+    }
+
+    let extra_ticket_cost &#61; 0;
+    // 此时其他店铺的选票数为i&#43;1&#xff0c;因此如果我们的选票数my_ticket_count &lt;&#61; i&#43;1&#xff0c;则无法取胜
+    if (my_ticket_count &lt;&#61; i &#43; 1) {
+      // 我们手中总票数只有达到 i&#43;2 张&#xff0c;才能战胜其他店铺&#xff0c;但是注意 i&#43;2 不能超过总票数n, 因此我们还需要正确额外的 min(i&#43;2, n) - my_ticket_count 张票
+      const extra_ticket_count &#61; Math.min(i &#43; 2, n) - my_ticket_count;
+      // 高效的求解一组数中的前x小数之和&#xff0c;可以基于权值线段树求解&#xff0c;相当于求解前extra_ticket_count小之和
+      extra_ticket_cost &#61; tree.query(1, 1, max_cost, extra_ticket_count);
+    }
+
+    // 每轮扫描线扫描后&#xff0c;计算其花费&#xff0c;保留最小花费作为题解
+    ans &#61; Math.min(ans, my_ticket_cost &#43; extra_ticket_cost);
+  }
+
+  console.log(ans);
+})();
+
+// 权值线段树
+class WSegmentTree {
+  constructor(n) {
+    // 线段树都要开4n的空间
+    this.count &#61; new Array(n &lt;&lt; 2).fill(0); // 权值树
+    this.sum &#61; new Array(n &lt;&lt; 2).fill(0); // 和树
+  }
+
+  /**
+   * 向权值线段树中加入一个数
+   * &#64;param {*} k 当前所在的线段树节点的序号
+   * &#64;param {*} l 前所在的线段树节点 对应的区间范围的左边界
+   * &#64;param {*} r 当前所在的线段树节点 对应的区间范围的右边界
+   * &#64;param {*} val 要加入权值线段数的数
+   */
+  add(k, l, r, val) {
+    // 到达叶子节点
+    if (l &#61;&#61; r) {
+      this.count[k] &#43;&#61; 1;
+      this.sum[k] &#43;&#61; val;
+      return;
+    }
+
+    // 节点k的左子节点序号
+    const lson &#61; k &lt;&lt; 1; // 相当于 2 * k
+    const rson &#61; (k &lt;&lt; 1) | 1; // 相当于 2 * k &#43; 1
+
+    // 左子节点对应区间范围[l, mid]
+    // 右子节点对应区间范围[mid&#43;1, r]
+    const mid &#61; (l &#43; r) &gt;&gt; 1;
+
+    if (val &lt;&#61; mid) {
+      // 要加入的数val&#xff0c;在左子节点区间范围内
+      this.add(lson, l, mid, val);
+    } else {
+      // 要加入的数val&#xff0c;在右子节点区间范围内
+      this.add(rson, mid &#43; 1, r, val);
+    }
+
+    // 回溯统计
+    this.count[k] &#61; this.count[lson] &#43; this.count[rson];
+    this.sum[k] &#61; this.sum[lson] &#43; this.sum[rson];
+  }
+
+  /**
+   * 求解前rank小数之和
+   * &#64;param {*} k 当前所在的线段树节点的序号
+   * &#64;param {*} l 当前所在的线段树节点 对应的区间范围的左边界
+   * &#64;param {*} r 当前所在的线段树节点 对应的区间范围的右边界
+   * &#64;param {*} rank 求解前rank小数之和的rank值
+   * &#64;returns 前rank小数之和
+   */
+  query(k, l, r, rank) {
+    // 到达叶子节点
+    if (l &#61;&#61; r) {
+      return rank * l;
+    }
+
+    // 节点k的左子节点序号
+    const lson &#61; k &lt;&lt; 1;
+    // 节点k的右子节点序号
+    const rson &#61; (k &lt;&lt; 1) | 1;
+
+    // 左子节点对应区间范围[l, mid]
+    // 右子节点对应区间范围[mid&#43;1, r]
+    const mid &#61; (l &#43; r) &gt;&gt; 1;
+
+    // this.count统计的是某区间范围内元素的数量&#xff0c;这些数量累加起来就是对应元素的排名
+    if (this.count[lson] &lt; rank) {
+      // 如果左子节点的元素数量 &lt; rank&#xff0c;那么说明前rank个数&#xff0c;还有部分在右子节点中
+      return (
+        this.sum[lson] &#43; this.query(rson, mid &#43; 1, r, rank - this.count[lson])
+      );
+    } else if (this.count[lson] &gt; rank) {
+      // 如果左子节点的元素数量 &gt; rank&#xff0c;那么说明前rank个数都在左子节点中&#xff0c;需要继续分解
+      return this.query(lson, l, mid, rank);
+    } else {
+      // 如果左子节点元素数量 &#61;&#61; rank&#xff0c;那么说明前rank个数就是左子节点内的元素&#xff0c;此时要求前rank小数之和&#xff0c;其实就是this.sum[lson]
+      return this.sum[lson];
+    }
+  }
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in).useDelimiter(&#34;[\n,]&#34;);
+
+    // 市民数量
+    int n &#61; sc.nextInt();
+    // 店铺数量
+    int m &#61; sc.nextInt();
+
+    // shop_costs是一个字典&#xff0c;key为店铺id&#xff0c;value为该店铺名下的市民
+    HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; shop_costs &#61; new HashMap&lt;&gt;();
+
+    // 记录所有市民中最大的改选花费&#xff0c;用于后面构造权值线段树
+    int max_cost &#61; 0;
+    // 记录自己店铺胜选所需要的花费
+    long ans &#61; 0;
+
+    // 获取n行输入
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 店铺id, 改选自己店铺的花费
+      int shop &#61; sc.nextInt();
+      int cost &#61; sc.nextInt();
+
+      // 如果改选花费为0&#xff0c;则说明选的就是自己店铺
+      if (cost &#61;&#61; 0 || shop &#61;&#61; 1) continue;
+
+      // 记录不选自己店铺的市民中最大的改选花费
+      max_cost &#61; Math.max(max_cost, cost);
+      // ans记录的是自己店铺胜选所需要的花费&#xff0c;初始时&#xff0c;我们假设让所有不选自己店铺的人都改选自己店铺&#xff0c;那么自己店铺就获得所有选票&#xff0c;此时肯定胜选
+      ans &#43;&#61; cost;
+
+      // shop_costs是一个字典&#xff0c;key为店铺id&#xff0c;value为该店铺名下的市民
+      shop_costs.putIfAbsent(shop, new ArrayList&lt;&gt;());
+      shop_costs.get(shop).add(cost);
+    }
+
+    // scan是扫描线矩阵
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; scan &#61; new ArrayList&lt;&gt;();
+    for (ArrayList&lt;Integer&gt; costs : shop_costs.values()) {
+      costs.sort((a, b) -&gt; b - a);
+
+      for (int i &#61; 0; i &lt; costs.size(); i&#43;&#43;) {
+        if (scan.size() &lt;&#61; i) scan.add(new ArrayList&lt;&gt;());
+        scan.get(i).add(costs.get(i));
+      }
+    }
+
+    // 我手中的票&#xff0c;初始时&#xff0c;假设我们想获得所有票
+    int my_ticket_count &#61; n;
+    // 获得所有票的花费
+    long my_ticket_cost &#61; ans;
+
+    // 构建权值线段树
+    WSegmentTree tree &#61; new WSegmentTree(max_cost);
+
+    // 开始扫描
+    for (int i &#61; 0; i &lt; scan.size(); i&#43;&#43;) {
+      //  被扫描线扫到的都是每个店铺名下改选花费最大的市民&#xff0c;对于这部分市民&#xff0c;我们放弃
+      ArrayList&lt;Integer&gt; line &#61; scan.get(i);
+
+      for (Integer cost : line) {
+        // 将被放弃的市民的改选费用加入权值线段树&#xff0c;后面如果自己店铺票数不够&#xff0c;还需要复活一些市民
+        tree.add(1, 1, max_cost, cost);
+        // 由于放弃了这部分市民&#xff0c;因此可以去除他们的改选花费
+        my_ticket_cost -&#61; cost;
+        // 由于放弃了这部分市民&#xff0c;因此相应票数也要去除
+        my_ticket_count -&#61; 1;
+      }
+
+      int extra_ticket_cost &#61; 0;
+      // 此时其他店铺的选票数为i&#43;1&#xff0c;因此如果我们的选票数my_ticket_count &lt;&#61; i&#43;1&#xff0c;则无法取胜
+      if (my_ticket_count &lt;&#61; i &#43; 1) {
+        // 我们手中总票数只有达到 i&#43;2 张&#xff0c;才能战胜其他店铺&#xff0c;但是注意 i&#43;2 不能超过总票数n,
+        // 因此我们还需要正确额外的 min(i&#43;2, n) - my_ticket_count张票
+        int extra_ticket_count &#61; Math.min(i &#43; 2, n) - my_ticket_count;
+        // 高效的求解一组数中的前x小数之和&#xff0c;可以基于权值线段树求解&#xff0c;相当于求解前extra_ticket_count小之和
+        extra_ticket_cost &#61; tree.query(1, 1, max_cost, extra_ticket_count);
+      }
+
+      // 每轮扫描线扫描后&#xff0c;计算其花费&#xff0c;保留最小花费作为题解
+      ans &#61; Math.min(ans, my_ticket_cost &#43; extra_ticket_cost);
+    }
+
+    System.out.println(ans);
+  }
+}
+
+// 权值线段树
+class WSegmentTree {
+  int[] count; // 权值树
+  int[] sum; // 和树
+
+  public WSegmentTree(int n) {
+    // 线段树都要开4n的空间
+    this.count &#61; new int[n &lt;&lt; 2];
+    this.sum &#61; new int[n &lt;&lt; 2];
+  }
+
+  /**
+   * 向权值线段树中加入一个数
+   *
+   * &#64;param k 当前所在的线段树节点的序号
+   * &#64;param l 当前所在的线段树节点 对应的区间范围的左边界
+   * &#64;param r 当前所在的线段树节点 对应的区间范围的右边界
+   * &#64;param val 要加入权值线段数的数
+   */
+  public void add(int k, int l, int r, int val) {
+    // 到达叶子节点
+    if (l &#61;&#61; r) {
+      this.count[k] &#43;&#61; 1;
+      this.sum[k] &#43;&#61; val;
+      return;
+    }
+
+    // 节点k的左子节点序号
+    int lson &#61; k &lt;&lt; 1; // 相当于 2 * k
+    // 节点k的右子节点序号
+    int rson &#61; k &lt;&lt; 1 | 1; // 相当于 2 * k &#43; 1
+
+    // 左子节点对应区间范围[l, mid]
+    // 右子节点对应区间范围[mid&#43;1, r]
+    int mid &#61; (l &#43; r) &gt;&gt; 1;
+
+    if (val &lt;&#61; mid) {
+      // 要加入的数val&#xff0c;在左子节点区间范围内
+      this.add(lson, l, mid, val);
+    } else {
+      // 要加入的数val&#xff0c;在右子节点区间范围内
+      this.add(rson, mid &#43; 1, r, val);
+    }
+
+    // 回溯统计
+    this.count[k] &#61; this.count[lson] &#43; this.count[rson];
+    this.sum[k] &#61; this.sum[lson] &#43; this.sum[rson];
+  }
+
+  /**
+   * 求解前rank小数之和
+   *
+   * &#64;param k 当前所在的线段树节点的序号
+   * &#64;param l 当前所在的线段树节点 对应的区间范围的左边界
+   * &#64;param r 当前所在的线段树节点 对应的区间范围的右边界
+   * &#64;param rank 求解前rank小数之和的rank值
+   * &#64;return 前rank小数之和
+   */
+  public int query(int k, int l, int r, int rank) {
+    // 到达叶子节点
+    if (l &#61;&#61; r) {
+      return rank * l;
+    }
+
+    // 节点k的左子节点序号
+    int lson &#61; k &lt;&lt; 1;
+    // 节点k的右子节点序号
+    int rson &#61; k &lt;&lt; 1 | 1;
+
+    // 左子节点对应区间范围[l, mid]
+    // 右子节点对应区间范围[mid&#43;1, r]
+    int mid &#61; (l &#43; r) &gt;&gt; 1;
+
+    // this.count统计的是某区间范围内元素的数量&#xff0c;这些数量累加起来就是对应元素的排名
+    if (this.count[lson] &lt; rank) {
+      // 如果左子节点的元素数量 &lt; rank&#xff0c;那么说明前rank个数&#xff0c;还有部分在右子节点中
+      return this.sum[lson] &#43; this.query(rson, mid &#43; 1, r, rank - this.count[lson]);
+    } else if (this.count[lson] &gt; rank) {
+      // 如果左子节点的元素数量 &gt; rank&#xff0c;那么说明前rank个数都在左子节点中&#xff0c;需要继续分解
+      return this.query(lson, l, mid, rank);
+    } else {
+      // 如果左子节点元素数量 &#61;&#61; rank&#xff0c;那么说明前rank个数就是左子节点内的元素&#xff0c;此时要求前rank小数之和&#xff0c;其实就是this.sum[lson]
+      return this.sum[lson];
+    }
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 权值线段树
+class WSegmentTree:
+    def __init__(self, n):
+        # 线段树都要开4n的空间
+        self.count &#61; [0] * (n &lt;&lt; 2)  # 权值树
+        self.sum &#61; [0] * (n &lt;&lt; 2)  # 和树
+
+    def add(self, k, l, r, val):
+        &#34;&#34;&#34;
+        向权值线段树中加入一个数
+        :param k: 当前所在的线段树节点的序号
+        :param l: 当前所在的线段树节点 对应的区间范围的左边界
+        :param r: 当前所在的线段树节点 对应的区间范围的右边界
+        :param val: 要加入权值线段数的数
+        &#34;&#34;&#34;
+        if l &#61;&#61; r:  # 到达叶子节点
+            self.count[k] &#43;&#61; 1
+            self.sum[k] &#43;&#61; val
+            return
+
+        # 节点k的左子节点序号
+        lson &#61; k &lt;&lt; 1
+        # 节点k的右子节点序号
+        rson &#61; k &lt;&lt; 1 | 1
+
+        # 左子节点对应区间范围[l, mid]
+        # 右子节点对应区间范围[mid&#43;1, r]
+        mid &#61; (l &#43; r) &gt;&gt; 1
+
+        if val &lt;&#61; mid:
+            # 要加入的数val&#xff0c;在左子节点区间范围内
+            self.add(lson, l, mid, val)
+        else:
+            # 要加入的数val&#xff0c;在右子节点区间范围内
+            self.add(rson, mid &#43; 1, r, val)
+
+        # 回溯统计
+        self.count[k] &#61; self.count[lson] &#43; self.count[rson]
+        self.sum[k] &#61; self.sum[lson] &#43; self.sum[rson]
+
+    def query(self, k, l, r, rank):
+        &#34;&#34;&#34;
+        求解前rank小数之和
+        :param k: 当前所在的线段树节点的序号
+        :param l: 当前所在的线段树节点 对应的区间范围的左边界
+        :param r: 当前所在的线段树节点 对应的区间范围的右边界
+        :param rank: 求解前rank小数之和的rank值
+        :return: 前rank小数之和
+        &#34;&#34;&#34;
+        if l &#61;&#61; r:  # 到达叶子节点
+            return rank * l
+
+        # 节点k的左子节点序号
+        lson &#61; k &lt;&lt; 1
+        # 节点k的右子节点序号
+        rson &#61; k &lt;&lt; 1 | 1
+
+        # 左子节点对应区间范围[l, mid]
+        # 右子节点对应区间范围[mid&#43;1, r]
+        mid &#61; (l &#43; r) &gt;&gt; 1
+
+        # this.count统计的是某区间范围内元素的数量&#xff0c;这些数量累加起来就是对应元素的排名
+        if self.count[lson] &lt; rank:
+            # 如果左子节点的元素数量 &lt; rank&#xff0c;那么说明前rank个数&#xff0c;还有部分在右子节点中
+            return self.sum[lson] &#43; self.query(rson, mid &#43; 1, r, rank - self.count[lson])
+        elif self.count[lson] &gt; rank:
+            # 如果左子节点的元素数量 &gt; rank&#xff0c;那么说明前rank个数都在左子节点中&#xff0c;需要继续分解
+            return self.query(lson, l, mid, rank)
+        else:
+            # 如果左子节点元素数量 &#61;&#61; rank&#xff0c;那么说明前rank个数就是左子节点内的元素&#xff0c;此时要求前rank小数之和&#xff0c;其实就是this.sum[lson]
+            return self.sum[lson]
+
+
+# 市民数量&#xff0c;店铺数量
+n, m &#61; map(int, input().split(&#34;,&#34;))
+
+# 记录店铺和其名下的市民
+shop_costs &#61; {}
+# 记录最大的改选花费&#xff0c;用于后面构造权值线段树
+max_cost &#61; 0
+# 记录自己店铺胜选所需要的花费
+ans &#61; 0
+
+# 获取n行输入
+for _ in range(n):
+    # 店铺id, 改选自己店铺的花费
+    shop, cost &#61; map(int, input().split(&#34;,&#34;))
+
+    # 如果改选花费为0&#xff0c;则说明选的就是自己店铺
+    if cost &#61;&#61; 0 or shop &#61;&#61; 1:
+        continue
+
+    # 记录不选自己店铺的市民中最大的改选花费
+    max_cost &#61; max(max_cost, cost)
+    # ans记录的是自己店铺胜选所需要的花费&#xff0c;初始时&#xff0c;我们假设让所有不选自己店铺的人都改选自己店铺&#xff0c;那么自己店铺就获得所有选票&#xff0c;此时肯定胜选
+    ans &#43;&#61; cost
+
+    # shop_costs是一个字典&#xff0c;key为店铺id&#xff0c;value为该店铺名下的市民
+    shop_costs.setdefault(shop, [])
+    shop_costs[shop].append(cost)
+
+# scan是扫描线矩阵
+scan &#61; []
+
+# 初始化扫描线矩阵
+for costs in shop_costs.values():
+    costs.sort(reverse&#61;True)
+
+    for i in range(len(costs)):
+        if len(scan) &lt;&#61; i:
+            scan.append([])
+        scan[i].append(costs[i])
+
+# 我手中的票&#xff0c;初始时&#xff0c;假设我们想获得所有票
+my_ticket_count &#61; n
+# 获得所有票的花费
+my_ticket_cost &#61; ans
+
+# 构建权值线段树
+tree &#61; WSegmentTree(max_cost)
+
+# 开始扫描
+for i, line in enumerate(scan):
+    # 被扫描线扫到的都是每个店铺名下改选花费最大的市民&#xff0c;对于这部分市民&#xff0c;我们放弃
+    for cost in line:
+        tree.add(1, 1, max_cost, cost)
+        # 由于放弃了这部分市民&#xff0c;因此可以去除他们的改选花费
+        my_ticket_cost -&#61; cost
+        # 由于放弃了这部分市民&#xff0c;因此相应票数也要去除
+        my_ticket_count -&#61; 1
+
+    extra_ticket_cost &#61; 0
+    # 此时其他店铺的选票数为i&#43;1&#xff0c;因此如果我们的选票数my_ticket_count &lt;&#61; i&#43;1&#xff0c;则无法取胜
+    if my_ticket_count &lt;&#61; i &#43; 1:
+        # 我们手中总票数只有达到 i&#43;2 张&#xff0c;才能战胜其他店铺&#xff0c;但是注意 i&#43;2 不能超过总票数n, 因此我们还需要正确额外的 min(i&#43;2, n) - my_ticket_count 张票
+        extra_ticket_count &#61; min(i&#43;2, n) - my_ticket_count
+        # 高效的求解一组数中的前x小数之和&#xff0c;可以基于权值线段树求解&#xff0c;相当于求解前extra_ticket_count小之和
+        extra_ticket_cost &#61; tree.query(1, 1, max_cost, extra_ticket_count)
+
+    # 每轮扫描线扫描后&#xff0c;计算其花费&#xff0c;保留最小花费作为题解
+    ans &#61; min(ans, my_ticket_cost &#43; extra_ticket_cost)
+
+print(ans)
+
+
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

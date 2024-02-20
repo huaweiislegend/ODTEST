@@ -1,0 +1,330 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 报数问题（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有n个人围成一圈&#xff0c;顺序排号为1-n。</p> 
+<p>从第一个人开始报数(从1到3报数)&#xff0c;凡报到3的人退出圈子&#xff0c;问最后留下的是原来第几号的那位。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入人数n&#xff08;n &lt; 1000&#xff09;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出最后留下的是原来第几号</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">报数序号为1的人最终报3&#xff0c;因此序号1的人退出圈子&#xff0c;最后剩下序号为2的那位</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是经典的约瑟夫环问题&#xff0c;最佳解题策略是利用循环链表。</p> 
+<p>因此&#xff0c;本题的关键是实现循环链表。</p> 
+<p></p> 
+<p>简易的循环链表实现&#xff1a;</p> 
+<ul><li>循环链表节点定义</li></ul> 
+<ol><li>节点双向性prev、next&#xff08;方便节点删除&#xff09;</li><li>节点值val</li></ol> 
+<hr /> 
+<ul><li>循环链表的属性&#xff1a;</li></ul> 
+<ol><li>链表长度size</li><li>链表头节点head</li><li>链表尾节点tail</li></ol> 
+<hr /> 
+<ul><li>循环链表的操作</li></ul> 
+<ol><li>尾增节点&#xff08;append操作&#xff09;</li><li>删除任意节点&#xff08;remove操作&#xff09;</li></ol> 
+<hr /> 
+<p>循环链表尾增节点&#xff0c;需要注意&#xff1a;</p> 
+<ul><li>如果size&gt;0&#xff0c;则相当于只需要更新循环链表的尾节点tail</li><li>如果size &#61;&#61; 0&#xff0c;则相当于更新循环链表的head和tail</li></ul> 
+<p>循环链表删除任意节点&#xff0c;需要注意&#xff1a;</p> 
+<ul><li>如果删除的不是head&#xff0c;tail节点&#xff0c;则只需要将被删除节点的prev和next节点关联</li><li>如果删除的是head或tail&#xff0c;则还需要更新head、tail指向</li></ul> 
+<p>具体实现请对照下面CycleLinkedList代码来看。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(parseInt(line)));
+});
+
+function getResult(n) {
+  const list &#61; new CycleLinkedList();
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) list.append(i);
+
+  let num &#61; 1;
+  let cur &#61; list.head;
+
+  while (list.size &gt; 1) {
+    if (num &#61;&#61; 3) {
+      num &#61; 1;
+      cur &#61; list.remove(cur);
+    } else {
+      num&#43;&#43;;
+      cur &#61; cur.next;
+    }
+  }
+
+  return cur.val;
+}
+
+class CycleLinkedList {
+  constructor() {
+    this.head &#61; null;
+    this.tail &#61; null;
+    this.size &#61; 0;
+  }
+
+  append(val) {
+    const node &#61; new Node(val);
+
+    if (this.size &gt; 0) {
+      this.tail.next &#61; node;
+      node.prev &#61; this.tail;
+      this.tail &#61; node;
+    } else {
+      this.head &#61; node;
+      this.tail &#61; node;
+    }
+
+    this.head.prev &#61; this.tail;
+    this.tail.next &#61; this.head;
+    this.size&#43;&#43;;
+  }
+
+  remove(cur) {
+    const pre &#61; cur.prev;
+    const nxt &#61; cur.next;
+
+    pre.next &#61; nxt;
+    nxt.prev &#61; pre;
+
+    cur.next &#61; cur.prev &#61; null;
+
+    if (this.head &#61;&#61;&#61; cur) {
+      this.head &#61; nxt;
+    }
+
+    if (this.tail &#61;&#61;&#61; cur) {
+      this.tail &#61; pre;
+    }
+
+    this.size--;
+
+    return nxt;
+  }
+}
+
+class Node {
+  constructor(val) {
+    this.val &#61; val;
+    this.prev &#61; null;
+    this.next &#61; null;
+  }
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextInt()));
+  }
+
+  public static int getResult(int n) {
+    CycleLinkedList list &#61; new CycleLinkedList();
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) list.append(i);
+
+    int num &#61; 1;
+    Node cur &#61; list.head;
+
+    while (list.size &gt; 1) {
+      if (num &#61;&#61; 3) {
+        num &#61; 1;
+        cur &#61; list.remove(cur);
+      } else {
+        num&#43;&#43;;
+        cur &#61; cur.next;
+      }
+    }
+
+    return cur.val;
+  }
+}
+
+class Node {
+  int val;
+  Node prev;
+  Node next;
+
+  public Node(int val) {
+    this.val &#61; val;
+    this.prev &#61; null;
+    this.next &#61; null;
+  }
+}
+
+class CycleLinkedList {
+  Node head;
+  Node tail;
+  int size;
+
+  public CycleLinkedList() {
+    this.head &#61; null;
+    this.tail &#61; null;
+    this.size &#61; 0;
+  }
+
+  public void append(int val) {
+    Node node &#61; new Node(val);
+
+    if (this.size &gt; 0) {
+      this.tail.next &#61; node;
+      node.prev &#61; this.tail;
+    } else {
+      this.head &#61; node;
+    }
+
+    this.tail &#61; node;
+
+    this.head.prev &#61; this.tail;
+    this.tail.next &#61; this.head;
+    this.size&#43;&#43;;
+  }
+
+  public Node remove(Node cur) {
+    Node pre &#61; cur.prev;
+    Node nxt &#61; cur.next;
+
+    pre.next &#61; nxt;
+    nxt.prev &#61; pre;
+
+    cur.next &#61; cur.prev &#61; null;
+
+    if (this.head &#61;&#61; cur) {
+      this.head &#61; nxt;
+    }
+
+    if (this.tail &#61;&#61; cur) {
+      this.tail &#61; pre;
+    }
+
+    this.size--;
+
+    return nxt;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">class Node:
+    def __init__(self, val):
+        self.val &#61; val
+        self.prev &#61; None
+        self.next &#61; None
+
+
+class CycleLinkedList:
+    def __init__(self):
+        self.size &#61; 0
+        self.head &#61; None
+        self.tail &#61; None
+
+    def append(self, val):
+        node &#61; Node(val)
+
+        if self.size &gt; 0:
+            self.tail.next &#61; node
+            node.prev &#61; self.tail
+            self.tail &#61; node
+        else:
+            self.head &#61; node
+            self.tail &#61; node
+
+        self.head.prev &#61; self.tail
+        self.tail.next &#61; self.head
+        self.size &#43;&#61; 1
+
+    def remove(self, cur):
+        pre &#61; cur.prev
+        nxt &#61; cur.next
+
+        pre.next &#61; nxt
+        nxt.prev &#61; pre
+
+        cur.next &#61; cur.prev &#61; None
+
+        if self.head &#61;&#61; cur:
+            self.head &#61; nxt
+
+        if self.tail &#61;&#61; cur:
+            self.tail &#61; pre
+
+        self.size -&#61; 1
+
+        return nxt
+
+
+# 输入获取
+n &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    link &#61; CycleLinkedList()
+
+    for i in range(1, n &#43; 1):
+        link.append(i)
+
+    num &#61; 1
+    cur &#61; link.head
+
+    while link.size &gt; 1:
+        if num &#61;&#61; 3:
+            num &#61; 1
+            cur &#61; link.remove(cur)
+        else:
+            num &#43;&#61; 1
+            cur &#61; cur.next
+
+    return cur.val
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

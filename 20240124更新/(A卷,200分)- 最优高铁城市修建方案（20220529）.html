@@ -1,0 +1,480 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 最优高铁城市修建方案（20220529）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>高铁城市圈对人们的出行、经济的拉动效果明显。每年都会规划新的高铁城市圈建设。</p> 
+<p>在给定城市数量、可建设高铁的两城市间的修建成本列表、以及结合城市商业价值会固定建设的两城市建高铁。</p> 
+<p>请你设计算法&#xff0c;达到修建城市高铁的最低成本。注意&#xff0c;需要满足城市圈内城市间两两互联可达(通过其他城市中转可达也属于满足条件&#xff09;。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入信息包括&#xff1a;</p> 
+<ol><li>第一行&#xff0c;包含此城市圈中城市的数量、可建设高铁的两城市间修建成本列表数量、必建高铁的城市列表。三个数字用空格间隔。</li><li>可建设高铁的两城市间的修建成本列表&#xff0c;为多行输入数据&#xff0c;格式为3个数字&#xff0c;用空格分隔&#xff0c;长度不超过1000。</li><li>固定要修建的高铁城市列表&#xff0c;是上面参数2的子集&#xff0c;可能为多行&#xff0c;每行输入为2个数字&#xff0c;以空格分隔。</li></ol> 
+<p>城市id从1开始编号&#xff0c;建设成本的取值为正整数&#xff0c;取值范围均不会超过1000</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>修建城市圈高铁的最低成本&#xff0c;正整数。如果城市圈内存在两城市之间无法互联&#xff0c;则返回-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 3 0<br /> 1 2 10<br /> 1 3 100<br /> 2 3 50</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">60</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">3 3 0城市圈数量为3&#xff0c;表示城市id分别为1,2,3<br /> 1 2 10城市1&#xff0c;2间的高铁修建成本为10<br /> 1 3 100城市1&#xff0c;3间的高铁修建成本为100<br /> 2 3 50城市2&#xff0c;3间的高铁修建成本为50<br /> 满足修建成本最低&#xff0c;只需要建设城市1&#xff0c;2间&#xff0c;城市2&#xff0c;3间的高铁即可&#xff0c;城市1&#xff0c;3之间可通过城市2中转来互联。这样最低修建成本就是60。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 3 1<br /> 1 2 10<br /> 1 3 100<br /> 2 3 50<br /> 1 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">110</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>3 3 1 城市圈数量为3&#xff0c;表示城市id分别为1&#xff0c;2&#xff0c;3</p> <p>1 2 10 城市1&#xff0c;2间的高铁修建成本为10</p> <p>1 3 100 城市1&#xff0c;3间的高铁修建成本为100</p> <p>2 3 50 城市2&#xff0c;3间的高铁修建成本为50</p> <p>1 3 城市1&#xff0c;3间的高铁必须修建</p> <p>因为城市1&#xff0c;3间的高铁必须修建&#xff0c;在满足互联的条件下&#xff0c;再增加修建城市1&#xff0c;2间的高铁即可&#xff0c;最低成本为110</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是求解最小生成树的变种题。</p> 
+<p>在了解最小生成树概念前&#xff0c;我们需要先了解生成树的概念&#xff1a;</p> 
+<blockquote> 
+ <p>在无向连通图中&#xff0c;生成树是指包含了全部顶点的极小连通子图。</p> 
+ <p>生成树包含原图全部的n个顶点和n-1条边。&#xff08;注意&#xff0c;边的数量一定是n-1&#xff09;</p> 
+</blockquote> 
+<p>比如下面无向连通图例子&#xff1a;</p> 
+<p><img alt="" height="280" src="https://img-blog.csdnimg.cn/417664559d374d71b72b89acd6f72a27.png" width="316" /></p> 
+<p>根据生成树概念&#xff0c;我们可以基于上面无向连通图&#xff0c;产生多个生成树&#xff0c;下面举几个生成树例子&#xff1a;</p> 
+<p><img alt="" height="300" src="https://img-blog.csdnimg.cn/5530cc699d8d48a8a152ce0acdb50ed8.png" width="346" /></p> 
+<p> <img alt="" height="293" src="https://img-blog.csdnimg.cn/8715fa9bd680447cb4eda3d4b41dddac.png" width="323" /></p> 
+<p>如上图我们用n-1条橙色边连接了n个顶点。这样就从无向连通图中产生了生成树。</p> 
+<blockquote> 
+ <p>为什么生成树只能由n-1条边呢&#xff1f;</p> 
+ <p>因为少一条边&#xff0c;则生成树就无法包含所有顶点。多一条边&#xff0c;则生成树就会形成环。</p> 
+ <p>而生成树最重要的两个特性就是&#xff1a;</p> 
+ <p>1、包含所有顶点</p> 
+ <p>2、无环</p> 
+</blockquote> 
+<p></p> 
+<p>了解了生成树概念后&#xff0c;我们就可以进一步学习最小生成树了。</p> 
+<p>我们回头看看无向连通图&#xff0c;可以发现每条边都有权重值&#xff0c;比如v1-v2权重值是6&#xff0c;v3-v6权重值是4。</p> 
+<p>最小生成树指的是&#xff0c;生成树中n-1条边的权重值之和最小。</p> 
+<p></p> 
+<p>那么如何才能准确的找出一个无向连通图的最小生成树呢&#xff1f;</p> 
+<p>有两种算法&#xff1a;Prim算法和Kruskal算法。</p> 
+<p>Prim算法是基于顶点找最小生成树。Kruskal是基于边找最小生成树。</p> 
+<p></p> 
+<p>首先&#xff0c;我们介绍Prim算法&#xff1a;</p> 
+<p>我们可以选择无向连通图中的任意一个顶点作为起始点&#xff0c;比如我们选v1顶点为起始点</p> 
+<p><img alt="" height="295" src="https://img-blog.csdnimg.cn/31ddd88256914b308ef93ff4c4b50c0d.png" width="348" /></p> 
+<p>从v1顶点出发&#xff0c;有三条边&#xff0c;我们选择权重最小的1&#xff0c;即将v1-v3相连</p> 
+<p> <img alt="" height="300" src="https://img-blog.csdnimg.cn/c5531624bec145079afaf584d7e96446.png" width="322" /></p> 
+<p>此时我们需要将v1-v3看成一个整体&#xff0c;然后继续找这个整体出发的所有边里面的最小的&#xff0c; </p> 
+<p><img alt="" height="272" src="https://img-blog.csdnimg.cn/bcd5d0d4773046968457e682d948d24d.png" width="325" /></p> 
+<p> 可以发现为最小权重为4&#xff0c;因此&#xff0c;将v3-v6相连</p> 
+<p><img alt="" height="284" src="https://img-blog.csdnimg.cn/3a9365df15e54482b69ad649522b6f8e.png" width="333" /></p> 
+<p>接着将v1-v3-v6看出一个整体&#xff0c;找这个整体出发的所有边里面的最小的&#xff0c;可以找到最小权重2&#xff0c;因此将v6-v4相连</p> 
+<p><img alt="" height="282" src="https://img-blog.csdnimg.cn/d173939f85944c118a1332b8a134539c.png" width="315" /></p> 
+<p>但是接下来&#xff0c;我们会发现&#xff0c;从v1-v3-v6-v4整体出发的所有边里面同时有三个最小权重5&#xff0c;那么该如何选择呢&#xff1f;</p> 
+<p><img alt="" height="281" src="https://img-blog.csdnimg.cn/edda156f686747b9b3f97f5727c134ec.png" width="309" /></p> 
+<p>其实不难看出&#xff0c;如果选择v4-v3&#xff0c;或者v4-v1相连&#xff0c;则对应的生成树就形成了环结构&#xff0c;因此就不符合生成树特性了&#xff0c;因此我们只能选择v3-v2。</p> 
+<blockquote> 
+ <p>&#xff08;注意&#xff1a;如果有多个相同的最小权重边可选&#xff0c;并且都不会产生环结构&#xff0c;则可以选择其中任意一条边&#xff0c;最终得到结果都是最小生成树&#xff09; </p> 
+</blockquote> 
+<p> 其实&#xff0c;不仅仅在上面遇到相同权重边时&#xff0c;需要判断是否形成环&#xff0c;在前选择每一条边时都需要判断是否形成环&#xff0c;一旦选择的边能够形成环&#xff0c;那么我们就应该舍弃它&#xff0c;选择第二小的权重边&#xff0c;并继续判断。</p> 
+<p><img alt="" height="294" src="https://img-blog.csdnimg.cn/88db4813972a4dd7abccc82fd09c982e.png" width="319" /></p> 
+<p>按照上面逻辑&#xff0c;我们可以继续找到v1-v2-v3-v4-v6整体出发所有边中的最小权重边3&#xff0c;即将v2-v5相连&#xff0c;并且连接后不会形成环</p> 
+<p> <img alt="" height="286" src="https://img-blog.csdnimg.cn/edb63470449d49008f86f3988a4c758f.png" width="291" /></p> 
+<p>此时选择的边数已经达到了n-1条&#xff0c;因此可以结束逻辑&#xff0c;而现在得到的就是最小生成树。我们可以将这个最小生成数的所有边的权重值之和计算出来为20。 </p> 
+<p>上面这种基于顶点的找最小生成树的方式就是Prim算法。</p> 
+<p></p> 
+<p>接下来介绍Kruskal算法&#xff1a;</p> 
+<p>Kruskal算法要求我们将所有的边按照权重值升序排序&#xff0c;因此可得&#xff1a;</p> 
+<p><img alt="" height="508" src="https://img-blog.csdnimg.cn/6fb925d5eeba4a2ca1c402ad85785558.png" width="580" /></p> 
+<p>首先&#xff0c;我们将权重最小的边v1-v3加入&#xff0c;得到下图</p> 
+<p> <img alt="" height="515" src="https://img-blog.csdnimg.cn/f001e66e7292438a950b9b0470455463.png" width="586" /></p> 
+<p>接着将下个最小权重2的边v4-v6加入 </p> 
+<p><img alt="" height="504" src="https://img-blog.csdnimg.cn/69f379e9514c43239c891658622fea99.png" width="601" /></p> 
+<p>接着继续加最小权重边</p> 
+<p><img alt="" height="507" src="https://img-blog.csdnimg.cn/4629d10e602c403c91c73b3f8b109a83.png" width="566" /></p> 
+<p><img alt="" height="498" src="https://img-blog.csdnimg.cn/44843934b9fb4b67ba6f286fd800a5c0.png" width="568" /></p> 
+<p> <img alt="" height="494" src="https://img-blog.csdnimg.cn/cfe3a1c2dd154aaba4e30edb82cb7e87.png" width="563" /></p> 
+<p>此时边数已经达到n-1&#xff0c;而刚好这个过程中也没有环的形成&#xff0c;因此得到的就是最小生成树。</p> 
+<p>但是这里有巧合因素在里面&#xff0c;因为最后一步中&#xff0c;最小权重5的边有多条&#xff0c;如果并不是v2-v3排在前面呢&#xff0c;比如是v1-v4呢&#xff1f;</p> 
+<p><img alt="" height="497" src="https://img-blog.csdnimg.cn/74f85fb4c1474b6bb88166db6671837c.png" width="572" /></p> 
+<p>可以发现&#xff0c;形成了环&#xff0c;因此我们应该舍弃这条边&#xff0c;继续找剩下的最小权重边。最后总能找到v2-v3。</p> 
+<p></p> 
+<p>通过上面对于Prim算法和Kruskal算法的分析&#xff0c;我们发现一个关键点&#xff0c;那就是必须实时判断是否产生了环&#xff1f;</p> 
+<p>那么判断环的存在就是实现上面Prim算法和Kruskal算法的关键点&#xff01;</p> 
+<p>其实&#xff0c;生成树就是一个连通分量&#xff0c;初始时&#xff0c;生成树这个连通分量只有一个顶点&#xff08;Prim&#xff09;&#xff0c;或者两个顶点&#xff08;Kruskal&#xff09;&#xff0c;后面会不断合入新的顶点进来&#xff0c;来扩大连通分量范围。</p> 
+<p>而连通分量可以使用并查集表示&#xff0c;</p> 
+<p>并查集本质就是一个长度为n的数组&#xff08;n为无向图的顶点数&#xff09;&#xff0c;数组索引值代表图中某个顶点child&#xff0c;数组索引指向的元素值&#xff0c;代表child顶点的祖先顶点father。</p> 
+<blockquote> 
+ <p>初始时&#xff0c;每个child的father都是自己。即初始时&#xff0c;默认有n个连通分量。</p> 
+</blockquote> 
+<p>比如 arr &#61; [1,1,1,5,5,5] 数组就可以模拟出一个无向图</p> 
+<p><img alt="" height="395" src="https://img-blog.csdnimg.cn/8d0c0847b3a24cedae13eda384e0bad5.png" width="650" /></p> 
+<ul><li>0顶点的祖先是1顶点   &#61;》  arr[0] &#61; 1</li><li>1顶点的祖先是1顶点  &#61;》 arr[1] &#61; 1</li><li>2顶点的祖先是1顶点 &#61;》 arr[2] &#61; 1</li></ul> 
+<p> 如果大家还不理解并查集结构&#xff0c;可以看<a href="https://blog.csdn.net/qfc_128220/article/details/127588130?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522166870829816800192212313%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;166870829816800192212313&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-1-127588130-null-null.nonecase&amp;utm_term&#61;%E5%8F%91%E5%B9%BF%E6%92%AD&amp;spm&#61;1018.2226.3001.4450" title="华为机试 - 发广播_伏城之外的博客-CSDN博客_服务器广播 华为机试">华为机试 - 发广播_伏城之外的博客-CSDN博客_服务器广播 华为机试</a></p> 
+<p></p> 
+<p>我们可以用father指代一个连通分量。比如上面arr &#61; [1,1,1,5,5,5]就有两个连通分量&#xff0c;分别是father为1的连通分量和father为5的连通分量。</p> 
+<p>最小生成树中的顶点必然都处于同一个连通分量中&#xff0c;因此每加入一个新的顶点child_new&#xff0c;我们我们就可以看它的father是否已经是连通分量对应的father&#xff0c;如果是&#xff0c;则说明顶点child_new其实已经存在于最小生成树中了&#xff0c;因此就产生了环&#xff0c;比如下面例子&#xff1a;</p> 
+<p><img alt="" height="497" src="https://img-blog.csdnimg.cn/74f85fb4c1474b6bb88166db6671837c.png" width="572" /></p> 
+<p>我们定义一个数组arr&#xff0c;来表示并查集结构&#xff0c;初始时&#xff0c;</p> 
+<p><img alt="" height="123" src="https://img-blog.csdnimg.cn/f3fd938973e547fdb575773ee519e8a5.png" width="451" /></p> 
+<p> 如果达到上图橙色边连接状态&#xff0c;则arr变为</p> 
+<p><img alt="" height="135" src="https://img-blog.csdnimg.cn/78bced20b62746188173de9dbe335f19.png" width="506" /></p> 
+<p>接下来加入黑色边&#xff0c;即v4顶点的father改成v1&#xff0c;但是实际上v4的father已经是v1&#xff0c;那么此时如果再强行加入的话&#xff0c;那么就形成了环。</p> 
+<p></p> 
+<p>下面&#xff0c;我们来解答本题&#xff1a;</p> 
+<p>本题要求的最低成本&#xff0c;其实就是最小生成树所有边相加得到的最小权重和。</p> 
+<p>但是本题&#xff0c;又不是一个纯粹的求最小生成树的题。</p> 
+<p>因为&#xff0c;本题中规定了一些“必建高铁的两个城市”&#xff0c;那么多个“必建高铁的两个城市”是非常有可能形成环的。</p> 
+<p>但是&#xff0c;我们并不需要纠结这个&#xff0c;因为我们要求的不是最小生成树&#xff0c;而是最小权重和&#xff0c;只是这个最小权重和中某些值已经固定了&#xff0c;这些固定的值就是“必建高铁的两个城市”对应的费用。</p> 
+<p></p> 
+<p>我们定义一个minFee来代表最低成本&#xff0c;首先我们需要将必建高铁的成本计算进去。并且在计算的过程中&#xff0c;将必建高铁的两个城市&#xff08;两个顶点&#xff09;纳入一个连通分量中&#xff08;基于并查集&#xff09;。</p> 
+<p></p> 
+<p>之后&#xff0c;我们在将  “可以建高铁” 的列表 按照成本费用升序排序&#xff08;Kruskal算法&#xff09;&#xff0c;然后遍历排序后列表&#xff0c;依次将“可以建高铁” 的两个城市&#xff08;两个顶点&#xff09;尝试纳入连通分量中&#xff0c;如果有环&#xff0c;则不纳入&#xff0c;无环&#xff0c;则纳入&#xff0c;纳入的话&#xff0c;则将成本费用计入minFee中。</p> 
+<p>那么上面逻辑何时结束呢&#xff1f;1、所有顶点已经纳入到一个连通分量中&#xff1b;2、循环结束。</p> 
+<p></p> 
+<p>循环结束后&#xff0c;</p> 
+<p>如果并查集中的连通分量数量为1&#xff0c;则说明所有城市&#xff08;顶点&#xff09;已经通车&#xff0c;且是最低成本。此时返回minFee就是题解。</p> 
+<p>如果并查集中的连通分量数量不为1&#xff0c;则说明所有城市&#xff08;顶点&#xff09;无法连通&#xff0c;返回-1。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, can, must;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [n, can, must] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (
+    can !&#61;&#61; undefined &amp;&amp;
+    must !&#61;&#61; undefined &amp;&amp;
+    lines.length &#61;&#61;&#61; can &#43; must &#43; 1
+  ) {
+    lines.shift();
+
+    const cans &#61; lines
+      .splice(0, can)
+      .map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+
+    const musts &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+
+    console.log(getResult(n, cans, musts));
+
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} n 一共几个城市
+ * &#64;param {*} cans 哪些城市之间可以修建高铁&#xff0c;以及修建费用
+ * &#64;param {*} musts 哪些城市之间必须修建高铁
+ */
+function getResult(n, cans, musts) {
+  const ufs &#61; new UnionFindSet(n);
+
+  // 这里因为不知道题目用例输入的城市序号是否是按顺序的&#xff0c;因此需要排个序。
+  // 并且为了方便统计“必建高铁”的费用&#xff0c;我们需要将cans数组改造为对象&#xff0c;key为&#39;1-2&#39; 两个城市&#xff0c;val为 这两个城市建高铁的费用
+  const cansObj &#61; {};
+  for (let [c1, c2, fee] of cans) {
+    const key &#61; c1 &lt; c2 ? &#96;${c1}-${c2}&#96; : &#96;${c2}-${c1}&#96;;
+    cansObj[key] &#61; fee;
+  }
+
+  // must数组中元素也改造为&#39;1-2&#39; 两个城市字符串的形成&#xff0c;方便从cansObj中获取对应的费用
+  musts &#61; musts.map((must) &#61;&gt; {
+    const [c1, c2] &#61; must;
+    return c1 &lt; c2 ? &#96;${c1}-${c2}&#96; : &#96;${c2}-${c1}&#96;;
+  });
+
+  let minFee &#61; 0;
+  for (let must of musts) {
+    // 计入必建高铁的费用到minFee中
+    minFee &#43;&#61; cansObj[must];
+    const [c1, c2] &#61; must.split(&#34;-&#34;).map(Number);
+    // 并将必建高铁的两个城市纳入同一个连通分量重
+    ufs.union(c1, c2);
+  }
+
+  // 如果必建高铁本身已经满足所有城市通车了&#xff0c;那么直接返回minFee
+  if (ufs.count &#61;&#61;&#61; 1) return minFee;
+
+  // 否则&#xff0c;按照求解最小生成树的Kruskal算法&#xff0c;将高铁线&#xff08;即图的边&#xff09;按照成本费用&#xff08;即边的权重&#xff09;升序
+  cans.sort((a, b) &#61;&gt; a[2] - b[2]);
+
+  // 遍历排序后的cans&#xff0c;每次得到的都是当前的最小权重边
+  for (let [c1, c2, fee] of cans) {
+    // 如果对应城市已经接入高铁线&#xff08;即处于连通分量中&#xff09;则再次合入就会产生环&#xff0c;因此不能合入&#xff0c;否则就可以合入
+    // if (ufs.fa[c1] !&#61;&#61; ufs.fa[c2]) {
+    if (ufs.find(c1) !&#61;&#61; ufs.find(c2)) {
+      ufs.union(c1, c2);
+      // 若可以合入&#xff0c;则将对应的建造成本计入minFee
+      minFee &#43;&#61; fee;
+    }
+
+    // 如果此时&#xff0c;所有城市都通车了&#xff08;即并查集中只有一个连通分量&#xff09;&#xff0c;则提前结束循环
+    if (ufs.count &#61;&#61;&#61; 1) break;
+  }
+
+  // 如果循环完&#xff0c;发现并查集中还有多个连通分量&#xff0c;那么代表有的城市无法通车&#xff0c;因此返回-1
+  if (ufs.count &gt; 1) return -1;
+
+  return minFee;
+}
+
+// 并查集
+class UnionFindSet {
+  constructor(n) {
+    this.fa &#61; new Array(n &#43; 1).fill(0).map((_, i) &#61;&gt; i);
+    this.count &#61; n;
+  }
+
+  find(x) {
+    if (x !&#61;&#61; this.fa[x]) {
+      return (this.fa[x] &#61; this.find(this.fa[x]));
+    }
+    return x;
+  }
+
+  union(x, y) {
+    const x_fa &#61; this.find(x);
+    const y_fa &#61; this.find(y);
+
+    if (x_fa !&#61;&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+      this.count--;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int can &#61; sc.nextInt();
+    int must &#61; sc.nextInt();
+
+    int[][] cans &#61; new int[can][3];
+    for (int i &#61; 0; i &lt; can; i&#43;&#43;) {
+      cans[i][0] &#61; sc.nextInt();
+      cans[i][1] &#61; sc.nextInt();
+      cans[i][2] &#61; sc.nextInt();
+    }
+
+    int[][] musts &#61; new int[must][2];
+    for (int i &#61; 0; i &lt; must; i&#43;&#43;) {
+      musts[i][0] &#61; sc.nextInt();
+      musts[i][1] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(n, cans, musts));
+  }
+
+  /**
+   * &#64;param n 一共几个城市
+   * &#64;param cans 哪些城市之间可以修建高铁&#xff0c;以及修建费用
+   * &#64;param musts 哪些城市之间必须修建高铁
+   * &#64;return 最少费用
+   */
+  public static int getResult(int n, int[][] cans, int[][] musts) {
+    UnionFindSet ufs &#61; new UnionFindSet(n);
+
+    // 为了方便统计“必建高铁”的费用&#xff0c;我们需要将cans数组改造为cansMap&#xff0c;key为&#39;1-2&#39; 两个城市&#xff0c;val为 这两个城市建高铁的费用
+    HashMap&lt;String, Integer&gt; cansMap &#61; new HashMap&lt;&gt;();
+    for (int[] can : cans) {
+      int city1 &#61; can[0], city2 &#61; can[1], fee &#61; can[2];
+      String key &#61; city1 &lt; city2 ? city1 &#43; &#34;-&#34; &#43; city2 : city2 &#43; &#34;-&#34; &#43; city1;
+      cansMap.put(key, fee);
+    }
+
+    int minFee &#61; 0;
+    for (int[] must : musts) {
+      // 计入必建高铁的费用到minFee中
+      String key &#61; must[0] &lt; must[1] ? must[0] &#43; &#34;-&#34; &#43; must[1] : must[1] &#43; &#34;-&#34; &#43; must[0];
+      minFee &#43;&#61; cansMap.get(key);
+      // 并将必建高铁的两个城市纳入同一个连通分量重
+      ufs.union(must[0], must[1]);
+    }
+
+    //  如果必建高铁本身已经满足所有城市通车了&#xff0c;那么直接返回minFee
+    if (ufs.count &#61;&#61; 1) return minFee;
+
+    // 否则&#xff0c;按照求解最小生成树的Kruskal算法&#xff0c;将高铁线&#xff08;即图的边&#xff09;按照成本费用&#xff08;即边的权重&#xff09;升序
+    Arrays.sort(cans, (a, b) -&gt; a[2] - b[2]);
+
+    // 遍历排序后的cans&#xff0c;每次得到的都是当前的最小权重边
+    for (int[] can : cans) {
+      int city1 &#61; can[0], city2 &#61; can[1], fee &#61; can[2];
+      // 如果对应城市已经接入高铁线&#xff08;即处于连通分量中&#xff09;则再次合入就会产生环&#xff0c;因此不能合入&#xff0c;否则就可以合入
+      //      if (ufs.fa[city1] !&#61; ufs.fa[city2]) {
+      if (ufs.find(city1) !&#61; ufs.find(city2)) {
+        ufs.union(city1, city2);
+        // 若可以合入&#xff0c;则将对应的建造成本计入minFee
+        minFee &#43;&#61; fee;
+      }
+
+      // 如果此时&#xff0c;所有城市都通车了&#xff08;即并查集中只有一个连通分量&#xff09;&#xff0c;则提前结束循环
+      if (ufs.count &#61;&#61; 1) break;
+    }
+
+    // 如果循环完&#xff0c;发现并查集中还有多个连通分量&#xff0c;那么代表有的城市无法通车&#xff0c;因此返回-1
+    if (ufs.count &gt; 1) return -1;
+
+    return minFee;
+  }
+}
+
+// 并查集
+class UnionFindSet {
+  int[] fa;
+  int count;
+
+  public UnionFindSet(int n) {
+    this.fa &#61; new int[n &#43; 1];
+    this.count &#61; n;
+    for (int i &#61; 0; i &lt; n &#43; 1; i&#43;&#43;) this.fa[i] &#61; i;
+  }
+
+  public int find(int x) {
+    if (x !&#61; this.fa[x]) {
+      return (this.fa[x] &#61; this.find(this.fa[x]));
+    }
+    return x;
+  }
+
+  public void union(int x, int y) {
+    int x_fa &#61; this.find(x);
+    int y_fa &#61; this.find(y);
+
+    if (x_fa !&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+      this.count--;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 并差集
+class UnionFindSet:
+    def __init__(self, n):
+        self.fa &#61; [i for i in range(n &#43; 1)]
+        self.count &#61; n
+
+    def find(self, x):
+        if x !&#61; self.fa[x]:
+            self.fa[x] &#61; self.find(self.fa[x])
+            return self.fa[x]
+        return x
+
+    def union(self, x, y):
+        x_fa &#61; self.find(x)
+        y_fa &#61; self.find(y)
+
+        if x_fa !&#61; y_fa:
+            self.fa[y_fa] &#61; x_fa
+            self.count -&#61; 1
+
+
+# 算法入口
+def getResult(n, cans, musts):
+    &#34;&#34;&#34;
+    :param n: 一共几个城市
+    :param cans: 哪些城市之间可以修建高铁&#xff0c;以及修建费用
+    :param musts: 哪些城市之间必须修建高铁
+    :return: 修建城市高铁的最低成本
+    &#34;&#34;&#34;
+    ufs &#61; UnionFindSet(n)
+
+    # 这里因为不知道题目用例输入的城市序号是否是按顺序的&#xff0c;因此需要排个序。
+    # 并且为了方便统计“必建高铁”的费用&#xff0c;我们需要将cans数组改造为对象&#xff0c;key为&#39;1-2&#39; 两个城市&#xff0c;val为 这两个城市建高铁的费用
+    canDict &#61; {}
+    for c1, c2, fee in cans:
+        key &#61; f&#34;{c1}-{c2}&#34; if c1 &lt; c2 else f&#34;{c2}-{c1}&#34;
+        canDict[key] &#61; fee
+
+    # must数组中元素也改造为&#39;1-2&#39; 两个城市字符串的形成&#xff0c;方便从cansObj中获取对应的费用
+    musts &#61; map(lambda must: f&#34;{must[0]}-{must[1]}&#34; if must[0] &lt; must[1] else f&#34;{must[1]}-{must[0]}&#34;, musts)
+
+    minFee &#61; 0
+    for must in musts:
+        # 计入必建高铁的费用到minFee中
+        minFee &#43;&#61; canDict[must]
+        c1, c2 &#61; map(int, must.split(&#34;-&#34;))
+        # 并将必建高铁的两个城市纳入同一个连通分量重
+        ufs.union(c1, c2)
+
+    # 如果必建高铁本身已经满足所有城市通车了&#xff0c;那么直接返回minFee
+    if ufs.count &#61;&#61; 1:
+        return minFee
+
+    # 否则&#xff0c;按照求解最小生成树的Kruskal算法&#xff0c;将高铁线&#xff08;即图的边&#xff09;按照成本费用&#xff08;即边的权重&#xff09;升序
+    cans.sort(key&#61;lambda x: x[2])
+
+    # 遍历排序后的cans&#xff0c;每次得到的都是当前的最小权重边
+    for c1, c2, fee in cans:
+        # 如果对应城市已经接入高铁线&#xff08;即处于连通分量中&#xff09;则再次合入就会产生环&#xff0c;因此不能合入&#xff0c;否则就可以合入
+        # if ufs.fa[c1] !&#61; ufs.fa[c2]:
+        if ufs.find(c1) !&#61; ufs.find(c2):
+            ufs.union(c1, c2)
+            # 若可以合入&#xff0c;则将对应的建造成本计入minFee
+            minFee &#43;&#61; fee
+
+        # 如果此时&#xff0c;所有城市都通车了&#xff08;即并查集中只有一个连通分量&#xff09;&#xff0c;则提前结束循环
+        if ufs.count &#61;&#61; 1:
+            break
+
+    # 如果循环完&#xff0c;发现并查集中还有多个连通分量&#xff0c;那么代表有的城市无法通车&#xff0c;因此返回-1
+    if ufs.count &gt; 1:
+        return -1
+
+    return minFee
+
+
+# 输入获取
+n, can, must &#61; map(int, input().split())
+cans &#61; [list(map(int, input().split())) for i in range(can)]
+musts &#61; [list(map(int, input().split())) for i in range(must)]
+
+# 算法调用
+print(getResult(n, cans, musts))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

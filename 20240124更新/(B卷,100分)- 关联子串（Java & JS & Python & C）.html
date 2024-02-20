@@ -1,0 +1,364 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 关联子串（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定两个字符串str1和str2&#xff0c;如果字符串str1中的字符&#xff0c;经过排列组合后的字符串中&#xff0c;只要有一个字符串是str2的子串&#xff0c;则认为str1是str2的关联子串。</p> 
+<p>若str1是str2的关联子串&#xff0c;请返回子串在str2的起始位置&#xff1b;</p> 
+<p>若不是关联子串&#xff0c;则返回-1。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入两个字符串&#xff0c;分别为题目中描述的str1、str2。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>若str1是str2的关联子串&#xff0c;请返回子串在str2的起始位置&#xff1b;</p> 
+<p>若不是关联子串&#xff0c;则返回-1。</p> 
+<p>若str2中有多个str1的组合子串&#xff0c;请返回最小的起始位置。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>输入的字符串只包含小写字母&#xff1b;</li><li>两个字符串的长度范围[1, 100000]之间&#xff1b;</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc efghicbaiii</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">str2包含str1的一种排列组合&#xff08;&#34;cab&#34;)&#xff0c;此组合在str2的字符串起始位置为5&#xff08;从0开始计数&#xff09;</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc efghiccaiii</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">“abc”字符串中三个字母的各种组合&#xff08;abc、acb、bac、bca、cab、cba&#xff09;&#xff0c;str2中均不包含&#xff0c;因此返回-1</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题看上去是要求解全排列&#xff0c;但是题目描述数量级为&#xff1a;两个字符串的长度范围[1, 100000]之间&#xff1b;</p> 
+<p>因此str1的全排列肯定会超时。</p> 
+<p></p> 
+<p>本题可以使用尺取法来求解&#xff0c;尺取法其实就是高级一点的滑动窗口&#xff0c;常用于解决最小覆盖子串问题&#xff0c;比如<a href="https://fcqian.blog.csdn.net/article/details/128092566" rel="nofollow" title="LeetCode - 76 最小覆盖子串_伏城之外的博客-CSDN博客">LeetCode - 76 最小覆盖子串_伏城之外的博客-CSDN博客</a></p> 
+<p>大家可以认真看下上面这个博客&#xff0c;对尺取法有个大致了解。</p> 
+<p></p> 
+<p>尺取法&#xff0c;通常是有一个子串str1&#xff0c;和一个父串str2&#xff0c;我们需要在父串str2中找到包含str1子串所有字符的目标串target&#xff0c;不在意字符顺序。</p> 
+<p>解决方案很固定&#xff1a;</p> 
+<p>预处理动作&#xff1a;</p> 
+<blockquote> 
+ <ul><li>统计出子串str1中各字符的数量&#xff0c;记录到count中&#xff0c;这里的count容器通常选择128长度的数组&#xff0c;因为字符串中的字符通常都是ASCII码表的字符&#xff0c;而ASCII码只有128个&#xff0c;因此选择128长度的数组就可以涵盖到所有字符。</li><li>定义一个total变量&#xff0c;来记录str1字符的总数&#xff08;即str1的长度&#xff09;</li></ul> 
+</blockquote> 
+<p>滑窗动作&#xff1a;</p> 
+<blockquote> 
+ <ul><li>初始滑窗&#xff0c;即父串str2的0~str1.length-1范围的滑窗。此时滑窗只有新增字符的过程&#xff0c;即滑窗左边界保持在0&#xff0c;而滑窗右边界从0运动到str1.length-1位置。</li><li>后续滑窗&#xff0c;即父串str2的 i ~ i &#43; str1.length - 1&#xff0c;其中 i &gt;&#61; 1&#xff0c;每次滑窗整体向右移动一格&#xff0c;即相较于上一个滑窗&#xff0c;会失去 str2[i-1]字符&#xff0c;以及新增 str2[i &#43; str1.length - 1] 字符。</li></ul> 
+</blockquote> 
+<p>滑窗的意义&#xff1a;</p> 
+<blockquote> 
+ <ul><li>滑窗其实就是一个str2的子串&#xff0c;我们可以基于滑窗来统计滑窗内子串各字符的数量&#xff0c;如果滑窗内各字符的数量与str1各字符数量一致&#xff0c;则说明滑窗内子串就是一个目标子串</li></ul> 
+</blockquote> 
+<p>滑窗处理新增字符&#xff1a;</p> 
+<blockquote> 
+ <ul><li>当滑窗新增一个字符c时&#xff0c;我们应该count[c] -&#61; 1&#xff0c;表示滑窗子串和str1的差别缩小了&#xff0c;此时total是否也需要-&#61;1吗&#xff1f;total是str1的字符总数&#xff0c;此时需要细化讨论</li></ul> 
+ <ol><li>如果字符c不是str1内的字符&#xff0c;则total不需要-&#61;1</li><li>如果字符c是str1内的字符&#xff0c;此时又需要细化讨论&#xff0c;字符c虽然是str1内的字符&#xff0c;但是滑窗内c字符的数量完全有可能超过str1内的字符数量&#xff0c;即滑窗内存在多余的字符c&#xff0c;那么此时滑窗新增了一个c&#xff0c;并不会缩小和str1的差距&#xff0c;即total不需要-&#61;1。</li></ol> 
+ <p>那么此时就需要搞清楚&#xff0c;如何判断滑窗内字符c是否是str1的字符&#xff1f;以及是str1字符的情况下&#xff0c;是否为超标字符&#xff1f;</p> 
+ <p>上面两个判断&#xff0c;可以用一句话实现&#xff1a;count[c] &gt; 0</p> 
+ <ul><li>如果滑窗新增的字符c不是str1字符&#xff0c;则必然count[c] &lt;&#61; 0</li><li>如果滑窗新增的字符c是str1字符&#xff0c;但是超标了&#xff0c;则经过count[c]--动作&#xff0c;超过的c字符&#xff0c;必然count[c] &lt;&#61; 0</li></ul> 
+</blockquote> 
+<p>滑窗处理移除字符&#xff1a;</p> 
+<blockquote> 
+ <p>当滑窗移除一个字符c是&#xff0c;我们应该count[c]&#43;&#43;&#xff0c;表示滑窗子串和str1的差别扩大了&#xff0c;此时total是否也需要&#43;&#61;1吗&#xff1f;total是str1的字符总数&#xff0c;此时需要细化讨论&#xff1a;</p> 
+ <ul><li>如果字符c不是str1内的字符&#xff0c;则total不需要&#43;&#61;1</li><li>如果字符c是str1内的字符&#xff0c;此时又需要细化讨论&#xff0c;字符c虽然是str1内的字符&#xff0c;但是滑窗内c字符的数量完全有可能超过str1内的字符数量&#xff0c;即滑窗内存在多余的字符c&#xff0c;那么此时滑窗移除一个c&#xff0c;并不会扩大和str1的差距&#xff0c;即不需要total&#43;&#61;1</li></ul> 
+ <p>那么此时就需要搞清楚&#xff0c;如何判断滑窗内字符c是否是str1的字符&#xff1f;以及是str1字符的情况下&#xff0c;是否为超标字符&#xff1f;</p> 
+ <p>上面两个判断&#xff0c;可以用一句话实现&#xff1a;count[c] <strong><span style="color:#fe2c24;">&gt;&#61;</span></strong> 0</p> 
+ <ul><li>如果滑窗移除的字符c不是str1字符&#xff0c;则移除之前必然count[c] &lt; 0</li><li>如果滑窗移除的字符c是str1字符&#xff0c;但是超标了&#xff0c;则移除之前必然count[c] &lt; 0</li></ul> 
+</blockquote> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str1 &#61; sc.next();
+    String str2 &#61; sc.next();
+
+    System.out.println(getResult(str1, str2));
+  }
+
+  public static int getResult(String str1, String str2) {
+    // count用于统计str1中各字符的数量
+    int[] count &#61; new int[128];
+    for (int i &#61; 0; i &lt; str1.length(); i&#43;&#43;) {
+      char c &#61; str1.charAt(i);
+      count[c]&#43;&#43;;
+    }
+
+    // total统计str1总共字符个数
+    int total &#61; str1.length();
+
+    // 初始滑窗&#xff0c;滑窗范围内容&#xff0c;就是一个子串
+    for (int i &#61; 0; i &lt; str1.length(); i&#43;&#43;) {
+      // 滑窗子串新增的字符
+      char add &#61; str2.charAt(i);
+
+      // 如果新增字符是str1的字符&#xff0c;即count[add] &gt; 0时&#xff0c;则说明滑窗子串已找到一个目标字符&#xff0c;此时剩余add字符数量count[add]--,剩余目标字符总数total--
+      if (count[add]-- &gt; 0) {
+        total--;
+      }
+    }
+
+    // 如果total &#61;&#61; 0&#xff0c;则说明滑窗内所有字符都是str1内的字符&#xff0c;由于限定了滑窗的长度就是str1的长度&#xff0c;因此滑窗内字符和str1完全匹配
+    if (total &#61;&#61; 0) return 0;
+
+    // 下一个滑窗范围是 i ~ i &#43; str1.length() - 1
+    for (int i &#61; 1; i &#43; str1.length() - 1 &lt; str2.length(); i&#43;&#43;) {
+      // 相较于上一个滑窗失去的字符remove
+      char remove &#61; str2.charAt(i - 1);
+      // 相较于上一个滑窗新增的字符add
+      char add &#61; str2.charAt(i &#43; str1.length() - 1);
+
+      // 本轮滑窗remove字符&#xff0c;在上一轮是被add的字符&#xff0c;我们假设此字符为c&#xff0c;此时可以分两种情况讨论&#xff1a;
+      // 1、c是str1的字符&#xff0c;则初始统计时count[c]&gt;0&#xff0c;上一轮滑窗加入c字符&#xff0c;则count[c]--&#xff0c;此轮count[c]是有可能&gt;&#61;0或者&lt;0的&#xff0c;
+      //    1.1、如果本轮count[c]&gt;&#61;0&#xff0c;则说明上轮滑窗并没有找到所有的c字符&#xff0c;因此本轮移除的c字符可以还原total数量
+      //
+      // 1.2、如果本轮count[c]&lt;0&#xff0c;这说明上轮滑窗内的c字符超标了&#xff0c;即c字符是目标字符&#xff0c;但是滑窗内包含的c字符数量超过了str1中c字符的数量&#xff0c;因此本轮移除c字符是超标部分&#xff0c;不会还原total
+      // 2、c不是str1的字符&#xff0c;则初始统计时count[c]&#61;&#61;0&#xff0c;上一轮滑窗加入c字符&#xff0c;则count[c]--&#xff0c;此轮必然count[c]&lt;0&#xff0c;因此c字符的移除&#xff0c;并不会还原total
+      if (count[remove]&#43;&#43; &gt;&#61; 0) {
+        total&#43;&#43;;
+      }
+
+      if (count[add]-- &gt; 0) {
+        total--;
+      }
+
+      if (total &#61;&#61; 0) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  let [str1, str2] &#61; line.split(&#34; &#34;);
+  console.log(getResult(str1, str2));
+});
+
+function getResult(str1, str2) {
+  // count用于统计str1中各字符的数量
+  const count &#61; {};
+  for (let i &#61; 0; i &lt; str1.length; i&#43;&#43;) {
+    const c &#61; str1[i];
+    count[c] &#61; (count[c] ?? 0) &#43; 1;
+  }
+
+  // total统计str1总共字符个数
+  let total &#61; str1.length;
+
+  // 初始滑窗&#xff0c;滑窗范围内容&#xff0c;就是一个子串
+  for (let i &#61; 0; i &lt; str1.length; i&#43;&#43;) {
+    // 滑窗子串新增的字符
+    const add &#61; str2[i];
+
+    // 如果新增字符是str1的字符&#xff0c;即count[add] &gt; 0时&#xff0c;则说明滑窗子串已找到一个目标字符&#xff0c;此时剩余add字符数量count[add]--,剩余目标字符总数total--
+    if (count[add]-- &gt; 0) {
+      total--;
+    }
+  }
+
+  // 如果total &#61;&#61; 0&#xff0c;则说明滑窗内所有字符都是str1内的字符&#xff0c;由于限定了滑窗的长度就是str1的长度&#xff0c;因此滑窗内字符和str1完全匹配
+  if (total &#61;&#61; 0) return 0;
+
+  // 下一个滑窗范围是 i ~ i &#43; str1.length() - 1
+  for (let i &#61; 1; i &#43; str1.length - 1 &lt; str2.length; i&#43;&#43;) {
+    // 相较于上一个滑窗失去的字符remove
+    const remove &#61; str2[i - 1];
+    // 相较于上一个滑窗新增的字符add
+    const add &#61; str2[i &#43; str1.length - 1];
+
+    // 本轮滑窗remove字符&#xff0c;在上一轮是被add的字符&#xff0c;我们假设此字符为c&#xff0c;此时可以分两种情况讨论&#xff1a;
+    // 1、c是str1的字符&#xff0c;则初始统计时count[c]&gt;0&#xff0c;上一轮滑窗加入c字符&#xff0c;则count[c]--&#xff0c;此轮count[c]是有可能&gt;&#61;0或者&lt;0的&#xff0c;
+    //    1.1、如果本轮count[c]&gt;&#61;0&#xff0c;则说明上轮滑窗并没有找到所有的c字符&#xff0c;因此本轮移除的c字符可以还原total数量
+    //    1.2、如果本轮count[c]&lt;0&#xff0c;这说明上轮滑窗内的c字符超标了&#xff0c;即c字符是目标字符&#xff0c;但是滑窗内包含的c字符数量超过了str1中c字符的数量&#xff0c;因此本轮移除c字符是超标部分&#xff0c;不会还原total
+    // 2、c不是str1的字符&#xff0c;则初始统计时count[c]&#61;&#61;0&#xff0c;上一轮滑窗加入c字符&#xff0c;则count[c]--&#xff0c;此轮必然count[c]&lt;0&#xff0c;因此c字符的移除&#xff0c;并不会还原total
+    if (count[remove]&#43;&#43; &gt;&#61; 0) {
+      total&#43;&#43;;
+    }
+
+    if (count[add]-- &gt; 0) {
+      total--;
+    }
+
+    if (total &#61;&#61; 0) return i;
+  }
+
+  return -1;
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+str1, str2 &#61; input().split()
+
+
+# 算法入口
+def getResult():
+    # count用于统计str1中各字符的数量
+    count &#61; {}
+    for c in str1:
+        count[c] &#61; count.get(c, 0) &#43; 1
+
+    # total统计str1总共字符个数
+    total &#61; len(str1)
+
+    # 初始滑窗&#xff0c;滑窗范围内容&#xff0c;就是一个子串
+    for i in range(len(str1)):
+        # 滑窗子串新增的字符
+        add &#61; str2[i]
+
+        # 如果新增字符是str1的字符&#xff0c;即count[add] &gt; 0时&#xff0c;则说明滑窗子串已找到一个目标字符&#xff0c;此时剩余add字符数量count[add]--,剩余目标字符总数total--
+        if count.get(add) is not None:
+            if count[add] &gt; 0:
+                total -&#61; 1
+            count[add] -&#61; 1
+
+    # 如果total &#61;&#61; 0&#xff0c;则说明滑窗内所有字符都是str1内的字符&#xff0c;由于限定了滑窗的长度就是str1的长度&#xff0c;因此滑窗内字符和str1完全匹配
+    if total &#61;&#61; 0:
+        return 0
+
+    # 下一个滑窗范围是 i ~ i &#43; str1.length() - 1
+    for i in range(1, len(str2) - len(str1) &#43; 1):
+        # 相较于上一个滑窗失去的字符remove
+        remove &#61; str2[i-1]
+        # 相较于上一个滑窗新增的字符add
+        add &#61; str2[i &#43; len(str1) - 1]
+
+        # 本轮滑窗remove字符&#xff0c;在上一轮是被add的字符&#xff0c;我们假设此字符为c&#xff1a;
+        # 1、c是str1的字符&#xff0c;则初始统计时count[c]&gt;0&#xff0c;上一轮滑窗加入c字符&#xff0c;则count[c]--&#xff0c;此轮count[c]是有可能&gt;&#61;0或者&lt;0的&#xff0c;
+        #    1.1、如果本轮count[c]&gt;&#61;0&#xff0c;则说明上轮滑窗并没有找到所有的c字符&#xff0c;因此本轮移除的c字符可以还原total数量
+        #    1.2、如果本轮count[c]&lt;0&#xff0c;这说明上轮滑窗内的c字符超标了&#xff0c;即c字符是目标字符&#xff0c;但是滑窗内包含的c字符数量超过了str1中c字符的数量&#xff0c;因此本轮移除c字符是超标部分&#xff0c;不会还原total
+        if count.get(remove) is not None:
+            if count[remove] &gt;&#61; 0:
+                total &#43;&#61; 1
+            count[remove] &#43;&#61; 1
+
+        if count.get(add) is not None:
+            if count[add] &gt; 0:
+                total -&#61; 1
+            count[add] -&#61; 1
+
+        if total &#61;&#61; 0:
+            return i
+
+    return -1
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_LEN 100000
+
+int getResult(char *str1, char *str2);
+
+int main() {
+    char str1[MAX_LEN], str2[MAX_LEN];
+    scanf(&#34;%s %s&#34;, str1, str2);
+
+    printf(&#34;%d\n&#34;, getResult(str1, str2));
+
+    return 0;
+}
+
+int getResult(char *str1, char *str2) {
+    // count用于统计str1中各字符的数量
+    int count[128] &#61; {0};
+
+    for (int i &#61; 0; i &lt; strlen(str1); i&#43;&#43;) {
+        char c &#61; str1[i];
+        count[c]&#43;&#43;;
+    }
+
+    // total统计str1总共字符个数
+    int total &#61; strlen(str1);
+
+    // 初始滑窗&#xff0c;滑窗范围内容&#xff0c;就是一个子串
+    for (int i &#61; 0; i &lt; strlen(str1); i&#43;&#43;) {
+        // 滑窗子串新增的字符
+        char add &#61; str2[i];
+
+        // 如果新增字符是str1的字符&#xff0c;即count[add] &gt; 0时&#xff0c;则说明滑窗子串已找到一个目标字符&#xff0c;此时剩余add字符数量count[add]--,剩余目标字符总数total--
+        if (count[add]-- &gt; 0) {
+            total--;
+        }
+    }
+
+    // 如果total &#61;&#61; 0&#xff0c;则说明滑窗内所有字符都是str1内的字符&#xff0c;由于限定了滑窗的长度就是str1的长度&#xff0c;因此滑窗内字符和str1完全匹配
+    if (total &#61;&#61; 0) return 0;
+
+    // 下一个滑窗范围是 i ~ i &#43; str1.length() - 1
+    for (int i &#61; 1; i &#43; strlen(str1) - 1 &lt; strlen(str2); i&#43;&#43;) {
+        // 相较于上一个滑窗失去的字符remove
+        char remove &#61; str2[i - 1];
+        // 相较于上一个滑窗新增的字符add
+        char add &#61; str2[i &#43; strlen(str1) - 1];
+
+        // 本轮滑窗remove字符&#xff0c;在上一轮是被add的字符&#xff0c;我们假设此字符为c&#xff0c;此时可以分两种情况讨论&#xff1a;
+        // 1、c是str1的字符&#xff0c;则初始统计时count[c]&gt;0&#xff0c;上一轮滑窗加入c字符&#xff0c;则count[c]--&#xff0c;此轮count[c]是有可能&gt;&#61;0或者&lt;0的&#xff0c;
+        //    1.1、如果本轮count[c]&gt;&#61;0&#xff0c;则说明上轮滑窗并没有找到所有的c字符&#xff0c;因此本轮移除的c字符可以还原total数量
+        //
+        // 1.2、如果本轮count[c]&lt;0&#xff0c;这说明上轮滑窗内的c字符超标了&#xff0c;即c字符是目标字符&#xff0c;但是滑窗内包含的c字符数量超过了str1中c字符的数量&#xff0c;因此本轮移除c字符是超标部分&#xff0c;不会还原total
+        // 2、c不是str1的字符&#xff0c;则初始统计时count[c]&#61;&#61;0&#xff0c;上一轮滑窗加入c字符&#xff0c;则count[c]--&#xff0c;此轮必然count[c]&lt;0&#xff0c;因此c字符的移除&#xff0c;并不会还原total
+        if (count[remove]&#43;&#43; &gt;&#61; 0) {
+            total&#43;&#43;;
+        }
+
+        if (count[add]-- &gt; 0) {
+            total--;
+        }
+
+        if (total &#61;&#61; 0) {
+            return i;
+        }
+    }
+
+    return -1;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

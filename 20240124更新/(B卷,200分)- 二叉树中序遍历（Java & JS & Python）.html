@@ -1,0 +1,220 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 二叉树中序遍历（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>根据给定的二叉树结构描述字符串&#xff0c;输出该二叉树按照中序遍历结果字符串。中序遍历顺序为&#xff1a;左子树&#xff0c;根结点&#xff0c;右子树。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>由大小写字母、左右大括号、逗号组成的字符串:字母代表一个节点值&#xff0c;左右括号内包含该节点的子节点。</p> 
+<p>左右子节点使用逗号分隔&#xff0c;逗号前为空则表示左子节点为空&#xff0c;没有逗号则表示右子节点为空。</p> 
+<p>二叉树节点数最大不超过100。</p> 
+<p>注:输入字符串格式是正确的&#xff0c;无需考虑格式错误的情况。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个字符串为二叉树中序遍历各节点值的拼接结果。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">a{b{d,e{g,h{,i}}},c{f}}</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">dbgehiafc</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>按照题目意思&#xff0c;用例对应的二叉树如下&#xff1a;</p> 
+<p><img alt="" height="410" src="https://img-blog.csdnimg.cn/c73427b4dc9744d3a08aaadc7d146d35.png" width="333" /></p> 
+<p> 按照中序遍历规则&#xff0c;左根右&#xff0c;遍历结果为&#xff1a;dbgehiafc 。</p> 
+<p></p> 
+<p>本题首先需要从给定字符串中解析出根、左子树、右子树信息&#xff0c;但是如果是从外到内解析&#xff0c;比如先提取最大的根&#xff1a;a&#xff0c;以及它的左右子树&#xff0c;那么将非常困难。大家可以尝试下。</p> 
+<p>我的解题思路是&#xff0c;利用栈结构&#xff0c;找到匹配的{,}&#xff0c;然后提取出根、以及其左右子树&#xff0c;实现如下&#xff1a;</p> 
+<p>首先定义两个栈结构stack&#xff0c;idxs&#xff0c;</p> 
+<p>然后&#xff0c;遍历输入的字符串的字符&#xff1a;默认将非 } 的字符都压入stack栈中&#xff0c;如果遇到 { 字符&#xff0c;则记录它被压入stack栈中的索引位置到idxs中。</p> 
+<p></p> 
+<p>如果遇到 } 字符</p> 
+<p>则弹出idxs栈顶的 { 索引值idx&#xff0c;此时我们可以根据idx索引得到&#xff1a;</p> 
+<ol><li>一颗子树的根&#xff0c;即stack[idx-1]&#xff0c;比如<span style="color:#0d0016;">h</span>&#xff1a;a{b{d,e{g,<span style="color:#fe2c24;"><strong>h</strong></span><span style="color:#0d0016;">{<!-- --></span>,i</li><li>根下的左右叶子&#xff1a;即stack的idx&#43;1~stack.size-1&#xff0c;比如,i &#xff1a;a{b{d,e{g,<span style="color:#0d0016;">h{<!-- --></span><span style="color:#fe2c24;"><strong>,i</strong></span></li></ol> 
+<p>因此&#xff0c;遇到 } 字符&#xff0c;意味着&#xff0c;我们就能够解析出一颗子树。</p> 
+<p></p> 
+<p>当解析出子树的根、以及左右叶子后&#xff0c;我们需要将这个子树按照中序遍历的特点重组为一个叶子节点&#xff0c;比如上面例子中&#xff0c;解析出子树的根为h&#xff0c;其左叶子为空&#xff0c;右叶子为i&#xff0c;则按照中序遍历&#xff0c;可以将该子树重组 &#34;&#34; &#43; h &#43; i &#xff0c;得到一个值为 hi 得叶子。</p> 
+<p>即此时stack栈内容为&#xff1a;a{b{d,e{g,<span style="color:#fe2c24;"><strong>hi</strong></span></p> 
+<p>之后再遇到 }&#xff0c;则重复该逻辑&#xff0c;比如</p> 
+<ul><li>a{b{d,<span style="color:#fe2c24;"><strong>gehi</strong></span></li><li>a{<!-- --><span style="color:#fe2c24;"><strong>dbgehi</strong></span></li><li>a{<!-- --><span style="color:#0d0016;">dbgehi,</span></li><li>a{<!-- --><span style="color:#0d0016;">dbgehi,c</span></li><li>a{<!-- --><span style="color:#0d0016;">dbgehi,c{<!-- --></span></li><li>a{<!-- --><span style="color:#0d0016;">dbgehi,c{f</span></li><li>a{<!-- --><span style="color:#0d0016;">dbgehi,</span><span style="color:#fe2c24;"><strong>fc</strong></span></li><li><span style="color:#fe2c24;"><strong>dbgehiafc</strong></span></li></ul> 
+<p>上面过程画图&#xff0c;如下所示</p> 
+<p><img alt="" height="423" src="https://img-blog.csdnimg.cn/0ec0fad213294c9da48e922f76cfbf9c.png" width="747" /></p> 
+<p><img alt="" height="349" src="https://img-blog.csdnimg.cn/4f9cd9ee2dbb451a9488d49051731b72.png" width="726" /> <img alt="" height="328" src="https://img-blog.csdnimg.cn/c8e39f6c75ba4634b51f326399ec31c9.png" width="772" /></p> 
+<p><img alt="" height="284" src="https://img-blog.csdnimg.cn/2511fc408a924680a44b85e7b69f8417.png" width="757" /> <img alt="" height="254" src="https://img-blog.csdnimg.cn/83ba1a849f4146e98c9e4b3e67af3c61.png" width="683" /></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  const idxs &#61; [];
+  const stack &#61; [];
+  for (let i &#61; 0; i &lt; str.length; i&#43;&#43;) {
+    const c &#61; str[i];
+
+    if (c &#61;&#61; &#34;}&#34;) {
+      const idx &#61; idxs.pop(); // 左括号索引
+      const root &#61; stack[idx - 1]; // 根
+      const [left, right] &#61; stack.splice(idx).slice(1).join(&#34;&#34;).split(&#34;,&#34;);
+      stack.pop();
+      stack.push((left ?? &#34;&#34;) &#43; root &#43; (right ?? &#34;&#34;));
+      continue;
+    }
+
+    if (c &#61;&#61; &#34;{&#34;) {
+      idxs.push(stack.length);
+    }
+
+    stack.push(c);
+  }
+
+  return stack[0];
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    System.out.println(getResult(sc.next()));
+  }
+
+  public static String getResult(String str) {
+    LinkedList&lt;Integer&gt; idxs &#61; new LinkedList&lt;&gt;();
+    LinkedList&lt;String&gt; stack &#61; new LinkedList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      char c &#61; str.charAt(i);
+
+      if (c &#61;&#61; &#39;}&#39;) {
+        // 如果遇到}&#xff0c;则需要将它和最近的一个{匹配&#xff0c;而最近的{的索引就是idxs的栈顶值
+        int idx &#61; idxs.removeLast(); // 左括号在栈中的索引位置idx
+
+        // 将{、}之间的子树内容提取出来&#xff0c;即从{索引&#43;1开始提取&#xff0c;一直到stack栈顶
+        String subTree &#61; removeStackEles(stack, idx &#43; 1);
+
+        // 此时stack栈顶元素是{&#xff0c;我们需要去除它
+        stack.removeLast();
+
+        // 此时stack栈顶元素是子树根
+        String root &#61; stack.removeLast();
+
+        // 将子树内容按照逗号切割&#xff0c;左边的是左子树&#xff0c;右边的是右子树
+        String[] split &#61; subTree.split(&#34;,&#34;);
+        String left &#61; split[0];
+        // 如果没有逗号&#xff0c;则没有右子树
+        String right &#61; split.length &gt; 1 ? split[1] : &#34;&#34;;
+
+        // 按照中序遍历顺序&#xff0c;合成:左根右
+        stack.addLast(left &#43; root &#43; right);
+        continue;
+      }
+
+      if (c &#61;&#61; &#39;{&#39;) {
+        idxs.addLast(stack.size());
+      }
+
+      stack.addLast(c &#43; &#34;&#34;);
+    }
+
+    return stack.get(0);
+  }
+
+  // 将栈stack&#xff0c;从start索引开始删除&#xff0c;一直删到栈顶&#xff0c;被删除元素组合为一个字符串返回
+  public static String removeStackEles(LinkedList&lt;String&gt; stack, int start) {
+    StringBuilder sb &#61; new StringBuilder();
+    while (start &lt; stack.size()) {
+      sb.append(stack.remove(start));
+    }
+    return sb.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    idxs &#61; []
+    stack &#61; []
+
+    for i in range(len(s)):
+        c &#61; s[i]
+
+        if c &#61;&#61; &#39;}&#39;:
+            idx &#61; idxs.pop()  # 左括号索引
+            root &#61; stack[idx - 1]  # 根
+
+            left, right &#61; &#34;&#34;, &#34;&#34;
+            tmp &#61; &#34;&#34;.join(stack[(idx &#43; 1):]).split(&#34;,&#34;)
+            if len(tmp) &#61;&#61; 1:  # 对应c{f}这种没有右子节点的情况
+                left &#61; tmp[0]
+            else:
+                left, right &#61; tmp
+
+            stack &#61; stack[:idx - 1]
+            stack.append(left &#43; root &#43; right)
+            continue
+
+        if c &#61;&#61; &#39;{&#39;:
+            idxs.append(len(stack))
+
+        stack.append(c)
+
+    return stack[0]
+
+
+# 算法调用
+print(getResult(s))
+</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

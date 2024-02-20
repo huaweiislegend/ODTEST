@@ -1,0 +1,303 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 最佳植树距离（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <p id="main-toc"><strong>目录</strong></p> 
+<p id="main-toc-toc" style="margin-left:80px;"><a href="#main-toc" rel="nofollow">题目描述</a></p> 
+<p id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0-toc" style="margin-left:80px;"><a href="#%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0" rel="nofollow">输入描述</a></p> 
+<p id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0-toc" style="margin-left:80px;"><a href="#%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0" rel="nofollow">输出描述</a></p> 
+<p id="%E7%94%A8%E4%BE%8B-toc" style="margin-left:80px;"><a href="#%E7%94%A8%E4%BE%8B" rel="nofollow">用例</a></p> 
+<p id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90-toc" style="margin-left:80px;"><a href="#%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90" rel="nofollow">题目解析</a></p> 
+<p id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">JavaScript算法源码</a></p> 
+<p id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">Java算法源码</a></p> 
+<p id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">Python算法源码</a></p> 
+<hr id="hr-toc" /> 
+<p></p> 
+<h4 id="main-toc">题目描述</h4> 
+<p>按照环保公司要求&#xff0c;小明需要在沙化严重的地区进行植树防沙工作&#xff0c;初步目标是种植一条直线的树带。由于有些区域目前不适合种植树木&#xff0c;所以只能在一些可以种植的点来种植树木。</p> 
+<p>在树苗有限的情况下&#xff0c;要达到最佳效果&#xff0c;就要尽量散开种植&#xff0c;不同树苗之间的最小间距要尽量大。给你一个适合种情树木的点坐标和一个树苗的数量&#xff0c;请帮小明选择一个最佳的最小种植间距。</p> 
+<p>例如&#xff0c;适合种植树木的位置分别为1,3,5,6,7,10,13 树苗数量是3&#xff0c;种植位置在1,7,13&#xff0c;树苗之间的间距都是6&#xff0c;均匀分开&#xff0c;就达到了散开种植的目的&#xff0c;最佳的最小种植间距是6</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第1行表示适合种树的坐标数量<br /> 第2行是适合种树的坐标位置<br /> 第3行是树苗的数量</p> 
+<p><br /> 例如&#xff1a;</p> 
+<blockquote> 
+ <p>7<br /> 1 5 3 6 10 7 13<br /> 3</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最佳的最小种植间距</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>位置范围为1~10000000</li><li>种植树苗的数量范围2~10000000</li><li>用例确保种桔的树苗数量不会超过有效种桔坐标数量</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">7<br /> 1 5 3 6 10 7 13<br /> 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">6</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">3棵树苗分别种植在1&#xff0c;7&#xff0c;13位置时&#xff0c;树苗种植的最均匀&#xff0c;最小间距为6</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是<a href="https://fcqian.blog.csdn.net/article/details/130633897" rel="nofollow" title="LeetCode - 1552 两球之间的磁力_伏城之外的博客-CSDN博客">LeetCode - 1552 两球之间的磁力_伏城之外的博客-CSDN博客</a></p> 
+<p>的换皮题。题解请参考链接博客。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const rl &#61; require(&#34;readline&#34;).createInterface({
+  input: process.stdin,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const n &#61; lines[0] - 0;
+    const positions &#61; lines[1].split(&#34; &#34;).map(Number);
+    const m &#61; lines[2] - 0;
+
+    console.log(getResult(n, positions, m));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, positions, m) {
+  positions.sort((a, b) &#61;&gt; a - b);
+
+  let min &#61; 1;
+  let max &#61; positions[n - 1] - positions[0];
+  let ans &#61; 0;
+
+  while (min &lt;&#61; max) {
+    const mid &#61; (min &#43; max) &gt;&gt; 1;
+    if (check(positions, m, mid)) {
+      ans &#61; mid;
+      min &#61; mid &#43; 1;
+    } else {
+      max &#61; mid - 1;
+    }
+  }
+
+  return ans;
+}
+
+function check(positions, m, minDis) {
+  let count &#61; 1;
+  let curPos &#61; positions[0];
+
+  for (let i &#61; 1; i &lt; positions.length; i&#43;&#43;) {
+    if (positions[i] - curPos &gt;&#61; minDis) {
+      count&#43;&#43;;
+      curPos &#61; positions[i];
+    }
+  }
+
+  return count &gt;&#61; m;
+}
+</code></pre> 
+<h4 id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] positions &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      positions[i] &#61; sc.nextInt();
+    }
+
+    int m &#61; sc.nextInt();
+
+    System.out.println(getResult(n, positions, m));
+  }
+
+  public static int getResult(int n, int[] positions, int m) {
+    Arrays.sort(positions);
+
+    int min &#61; 1, max &#61; positions[n - 1] - positions[0];
+    int ans &#61; 0;
+
+    while (min &lt;&#61; max) {
+      int mid &#61; (min &#43; max) &gt;&gt; 1;
+
+      if (check(positions, m, mid)) {
+        ans &#61; mid;
+        min &#61; mid &#43; 1;
+      } else {
+        max &#61; mid - 1;
+      }
+    }
+
+    return ans;
+  }
+
+  public static boolean check(int[] positions, int m, int minDis) {
+    int count &#61; 1;
+
+    int curPos &#61; positions[0];
+    for (int i &#61; 1; i &lt; positions.length; i&#43;&#43;) {
+      if (positions[i] - curPos &gt;&#61; minDis) {
+        count&#43;&#43;;
+        curPos &#61; positions[i];
+      }
+    }
+
+    return count &gt;&#61; m;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+positions &#61; list(map(int, input().split()))
+m &#61; int(input())
+
+
+def check(minDis):
+    count &#61; 1
+    curPos &#61; positions[0]
+
+    for i in range(1, n):
+        if positions[i] - curPos &gt;&#61; minDis:
+            count &#43;&#61; 1
+            curPos &#61; positions[i]
+
+    return count &gt;&#61; m
+
+
+# 算法入口
+def getResult():
+    positions.sort()
+
+    low &#61; 1
+    high &#61; positions[-1] - positions[0]
+    ans &#61; 0
+
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) &gt;&gt; 1
+
+        if check(mid):
+            ans &#61; mid
+            low &#61; mid &#43; 1
+        else:
+            high &#61; mid - 1
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 100000
+
+int getResult(int n, int* positions, int m);
+int cmp(const void* a, const void* b);
+int check(int* positions, int n, int m, int minDis);
+
+int main()
+{
+	// 适合种树的坐标数量
+	int n;
+	scanf(&#34;%d&#34;, &amp;n);
+	
+	// 适合种树的坐标位置
+	int positions[MAX_SIZE];
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		scanf(&#34;%d&#34;, &amp;positions[i]);
+	}
+	
+	// 树苗的数量
+	int m;
+	scanf(&#34;%d&#34;, &amp;m);
+	
+	printf(&#34;%d\n&#34;, getResult(n, positions, m));
+	
+	return 0;
+}
+
+int getResult(int n, int* positions, int m)
+{
+	qsort(positions, n, sizeof(int), cmp);
+	
+	int min &#61; 1;
+	int max &#61; positions[n-1] - positions[0];
+	
+	int ans &#61; 0;
+	
+	while(min &lt;&#61; max) {
+		int mid &#61; (min &#43; max) &gt;&gt; 1;
+		
+		if(check(positions, n, m, mid)) {
+			ans &#61; mid;
+			min &#61; mid &#43; 1;
+		} else {
+			max &#61; mid - 1;
+		}
+	}
+	
+	return ans;
+}
+
+int cmp(const void* a, const void* b)
+{
+	return *((int*) a) - *((int*) b);
+}
+
+int check(int* positions, int n, int m, int minDis)
+{
+	int count &#61; 1;
+	
+	int curPos &#61; positions[0];
+	for(int i&#61;1; i&lt;n; i&#43;&#43;) {
+		if(positions[i] - curPos &gt;&#61; minDis) {
+			count&#43;&#43;;
+			curPos &#61; positions[i];
+		}
+	}
+	
+	return count &gt;&#61; m;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

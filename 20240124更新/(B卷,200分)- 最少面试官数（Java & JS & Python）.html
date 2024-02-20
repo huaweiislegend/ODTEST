@@ -1,0 +1,196 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 最少面试官数（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某公司组织一场公开招聘活动&#xff0c;假设由于人数和场地的限制&#xff0c;每人每次面试的时长不等&#xff0c;并已经安排给定&#xff0c;用(S1,E1)、 (S2,E2)、 (Sj,Ej)…(Si &lt; Ei&#xff0c;均为非负整数)表示每场面试的开始和结束时间。</p> 
+<p>面试采用一对一的方式&#xff0c;即一名面试官同时只能面试一名应试者&#xff0c;一名面试官完成一次面试后可以立即进行下一场面试&#xff0c;且每个面试官的面试人次不超过 m。</p> 
+<p>为了支撑招聘活动高效顺利进行&#xff0c;请你计算至少需要多少名面试官。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的第一行为面试官的最多面试人次 m&#xff0c;第二行为当天总的面试场次 n&#xff0c;</p> 
+<p>接下来的 n 行为每场面试的起始时间和结束时间&#xff0c;起始时间和结束时间用空格分隔。</p> 
+<p>其中&#xff0c; 1 &lt;&#61; n, m &lt;&#61; 500</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出一个整数&#xff0c;表示至少需要的面试官数量。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 5<br /> 1 2<br /> 2 3<br /> 3 4<br /> 4 5<br /> 5 6</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">总共有 5 场面试&#xff0c;且面试时间都不重叠&#xff0c;但每个面试官最多只能面试 2 人次&#xff0c;所以需要 3 名面试官。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:84px;">输入</td><td style="width:414px;">3<br /> 3<br /> 1 2<br /> 2 3<br /> 3 4</td></tr><tr><td style="width:84px;">输出</td><td style="width:414px;">1</td></tr><tr><td style="width:84px;">说明</td><td style="width:414px;">总共有3场面试&#xff0c;面试时间不重叠&#xff0c;每个面试官最多能面试3人次&#xff0c;所以只需要一名面试官</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:84px;">输入</td><td style="width:414px;">3<br /> 3<br /> 8 35<br /> 5 10<br /> 1 3</td></tr><tr><td style="width:84px;">输出</td><td style="width:414px;">2</td></tr><tr><td style="width:84px;">说明</td><td style="width:414px;">总共有3场面试&#xff0c;[5,10]和[8,35]有重叠&#xff0c;所以至少需要2名面试官</td></tr></tbody></table> 
+<p> </p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题要想面试官人数最少&#xff0c;则需要每个面试官面试尽量多的人。</p> 
+<p>我们将每个面试官想象成一个桶&#xff0c;每个面试者想象成一个球。</p> 
+<p></p> 
+<p>首先&#xff0c;我们需要对面试者的面试时间段&#xff0c;按照结束时间进行升序。</p> 
+<blockquote> 
+ <p>求解最大不相交区间数&#xff0c;需要将区间按结束位置升序&#xff1a;</p> 
+ <p><a href="https://blog.csdn.net/qfc_128220/article/details/128386257?spm&#61;1001.2014.3001.5501" title="华为OD机试 - 最多等和不相交连续子序列&#xff08;Java &amp; JS &amp; Python&#xff09;_华为机试_伏城之外的博客-CSDN博客">华为OD机试 - 最多等和不相交连续子序列&#xff08;Java &amp; JS &amp; Python&#xff09;_华为机试_伏城之外的博客-CSDN博客</a></p> 
+</blockquote> 
+<p>由于不知道面试官个数&#xff0c;因此初始化时&#xff0c;有几个面试者就预定几个面试官&#xff0c;比如用例中有5个面试者&#xff0c;那就是初始化预定5个面试官。</p> 
+<p></p> 
+<p>接着&#xff0c;就是球放桶的问题了。</p> 
+<p></p> 
+<p>第一个球&#xff0c;放第一个桶。</p> 
+<p>第二个球&#xff0c;先尝试放第一个桶&#xff0c;首先检查桶中球个数是否已达到m&#xff0c;若已达到&#xff0c;则不能放入&#xff0c;继续尝试放入下一个桶&#xff0c;若未达到&#xff0c;则将球和桶最上面的球比较&#xff0c;即看面试时间是否有交集&#xff0c;如果有交集&#xff0c;则不能放入&#xff0c;继续尝试放入下一个桶&#xff0c;如果没有交集&#xff0c;则可以放入。</p> 
+<p>按照上面逻辑&#xff0c;放入所有球。</p> 
+<p></p> 
+<p>然后把空桶排除掉&#xff0c;剩下还有几个桶&#xff0c;就需要几个面试官。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    m &#61; lines[0] - 0;
+    n &#61; lines[1] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 2) {
+    const ranges &#61; lines.slice(2).map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+    console.log(getResult(ranges, m, n));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(ranges, m, n) {
+  // 求解最大不相交区间时&#xff0c;需要将所有区间按照右边界升序
+  ranges.sort((a, b) &#61;&gt; a[1] - b[1]);
+  const buckets &#61; new Array(n).fill(0).map(() &#61;&gt; new Array());
+
+  for (let [s, e] of ranges) {
+    for (let bucket of buckets) {
+      // 每个面试官最多面试m次
+      if (bucket.length &lt; m &amp;&amp; (bucket.length &#61;&#61; 0 || bucket.at(-1) &lt;&#61; s)) {
+        bucket.push(e);
+        break;
+      }
+    }
+  }
+
+  return buckets.filter((bucket) &#61;&gt; bucket.length &gt; 0).length;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[][] ranges &#61; new int[n][2];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      ranges[i][0] &#61; sc.nextInt();
+      ranges[i][1] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(m, n, ranges));
+  }
+
+  // 算法入口
+  public static long getResult(int m, int n, int[][] ranges) {
+    // 求解最大不相交区间时&#xff0c;需要将所有区间按照右边界升序
+    Arrays.sort(ranges, (a, b) -&gt; a[1] - b[1]);
+
+    ArrayList&lt;LinkedList&lt;Integer&gt;&gt; buckets &#61; new ArrayList&lt;&gt;();
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) buckets.add(new LinkedList&lt;&gt;());
+
+    for (int[] range : ranges) {
+      int s &#61; range[0];
+      int e &#61; range[1];
+
+      for (LinkedList&lt;Integer&gt; bucket : buckets) {
+        // 每个面试官最多面试m次
+        if (bucket.size() &lt; m &amp;&amp; (bucket.size() &#61;&#61; 0 || bucket.getLast() &lt;&#61; s)) {
+          bucket.add(e);
+          break;
+        }
+      }
+    }
+
+    return buckets.stream().filter(bucket -&gt; bucket.size() &gt; 0).count();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+n &#61; int(input())
+areas &#61; [list(map(int, input().split())) for _ in range(n)]
+
+
+# 算法入口
+def getResult():
+    # 求解最大不相交区间时&#xff0c;需要将所有区间按照右边界升序
+    areas.sort(key&#61;lambda x: x[1])
+
+    buckets &#61; [[] for _ in range(n)]
+
+    for s, e in areas:
+        for bucket in buckets:
+            # 每个面试官最多面试m次
+            if len(bucket) &lt; m and (len(bucket) &#61;&#61; 0 or bucket[-1] &lt;&#61; s):
+                bucket.append(e)
+                break
+
+    return len(list(filter(lambda b: len(b) &gt; 0, buckets)))
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

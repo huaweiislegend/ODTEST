@@ -1,0 +1,213 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 拔河比赛（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>公司最近准备进行拔河比赛&#xff0c;需要在全部员工中进行挑选。<br /> 选拔的规则如下&#xff1a;</p> 
+<ol><li>按照身高优先、体重次优先的方式准备比赛阵容&#xff1b;</li><li>规定参赛的队伍派出10名选手。</li></ol> 
+<p>请实现一个选拔队员的小程序。</p> 
+<p>输入为一个数组&#xff0c;记录了部门人员的身高、体重信息&#xff0c;如[身高,体重]的方式放置&#xff1b;</p> 
+<p>部门全部成员数量为大于10的一个数组。</p> 
+<p>要求输出一个size为10的二维数组。<br />  </p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为N行员工信息&#xff0c;表示部门报名参加选拔的候选人信息&#xff0c;每行有两个数字&#xff0c;使用空格分隔&#xff0c;表示员工的身高、体重信息<br /> 如<br /> 181 70<br /> 182 70<br /> 表示两位候选员工&#xff0c;第一人身高181厘米&#xff0c;体重70公斤;第二人身高182厘米&#xff0c;体重70公斤</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>要求输出一个10行的已经排序的参赛员工信息数据&#xff0c;每行有两个数字&#xff0c;使用空格分隔&#xff0c;表示员工的身高、体重信息如<br /> 182 70<br /> 181 70</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>输入数据范围&#xff1a;</p> 
+<ul><li>成员身高、体重为int数据类型:</li><li>输入备选成员数量为N&#xff0c;10 ≤ N ≤ 100</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">181 70<br /> 182 70<br /> 183 70<br /> 184 70<br /> 185 70<br /> 186 70<br /> 180 71<br /> 180 72<br /> 180 73<br /> 180 74<br /> 180 75</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">186 70<br /> 185 70<br /> 184 70<br /> 183 70<br /> 182 70<br /> 181 70<br /> 180 75<br /> 180 74<br /> 180 73<br /> 180 72</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>考察简单的排序。</p> 
+<hr /> 
+<p>2023.09.21</p> 
+<p>本题根据考友反馈&#xff0c;题目用例的输出格式可能存在问题</p> 
+<p>考试时可以考虑将多行输出 改成 一行输出 试试</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const employees &#61; [];
+
+  while (true) {
+    try {
+      employees.push((await readline()).split(&#34; &#34;).map(Number));
+    } catch (error) {
+      break;
+    }
+  }
+
+  getResult(employees);
+})();
+
+function getResult(employees) {
+  employees.sort((a, b) &#61;&gt; (a[0] !&#61; b[0] ? b[0] - a[0] : b[1] - a[1]));
+
+  for (let i &#61; 0; i &lt; 10; i&#43;&#43;) {
+    console.log(employees[i].join(&#34; &#34;));
+  }
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  static class Employee {
+    int height;
+    int weight;
+
+    public Employee(String s) {
+      int[] tmp &#61; Arrays.stream(s.split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+      this.height &#61; tmp[0];
+      this.weight &#61; tmp[1];
+    }
+
+    &#64;Override
+    public String toString() {
+      return this.height &#43; &#34; &#34; &#43; this.weight;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    ArrayList&lt;Employee&gt; employees &#61; new ArrayList&lt;&gt;();
+
+    // 假设题目以空行作为输入结束条件
+    //    while (sc.hasNextLine()) {
+    //      String line &#61; sc.nextLine();
+    //
+    //      if (&#34;&#34;.equals(line)) {
+    //        getResult(employees);
+    //        break;
+    //      } else {
+    //        employees.add(new Employee(line));
+    //      }
+    //    }
+
+    // 没有额外的空行作为输入结束条件
+    while (sc.hasNextLine()) {
+      employees.add(new Employee(sc.nextLine()));
+    }
+
+    getResult(employees);
+  }
+
+  public static void getResult(ArrayList&lt;Employee&gt; employees) {
+    employees.sort((a, b) -&gt; a.height !&#61; b.height ? b.height - a.height : b.weight - a.weight);
+
+    for (int i &#61; 0; i &lt; 10; i&#43;&#43;) {
+      System.out.println(employees.get(i));
+    }
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 全局变量
+employees &#61; []
+
+# 输入获取
+while True:
+    try:
+        employees.append(list(map(int, input().split())))
+    except:
+        break
+
+
+# 算法入口
+def getResult(employees):
+    employees.sort(key&#61;lambda x: (-x[0], -x[1]))
+
+    for i in range(10):
+        print(&#34; &#34;.join(map(str, employees[i])))
+
+
+# 算法调用
+getResult(employees)
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 100
+
+typedef struct {
+    int height;
+    int weight;
+} Employee;
+
+int cmp(const void *a, const void *b) {
+    Employee* A &#61; (Employee*) a;
+    Employee* B &#61; (Employee*) b;
+    return A-&gt;height !&#61; B-&gt;height ? B-&gt;height - A-&gt;height : B-&gt;weight - A-&gt;weight;
+}
+
+int main() {
+    Employee employees[MAX_SIZE];
+    int employees_size &#61; 0;
+
+    int height, weight;
+    while(scanf(&#34;%d %d&#34;, &amp;height, &amp;weight) !&#61; EOF) {
+        employees[employees_size].height &#61; height;
+        employees[employees_size].weight &#61; weight;
+        employees_size&#43;&#43;;
+    }
+
+    qsort(employees, employees_size, sizeof(Employee), cmp);
+
+    for(int i&#61;0; i&lt;10; i&#43;&#43;) {
+        printf(&#34;%d %d\n&#34;, employees[i].height, employees[i].weight);
+    }
+
+    return 0;
+}
+
+</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

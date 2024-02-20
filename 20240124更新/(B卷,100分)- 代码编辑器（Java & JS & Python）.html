@@ -1,0 +1,251 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 代码编辑器（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某公司为了更高效的编写代码&#xff0c;邀请你开发一款代码编辑器程序。</p> 
+<p>程序的输入为 已有的代码文本和指令序列&#xff0c;程序需输出编辑后的最终文本。指针初始位置位于文本的开头。<br /> 支持的指令(X为大于等于0的整数, word 为无空格的字符串)&#xff1a;</p> 
+<ul><li>FORWARD X 指针向前(右)移动X,如果指针移动位置超过了文本末尾&#xff0c;则将指针移动到文本末尾</li><li>BACKWARD X 指针向后(左)移动X,如果指针移动位置超过了文本开头&#xff0c;则将指针移动到文本开头</li><li>SEARCH-FORWARD word 从指针当前位置向前查找 word 并将指针移动到word的起始位置&#xff0c;如果未找到则保持不变</li><li>SEARCH-BACKWARD word 在文本中向后查我 word 并将指针移动到word的起始位置&#xff0c;如果未找到则保持不变</li><li>INSERT word 在指针当前位置前插入word&#xff0c;并将指针移动到word的结尾</li><li>REPLACE word 在指针当前位置替换并插入字符(删除原有字符&#xff0c;并增加新的字符)</li><li>DELETE X 在指针位置删除X个字符</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的第一行为命令列表的长度K</p> 
+<p>输入的第二行为文件中的原始文本</p> 
+<p>接下来的K行&#xff0c;每行为一个指令</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>编辑后的最终结果</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>文本最长长度不超过 256K</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> ello<br /> INSERT h</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">hello</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">在文本开头插入</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> hllo<br /> FORWARD 1<br /> INSERT e</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">hello</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">在文本的第一个位置插入</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> hell<br /> FORWARD 1000<br /> INSERT o</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">hello</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">在文本的结尾插入</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> hello<br /> REPLACE HELLO</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">HELLO</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">替换</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> hello<br /> REPLACE HELLO_WORLD</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">HELLO_WORLD</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">超过文本长度替换</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> hell<br /> FORWARD 10000<br /> REPLACE O</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">hellO</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">超出文本长度替换</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题考察逻辑分析&#xff0c;以及字符串常用操作。</p> 
+<p>本题题目描述对逻辑描述的非常清晰&#xff0c;大家可以对照题目描述来看下面的代码。</p> 
+<p>其中&#xff0c;容易出错的点是&#xff1a;</p> 
+<ul><li>SEARCH-BACKWARD 是向后查找&#xff0c;这个“向后”&#xff0c;其实是“向左”</li><li>SEARCH-FORWARD 是向前查找&#xff0c;这个“向前”&#xff0c;其实是“向右”</li><li>假设指针位置是curIdx&#xff0c;原始文本是s&#xff0c;SEARCH-BACKWARD word&#xff0c;即相当于在s的0~curIdx范围反向查找word&#xff0c;这里容易出错的点是反向查找方法参数的含义&#xff0c;大家可以看下各自语言的下面方法参数的含义</li></ul> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:75px;">Java</td><td style="width:124px;">lastIndexOf</td><td style="width:307px;"><a href="https://docs.oracle.com/javase/8/docs/api/index.html" rel="nofollow" title="StringBuilder (Java Platform SE 8 ) (oracle.com)">StringBuilder (Java Platform SE 8 ) (oracle.com)</a></td></tr><tr><td style="width:75px;">JS</td><td style="width:124px;">lastIndexOf</td><td style="width:307px;"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/lastIndexOf" rel="nofollow" title="String.prototype.lastIndexOf() - JavaScript | MDN (mozilla.org)">String.prototype.lastIndexOf() - JavaScript | MDN (mozilla.org)</a></td></tr><tr><td style="width:75px;">Python</td><td style="width:124px;">rfind</td><td style="width:307px;"><a href="https://www.runoob.com/python/att-string-rfind.html" rel="nofollow" title="Python rfind()方法 | 菜鸟教程 (runoob.com)">Python rfind()方法 | 菜鸟教程 (runoob.com)</a></td></tr></tbody></table> 
+<p><span style="color:#4d4d4d;"> </span></p> 
+<ul><li>INSERT word&#xff0c;这里容易出错的点是&#xff0c;插入word到s中后&#xff0c;curIdx也要更新位置到插入word的最后一个单词位置后面</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let k, s;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    k &#61; parseInt(lines[0]);
+    s &#61; lines[1];
+  }
+
+  if (k &amp;&amp; lines.length &#61;&#61; k &#43; 2) {
+    lines.shift();
+    lines.shift();
+    const commands &#61; lines.map((str) &#61;&gt; str.split(&#34; &#34;));
+
+    console.log(getResult(s, commands));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(s, commands) {
+  let curIdx &#61; 0;
+
+  for (let [type, value] of commands) {
+    switch (type) {
+      case &#34;FORWARD&#34;:
+        curIdx &#43;&#61; parseInt(value);
+        curIdx &#61; Math.min(curIdx, s.length);
+        break;
+      case &#34;BACKWARD&#34;:
+        curIdx -&#61; parseInt(value);
+        curIdx &#61; Math.max(curIdx, 0);
+        break;
+      case &#34;SEARCH-FORWARD&#34;:
+        const i &#61; s.indexOf(value, curIdx);
+        if (i !&#61; -1) curIdx &#61; i;
+        break;
+      case &#34;SEARCH-BACKWARD&#34;:
+        const i1 &#61; s.lastIndexOf(value, curIdx);
+        if (i1 !&#61; -1) curIdx &#61; i1;
+        break;
+      case &#34;INSERT&#34;:
+        tmp &#61; [...s];
+        tmp.splice(curIdx, 0, ...value);
+        s &#61; tmp.join(&#34;&#34;);
+        curIdx &#43;&#61; value.length;
+        break;
+      case &#34;REPLACE&#34;:
+        tmp &#61; [...s];
+        tmp.splice(curIdx, value.length, ...value);
+        s &#61; tmp.join(&#34;&#34;);
+        break;
+      case &#34;DELETE&#34;:
+        tmp &#61; [...s];
+        tmp.splice(curIdx, parseInt(value));
+        s &#61; tmp.join(&#34;&#34;);
+        break;
+    }
+  }
+
+  return s;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int k &#61; Integer.parseInt(sc.nextLine());
+
+    StringBuilder s &#61; new StringBuilder(sc.nextLine());
+
+    String[][] commands &#61; new String[k][2];
+    for (int i &#61; 0; i &lt; k; i&#43;&#43;) {
+      commands[i] &#61; sc.nextLine().split(&#34; &#34;);
+    }
+
+    System.out.println(getResult(s, commands));
+  }
+
+  public static String getResult(StringBuilder s, String[][] commands) {
+    int curIdx &#61; 0;
+
+    for (String[] command : commands) {
+      switch (command[0]) {
+        case &#34;FORWARD&#34;:
+          curIdx &#43;&#61; Integer.parseInt(command[1]);
+          curIdx &#61; Math.min(curIdx, s.length());
+          break;
+        case &#34;BACKWARD&#34;:
+          curIdx -&#61; Integer.parseInt(command[1]);
+          curIdx &#61; Math.max(curIdx, 0);
+          break;
+        case &#34;SEARCH-FORWARD&#34;:
+          int i &#61; s.indexOf(command[1], curIdx);
+          if (i !&#61; -1) curIdx &#61; i;
+          break;
+        case &#34;SEARCH-BACKWARD&#34;:
+          int i1 &#61; s.lastIndexOf(command[1], curIdx);
+          if (i1 !&#61; -1) curIdx &#61; i1;
+          break;
+        case &#34;INSERT&#34;:
+          s.insert(curIdx, command[1]);
+          curIdx &#43;&#61; command[1].length();
+          break;
+        case &#34;REPLACE&#34;:
+          s.replace(curIdx, curIdx &#43; command[1].length(), command[1]);
+          break;
+        case &#34;DELETE&#34;:
+          s.delete(curIdx, curIdx &#43; Integer.parseInt(command[1]));
+          break;
+      }
+    }
+
+    return s.toString();
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+k &#61; int(input())
+s &#61; input()
+commands &#61; list(input().split() for _ in range(k))
+
+
+# 算法入口
+def getResult():
+    global s
+
+    curIdx &#61; 0
+
+    for type, value in commands:
+        if type &#61;&#61; &#34;FORWARD&#34;:
+            curIdx &#43;&#61; int(value)
+            curIdx &#61; min(curIdx, len(s))
+        elif type &#61;&#61; &#34;BACKWARD&#34;:
+            curIdx -&#61; int(value)
+            curIdx &#61; max(curIdx, 0)
+        elif type &#61;&#61; &#34;SEARCH-FORWARD&#34;:
+            i &#61; s.find(value, curIdx)
+            if i !&#61; -1:
+                curIdx &#61; i
+        elif type &#61;&#61; &#34;SEARCH-BACKWARD&#34;:
+            j &#61; s.rfind(value, 0, curIdx)
+            if j !&#61; -1:
+                curIdx &#61; j
+        elif type &#61;&#61; &#34;INSERT&#34;:
+            lst &#61; list(s)
+            lst.insert(curIdx, value)
+            s &#61; &#34;&#34;.join(lst)
+            curIdx &#43;&#61; len(value)
+        elif type &#61;&#61; &#34;REPLACE&#34;:
+            lst &#61; list(s)
+            del lst[curIdx:curIdx &#43; len(value)]
+            lst.insert(curIdx, value)
+            s &#61; &#34;&#34;.join(lst)
+        elif type &#61;&#61; &#34;DELETE&#34;:
+            lst &#61; list(s)
+            del lst[curIdx:curIdx &#43; int(value)]
+            s &#61; &#34;&#34;.join(lst)
+
+    return s
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

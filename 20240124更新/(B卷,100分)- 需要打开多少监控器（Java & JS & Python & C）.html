@@ -1,0 +1,265 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 需要打开多少监控器（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某长方形停车场&#xff0c;每个车位上方都有对应监控器&#xff0c;当且仅当在当前车位或者前后左右四个方向任意一个车位范围停车时&#xff0c;监控器才需要打开&#xff1b;</p> 
+<p>给出某一时刻停车场的停车分布&#xff0c;请统计最少需要打开多少个监控器&#xff1b;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入m&#xff0c;n表示长宽&#xff0c;满足1 &lt; m,n &lt;&#61; 20&#xff1b;</p> 
+<p>后面输入m行&#xff0c;每行有n个0或1的整数&#xff0c;整数间使用一个空格隔开&#xff0c;表示该行已停车情况&#xff0c;其中0表示空位&#xff0c;1表示已停&#xff1b;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最少需要打开监控器的数量&#xff1b;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 3<br /> 0 0 0<br /> 0 1 0<br /> 0 0 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题题意比较难以理解&#xff0c;但是画一幅图给大家看下就懂了</p> 
+<p><img alt="" height="481" src="https://img-blog.csdnimg.cn/309bcc6af3854581b26e5bf9d66593f2.png" width="542" /></p> 
+<p> 停车&#xff08;1&#xff09;的位置必须要打开监控器&#xff0c;另外停车位置的上下左右位置&#xff08;1或0&#xff09;的监控器也要打开&#xff0c;问最终需要打开多少个监控器&#xff1f;</p> 
+<p>即&#xff0c;求解上面图示种有颜色的格子数量。</p> 
+<p></p> 
+<p>解题思路如下&#xff1a;</p> 
+<p>遍历矩阵每一个元素&#xff0c;</p> 
+<ul><li>如果元素值为1&#xff0c;对应位置的监控器就要打开。</li><li>如果元素值为0&#xff0c;则需要进一步检查其上下左右四个位置&#xff0c;只要这四个位置有一个元素值为1&#xff0c;则当前位置的监控器需要打开</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const [m, n] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const matrix &#61; [];
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    matrix.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  console.log(getResult(matrix, m, n));
+})();
+
+function getResult(matrix, m, n) {
+  // 记录需要打开的监控器数量
+  let count &#61; 0;
+
+  // 上下左右四个方向的偏移量
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  for (let x &#61; 0; x &lt; m; x&#43;&#43;) {
+    for (let y &#61; 0; y &lt; n; y&#43;&#43;) {
+      // 如果元素值为1&#xff0c;对应位置的监控器就要打开
+      if (matrix[x][y] &#61;&#61;&#61; 1) {
+        count&#43;&#43;;
+        continue;
+      }
+
+      // 如果元素值为0&#xff0c;则需要进一步检查其上下左右4个位置&#xff0c;只要这四个位置有一个元素值为1&#xff0c;则当前位置的监控器需要打开
+      for (let [offsetX, offsetY] of offsets) {
+        const newX &#61; x &#43; offsetX;
+        const newY &#61; y &#43; offsetY;
+
+        if (
+          newX &gt;&#61; 0 &amp;&amp;
+          newX &lt; m &amp;&amp;
+          newY &gt;&#61; 0 &amp;&amp;
+          newY &lt; n &amp;&amp;
+          matrix[newX][newY] &#61;&#61;&#61; 1
+        ) {
+          count&#43;&#43;;
+          break;
+        }
+      }
+    }
+  }
+
+  return count;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[][] matrix &#61; new int[m][n];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    System.out.println(getResult(m, n, matrix));
+  }
+
+  public static int getResult(int m, int n, int[][] matrix) {
+    // 记录需要打开的监控器数量
+    int count &#61; 0;
+
+    // 上下左右四个方向的偏移量
+    int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+
+    for (int x &#61; 0; x &lt; m; x&#43;&#43;) {
+      for (int y &#61; 0; y &lt; n; y&#43;&#43;) {
+        // 如果元素值为1&#xff0c;对应位置的监控器就要打开
+        if (matrix[x][y] &#61;&#61; 1) {
+          count&#43;&#43;;
+          continue;
+        }
+
+        // 如果元素值为0&#xff0c;则需要进一步检查其上下左右4个位置&#xff0c;只要这四个位置有一个元素值为1&#xff0c;则当前位置的监控器需要打开
+        for (int[] offset : offsets) {
+          int newX &#61; x &#43; offset[0];
+          int newY &#61; y &#43; offset[1];
+
+          if (newX &gt;&#61; 0 &amp;&amp; newX &lt; m &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; n &amp;&amp; matrix[newX][newY] &#61;&#61; 1) {
+            count&#43;&#43;;
+            break;
+          }
+        }
+      }
+    }
+
+    return count;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, n &#61; map(int, input().split())
+matrix &#61; [list(map(int, input().split())) for _ in range(m)]
+
+
+# 算法入口
+def getResult():
+    # 记录需要打开的监控器数量
+    count &#61; 0
+
+    # 上下左右四个方向的偏移量
+    offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    for x in range(m):
+        for y in range(n):
+            # 如果元素值为1&#xff0c;对应位置的监控器就要打开
+            if matrix[x][y] &#61;&#61; 1:
+                count &#43;&#61; 1
+                continue
+
+            # 如果元素值为0&#xff0c;则需要进一步检查其上下左右4个位置&#xff0c;只要这四个位置有一个元素值为1&#xff0c;则当前位置的监控器需要打开
+            for offsetX, offsetY in offsets:
+                newX &#61; x &#43; offsetX
+                newY &#61; y &#43; offsetY
+
+                if m &gt; newX &gt;&#61; 0 and n &gt; newY &gt;&#61; 0 and matrix[newX][newY] &#61;&#61; 1:
+                    count &#43;&#61; 1
+                    break
+
+    return count
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_ROWS 20
+#define MAX_COLS 20
+
+int main()
+{
+	// 输入获取
+	int m, n;
+	scanf(&#34;%d %d&#34;, &amp;m, &amp;n);
+	
+	int matrix[MAX_ROWS][MAX_COLS];
+	for(int i &#61; 0; i &lt; m; i&#43;&#43;) {
+		for(int j &#61; 0; j &lt; n; j&#43;&#43;) {
+			scanf(&#34;%d&#34;, &amp;matrix[i][j]);
+		}
+	}
+	
+	// 记录需要打开的监控器数量
+	int count &#61; 0;
+	
+	// 上下左右四个方向的偏移量
+	int offsets[4][2] &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+	
+	for(int x &#61; 0; x &lt; m; x&#43;&#43;) {
+		for(int y &#61; 0; y &lt; n; y&#43;&#43;) {
+			// 如果元素值为1&#xff0c;对应位置的监控器就要打开
+			if(matrix[x][y] &#61;&#61; 1) {
+				count&#43;&#43;;
+				continue;
+			}
+			
+			// 如果元素值为0&#xff0c;则需要进一步检查其上下左右4个位置&#xff0c;只要这四个位置有一个元素值为1&#xff0c;则当前位置的监控器需要打开
+			for(int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+				int offsetX &#61; offsets[i][0];
+				int offsetY &#61; offsets[i][1];
+				
+				int newX &#61; x &#43; offsetX;
+				int newY &#61; y &#43; offsetY;
+				
+				if(newX &gt;&#61;0 &amp;&amp; newX &lt; m &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; n &amp;&amp; matrix[newX][newY] &#61;&#61; 1) {
+					count&#43;&#43;;
+					break;
+				}
+			}
+		}
+	}
+	
+	// 输出打印
+	printf(&#34;%d\n&#34;, count);
+	
+	return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

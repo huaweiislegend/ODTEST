@@ -1,0 +1,209 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 匿名信（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>电视剧《分界线》里面有一个片段&#xff0c;男主为了向警察透露案件细节&#xff0c;且不暴露自己&#xff0c;于是将报刊上的字减下来&#xff0c;剪拼成匿名信。<br /> 现在又一名举报人&#xff0c;希望借鉴这种手段&#xff0c;使用英文报刊完成举报操作。<br /> 但为了增加文章的混淆度&#xff0c;只需满足每个单词中字母数量一致即可&#xff0c;不关注每个字母的顺序。<br /> 解释&#xff1a;单词on允许通过单词no进行替代。<br /> 报纸代表newspaper&#xff0c;匿名信代表anonymousLetter&#xff0c;求报纸内容是否可以拼成匿名信。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入newspaper内容&#xff0c;包括1-N个字符串&#xff0c;用空格分开<br /> 第二行输入anonymousLetter内容&#xff0c;包括1-N个字符串&#xff0c;用<strong>空格</strong>分开。</p> 
+<p>newspaper和anonymousLetter的字符串由小写英文字母组成&#xff0c;且每个字母只能使用一次&#xff1b;<br /> newspaper内容中的每个字符串字母顺序可以任意调整&#xff0c;但必须保证字符串的完整性&#xff08;每个字符串不能有多余字母&#xff09;<br /> 1 &lt; N &lt; 100,<br /> 1 &lt;&#61; newspaper.length,anonymousLetter.length &lt;&#61; 10^4</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>如果报纸可以拼成匿名信返回true&#xff0c;否则返回false</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">ab cd<br /> ab</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">true</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">ab ef<br /> aef</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">false</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:84px;">输入</td><td style="width:414px;">ab bcd ef<br /> cbd fe</td></tr><tr><td style="width:84px;">输出</td><td style="width:414px;">true</td></tr><tr><td style="width:84px;">说明</td><td style="width:414px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:81px;">输入</td><td style="width:417px;">ab bcd ef<br /> cd ef</td></tr><tr><td style="width:81px;">输出</td><td style="width:417px;">false</td></tr><tr><td style="width:81px;">说明</td><td style="width:417px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1的意思是&#xff1a;</p> 
+<p>报纸上有两个单词&#xff1a;ab、cd&#xff0c;而要写的匿名信需要一个单词ab&#xff0c;因此可以直接使用报纸上的单词ab&#xff0c;所以可以写出匿名信。</p> 
+<p>用例2的意思是&#xff1a;</p> 
+<p>报纸上有两个单词&#xff1a;ab、ef&#xff0c;而要写的匿名信需要一个aef&#xff0c;根据题目意思</p> 
+<blockquote> 
+ <p>只需满足每个单词中字母数量一致即可</p> 
+</blockquote> 
+<p>如果想用报纸上的单词&#xff0c;代替匿名信上的单词&#xff0c;则这两个单词的字母数量必须一致。</p> 
+<p>因此&#xff0c;对于匿名信单词aef&#xff0c;有三个字母&#xff0c;而报纸上没有有三个字母的单词&#xff0c;因此输出false。</p> 
+<p></p> 
+<p>我增加一个自测用例&#xff0c;说明下面这个特点</p> 
+<blockquote> 
+ <p>不关注每个字母的顺序。单词on允许通过单词no进行替代。</p> 
+</blockquote> 
+<p>比如&#xff0c;报纸单词ba、cd&#xff0c;匿名信需要单词ab&#xff0c;而题目说</p> 
+<blockquote> 
+ <p>不关注每个字母的顺序</p> 
+</blockquote> 
+<p>因此匿名信的单词ab可以用报纸的单词ba代替&#xff0c;因此输出true。</p> 
+<p></p> 
+<p>本题需要关注下数量级&#xff1a;1 &lt;&#61; newspaper.length,anonymousLetter.length &lt;&#61; 10^4</p> 
+<p>因此双重for的O(n^2)时间复杂度会高达一亿次循环&#xff0c;会超时。</p> 
+<p></p> 
+<p>我的策略如下&#xff0c;统计出newspaper中每个单词出现的次数到count对象中&#xff0c;统计前&#xff0c;对每个单词进行字典序排序&#xff0c;这样就可以忽略字母顺序了。</p> 
+<p>比如&#xff0c;用例1的newspaper会统计出count: { &#34;ab&#34;:1, &#34;cd&#34;: 1}&#xff0c;这个时间复杂度是O(n)</p> 
+<p>然后&#xff0c;再遍历anonymousLetter每个单词&#xff0c;并对单词进行字典序排序&#xff0c;忽略字母顺序&#xff0c;然后用排序后单词去count中找&#xff0c;如果count[letter] &gt; 0&#xff0c;则可以找到&#xff0c;然后count[letter]--</p> 
+<blockquote> 
+ <p>遵循题目意思&#xff1a;每个字母只能使用一次</p> 
+</blockquote> 
+<p>如果count[letter]不存在&#xff0c;或者count[letter]&#61;&#61;&#61;0&#xff0c;则说明匿名信中的某个单词在报纸单词中找不到替代&#xff0c;因此可以直接返回false。</p> 
+<p>如果全部都可以找到&#xff0c;则返回true。</p> 
+<p>这个过程的时间复杂度是O(n)。</p> 
+<p>因此总的时间复杂度是O(n)。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const newspaper &#61; lines[0].split(&#34; &#34;);
+    const anonymousLetter &#61; lines[1].split(&#34; &#34;);
+    console.log(getResult(newspaper, anonymousLetter));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(newspaper, anonymousLetter) {
+  const count &#61; {};
+  for (let str of newspaper) {
+    str &#61; [...str].sort().join(&#34;&#34;);
+    count[str] ? count[str]&#43;&#43; : (count[str] &#61; 1);
+  }
+
+  let flag &#61; true;
+  for (let str of anonymousLetter) {
+    str &#61; [...str].sort().join(&#34;&#34;);
+    if (count[str] &gt; 0) {
+      count[str]--;
+    } else {
+      flag &#61; false;
+      break;
+    }
+  }
+
+  return flag;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] newspaper &#61; sc.nextLine().split(&#34; &#34;);
+    String[] anonymousLetter &#61; sc.nextLine().split(&#34; &#34;);
+
+    System.out.println(getResult(newspaper, anonymousLetter));
+  }
+
+  public static boolean getResult(String[] newspaper, String[] anonymousLetter) {
+    HashMap&lt;String, Integer&gt; count &#61; new HashMap&lt;&gt;();
+    for (String str : newspaper) {
+      String newStr &#61; strSort(str);
+      count.put(newStr, count.getOrDefault(newStr, 0) &#43; 1);
+    }
+
+    boolean flag &#61; true;
+    for (String str : anonymousLetter) {
+      String newStr &#61; strSort(str);
+
+      if (count.containsKey(newStr) &amp;&amp; count.get(newStr) &gt; 0) {
+        count.put(newStr, count.get(newStr) - 1);
+      } else {
+        flag &#61; false;
+        break;
+      }
+    }
+
+    return flag;
+  }
+
+  public static String strSort(String str) {
+    char[] cArr &#61; str.toCharArray();
+    Arrays.sort(cArr);
+    return new String(cArr);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+newspaper &#61; input().split()
+anonymousLetter &#61; input().split()
+
+
+# 算法源码
+def getResult(newspaper, anonymousLetter):
+    count &#61; {}
+    for s in newspaper:
+        s &#61; &#34;&#34;.join(sorted(s))
+        if count.get(s) is None:
+            count[s] &#61; 1
+        else:
+            count[s] &#43;&#61; 1
+
+    flag &#61; True
+    for s in anonymousLetter:
+        s &#61; &#34;&#34;.join(sorted(s))
+        if count.get(s) is not None and count[s] &gt; 0:
+            count[s] -&#61; 1
+        else:
+            flag &#61; False
+            break
+
+    return str(flag).lower()
+
+
+# 调用算法
+print(getResult(newspaper, anonymousLetter))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

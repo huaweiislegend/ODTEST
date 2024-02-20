@@ -1,0 +1,305 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 查找接口成功率最优时间段（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <p id="main-toc"></p> 
+<h4 id="main-toc">题目描述</h4> 
+<p>服务之间交换的接口成功率作为服务调用关键质量特性&#xff0c;某个时间段内的接口失败率使用一个数组表示&#xff0c;</p> 
+<p>数组中每个元素都是单位时间内失败率数值&#xff0c;数组中的数值为0~100的整数&#xff0c;</p> 
+<p>给定一个数值(minAverageLost)表示某个时间段内平均失败率容忍值&#xff0c;即平均失败率小于等于minAverageLost&#xff0c;</p> 
+<p>找出数组中最长时间段&#xff0c;如果未找到则直接返回NULL。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入有两行内容&#xff0c;第一行为{minAverageLost}&#xff0c;第二行为{数组}&#xff0c;数组元素通过空格(” “)分隔&#xff0c;</p> 
+<p>minAverageLost及数组中元素取值范围为0~100的整数&#xff0c;数组元素的个数不会超过100个。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>找出平均值小于等于minAverageLost的最长时间段&#xff0c;输出数组下标对&#xff0c;格式{beginIndex}-{endIndx}(下标从0开始)&#xff0c;</p> 
+<p>如果同时存在多个最长时间段&#xff0c;则输出多个下标对且下标对之间使用空格(” “)拼接&#xff0c;多个下标对按下标从小到大排序。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1<br /> 0 1 2 3 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0-2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入解释&#xff1a;minAverageLost&#61;1&#xff0c;数组[0, 1, 2, 3, 4]</p> <p>前3个元素的平均值为1&#xff0c;因此数组第一个至第三个数组下标&#xff0c;即0-2</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;">2<br /> 0 0 100 2 2 99 0 2</td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">0-1 3-4 6-7</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;"> <p>输入解释&#xff1a;minAverageLost&#61;2&#xff0c;数组[0, 0, 100, 2, 2, 99, 0, 2]</p> <p>通过计算小于等于2的最长时间段为&#xff1a;</p> <p>数组下标为0-1即[0, 0]&#xff0c;数组下标为3-4即[2, 2]&#xff0c;数组下标为6-7即[0, 2]&#xff0c;这三个部分都满足平均值小于等于2的要求&#xff0c;</p> <p>因此输出0-1 3-4 6-7</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题需要求出第二行输入的所有区间&#xff0c;比如0 1 2 3 4区间有</p> 
+<ul><li>0</li><li>0~1, 1</li><li>0~2, 1~2, 2</li><li>0~3, 1~3, 2~3, 3</li><li>0~4, 1~4, 2~4, 3~4, 4</li></ul> 
+<p>我们需要计算出这些区间的平均失败率容忍值averageLost&#xff0c;和第一行输入的minAverageLost比较&#xff0c;</p> 
+<p>如果averageLost &gt; minAverageLost&#xff0c;则不考虑</p> 
+<p>如果averageLost  &lt;&#61; minAverageLost&#xff0c;则考虑</p> 
+<p>最后将考虑中所有区间进行比较&#xff0c;保留最长的&#xff0c;注意可能有多个相同时间长度的。</p> 
+<p></p> 
+<p>这里模拟出上面区间&#xff0c;很明显需要使用双重for</p> 
+<pre><code class="language-javascript">for(let i&#61;0; i&lt;arr.length; i&#43;&#43;) { // 区间右边界&#xff0c;包含
+        for(let j&#61;0; j&lt;i; j&#43;&#43;) {// 区间左边界&#xff0c;不包含
+            
+        }
+}</code></pre> 
+<p>这里&#xff0c;我们为了避免陷入遍历i到j&#xff0c;来计算区间[i, j]的总和&#xff0c;我们可以事先定义一个dp数组&#xff0c;dp[i]表示以0~i区间的和&#xff08;即前缀和&#xff09;。</p> 
+<p>因此[j, i]区间总和的计算就是dp[j] - dp[i-1]。</p> 
+<p>更多前缀和求解任意区间子序列和的知识请看&#xff1a;</p> 
+<p><a href="https://fcqian.blog.csdn.net/article/details/128976936" rel="nofollow" title="算法设计 - 前缀和 &amp; 差分数列_伏城之外的博客-CSDN博客">算法设计 - 前缀和 &amp; 差分数列_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>同时为了避免计算平均失败率&#xff0c;我们可以计算总最低失败率&#xff0c;即(j - i &#43; 1) * minAverageLost</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const minAverageLost &#61; parseInt(await readline());
+  const nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const n &#61; nums.length;
+
+  const preSum &#61; new Array(n &#43; 1).fill(0);
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+    preSum[i] &#61; preSum[i - 1] &#43; nums[i - 1];
+  }
+
+  let ans &#61; [];
+  let maxLen &#61; 0;
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; i &#43; 1; j &lt;&#61; n; j&#43;&#43;) {
+      // sum 是 区间 [i, j-1] 的和
+      let sum &#61; preSum[j] - preSum[i];
+      let len &#61; j - i;
+      let lost &#61; len * minAverageLost;
+
+      if (sum &lt;&#61; lost) {
+        if (len &gt;&#61; maxLen) {
+          if (len &gt; maxLen) {
+            ans &#61; [];
+          }
+          ans.push([i, j - 1]);
+          maxLen &#61; len;
+        }
+      }
+    }
+  }
+
+  if (ans.length &#61;&#61; 0) {
+    console.log(&#34;NULL&#34;);
+  } else {
+    console.log(
+      ans
+        .sort((a, b) &#61;&gt; a[0] - b[0])
+        .map((arr) &#61;&gt; arr.join(&#34;-&#34;))
+        .join(&#34; &#34;)
+    );
+  }
+})();
+</code></pre> 
+<p></p> 
+<h4 id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int minAverageLost &#61; Integer.parseInt(sc.nextLine());
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(nums, minAverageLost));
+  }
+
+  public static String getResult(int[] nums, int minAverageLost) {
+    int n &#61; nums.length;
+
+    int[] preSum &#61; new int[n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      preSum[i] &#61; preSum[i - 1] &#43; nums[i - 1];
+    }
+
+    ArrayList&lt;int[]&gt; ans &#61; new ArrayList&lt;&gt;();
+    int maxLen &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; i &#43; 1; j &lt;&#61; n; j&#43;&#43;) {
+        // sum 是 区间 [i, j-1] 的和
+        int sum &#61; preSum[j] - preSum[i];
+        int len &#61; j - i;
+        int lost &#61; len * minAverageLost;
+
+        if (sum &lt;&#61; lost) {
+          if (len &gt;&#61; maxLen) {
+            if (len &gt; maxLen) {
+              ans &#61; new ArrayList&lt;&gt;();
+            }
+            ans.add(new int[] {i, j - 1});
+            maxLen &#61; len;
+          }
+        }
+      }
+    }
+
+    if (ans.size() &#61;&#61; 0) return &#34;NULL&#34;;
+
+    ans.sort((a, b) -&gt; a[0] - b[0]);
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (int[] an : ans) sj.add(an[0] &#43; &#34;-&#34; &#43; an[1]);
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+minAverageLost &#61; int(input())
+nums &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    n &#61; len(nums)
+
+    preSum &#61; [0] * (n &#43; 1)
+    for i in range(1, n &#43; 1):
+        preSum[i] &#61; preSum[i - 1] &#43; nums[i - 1]
+
+    ans &#61; []
+    maxLen &#61; 0
+    for i in range(n):
+        for j in range(i &#43; 1, n &#43; 1):
+            # sumV 是 区间 [i, j-1] 的和
+            sumV &#61; preSum[j] - preSum[i]
+            length &#61; j - i
+            lost &#61; length * minAverageLost
+
+            if sumV &lt;&#61; lost:
+                if length &gt; maxLen:
+                    ans &#61; [[i, j - 1]]
+                    maxLen &#61; length
+                elif length &#61;&#61; maxLen:
+                    ans.append([i, j - 1])
+
+    ans.sort(key&#61;lambda x: x[0])
+
+    if len(ans) &#61;&#61; 0:
+        return &#34;NULL&#34;
+    else:
+        return &#34; &#34;.join(map(lambda x: &#34;-&#34;.join(map(str, x)), ans))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_SIZE 100
+
+int cmp(const void *a, const void *b) {
+    int *A &#61; (int *) a;
+    int *B &#61; (int *) b;
+    return A[0] - B[0];
+}
+
+int main() {
+    int minAverageLost;
+    scanf(&#34;%d&#34;, &amp;minAverageLost);
+
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    int preSum[nums_size &#43; 1];
+    preSum[0] &#61; 0;
+
+    for (int i &#61; 1; i &lt;&#61; nums_size; i&#43;&#43;) {
+        preSum[i] &#61; preSum[i - 1] &#43; nums[i - 1];
+    }
+
+    int arrList[MAX_SIZE][2];
+    int arrList_size &#61; 0;
+
+    int maxLen &#61; 0;
+    for (int i &#61; 0; i &lt; nums_size; i&#43;&#43;) {
+        for (int j &#61; i &#43; 1; j &lt;&#61; nums_size; j&#43;&#43;) {
+            // sum 是 区间 [i, j-1] 的和
+            int sum &#61; preSum[j] - preSum[i];
+            int len &#61; j - i;
+            int lost &#61; len * minAverageLost;
+
+            if (sum &lt;&#61; lost) {
+                if (len &gt;&#61; maxLen) {
+                    if (len &gt; maxLen) {
+                        arrList_size &#61; 0;
+                    }
+                    arrList[arrList_size][0] &#61; i;
+                    arrList[arrList_size][1] &#61; j - 1;
+                    arrList_size&#43;&#43;;
+                    maxLen &#61; len;
+                }
+            }
+        }
+    }
+
+    if (arrList_size &#61;&#61; 0) {
+        puts(&#34;NULL&#34;);
+    } else {
+        qsort(arrList, arrList_size, sizeof(int *), cmp);
+
+        char res[10000];
+        for (int i &#61; 0; i &lt; arrList_size; i&#43;&#43;) {
+            char tmp[100];
+            sprintf(tmp, &#34;%d-%d&#34;, arrList[i][0], arrList[i][1]);
+            strcat(res, tmp);
+            strcat(res, &#34; &#34;);
+        }
+
+        res[strlen(res) - 1] &#61; &#39;\0&#39;;
+
+        puts(res);
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

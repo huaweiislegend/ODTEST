@@ -1,0 +1,397 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 非严格递增连续数字序列（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>输入一个字符串仅包含大小写字母和数字&#xff0c;求字符串中包含的最长的非严格递增连续数字序列的长度&#xff0c;&#xff08;比如12234属于非严格递增连续数字序列&#xff09;。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>输入一个字符串仅包含大小写字母和数字&#xff0c;输入的字符串最大不超过255个字符。</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>最长的非严格递增连续数字序列的长度</p> 
+<p></p> 
+<h3 id="%E7%94%A8%E4%BE%8B">用例</h3> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc2234019A334bc</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">2234为最长的非严格递增连续数字序列&#xff0c;所以长度为4。</td></tr></tbody></table> 
+<p></p> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">双指针解法</h3> 
+<p>简单的双指针题目。</p> 
+<p>双指针逻辑如下</p> 
+<p><img alt="" height="551" src="https://img-blog.csdnimg.cn/e15979822d1b42f4aaf46d0bb2e23364.png" width="1200" /></p> 
+<p>当right指针移动遇到字母时&#xff0c;则right前面可能&#xff1a;</p> 
+<ul><li>是一个空串</li><li>是一个符合题意的&#xff0c;且长度right-left的子串&#xff0c;</li></ul> 
+<p>然后right&#43;&#43;&#xff0c;left &#61; right&#xff0c;即left,right同时移到字母后一个位置</p> 
+<p></p> 
+<p>当right指针移动遇到数字时&#xff0c;</p> 
+<ul><li>若此时left、right在同一个位置&#xff0c;则可得一个长度为1的符合要求的子串</li><li>若此时left、right不在同一个位置&#xff0c;则检查right指向数值是否大于right-1指向的数值&#xff0c;</li></ul> 
+<ol><li>若是&#xff0c;则可得一个符合要求的&#xff0c;长度right-left&#43;1的子串&#xff0c;然后right&#43;&#43;</li><li>若不是&#xff0c;则可得一个符合要求的&#xff0c;长度right-left的子串&#xff0c;然后right&#43;&#43;&#xff0c;left &#61; right&#xff0c;即left,right同时移到字母后一个位置</li></ol> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String s &#61; sc.nextLine();
+
+    System.out.println(getResult(s));
+  }
+
+  public static int getResult(String s) {
+    int l &#61; 0;
+    int r &#61; 0;
+    int maxLen &#61; 0;
+
+    while (r &lt; s.length()) {
+      char c &#61; s.charAt(r);
+      if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+        if (l !&#61; r) {
+          if (c &gt;&#61; s.charAt(r - 1)) {
+            maxLen &#61; Math.max(maxLen, r - l &#43; 1);
+          } else {
+            maxLen &#61; Math.max(maxLen, r - l);
+            l &#61; r;
+          }
+          r&#43;&#43;;
+        } else {
+          maxLen &#61; Math.max(maxLen, 1);
+          r&#43;&#43;;
+        }
+      } else {
+        maxLen &#61; Math.max(maxLen, r - l);
+        r&#43;&#43;;
+        l &#61; r;
+      }
+    }
+
+    return maxLen;
+  }
+}
+</code></pre> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getMaxLen(line));
+});
+
+function getMaxLen(str) {
+  let L &#61; 0;
+  let R &#61; 0;
+  let maxLen &#61; 0;
+
+  while (R &lt; str.length) {
+    if (/\d/.test(str[R])) {
+      if (L !&#61;&#61; R) {
+        if (str[R] - 0 &gt;&#61; str[R - 1] - 0) {
+          maxLen &#61; Math.max(maxLen, R - L &#43; 1);
+          R&#43;&#43;;
+        } else {
+          maxLen &#61; Math.max(maxLen, R - L);
+          L &#61; R;
+          R&#43;&#43;;
+        }
+      } else {
+        maxLen &#61; Math.max(maxLen, 1);
+        R&#43;&#43;;
+      }
+    } else {
+      maxLen &#61; Math.max(maxLen, R - L);
+      R&#43;&#43;;
+      L &#61; R;
+    }
+  }
+
+  return maxLen;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    l &#61; 0
+    r &#61; 0
+    maxLen &#61; 0
+
+    while r &lt; len(s):
+        if &#39;0&#39; &lt;&#61; s[r] &lt;&#61; &#39;9&#39;:
+            if l !&#61; r:
+                if s[r] &gt;&#61; s[r-1]:
+                    maxLen &#61; max(maxLen, r - l &#43; 1)
+                    r &#43;&#61; 1
+                else:
+                    maxLen &#61; max(maxLen, r - l)
+                    l &#61; r
+                    r &#43;&#61; 1
+            else:
+                maxLen &#61; max(maxLen, 1)
+                r &#43;&#61; 1
+        else:
+            maxLen &#61; max(maxLen, r - l)
+            r &#43;&#61; 1
+            l &#61; r
+
+    return maxLen
+
+
+# 调用算法
+print(getResult())
+</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX(a,b) a &gt; b ? a : b
+
+int main() {
+    char s[255];
+    scanf(&#34;%s&#34;, s);
+
+    int l &#61; 0;
+    int r &#61; 0;
+    int maxLen &#61; 0;
+
+    while(r &lt; strlen(s)) {
+        char c &#61; s[r];
+
+        if(c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+            if(l !&#61; r) {
+                if(c &gt;&#61; s[r - 1]) {
+                    maxLen &#61; MAX(maxLen, r - l &#43; 1);
+                } else {
+                    maxLen &#61; MAX(maxLen, r - l);
+                    l &#61; r;
+                }
+                r&#43;&#43;;
+            } else {
+                maxLen &#61; MAX(maxLen, 1);
+                r&#43;&#43;;
+            }
+        } else {
+            maxLen &#61; MAX(maxLen, r - l);
+            r&#43;&#43;;
+            l &#61; r;
+        }
+    }
+
+    printf(&#34;%d\n&#34;, maxLen);
+
+    return 0;
+}</code></pre> 
+<p></p> 
+<h3 id="%E5%8D%95%E6%8C%87%E9%92%88%E8%A7%A3%E6%B3%95">单指针解法</h3> 
+<p>上面双指针解法略显繁琐&#xff0c;因为我们需要依赖于L&#xff0c;R来求解子串长度&#xff0c;但是其实我们可以只靠一个变量len来记录长度即可</p> 
+<p><img alt="" height="740" src="https://img-blog.csdnimg.cn/abef7301c01b4c08810109f4bee25366.png" width="1200" /></p> 
+<p> for循环从左到右开始扫描字符串&#xff0c;</p> 
+<p>若遇到字母&#xff0c;则len&#61;0&#xff0c;maxNum&#61;0&#xff0c;表示符合题意的子串长度len为0&#xff0c;重置最大数字字符为0</p> 
+<p>若遇到数字&#xff0c;则看len是否为0&#xff0c;</p> 
+<p>        若为0&#xff0c;则表示该数字是子串开头&#xff0c;此时子串长度len&#61;1&#xff0c;最大数字字符maxNum就是当前数字curNum</p> 
+<p>        若不为0&#xff0c;则表示该数字前面还有数字&#xff0c;且前面的数字必然是maxNum&#xff0c;此时需要判断curNum&gt;&#61;maxNum&#xff1f;&#xff0c;若是&#xff0c;则len&#43;&#43;&#xff0c;否则len&#61;1,然后maxNum&#61;curNum </p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String s &#61; sc.nextLine();
+
+    System.out.println(getResult(s));
+  }
+
+  public static int getResult(String s) {
+    int maxNum &#61; 0;
+    int len &#61; 0;
+    int maxLen &#61; 0;
+
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+
+      if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+        int curNum &#61; c - &#39;0&#39;;
+
+        if (len &#61;&#61; 0) {
+          len &#61; 1;
+          maxNum &#61; curNum;
+        } else {
+          if (curNum &gt;&#61; maxNum) {
+            len&#43;&#43;;
+          } else {
+            len &#61; 1;
+          }
+          maxNum &#61; curNum;
+        }
+      } else {
+        len &#61; 0;
+        maxNum &#61; 0;
+      }
+
+      maxLen &#61; Math.max(maxLen, len);
+    }
+
+    return maxLen;
+  }
+}
+</code></pre> 
+<h4>JS算法源码                      </h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getMaxLen(line));
+});
+
+function getMaxLen(str) {
+  let maxLen &#61; 0;
+  let len &#61; 0;
+  let maxNum &#61; 0;
+
+  for (let i &#61; 0; i &lt; str.length; i&#43;&#43;) {
+    if (/\d/.test(str[i])) {
+      let curNum &#61; str[i] - 0;
+      if (len &#61;&#61;&#61; 0) {
+        len &#61; 1;
+        maxNum &#61; curNum;
+      } else {
+        curNum &gt;&#61; maxNum ? len&#43;&#43; : (len &#61; 1);
+        maxNum &#61; curNum;
+      }
+    } else {
+      len &#61; 0;
+      maxNum &#61; 0;
+    }
+
+    maxLen &#61; Math.max(maxLen, len);
+  }
+
+  return maxLen;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    maxLen &#61; 0
+    length &#61; 0
+    maxNum &#61; 0
+
+    for c in s:
+        if &#39;0&#39; &lt;&#61; c &lt;&#61; &#39;9&#39;:
+            curNum &#61; int(c)
+            if length &#61;&#61; 0:
+                length &#61; 1
+                maxNum &#61; curNum
+            else:
+                if curNum &gt;&#61; maxNum:
+                    length &#43;&#61; 1
+                else:
+                    length &#61; 1
+                maxNum &#61; curNum
+        else:
+            length &#61; 0
+            maxNum &#61; 0
+
+        maxLen &#61; max(maxLen, length)
+
+    return maxLen
+
+
+# 调用算法
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX(a, b) a &gt; b ? a : b
+
+int main() {
+    char s[255];
+    scanf(&#34;%s&#34;, s);
+
+    int maxNum &#61; 0;
+    int len &#61; 0;
+    int maxLen &#61; 0;
+
+    for (int i &#61; 0; i &lt; strlen(s); i&#43;&#43;) {
+        if (s[i] &gt;&#61; &#39;0&#39; &amp;&amp; s[i] &lt;&#61; &#39;9&#39;) {
+            int curNum &#61; s[i] - &#39;0&#39;;
+            if (len &#61;&#61; 0) {
+                len &#61; 1;
+                maxNum &#61; curNum;
+            } else {
+                if (curNum &gt;&#61; maxNum) {
+                    len&#43;&#43;;
+                } else {
+                    len &#61; 1;
+                }
+                maxNum &#61; curNum;
+            }
+        } else {
+            len &#61; 0;
+            maxNum &#61; 0;
+        }
+
+        maxLen &#61; MAX(maxLen, len);
+    }
+
+    printf(&#34;%d&#34;, maxLen);
+
+    return 0;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

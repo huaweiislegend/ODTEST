@@ -1,0 +1,220 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 磁盘容量排序（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>磁盘的容量单位常用的有M&#xff0c;G&#xff0c;T这三个等级&#xff0c;</p> 
+<p>它们之间的换算关系为1T &#61; 1024G&#xff0c;1G &#61; 1024M&#xff0c;</p> 
+<p>现在给定n块磁盘的容量&#xff0c;请对它们按从小到大的顺序进行稳定排序&#xff0c;</p> 
+<p>例如给定5块盘的容量&#xff0c;1T&#xff0c;20M&#xff0c;3G&#xff0c;10G6T&#xff0c;3M12G9M</p> 
+<p>排序后的结果为20M&#xff0c;3G&#xff0c;3M12G9M&#xff0c;1T&#xff0c;10G6T。</p> 
+<p>注意单位可以重复出现&#xff0c;上述3M12G9M表示的容量即为3M&#43;12G&#43;9M&#xff0c;和12M12G相等。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入第一行包含一个整数n(2 &lt;&#61; n &lt;&#61; 100)&#xff0c;表示磁盘的个数&#xff0c;</p> 
+<p>接下的n行&#xff0c;每行一个字符串(长度大于2&#xff0c;小于30)&#xff0c;</p> 
+<p>表示磁盘的容量&#xff0c;由一个或多个格式为mv的子串组成&#xff0c;</p> 
+<p>其中m表示容量大小&#xff0c;v表示容量单位&#xff0c;例如20M&#xff0c;1T&#xff0c;30G&#xff0c;10G6T&#xff0c;3M12G9M。</p> 
+<p>磁盘容量m的范围为1到1024的正整数&#xff0c;</p> 
+<p>容量单位v的范围只包含题目中提到的M&#xff0c;G&#xff0c;T三种&#xff0c;换算关系如题目描述。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出n行&#xff0c;表示n块磁盘容量排序后的结果。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:95px;">输入</td><td style="width:403px;"> <p>3<br /> 1G<br /> 2G<br /> 1024M</p> </td></tr><tr><td style="width:95px;">输出</td><td style="width:403px;"> <p>1G<br /> 1024M<br /> 2G</p> </td></tr><tr><td style="width:95px;">说明</td><td style="width:403px;">1G和1024M容量相等&#xff0c;稳定排序要求保留它们原来的相对位置&#xff0c;故1G在1024M之前。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:94px;">输入</td><td style="width:404px;"> <p>3<br /> 2G4M<br /> 3M2G<br /> 1T</p> </td></tr><tr><td style="width:94px;">输出</td><td style="width:404px;"> <p>3M2G<br /> 2G4M<br /> 1T</p> </td></tr><tr><td style="width:94px;">说明</td><td style="width:404px;">1T的容量大于2G4M&#xff0c;2G4M的容量大于3M2G。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的字符串操作&#43;排序&#xff0c;具体逻辑请看代码。</p> 
+<hr /> 
+<p>2023.06.15</p> 
+<p>本题Java注意int的整型溢出&#xff0c;建议使用long。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    String[] capacitys &#61; new String[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) capacitys[i] &#61; sc.next();
+
+    getResult(capacitys);
+  }
+
+  public static void getResult(String[] capacitys) {
+    Arrays.sort(capacitys, (a, b) -&gt; Long.compare(calc(a), calc(b)));
+    for (String capacity : capacitys) {
+      System.out.println(capacity);
+    }
+  }
+
+  public static Long calc(String capacity) {
+    long ans &#61; 0;
+
+    StringBuilder num &#61; new StringBuilder();
+    for (int i &#61; 0; i &lt; capacity.length(); i&#43;&#43;) {
+      char c &#61; capacity.charAt(i);
+
+      if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+        num.append(c);
+      } else {
+        switch (c) {
+          case &#39;M&#39;:
+            ans &#43;&#61; Long.parseLong(num.toString());
+            break;
+          case &#39;G&#39;:
+            ans &#43;&#61; Long.parseLong(num.toString()) * 1024;
+            break;
+          case &#39;T&#39;:
+            ans &#43;&#61; Long.parseLong(num.toString()) * 1024 * 1024;
+            break;
+        }
+
+        num &#61; new StringBuilder();
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    lines.shift();
+    getResult(lines);
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(capacitys) {
+  capacitys
+    .sort((a, b) &#61;&gt; calc(a) - calc(b))
+    .forEach((cap) &#61;&gt; console.log(cap));
+}
+
+function calc(capacity) {
+  let ans &#61; 0;
+
+  const num &#61; [];
+  for (let i &#61; 0; i &lt; capacity.length; i&#43;&#43;) {
+    const c &#61; capacity[i];
+
+    if (c &gt;&#61; &#34;0&#34; &amp;&amp; c &lt;&#61; &#34;9&#34;) {
+      num.push(c);
+    } else {
+      switch (c) {
+        case &#34;M&#34;:
+          ans &#43;&#61; parseInt(num.join(&#34;&#34;));
+          break;
+        case &#34;G&#34;:
+          ans &#43;&#61; parseInt(num.join(&#34;&#34;)) * 1024;
+          break;
+        case &#34;T&#34;:
+          ans &#43;&#61; parseInt(num.join(&#34;&#34;)) * 1024 * 1024;
+          break;
+      }
+      num.length &#61; 0;
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+capacitys &#61; [input() for _ in range(n)]
+
+
+def calc(cap):
+    ans &#61; 0
+
+    num &#61; []
+    for i in range(len(cap)):
+        c &#61; cap[i]
+
+        if &#39;0&#39; &lt;&#61; c &lt;&#61; &#39;9&#39;:
+            num.append(c)
+        else:
+            if c &#61;&#61; &#39;M&#39;:
+                ans &#43;&#61; int(&#34;&#34;.join(num))
+            elif c &#61;&#61; &#39;G&#39;:
+                ans &#43;&#61; int(&#34;&#34;.join(num)) * 1024
+            elif c &#61;&#61; &#39;T&#39;:
+                ans &#43;&#61; int(&#34;&#34;.join(num)) * 1024 * 1024
+
+            num &#61; []
+
+    return ans
+
+
+# 算法入口
+def getResult():
+    capacitys.sort(key&#61;lambda x: calc(x))
+
+    for cap in capacitys:
+        print(cap)
+
+
+# 算法调用
+getResult()
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

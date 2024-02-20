@@ -1,0 +1,306 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 分配土地（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>从前有个村庄&#xff0c;村民们喜欢在各种田地上插上小旗子&#xff0c;旗子上标识了各种不同的数字。</p> 
+<p>某天集体村民决定将覆盖相同数字的最小矩阵形的土地分配给村里做出巨大贡献的村民&#xff0c;请问此次分配土地&#xff0c;做出贡献的村民种最大会分配多大面积?</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入 m 和 n&#xff0c;</p> 
+<ul><li>m 代表村子的土地的长</li><li>n 代表土地的宽</li></ul> 
+<p>第二行开始输入地图上的具体标识</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>此次分配土地&#xff0c;做出贡献的村民种最大会分配多大面积</p> 
+<p></p> 
+<h4 id="%E5%A4%87%E6%B3%A8">备注</h4> 
+<ul><li>旗子上的数字为1~500&#xff0c;土地边长不超过500</li><li>未插旗子的土地用0标识</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 3<br /> 1 0 1<br /> 0 0 0<br /> 0 1 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">9</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">土地上的旗子为1&#xff0c;其坐标分别为(0,0)&#xff0c;(2,1)以及(0,2)&#xff0c;为了覆盖所有旗子&#xff0c;矩阵需要覆盖的横坐标为0和2&#xff0c;纵坐标为0和2&#xff0c;所以面积为9&#xff0c;即&#xff08;2-0&#43;1&#xff09;*&#xff08;2-0&#43;1&#xff09;&#61; 9</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 3<br /> 1 0 2<br /> 0 0 0<br /> 0 3 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">由于不存在成对的小旗子&#xff0c;故而返回1&#xff0c;即一块土地的面积。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>根据用例1说明来看&#xff0c;最小矩形需要覆盖相同数字得所有旗子。</p> 
+<blockquote> 
+ <p>土地上的旗子为1&#xff0c;其坐标分别为(0,0)&#xff0c;(2,1)以及(0,2)&#xff0c;<strong><span style="color:#fe2c24;">为了覆盖所有旗子</span></strong>&#xff0c;矩阵需要覆盖的横坐标为0和2&#xff0c;纵坐标为0和2&#xff0c;所以面积为9&#xff0c;即&#xff08;2-0&#43;1&#xff09;*&#xff08;2-0&#43;1&#xff09;&#61; 9</p> 
+</blockquote> 
+<p></p> 
+<p>但是这产生一个问题&#xff1f;比如下图所示&#xff1a;</p> 
+<p><img alt="" height="239" src="https://img-blog.csdnimg.cn/c6561b394458415185a8fc73d71005a5.png" width="302" /></p> 
+<p>如果我要覆盖住所有的数字1&#xff0c;那么必然会同时覆盖了数字2&#xff0c;3&#xff0c;此时该怎么办呢&#xff1f;</p> 
+<p>题目没有说怎么处理&#xff0c;那么我理解就不需要管&#xff0c;只需要保证覆盖所有1的矩形最小就行。</p> 
+<p></p> 
+<p>本题解题思路很简单&#xff0c;只需要统计出相同数字的出现的“所有坐标位置”中&#xff1a;</p> 
+<ul><li>最小的横坐标&#xff08;矩形最上面一行的行号&#xff09;</li><li>最大的横坐标&#xff08;矩形最下面一行的行号&#xff09;</li><li>最小的纵坐标&#xff08;矩形最左边一列的列号&#xff09;</li><li>最大的纵坐标&#xff08;矩形最右边一列的列号&#xff09;</li></ul> 
+<p>即可。比如&#xff1a;前面图示中数字1的所有坐标位置(1,1)、(1,3)、(2,4)、(3,1)、(3,3)中&#xff1a;</p> 
+<ul><li>最小的横坐标&#xff1a;1</li><li>最大的横坐标&#xff1a;3</li><li>最小的纵坐标&#xff1a;1</li><li>最大的纵坐标&#xff1a;4</li></ul> 
+<p>那么包含所有数字1的最小矩形面积为&#xff1a;</p> 
+<blockquote> 
+ <p>(最大的横坐标 - 最小的横坐标 &#43; 1) * (最大的纵坐标 - 最小的纵坐标 &#43; 1)</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  class Rect {
+    constructor() {
+      this.minRow &#61; Infinity;
+      this.maxRow &#61; -Infinity;
+      this.minCol &#61; Infinity;
+      this.maxCol &#61; -Infinity;
+    }
+
+    setRow(row) {
+      this.minRow &#61; Math.min(this.minRow, row);
+      this.maxRow &#61; Math.max(this.maxRow, row);
+    }
+
+    setCol(col) {
+      this.minCol &#61; Math.min(this.minCol, col);
+      this.maxCol &#61; Math.max(this.maxCol, col);
+    }
+  }
+
+  // 长&#xff08;行数&#xff09;、宽&#xff08;列数&#xff09;
+  const [m, n] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const rects &#61; {};
+
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    const nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+    for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+      const num &#61; nums[j];
+
+      if (num &gt; 0) {
+        if (!rects[num]) rects[num] &#61; new Rect();
+        rects[num].setRow(i);
+        rects[num].setCol(j);
+      }
+    }
+  }
+
+  let maxArea &#61; 0;
+  for (let num in rects) {
+    const rect &#61; rects[num];
+
+    maxArea &#61; Math.max(
+      maxArea,
+      (rect.maxRow - rect.minRow &#43; 1) * (rect.maxCol - rect.minCol &#43; 1)
+    );
+  }
+
+  console.log(maxArea);
+})();
+</code></pre> 
+<p></p> 
+<h4 id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  static class Rect {
+    int minRow &#61; Integer.MAX_VALUE;
+    int maxRow &#61; Integer.MIN_VALUE;
+    int minCol &#61; Integer.MAX_VALUE;
+    int maxCol &#61; Integer.MIN_VALUE;
+
+    private void setRow(int row) {
+      this.minRow &#61; Math.min(this.minRow, row);
+      this.maxRow &#61; Math.max(this.maxRow, row);
+    }
+
+    private void setCol(int col) {
+      this.minCol &#61; Math.min(this.minCol, col);
+      this.maxCol &#61; Math.max(this.maxCol, col);
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt(); // 长&#xff08;行数&#xff09;
+    int n &#61; sc.nextInt(); // 宽&#xff08;列数&#xff09;
+
+    HashMap&lt;Integer, Rect&gt; rects &#61; new HashMap&lt;&gt;();
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        int num &#61; sc.nextInt();
+
+        if (num &gt; 0) {
+          rects.putIfAbsent(num, new Rect());
+          rects.get(num).setRow(i);
+          rects.get(num).setCol(j);
+        }
+      }
+    }
+
+    int maxArea &#61; 0;
+    for (int num : rects.keySet()) {
+      Rect rect &#61; rects.get(num);
+
+      maxArea &#61;
+          Math.max(maxArea, (rect.maxRow - rect.minRow &#43; 1) * (rect.maxCol - rect.minCol &#43; 1));
+    }
+
+    System.out.println(maxArea);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+
+class Rect:
+    def __init__(self):
+        self.minRow &#61; sys.maxsize
+        self.maxRow &#61; -sys.maxsize
+        self.minCol &#61; sys.maxsize
+        self.maxCol &#61; -sys.maxsize
+
+    def setRow(self, row):
+        self.minRow &#61; min(self.minRow, row)
+        self.maxRow &#61; max(self.maxRow, row)
+
+    def setCol(self, col):
+        self.minCol &#61; min(self.minCol, col)
+        self.maxCol &#61; max(self.maxCol, col)
+
+
+# 输入获取
+m, n &#61; map(int, input().split())
+
+rects &#61; {}
+
+for i in range(m):
+    nums &#61; list(map(int, input().split()))
+    for j in range(n):
+        num &#61; nums[j]
+
+        if num &gt; 0:
+            rects.setdefault(num, Rect())
+            rects[num].setRow(i)
+            rects[num].setCol(j)
+
+maxArea &#61; 0
+for num in rects:
+    rect &#61; rects[num]
+
+    maxArea &#61; max(maxArea, (rect.maxRow - rect.minRow &#43; 1) * (rect.maxCol - rect.minCol &#43; 1))
+
+print(maxArea)
+</code></pre> 
+<p></p> 
+<h4 id="C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
+
+#define MIN(a, b) ((a) &lt; (b) ? (a) : (b))
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+#define MAX_SIZE 500
+
+typedef struct {
+    int minRow;
+    int maxRow;
+    int minCol;
+    int maxCol;
+} Rect;
+
+Rect *new_Rect() {
+    Rect *rect &#61; (Rect *) malloc(sizeof(Rect));
+    rect-&gt;minRow &#61; INT_MAX;
+    rect-&gt;maxRow &#61; INT_MIN;
+    rect-&gt;minCol &#61; INT_MAX;
+    rect-&gt;maxCol &#61; INT_MIN;
+    return rect;
+}
+
+void setRow(Rect *rect, int row) {
+    rect-&gt;minRow &#61; MIN(rect-&gt;minRow, row);
+    rect-&gt;maxRow &#61; MAX(rect-&gt;maxRow, row);
+}
+
+void setCol(Rect *rect, int col) {
+    rect-&gt;minCol &#61; MIN(rect-&gt;minCol, col);
+    rect-&gt;maxCol &#61; MAX(rect-&gt;maxCol, col);
+}
+
+int main() {
+    int m, n;
+    scanf(&#34;%d %d&#34;, &amp;m, &amp;n);
+
+    Rect *rects[MAX_SIZE] &#61; {NULL};
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            int num;
+            scanf(&#34;%d&#34;, &amp;num);
+
+            if (num &gt; 0) {
+                if (rects[num] &#61;&#61; NULL) {
+                    rects[num] &#61; new_Rect();
+                }
+
+                setRow(rects[num], i);
+                setCol(rects[num], j);
+            }
+        }
+    }
+
+    int maxArea &#61; 0;
+    for (int i &#61; 0; i &lt; MAX_SIZE; i&#43;&#43;) {
+        Rect *rect &#61; rects[i];
+
+        if (rects[i] !&#61; NULL) {
+            int area &#61; (rect-&gt;maxRow - rect-&gt;minRow &#43; 1) * (rect-&gt;maxCol - rect-&gt;minCol &#43; 1);
+            maxArea &#61; MAX(maxArea, area);
+        }
+    }
+
+    printf(&#34;%d\n&#34;, maxArea);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

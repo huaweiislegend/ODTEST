@@ -1,0 +1,247 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 比赛（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<ul><li>一个有N个选手参加比赛&#xff0c;选手编号为1~N&#xff08;3&lt;&#61;N&lt;&#61;100&#xff09;&#xff0c;有M&#xff08;3&lt;&#61;M&lt;&#61;10&#xff09;个评委对选手进行打分。</li><li>打分规则为每个评委对选手打分&#xff0c;最高分10分&#xff0c;最低分1分。</li><li>请计算得分最多的3位选手的编号。</li><li>如果得分相同&#xff0c;则得分高分值最多的选手排名靠前</li><li>(10分数量相同&#xff0c;则比较9分的数量&#xff0c;以此类推&#xff0c;用例中不会出现多个选手得分完全相同的情况)。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<ul><li>第一行为半角逗号分割的两个正整数&#xff0c;第一个数字表示M&#xff08;3&lt;&#61;M&lt;&#61;10&#xff09;个评委&#xff0c;第二个数字表示N&#xff08;3&lt;&#61;N&lt;&#61;100&#xff09;个选手。</li><li>第2到M&#43;1行是半角逗号分割的整数序列&#xff0c;表示评委为每个选手的打分&#xff0c;0号下标数字表示1号选手分数&#xff0c;1号下标数字表示2号选手分数&#xff0c;依次类推。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<ul><li>选手前3名的编号。</li><li><strong>注&#xff1a;</strong>若输入为异常&#xff0c;输出-1&#xff0c;如M、N、打分不在范围内。</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:503px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:413px;">4,5<br /> 10,6,9,7,6<br /> 9,10,6,7,5<br /> 8,10,6,5,10<br /> 9,10,8,4,9</td></tr><tr><td style="width:86px;">输出</td><td style="width:413px;">2,1,5</td></tr><tr><td style="width:86px;">说明</td><td style="width:413px;"> <p>第一行代表有4个评委&#xff0c;5个选手参加比赛</p> <p>矩阵代表是4*5&#xff0c;每个数字是选手的编号&#xff0c;每一行代表一个评委对选手的打分排序&#xff0c;</p> <p>2号选手得分36分排第1&#xff0c;1号选手36分排第2&#xff0c;5号选手30分(2号10分值有3个&#xff0c;1号10分值只有1个&#xff0c;所以2号排第一)</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2,5<br /> 7,3,5,4,2<br /> 8,5,4,4,3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">只有2个评委&#xff0c;要求最少为3个评委</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4,2<br /> 8,5<br /> 5,6<br /> 10,4<br /> 8,9</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">只有2名选手参加&#xff0c;要求最少为3名</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4,5<br /> 11,6,9,7,8<br /> 9,10,6,7,8<br /> 8,10,6,9,7<br /> 9,10,8,6,7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第一个评委给第一个选手打分11&#xff0c;无效分数</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>考察数组排序&#xff0c;主要难点在于下面逻辑的设计</p> 
+<blockquote> 
+ <p>如果得分相同&#xff0c;则得分高分值最多的选手排名靠前</p> 
+</blockquote> 
+<p>我这里直接将选手分数降序排序后&#xff0c;join(&#39;&#39;)为字符串数值&#xff0c;高分多的选手该字符串数值越大</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let m, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [m, n] &#61; lines[0].split(&#34;,&#34;).map(Number);
+  }
+
+  if (m &amp;&amp; lines.length &#61;&#61;&#61; m &#43; 1) {
+    lines.shift();
+    const scores &#61; lines.map((line) &#61;&gt; line.split(&#34;,&#34;).map(Number));
+    console.log(getResult(scores, m, n));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(scores, m, n) {
+  if (m &lt; 3 || m &gt; 10 || n &lt; 3 || n &gt; 100) return -1;
+
+  const players &#61; [];
+
+  for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+    const player &#61; [];
+    for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+      if (scores[i][j] &gt; 10 || scores[i][j] &lt; 1) return &#34;-1&#34;;
+      player.push(scores[i][j]);
+    }
+    player.sort((a, b) &#61;&gt; b - a);
+    players.push({
+      idx: j,
+      sum: player.reduce((p, c) &#61;&gt; p &#43; c),
+      score: player,
+    });
+  }
+
+  return players
+    .sort((a, b) &#61;&gt; {
+      if (a.sum !&#61; b.sum) return b.sum - a.sum;
+
+      for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+        if (a.score[i] &#61;&#61; b.score[i]) continue;
+        return b.score[i] - a.score[i];
+      }
+
+      return 0;
+    })
+    .slice(0, 3)
+    .map((a) &#61;&gt; a.idx &#43; 1)
+    .join(&#34;,&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    // 将输入分隔符设置为“,”或者换行
+    Scanner sc &#61; new Scanner(System.in).useDelimiter(&#34;[,\n]&#34;);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[][] scores &#61; new int[m][n];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        scores[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    System.out.println(getResult(m, n, scores));
+  }
+
+  // 算法入口
+  public static String getResult(int m, int n, int[][] scores) {
+    if (m &lt; 3 || m &gt; 10 || n &lt; 3 || n &gt; 100) return &#34;-1&#34;;
+
+    HashMap&lt;Integer, Integer[]&gt; players &#61; new HashMap&lt;&gt;();
+
+    for (int j &#61; 0; j &lt; n; j&#43;&#43;) { // 列
+      Integer[] player &#61; new Integer[m];
+      for (int i &#61; 0; i &lt; m; i&#43;&#43;) { // 行
+        if (scores[i][j] &gt; 10 || scores[i][j] &lt; 1) return &#34;-1&#34;; // 队员得分1~10合法&#xff0c;否则不合法
+        player[i] &#61; scores[i][j];
+      }
+      Arrays.sort(player, (a, b) -&gt; b - a); // 将每个队员的得分降序
+      players.put(j, player);
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+
+    players.entrySet().stream()
+        .sorted(
+            (a, b) -&gt; {
+              Integer[] playerA &#61; a.getValue();
+              Integer[] playerB &#61; b.getValue();
+
+              int sumA &#61; sum(playerA);
+              int sumB &#61; sum(playerB);
+
+              if (sumA !&#61; sumB) { // 按总分降序
+                return sumB - sumA;
+              }
+
+              for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+                if (playerA[i] &#61;&#61; playerB[i]) continue;
+                return playerB[i] - playerA[i]; // 按最高分降序
+              }
+
+              return 0;
+            })
+        .limit(3)
+        .forEach(p -&gt; sj.add(p.getKey() &#43; 1 &#43; &#34;&#34;));
+
+    return sj.toString();
+  }
+
+  public static int sum(Integer[] arr) {
+    return Arrays.stream(arr).reduce(Integer::sum).orElse(0);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import functools
+
+m, n &#61; map(int, input().split(&#34;,&#34;))
+scores &#61; [list(map(int, input().split(&#34;,&#34;))) for _ in range(m)]
+
+
+def cmp(a, b):
+    if a[&#34;sum&#34;] !&#61; b[&#34;sum&#34;]:
+        return b[&#34;sum&#34;] - a[&#34;sum&#34;]
+
+    for i in range(m):
+        if a[&#34;score&#34;][i] &#61;&#61; b[&#34;score&#34;][i]:
+            continue
+        return b[&#34;score&#34;][i] - a[&#34;score&#34;][i]
+
+    return 0
+
+
+# 算法入口
+def getResult():
+    if m &lt; 3 or m &gt; 10 or n &lt; 3 or n &gt; 100:
+        return &#34;-1&#34;
+
+    players &#61; []
+
+    for j in range(n):
+        player &#61; []
+        for i in range(m):
+            if scores[i][j] &gt; 10 or scores[i][j] &lt; 1:
+                return &#34;-1&#34;
+            player.append(scores[i][j])
+
+        player.sort(reverse&#61;True)
+        players.append({
+            &#34;idx&#34;: j,
+            &#34;sum&#34;: sum(player),
+            &#34;score&#34;: player
+        })
+
+    players.sort(key&#61;functools.cmp_to_key(cmp))
+
+    return &#34;,&#34;.join(list(map(lambda x: str(x[&#34;idx&#34;] &#43; 1), players[:3])))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,614 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 报数游戏（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h2 id="main-toc">题目描述</h2> 
+<p>100个人围成一圈&#xff0c;每个人有一个编码&#xff0c;编号从1开始到100。</p> 
+<p>他们从1开始依次报数&#xff0c;报到为M的人自动退出圈圈&#xff0c;然后下一个人接着从1开始报数&#xff0c;直到剩余的人数小于M。</p> 
+<p>请问最后剩余的人在原先的编号为多少&#xff1f;</p> 
+<p></p> 
+<h2 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h2> 
+<p>输入一个整数参数 M</p> 
+<p></p> 
+<h2 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h2> 
+<p>如果输入参数M小于等于1或者大于等于100&#xff0c;输出“ERROR!”&#xff1b;</p> 
+<p>否则按照原先的编号从小到大的顺序&#xff0c;以英文逗号分割输出编号字符串</p> 
+<p></p> 
+<h2 id="%E7%94%A8%E4%BE%8B">用例</h2> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>3</td></tr><tr><td>输出</td><td>58,91</td></tr><tr><td>说明</td><td>输入M为3&#xff0c;最后剩下两个人。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>4</td></tr><tr><td>输出</td><td>34,45,97</td></tr><tr><td>说明</td><td>输入M为4&#xff0c;最后剩下三个人。</td></tr></tbody></table> 
+<p></p> 
+<h2 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h2> 
+<p>本题是经典的约瑟夫环问题&#xff0c;可以利用循环链表解决。</p> 
+<p></p> 
+<h3>解法一&#xff1a;循环链表</h3> 
+<blockquote> 
+ <p>定义一个循环链表&#xff0c;头节点val&#61;1&#xff0c;尾节点val&#61;100&#xff0c;头.prev &#61; 尾&#xff0c;尾.next &#61; 头</p> 
+ <p>这样的话&#xff0c;就构造出了一个循环链表。</p> 
+ <p></p> 
+ <p>我们还需要为循环链表设置&#xff0c;尾部追加新节点&#xff0c;删除任意节点的操作。</p> 
+ <p>另外&#xff0c;我们还需要维护一个报数变量idx&#xff0c;从1开始。</p> 
+ <p></p> 
+ <p>这样的话&#xff0c;我们从链表头head开始查询&#xff0c;此时报数idx&#61;1&#xff0c;</p> 
+ <ul><li>如果idx&#61;&#61;&#61;m&#xff0c;则删除当前节点cur&#xff0c;下一个查询节点变为删除节点的下一个节点&#xff0c;并且重置报数idx&#61;1&#xff0c;</li><li>如果idx!&#61;&#61;m&#xff0c;则继续查询下一节点&#xff0c;即cur &#61; cur.next&#xff0c;并且报数idx&#43;&#43;</li></ul> 
+ <p>按上面逻辑&#xff0c;直到链表的size &lt; m时&#xff0c;结束。</p> 
+ <p>然后&#xff0c;for(i&#61;0; i&lt;size; i&#43;&#43;) 遍历出循环链表的每一个节点值&#xff0c;就是题解。</p> 
+</blockquote> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int m &#61; sc.nextInt();
+    System.out.println(getResult(m));
+  }
+
+  public static String getResult(int m) {
+    if (m &lt;&#61; 1 || m &gt;&#61; 100) return &#34;ERROR!&#34;;
+
+    CycleLinkedList list &#61; new CycleLinkedList();
+    for (int i &#61; 1; i &lt;&#61; 100; i&#43;&#43;) list.append(i);
+
+    int idx &#61; 1;
+    Node cur &#61; list.head;
+
+    while (list.size &gt;&#61; m) {
+      if (idx &#61;&#61; m) {
+        idx &#61; 1;
+        cur &#61; list.remove(cur);
+      } else {
+        idx&#43;&#43;;
+        cur &#61; cur.next;
+      }
+    }
+
+    return list.toString();
+  }
+}
+
+class Node {
+  int val;
+  Node prev;
+  Node next;
+
+  public Node(int val, Node prev, Node next) {
+    this.val &#61; val;
+    this.prev &#61; prev;
+    this.next &#61; next;
+  }
+}
+
+class CycleLinkedList {
+  Node head;
+  Node tail;
+  int size &#61; 0;
+
+  public void append(int val) {
+    Node node &#61; new Node(val, null, null);
+
+    if (this.size &gt; 0) {
+      this.tail.next &#61; node;
+      node.prev &#61; this.tail;
+      this.tail &#61; node;
+    } else {
+      this.head &#61; node;
+      this.tail &#61; node;
+    }
+    this.head.prev &#61; this.tail;
+    this.tail.next &#61; this.head;
+    this.size&#43;&#43;;
+  }
+
+  public Node remove(Node cur) {
+    Node pre &#61; cur.prev;
+    Node nxt &#61; cur.next;
+
+    pre.next &#61; nxt;
+    nxt.prev &#61; pre;
+
+    cur.next &#61; cur.prev &#61; null;
+
+    if (this.head &#61;&#61; cur) {
+      this.head &#61; nxt;
+    }
+
+    if (this.tail &#61;&#61; cur) {
+      this.tail &#61; pre;
+    }
+    this.size--;
+    return nxt;
+  }
+
+  &#64;Override
+  public String toString() {
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+
+    Node cur &#61; this.head;
+    for (int i &#61; 0; i &lt; this.size; i&#43;&#43;) {
+      sj.add(cur.val &#43; &#34;&#34;);
+      cur &#61; cur.next;
+    }
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const m &#61; line - 0;
+  console.log(getResult(m));
+});
+
+function getResult(m) {
+  if (m &lt;&#61; 1 || m &gt;&#61; 100) {
+    return &#34;ERROR!&#34;;
+  }
+
+  const list &#61; new CycleLinkedList();
+  for (let i &#61; 1; i &lt;&#61; 100; i&#43;&#43;) list.append(i);
+
+  let idx &#61; 1;
+  let cur &#61; list.head;
+
+  while (list.size &gt;&#61; m) {
+    if (idx &#61;&#61;&#61; m) {
+      idx &#61; 1;
+      cur &#61; list.remove(cur);
+    } else {
+      idx&#43;&#43;;
+      cur &#61; cur.next;
+    }
+  }
+
+  return list.toString();
+}
+
+// 节点定义&#xff08;双向&#xff09;
+class Node {
+  constructor(val) {
+    this.val &#61; val;
+    this.next &#61; null;
+    this.prev &#61; null;
+  }
+}
+
+// 循环链表定义
+class CycleLinkedList {
+  constructor() {
+    this.head &#61; null;
+    this.tail &#61; null;
+    this.size &#61; 0;
+  }
+
+  append(val) {
+    const node &#61; new Node(val);
+
+    if (this.size) {
+      this.tail.next &#61; node;
+      node.prev &#61; this.tail;
+      this.tail &#61; node;
+    } else {
+      this.head &#61; node;
+      this.tail &#61; node;
+    }
+    this.head.prev &#61; this.tail;
+    this.tail.next &#61; this.head;
+    this.size&#43;&#43;;
+  }
+
+  remove(cur) {
+    const pre &#61; cur.prev;
+    const nxt &#61; cur.next;
+
+    pre.next &#61; nxt;
+    nxt.prev &#61; pre;
+
+    cur.next &#61; cur.prev &#61; null;
+
+    if (this.head &#61;&#61;&#61; cur) {
+      this.head &#61; nxt;
+    }
+
+    if (this.tail &#61;&#61;&#61; cur) {
+      this.tail &#61; pre;
+    }
+
+    this.size--;
+
+    return nxt;
+  }
+
+  toString() {
+    const arr &#61; [];
+    let cur &#61; this.head;
+
+    for (let i &#61; 0; i &lt; this.size; i&#43;&#43;) {
+      arr.push(cur.val);
+      cur &#61; cur.next;
+    }
+
+    return arr.join();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 双向节点
+class Node:
+    def __init__(self, val):
+        self.val &#61; val
+        self.next &#61; None
+        self.prev &#61; None
+
+
+# 循环链表
+class CycleLinkedList:
+    def __init__(self):
+        self.head &#61; None
+        self.tail &#61; None
+        self.size &#61; 0
+
+    def append(self, val):
+        node &#61; Node(val)
+
+        if self.size &gt; 0:
+            self.tail.next &#61; node
+            node.prev &#61; self.tail
+            self.tail &#61; node
+        else:
+            self.head &#61; node
+            self.tail &#61; node
+
+        self.head.prev &#61; self.tail
+        self.tail.next &#61; self.head
+        self.size &#43;&#61; 1
+
+    def remove(self, cur):
+        pre &#61; cur.prev
+        nxt &#61; cur.next
+
+        pre.next &#61; nxt
+        nxt.prev &#61; pre
+
+        cur.next &#61; cur.prev &#61; None
+
+        if self.head &#61;&#61; cur:
+            self.head &#61; nxt
+
+        if self.tail &#61;&#61; cur:
+            self.tail &#61; pre
+
+        self.size -&#61; 1
+
+        return nxt
+
+    def __str__(self):
+        arr &#61; []
+        cur &#61; self.head
+
+        for i in range(self.size):
+            arr.append(str(cur.val))
+            cur &#61; cur.next
+
+        return &#34;,&#34;.join(arr)
+
+
+# 输入获取
+m &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    if m &lt;&#61; 1 or m &gt;&#61; 100:
+        return &#34;ERROR!&#34;
+
+    cycList &#61; CycleLinkedList()
+    for i in range(1, 101):
+        cycList.append(i)
+
+    idx &#61; 1
+    cur &#61; cycList.head
+
+    while cycList.size &gt;&#61; m:
+        if idx &#61;&#61; m:
+            idx &#61; 1
+            cur &#61; cycList.remove(cur)
+        else:
+            idx &#43;&#61; 1
+            cur &#61; cur.next
+
+    return str(cycList)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h3>解法二&#xff1a;递归</h3> 
+<blockquote> 
+ <p>逻辑分析&#xff0c;需要先考虑两点</p> 
+ <ul><li>找到报数M的人</li><li>维持连续报数</li></ul> 
+ <p>我这边维护了一个外部变量count&#xff0c;让他初始值为1&#xff0c;因为报数从1开始。</p> 
+ <p>遍历数组&#xff0c;每遍历完一次&#xff0c;则count&#43;&#43;&#xff0c;下次遍历时判断count是不是已经超过M了&#xff0c;若超过则count重置为1&#xff0c;以此模拟报数。</p> 
+ <p>当count%M&#61;&#61;&#61;0时&#xff0c;表示当前遍历的数组元素就是报数M的人&#xff0c;我们将他filter踢出去了。</p> 
+ <p>维持连续报数&#xff0c;指的是&#xff0c;当我遍历完数组后&#xff0c;如果数组元素个数不少于M个&#xff0c;则需要新的报数轮次&#xff0c;此时新一轮的遍历时&#xff0c;第一个元素的报数需要接着上一轮结束时的报数&#xff0c;这个也可以通过外部变量count来维护。</p> 
+</blockquote> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int m &#61; sc.nextInt();
+    System.out.println(getResult(m));
+  }
+
+  public static String getResult(int m) {
+    if (m &lt;&#61; 1 || m &gt;&#61; 100) return &#34;ERROR!&#34;;
+
+    ArrayList&lt;Integer&gt; arr &#61; new ArrayList&lt;&gt;();
+    for (int i &#61; 1; i &lt;&#61; 100; i&#43;&#43;) arr.add(i);
+
+    return recursive(arr, m, 1);
+  }
+
+  public static String recursive(ArrayList&lt;Integer&gt; arr, int m, int count) {
+    ArrayList&lt;Integer&gt; nxt &#61; new ArrayList&lt;&gt;();
+
+    for (Integer v : arr) {
+      if (count &#61;&#61; m &#43; 1) {
+        count &#61; 1;
+      }
+
+      if (count&#43;&#43; % m !&#61; 0) {
+        nxt.add(v);
+      }
+    }
+
+    if (nxt.size() &gt;&#61; m) {
+      return recursive(nxt, m, count);
+    } else {
+      StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+      for (Integer v : nxt) sj.add(v &#43; &#34;&#34;);
+      return sj.toString();
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const m &#61; parseInt(line);
+
+  if (m &lt;&#61; 1 || m &gt;&#61; 100) {
+    return console.log(&#34;ERROR!&#34;);
+  }
+
+  const arr &#61; new Array(100).fill().map((_, index) &#61;&gt; index &#43; 1);
+
+  console.log(recursive(arr, m, 1));
+});
+
+// 1 2 3 4 5 6 7 8 9 10
+// 1 2 _ 4 5 _ 7 8 _ 10
+// 1 _ _ 4 5 _ _ 8 _ 10
+// _ _ _ 4 5 _ _ _ _ 10
+// _ _ _ 4 _ _ _ _ _ 10
+
+/* 算法逻辑 */
+function recursive(arr, m, count) {
+  arr &#61; arr.filter(() &#61;&gt; {
+    if (count &#61;&#61; m &#43; 1) count &#61; 1;
+    return count&#43;&#43; % m;
+  });
+
+  if (arr.length &gt;&#61; m) {
+    return recursive(arr, m, count);
+  } else {
+    return arr.join(&#34;,&#34;);
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+
+
+def recursive(arr, m, count):
+    nxt &#61; []
+
+    for v in arr:
+        if count &#61;&#61; m &#43; 1:
+            count &#61; 1
+
+        if count % m !&#61; 0:
+            nxt.append(v)
+
+        count &#43;&#61; 1
+
+    if len(nxt) &gt;&#61; m:
+        return recursive(nxt, m, count)
+    else:
+        return &#34;,&#34;.join(map(str, nxt))
+
+
+# 算法入口
+def getResult():
+    if m &lt;&#61; 1 or m &gt;&#61; 100:
+        return &#34;ERROR!&#34;
+
+    arr &#61; [i for i in range(1, 101)]
+
+    return recursive(arr, m, 1)
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h3>解法三&#xff1a;双端队列</h3> 
+<p>还有一种非常简单&#xff0c;非常好理解的做法就是双端队列。</p> 
+<blockquote> 
+ <p>双端队列本质也是维护一个循环结构。</p> 
+ <p>即&#xff0c;</p> 
+ <p>当报数&#61;&#61;&#61;m时&#xff0c;则队头出队&#xff0c;报数重置为1&#xff0c;对应此时新对头。</p> 
+ <p>当报数 !&#61;&#61; m时&#xff0c;则队头加入队尾&#xff0c;报数&#43;&#43;&#xff0c;对应此时新队头。</p> 
+</blockquote> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayDeque;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int m &#61; sc.nextInt();
+    System.out.println(getResult(m));
+  }
+
+  public static String getResult(int m) {
+    if (m &lt;&#61; 1 || m &gt;&#61; 100) return &#34;ERROR!&#34;;
+
+    ArrayDeque&lt;Integer&gt; dq &#61; new ArrayDeque&lt;&gt;();
+    for (int i &#61; 1; i &lt;&#61; 100; i&#43;&#43;) dq.add(i);
+
+    int idx &#61; 1;
+    while (dq.size() &gt;&#61; m) {
+      if (idx &#61;&#61; m) {
+        dq.removeFirst();
+        idx &#61; 1;
+      } else {
+        dq.addLast(dq.removeFirst());
+        idx&#43;&#43;;
+      }
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+
+    dq.stream().sorted((a, b) -&gt; a - b).forEach(v -&gt; sj.add(v &#43; &#34;&#34;));
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const m &#61; parseInt(line);
+
+  if (m &lt;&#61; 1 || m &gt;&#61; 100) {
+    return console.log(&#34;ERROR!&#34;);
+  }
+
+  const dq &#61; new Array(100).fill(0).map((_, idx) &#61;&gt; idx &#43; 1);
+
+  let idx &#61; 1;
+
+  while (dq.length &gt;&#61; m) {
+    if (idx &#61;&#61;&#61; m) {
+      dq.shift();
+      idx &#61; 1;
+    } else {
+      dq.push(dq.shift());
+      idx&#43;&#43;;
+    }
+  }
+
+  console.log(dq.sort((a, b) &#61;&gt; a - b).join());
+});
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    if m &lt;&#61; 1 or m &gt;&#61; 100:
+        return &#34;ERROR!&#34;
+
+    dq &#61; [i for i in range(1, 101)]
+
+    idx &#61; 1
+
+    while len(dq) &gt;&#61; m:
+        if idx &#61;&#61; m:
+            dq.pop(0)
+            idx &#61; 1
+        else:
+            dq.append(dq.pop(0))
+            idx &#43;&#61; 1
+
+    dq.sort()
+    return &#34;,&#34;.join(map(str, dq))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h3>总结</h3> 
+<p>上面三种解题思路&#xff0c;循环链表的性能是最优的&#xff0c;而基于数组filter的解法&#xff0c;会创建大量零时数组&#xff0c;造成内存浪费&#xff0c;基于双端队列的解法&#xff0c;本质也是基于数组&#xff0c;队头出队&#xff0c;对于数组来说&#xff0c;会导致整体数组元素前移一位&#xff0c;即每次队头出队&#xff0c;都有一次O(n)时间复杂度的元素位置调整&#xff0c;而同样的操作&#xff0c;对应于循环链表删除节点的操作&#xff0c; 只需要O(1)时间复杂度。</p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

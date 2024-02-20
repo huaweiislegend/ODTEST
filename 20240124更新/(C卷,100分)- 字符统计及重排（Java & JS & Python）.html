@@ -1,0 +1,199 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 字符统计及重排（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4>题目描述</h4> 
+<p>给出一个仅包含字母的字符串&#xff0c;不包含空格&#xff0c;统计字符串中各个字母&#xff08;区分大小写&#xff09;出现的次数&#xff0c;</p> 
+<p>并按照字母出现次数从大到小的顺序。输出各个字母及其出现次数。</p> 
+<p>如果次数相同&#xff0c;按照自然顺序进行排序&#xff0c;且小写字母在大写字母之前。</p> 
+<p></p> 
+<h4>输入描述</h4> 
+<p>输入一行&#xff0c;为一个仅包含字母的字符串。</p> 
+<p></p> 
+<h4>输出描述</h4> 
+<p>按照字母出现次数从大到小的顺序输出各个字母和字母次数&#xff0c;用英文分号分隔&#xff0c;注意末尾的分号&#xff1b;</p> 
+<p>字母和次数间用英文冒号分隔。</p> 
+<p></p> 
+<h4>用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:82px;">输入</td><td style="width:416px;">xyxyXX</td></tr><tr><td style="width:82px;">输出</td><td style="width:416px;">x:2;y:2;X:2;</td></tr><tr><td style="width:82px;">说明</td><td style="width:416px;">每个字符出现的个数都是2&#xff0c;故x排在y之前&#xff0c;而小写字母x在X之前</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>abababb</td></tr><tr><td>输出</td><td>b:4;a:3;</td></tr><tr><td>说明</td><td>b的出现个数比a多&#xff0c;故b排在a之前</td></tr></tbody></table> 
+<h4>题目解析</h4> 
+<p>本题需要注意的是&#xff0c;题目要求&#xff1a;</p> 
+<blockquote> 
+ <p>如果次数相同&#xff0c;按照自然顺序进行排序&#xff0c;且小写字母在大写字母之前。</p> 
+</blockquote> 
+<p>自然顺序排序&#xff0c;看用例1&#xff0c;应该就是ASCII升序。而后面又要求&#xff0c;小写字母在大写字母之前&#xff0c;小写字母的ASCII码值是大于大小字母的&#xff0c;因此这里又相当于ASCII降序。</p> 
+<p>因此排序时&#xff0c;如果遇到次数相同的&#xff0c;则需要判断比较的两个字母是否 都为大写 或者 都为小写&#xff0c;若是&#xff0c;则此时按照ASCII码值升序&#xff0c;若不是&#xff0c;则小写字母排在前面&#xff0c;大写字母排在后面。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String s &#61; sc.nextLine();
+    System.out.println(getResult(s));
+  }
+
+  public static String getResult(String s) {
+    HashMap&lt;Character, Integer&gt; letter &#61; new HashMap&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+      letter.put(c, letter.getOrDefault(c, 0) &#43; 1);
+    }
+
+    StringBuilder sb &#61; new StringBuilder();
+
+    letter.entrySet().stream()
+        .sorted(
+            (a, b) -&gt; {
+              if (a.getValue() - b.getValue() !&#61; 0) {
+                return b.getValue() - a.getValue();
+              } else {
+                if ((isLower(a.getKey()) &amp;&amp; isLower(b.getKey()))
+                    || (isUpper(a.getKey()) &amp;&amp; isUpper(b.getKey()))) {
+                  return a.getKey() - b.getKey();
+                } else {
+                  if (isUpper(a.getKey())) return 1;
+                  else return -1;
+                }
+              }
+            })
+        .forEach(entry -&gt; sb.append(entry.getKey() &#43; &#34;:&#34; &#43; entry.getValue() &#43; &#34;;&#34;));
+
+    return sb.toString();
+  }
+
+  public static boolean isLower(char letter) {
+    return letter &gt;&#61; &#39;a&#39; &amp;&amp; letter &lt;&#61; &#39;z&#39;;
+  }
+
+  public static boolean isUpper(char letter) {
+    return letter &gt;&#61; &#39;A&#39; &amp;&amp; letter &lt;&#61; &#39;Z&#39;;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  const letter &#61; {};
+
+  for (let c of s) {
+    letter[c] &#61; (letter[c] ?? 0) &#43; 1;
+  }
+
+  const arr &#61; [];
+
+  for (let key in letter) {
+    arr.push([key, letter[key]]);
+  }
+
+  arr.sort((a, b) &#61;&gt; {
+    if (a[1] !&#61; b[1]) return b[1] - a[1];
+
+    if ((isLower(a[0]) &amp;&amp; isLower(b[0])) || (isUpper(a[0]) &amp;&amp; isUpper(b[0]))) {
+      return a[0] &gt; b[0] ? 1 : -1;
+    } else {
+      if (isUpper(a[0])) return 1;
+      else return -1;
+    }
+  });
+
+  return arr.map((kv) &#61;&gt; kv[0] &#43; &#34;:&#34; &#43; kv[1] &#43; &#34;;&#34;).join(&#34;&#34;);
+}
+
+function isLower(letter) {
+  return letter &gt;&#61; &#34;a&#34; &amp;&amp; letter &lt;&#61; &#34;z&#34;;
+}
+
+function isUpper(letter) {
+  return letter &gt;&#61; &#34;A&#34; &amp;&amp; letter &lt;&#61; &#34;Z&#34;;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import functools
+
+s &#61; input()
+
+
+def cmp(a, b):
+    if a[1] !&#61; b[1]:
+        return b[1] - a[1]
+
+    if (a[0].islower() and b[0].islower()) or (a[0].isupper() and b[0].isupper()):
+        return 1 if a[0] &gt; b[0] else -1
+    else:
+        if a[0].isupper():
+            return 1
+        else:
+            return -1
+
+
+# 算法入口
+def getResult():
+    letter &#61; {}
+
+    for c in s:
+        letter[c] &#61; letter.get(c, 0) &#43; 1
+
+    letterList &#61; list(letter.items())
+
+    letterList.sort(key&#61;functools.cmp_to_key(cmp))
+
+    return &#34;&#34;.join(list(map(lambda x: f&#34;{x[0]}:{x[1]};&#34;, letterList)))
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

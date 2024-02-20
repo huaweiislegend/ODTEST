@@ -1,0 +1,296 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 查找树中元素（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>已知树形结构的所有节点信息&#xff0c;现要求根据输入坐标&#xff08;x,y&#xff09;找到该节点保存的内容值&#xff0c;其中x表示节点所在的层数&#xff0c;根节点位于第0层&#xff0c;根节点的子节点位于第1层&#xff0c;依次类推&#xff1b;y表示节点在该层内的相对偏移&#xff0c;从左至右&#xff0c;第一个节点偏移0&#xff0c;第二个节点偏移1&#xff0c;依次类推&#xff1b;</p> 
+<p><img alt="" height="287" src="https://img-blog.csdnimg.cn/a1cd152916724a2aad95fe0a2b7b4953.png" width="704" /></p> 
+<p>举例&#xff1a;上图中&#xff0c;假定圆圈内的数字表示节点保存的<strong>内容值</strong>&#xff0c;则根据坐标(1,1)查到的内容值是23。 </p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>每个节点以一维数组&#xff08;int[]&#xff09;表示&#xff0c;所有节点信息构成二维数组&#xff08;int[][]&#xff09;&#xff0c;二维数组的0位置存放根节点&#xff1b;<br /> 表示单节点的一维数组中&#xff0c;0位置保存<strong>内容值</strong>&#xff0c;后续位置保存子节点在二维数组中的<strong>索引位置</strong>。<br /> 对于上图中&#xff1a;</p> 
+<ul><li>根节点的可以表示为{10&#xff0c;1&#xff0c;2}&#xff0c;</li><li>树的整体表示为{<!-- -->{10,1,2},{-21,3,4},{23,5},{14},{35},{66}}</li></ul> 
+<p>查询条件以长度为2的一维数组表示&#xff0c;上图查询坐标为(1,1)时表示为{1,1}</p> 
+<p>使用Java标准IO键盘输入进行录入时&#xff0c;</p> 
+<ol><li>先录入节点数量</li><li>然后逐行录入节点</li><li>最后录入查询的位置</li></ol> 
+<p>对于上述示例为&#xff1a;</p> 
+<blockquote> 
+ <p>6<br /> 10 1 2<br /> -21 3 4<br /> 23 5<br /> 14<br /> 35<br /> 66<br /> 1 1</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>查询到内容时&#xff0c;输出{内容值}&#xff0c;查询不到时输出{}<br /> 上图中根据坐标(1,1)查询输出{23}&#xff0c;根据坐标(1,2)查询输出{}</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6<br /> 10 1 2<br /> -21 3 4<br /> 23 5<br /> 14<br /> 35<br /> 66<br /> 1 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">{23}</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p>2023.1.16新增用例说明&#xff0c;之前代码只是根据用例1写的&#xff0c;误以为题目中说的树是二叉树&#xff0c;因此代码存在问题&#xff0c;后面发现了原题更多的用例说明&#xff0c;意识到本题的树是多叉树&#xff0c;但是本题代码中多叉树的处理逻辑和二叉树相同&#xff0c;只需要微调代码即可</p> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">14<br /> 0 1 2 3 4<br /> -11 5 6 7 8<br /> 113 9 10 11<br /> 24 12<br /> 35<br /> 66 13<br /> 77<br /> 88<br /> 99<br /> 101<br /> 102<br /> 103<br /> 25<br /> 104<br /> 2 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">{102}</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">14<br /> 0 1 2 3 4<br /> -11 5 6 7 8<br /> 113 9 10 11<br /> 24 12<br /> 35<br /> 66 13<br /> 77<br /> 88<br /> 99<br /> 101<br /> 102<br /> 103<br /> 25<br /> 104<br /> 3 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">{}</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">1<br /> 1000<br /> 0 0</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">{1000}</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这题输入描述比较晦涩难懂&#xff0c;但我还是猜出来一点&#xff1a;</p> 
+<blockquote> 
+ <p>每个节点以一维数组&#xff08;int[]&#xff09;表示&#xff0c;所有节点信息构成二维数组&#xff08;int[][]&#xff09;&#xff0c;二维数组的0位置存放根节点&#xff1b;</p> 
+</blockquote> 
+<p>这句话的意思就是&#xff1a;用例的第二行输入到倒数第二行输入可以构成一个二维数组&#xff0c;二维数组的元素是一维数组&#xff0c;如下图</p> 
+<blockquote> 
+ <p>[<br />     [10,1,2],<br />     [-21,3,4],<br />     [23,5],<br />     [14],<br />     [35],<br />     [66]<br /> ]</p> 
+</blockquote> 
+<p>假设二维数组是matrix的话&#xff0c;则每一个matrix[i]对应树的一个节点&#xff0c;其中matrix[0] &#xff08;如用例[10,1,2]&#xff09;代表的是树的根节点。</p> 
+<blockquote> 
+ <p>表示单节点的一维数组中&#xff0c;0位置保存<strong>内容值</strong>&#xff0c;后续位置保存子节点在二维数组中的<strong>索引位置</strong>。</p> 
+</blockquote> 
+<p>上面这句话的意思是&#xff0c;matrix[i] &#xff08;是一个一维数组&#xff09;&#xff0c;我们用arr &#61; matrix[i]&#xff0c;则arr[0]表示节点的内容值&#xff0c;arr[1]、arr[2]表示的是该节点的子节点在matrix中的索引位置。</p> 
+<p>比如[10,1,2]表示内容值为10的节点&#xff0c;有两个子节点&#xff0c;分别是matrix[1]和matrix[2]&#xff0c;即[-21,3,4]&#xff0c;[23,5]。</p> 
+<p>由于本题是二叉树&#xff0c;因此一个节点最多有两个子节点&#xff0c;最少没有子节点。</p> 
+<p></p> 
+<p>以上是关于输入描述的解读。</p> 
+<p></p> 
+<p>本题并没有说二叉树是完全二叉树&#xff0c;因此二叉树的节点非常有可能像&#xff1a;</p> 
+<p><img alt="" height="289" src="https://img-blog.csdnimg.cn/a8fa127cd2c740bba6b1e396140c795d.png" width="435" /></p> 
+<p>因此无法直接利用完全二叉树特性。</p> 
+<p>但是也不难&#xff0c;本题就是就是一个简单的深度优先搜索题</p> 
+<p><img alt="" height="323" src="https://img-blog.csdnimg.cn/c15afe8fe5ef47b98afdb255152b776c.png" width="468" /></p> 
+<p>本题的意思其实就是让我们再构造一个二维数组matrix2&#xff0c;这个二维数组形式如上图所示&#xff0c;具体内容如下</p> 
+<blockquote> 
+ <p>[<br />     [10],<br />     [-21, 23],<br />     [14,35,66]<br /> ]</p> 
+</blockquote> 
+<p>因此&#xff0c;我们很容想到利用深度优先搜索&#xff0c;从根节点开始递归&#xff0c;dfs(root, 0)&#xff0c;dfs参数含义是&#xff1a;当前节点root&#xff0c;得到的节点值将放置于二维数组matrix2的第0行。</p> 
+<p>从根节点还可以得到其左右子节点的索引&#xff0c;因此我们可以继续递归其左右子节点 dfs(left, 1)、dfs(right,1)&#xff0c;只是此时的得到的子节点将放于matrix2的第1行。</p> 
+<p>由此&#xff0c;我们就可以将节点值放到正确的行位置上了。</p> 
+<p>那么列位置该如何确认呢&#xff1f;</p> 
+<p>很好解决&#xff0c;matrix2的每一行都是一个数组&#xff0c;由于我们是优先左子树遍历&#xff0c;因此&#xff0c;总是每一行最左边的节点被优先遍历出来&#xff0c;我们只需要将遍历出来的节点值push压入对应行的数组中即可。比如&#xff1a;</p> 
+<p>matrix2一开始是空数组[]&#xff0c;然后遍历得到根节点&#xff0c;压入第0行的数组元素中&#xff0c;但是第0行没有数组元素&#xff0c;因此就构造一个[val]压入&#xff0c;同理处理根节点的左子节点&#xff0c;然后继续处理左子节点的左子节点&#xff0c;因此第一个深搜回溯时&#xff0c;得到</p> 
+<blockquote> 
+ <p>[<br />     [10],<br />     [-21],<br />     [14]<br /> ]</p> 
+</blockquote> 
+<p>即确认了每一行数组的第一个元素&#xff0c;刚好是</p> 
+<p><img alt="" height="339" src="https://img-blog.csdnimg.cn/0274d447253844e09992c77c9d9129b4.png" width="462" /></p> 
+<p>然后回溯过程将其余节点值依次加入每一行数组中&#xff0c;最终得到</p> 
+<blockquote> 
+ <p> [<br />     [10],<br />     [-21, 23],<br />     [14,35,66]<br /> ]</p> 
+</blockquote> 
+<p>此时&#xff0c;找任意位置的节点值都是so easy</p> 
+<p></p> 
+<p></p> 
+<p>2023.03.17 补充一个用例</p> 
+<p>本题中最后一行输入的目标节点坐标位置可能是负数&#xff0c;尼玛&#xff0c;我服了,比如下面用例</p> 
+<blockquote> 
+ <p>6<br /> 10 1 2<br /> -21 3 4<br /> 23 5<br /> 14<br /> 35<br /> 66<br /><span style="color:#fe2c24;">-1 -1</span></p> 
+</blockquote> 
+<p>如果坐标位置为负数&#xff0c;则会出现数组越界的问题&#xff0c;加了这个就100%了</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    n &#61; lines[0] - 0;
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 2) {
+    lines.shift();
+    const [tx, ty] &#61; lines.pop().split(&#34; &#34;).map(Number);
+    const nodes &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+
+    console.log(getResult(nodes, tx, ty));
+
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ *
+ * &#64;param {*} nodes 数组&#xff0c;存储树中所有节点&#xff0c;数组元素node也是数组&#xff0c;node &#61; [val, left, right] &#xff0c;其中val是node节点的内容值&#xff0c;left是node节点的左子节点的索引&#xff0c;right是node节点的右子节点的索引&#xff0c;索引是相对nodes而言的
+ * &#64;param {*} tx 目标位置x坐标
+ * &#64;param {*} ty 目标位置y坐标
+ */
+function getResult(nodes, tx, ty) {
+  // 2023.03.17&#xff0c;尼玛&#xff0c;谁能想到还有tx,ty小于0的用例&#xff0c;题目描述一点没说
+  if (tx &lt; 0 || ty &lt; 0) return &#34;{}&#34;;
+
+  const matrix &#61; [];
+
+  function dfs(node, level) {
+    if (!node) return;
+
+    // 2023.1.16更新代码逻辑&#xff0c;之前本题只有用例1&#xff0c;因此误以为题目中的树指的是二叉树&#xff0c;因此错误意味一个节点最多只有两个子节点&#xff0c;但是后面补充了更多用例&#xff0c;发现本题的树是多叉树
+    // const [val, left, right] &#61; node;
+    const val &#61; node[0];
+    matrix[level] ? matrix[level].push(val) : (matrix[level] &#61; [val]);
+
+    // 2023.1.16更新代码逻辑&#xff0c;之前本题只有用例1&#xff0c;因此误以为题目中的树指的是二叉树&#xff0c;因此错误意味一个节点最多只有两个子节点&#xff0c;但是后面补充了更多用例&#xff0c;发现本题的树是多叉树
+    // dfs(nodes[left], level &#43; 1);
+    // dfs(nodes[right], level &#43; 1);
+    for (let i &#61; 1; i &lt; node.length; i&#43;&#43;) {
+      dfs(nodes[node[i]], level &#43; 1);
+    }
+  }
+
+  dfs(nodes[0], 0);
+
+  if (matrix[tx] &amp;&amp; matrix[tx][ty]) {
+    return &#96;{${matrix[tx][ty]}}&#96;;
+  } else {
+    return &#34;{}&#34;;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  static ArrayList&lt;Integer[]&gt; nodes;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+
+    nodes &#61; new ArrayList&lt;&gt;();
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      Integer[] node &#61;
+          Arrays.stream(sc.nextLine().split(&#34; &#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+      nodes.add(node);
+    }
+
+    int tx &#61; sc.nextInt();
+    int ty &#61; sc.nextInt();
+
+    System.out.println(getResult(nodes, tx, ty));
+  }
+
+  public static String getResult(ArrayList&lt;Integer[]&gt; nodes, int tx, int ty) {
+    // 2023.03.17&#xff0c;尼玛&#xff0c;谁能想到还有tx,ty小于0的用例&#xff0c;题目描述一点没说
+    if (tx &lt; 0 || ty &lt; 0) return &#34;{}&#34;;
+
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix &#61; new ArrayList&lt;&gt;();
+    dfs(matrix, nodes.get(0), 0);
+
+    if (tx &lt; matrix.size() &amp;&amp; ty &lt; matrix.get(tx).size()) {
+      return &#34;{&#34; &#43; matrix.get(tx).get(ty) &#43; &#34;}&#34;;
+    } else {
+      return &#34;{}&#34;;
+    }
+  }
+
+  public static void dfs(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix, Integer[] node, Integer level) {
+    if (node &#61;&#61; null) return;
+
+    int val &#61; node[0];
+
+    if (level &lt; matrix.size()) {
+      matrix.get(level).add(val);
+    } else {
+      ArrayList&lt;Integer&gt; list &#61; new ArrayList&lt;&gt;();
+      list.add(val);
+      matrix.add(list);
+    }
+
+    // 将二叉树处理逻辑&#xff0c;改成多叉树
+    //    if (node.length &gt; 1) {
+    //      int left &#61; node[1];
+    //      dfs(matrix, nodes.get(left), level &#43; 1);
+    //    }
+    //
+    //    if (node.length &gt; 2) {
+    //      int right &#61; node[2];
+    //      dfs(matrix, nodes.get(right), level &#43; 1);
+    //    }
+
+    for (int i &#61; 1; i &lt; node.length; i&#43;&#43;) {
+      int child &#61; node[i];
+      dfs(matrix, nodes.get(child), level &#43; 1);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+nodes &#61; [list(map(int, input().split())) for i in range(n)]
+tx, ty &#61; map(int, input().split())
+
+
+# 算法入口
+def getResult(nodes, tx, ty):
+    if tx &lt; 0 or ty &lt; 0:
+        return &#34;{}&#34;
+
+    matrix &#61; []
+    dfs(matrix, nodes[0], 0)
+
+    if tx &lt; len(matrix) and ty &lt; len(matrix[tx]):
+        return &#34;{&#34; &#43; str(matrix[tx][ty]) &#43; &#34;}&#34;
+    else:
+        return &#34;{}&#34;
+
+
+def dfs(matrix, node, level):
+    if node is None:
+        return
+
+    val &#61; node[0]
+
+    if level &lt; len(matrix):
+        matrix[level].append(val)
+    else:
+        matrix.append([val])
+
+    for i in range(1, len(node)):
+        child &#61; node[i]
+        dfs(matrix, nodes[child], level &#43; 1)
+
+
+# 算法调用
+print(getResult(nodes, tx, ty))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

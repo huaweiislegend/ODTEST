@@ -1,0 +1,138 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 数字加减游戏（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小明在玩一个数字加减游戏&#xff0c;只使用加法或者减法&#xff0c;将一个数字s变成数字t。<br /> 每个回合&#xff0c;小明可以用当前的数字加上或减去一个数字。<br /> 现在有两种数字可以用来加减&#xff0c;分别为a,b(a!&#61;b)&#xff0c;其中b没有使用次数限制。<br /> 请问小明最少可以用多少次a&#xff0c;才能将数字s变成数字t。<br /> 题目保证数字s一定能变成数字t。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的唯一一行包含四个正整数s,t,a,b(1&lt;&#61;s,t,a,b&lt;&#61;105)&#xff0c;并且a!&#61;b。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出的唯一一行包含一个整数&#xff0c;表示最少需要使用多少次a才能将数字s变成数字t。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 10 5 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">初始值1加一次a变成6&#xff0c;然后加两次b变成10&#xff0c;因此a的使用次数为1</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">11 33 4 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">11减两次a变成3&#xff0c;然后加三次b变成33&#xff0c;因此a的使用次数为2次</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题有点像数学问题</p> 
+<p>比如用例1其实就是求解&#xff1a;</p> 
+<p>满足 5 * x &#43; 2 * y &#61; 9  的所有解中绝对值最小的x</p> 
+<p></p> 
+<p>比如用例2其实就是求解&#xff1a;</p> 
+<p>满足 4 * x &#43; 10 * y &#61; 22 的所有解中绝对值最小的x</p> 
+<p></p> 
+<p>因此&#xff0c;我们可以让x从0开始尝试&#xff0c;然后尝试1&#xff0c;-1&#xff0c;然后尝试2&#xff0c;-2&#xff0c;直到找到一个x能够让&#xff08;比如用例1&#xff09;(9 - 5*x) / 2 为一个整数。</p> 
+<p></p> 
+<p>由于本题1&lt;&#61;s,t,a,b&lt;&#61;105&#xff0c;数量级较小&#xff0c;因此上面逻辑可行。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [s, t, a, b] &#61; line.split(&#34; &#34;).map(Number);
+  console.log(getResult(s, t, a, b));
+});
+
+function getResult(s, t, a, b) {
+  let x &#61; 0;
+  let diff &#61; t - s;
+  while (true) {
+    if (
+      Number.isInteger((diff - a * x) / b) ||
+      Number.isInteger((diff &#43; a * x) / b)
+    ) {
+      return Math.abs(x);
+    }
+
+    x&#43;&#43;;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-javascript">import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc &#61; new Scanner(System.in);
+
+        int[] arr &#61; new int[4];
+        for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+            arr[i] &#61; sc.nextInt();
+        }
+
+        System.out.println(getResult(arr[0], arr[1], arr[2], arr[3]));
+    }
+
+    public static int getResult(int s, int t, int a, int b) {
+        int x &#61; 0;
+        int diff &#61; t - s;
+        while (true) {
+            if ((diff - a * x) % b &#61;&#61; 0 || (diff &#43; a * x) % b &#61;&#61; 0) {
+                 return Math.abs(x);
+            }
+            x&#43;&#43;;
+        }
+    }
+}</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s, t, a, b &#61; map(int, input().split())
+
+
+# 算法入口
+def getResult(s, t, a, b):
+    x &#61; 0
+    diff &#61; t - s
+    while True:
+        if str((diff - a * x) / b).endswith(&#34;.0&#34;) or str((diff &#43; a * x) / b).endswith(&#34;.0&#34;):
+            return abs(x)
+        x &#43;&#61; 1
+
+
+# 算法调用
+print(getResult(s, t, a, b))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

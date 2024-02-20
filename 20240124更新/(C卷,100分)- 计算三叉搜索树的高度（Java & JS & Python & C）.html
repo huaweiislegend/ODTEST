@@ -1,0 +1,425 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 计算三叉搜索树的高度（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>定义构造三叉搜索树规则如下&#xff1a;</p> 
+<p>每个节点都存有一个数&#xff0c;当插入一个新的数时&#xff0c;从根节点向下寻找&#xff0c;直到找到一个合适的空节点插入。查找的规则是&#xff1a;</p> 
+<ol><li>如果数小于节点的数减去500&#xff0c;则将数插入节点的左子树</li><li>如果数大于节点的数加上500&#xff0c;则将数插入节点的右子树</li><li>否则&#xff0c;将数插入节点的中子树</li></ol> 
+<p>给你一系列数&#xff0c;请按以上规则&#xff0c;按顺序将数插入树中&#xff0c;构建出一棵三叉搜索树&#xff0c;最后输出树的高度。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为一个数 N&#xff0c;表示有 N 个数&#xff0c;1 ≤ N ≤ 10000</p> 
+<p>第二行为 N 个空格分隔的整数&#xff0c;每个数的范围为[1,10000]</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出树的高度&#xff08;根节点的高度为1&#xff09;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 5000 2000 5000 8000 1800</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>最终构造出的树如下&#xff0c;高度为3&#xff1a;</p> <p><img alt="" height="274" src="https://img-blog.csdnimg.cn/direct/7d58c808a5eb41df8aee1548b264e27e.png" width="325" /></p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 5000 4000 3000</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>最终构造出的树如下&#xff0c;高度为3&#xff1a;</p> <p><img alt="" height="236" src="https://img-blog.csdnimg.cn/direct/4365a71eaced46e795910df9de616fa8.png" width="375" /></p> <p></p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;">9<br /> 5000 2000 5000 8000 1800 7500 4500 1400 8100</td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">4</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;"> <p>最终构造出的树如下&#xff0c;高度为4&#xff1a;</p> <p><img alt="" height="340" src="https://img-blog.csdnimg.cn/direct/a02f1032d12044fa814821d59f084678.png" width="573" /></p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题应该只是需要模拟出三叉树结构&#xff0c;以及根据指定的逻辑进行插入新节点。</p> 
+<p></p> 
+<p>三叉树节点的数据结构定义如下&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />   val&#xff0c; // 节点值<br />   height&#xff0c;// 节点所在高度&#xff0c;<br />   left&#xff0c;// 左子树根节点&#xff0c;<br />   right&#xff0c;// 右子树根节点&#xff0c;<br />   mid&#xff0c;// 中子树根节点<br /> }</p> 
+</blockquote> 
+<p></p> 
+<p>三叉树的数据结构定义如下&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />   root&#xff0c;// 根节点<br />   height&#xff0c;// 树的高度<br /> }</p> 
+</blockquote> 
+<p></p> 
+<p>三叉树插入新节点node逻辑&#xff1a;</p> 
+<ul><li>如果三叉树为空&#xff0c;则三叉树根节点root &#61; 新节点node</li><li>如果三叉树不为空&#xff0c;则从三叉树根节点作为比较节点cur开始比较&#xff1a;</li></ul> 
+<ol><li>如果 node.val &lt; cur.val - 500&#xff0c;则node应该插入到cur节点的左子树中&#xff0c;<br /> 若 cur 节点不存在左子树&#xff0c;那么 node 就作为 cur 节点的左子树根节点&#xff0c;且node.height &#61; cur.height &#43; 1<br /> 若 cur 节点存在左子树&#xff0c;那么 cur &#61; cur.left&#xff0c;继续和 node 比较</li><li>如果 node.val &gt; cur.val &#43; 500&#xff0c;则node应该插入到cur节点的右子树中&#xff0c;<br /> 若 cur 节点不存在右子树&#xff0c;那么 node 就作为 cur 节点的右子树根节点&#xff0c;且node.height &#61; cur.height &#43; 1<br /> 若 cur 节点存在右子树&#xff0c;那么 cur &#61; cur.right&#xff0c;继续和 node 比较</li><li>其他情况&#xff0c;则 node 应该插入到 cur 节点的中子树中&#xff0c;<br /> 若 cur 节点不存在中子树&#xff0c;那么 node 就作为 cur 节点的中子树根节点&#xff0c;且且node.height &#61; cur.height &#43; 1<br /> 若 cur 节点存在中子树&#xff0c;那么 cur &#61; cur.mid&#xff0c;继续和 node 比较</li></ol> 
+<p>在上面比较过程&#xff0c;始终保留最大的node.height作为tree.height。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  class TreeNode {
+    constructor(val) {
+      this.val &#61; val; // 节点值
+      this.height &#61; undefined; // 节点所在高度
+      this.left &#61; null; // 左子树
+      this.mid &#61; null; // 中子树
+      this.right &#61; null; // 右子树
+    }
+  }
+
+  class Tree {
+    constructor() {
+      this.root &#61; null; // 树的根节点
+      this.height &#61; 0; // 树的高度
+    }
+
+    add(val) {
+      const node &#61; new TreeNode(val);
+
+      if (this.root &#61;&#61; null) {
+        // 如果树是空的&#xff0c;则当前创建的节点将作为根节点
+        node.height &#61; 1; // 根节点的高度为1
+        this.root &#61; node;
+        this.height &#61; 1;
+      } else {
+        // 如果树不是空的&#xff0c;则从根节点开始比较
+        let cur &#61; this.root;
+
+        while (true) {
+          // 假设创建的节点node是当前节点cur的子节点&#xff0c;则node节点高度值&#61;cur节点高度值&#43;1
+          node.height &#61; cur.height &#43; 1;
+          // 如果创建的node进入新层&#xff0c;则更新树的高度
+          this.height &#61; Math.max(node.height, this.height);
+
+          if (val &lt; cur.val - 500) {
+            // 如果数小于节点的数减去500&#xff0c;则将数插入cur节点的左子树
+            if (cur.left &#61;&#61; null) {
+              // 如果cur节点没有左子树&#xff0c;则node作为cur节点的左子树
+              cur.left &#61; node;
+              // 停止探索
+              break;
+            } else {
+              // 否则继续探索
+              cur &#61; cur.left;
+            }
+          } else if (val &gt; cur.val &#43; 500) {
+            // 如果数大于节点的数加上500&#xff0c;则将数插入节点的右子树
+            if (cur.right &#61;&#61; null) {
+              cur.right &#61; node;
+              break;
+            } else {
+              cur &#61; cur.right;
+            }
+          } else {
+            // 如果数大于节点的数加上500&#xff0c;则将数插入节点的右子树
+            if (cur.mid &#61;&#61; null) {
+              cur.mid &#61; node;
+              break;
+            } else {
+              cur &#61; cur.mid;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  const n &#61; parseInt(await readline());
+
+  const tree &#61; new Tree();
+
+  const nums &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    tree.add(nums[i]);
+  }
+
+  console.log(tree.height);
+})();
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  static class TreeNode {
+    int val; // 节点值
+    int height; // 节点所在高度
+    TreeNode left; // 左子树
+    TreeNode mid; // 中子树
+    TreeNode right; // 右子树
+
+    public TreeNode(int val) {
+      this.val &#61; val;
+    }
+  }
+
+  static class Tree {
+    TreeNode root; // 树的根节点
+    int height; // 树的高度
+
+    public void add(int val) {
+      TreeNode node &#61; new TreeNode(val);
+
+      if (this.root &#61;&#61; null) {
+        // 如果树是空的&#xff0c;则当前创建的节点将作为根节点
+        node.height &#61; 1; // 根节点的高度为1
+        this.root &#61; node;
+        this.height &#61; 1;
+      } else {
+        // 如果树不是空的&#xff0c;则从根节点开始比较
+        TreeNode cur &#61; this.root;
+
+        while (true) {
+          // 假设创建的节点node是当前节点cur的子节点&#xff0c;则node节点高度值&#61;cur节点高度值&#43;1
+          node.height &#61; cur.height &#43; 1;
+          // 如果创建的node进入新层&#xff0c;则更新树的高度
+          this.height &#61; Math.max(node.height, this.height);
+
+          if (val &lt; cur.val - 500) {
+            // 如果数小于节点的数减去500&#xff0c;则将数插入cur节点的左子树
+            if (cur.left &#61;&#61; null) {
+              // 如果cur节点没有左子树&#xff0c;则node作为cur节点的左子树
+              cur.left &#61; node;
+              // 停止探索
+              break;
+            } else {
+              // 否则继续探索
+              cur &#61; cur.left;
+            }
+          } else if (val &gt; cur.val &#43; 500) {
+            // 如果数大于节点的数加上500&#xff0c;则将数插入节点的右子树
+            if (cur.right &#61;&#61; null) {
+              cur.right &#61; node;
+              break;
+            } else {
+              cur &#61; cur.right;
+            }
+          } else {
+            // 如果数大于节点的数加上500&#xff0c;则将数插入节点的右子树
+            if (cur.mid &#61;&#61; null) {
+              cur.mid &#61; node;
+              break;
+            } else {
+              cur &#61; cur.mid;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    Tree tree &#61; new Tree();
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      int num &#61; sc.nextInt();
+      tree.add(num);
+    }
+
+    System.out.println(tree.height);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">class TreeNode:
+    def __init__(self, val):
+        self.val &#61; val  # 节点值
+        self.height &#61; None  # 节点所在高度
+        self.left &#61; None  # 左子树
+        self.mid &#61; None  # 中子树
+        self.right &#61; None   # 右子树
+
+
+class Tree:
+    def __init__(self):
+        self.root &#61; None  # 树的根节点
+        self.height &#61; 0  # 树的高度
+
+    def add(self, val):
+        node &#61; TreeNode(val)
+
+        if self.root is None:
+            # 如果树是空的&#xff0c;则当前创建的节点将作为根节点
+            node.height &#61; 1  # 根节点的高度为1
+            self.root &#61; node
+            self.height &#61; 1
+        else:
+            # 如果树不是空的&#xff0c;则从根节点开始比较
+            cur &#61; self.root
+
+            while True:
+                # 假设创建的节点node是当前节点cur的子节点&#xff0c;则node节点高度值&#61;cur节点高度值&#43;1
+                node.height &#61; cur.height &#43; 1
+                # 如果创建的node进入新层&#xff0c;则更新树的高度
+                self.height &#61; max(node.height, self.height)
+
+                if val &lt; cur.val - 500:
+                    # 如果数小于节点的数减去500&#xff0c;则将数插入cur节点的左子树
+                    if cur.left is None:
+                        # 如果cur节点没有左子树&#xff0c;则node作为cur节点的左子树
+                        cur.left &#61; node
+                        # 停止探索
+                        break
+                    else:
+                        # 否则继续探索
+                        cur &#61; cur.left
+                elif val &gt; cur.val &#43; 500:
+                    # 如果数大于节点的数加上500&#xff0c;则将数插入节点的右子树
+                    if cur.right is None:
+                        cur.right &#61; node
+                        break
+                    else:
+                        cur &#61; cur.right
+                else:
+                    # 如果数大于节点的数加上500&#xff0c;则将数插入节点的右子树
+                    if cur.mid is None:
+                        cur.mid &#61; node
+                        break
+                    else:
+                        cur &#61; cur.mid
+
+
+def getResult():
+    n &#61; int(input())
+    nums &#61; list(map(int, input().split()))
+
+    tree &#61; Tree()
+    for num in nums:
+        tree.add(num)
+
+    return tree.height
+
+
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+typedef struct TreeNode {
+    int val; // 节点值
+    int height; // 节点所在高度
+    struct TreeNode *left; // 左子树
+    struct TreeNode *mid; // 中子树
+    struct TreeNode *right; // 右子树
+} TreeNode;
+
+TreeNode *new_TreeNode(int val) {
+    TreeNode *node &#61; (TreeNode *) malloc(sizeof(TreeNode));
+    node-&gt;val &#61; val;
+    node-&gt;height &#61; 0;
+    node-&gt;left &#61; NULL;
+    node-&gt;mid &#61; NULL;
+    node-&gt;right &#61; NULL;
+    return node;
+}
+
+typedef struct Tree {
+    TreeNode *root; // 树的根节点
+    int height; // 树的高度
+} Tree;
+
+Tree *new_Tree() {
+    Tree *tree &#61; (Tree *) malloc(sizeof(Tree));
+    tree-&gt;root &#61; NULL;
+    tree-&gt;height &#61; 0;
+    return tree;
+}
+
+void add_Tree(Tree *tree, int val) {
+    TreeNode *node &#61; new_TreeNode(val);
+
+    if (tree-&gt;root &#61;&#61; NULL) {
+        // 如果树是空的&#xff0c;则当前创建的节点将作为根节点
+        node-&gt;height &#61; 1; // 根节点的高度为1
+        tree-&gt;root &#61; node;
+        tree-&gt;height &#61; 1;
+    } else {
+        // 如果树不是空的&#xff0c;则从根节点开始比较
+        TreeNode *cur &#61; tree-&gt;root;
+
+        while (1) {
+            // 假设创建的节点node是当前节点cur的子节点&#xff0c;则node节点高度值&#61;cur节点高度值&#43;1
+            node-&gt;height &#61; cur-&gt;height &#43; 1;
+            // 如果创建的node进入新层&#xff0c;则更新树的高度
+            tree-&gt;height &#61; MAX(node-&gt;height, tree-&gt;height);
+
+            if (val &lt; cur-&gt;val - 500) {
+                // 如果数小于节点的数减去500&#xff0c;则将数插入cur节点的左子树
+                if (cur-&gt;left &#61;&#61; NULL) {
+                    // 如果cur节点没有左子树&#xff0c;则node作为cur节点的左子树
+                    cur-&gt;left &#61; node;
+                    // 停止探索
+                    break;
+                } else {
+                    // 否则继续探索
+                    cur &#61; cur-&gt;left;
+                }
+            } else if (val &gt; cur-&gt;val &#43; 500) {
+                // 如果数大于节点的数加上500&#xff0c;则将数插入节点的右子树
+                if (cur-&gt;right &#61;&#61; NULL) {
+                    cur-&gt;right &#61; node;
+                    break;
+                } else {
+                    cur &#61; cur-&gt;right;
+                }
+            } else {
+                // 如果数大于节点的数加上500&#xff0c;则将数插入节点的右子树
+                if (cur-&gt;mid &#61;&#61; NULL) {
+                    cur-&gt;mid &#61; node;
+                    break;
+                } else {
+                    cur &#61; cur-&gt;mid;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    Tree *tree &#61; new_Tree();
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        int num;
+        scanf(&#34;%d&#34;, &amp;num);
+
+        add_Tree(tree, num);
+    }
+
+    printf(&#34;%d\n&#34;, tree-&gt;height);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

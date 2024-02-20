@@ -1,0 +1,281 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 密码输入检测（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定用户密码输入流 input&#xff0c;输入流中字符 &#39;&lt;&#39; 表示退格&#xff0c;可以清除前一个输入的字符&#xff0c;请你编写程序&#xff0c;输出最终得到的密码字符&#xff0c;并判断密码是否满足如下的密码安全要求。</p> 
+<p>密码安全要求如下&#xff1a;</p> 
+<ol><li>密码长度 ≥ 8&#xff1b;</li><li>密码至少需要包含 1 个大写字母&#xff1b;</li><li>密码至少需要包含 1 个小写字母&#xff1b;</li><li>密码至少需要包含 1 个数字&#xff1b;</li><li>密码至少需要包含 1 个字母和数字以外的非空白特殊字符&#xff1b;</li></ol> 
+<p>注意空串退格后仍然为空串&#xff0c;且用户输入的字符串不包含 &#39;&lt;&#39; 字符和空白字符。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>用一行字符串表示输入的用户数据&#xff0c;输入的字符串中 &#39;&lt;&#39; 字符标识退格&#xff0c;用户输入的字符串不包含空白字符&#xff0c;例如&#xff1a;</p> 
+<blockquote> 
+ <p>ABC&lt;c89%000&lt;</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出经过程序处理后&#xff0c;输出的实际密码字符串&#xff0c;并输出改密码字符串是否满足密码安全要求。两者间由 &#39;,&#39; 分隔&#xff0c; 例如&#xff1a;</p> 
+<blockquote> 
+ <p>ABc89%00,true</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">ABC&lt;c89%000&lt;</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">ABc89%00,true</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">多余的C和0由于退格被去除,最终用户输入的密码为ABc89%00&#xff0c;且满足密码安全要求&#xff0c;输出true</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以利用栈的压栈来模拟用户输入字符&#xff0c;弹栈来模拟&#39;&lt;&#39;退格操作。</p> 
+<p>最后统计栈中&#xff1a;所有字符数量&gt;&#61;8 &amp;&amp; 小写字母数量 &gt;&#61; 1 &amp;&amp; 大写字母数量 &gt;&#61; 1 &amp;&amp; 数字数量 &gt;&#61; 1 &amp;&amp; 非字母数字空白字符数量 &gt;&#61; 1</p> 
+<p>若满足&#xff0c;则将栈中字符拼接为字符串后再追加“true”&#xff0c;否则追加“false”</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const s &#61; await readline();
+
+  const stack &#61; [];
+  for (let c of s) {
+    if (c &#61;&#61; &#34;&lt;&#34;) {
+      if (stack.length &#61;&#61; 0) continue;
+      stack.pop();
+    } else {
+      stack.push(c);
+    }
+  }
+
+  let upper &#61; 0;
+  let lower &#61; 0;
+  let number &#61; 0;
+  let non_letter_number &#61; 0;
+
+  const password &#61; [];
+  for (let c of stack) {
+    password.push(c);
+
+    if (c &gt;&#61; &#34;a&#34; &amp;&amp; c &lt;&#61; &#34;z&#34;) {
+      lower&#43;&#43;;
+    } else if (c &gt;&#61; &#34;A&#34; &amp;&amp; c &lt;&#61; &#34;Z&#34;) {
+      upper&#43;&#43;;
+    } else if (c &gt;&#61; &#34;0&#34; &amp;&amp; c &lt;&#61; &#34;9&#34;) {
+      number&#43;&#43;;
+    } else {
+      non_letter_number&#43;&#43;;
+    }
+  }
+
+  if (
+    password.length &gt;&#61; 8 &amp;&amp;
+    lower &gt;&#61; 1 &amp;&amp;
+    upper &gt;&#61; 1 &amp;&amp;
+    non_letter_number &gt;&#61; 1
+  ) {
+    password.push(&#34;,true&#34;);
+  } else {
+    password.push(&#34;,false&#34;);
+  }
+
+  console.log(password.join(&#34;&#34;));
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String s &#61; sc.nextLine();
+
+    LinkedList&lt;Character&gt; stack &#61; new LinkedList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+
+      if (c &#61;&#61; &#39;&lt;&#39;) {
+        if (stack.isEmpty()) continue;
+        stack.removeLast();
+      } else {
+        stack.addLast(c);
+      }
+    }
+
+    int upper &#61; 0;
+    int lower &#61; 0;
+    int number &#61; 0;
+    int non_letter_number &#61; 0;
+
+    StringBuilder password &#61; new StringBuilder();
+    for (Character c : stack) {
+      password.append(c);
+
+      if (c &gt;&#61; &#39;a&#39; &amp;&amp; c &lt;&#61; &#39;z&#39;) {
+        lower&#43;&#43;;
+      } else if (c &gt;&#61; &#39;A&#39; &amp;&amp; c &lt;&#61; &#39;Z&#39;) {
+        upper&#43;&#43;;
+      } else if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+        number&#43;&#43;;
+      } else {
+        non_letter_number&#43;&#43;;
+      }
+    }
+
+    if (password.length() &gt;&#61; 8
+        &amp;&amp; lower &gt;&#61; 1
+        &amp;&amp; upper &gt;&#61; 1
+        &amp;&amp; number &gt;&#61; 1
+        &amp;&amp; non_letter_number &gt;&#61; 1) {
+      password.append(&#34;,true&#34;);
+    } else {
+      password.append(&#34;,false&#34;);
+    }
+
+    System.out.println(password);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    stack &#61; []
+
+    for c in s:
+        if c &#61;&#61; &#39;&lt;&#39;:
+            if len(stack) &gt; 0:
+                stack.pop()
+        else:
+            stack.append(c)
+
+    upper &#61; 0
+    lower &#61; 0
+    number &#61; 0
+    non_letter_number &#61; 0
+
+    password &#61; []
+    for c in stack:
+        password.append(c)
+
+        if &#39;z&#39; &gt;&#61; c &gt;&#61; &#39;a&#39;:
+            lower &#43;&#61; 1
+        elif &#39;Z&#39; &gt;&#61; c &gt;&#61; &#39;A&#39;:
+            upper &#43;&#61; 1
+        elif &#39;9&#39; &gt;&#61; c &gt;&#61; &#39;0&#39;:
+            number &#43;&#61; 1
+        else:
+            non_letter_number &#43;&#61; 1
+
+    if len(password) &gt;&#61; 8 and lower &gt;&#61; 1 and upper &gt;&#61; 1 and number &gt;&#61; 1 and non_letter_number &gt;&#61; 1:
+        password.append(&#34;,true&#34;)
+    else:
+        password.append(&#34;,false&#34;)
+
+    return &#34;&#34;.join(password)
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_SIZE 100000
+
+int main() {
+    char s[MAX_SIZE];
+    gets(s);
+
+    unsigned long long len &#61; strlen(s);
+
+    char stack[MAX_SIZE];
+    int stack_size &#61; 0;
+
+    int upper &#61; 0;
+    int lower &#61; 0;
+    int number &#61; 0;
+    int non_letter_number &#61; 0;
+
+    for (int i &#61; 0; i &lt; len; i&#43;&#43;) {
+        char key;
+        int val;
+
+        if (s[i] &#61;&#61; &#39;&lt;&#39;) {
+            if (stack_size &gt; 0) {
+                key &#61; stack[stack_size - 1];
+                val &#61; -1;
+                stack_size--;
+            } else {
+                continue;
+            }
+        } else {
+            key &#61; s[i];
+            val &#61; 1;
+            stack[stack_size&#43;&#43;] &#61; s[i];
+        }
+
+        if (key &gt;&#61; &#39;a&#39; &amp;&amp; key &lt;&#61; &#39;z&#39;) {
+            lower &#43;&#61; val;
+        } else if (key &gt;&#61; &#39;A&#39; &amp;&amp; key &lt;&#61; &#39;Z&#39;) {
+            upper &#43;&#61; val;
+        } else if (key &gt;&#61; &#39;0&#39; &amp;&amp; key &lt;&#61; &#39;9&#39;) {
+            number &#43;&#61; val;
+        } else {
+            non_letter_number &#43;&#61; val;
+        }
+    }
+
+    stack[stack_size] &#61; &#39;\0&#39;;
+    if(stack_size &gt;&#61; 8 &amp;&amp; lower &gt;&#61; 1 &amp;&amp; upper &gt;&#61; 1 &amp;&amp; number &gt;&#61; 1 &amp;&amp; non_letter_number &gt;&#61; 1) {
+        strcat(stack, &#34;,true&#34;);
+    } else {
+        strcat(stack, &#34;,false&#34;);
+    }
+
+    puts(stack);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

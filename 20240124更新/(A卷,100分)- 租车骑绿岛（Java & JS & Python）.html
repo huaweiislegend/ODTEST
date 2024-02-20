@@ -1,0 +1,181 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 租车骑绿岛（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>部门组织绿岛骑行团建活动。租用公共双人自行车&#xff0c;每辆自行车最多坐两人&#xff0c;最大载重M。<br /> 给出部门每个人的体重&#xff0c;请问最多需要租用多少双人自行车。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行两个数字m、n&#xff0c;分别代表自行车限重&#xff0c;部门总人数。</p> 
+<p>第二行&#xff0c;n个数字&#xff0c;代表每个人的体重&#xff0c;体重都小于等于自行车限重m。</p> 
+<ul><li><code>0&lt;m&lt;&#61;200</code></li><li><code>0&lt;n&lt;&#61;1000000</code></li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最小需要的双人自行车数量。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 4<br /> 3 2 2 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题需要最少的车辆&#xff0c;即尽可能组合出重量小于等于m的两人组。</p> 
+<p></p> 
+<p>首先&#xff0c;我们可以将所有人按体重升序&#xff0c;然后将最大体重和m比较&#xff0c;若最大体重大于等于m&#xff0c;则这个人只能一人占一辆车&#xff0c;车数量count&#43;&#43;&#xff0c;然后将最大体重弹出&#xff0c;继续将剩下体重中最大的和m比较&#xff0c;逻辑同上&#xff0c;直到最大体重小于m时&#xff0c;停止弹出。</p> 
+<p></p> 
+<p>在剩余体重中&#xff0c;我们利用双指针&#xff0c;i指针指向最小体重&#xff0c;j指针指向最大体重&#xff0c;然后组合它们&#xff0c;即arr[i]&#43;arr[j]&#xff0c;和m比较&#xff0c;若小于等于m&#xff0c;则说明这两个人可以共享一辆车&#xff0c;车数量count&#43;&#43;&#xff0c;然后i&#43;&#43;&#xff0c;j--。如果arr[i]&#43;arr[j]&gt;m&#xff0c;则说明两个人无法共享一辆车&#xff0c;我们只能优先将这里车分配给较大体重的人&#xff0c;此时车数量count&#43;&#43;&#xff0c;然后j--。</p> 
+<p></p> 
+<p>按上面逻辑移动双指针&#xff0c;最后可能会出现两种情况&#xff1a;</p> 
+<ul><li>i &gt; j        此情况下所有人均分配到了车&#xff0c;因此可以直接输出count作为题解</li><li>i &#61;&#61;&#61; j    此情况下还有一个人未分配到车&#xff0c;因此需要count&#43;&#43;&#xff0c;为这个人单独分配一辆车</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [m, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const arr &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(arr, m, n));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(arr, m, n) {
+  arr.sort((a, b) &#61;&gt; a - b);
+
+  let count &#61; 0;
+
+  // while (arr.at(-1) &gt;&#61; m) {
+  //   count&#43;&#43;;
+  //   arr.pop();
+  // }
+
+  let i &#61; 0;
+  let j &#61; arr.length - 1;
+
+  while (i &lt; j) {
+    if (arr[i] &#43; arr[j] &lt;&#61; m) i&#43;&#43;;
+    j--;
+    count&#43;&#43;;
+  }
+
+  if (i &#61;&#61;&#61; j) count&#43;&#43;;
+
+  return count;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      arr[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(arr, m));
+  }
+
+  public static int getResult(int[] arr, int m) {
+    Arrays.sort(arr);
+
+    int count &#61; 0;
+
+    int i &#61; 0;
+    int j &#61; arr.length - 1;
+
+    while (i &lt; j) {
+      if (arr[i] &#43; arr[j] &lt;&#61; m) i&#43;&#43;;
+      j--;
+      count&#43;&#43;;
+    }
+
+    if (i &#61;&#61; j) count&#43;&#43;;
+
+    return count;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m, n &#61; map(int, input().split())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult(arr, m, n):
+    arr.sort()
+
+    count &#61; 0
+
+    i &#61; 0
+    j &#61; n - 1
+
+    while i &lt; j:
+        if arr[i] &#43; arr[j] &lt;&#61; m:
+            i &#43;&#61; 1
+        j -&#61; 1
+        count &#43;&#61; 1
+
+    if i &#61;&#61; j:
+        count &#43;&#61; 1
+
+    return count
+
+
+# 算法调用
+print(getResult(arr, m, n))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,297 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- Wonderland（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>Wonderland是小王居住地一家很受欢迎的游乐园。Wonderland目前有4种售票方式&#xff0c;分别为一日票&#xff08;1天&#xff09;、三日票&#xff08;3天&#xff09;、周票&#xff08;7天&#xff09;和月票&#xff08;30天&#xff09;。</p> 
+<p>每种售票方式的价格由一个数组给出&#xff0c;每种票据在票面时限内可以无限制地进行游玩。例如&#xff1a;</p> 
+<blockquote> 
+ <p>小王在第10日买了一张三日票&#xff0c;小王可以在第10日、第11日和第12日进行无限制地游玩。</p> 
+</blockquote> 
+<p>小王计划在接下来一年多次游玩该游乐园。小王计划地游玩日期将由一个数组给出。</p> 
+<p>现在&#xff0c;请您根据给出地售票价格数组和小王计划游玩日期数组&#xff0c;返回游玩计划所需要地最低消费。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为2个数组&#xff1a;</p> 
+<ul><li>售票价格数组为costs&#xff0c;costs.length &#61; 4&#xff0c;默认顺序为一日票、三日票、周票和月票。</li><li>小王计划游玩日期数组为days&#xff0c;1 ≤ days.length ≤ 365&#xff0c;1 ≤ days[i] ≤ 365&#xff0c;默认顺序为升序。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>完成游玩计划的最低消费。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 14 30 100<br /> 1 3 5 20 21 200 202 230</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">40</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">根据售票价格数组和游玩日期数组给出的信息&#xff0c;发现每次去玩的时候买一张一日票是最省钱的&#xff0c;所以小王会卖8张一日票&#xff0c;每张5元&#xff0c;最低花费是40元。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用动态规划求解。</p> 
+<p></p> 
+<p>定义一个dp数组&#xff0c;dp[i] 的含义是&#xff1a;前 i 天&#xff0c;完成所有游玩日的最少花费金额。</p> 
+<p>dp[i] 可以由前面的 dp状态 推导而来&#xff1a;</p> 
+<ul><li>如果第 i 天不是游玩日&#xff0c;即第 i 天不需要考虑花钱买票&#xff0c;那么&#xff1a;dp[i] &#61; dp[i-1]</li><li>如果第 i 天是游玩日&#xff0c;那么此时有四种选择&#xff1a;</li></ul> 
+<ol><li>如果第 i 天被购买的&#34;一日票&#34;有效期覆盖&#xff0c;那么&#xff1a;dp[i] &#61; dp[i-1] &#43; costs[0]&#xff0c;其中&#xff1a;<br /><br /> dp[i - 1] 是前 i-1 天的花费<br /><br /> costs[0] 是第 i 天的花费&#xff0c;即第 i 天买了当天有效的&#34;一日票&#34;<br />  </li><li>如果第 i 天被购买的&#34;三日票&#34;有效期覆盖&#xff0c;那么&#xff1a;dp[i] &#61; ( i ≥ 3 ? dp[i-3] <strong>:</strong> 0 ) &#43; costs[1]<br /><br /> 我们可以认为在第 i - 2 天购买了&#34;三日票&#34;&#xff0c;其有效期覆盖第 i-2 天&#xff0c;第i-1天&#xff0c;第i天&#xff0c;这段时间的花费是 costs[1]<br /><br /> 而第 i-2 天之前&#xff0c;即&#xff1a;第0天~第i-3天的花费是dp[i-3]&#xff0c;此时需要注意 i - 3 可能为负数&#xff0c;如果为负数&#xff0c;则表示第 i-2 天之前没有花费&#xff0c;即为0<br />  </li><li>如果第 i 天被购买的&#34;七日票&#34;有效期覆盖&#xff0c;那么&#xff1a;dp[i] &#61; ( i ≥ 7 &#xff1f;dp[i-7] <strong>: </strong>0) &#43; costs[2]<br /><br /> 原理同上<br />  </li><li>如果第 i 天被购买的&#34;月票&#34;有效期覆盖&#xff0c;那么&#xff1a;dp[i] &#61; ( i ≥ 30 &#xff1f;dp[i-30] <strong>: </strong>0) &#43; costs[3]<br /><br /> 原理同上</li></ol> 
+<p>因此&#xff0c;如果第 i 天是游玩日&#xff0c;那么我们可以选择上面四种花费中最小的花费。</p> 
+<p></p> 
+<p>最后只需要返回 dp[maxDay] 即可&#xff0c;其中maxDay为最大的游玩日&#xff0c;即为days[days.length - 1]。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const costs &#61; (await readline()).split(&#34; &#34;).map(Number);
+  const days &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 最大游玩日
+  const maxDay &#61; days[days.length - 1];
+
+  // dp[i] 表示 前i天中完成其中所有游玩日需要的最少花费
+  const dp &#61; new Array(maxDay &#43; 1).fill(0); // dp[0] 默认为 0, 表示前0天花费0元
+
+  // index用于指向当前需要完成的游玩日days[index]
+  let index &#61; 0;
+
+  // 遍历第1天 ~ 第maxDay天
+  for (let i &#61; 1; i &lt;&#61; maxDay; i&#43;&#43;) {
+    if (i &#61;&#61; days[index]) {
+      // 如果第i天是游玩日&#xff0c;那么此时有四种花费选择
+
+      // 选择买&#34;一日票&#34;&#xff0c;该花费仅用于第i天的游玩&#xff0c;那么此时前i天的花费就是 dp[i-1] &#43; cost[0]
+      const buy1 &#61; dp[i - 1] &#43; costs[0];
+
+      // 选择买&#34;三日票&#34;&#xff0c;该花费可用于第i天&#xff0c;第i-1天&#xff0c;第i-2天&#xff08;相当于在第i-2天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-3] &#43; cost[1]
+      // 需要注意&#xff0c;如果 i &lt; 3&#xff0c;那么dp[i-3]越界&#xff0c;此时前(i-3)天不存在,即花费为0
+      const buy3 &#61; (i &gt;&#61; 3 ? dp[i - 3] : 0) &#43; costs[1];
+
+      // 选择买“七日票”&#xff0c;该花费可用于第i天~第i-6天&#xff08;相当于在第i-6天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-7] &#43; cost[2]
+      // 同上&#xff0c;注意i&lt;7的处理
+      const buy7 &#61; (i &gt;&#61; 7 ? dp[i - 7] : 0) &#43; costs[2];
+
+      // 选择买“月票”&#xff0c;该花费可用于第i天~第i-29天&#xff08;相当于在第i-29天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-30] &#43; cost[3]
+      // 同上&#xff0c;注意i&lt;30的处理
+      const buy30 &#61; (i &gt;&#61; 30 ? dp[i - 30] : 0) &#43; costs[3];
+
+      // 最终dp[i]取上面四种花费的最小值
+      dp[i] &#61; Math.min(buy1, buy3, buy7, buy30);
+
+      // 匹配下一个游玩日&#xff08;days是升序的&#xff0c;因此index 和 days[index] 正相关&#xff09;
+      index&#43;&#43;;
+    } else {
+      // 如果第i天不是游玩日&#xff0c;那么第i天不需要花费&#xff0c;即前i天的花费和前i-1天的花费一样
+      dp[i] &#61; dp[i - 1];
+    }
+  }
+
+  console.log(dp[maxDay]);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] costs &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int[] days &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    // 最大游玩日
+    int maxDay &#61; days[days.length - 1];
+
+    // dp[i] 表示 前i天中完成其中所有游玩日需要的最少花费
+    int[] dp &#61; new int[maxDay &#43; 1]; // dp[0] 默认为 0, 表示前0天花费0元
+
+    // index用于指向当前需要完成的游玩日days[index]
+    int index &#61; 0;
+
+    // 遍历第1天~第maxDay天
+    for (int i &#61; 1; i &lt;&#61; maxDay; i&#43;&#43;) {
+
+      if (i &#61;&#61; days[index]) {
+        // 如果第i天是游玩日&#xff0c;那么此时有四种花费选择
+
+        // 选择买&#34;一日票&#34;&#xff0c;该花费仅用于第i天的游玩&#xff0c;那么此时前i天的花费就是 dp[i-1] &#43; cost[0]
+        int buy1 &#61; dp[i - 1] &#43; costs[0];
+
+        // 选择买&#34;三日票&#34;&#xff0c;该花费可用于第i天&#xff0c;第i-1天&#xff0c;第i-2天&#xff08;相当于在第i-2天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-3] &#43; cost[1]
+        // 需要注意&#xff0c;如果 i &lt; 3&#xff0c;那么dp[i-3]越界&#xff0c;此时前(i-3)天不存在,即花费为0
+        int buy3 &#61; (i &gt;&#61; 3 ? dp[i - 3] : 0) &#43; costs[1];
+
+        // 选择买“七日票”&#xff0c;该花费可用于第i天~第i-6天&#xff08;相当于在第i-6天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-7] &#43; cost[2]
+        // 同上&#xff0c;注意i&lt;7的处理
+        int buy7 &#61; (i &gt;&#61; 7 ? dp[i - 7] : 0) &#43; costs[2];
+
+        // 选择买“月票”&#xff0c;该花费可用于第i天~第i-29天&#xff08;相当于在第i-29天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-30] &#43; cost[3]
+        // 同上&#xff0c;注意i&lt;30的处理
+        int buy30 &#61; (i &gt;&#61; 30 ? dp[i - 30] : 0) &#43; costs[3];
+
+        // 最终dp[i]取上面四种花费的最小值
+        dp[i] &#61; Math.min(Math.min(Math.min(buy1, buy3), buy7), buy30);
+
+        // 匹配下一个游玩日&#xff08;days是升序的&#xff0c;因此index 和 days[index] 正相关&#xff09;
+        index&#43;&#43;;
+      } else {
+        // 如果第i天不是游玩日&#xff0c;那么第i天不需要花费&#xff0c;即前i天的花费和前i-1天的花费一样
+        dp[i] &#61; dp[i - 1];
+      }
+    }
+
+    System.out.println(dp[maxDay]);
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+costs &#61; list(map(int, input().split()))
+days &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    # 最大游玩日
+    maxDay &#61; days[-1]
+
+    # dp[i] 表示 前i天中完成其中所有游玩日需要的最少花费
+    dp &#61; [0] * (maxDay &#43; 1)  # dp[0] 默认为 0, 表示前0天花费0元
+
+    # index用于指向当前需要完成的游玩日days[index]
+    index &#61; 0
+
+    # 遍历第1天~第maxDay天
+    for i in range(1, maxDay &#43; 1):
+        if i &#61;&#61; days[index]:
+            # 如果第i天是游玩日&#xff0c;那么此时有四种花费选择
+
+            #  选择买&#34;一日票&#34;&#xff0c;该花费仅用于第i天的游玩&#xff0c;那么此时前i天的花费就是 dp[i-1] &#43; cost[0]
+            buy1 &#61; dp[i - 1] &#43; costs[0]
+
+            # 选择买&#34;三日票&#34;&#xff0c;该花费可用于第i天&#xff0c;第i-1天&#xff0c;第i-2天&#xff08;相当于在第i-2天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-3] &#43; cost[1]
+            # 需要注意&#xff0c;如果 i &lt; 3&#xff0c;那么dp[i-3]越界&#xff0c;此时前(i-3)天不存在,即花费为0
+            buy3 &#61; (dp[i - 3] if i &gt;&#61; 3 else 0) &#43; costs[1]
+
+            # 选择买“七日票”&#xff0c;该花费可用于第i天~第i-6天&#xff08;相当于在第i-6天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-7] &#43; cost[2]
+            # 同上&#xff0c;注意i&lt;7的处理
+            buy7 &#61; (dp[i - 7] if i &gt;&#61; 7 else 0) &#43; costs[2]
+
+            # 选择买“月票”&#xff0c;该花费可用于第i天~第i-29天&#xff08;相当于在第i-29天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-30] &#43; cost[3]
+            # 同上&#xff0c;注意i&lt;30的处理
+            buy30 &#61; (dp[i - 30] if i &gt;&#61; 30 else 0) &#43; costs[3]
+
+            # 最终dp[i]取上面四种花费的最小值
+            dp[i] &#61; min(buy1, buy3, buy7, buy30)
+
+            # 匹配下一个游玩日&#xff08;days是升序的&#xff0c;因此index 和 days[index] 正相关&#xff09;
+            index &#43;&#61; 1
+        else:
+            # 如果第i天不是游玩日&#xff0c;那么第i天不需要花费&#xff0c;即前i天的花费和前i-1天的花费一样
+            dp[i] &#61; dp[i - 1]
+
+    return dp[maxDay]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+#define MAX_SIZE 366
+
+int main() {
+    int costs[4];
+    for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;costs[i]);
+    }
+
+    int days[MAX_SIZE];
+    int days_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;days[days_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    // 最大游玩日
+    int maxDay &#61; days[days_size - 1];
+
+    // dp[i] 表示 前i天中完成其中所有游玩日需要的最少花费
+    int dp[maxDay &#43; 1];
+    dp[0] &#61; 0; // dp[0] 默认为 0, 表示前0天花费0元
+
+    // index用于指向当前需要完成的游玩日days[index]
+    int index &#61; 0;
+
+    // 遍历第1天~第maxDay天
+    for (int i &#61; 1; i &lt;&#61; maxDay; i&#43;&#43;) {
+        if (i &#61;&#61; days[index]) {
+            // 如果第i天是游玩日&#xff0c;那么此时有四种花费选择
+
+            // 选择买&#34;一日票&#34;&#xff0c;该花费仅用于第i天的游玩&#xff0c;那么此时前i天的花费就是 dp[i-1] &#43; cost[0]
+            int buy1 &#61; dp[i - 1] &#43; costs[0];
+
+            // 选择买&#34;三日票&#34;&#xff0c;该花费可用于第i天&#xff0c;第i-1天&#xff0c;第i-2天&#xff08;相当于在第i-2天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-3] &#43; cost[1]
+            // 需要注意&#xff0c;如果 i &lt; 3&#xff0c;那么dp[i-3]越界&#xff0c;此时前(i-3)天不存在,即花费为0
+            int buy3 &#61; (i &gt;&#61; 3 ? dp[i - 3] : 0) &#43; costs[1];
+
+            // 选择买“七日票”&#xff0c;该花费可用于第i天~第i-6天&#xff08;相当于在第i-6天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-7] &#43; cost[2]
+            // 同上&#xff0c;注意i&lt;7的处理
+            int buy7 &#61; (i &gt;&#61; 7 ? dp[i - 7] : 0) &#43; costs[2];
+
+            // 选择买“月票”&#xff0c;该花费可用于第i天~第i-29天&#xff08;相当于在第i-29天购买&#xff09;&#xff0c;那么此时前i天的花费就是 dp[i-30] &#43; cost[3]
+            // 同上&#xff0c;注意i&lt;30的处理
+            int buy30 &#61; (i &gt;&#61; 30 ? dp[i - 30] : 0) &#43; costs[3];
+
+            // 最终dp[i]取上面四种花费的最小值
+            dp[i] &#61; (int) fmin(fmin(buy1, buy3), fmin(buy7, buy30));
+
+            // 匹配下一个游玩日&#xff08;days是升序的&#xff0c;因此index 和 days[index] 正相关&#xff09;
+            index&#43;&#43;;
+        } else {
+            // 如果第i天不是游玩日&#xff0c;那么第i天不需要花费&#xff0c;即前i天的花费和前i-1天的花费一样
+            dp[i] &#61; dp[i - 1];
+        }
+    }
+
+    printf(&#34;%d\n&#34;, dp[maxDay]);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

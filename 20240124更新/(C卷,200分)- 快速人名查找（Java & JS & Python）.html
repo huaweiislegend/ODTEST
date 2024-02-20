@@ -1,0 +1,282 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 快速人名查找（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给一个字符串&#xff0c;表示用’,’分开的人名。</p> 
+<p>然后给定一个字符串&#xff0c;进行快速人名查找&#xff0c;符合要求的输出。</p> 
+<p>快速人名查找要求︰人名的每个单词的连续前几位能组成给定字符串&#xff0c;一定要用到每个单词。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行是人名&#xff0c;用’,’分开的人名<br /> 第二行是 查找字符串</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出满足要求的人名</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:513px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:423px;">zhang san,zhang san san<br /> zs</td></tr><tr><td style="width:86px;">输出</td><td style="width:423px;">zhang san</td></tr><tr><td style="width:86px;">说明</td><td style="width:423px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:523px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:433px;">zhang san san,zhang an sa,zhang hang,zhang seng,zhang sen a<br /> zhas</td></tr><tr><td style="width:86px;">输出</td><td style="width:433px;">zhang an sa,zhang seng</td></tr><tr><td style="width:86px;">说明</td><td style="width:433px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题暂时没有想到更好的解法&#xff0c;只能通过暴力法求解。</p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>比如人名为&#xff1a;zhang seng&#xff0c;前缀缩写为&#xff1a;zhas</p> 
+<p>首先将人名字符串按照空格分隔为字符串数组&#xff0c;如Sting parts &#61; [&#34;zhang&#34;&#xff0c;&#34;san&#34;]</p> 
+<p>前缀缩写定义为 String abbr &#61; &#34;zhas&#34;&#xff0c;用一个start指针指向abbr的被检查的字母&#xff0c;初始时start&#61;0&#xff0c;即指向abbr的第0个字母。</p> 
+<p>然后按照下图逻辑开始进行人名的每个part的前缀部分和abbr的匹配&#xff0c;匹配逻辑如下图所示&#xff1a;</p> 
+<blockquote> 
+ <p>abbr开头字母必须首先要和parts[0]的开头字母匹配&#xff0c;如果无法匹配否则就表示当前人名无法缩写为abbr。</p> 
+</blockquote> 
+<p></p> 
+<p><img alt="" height="325" src="https://img-blog.csdnimg.cn/662d6dc1cff34efd87137f44f2444679.png" width="618" /></p> 
+<p><img alt="" height="347" src="https://img-blog.csdnimg.cn/da34db5985314007bd8e49e37be90ae3.png" width="714" /></p> 
+<p><img alt="" height="332" src="https://img-blog.csdnimg.cn/03a96834db5843a9a3829747ae1d5bdb.png" width="624" /></p> 
+<p><img alt="" height="346" src="https://img-blog.csdnimg.cn/cdcf7f36de0a49ecb44a76ad93463f89.png" width="646" /></p> 
+<p><img alt="" height="341" src="https://img-blog.csdnimg.cn/1834a36151a7447a80c8d41a2dcc4563.png" width="570" /></p> 
+<p><img alt="" height="420" src="https://img-blog.csdnimg.cn/189c8fb8c14246aca1afa26c46542f16.png" width="677" /></p> 
+<p> 通过上面图示&#xff0c;我们可以发现&#xff0c;parts[0]每匹配到一个abbr字母&#xff0c;就把下一次的匹配权让给了parts[1]&#xff0c;这是为什么呢&#xff1f;</p> 
+<p>因为&#xff0c;这样可以避免abbr的扫描指针的回溯。啥意思呢&#xff1f;</p> 
+<p>我们看看下面这个例子&#xff1a;</p> 
+<p>人名&#xff1a;zhasta san</p> 
+<p>缩写&#xff1a;zhasa</p> 
+<p>如果优先parts[0]匹配的话&#xff0c;则必然会走到下面这种情况</p> 
+<p><img alt="" height="294" src="https://img-blog.csdnimg.cn/0b6d259b731b429bba135ebc2c219b27.png" width="712" /></p> 
+<p>然后下一步匹配&#xff0c;就会出问题</p> 
+<p><img alt="" height="321" src="https://img-blog.csdnimg.cn/8a6938e853af47c499c230c35bafbb1d.png" width="675" /></p> 
+<p>此时&#xff0c;我们就需要进行abbr的扫描指针回溯&#xff0c;然后将匹配权交到parts[1]手上。</p> 
+<p><img alt="" height="333" src="https://img-blog.csdnimg.cn/f4c4246963bb44839e0224e566c66778.png" width="687" /></p> 
+<p>可能有人觉得这样匹配速度反而会更快一点&#xff0c;但是如果用例是下面这种呢&#xff1f;</p> 
+<ul><li>人名&#xff1a;zhass san san</li><li>缩写&#xff1a;zhass</li></ul> 
+<p> 即我们可以在一个part中就完成了缩写匹配&#xff0c;但是题目要求所有的单词part都要使用到&#xff0c;此时我们应该如何回溯呢&#xff1f;</p> 
+<p>这样的回溯操作逻辑将变得十分复杂&#xff0c;且性能不佳。因此我们需要尽量避免abbr的扫描指针回溯行为。</p> 
+<p></p> 
+<p>如果&#xff0c;大家对上面部分都理解了&#xff0c;那么本题差不多就搞定了。</p> 
+<p>上面例子都是两个part的人名&#xff0c;本题并没有说人名由几个part组成&#xff0c;因此我们无法确定要几重for循环解题&#xff0c;此时只能依赖于回溯递归来帮助我们。具体递归逻辑请看代码。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const names &#61; (await readline()).split(&#34;,&#34;);
+  const abbr &#61; await readline();
+  console.log(getResult(names, abbr));
+})();
+
+function getResult(names, abbr) {
+  const ans &#61; [];
+
+  for (let name of names) {
+    const parts &#61; name.split(&#34; &#34;);
+
+    if (parts.length &gt; abbr.length) continue;
+
+    if (recursive(parts, 0, abbr, 0)) {
+      ans.push(name);
+    }
+  }
+
+  return ans.join(&#34;,&#34;);
+}
+
+/**
+ *
+ * &#64;param {*} parts 人名组成
+ * &#64;param {*} parts_index 人名被匹配的组成部分的索引位置
+ * &#64;param {*} abbr 人名缩写
+ * &#64;param {*} abbr_index 缩写被匹配的字符的索引位置
+ * &#64;returns 当前人名name是否匹配对应缩写abbr
+ */
+function recursive(parts, parts_index, abbr, abbr_index) {
+  if (abbr_index &gt;&#61; abbr.length) {
+    // 如果缩写被匹配完&#xff0c;且人名组成也匹配到最后一个&#xff0c;则说明当前人名可以匹配对应缩写
+    return parts_index &gt;&#61; parts.length;
+  }
+
+  // 如果缩写尚未匹配完&#xff0c;但是人名组成已经匹配完&#xff0c;则说明当前人名无法匹配对应缩写
+  if (parts_index &gt;&#61; parts.length) {
+    return false;
+  }
+
+  const part_name &#61; parts[parts_index];
+
+  for (let j &#61; 0; j &lt; part_name.length; j&#43;&#43;) {
+    // 如果当前人名组成部分part_name的第 j 个字符 可以 匹配 缩写abbr的第 abbr_index个字符
+    if (abbr_index &lt; abbr.length &amp;&amp; part_name[j] &#61;&#61; abbr[abbr_index]) {
+      // 为了保证part_name匹配不回退&#xff0c;此时我们将缩写abbr的第abbr_index&#43;1个字符的匹配权优先交给人名的parts_index &#43; 1部分
+      if (recursive(parts, parts_index &#43; 1, abbr, &#43;&#43;abbr_index)) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  return false;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] names &#61; sc.nextLine().split(&#34;,&#34;);
+    String abbr &#61; sc.nextLine();
+
+    System.out.println(getResult(names, abbr));
+  }
+
+  public static String getResult(String[] names, String abbr) {
+    ArrayList&lt;String&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    for (String name : names) {
+      String[] parts &#61; name.split(&#34; &#34;);
+
+      if (parts.length &gt; abbr.length()) continue;
+
+      if (recursive(parts, 0, abbr, 0)) {
+        ans.add(name);
+      }
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+    for (String an : ans) {
+      sj.add(an);
+    }
+    return sj.toString();
+  }
+
+  /**
+   * &#64;param parts 人名组成
+   * &#64;param parts_index 人名被匹配的组成部分的索引位置
+   * &#64;param abbr 人名缩写
+   * &#64;param abbr_index 缩写被匹配的字符的索引位置
+   * &#64;return 当前人名name是否匹配对应缩写abbr
+   */
+  public static boolean recursive(String[] parts, int parts_index, String abbr, int abbr_index) {
+    if (abbr_index &gt;&#61; abbr.length()) {
+      // 如果缩写被匹配完&#xff0c;且人名组成也匹配到最后一个&#xff0c;则说明当前人名可以匹配对应缩写
+      return parts_index &gt;&#61; parts.length;
+    }
+
+    // 如果缩写尚未匹配完&#xff0c;但是人名组成已经匹配完&#xff0c;则说明当前人名无法匹配对应缩写
+    if (parts_index &gt;&#61; parts.length) {
+      return false;
+    }
+
+    String part_name &#61; parts[parts_index];
+
+    for (int j &#61; 0; j &lt; part_name.length(); j&#43;&#43;) {
+      // 如果当前人名组成部分part_name的第 j 个字符 可以 匹配 缩写abbr的第 abbr_index个字符
+      if (abbr_index &lt; abbr.length() &amp;&amp; part_name.charAt(j) &#61;&#61; abbr.charAt(abbr_index)) {
+        // 为了保证part_name匹配不回退&#xff0c;此时我们将缩写abbr的第abbr_index&#43;1个字符的匹配权优先交给人名的parts_index &#43; 1部分
+        if (recursive(parts, parts_index &#43; 1, abbr, &#43;&#43;abbr_index)) {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+names &#61; input().split(&#34;,&#34;)
+abbr &#61; input()
+
+
+# 通过递归实现人名各部分和缩写的匹配
+def recursive(parts, parts_index, abbr_index):
+    &#34;&#34;&#34;
+    :param parts: 人名组成
+    :param parts_index: 人名被匹配的组成部分的索引位置
+    :param abbr_index: 缩写被匹配的字符的索引位置
+    :return: 当前人名name是否匹配对应缩写abbr
+    &#34;&#34;&#34;
+    if abbr_index &gt;&#61; len(abbr):
+        # 如果缩写被匹配完&#xff0c;且人名组成也匹配到最后一个&#xff0c;则说明当前人名可以匹配对应缩写
+        return parts_index &gt;&#61; len(parts)
+
+    # 如果缩写尚未匹配完&#xff0c;但是人名组成已经匹配完&#xff0c;则说明当前人名无法匹配对应缩写
+    if parts_index &gt;&#61; len(parts):
+        return False
+
+    part_name &#61; parts[parts_index]
+
+    for j in range(len(part_name)):
+        # 如果当前人名组成部分part_name的第 j 个字符 可以 匹配 缩写abbr的第 abbr_index个字符
+        if abbr_index &lt; len(abbr) and part_name[j] &#61;&#61; abbr[abbr_index]:
+            # 为了保证part_name匹配不回退&#xff0c;此时我们将缩写abbr的第abbr_index&#43;1个字符的匹配权优先交给人名的parts_index &#43; 1部分
+            abbr_index &#43;&#61; 1
+            if recursive(parts, parts_index &#43; 1, abbr_index):
+                return True
+        else:
+            return False
+
+    return False
+
+
+# 算法入口
+def getResult():
+    ans &#61; []
+
+    for name in names:
+        parts &#61; name.split()
+
+        if len(parts) &gt; len(abbr):
+            continue
+
+        if recursive(parts, 0, 0):
+            ans.append(name)
+
+    print(&#34;,&#34;.join(ans))
+
+
+# 算法调用
+getResult()
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

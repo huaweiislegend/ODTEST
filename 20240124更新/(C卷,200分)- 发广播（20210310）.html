@@ -1,0 +1,390 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 发广播（20210310）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某地有N个广播站&#xff0c;站点之间有些有连接&#xff0c;有些没有。有连接的站点在接受到广播后会互相发送。</p> 
+<p>给定一个N*N的二维数组matrix,数组的元素都是字符’0’或者’1’。</p> 
+<p>matrix[i][j] &#61; ‘1’, 代表i和j站点之间有连接&#xff0c;</p> 
+<p>matrix[i][j] &#61; ‘0’, 代表没连接&#xff0c;</p> 
+<p>现在要发一条广播&#xff0c;问初始最少给几个广播站发送&#xff0c;才能保证所有的广播站都收到消息。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>从stdin输入&#xff0c;共一行数据&#xff0c;表示二维数组的各行&#xff0c;用逗号分隔行。保证每行字符串所含的字符数一样的。</p> 
+<p>比如&#xff1a;110,110,001。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>返回初始最少需要发送广播站个数</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">110,110,001</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">站点1和站点2直接有连接&#xff0c;站点3和其他的都没连接&#xff0c;所以开始至少需要给两个站点发送广播。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>100,010,001</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">3台服务器互不连接&#xff0c;所以需要分别广播这3台服务器。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"> <p>11,11</p> </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">2台服务器相互连接&#xff0c;所以只需要广播其中一台服务器</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>题目中说&#xff1a;“有连接的站点在接受到广播后会<span style="color:#fe2c24;">互相</span>发送。”</p> 
+<p>这表明了如果matrix[<strong>i</strong>][<strong>j</strong>] &#61; ‘1’,则必然matrix[<strong>j</strong>][<strong>i</strong>] &#61; ‘1’&#xff0c;即如下图中二维矩阵中元素值&#xff0c;会沿左上右下对角线轴对称</p> 
+<p><img alt="" height="546" src="https://img-blog.csdnimg.cn/6b64f4808f8447a4a7a4a91f374f9750.png" width="224" /></p> 
+<p> 因此&#xff0c;解决本题&#xff0c;我们只需要看对角线的一侧即可。 </p> 
+<p></p> 
+<p>有了上面的前提&#xff0c;下面我们可以通过画图来解决此题</p> 
+<p>比如输入&#xff1a;1101,1100,0011,1011&#xff0c;画图如下</p> 
+<p><img alt="" height="214" src="https://img-blog.csdnimg.cn/5b3f8f6f1e3c4a9b8e05bfff001533b8.png" width="460" /></p> 
+<p>因此可得联通图如下</p> 
+<p> <img alt="" height="358" src="https://img-blog.csdnimg.cn/bf9a173fdc8e41b3a09a6333c4a17ad5.png" width="380" /></p> 
+<p> 由于站点之间的连接是双向的&#xff0c;因此上面例子只要给一个站点发送广播&#xff0c;所有站点就都能收到广播了</p> 
+<p></p> 
+<p>再比如&#xff0c;输入11010,11000,00110,10110,00001</p> 
+<p><img alt="" height="238" src="https://img-blog.csdnimg.cn/bf1190c3676246b5b4f8cd051915fbab.png" width="580" /></p> 
+<p> <img alt="" height="370" src="https://img-blog.csdnimg.cn/b8b0bdb7286a40d2a0d102a681594de6.png" width="456" /></p> 
+<p>此时0&#xff0c;1&#xff0c;2&#xff0c;3站点是互联的&#xff0c;4没有任何连接&#xff0c;因此我们需要给至少两个站点发送广播。 </p> 
+<p></p> 
+<p>那么如何才能构建上面这种连通图呢&#xff1f;</p> 
+<p>最好的方式就是创建 并查集 结构。</p> 
+<p></p> 
+<p>并查集本身其实就是一个数组&#xff0c;数组的<span style="color:#fe2c24;">索引</span>指代<span style="color:#fe2c24;">站点</span>&#xff0c;数组的<span style="color:#fe2c24;">元素值</span>指代当前索引站点的<span style="color:#fe2c24;">祖先站点</span>。</p> 
+<p>比如上面例子中&#xff0c;我们有5个站点&#xff0c;因此我们可以创建一个长度为5的数组arr&#xff0c;初始时&#xff0c;每个站点都可以视为互不相连的&#xff0c;即每个站点的祖先站点都是自己</p> 
+<p><img alt="" height="111" src="https://img-blog.csdnimg.cn/55f546490caf4e7eac0f7d277c6773d7.png" width="346" /></p> 
+<p> 我们开始遍历输入的二维数组对角线一侧的站点连接情况&#xff0c;来更新上面的并查集结构&#xff0c;实现代码如下</p> 
+<pre><code class="language-javascript">// 输入是一个n*n的二维矩阵
+for(let i&#61;0; i&lt;n; i&#43;&#43;) {
+    for(let j&#61;i&#43;1; j&lt;n; j&#43;&#43;) {
+        if(matrix[i][j] &#61;&#61;&#61; &#39;1&#39;) 更新并查集
+    }
+}</code></pre> 
+<p><img alt="" height="238" src="https://img-blog.csdnimg.cn/bf1190c3676246b5b4f8cd051915fbab.png" width="580" /></p> 
+<p>matrix[0][1] &#61; 1&#xff0c;因此我们将站点1的父站点更新为0&#xff0c;即arr[1] &#61; 0</p> 
+<p><img alt="" height="123" src="https://img-blog.csdnimg.cn/113149b2ce504c13804aa2881019b56b.png" width="356" /></p> 
+<p> matrix[0][3] &#61; 1&#xff0c;因此我们将站点3的父站点更新为0&#xff0c;即arr[3] &#61; 0</p> 
+<p><img alt="" height="114" src="https://img-blog.csdnimg.cn/d9b74e24620240fe94d70c4f64f50988.png" width="347" /></p> 
+<p>matrix[2][3] &#61; 1&#xff0c;因此我们将站点3的父站点更新为2&#xff0c;但是由于站点3已经更新过父站点为0了&#xff0c;因此我们此时再次更新&#xff0c;只会覆抹除掉站点3和站点0之间的父子关系&#xff0c;为了避免这种情况&#xff0c;我们可以先找到站点的3的祖宗站点&#xff08;即为站点0&#xff09;&#xff0c;然后将祖先站点0的父站点更新为2</p> 
+<p><img alt="" height="131" src="https://img-blog.csdnimg.cn/626be43cb55f48d894bb8008617c14ad.png" width="361" /></p> 
+<p>有人可能会感觉到疑惑&#xff0c;如果这样更新的话&#xff0c;岂不是影响了站点1&#xff0c;因为站点1的父站点是站点0&#xff0c;现在站点0的父站点更新为了站点2&#xff0c;那么也就意味着站点1的祖先站点变为站点2&#xff1f;</p> 
+<p>我们再回头思考下&#xff0c;我们使用并查集的目的是啥&#xff0c;是构造连通图&#xff0c;而不是构造准确的父子关系&#xff0c;我们将上面并查集结构转为连通图看看</p> 
+<p><img alt="" height="205" src="https://img-blog.csdnimg.cn/5ce064ae585e40928e1b212f13e16371.png" width="437" /><img alt="" height="243" src="https://img-blog.csdnimg.cn/d7959b50b8f844b2839f6bff559a87ff.png" width="293" /></p> 
+<p>发现&#xff0c;就是我们想要的。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const matrix &#61; line.split(&#34;,&#34;).map((str) &#61;&gt; str.split(&#34;&#34;));
+  console.log(getMinCount(matrix));
+});
+
+function getMinCount(matrix) {
+  const n &#61; matrix.length;
+
+  const ufs &#61; new UnionFindSet(n);
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; i &#43; 1; j &lt; n; j&#43;&#43;) {
+      if (matrix[i][j] &#61;&#61;&#61; &#34;1&#34;) {
+        ufs.union(i, j);
+      }
+    }
+  }
+
+  return ufs.count;
+}
+
+class UnionFindSet {
+  constructor(n) {
+    this.fa &#61; new Array(n).fill(true).map((_, idx) &#61;&gt; idx);
+    this.count &#61; n; // 初始时各站点互不相连&#xff0c;互相独立&#xff0c;因此需要给n个站点发送广播
+  }
+
+  // 查x站点对应的顶级祖先站点
+  find(x) {
+    while (x !&#61;&#61; this.fa[x]) {
+      x &#61; this.fa[x];
+    }
+    return x;
+  }
+
+  // 合并两个站点&#xff0c;其实就是合并两个站点对应的顶级祖先节点
+  union(x, y) {
+    let x_fa &#61; this.find(x);
+    let y_fa &#61; this.find(y);
+
+    if (x_fa !&#61;&#61; y_fa) { // 如果两个站点祖先相同&#xff0c;则在一条链上&#xff0c;不需要合并
+      this.fa[y_fa] &#61; x_fa; // 合并站点&#xff0c;即让某条链的祖先指向另一条链的祖先
+      this.count--; // 一旦两个站点合并&#xff0c;则发送广播次数减1
+    }
+  }
+}
+</code></pre> 
+<p>以上算法&#xff0c;还可以继续优化find逻辑&#xff0c;当前find逻辑&#xff0c;找某个站点的祖先&#xff0c;都会从所在链的自身位置开始向上逐级查找&#xff0c;这个过程其实也找到了同一链上它之后的站点的祖先</p> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const matrix &#61; line.split(&#34;,&#34;).map((str) &#61;&gt; str.split(&#34;&#34;));
+  console.log(getMinCount(matrix));
+});
+
+function getMinCount(matrix) {
+  const n &#61; matrix.length;
+
+  const ufs &#61; new UnionFindSet(n);
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; i &#43; 1; j &lt; n; j&#43;&#43;) {
+      if (matrix[i][j] &#61;&#61;&#61; &#34;1&#34;) {
+        ufs.union(i, j);
+      }
+    }
+  }
+
+  // console.log(ufs.fa);
+
+  return ufs.count;
+}
+
+class UnionFindSet {
+  constructor(n) {
+    this.fa &#61; new Array(n).fill(true).map((_, idx) &#61;&gt; idx);
+    this.count &#61; n;
+  }
+
+  find(x) {
+    if (x !&#61;&#61; this.fa[x]) {
+      this.fa[x] &#61; this.find(this.fa[x]);
+      return this.fa[x];
+    }
+    return x;
+  }
+
+  union(x, y) {
+    let x_fa &#61; this.find(x);
+    let y_fa &#61; this.find(y);
+
+    if (x_fa !&#61;&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+      this.count--;
+    }
+  }
+}
+</code></pre> 
+<p>我们可以将while循环改为递归&#xff0c;将每次递归的结果&#xff08;祖先站点&#xff09;更新为递归站点的父站点。</p> 
+<p>还有一道相同意思的题目&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/127605092?spm&#61;1001.2014.3001.5502" title="LeetCode - 547 省份数量_伏城之外的博客-CSDN博客">LeetCode - 547 省份数量_伏城之外的博客-CSDN博客</a></p> 
+<p>有兴趣的小伙伴可以试试</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] matrix &#61; sc.nextLine().split(&#34;,&#34;);
+
+    System.out.println(getResult(matrix));
+  }
+
+  public static int getResult(String[] matrix) {
+    int n &#61; matrix.length;
+
+    UnionFindSet ufs &#61; new UnionFindSet(n);
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; i &#43; 1; j &lt; n; j&#43;&#43;) {
+        if (matrix[i].charAt(j) &#61;&#61; &#39;1&#39;) {
+          ufs.union(i, j);
+        }
+      }
+    }
+
+    return ufs.count;
+  }
+}
+
+// 并查集实现
+class UnionFindSet {
+  int[] fa;
+  int count;
+
+  public UnionFindSet(int n) {
+    this.fa &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) fa[i] &#61; i;
+    this.count &#61; n;
+  }
+
+  public int find(int x) {
+    if (x !&#61; this.fa[x]) {
+      this.fa[x] &#61; this.find(this.fa[x]);
+      return this.fa[x];
+    }
+    return x;
+  }
+
+  public void union(int x, int y) {
+    int x_fa &#61; this.find(x);
+    int y_fa &#61; this.find(y);
+
+    if (x_fa !&#61; y_fa) {
+      this.fa[y_fa] &#61; x_fa;
+      this.count--;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+matrix &#61; input().split(&#34;,&#34;)
+
+
+# 并查集实现
+class UnionFindSet:
+    def __init__(self, n):
+        self.fa &#61; [i for i in range(n)]
+        self.count &#61; n
+
+    def find(self, x):
+        if x !&#61; self.fa[x]:
+            self.fa[x] &#61; self.find(self.fa[x])
+            return self.fa[x]
+        return x
+
+    def union(self, x, y):
+        x_fa &#61; self.find(x)
+        y_fa &#61; self.find(y)
+
+        if x_fa !&#61; y_fa:
+            self.fa[y_fa] &#61; x_fa
+            self.count -&#61; 1
+
+
+# 算法入口
+def getResult(matrix):
+    n &#61; len(matrix)
+
+    ufs &#61; UnionFindSet(n)
+
+    for i in range(n):
+        for j in range(i &#43; 1, n):
+            if matrix[i][j] &#61;&#61; &#34;1&#34;:
+                ufs.union(i, j)
+
+    return ufs.count
+
+
+# 算法调用
+print(getResult(matrix))
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 10000
+
+/** 并查集定义 **/
+typedef struct {
+    int *fa;
+    int count;
+} UFS;
+
+UFS *new_UFS(int n) {
+    UFS *ufs &#61; (UFS *) malloc(sizeof(UFS));
+
+    ufs-&gt;fa &#61; (int *) malloc(sizeof(int) * n);
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        ufs-&gt;fa[i] &#61; i;
+    }
+
+    ufs-&gt;count &#61; n;
+
+    return ufs;
+}
+
+int find_UFS(UFS *ufs, int x) {
+    if (x !&#61; ufs-&gt;fa[x]) {
+        ufs-&gt;fa[x] &#61; find_UFS(ufs, ufs-&gt;fa[x]);
+        return ufs-&gt;fa[x];
+    }
+    return x;
+}
+
+void union_UFS(UFS *ufs, int x, int y) {
+    int x_fa &#61; find_UFS(ufs, x);
+    int y_fa &#61; find_UFS(ufs, y);
+
+    if (x_fa !&#61; y_fa) {
+        ufs-&gt;fa[y_fa] &#61; x_fa;
+        ufs-&gt;count--;
+    }
+}
+
+/** 算法逻辑 **/
+char matrix[MAX_SIZE][MAX_SIZE];
+
+int main() {
+    int n &#61; 0;
+
+    while (scanf(&#34;%[^\\,\n]&#34;, matrix[n&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    UFS *ufs &#61; new_UFS(n);
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; i &#43; 1; j &lt; n; j&#43;&#43;) {
+            if (matrix[i][j] &#61;&#61; &#39;1&#39;) {
+                union_UFS(ufs, i, j);
+            }
+        }
+    }
+
+    printf(&#34;%d\n&#34;, ufs-&gt;count);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

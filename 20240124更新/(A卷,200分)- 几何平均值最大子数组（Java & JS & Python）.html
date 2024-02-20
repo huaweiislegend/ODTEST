@@ -1,0 +1,598 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 几何平均值最大子数组（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>从一个长度为N的正数数组numbers中找出长度至少为L且几何平均值最大子数组&#xff0c;并输出其位置和大小。&#xff08;K个数的几何平均值为K个数的乘积的K次方根&#xff09;</p> 
+<p>若有多个子数组的几何平均值均为最大值&#xff0c;则输出长度最小的子数组。</p> 
+<p>若有多个长度相同的子数组的几何平均值均为最大值&#xff0c;则输出最前面的子数组。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为N、L</p> 
+<ul><li>N表示numbers的大小&#xff08;1 ≤ N ≤ 100000&#xff09;</li><li>L表示子数组的最小长度&#xff08;1 ≤ L ≤ N&#xff09;</li></ul> 
+<p>之后N行表示numbers中的N个数&#xff0c;每个一行&#xff08;10^-9 ≤ numbers[i] ≤ 10^9&#xff09;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出子数组的位置&#xff08;从0开始计数&#xff09;和大小&#xff0c;中间用一个空格隔开。</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>用例保证除几何平均值为最大值的子数组外&#xff0c;其他子数组的几何平均值至少比最大值小10^-10倍</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 2<br /> 2<br /> 2<br /> 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1 2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">长度至少为2的子数组共三个&#xff0c;分别是{2,2}、{2,3}、{2,2,3}&#xff0c;其中{2,3}的几何平均值最大&#xff0c;故输出其位置1和长度2</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">10 2<br /> 0.2<br /> 0.1<br /> 0.2<br /> 0.2<br /> 0.2<br /> 0.1<br /> 0.2<br /> 0.2<br /> 0.2<br /> 0.2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2 2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">有多个长度至少为2的子数组的几何平均值为0.2&#xff0c;其中长度最短的为2&#xff0c;也有多个&#xff0c;长度为2且几何平均值为0.2的子数组最前面的那个为从第二个数开始的两个0.2组成的子数组</td></tr></tbody></table> 
+<h4></h4> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">二分&#43;前缀积解法&#xff08;不适用于本题&#xff0c;可以不看&#xff0c;具体原因看下一个解法&#xff09;</h3> 
+<h4>题目解析</h4> 
+<p>本题其实就是 <a href="https://blog.csdn.net/qfc_128220/article/details/128850088?spm&#61;1001.2014.3001.5501" title="LeetCode - 644 子数组最大平均数 II_伏城之外的博客-CSDN博客">LeetCode - 644 子数组最大平均数 II_伏城之外的博客-CSDN博客</a></p> 
+<p>的变种题。但是本题更难。</p> 
+<p></p> 
+<p>建议大家先把leetcode 644 这题做会了&#xff0c;再来看本题。</p> 
+<p>本题和leetcode 644的区别在于&#xff0c;leetcode 644求解的长度大于等于k的 <span style="color:#fe2c24;">最大算术平均值</span> 的连续子序列&#xff0c;而本题求解的是 长度大于等于k的 <span style="color:#fe2c24;">最大几何平均值</span> 的连续子序列。</p> 
+<p></p> 
+<p>一个数组的nums &#61; [a1, a2, a3, ..., aN]的</p> 
+<ul><li>算术平均值 &#61; (a1 &#43; a2 &#43; a3 &#43; ... &#43; aN) / N</li><li>几何平均值 &#61; N √(a1 * a2 * a3 * .... * aN) </li></ul> 
+<p></p> 
+<p>因此&#xff0c;在求解 长度大于等于k 的子序列时&#xff0c;我们不能在沿用leetcode 644的解法&#xff0c;leetcode 644解法如下</p> 
+<blockquote> 
+ <p>首先&#xff0c;求出 0~i 子序列的和 sum</p> 
+ <p>然后&#xff0c;求出 0~0  到  0~i-k  中所有子序列的最小和 min_pre_sum</p> 
+ <p>最后&#xff0c;sum - min_pre_sum &gt;&#61; 0的话&#xff0c;说明midVal<span style="color:#fe2c24;">可能</span>取小了</p> 
+</blockquote> 
+<p>本题需要换成除法</p> 
+<blockquote> 
+ <p>首先&#xff0c;求出 0~i 子序列的所有元素乘积 fact</p> 
+ <p>然后&#xff0c;求出 0~0 到 0~i-k 中所有子序列的最小乘积 min_pre_fact</p> 
+ <p>最后&#xff0c;fact / min_pre_fact &gt;&#61; 1的话&#xff0c;说明midVal<span style="color:#fe2c24;">可能</span>取小了</p> 
+ <p></p> 
+ <p>原理如下&#xff1a;有一个数组nums &#61; [a1, a2, a3, ..., aN]&#xff0c;假设其几何平均值为avg&#xff0c;则有等式如下&#xff1a;</p> 
+ <p>N √ &#xff08;a1 * a2 * a3 * ... * aN&#xff09; &#61;&#61; avg</p> 
+ <p>再转换一下&#xff0c;如下&#xff1a;</p> 
+ <p>a1 * a2 * a3 * ... * aN &#61;&#61; avg ^ N</p> 
+ <p>再转换一下&#xff0c;如下&#xff1a;</p> 
+ <p>(a1 / avg) * (a2 / avg) * (a3 / avg) * ... * (aN / avg) &#61;&#61; 1</p> 
+ <p>如果avg取大了&#xff0c;则 (a1 / avg) * (a2 / avg) * (a3 / avg) * ... * (aN / avg)  &lt; 1</p> 
+ <p>如果avg取小了&#xff0c;则 (a1 / avg) * (a2 / avg) * (a3 / avg) * ... * (aN / avg)  &gt; 1</p> 
+</blockquote> 
+<p></p> 
+<p>另外&#xff0c;本题需要输出最大几何平均值对应的子数组的起始位置和长度&#xff0c;这个很简单&#xff0c;只需要记录每次被挖去的最小平均值子数组的结尾索引即可&#xff0c;根据结尾索引min_pre_fact_end&#xff0c;即可得出最大平均值数组的起始索引和长度&#xff0c;计算公式如下</p> 
+<p><img alt="" height="125" src="https://img-blog.csdnimg.cn/83614d6edf584f179a66cf21b524b640.png" width="319" /></p> 
+<p></p> 
+<hr /> 
+<p>2023.04.09 根据网友指正&#xff0c;本题之前的解法没有考虑&#xff1a;存在多个最大几何平均值的子数组的情况&#xff0c;比如用例2&#xff0c;就有多个最大几何平均值&#xff0c;下面用JS通过暴力解法&#xff0c;求出所有子数组的几何平均值</p> 
+<p><img alt="" height="739" src="https://img-blog.csdnimg.cn/f85bf2ff43ff4b91af0d274b7ad490cd.png" width="1200" /></p> 
+<p> 如上图所示&#xff0c;最大几何平均值为0.2&#xff0c;而几何平均值到达0.2的子数组有多个&#xff0c;</p> 
+<p>比如 [2, 2, &#39;0.200000000000&#39;] 的含义就是&#xff1a;起点索引2&#xff0c;长度2&#xff0c;的子数组的几何平均值就是0.2</p> 
+<p>因此&#xff0c;基于上面算法&#xff0c;当我们可以保存最后一轮二分求得的avg对应的&#xff1a;所有子数组的起点和长度&#xff08;保存进ans&#xff09;&#xff0c;然后进行排序&#xff1a;先按照长度&#xff08;较短者排前面&#xff09;&#xff0c;再按照起点&#xff08;靠前者排在前面&#xff09;、</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, l;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [n, l] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    const numbers &#61; lines.slice(1).map((line) &#61;&gt; Number(line));
+    console.log(getResult(n, l, numbers));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, l, numbers) {
+  const sorted_numbers &#61; numbers.slice().sort((a, b) &#61;&gt; a - b);
+  let minAvg &#61; sorted_numbers.at(0);
+  let maxAvg &#61; sorted_numbers.at(-1);
+  // const diff &#61; maxAvg / Math.pow(10, 10);
+
+  let ans &#61; [];
+
+  // 其他子数组的几何平均值至少比最大值小10^-10倍
+  while (maxAvg - minAvg &gt;&#61; maxAvg / Math.pow(10, 10)) {
+    // 不保留历史avg对应的ans&#xff0c;只保留最后一个avg&#xff0c;即最大avg的ans
+    ans &#61; [];
+    let midAvg &#61; (minAvg &#43; maxAvg) / 2;
+
+    if (check(n, l, numbers, midAvg, ans)) {
+      minAvg &#61; midAvg;
+    } else {
+      maxAvg &#61; midAvg;
+    }
+  }
+
+  // 若有多个子数组的几何平均值均为最大值&#xff0c;则输出长度最小的子数组。
+  // 若有多个长度相同的子数组的几何平均值均为最大值&#xff0c;则输出最前面的子数组。
+  ans.sort((a, b) &#61;&gt; (a[1] !&#61; b[1] ? a[1] - b[1] : a[0] - b[0]));
+
+  return ans[0].join(&#34; &#34;);
+}
+
+function check(n, l, numbers, avg, ans) {
+  // 该flag为True表示avg取小了&#xff0c;为False表示avg取大了&#xff0c;默认为False
+  let flag &#61; false;
+  let fact &#61; 1;
+
+  for (let i &#61; 0; i &lt; l; i&#43;&#43;) {
+    fact *&#61; numbers[i] / avg;
+  }
+
+  if (fact &gt;&#61; 1) {
+    flag &#61; true;
+    // ans的元素含义&#xff1a;[目标子数组起始位置&#xff0c;目标子数组长度]
+    ans.push([0, l]);
+  }
+
+  let pre_fact &#61; 1;
+  let min_pre_fact &#61; Infinity;
+  let min_pre_fact_end &#61; 0;
+
+  for (let i &#61; l; i &lt; n; i&#43;&#43;) {
+    fact *&#61; numbers[i] / avg; // 对应0~i区间
+    pre_fact *&#61; numbers[i - l] / avg; // 对应0~i-l区间
+
+    if (pre_fact &lt; min_pre_fact) {
+      min_pre_fact &#61; pre_fact; // 对应0~i-l区间内 几何平均值最小的子数列
+      min_pre_fact_end &#61; i - l;
+    }
+
+    if (fact / min_pre_fact &gt;&#61; 1) {
+      flag &#61; true;
+      // ans的元素含义&#xff1a;[目标子数组起始位置&#xff0c;目标子数组长度]
+      ans.push([min_pre_fact_end &#43; 1, i - min_pre_fact_end]);
+    }
+  }
+
+  return flag;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int l &#61; sc.nextInt();
+
+    double[] numbers &#61; new double[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      numbers[i] &#61; sc.nextDouble();
+    }
+
+    System.out.println(getResult(n, l, numbers));
+  }
+
+  public static String getResult(int n, int l, double[] numbers) {
+    double minAvg &#61; Integer.MAX_VALUE;
+    double maxAvg &#61; Integer.MIN_VALUE;
+    for (double num : numbers) {
+      minAvg &#61; Math.min(num, minAvg);
+      maxAvg &#61; Math.max(num, maxAvg);
+    }
+
+    //    double diff &#61; maxAvg / Math.pow(10, 10);
+
+    ArrayList&lt;Integer[]&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    // 其他子数组的几何平均值至少比最大值小10^-10倍
+    while (maxAvg - minAvg &gt;&#61; maxAvg / Math.pow(10, 10)) {
+      // 不保留历史avg对应的ans&#xff0c;只保留最后一个avg&#xff0c;即最大avg的ans
+      ans &#61; new ArrayList&lt;&gt;();
+      double midAvg &#61; (minAvg &#43; maxAvg) / 2;
+
+      if (check(n, l, numbers, midAvg, ans)) {
+        minAvg &#61; midAvg;
+      } else {
+        maxAvg &#61; midAvg;
+      }
+    }
+
+    // 若有多个子数组的几何平均值均为最大值&#xff0c;则输出长度最小的子数组。
+    // 若有多个长度相同的子数组的几何平均值均为最大值&#xff0c;则输出最前面的子数组。
+    ans.sort((a, b) -&gt; !Objects.equals(a[1], b[1]) ? a[1] - b[1] : a[0] - b[0]);
+
+    Integer[] tmp &#61; ans.get(0);
+    return tmp[0] &#43; &#34; &#34; &#43; tmp[1];
+  }
+
+  public static boolean check(
+      int n, int l, double[] numbers, double avg, ArrayList&lt;Integer[]&gt; ans) {
+    // 该flag为True表示avg取小了&#xff0c;为False表示avg取大了&#xff0c;默认为False
+    boolean flag &#61; false;
+    double fact &#61; 1;
+
+    for (int i &#61; 0; i &lt; l; i&#43;&#43;) {
+      fact *&#61; numbers[i] / avg;
+    }
+
+    if (fact &gt;&#61; 1) {
+      flag &#61; true;
+      // ans的元素含义&#xff1a;[目标子数组起始位置&#xff0c;目标子数组长度]
+      ans.add(new Integer[] {0, l});
+    }
+
+    double pre_fact &#61; 1;
+    double min_pre_fact &#61; Integer.MAX_VALUE;
+    int min_pre_fact_end &#61; 0;
+
+    for (int i &#61; l; i &lt; n; i&#43;&#43;) {
+      fact *&#61; numbers[i] / avg; // 对应0~i区间
+      pre_fact *&#61; numbers[i - l] / avg; // 对应0~i-l区间
+
+      if (pre_fact &lt; min_pre_fact) {
+        min_pre_fact &#61; pre_fact; // 对应0~i-l区间内 几何平均值最小的子数列
+        min_pre_fact_end &#61; i - l;
+      }
+
+      if (fact / min_pre_fact &gt;&#61; 1) {
+        flag &#61; true;
+        // ans的元素含义&#xff1a;[目标子数组起始位置&#xff0c;目标子数组长度]
+        ans.add(new Integer[] {min_pre_fact_end &#43; 1, i - min_pre_fact_end});
+      }
+    }
+
+    return flag;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n, l &#61; map(int, input().split())
+numbers &#61; [float(input()) for i in range(n)]
+
+
+# 算法入口
+def getResult(n, l, numbers):
+    minAvg &#61; min(numbers)
+    maxAvg &#61; max(numbers)
+    # diff &#61; maxAvg / 10 ** 10
+
+    ans &#61; []
+
+    # 其他子数组的几何平均值至少比最大值小10^-10倍
+    while maxAvg - minAvg &gt;&#61; maxAvg / 10 ** 10:
+        # 不保留历史avg对应的ans&#xff0c;只保留最后一个avg&#xff0c;即最大avg的ans
+        ans &#61; []
+        midAvg &#61; (minAvg &#43; maxAvg) / 2
+
+        if check(n, l, numbers, midAvg, ans):
+            minAvg &#61; midAvg
+        else:
+            maxAvg &#61; midAvg
+
+    # 若有多个子数组的几何平均值均为最大值&#xff0c;则输出长度最小的子数组。
+    # 若有多个长度相同的子数组的几何平均值均为最大值&#xff0c;则输出最前面的子数组。
+    ans.sort(key&#61;lambda x: (x[1], x[0]))
+    return &#34; &#34;.join(map(str, ans[0]))
+
+
+def check(n, l, numbers, avg, ans):
+    # 该flag为True表示avg取小了&#xff0c;为False表示avg取大了&#xff0c;默认为False
+    flag &#61; False
+    fact &#61; 1
+
+    for i in range(l):
+        fact *&#61; numbers[i] / avg
+
+    if fact &gt;&#61; 1:
+        flag &#61; True
+        # ans的元素含义&#xff1a;[目标子数组起始位置&#xff0c;目标子数组长度]
+        ans.append([0, l])
+
+    pre_fact &#61; 1
+    min_pre_fact &#61; sys.maxsize
+    min_pre_fact_end &#61; 0
+
+    for i in range(l, n):
+        fact *&#61; numbers[i] / avg  # 对应0~i区间
+        pre_fact *&#61; numbers[i - l] / avg  # 对应0~i-l区间
+
+        if pre_fact &lt; min_pre_fact:
+            min_pre_fact &#61; pre_fact  # 对应0~i-l区间内 几何平均值最小的子数列
+            min_pre_fact_end &#61; i - l
+
+        if fact / min_pre_fact &gt;&#61; 1:
+            flag &#61; True
+            # ans的元素含义&#xff1a;[目标子数组起始位置&#xff0c;目标子数组长度]
+            ans.append([min_pre_fact_end &#43; 1, i - min_pre_fact_end])
+
+    return flag
+
+
+# 算法调用
+print(getResult(n, l, numbers))</code></pre> 
+<p></p> 
+<h3>前缀积解法</h3> 
+<h4>题目解析</h4> 
+<p>前面二分&#43;前缀积的解法存在问题&#xff0c;比如下面用例&#xff1a;</p> 
+<blockquote> 
+ <p>7 4<br /> 0.5<br /> 0.5<br /> 2<br /> 2<br /> 2<br /> 0.5<br /> 8</p> 
+</blockquote> 
+<p>这题大家可以用暴力解法&#xff0c;求出所有长度大于等于4的子数组&#xff0c;然后求解每个子数组的几何平均值&#xff0c;如下图是基于JS的暴力求解结果&#xff1a;</p> 
+<p class="img-center"><img alt="" src="https://img-blog.csdnimg.cn/img_convert/e21856ea48b9e246c66b2036ad9981c9.jpeg" /></p> 
+<p>可以发现&#xff1a;</p> 
+<ul><li>起始索引3&#xff0c;长度4的子数组的几何平均值是2</li><li>起始索引2&#xff0c;长度5的子数组的几何平均值也是2</li></ul> 
+<p>但是对于本题而言&#xff1a;</p> 
+<blockquote> 
+ <p>若有多个子数组的几何平均值均为最大值&#xff0c;则输出长度最小的子数组。</p> 
+ <p>若有多个长度相同的子数组的几何平均值均为最大值&#xff0c;则输出最前面的子数组。</p> 
+</blockquote> 
+<p>因此&#xff0c;起始索引3&#xff0c;长度4的子数组是最优解&#xff0c;因为该子数组的长度更短。因此上面用例应该输出3 4。</p> 
+<p></p> 
+<p>但是前面的 “二分&#43;前缀积” 解法输出的是2 5</p> 
+<p class="img-center"><img alt="" src="https://img-blog.csdnimg.cn/img_convert/caada94cf25afd3651aecfe04b9041f2.jpeg" /></p> 
+<p>明明已经考虑了会存在 “多个子数组的几何平均值均为最大值” 的情况&#xff0c;为啥会得出错误答案呢&#xff1f;</p> 
+<p>比如下面min_pre_fact代表的时0~i-L范围内最小的子数组&#xff08;注意&#xff0c;是范围内&#xff0c;不一定就是0~i-L&#xff09;&#xff0c;而fact代表的是0~i子数组&#xff0c;然后用fact / min_pre_fact 其实就能得出一个长度大于L的子数组的几何平均值/avg的情况</p> 
+<p><img alt="" height="439" src="https://img-blog.csdnimg.cn/d9f29f91f6b2463b9eaf1879f3862d9a.png" width="771" /></p> 
+<p>因此&#xff0c;check函数在验证几何平均值时&#xff0c;并非验证了所有子数组&#xff0c;而这是验证了一些特定&#xff0c;最优情况的子数组&#xff0c;因此上面代码中ans统计到的子数组是不全面的。</p> 
+<p></p> 
+<p>我想了一下&#xff0c;本题没有什么好的解法&#xff0c;我们只能暴力枚举所有子数组情况&#xff0c;并求出每个子数组的几何平均值&#xff0c;保留最大的&#xff0c;如果存在多个最大几何平均值子数组&#xff0c;那么就保留长度最短的&#xff0c;如果有多个长度相同的&#xff0c;则保留起始索引最靠前的。</p> 
+<p>当然&#xff0c;在暴力枚举所有子数组情况前&#xff0c;可以先求解出输入数组的前缀积数组&#xff0c;然后基于前缀积数组&#xff0c;就可以求解出任意范围子数组的积了。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int l &#61; sc.nextInt();
+
+    double[] numbers &#61; new double[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      numbers[i] &#61; sc.nextDouble();
+    }
+
+    System.out.println(getResult(n, l, numbers));
+  }
+
+  public static String getResult(int n, int l, double[] numbers) {
+    // dp是“前缀积”数组
+    double[] dp &#61; new double[n];
+
+    dp[0] &#61; numbers[0];
+    for (int i &#61; 1; i &lt; n; i&#43;&#43;) {
+      dp[i] &#61; numbers[i] * dp[i - 1];
+    }
+
+    // 记录题解
+    Avg ans &#61; null;
+
+    // 长度大于L的子数组的起始位置start&#xff0c;和结束位置end&#xff0c;注意这里end是包含的&#xff0c;即左闭右闭
+    for (int start &#61; 0; start &lt;&#61; n - l; start&#43;&#43;) {
+      for (int end &#61; start &#43; l - 1; end &lt; n; end&#43;&#43;) {
+        // 通过前缀积数组&#xff0c;快速计算出start~end范围对应子数组的元素之积
+        double fact &#61; start &#61;&#61; 0 ? dp[end] : dp[end] / dp[start - 1];
+        // k是当前start~end子数组的长度
+        int k &#61; end - start &#43; 1;
+
+        Avg cur &#61; new Avg(start, k, fact);
+
+        // 保留几何平均值最大的&#xff0c;如果几何平均值相同&#xff0c;则保留长度较小的&#xff0c;如果长度相同则保留起始位置最靠前的
+        if (ans &#61;&#61; null || Avg.cmp(ans, cur) &gt; 0) ans &#61; cur;
+      }
+    }
+
+    return ans.start &#43; &#34; &#34; &#43; ans.root;
+  }
+}
+
+class Avg {
+  int start;
+  int root;
+  double fact;
+  double avg;
+
+  public Avg(int start, int root, double fact) {
+    this.start &#61; start;
+    this.root &#61; root;
+    this.fact &#61; fact;
+    // 几何平均值
+    this.avg &#61; Math.pow(fact, 1.0 / root);
+  }
+
+  public static int cmp(Avg a, Avg b) {
+    // 由于题目说几何平均值间最小差距为
+    if (Math.abs(a.avg - b.avg) &gt; Math.max(a.avg, b.avg) / Math.pow(10, 10)) {
+      // 保留几何平均值最大的
+      return b.avg - a.avg &gt; 0 ? 1 : -1;
+    }
+    // 如果几何平均值相同&#xff0c;则保留长度较小的
+    if (a.root !&#61; b.root) return a.root - b.root;
+    // 如果长度相同则保留起始位置最靠前的
+    return a.start - b.start;
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, l;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [n, l] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 1) {
+    const numbers &#61; lines.slice(1).map((line) &#61;&gt; Number(line));
+    console.log(getResult(n, l, numbers));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, l, numbers) {
+  // dp是“前缀积”数组
+  const dp &#61; new Array(n).fill(0);
+
+  dp[0] &#61; numbers[0];
+  for (let i &#61; 1; i &lt; n; i&#43;&#43;) {
+    dp[i] &#61; numbers[i] * dp[i - 1];
+  }
+
+  // 记录题解
+  let ans &#61; null;
+
+  // 长度大于L的子数组的起始位置start&#xff0c;和结束位置end&#xff0c;注意这里end是包含的&#xff0c;即左闭右闭
+  for (let start &#61; 0; start &lt;&#61; n - l; start&#43;&#43;) {
+    for (let end &#61; start &#43; l - 1; end &lt; n; end&#43;&#43;) {
+      // 通过前缀积数组&#xff0c;快速计算出start~end范围对应子数组的元素之积
+      const fact &#61; start &#61;&#61; 0 ? dp[end] : dp[end] / dp[start - 1];
+      // k是当前start~end子数组的长度
+      const k &#61; end - start &#43; 1;
+
+      const cur &#61; new Avg(start, k, fact);
+      // 保留几何平均值最大的&#xff0c;如果几何平均值相同&#xff0c;则保留长度较小的&#xff0c;如果长度相同则保留起始位置最靠前的
+      if (ans &#61;&#61; null || cmp(ans, cur) &gt; 0) ans &#61; cur;
+    }
+  }
+
+  return ans.start &#43; &#34; &#34; &#43; ans.root;
+}
+
+function cmp(a, b) {
+  // 由于题目说几何平均值间最小差距为
+  if (Math.abs(a.avg - b.avg) &gt; Math.max(a.avg, b.avg) / Math.pow(10, 10)) {
+    // 保留几何平均值最大的
+    return b.avg - a.avg &gt; 0 ? 1 : -1;
+  }
+
+  // 如果几何平均值相同&#xff0c;则保留长度较小的
+  if (a.root !&#61; b.root) return a.root - b.root;
+  // 如果长度相同则保留起始位置最靠前的
+  return a.start - b.start;
+}
+
+class Avg {
+  constructor(start, root, fact) {
+    this.start &#61; start;
+    this.root &#61; root;
+    this.fact &#61; fact;
+    // 几何平均值
+    this.avg &#61; Math.pow(fact, 1 / root);
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>Python算法源码</h4> 
+<p> </p> 
+<pre><code class="language-python"># 输入获取
+n, l &#61; map(int, input().split())
+numbers &#61; [float(input()) for i in range(n)]
+
+
+class Avg:
+    def __init__(self, start, root, fact):
+        self.start &#61; start
+        self.root &#61; root
+        self.fact &#61; fact
+        # 几何平均值
+        self.avg &#61; pow(fact, 1.0 / root)
+
+
+def cmp(a, b):
+    # 由于题目说几何平均值间最小差距为
+    if abs(a.avg - b.avg) &gt; max(a.avg, b.avg) / pow(10, 10):
+        # 保留几何平均值最大的
+        return 1 if b.avg - a.avg &gt; 0 else -1
+    # 如果几何平均值相同&#xff0c;则保留长度较小的
+    if a.root !&#61; b.root:
+        return a.root - b.root
+    # 如果长度相同则保留起始位置最靠前的
+    return a.start - b.start
+
+
+# 算法入口
+def getResult(n, l, numbers):
+    # dp是“前缀积”数组
+    dp &#61; [0] * n
+
+    dp[0] &#61; numbers[0]
+    for i in range(1, n):
+        dp[i] &#61; numbers[i] * dp[i - 1]
+
+    # 记录题解
+    ans &#61; None
+
+    # 长度大于L的子数组的起始位置start&#xff0c;和结束位置end&#xff0c;注意这里end是包含的&#xff0c;即左闭右闭
+    for start in range(n - l &#43; 1):
+        for end in range(start &#43; l - 1, n):
+            # 通过前缀积数组&#xff0c;快速计算出start~end范围对应子数组的元素之积
+            fact &#61; dp[end] if start &#61;&#61; 0 else dp[end] / dp[start - 1]
+            # k是当前start~end子数组的长度
+            k &#61; end - start &#43; 1
+
+            cur &#61; Avg(start, k, fact)
+            # 保留几何平均值最大的&#xff0c;如果几何平均值相同&#xff0c;则保留长度较小的&#xff0c;如果长度相同则保留起始位置最靠前的
+            if ans is None or cmp(ans, cur) &gt; 0:
+                ans &#61; cur
+
+    return str(ans.start) &#43; &#34; &#34; &#43; str(ans.root)
+
+
+# 算法调用
+print(getResult(n, l, numbers))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

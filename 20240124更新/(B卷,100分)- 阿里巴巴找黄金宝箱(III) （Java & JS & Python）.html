@@ -1,0 +1,340 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 阿里巴巴找黄金宝箱(III) （Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>一贫如洗的樵夫阿里巴巴在去砍柴的路上&#xff0c;无意中发现了强盗集团的藏宝地&#xff0c;藏宝地有编号从0-N的箱子&#xff0c;每个箱子上面贴有一个数字。</p> 
+<p>阿里巴巴念出一个咒语数字&#xff0c;查看宝箱是否存在两个不同箱子&#xff0c;这两个箱子上贴的数字相同&#xff0c;同时这两个箱了的编号之差的绝对值小于等于咒语数字&#xff0c;<br /> 如果存在这样的一对宝箱&#xff0c;请返回最先找到的那对宝箱左边箱子的编号&#xff0c;如果不存在则返回-1.</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入一个数字字串&#xff0c;数字之间使用逗号分隔&#xff0c;例如: 1,2,3,1</p> 
+<ul><li>1 ≤ 字串中数字个数 ≤ 100000</li><li>-100000 ≤ 每个数字值 ≤ 100000</li></ul> 
+<p>第二行输入咒语数字&#xff0c;例如: 3</p> 
+<ul><li>1 ≤ 咒语数字 ≤ 100000</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>存在这样的一对宝箱&#xff0c;请返回最先找到的那对宝箱左边箱子的编号&#xff0c;如果不存在则返回-1</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6,3,1,6<br /> 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5,6,7,5,6,7<br /> 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题的用例似乎有问题。</p> 
+<p></p> 
+<p>用例1</p> 
+<p><img alt="" height="141" src="https://img-blog.csdnimg.cn/d8eac5e65fdb4826bbf44391b165be6e.png" width="425" /></p> 
+<p>编号0&#xff0c;和编号3的箱子数字相同&#xff0c;编号差的绝对值 &#61; 3。符合&lt;&#61;咒语3 的要求&#xff0c;因此返回这对箱子左边的箱子编号0。</p> 
+<p>但是用例1输出的是1&#xff0c;难道箱子编号要从1开始&#xff1f;但是题目描述开头就说了</p> 
+<blockquote> 
+ <p>藏宝地有编号从0-N的箱子</p> 
+</blockquote> 
+<p></p> 
+<p>用例2</p> 
+<p><img alt="" height="135" src="https://img-blog.csdnimg.cn/98f5dd569f704377b0db7b307d5c8b48.png" width="414" /></p> 
+<p>编号0和编号3的箱子数字相同&#xff0c;编号差的绝对值 &#61; 3</p> 
+<p>编号1和编号4的箱子数字相同&#xff0c;编号差的绝对值 &#61; 3</p> 
+<p>编号2和编号5的箱子数字相同&#xff0c;编号差的绝对值 &#61; 3</p> 
+<p>以上三对箱子没有编号差的绝对值 &lt;&#61; 咒语2的&#xff0c;因此本用例应该返回-1</p> 
+<p>但是用例2输出的是0</p> 
+<p>&#xff1f;&#xff1f;&#xff1f;&#xff1f;</p> 
+<p></p> 
+<p>因此&#xff0c;下面解法是不符合用例要求的。实际考试时&#xff0c;需要灵活应对。</p> 
+<p></p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先定义一个字典lastIdx&#xff0c;用于统计对应数字的上一次出现的箱子编号</p> 
+<p>再定义一个set集合find&#xff0c;用于统计对应数字是否已经找到了符合咒语要求的箱子对</p> 
+<p>接下来遍历箱子&#xff1a;</p> 
+<ul><li>如果find有箱子数字&#xff0c;那么说明该数字已经找到符合要求的箱子对&#xff0c;无需找后续的&#xff0c;因为题目只需要找每个数字的第一对符合咒语的</li><li>如果find没有箱子数字&#xff1a;</li></ul> 
+<ol><li>如果lastIdx没有该箱子数字&#xff0c;则将当前箱子的编号value&#xff0c;和箱子数字key&#xff0c;录入lastIdx</li><li>如果lastIdx有该箱子数字num&#xff0c;则计算当前箱子编号idx&#xff0c;和相同数字的上一次出现的箱子编号lastIdx[num]的差值绝对值&#xff0c;看是否符合咒语要求&#xff0c;若符合&#xff0c;则记录此时lastIdx[num]&#xff08;左边箱子编号&#xff09;到ans中&#xff0c;并将num录入find&#xff0c;若不符合&#xff0c;则只更新lastIdx[num] &#61; idx</li></ol> 
+<p>最后&#xff0c;从ans记录的所有左边箱子编号中&#xff0c;找出最左边的即可。</p> 
+<hr /> 
+<p>2023.07.20</p> 
+<p>本题存在歧义&#xff0c;题目最后要求返回</p> 
+<blockquote> 
+ <p>如果存在这样的一对宝箱&#xff0c;请返回<span style="color:#fe2c24;">最先找到的那对宝箱</span>左边箱子的编号&#xff0c;如果不存在则返回-1.</p> 
+</blockquote> 
+<p>其中&#xff0c;“最先找到的那对宝箱”&#xff0c;歧义在于“那对”&#xff0c;即一对宝箱有两个</p> 
+<ul><li>先找到这对宝箱的左边的宝箱为“最先”&#xff1f;</li><li>先找到这对宝箱的右边的宝箱为“最先”&#xff1f;</li></ul> 
+<p>比如用例</p> 
+<blockquote> 
+ <p>1,2,2,1</p> 
+ <p>10</p> 
+</blockquote> 
+<p>如果以先找到<span style="color:#fe2c24;">这对宝箱的左边的宝箱</span>为“最先”&#xff0c;则这对宝箱贴的数字应该是1</p> 
+<p>如果以先找到<span style="color:#fe2c24;">这对宝箱的右边的宝箱</span>为“最先”&#xff0c;则这对宝箱贴的数字应该是2</p> 
+<p></p> 
+<p>前面的解析是按照&#xff1a;先找到<span style="color:#fe2c24;">这对宝箱的左边的宝箱</span>为“最先”&#xff0c;的逻辑来实现的。</p> 
+<p>鉴于争议比较大&#xff0c;这里我再提供一种&#xff1a;先找到<span style="color:#fe2c24;">这对宝箱的右边的宝箱</span>为“最先”&#xff0c;的解法&#xff0c;大家考试时可以都尝试一下。</p> 
+<p></p> 
+<h3>先找到<span style="color:#fe2c24;">这对宝箱的左边的宝箱</span>为“最先”</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    const boxes &#61; lines[0].split(&#34;,&#34;).map(Number);
+    const len &#61; parseInt(lines[1]);
+
+    console.log(getResult(boxes, len));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(boxes, len) {
+  // 统计该数字上一个箱子的编号
+  const lastIdx &#61; {};
+  // 对应数字的箱子已经找到了&#xff0c;符合咒语要求的箱子对
+  const find &#61; new Set();
+
+  let ans &#61; -1;
+
+  for (let i &#61; 0; i &lt; boxes.length; i&#43;&#43;) {
+    // 箱子上贴的数字
+    const num &#61; boxes[i];
+
+    // 该数字是否已经找到符合咒语要求的箱子对&#xff0c;如果找到了&#xff0c;则不需要再看后面的&#xff0c;只找第一对即可
+    if (find.has(num)) continue;
+
+    // 检查箱子对是否符合咒语要求
+    if (lastIdx[num] !&#61;&#61; undefined &amp;&amp; i - lastIdx[num] &lt;&#61; len) {
+      find.add(num);
+      ans &#61; ans &#61;&#61; -1 ? lastIdx[num] : Math.min(ans, lastIdx[num]);
+    } else {
+      lastIdx[num] &#61; i;
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] boxes &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int len &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(boxes, len));
+  }
+
+  public static int getResult(int[] boxes, int len) {
+    // 统计该数字上一个箱子的编号
+    HashMap&lt;Integer, Integer&gt; lastIdx &#61; new HashMap&lt;&gt;();
+    // 对应数字的箱子已经找到了&#xff0c;符合咒语要求的箱子对
+    HashSet&lt;Integer&gt; find &#61; new HashSet&lt;&gt;();
+
+    int ans &#61; -1;
+
+    for (int i &#61; 0; i &lt; boxes.length; i&#43;&#43;) {
+      // 箱子上贴的数字
+      int num &#61; boxes[i];
+
+      // 该数字是否已经找到符合咒语要求的箱子对&#xff0c;如果找到了&#xff0c;则不需要再看后面的&#xff0c;只找第一对即可
+      if (find.contains(num)) continue;
+
+      // 检查箱子对是否符合咒语要求
+      if (lastIdx.containsKey(num) &amp;&amp; i - lastIdx.get(num) &lt;&#61; len) {
+        find.add(num);
+        ans &#61; ans &#61;&#61; -1 ? lastIdx.get(num) : Math.min(ans, lastIdx.get(num));
+      } else {
+        lastIdx.put(num, i);
+      }
+    }
+
+    return ans;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+boxes &#61; list(map(int, input().split(&#34;,&#34;)))
+length &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    # 统计该数字上一个箱子的编号
+    lastIdx &#61; {}
+    # 对应数字的箱子已经找到了&#xff0c;符合咒语要求的箱子对
+    find &#61; set()
+
+    ans &#61; -1
+
+    for i in range(len(boxes)):
+        # 箱子上贴的数字
+        num &#61; boxes[i]
+
+        # 该数字是否已经找到符合咒语要求的箱子对&#xff0c;如果找到了&#xff0c;则不需要再看后面的&#xff0c;只找第一对即可
+        if num in find:
+            continue
+
+        # 检查箱子对是否符合咒语要求
+        if lastIdx.get(num) is not None and i - lastIdx[num] &lt;&#61; length:
+            find.add(num)
+            ans &#61; lastIdx[num] if ans &#61;&#61; -1 else min(ans, lastIdx[num])
+        else:
+            lastIdx[num] &#61; i
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h3>先找到<span style="color:#fe2c24;">这对宝箱的右边的宝箱</span>为“最先”</h3> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    const boxes &#61; lines[0].split(&#34;,&#34;).map(Number);
+    const len &#61; parseInt(lines[1]);
+
+    console.log(getResult(boxes, len));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(boxes, len) {
+  // 统计该数字上一个箱子的编号
+  const lastIdx &#61; {};
+
+  for (let i &#61; 0; i &lt; boxes.length; i&#43;&#43;) {
+    // 箱子上贴的数字
+    const num &#61; boxes[i];
+
+    // 检查箱子对是否符合咒语要求
+    if (lastIdx[num] !&#61;&#61; undefined &amp;&amp; i - lastIdx[num] &lt;&#61; len) {
+      return lastIdx[num];
+    } else {
+      lastIdx[num] &#61; i;
+    }
+  }
+
+  return -1;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] boxes &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int len &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(boxes, len));
+  }
+
+  public static int getResult(int[] boxes, int len) {
+    // 统计该数字上一个箱子的编号
+    HashMap&lt;Integer, Integer&gt; lastIdx &#61; new HashMap&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; boxes.length; i&#43;&#43;) {
+      // 箱子上贴的数字
+      int num &#61; boxes[i];
+
+      // 检查箱子对是否符合咒语要求
+      if (lastIdx.containsKey(num) &amp;&amp; i - lastIdx.get(num) &lt;&#61; len) {
+        return lastIdx.get(num);
+      } else {
+        lastIdx.put(num, i);
+      }
+    }
+
+    return -1;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+boxes &#61; list(map(int, input().split(&#34;,&#34;)))
+length &#61; int(input())
+
+
+# 算法入口
+def getResult():
+    # 统计该数字上一个箱子的编号
+    lastIdx &#61; {}
+
+    for i in range(len(boxes)):
+        # 箱子上贴的数字
+        num &#61; boxes[i]
+
+        # 检查箱子对是否符合咒语要求
+        if lastIdx.get(num) is not None and i - lastIdx[num] &lt;&#61; length:
+            return lastIdx[num]
+        else:
+            lastIdx[num] &#61; i
+
+    return -1
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

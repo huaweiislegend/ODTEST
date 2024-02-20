@@ -1,0 +1,218 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 数字字符串组合倒序（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p></p> 
+<p>对数字&#xff0c;字符&#xff0c;数字串&#xff0c;字符串&#xff0c;以及数字与字符串组合进行倒序排列。</p> 
+<ol><li>字符范围&#xff1a;由 a 到 z&#xff0c; A 到 Z&#xff0c;</li><li>数字范围&#xff1a;由 0 到 9</li></ol> 
+<p>符号的定义&#xff1a;</p> 
+<ul><li>“-”作为连接符使用时作为字符串的一部分&#xff0c;例如“20-years”作为一个整体字符串呈现&#xff1b;</li><li>连续出现 2 个 “-” 及以上时视为字符串间隔符&#xff0c;如“out--standing”中的”–“视为间隔符&#xff0c;是 2 个独立整体字符串”out”和”standing”&#xff1b;</li><li>除了 1&#xff0c;2 里面定义的字符以外其他的所有字符&#xff0c;都是非法字符&#xff0c;作为字符串的间隔符处理&#xff0c;倒序后间隔符作为空格处理&#xff1b;</li><li>要求倒排后的单词间隔符以一个空格表示&#xff1b;如果有多个间隔符时&#xff0c;倒排转换后也只允许出现一个字格间隔符&#xff1b;</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>无</p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">I am an 20-years out--standing &#64; * -stu- dent</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">dent stu standing out 20-years an am I</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题考察字符串处理。</p> 
+<p></p> 
+<p>题目描述中说</p> 
+<blockquote> 
+ <p>除了 1&#xff0c;2 里面定义的字符以外其他的所有字符&#xff0c;都是非法字符&#xff0c;作为字符串的间隔符处理&#xff0c;倒序后间隔符作为空格处理&#xff1b;</p> 
+</blockquote> 
+<p>即非数字、字母、&#39;-&#39; 的字符都是作为单词分隔符&#xff0c;因此我们可以按此逻辑对输入的字符串进行分割&#xff0c;得到一个单词数组words。</p> 
+<p>接下来&#xff0c;倒序遍历words中每一个单词word&#xff0c;对word处理如下&#xff1a;</p> 
+<ol><li>如果word首尾含有&#39;-&#39;&#xff0c;则需要去除首尾&#39;-&#39;</li><li>如果word中间含有&#34;--&#34;&#xff0c;则需要将word按照&#34;--&#34;分割为多个subWords单词数组</li><li>倒序遍历subWords单词数组&#xff0c;将不为空串的元素拼接到题解ans中</li></ol> 
+<hr /> 
+<p>2023.07.20</p> 
+<p>经考友提醒&#xff0c;本题描述中&#xff1a;</p> 
+<blockquote> 
+ <p>连续出现 2 个 “-” 及以上时视为字符串间隔符</p> 
+</blockquote> 
+<p>这里之前把“及以上”看漏了&#xff0c;因此上面对于word的处理中&#xff0c;第2步不能按照&#34;--&#34;分割&#xff0c;而是应该按照正则&#34;-{2,}&#34;分割</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  // 非字母、数字、-的字符都当成单词之间的分隔符
+  const words &#61; s.split(/[^0-9a-zA-Z\-]/);
+
+  // 记录题解
+  const ans &#61; [];
+
+  // 倒序遍历单词
+  for (let i &#61; words.length - 1; i &gt;&#61; 0; i--) {
+    let word &#61; words[i];
+
+    if (word &#61;&#61; &#34;&#34;) continue;
+
+    // 单词左边界不能是 -
+    let l &#61; 0;
+    while (l &lt; word.length &amp;&amp; word[l] &#61;&#61; &#34;-&#34;) l&#43;&#43;;
+
+    // 单词右边界不能是 -
+    let r &#61; word.length - 1;
+    while (r &gt;&#61; 0 &amp;&amp; word[r] &#61;&#61; &#34;-&#34;) r--;
+
+    // 如果单词就是“-”, 则经过上面边界处理后&#xff0c;会导致 l &gt; r
+    if (l &gt; r) continue;
+
+    // 处理完单词左、右边界后的新单词
+    word &#61; word.slice(l, r &#43; 1);
+
+    // 单词中间的&#34;--&#34;视为分隔符
+    const subWords &#61; word.split(/-{2,}/);
+
+    // 按照&#34;--&#34;分割后&#xff0c;倒序记录入ans
+    for (let j &#61; subWords.length - 1; j &gt;&#61; 0; j--) {
+      if (subWords[j] !&#61; &#34;&#34;) ans.push(subWords[j]);
+    }
+  }
+
+  return ans.join(&#34; &#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  public static String getResult(String s) {
+    // 非字母、数字、-的字符都当成单词之间的分隔符
+    String[] words &#61; s.split(&#34;[^0-9a-zA-Z\\-]&#34;);
+
+    // 记录题解
+    ArrayList&lt;String&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    // 倒序遍历单词
+    for (int i &#61; words.length - 1; i &gt;&#61; 0; i--) {
+      String word &#61; words[i];
+
+      if (&#34;&#34;.equals(word)) continue;
+
+      // 单词左边界不能是 -
+      int l &#61; 0;
+      while (l &lt; word.length() &amp;&amp; word.charAt(l) &#61;&#61; &#39;-&#39;) {
+        l&#43;&#43;;
+      }
+
+      // 单词右边界不能是 -
+      int r &#61; word.length() - 1;
+      while (r &gt;&#61; 0 &amp;&amp; word.charAt(r) &#61;&#61; &#39;-&#39;) {
+        r--;
+      }
+
+      // 如果单词就是“-”, 则经过上面边界处理后&#xff0c;会导致 l &gt; r
+      if (l &gt; r) continue;
+
+      // 处理完单词左、右边界后的新单词
+      word &#61; word.substring(l, r &#43; 1);
+
+      // 单词中间的&#34;--&#34;视为分隔符
+      String[] subWords &#61; word.split(&#34;-{2,}&#34;);
+
+      // 按照&#34;--&#34;分割后&#xff0c;倒序记录入ans
+      for (int j &#61; subWords.length - 1; j &gt;&#61; 0; j--) {
+        if (!&#34;&#34;.equals(subWords[j])) ans.add(subWords[j]);
+      }
+    }
+
+    return String.join(&#34; &#34;, ans);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import re
+
+s &#61; input()
+
+
+# 算法入口
+def getResult():
+    # 非字母、数字、-的字符都当成单词之间的分隔符
+    words &#61; re.split(r&#34;[^0-9a-zA-Z\-]&#34;, s)
+
+    # 记录题解
+    ans &#61; []
+
+    # 倒序遍历单词
+    for i in range(len(words) - 1, -1, -1):
+        word &#61; words[i]
+
+        if word &#61;&#61; &#34;&#34;:
+            continue
+
+        # 单词左、右边界不能是 -
+        word &#61; word.strip(&#39;-&#39;)
+
+        # 单词中间的&#34;--&#34;视为分隔符
+        subWords &#61; re.split(r&#34;-{2,}&#34;, word)
+
+        # 按照&#34;--&#34;分割后&#xff0c;倒序记录入ans
+        for j in range(len(subWords) - 1, -1, -1):
+            if subWords[j] !&#61; &#34;&#34;:
+                ans.append(subWords[j])
+
+    return &#34; &#34;.join(ans)
+
+
+# 算法调用
+print(getResult())</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

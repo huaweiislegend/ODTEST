@@ -1,0 +1,711 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 分披萨（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>&#34;吃货&#34;和&#34;馋嘴&#34;两人到披萨店点了一份铁盘&#xff08;圆形&#xff09;披萨&#xff0c;并嘱咐店员将披萨按放射状切成大小相同的偶数个小块。但是粗心的服务员将披萨切成了每块大小都完全不同奇数块&#xff0c;且肉眼能分辨出大小。</p> 
+<p>由于两人都想吃到最多的披萨&#xff0c;他们商量了一个他们认为公平的分法&#xff1a;从&#34;吃货&#34;开始&#xff0c;轮流取披萨。除了第一块披萨可以任意选取外&#xff0c;其他都必须从缺口开始选。</p> 
+<p>他俩选披萨的思路不同。&#34;馋嘴&#34;每次都会选最大块的披萨&#xff0c;而且&#34;吃货&#34;知道&#34;馋嘴&#34;的想法。</p> 
+<p>已知披萨小块的数量以及每块的大小&#xff0c;求&#34;吃货&#34;能分得的最大的披萨大小的总和。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第 1 行为一个正整数奇数 N&#xff0c;表示披萨小块数量。</p> 
+<ul><li>3 ≤ N &lt; 500</li></ul> 
+<p>接下来的第 2 行到第 N &#43; 1 行&#xff08;共 N 行&#xff09;&#xff0c;每行为一个正整数&#xff0c;表示第 i 块披萨的大小</p> 
+<ul><li>1 ≤ i ≤ N</li></ul> 
+<p>披萨小块从某一块开始&#xff0c;按照一个方向次序顺序编号为 1 ~ N</p> 
+<ul><li>每块披萨的大小范围为 [1, 2147483647]</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>&#34;吃货&#34;能分得到的最大的披萨大小的总和。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5<br /> 8<br /> 2<br /> 10<br /> 5<br /> 7</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">19</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>此例子中&#xff0c;有 5 块披萨。每块大小依次为 8、2、10、5、7。</p> <p>按照如下顺序拿披萨&#xff0c;可以使&#34;吃货&#34;拿到最多披萨&#xff1a;</p> <p>&#34;吃货&#34; 拿大小为 10 的披萨</p> <p>&#34;馋嘴&#34; 拿大小为 5 的披萨</p> <p>&#34;吃货&#34; 拿大小为 7 的披萨</p> <p>&#34;馋嘴&#34; 拿大小为 8 的披萨</p> <p>&#34;吃货&#34; 拿大小为 2 的披萨</p> <p>至此&#xff0c;披萨瓜分完毕&#xff0c;&#34;吃货&#34;拿到的披萨总大小为 10 &#43; 7 &#43; 2 &#61; 19</p> <p>可能存在多种拿法&#xff0c;以上只是其中一种。</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>题目用例意思如下&#xff1a;</p> 
+<p>初始月饼如下&#xff1a;</p> 
+<p><img alt="" height="326" src="https://img-blog.csdnimg.cn/direct/fa8ee4333547472b9cd7beac275eea96.png" width="545" /></p> 
+<p>题目说</p> 
+<blockquote> 
+ <p>从&#34;吃货&#34;开始&#xff0c;轮流取披萨。</p> 
+ <p>除了第一块披萨可以任意选取外&#xff0c;其他都必须从缺口开始选。</p> 
+</blockquote> 
+<p>因此第一轮从&#34;吃货&#34;开始选&#xff0c;按照题目用例说明&#xff0c;先选走了10</p> 
+<p><img alt="" height="323" src="https://img-blog.csdnimg.cn/direct/67f6fcc97e364be486e064fe9b42aae7.png" width="542" /></p> 
+<p></p> 
+<p>下一轮轮到&#34;馋嘴&#34;选&#xff0c;且必须从缺口的两端&#xff08;5&#xff0c;2&#xff09;中选&#xff0c;题目说&#xff1a;</p> 
+<blockquote> 
+ <p>&#34;馋嘴&#34;每次都会选最大块的披萨</p> 
+</blockquote> 
+<p>因此&#34;馋嘴&#34;固定选择缺口的两端中较大的&#xff0c;即必然选走5</p> 
+<p><img alt="" height="323" src="https://img-blog.csdnimg.cn/direct/8a793cd71df24b2da693f793aed26a2f.png" width="541" /></p> 
+<p></p> 
+<p>下一轮轮到吃货选择&#xff0c;而吃货也必须从缺口两端&#xff08;7&#xff0c;2&#xff09;中选&#xff1a;</p> 
+<ul><li>如果选走2的话&#xff0c;那么下一轮&#xff0c;馋嘴肯定选走8</li><li>如果选走7的话&#xff0c;那么下一轮&#xff0c;馋嘴肯定选走8</li></ul> 
+<p>因此无论吃货无论选哪个&#xff0c;馋嘴下一轮肯定选走8&#xff0c;因此吃货此轮选走7更优</p> 
+<p><img alt="" height="322" src="https://img-blog.csdnimg.cn/direct/9b4c5d6f2f424084bc0003ea64ad6266.png" width="544" /></p> 
+<p>下一轮轮到馋嘴选&#xff0c;肯定选走8</p> 
+<p><img alt="" height="324" src="https://img-blog.csdnimg.cn/direct/6a7ed29d9ad543b09e5c51e3b16355a3.png" width="533" /></p> 
+<p>最后一轮吃货再选走2。</p> 
+<hr /> 
+<p></p> 
+<p>本题我的解题思路是利用递归来求解。</p> 
+<p>第一轮&#xff0c;&#34;吃货&#34;可以拿任意一块披萨。而&#34;吃货&#34;拿完后&#xff0c;披萨铁盘就会产生缺口&#xff0c;而&#34;馋嘴&#34;取走披萨是明确的&#xff0c;就是缺口左右两边中较大者。</p> 
+<hr /> 
+<p>第二轮&#xff0c;&#34;吃货&#34;需要从披萨铁盘的缺口处选择&#xff0c;有两种&#xff1a;</p> 
+<ol><li>选择缺口左边的披萨</li><li>选择缺口右边的披萨</li></ol> 
+<p>此时我们可以进行递归开两个分支&#xff0c;分别去尝试此轮取左边&#xff0c;和此轮取右边&#xff0c;最终选取两种方式中可以给&#34;吃货&#34;带来最大披萨大小的那个值。</p> 
+<p>而一旦&#34;吃货&#34;选完&#xff0c;&#34;馋嘴&#34;选取的披萨是明确的&#xff0c;即缺口左右两边中较大值。</p> 
+<hr /> 
+<p>第三轮&#xff0c;&#34;吃货&#34;的选取披萨策略&#xff0c;继续按照第二轮的方式进行递归处理</p> 
+<hr /> 
+<p>.....</p> 
+<hr /> 
+<p>第X轮&#xff0c;只剩一块披萨时&#xff0c;由于披萨一开始就分成了奇数块&#xff0c;而&#34;吃货&#34;又有先选优势&#xff0c;因此最后一块也是&#34;吃货&#34;的&#xff0c;此时结束递归。</p> 
+<p></p> 
+<p>本题的披萨数量 3 ≤ N &lt; 500&#xff0c;这个数量级依赖纯递归&#xff0c;会超时。</p> 
+<p>因此我们可以加入缓存优化&#xff0c;即将某个缺口状态下&#xff0c;&#34;吃货&#34;能获得的最大披萨大小记录下来&#xff0c;比如&#xff1a;</p> 
+<p><img alt="" height="323" src="https://img-blog.csdnimg.cn/direct/8a793cd71df24b2da693f793aed26a2f.png" width="541" /></p> 
+<p>上图所示中&#xff0c;披萨的缺口状态是 [左边7&#xff0c; 右边2]&#xff0c;且当前状态处于&#34;吃货&#34;选择的轮次&#xff0c;我们按照前面思路可以知道这种缺口状态下&#xff0c;&#34;吃货&#34;能得到的最大披萨为 7 &#43; 2</p> 
+<p>因此&#xff1a;</p> 
+<blockquote> 
+ <p>假设左边缺口位置是 L&#xff0c;右边缺口位置是 R</p> 
+ <p>那么可以记录下&#xff1a;cache[L][R] &#61; 7 &#43; 2</p> 
+</blockquote> 
+<p>如果后面再次遇到上面缺口状态&#xff0c;则无需重新递归计算&#xff0c;只需要取出cache[L][R]即可。</p> 
+<p></p> 
+<p>递归的缓存优化策略很常见&#xff0c;比如斐波那契数列的求解。大家可以找找相关资料熟悉下。</p> 
+<blockquote> 
+ <p>另外Python有针对函数结果的自动缓存标签&#64;cache&#xff0c;可以避免手动实现缓存表&#xff0c;实现上更佳简单</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<h5 style="background-color:transparent;">纯递归&#xff08;会超时&#xff0c;但是是下一种解法的基础&#xff0c;需要先看懂这里&#xff09;</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 披萨数量&#xff08;奇数个&#xff09;
+  const n &#61; parseInt(await readline());
+
+  // n个披萨的大小&#xff08;各不相同&#xff09;
+  const pizza &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    pizza.push(parseInt(await readline()));
+  }
+
+  function check(idx) {
+    if (idx &lt; 0) {
+      idx &#61; n - 1;
+    } else if (idx &gt;&#61; n) {
+      idx &#61; 0;
+    }
+
+    return idx;
+  }
+
+  function recursive(l, r) {
+    // 进入递归前&#xff0c;&#34;吃货&#34;已经拿了披萨&#xff0c;因此进入递归后&#xff0c;轮到&#34;馋嘴&#34;拿
+    // 而&#34;馋嘴&#34;拿披萨的策略固定是&#xff1a;缺口左右两边中较大的那块
+    if (pizza[l] &gt; pizza[r]) {
+      // 拿走第 l 块&#xff0c;因此缺口左边的位置变为 l - 1
+      l &#61; check(l - 1);
+    } else {
+      // 拿走第 r 块&#xff0c;因此缺口右边的位置变为 r &#43; 1
+      r &#61; check(r &#43; 1);
+    }
+
+    if (l &#61;&#61; r) {
+      // 当 l &#61;&#61; r 是&#xff0c;说明只剩一块披萨了&#xff0c;由于奇数个披萨&#xff0c;且&#34;吃货&#34;第一个拿&#xff0c;因此最后一个也是&#34;吃货&#34;拿
+      return pizza[l];
+    } else {
+      // 如果还剩多块披萨&#xff0c;那么&#34;吃货&#34;有两种选择&#xff1a;
+      // 1、拿缺口左边的披萨
+      // 2、拿缺口右边的披萨
+      // 因此这里直接开两个递归分支&#xff0c;最终结果取较大值
+      return Math.max(
+        recursive(check(l - 1), r) &#43; pizza[l],
+        recursive(l, check(r &#43; 1)) &#43; pizza[r]
+      );
+    }
+  }
+
+  // ans记录&#34;吃货&#34;能获得的最大披萨大小
+  let ans &#61; 0;
+  // i 指向首轮被&#34;吃货&#34;选取的披萨位置&#xff0c;可以理解为缺口位置&#xff0c;相当于给环切了一个口
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // i - 1 是缺口的左边披萨&#xff0c;check函数作用是防止 i - 1 越界, 进行绕环运动
+    // i &#43; 1 是缺口的右边披萨&#xff0c;check函数作用是防止 i &#43; 1 越界&#xff0c;进行绕环运动
+    // recursive的作用求解是&#34;吃货&#34;从缺失了 第 i 块的披萨铁盘 开始选&#xff0c;最终可得的最大披萨大小&#xff0c;
+    // 而第 i 块是首轮就被&#34;吃货&#34;拿走的&#xff0c;因此是recursive &#43; pizza[i]
+    ans &#61; Math.max(ans, recursive(check(i - 1), check(i &#43; 1)) &#43; pizza[i]);
+  }
+
+  console.log(ans);
+})();
+</code></pre> 
+<p></p> 
+<h5 style="background-color:transparent;">递归 &#43; 缓存&#xff08;不超时&#xff09;</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+
+  const pizza &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    pizza.push(parseInt(await readline()));
+  }
+
+  // 缓存
+  const cache &#61; new Array(n).fill(0).map(() &#61;&gt; new Array(n).fill(0));
+
+  function check(idx) {
+    if (idx &lt; 0) {
+      idx &#61; n - 1;
+    } else if (idx &gt;&#61; n) {
+      idx &#61; 0;
+    }
+
+    return idx;
+  }
+
+  function recursive(l, r) {
+    if (pizza[l] &gt; pizza[r]) {
+      l &#61; check(l - 1);
+    } else {
+      r &#61; check(r &#43; 1);
+    }
+
+    // 缓存优化&#xff0c;如果对应缺口状态的披萨铁盘结果已经算过了&#xff0c;则无需再次重复递归
+    if (cache[l][r] &gt; 0) {
+      return cache[l][r];
+    }
+
+    if (l &#61;&#61; r) {
+      // 缓存对应缺口状态下&#xff0c;吃货可得的最大披萨大小
+      cache[l][r] &#61; pizza[l];
+    } else {
+      // 缓存对应缺口状态下&#xff0c;吃货可得的最大披萨大小
+      cache[l][r] &#61; Math.max(
+        recursive(check(l - 1), r) &#43; pizza[l],
+        recursive(l, check(r &#43; 1)) &#43; pizza[r]
+      );
+    }
+
+    return cache[l][r];
+  }
+
+  let ans &#61; 0;
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    ans &#61; Math.max(ans, recursive(check(i - 1), check(i &#43; 1)) &#43; pizza[i]);
+  }
+
+  console.log(ans);
+})();
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Java算法源码</h4> 
+<h5 style="background-color:transparent;">纯递归&#xff08;会超时&#xff0c;但是是下一种解法的基础&#xff0c;需要先看懂这里&#xff09;</h5> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  static int[] pizza;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    // 披萨数量&#xff08;奇数个&#xff09;
+    int n &#61; sc.nextInt();
+
+    // n个披萨的大小&#xff08;各不相同&#xff09;
+    pizza &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      pizza[i] &#61; sc.nextInt();
+    }
+
+    // ans记录&#34;吃货&#34;能获得的最大披萨大小
+    long ans &#61; 0;
+    // i 指向首轮被&#34;吃货&#34;选取的披萨位置&#xff0c;可以理解为缺口位置&#xff0c;相当于给环切了一个口
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // i - 1 是缺口的左边披萨&#xff0c;check函数作用是防止 i - 1 越界, 进行绕环运动
+      // i &#43; 1 是缺口的右边披萨&#xff0c;check函数作用是防止 i &#43; 1 越界&#xff0c;进行绕环运动
+      // recursive的作用求解是&#34;吃货&#34;从缺失了 第 i 块的披萨铁盘 开始选&#xff0c;最终可得的最大披萨大小&#xff0c;
+      // 而第 i 块是首轮就被&#34;吃货&#34;拿走的&#xff0c;因此是recursive &#43; pizza[i]
+      ans &#61; Math.max(ans, recursive(check(i - 1), check(i &#43; 1)) &#43; pizza[i]);
+    }
+
+    System.out.println(ans);
+  }
+
+  public static long recursive(int l, int r) {
+    // 进入递归前&#xff0c;&#34;吃货&#34;已经拿了披萨&#xff0c;因此进入递归后&#xff0c;轮到&#34;馋嘴&#34;拿
+    // 而&#34;馋嘴&#34;拿披萨的策略固定是&#xff1a;缺口左右两边中较大的那块
+    if (pizza[l] &gt; pizza[r]) { // 注意披萨大小各部相同&#xff0c;因此要么左边大&#xff0c;要么右边大&#xff0c;不存在相等的情况
+      // 拿走第 l 块&#xff0c;因此缺口左边的位置变为 l - 1
+      l &#61; check(l - 1);
+    } else {
+      // 拿走第 r 块&#xff0c;因此缺口右边的位置变为 r &#43; 1
+      r &#61; check(r &#43; 1);
+    }
+
+    if (l &#61;&#61; r) {
+      // 当 l &#61;&#61; r 是&#xff0c;说明只剩一块披萨了&#xff0c;由于奇数个披萨&#xff0c;且&#34;吃货&#34;第一个拿&#xff0c;因此最后一个也是&#34;吃货&#34;拿
+      return pizza[l];
+    } else {
+      // 如果还剩多块披萨&#xff0c;那么&#34;吃货&#34;有两种选择&#xff1a;
+      // 1、拿缺口左边的披萨
+      // 2、拿缺口右边的披萨
+      // 因此这里直接开两个递归分支&#xff0c;最终结果取较大值
+      return Math.max(recursive(check(l - 1), r) &#43; pizza[l], recursive(l, check(r &#43; 1)) &#43; pizza[r]);
+    }
+  }
+
+  public static int check(int idx) {
+    if (idx &lt; 0) {
+      idx &#61; pizza.length - 1;
+    } else if (idx &gt;&#61; pizza.length) {
+      idx &#61; 0;
+    }
+
+    return idx;
+  }
+}
+</code></pre> 
+<h5 style="background-color:transparent;">递归 &#43; 缓存&#xff08;不超时&#xff09;</h5> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  static int[] pizza;
+  // 缓存
+  static long[][] cache;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    pizza &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      pizza[i] &#61; sc.nextInt();
+    }
+
+    // 缓存
+    cache &#61; new long[n][n];
+
+    long ans &#61; 0;
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      ans &#61; Math.max(ans, recursive(check(i - 1), check(i &#43; 1)) &#43; pizza[i]);
+    }
+
+    System.out.println(ans);
+  }
+
+  public static long recursive(int l, int r) {
+    if (pizza[l] &gt; pizza[r]) {
+      l &#61; check(l - 1);
+    } else {
+      r &#61; check(r &#43; 1);
+    }
+
+    // 缓存优化&#xff0c;如果对应缺口状态的披萨铁盘结果已经算过了&#xff0c;则无需再次重复递归
+    if (cache[l][r] &gt; 0) {
+      return cache[l][r];
+    }
+
+    if (l &#61;&#61; r) {
+      // 缓存对应缺口状态下&#xff0c;吃货可得的最大披萨大小
+      cache[l][r] &#61; pizza[l];
+    } else {
+      // 缓存对应缺口状态下&#xff0c;吃货可得的最大披萨大小
+      cache[l][r] &#61;
+          Math.max(recursive(check(l - 1), r) &#43; pizza[l], recursive(l, check(r &#43; 1)) &#43; pizza[r]);
+    }
+
+    return cache[l][r];
+  }
+
+  public static int check(int idx) {
+    if (idx &lt; 0) {
+      idx &#61; pizza.length - 1;
+    } else if (idx &gt;&#61; pizza.length) {
+      idx &#61; 0;
+    }
+
+    return idx;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<h5 style="background-color:transparent;">纯递归&#xff08;会超时&#xff0c;但是是下一种解法的基础&#xff0c;需要先看懂这里&#xff09;</h5> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())  # 披萨数量&#xff08;奇数个&#xff09;
+
+pizza &#61; []  # n个披萨的大小&#xff08;各不相同&#xff09;
+for _ in range(n):
+    pizza.append(int(input()))
+
+
+# 越界索引环形变化
+def check(idx):
+    if idx &lt; 0:
+        idx &#61; n - 1
+    elif idx &gt;&#61; n:
+        idx &#61; 0
+
+    return idx
+
+
+def recursive(l, r):
+    # 进入递归前&#xff0c;&#34;吃货&#34;已经拿了披萨&#xff0c;因此进入递归后&#xff0c;轮到&#34;馋嘴&#34;拿
+    # 而&#34;馋嘴&#34;拿披萨的策略固定是&#xff1a;缺口左右两边中较大的那块
+    if pizza[l] &gt; pizza[r]:  # 注意披萨大小各部相同&#xff0c;因此要么左边大&#xff0c;要么右边大&#xff0c;不存在相等的情况
+        # 拿走第 l 块&#xff0c;因此缺口左边的位置变为 l - 1
+        l &#61; check(l - 1)
+    else:
+        # 拿走第 r 块&#xff0c;因此缺口右边的位置变为 r &#43; 1
+        r &#61; check(r &#43; 1)
+
+    if l &#61;&#61; r:
+        # 当 l &#61;&#61; r 是&#xff0c;说明只剩一块披萨了&#xff0c;由于奇数个披萨&#xff0c;且&#34;吃货&#34;第一个拿&#xff0c;因此最后一个也是&#34;吃货&#34;拿
+        return pizza[l]
+    else:
+        # 如果还剩多块披萨&#xff0c;那么&#34;吃货&#34;有两种选择&#xff1a;
+        # 1、拿缺口左边的披萨
+        # 2、拿缺口右边的披萨
+        # 因此这里直接开两个递归分支&#xff0c;最终结果取较大值
+        return max(recursive(check(l - 1), r) &#43; pizza[l], recursive(l, check(r &#43; 1)) &#43; pizza[r])
+
+
+def getResult():
+    # ans记录&#34;吃货&#34;能获得的最大披萨大小
+    ans &#61; 0
+
+    # i 指向首轮被&#34;吃货&#34;选取的披萨位置&#xff0c;可以理解为缺口位置&#xff0c;相当于给环切了一个口
+    for i in range(n):
+        # i - 1 是缺口的左边披萨&#xff0c;check函数作用是防止 i - 1 越界, 进行绕环运动
+        # i &#43; 1 是缺口的右边披萨&#xff0c;check函数作用是防止 i &#43; 1 越界&#xff0c;进行绕环运动
+        # recursive的作用求解是&#34;吃货&#34;从缺失了 第 i 块的披萨铁盘 开始选&#xff0c;最终可得的最大披萨大小&#xff0c;
+        # 而第 i 块是首轮就被&#34;吃货&#34;拿走的&#xff0c;因此是recursive &#43; pizza[i]
+        ans &#61; max(ans, recursive(check(i - 1), check(i &#43; 1)) &#43; pizza[i])
+
+    return ans
+
+
+print(getResult())
+
+</code></pre> 
+<h5 style="background-color:transparent;">递归 &#43; 手动缓存&#xff08;不超时&#xff09;(下面还有一个自动缓存标签&#xff0c;代码更简单)</h5> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())  # 披萨数量&#xff08;奇数个&#xff09;
+
+pizza &#61; []  # n个披萨的大小&#xff08;各不相同&#xff09;
+for _ in range(n):
+    pizza.append(int(input()))
+
+
+# 缓存表
+cache &#61; [[0] * n for _ in range(n)]
+
+
+# 越界索引环形变化
+def check(idx):
+    if idx &lt; 0:
+        idx &#61; n - 1
+    elif idx &gt;&#61; n:
+        idx &#61; 0
+
+    return idx
+
+
+def recursive(l, r):
+    # 进入递归前&#xff0c;&#34;吃货&#34;已经拿了披萨&#xff0c;因此进入递归后&#xff0c;轮到&#34;馋嘴&#34;拿
+    # 而&#34;馋嘴&#34;拿披萨的策略固定是&#xff1a;缺口左右两边中较大的那块
+    if pizza[l] &gt; pizza[r]:  # 注意披萨大小各部相同&#xff0c;因此要么左边大&#xff0c;要么右边大&#xff0c;不存在相等的情况
+        # 拿走第 l 块&#xff0c;因此缺口左边的位置变为 l - 1
+        l &#61; check(l - 1)
+    else:
+        # 拿走第 r 块&#xff0c;因此缺口右边的位置变为 r &#43; 1
+        r &#61; check(r &#43; 1)
+
+    if cache[l][r] &gt; 0:
+        return cache[l][r]
+
+    if l &#61;&#61; r:
+        # 当 l &#61;&#61; r 是&#xff0c;说明只剩一块披萨了&#xff0c;由于奇数个披萨&#xff0c;且&#34;吃货&#34;第一个拿&#xff0c;因此最后一个也是&#34;吃货&#34;拿
+        cache[l][r] &#61; pizza[l]
+    else:
+        # 如果还剩多块披萨&#xff0c;那么&#34;吃货&#34;有两种选择&#xff1a;
+        # 1、拿缺口左边的披萨
+        # 2、拿缺口右边的披萨
+        # 因此这里直接开两个递归分支&#xff0c;最终结果取较大值
+        cache[l][r] &#61; max(recursive(check(l - 1), r) &#43; pizza[l], recursive(l, check(r &#43; 1)) &#43; pizza[r])
+
+    return cache[l][r]
+
+
+def getResult():
+    # ans记录&#34;吃货&#34;能获得的最大披萨大小
+    ans &#61; 0
+
+    # i 指向首轮被&#34;吃货&#34;选取的披萨位置&#xff0c;可以理解为缺口位置&#xff0c;相当于给环切了一个口
+    for i in range(n):
+        # i - 1 是缺口的左边披萨&#xff0c;check函数作用是防止 i - 1 越界, 进行绕环运动
+        # i &#43; 1 是缺口的右边披萨&#xff0c;check函数作用是防止 i &#43; 1 越界&#xff0c;进行绕环运动
+        # recursive的作用求解是&#34;吃货&#34;从缺失了 第 i 块的披萨铁盘 开始选&#xff0c;最终可得的最大披萨大小&#xff0c;
+        # 而第 i 块是首轮就被&#34;吃货&#34;拿走的&#xff0c;因此是recursive &#43; pizza[i]
+        ans &#61; max(ans, recursive(check(i - 1), check(i &#43; 1)) &#43; pizza[i])
+
+    return ans
+
+
+print(getResult())
+
+</code></pre> 
+<h5 style="background-color:transparent;">递归 &#43; 自动缓存&#xff08;利用python的&#64;cache标签实现自动函数结果缓存&#xff09;</h5> 
+<pre><code class="language-python">from functools import cache
+
+# 输入获取
+n &#61; int(input())  # 披萨数量&#xff08;奇数个&#xff09;
+
+pizza &#61; []  # n个披萨的大小&#xff08;各不相同&#xff09;
+for _ in range(n):
+    pizza.append(int(input()))
+
+
+# 越界索引环形变化
+def check(idx):
+    if idx &lt; 0:
+        idx &#61; n - 1
+    elif idx &gt;&#61; n:
+        idx &#61; 0
+
+    return idx
+
+
+&#64;cache
+def recursive(l, r):
+    # 进入递归前&#xff0c;&#34;吃货&#34;已经拿了披萨&#xff0c;因此进入递归后&#xff0c;轮到&#34;馋嘴&#34;拿
+    # 而&#34;馋嘴&#34;拿披萨的策略固定是&#xff1a;缺口左右两边中较大的那块
+    if pizza[l] &gt; pizza[r]:  # 注意披萨大小各部相同&#xff0c;因此要么左边大&#xff0c;要么右边大&#xff0c;不存在相等的情况
+        # 拿走第 l 块&#xff0c;因此缺口左边的位置变为 l - 1
+        l &#61; check(l - 1)
+    else:
+        # 拿走第 r 块&#xff0c;因此缺口右边的位置变为 r &#43; 1
+        r &#61; check(r &#43; 1)
+
+    if l &#61;&#61; r:
+        # 当 l &#61;&#61; r 是&#xff0c;说明只剩一块披萨了&#xff0c;由于奇数个披萨&#xff0c;且&#34;吃货&#34;第一个拿&#xff0c;因此最后一个也是&#34;吃货&#34;拿
+        return pizza[l]
+    else:
+        # 如果还剩多块披萨&#xff0c;那么&#34;吃货&#34;有两种选择&#xff1a;
+        # 1、拿缺口左边的披萨
+        # 2、拿缺口右边的披萨
+        # 因此这里直接开两个递归分支&#xff0c;最终结果取较大值
+        return max(recursive(check(l - 1), r) &#43; pizza[l], recursive(l, check(r &#43; 1)) &#43; pizza[r])
+
+
+def getResult():
+    # ans记录&#34;吃货&#34;能获得的最大披萨大小
+    ans &#61; 0
+
+    # i 指向首轮被&#34;吃货&#34;选取的披萨位置&#xff0c;可以理解为缺口位置&#xff0c;相当于给环切了一个口
+    for i in range(n):
+        # i - 1 是缺口的左边披萨&#xff0c;check函数作用是防止 i - 1 越界, 进行绕环运动
+        # i &#43; 1 是缺口的右边披萨&#xff0c;check函数作用是防止 i &#43; 1 越界&#xff0c;进行绕环运动
+        # recursive的作用求解是&#34;吃货&#34;从缺失了 第 i 块的披萨铁盘 开始选&#xff0c;最终可得的最大披萨大小&#xff0c;
+        # 而第 i 块是首轮就被&#34;吃货&#34;拿走的&#xff0c;因此是recursive &#43; pizza[i]
+        ans &#61; max(ans, recursive(check(i - 1), check(i &#43; 1)) &#43; pizza[i])
+
+    return ans
+
+
+print(getResult())
+
+</code></pre> 
+<p></p> 
+<p></p> 
+<h4>C算法源码</h4> 
+<h5 style="background-color:transparent;">纯递归&#xff08;会超时&#xff0c;但是是下一种解法的基础&#xff0c;需要先看懂这里&#xff09;</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+int pizza_size; // 披萨数量&#xff08;奇数个&#xff09;
+int pizza[500]; // n个披萨的大小&#xff08;各不相同&#xff09;
+
+// 越界索引环形走位
+int check(int idx) {
+    if (idx &lt; 0) {
+        idx &#61; pizza_size - 1;
+    } else if (idx &gt;&#61; pizza_size) {
+        idx &#61; 0;
+    }
+
+    return idx;
+}
+
+long long recursive(int l, int r) {
+    // 进入递归前&#xff0c;&#34;吃货&#34;已经拿了披萨&#xff0c;因此进入递归后&#xff0c;轮到&#34;馋嘴&#34;拿
+    // 而&#34;馋嘴&#34;拿披萨的策略固定是&#xff1a;缺口左右两边中较大的那块
+    if (pizza[l] &gt; pizza[r]) { // 注意披萨大小各部相同&#xff0c;因此要么左边大&#xff0c;要么右边大&#xff0c;不存在相等的情况
+        // 拿走第 l 块&#xff0c;因此缺口左边的位置变为 l - 1
+        l &#61; check(l - 1);
+    } else {
+        // 拿走第 r 块&#xff0c;因此缺口右边的位置变为 r &#43; 1
+        r &#61; check(r &#43; 1);
+    }
+
+    if (l &#61;&#61; r) {
+        // 当 l &#61;&#61; r 是&#xff0c;说明只剩一块披萨了&#xff0c;由于奇数个披萨&#xff0c;且&#34;吃货&#34;第一个拿&#xff0c;因此最后一个也是&#34;吃货&#34;拿
+        return pizza[l];
+    } else {
+        // 如果还剩多块披萨&#xff0c;那么&#34;吃货&#34;有两种选择&#xff1a;
+        // 1、拿缺口左边的披萨
+        long long v1 &#61; recursive(check(l - 1), r) &#43; pizza[l];
+        // 2、拿缺口右边的披萨
+        long long v2 &#61; recursive(l, check(r &#43; 1)) &#43; pizza[r];
+        // 因此这里直接开两个递归分支&#xff0c;最终结果取较大值
+        return MAX(v1, v2);
+    }
+}
+
+int main() {
+    scanf(&#34;%d&#34;, &amp;pizza_size);
+
+    for (int i &#61; 0; i &lt; pizza_size; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;pizza[i]);
+    }
+
+    // ans记录&#34;吃货&#34;能获得的最大披萨大小
+    long long ans &#61; 0;
+    // i 指向首轮被&#34;吃货&#34;选取的披萨位置&#xff0c;可以理解为缺口位置&#xff0c;相当于给环切了一个口
+    for (int i &#61; 0; i &lt; pizza_size; i&#43;&#43;) {
+        // i - 1 是缺口的左边披萨&#xff0c;check函数作用是防止 i - 1 越界, 进行绕环运动
+        // i &#43; 1 是缺口的右边披萨&#xff0c;check函数作用是防止 i &#43; 1 越界&#xff0c;进行绕环运动
+        // recursive的作用求解是&#34;吃货&#34;从缺失了 第 i 块的披萨铁盘 开始选&#xff0c;最终可得的最大披萨大小&#xff0c;
+        // 而第 i 块是首轮就被&#34;吃货&#34;拿走的&#xff0c;因此是recursive &#43; pizza[i]
+        long long v &#61; recursive(check(i - 1), check(i &#43; 1)) &#43; pizza[i];
+        ans &#61; MAX(ans, v);
+    }
+
+    printf(&#34;%lld\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<p></p> 
+<h5 style="background-color:transparent;">递归 &#43; 缓存&#xff08;不超时&#xff09;</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+int pizza_size; // 披萨数量&#xff08;奇数个&#xff09;
+int pizza[500]; // n个披萨的大小&#xff08;各不相同&#xff09;
+
+long long cache[500][500];
+
+// 越界索引环形走位
+int check(int idx) {
+    if (idx &lt; 0) {
+        idx &#61; pizza_size - 1;
+    } else if (idx &gt;&#61; pizza_size) {
+        idx &#61; 0;
+    }
+
+    return idx;
+}
+
+long long recursive(int l, int r) {
+    // 进入递归前&#xff0c;&#34;吃货&#34;已经拿了披萨&#xff0c;因此进入递归后&#xff0c;轮到&#34;馋嘴&#34;拿
+    // 而&#34;馋嘴&#34;拿披萨的策略固定是&#xff1a;缺口左右两边中较大的那块
+    if (pizza[l] &gt; pizza[r]) { // 注意披萨大小各部相同&#xff0c;因此要么左边大&#xff0c;要么右边大&#xff0c;不存在相等的情况
+        // 拿走第 l 块&#xff0c;因此缺口左边的位置变为 l - 1
+        l &#61; check(l - 1);
+    } else {
+        // 拿走第 r 块&#xff0c;因此缺口右边的位置变为 r &#43; 1
+        r &#61; check(r &#43; 1);
+    }
+
+    if(cache[l][r] &gt; 0) {
+        return cache[l][r];
+    }
+
+    if (l &#61;&#61; r) {
+        // 当 l &#61;&#61; r 是&#xff0c;说明只剩一块披萨了&#xff0c;由于奇数个披萨&#xff0c;且&#34;吃货&#34;第一个拿&#xff0c;因此最后一个也是&#34;吃货&#34;拿
+        cache[l][r] &#61; pizza[l];
+    } else {
+        // 如果还剩多块披萨&#xff0c;那么&#34;吃货&#34;有两种选择&#xff1a;
+        // 1、拿缺口左边的披萨
+        long long v1 &#61; recursive(check(l - 1), r) &#43; pizza[l];
+        // 2、拿缺口右边的披萨
+        long long v2 &#61; recursive(l, check(r &#43; 1)) &#43; pizza[r];
+        // 因此这里直接开两个递归分支&#xff0c;最终结果取较大值
+        cache[l][r] &#61;  MAX(v1, v2);
+    }
+
+    return cache[l][r];
+}
+
+int main() {
+    scanf(&#34;%d&#34;, &amp;pizza_size);
+
+    for (int i &#61; 0; i &lt; pizza_size; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;pizza[i]);
+    }
+
+    // ans记录&#34;吃货&#34;能获得的最大披萨大小
+    long long ans &#61; 0;
+    // i 指向首轮被&#34;吃货&#34;选取的披萨位置&#xff0c;可以理解为缺口位置&#xff0c;相当于给环切了一个口
+    for (int i &#61; 0; i &lt; pizza_size; i&#43;&#43;) {
+        // i - 1 是缺口的左边披萨&#xff0c;check函数作用是防止 i - 1 越界, 进行绕环运动
+        // i &#43; 1 是缺口的右边披萨&#xff0c;check函数作用是防止 i &#43; 1 越界&#xff0c;进行绕环运动
+        // recursive的作用求解是&#34;吃货&#34;从缺失了 第 i 块的披萨铁盘 开始选&#xff0c;最终可得的最大披萨大小&#xff0c;
+        // 而第 i 块是首轮就被&#34;吃货&#34;拿走的&#xff0c;因此是recursive &#43; pizza[i]
+        long long v &#61; recursive(check(i - 1), check(i &#43; 1)) &#43; pizza[i];
+        ans &#61; MAX(ans, v);
+    }
+
+    printf(&#34;%lld\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

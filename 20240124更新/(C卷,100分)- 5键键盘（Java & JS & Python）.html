@@ -1,0 +1,216 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 5键键盘（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一个特殊的5键键盘&#xff0c;上面有a&#xff0c;ctrl-c&#xff0c;ctrl-x&#xff0c;ctrl-v&#xff0c;ctrl-a五个键。</p> 
+<p>a键在屏幕上输出一个字母a&#xff1b;</p> 
+<p>ctrl-c将当前选择的字母复制到剪贴板&#xff1b;</p> 
+<p>ctrl-x将当前选择的字母复制到剪贴板&#xff0c;并清空选择的字母&#xff1b;</p> 
+<p>ctrl-v将当前剪贴板里的字母输出到屏幕&#xff1b;</p> 
+<p>ctrl-a选择当前屏幕上的所有字母。</p> 
+<p><strong>注意&#xff1a;</strong></p> 
+<ol><li>剪贴板初始为空&#xff0c;新的内容被复制到剪贴板时会覆盖原来的内容</li><li>当屏幕上没有字母时&#xff0c;ctrl-a无效</li><li>当没有选择字母时&#xff0c;ctrl-c和ctrl-x无效</li><li>当有字母被选择时&#xff0c;a和ctrl-v这两个有输出功能的键会先清空选择的字母&#xff0c;再进行输出</li></ol> 
+<p>给定一系列键盘输入&#xff0c;输出最终屏幕上字母的数量。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<ul><li>输入为一行&#xff0c;为简化解析&#xff0c;用数字1 2 3 4 5代表a&#xff0c;ctrl-c&#xff0c;ctrl-x&#xff0c;ctrl-v&#xff0c;ctrl-a五个键的输入&#xff0c;数字用空格分隔。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<ul><li>输出一个数字&#xff0c;为最终屏幕上字母的数量。</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 1 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">连续键入3个a&#xff0c;故屏幕上字母的长度为3。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 1 5 1 5 2 4 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入两个a后ctrl-a选择这两个a&#xff0c;再输入a时选择的两个a先被清空&#xff0c;所以此时屏幕只有一个a&#xff0c;</p> <p>后续的ctrl-a&#xff0c;ctrl-c选择并复制了这一个a&#xff0c;最后两个ctrl-v在屏幕上输出两个a&#xff0c;</p> <p>故屏幕上字母的长度为2&#xff08;第一个ctrl-v清空了屏幕上的那个a&#xff09;。</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>逻辑题&#xff0c;主要考察多情况的处理。</p> 
+<p>题目中没有准确说明  选择状态 何时被解除&#xff0c;比如我ctrl-a全选所有字母时&#xff0c;然后ctrl-c将选择的字母复制到剪贴板&#xff0c;那么此时屏幕中字母的选中状态是保留还是清除呢&#xff1f;</p> 
+<p>我理解ctrl-x剪切走屏幕内容&#xff0c;没有字母了&#xff0c;自然就没有选中状态了。另外&#xff0c;a、ctrl-v输入时&#xff0c;如果有字母选中状态&#xff0c;则输入时会覆盖选中内容&#xff0c;那么选中状态就没了。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    int[] commands &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    System.out.println(getResult(commands));
+  }
+
+  public static int getResult(int[] commands) {
+    ArrayList&lt;String&gt; screen &#61; new ArrayList&lt;&gt;();
+    ArrayList&lt;String&gt; clip &#61; new ArrayList&lt;&gt;();
+    boolean isSelect &#61; false;
+
+    for (int command : commands) {
+      switch (command) {
+        case 1: // a
+          if (isSelect) screen.clear();
+          screen.add(&#34;a&#34;);
+          isSelect &#61; false;
+          break;
+        case 2: // ctrl-c
+          if (isSelect) {
+            clip.clear();
+            clip.addAll(screen);
+          }
+          break;
+        case 3: // ctrl-x
+          if (isSelect) {
+            clip.clear();
+            clip.addAll(screen);
+            screen.clear();
+            isSelect &#61; false;
+          }
+          break;
+        case 4: // ctrl-v
+          if (isSelect) screen.clear();
+          screen.addAll(clip);
+          isSelect &#61; false;
+          break;
+        case 5: // ctrl-a
+          if (screen.size() !&#61; 0) isSelect &#61; true;
+          break;
+      }
+    }
+
+    return screen.size();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const directives &#61; line.split(&#34; &#34;);
+
+  console.log(getFinalLetterCount(directives));
+});
+
+function getFinalLetterCount(directives) {
+  const screen &#61; [];
+  const clip &#61; [];
+  let isSelect &#61; false;
+
+  directives.forEach((directive) &#61;&gt; {
+    switch (directive) {
+      case &#34;1&#34;: // a
+        if (isSelect) screen.length &#61; 0;
+        screen.push(&#34;a&#34;);
+        isSelect &#61; false;
+        break;
+      case &#34;2&#34;: // ctrl-c
+        if (isSelect) {
+          clip.length &#61; 0;
+          clip.push(...screen);
+        }
+        break;
+      case &#34;3&#34;: // ctrl-x
+        if (isSelect) {
+          clip.length &#61; 0;
+          clip.push(...screen);
+          screen.length &#61; 0;
+          isSelect &#61; false;
+        }
+        break;
+      case &#34;4&#34;: // ctrl-v
+        if (isSelect) screen.length &#61; 0;
+        screen.push(...clip);
+        isSelect &#61; false;
+        break;
+      case &#34;5&#34;: // ctrl-a
+        if (screen.length !&#61;&#61; 0) isSelect &#61; true;
+        break;
+    }
+  });
+
+  return screen.length;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+commands &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    screen &#61; []
+    clip &#61; []
+    isSelect &#61; False
+
+    for command in commands:
+        if command &#61;&#61; 1:
+            if isSelect:
+                screen.clear()
+            screen.append(&#34;a&#34;)
+            isSelect &#61; False
+        elif command &#61;&#61; 2:
+            if isSelect:
+                clip.clear()
+                clip.extend(screen)
+        elif command &#61;&#61; 3:
+            if isSelect:
+                clip.clear()
+                clip.extend(screen)
+                screen.clear()
+                isSelect &#61; False
+        elif command &#61;&#61; 4:
+            if isSelect:
+                screen.clear()
+            screen.extend(clip)
+            isSelect &#61; False
+        elif command &#61;&#61; 5:
+            if len(screen) !&#61; 0:
+                isSelect &#61; True
+
+    return len(screen)
+
+
+# 调用算法
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

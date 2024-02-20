@@ -1,0 +1,408 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 内存资源分配（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一个简易内存池&#xff0c;内存按照大小粒度分类&#xff0c;每个粒度有若干个可用内存资源&#xff0c;用户会进行一系列内存申请&#xff0c;需要按需分配内存池中的资源返回申请结果成功失败列表。</p> 
+<p>分配规则如下&#xff1a;</p> 
+<ol><li>分配的内存要大于等于内存的申请量&#xff0c;存在满足需求的内存就必须分配&#xff0c;优先分配粒度小的&#xff0c;但内存不能拆分使用&#xff1b;</li><li>需要按申请顺序分配&#xff0c;先申请的先分配&#xff0c;有可用内存分配则申请结果为true&#xff1b;</li><li>没有可用则返回false。</li></ol> 
+<p>注意&#xff1a;不考虑内存释放</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为两行字符串</p> 
+<p>第一行为内存池资源列表&#xff0c;包含内存粒度数据信息&#xff0c;粒度数据间用逗号分割</p> 
+<ul><li>一个粒度信息内用冒号分割&#xff0c;冒号前为内存粒度大小&#xff0c;冒号后为数量</li><li>资源列表不大于1024</li><li>每个粒度的数量不大于4096</li></ul> 
+<p>第二行为申请列表&#xff0c;申请的内存大小间用逗号分割</p> 
+<ul><li>申请列表不大于100000</li></ul> 
+<p>如</p> 
+<p>64:2,128:1,32:4,1:128</p> 
+<p>50,36,64,128,127</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出为内存池分配结果</p> 
+<p>如true,true,true,false,false</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">64:2,128:1,32:4,1:128<br /> 50,36,64,128,127</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">true,true,true,false,false</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">内存池资源包含&#xff1a;64K共2个、128K共1个、32K共4个、1K共128个的内存资源&#xff1b;<br /> 针对50,36,64,128,127的内存申请序列&#xff0c;分配的内存依次是&#xff1a;64,64,128,NULL,NULL,<br /> 第三次申请内存时已经将128分配出去&#xff0c;因此输出结果是&#xff1a;<br /> true,true,true,false,false</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题最简单的方法是用一个双重for&#xff0c;外层循环申请列表&#xff0c;内层循环内存池资源列表&#xff08;先按内存大小升序&#xff09;</p> 
+<pre><code class="language-javascript">/**
+ * &#64;param {*} pools 内存池资源列表&#xff0c;是一个二维数组&#xff0c;元素是[内存粒度大小&#xff0c; 内存粒度数量]
+ * &#64;param {*} applies 申请列表
+ * &#64;returns 内存池分配结果
+ */
+function getResult(pools, applies) {
+  pools.sort((a, b) &#61;&gt; a[0] - b[0]);
+
+  const ans &#61; [];
+  outer: for (let apply of applies) {
+    for (let pool of pools) {
+      const [size, count] &#61; pool;
+
+      // 如果该内存池资源数为0&#xff0c;则继续查找下一个内存池资源
+      if (count &lt;&#61; 0) continue;
+      // 如果该内存池资源大小不够申请的内存&#xff0c;则继续查找下一个内存池资源
+      if (size &lt; apply) continue;
+
+      // 如果该内存池有资源&#xff0c;且大小满足申请的内存&#xff0c;则可以使用
+      pool[1]--;
+      ans.push(true);
+      continue outer;
+    }
+
+    ans.push(false);
+  }
+
+  return ans.join(&#34;,&#34;);
+}
+</code></pre> 
+<p>但是&#xff0c;本题中有数量级说明&#xff0c;其中&#xff1a;</p> 
+<ul><li>资源列表m不大于1024</li><li>申请列表n不大于100000</li></ul> 
+<p>也就是说&#xff0c;最多有1024 * 100000次循环&#xff0c;这是超时的节奏。</p> 
+<p>因此&#xff0c;上面算法要进行优化&#xff0c;由于申请列表有顺序要求&#xff1a;</p> 
+<blockquote> 
+ <p>需要按申请顺序分配&#xff0c;先申请的先分配&#xff0c;有可用内存分配则申请结果为true&#xff1b;</p> 
+</blockquote> 
+<p>因此&#xff0c;我们不能改变申请列表顺序。</p> 
+<p></p> 
+<p>而资源列表没有顺序要求&#xff0c;因此我们可以将资源列表升序&#xff0c;然后每次申请一个内存时&#xff0c;都在资源列表中进行二分查找&#xff0c;这样即使资源列表有1024长度&#xff0c;最多也只需要10次即可查询到合适的内存池资源&#xff0c;此时整体时间复杂度为NlogM&#xff0c;循环次数降低到了 最大百万级别。</p> 
+<p></p> 
+<hr /> 
+<p>2023.10.30</p> 
+<p>根据考友反馈&#xff0c;本题输入可能存在如下情况&#xff1a;</p> 
+<blockquote> 
+ <p>64:2,128:1,32:4,1:128<br /> 50,36,64,128<span style="color:#fe2c24;">,   ,</span>127</p> 
+</blockquote> 
+<p>对于此种异常输入情况&#xff0c;我们可以忽略其中空格部分&#xff08;两个红色逗号之间可能是一个空格&#xff0c;也可能是多个空格&#xff09;&#xff0c;具体处理办法是利用try...catch...捕获转整型时的异常&#xff0c;对于异常情况不做处理。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const pools &#61; lines[0]
+      .split(&#34;,&#34;)
+      .map((line) &#61;&gt; line.split(&#34;:&#34;).map(Number));
+
+    const applies &#61; lines[1].split(&#34;,&#34;).map(Number);
+
+    console.log(getResult(pools, applies));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} pools 内存池资源列表&#xff0c;是一个二维数组&#xff0c;元素是[内存粒度大小&#xff0c; 内存粒度数量]
+ * &#64;param {*} applies 申请列表
+ * &#64;returns 内存池分配结果
+ */
+function getResult(pools, applies) {
+  pools.sort((a, b) &#61;&gt; a[0] - b[0]);
+
+  const ans &#61; [];
+
+  for (let apply of applies) {
+    let idx &#61; binarySearch(pools, apply);
+
+    if (idx &lt; 0) {
+      idx &#61; -idx - 1;
+    }
+
+    if (pools[idx] &#61;&#61;&#61; undefined) {
+      ans.push(false);
+      continue;
+    }
+
+    pools[idx][1]--;
+
+    ans.push(true);
+
+    if (pools[idx][1] &#61;&#61;&#61; 0) {
+      pools.splice(idx, 1);
+    }
+  }
+
+  return ans.join();
+}
+
+function binarySearch(arr, key) {
+  let low &#61; 0;
+  let high &#61; arr.length - 1;
+
+  while (low &lt;&#61; high) {
+    let mid &#61; (low &#43; high) &gt;&gt;&gt; 1;
+    let midVal &#61; arr[mid][0]; // 专门用于pools二分查找的binarySearch
+
+    if (midVal &lt; key) {
+      low &#61; mid &#43; 1;
+    } else if (midVal &gt; key) {
+      high &#61; mid - 1;
+    } else {
+      return mid;
+    }
+  }
+  return -low - 1;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[][] pools &#61;
+        Arrays.stream(sc.nextLine().split(&#34;,&#34;))
+            .map(
+                str -&gt; Arrays.stream(str.split(&#34;:&#34;)).map(Integer::parseInt).toArray(Integer[]::new))
+            .toArray(Integer[][]::new);
+
+    Integer[] applies &#61;
+        Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(pools, applies));
+  }
+
+  public static String getResult(Integer[][] pools, Integer[] applies) {
+    Integer[][] sortedPools &#61;
+        Arrays.stream(pools).sorted((a, b) -&gt; a[0] - b[0]).toArray(Integer[][]::new);
+
+    ArrayList&lt;Integer&gt; sizes &#61; new ArrayList&lt;&gt;();
+    ArrayList&lt;Integer&gt; counts &#61; new ArrayList&lt;&gt;();
+    for (Integer[] pool : sortedPools) {
+      sizes.add(pool[0]);
+      counts.add(pool[1]);
+    }
+
+    ArrayList&lt;Boolean&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    for (Integer apply : applies) {
+      int idx &#61; Collections.binarySearch(sizes, apply);
+
+      if (idx &lt; 0) {
+        idx &#61; -idx - 1;
+      }
+
+      if (idx &gt;&#61; sizes.size()) {
+        ans.add(false);
+        continue;
+      }
+
+      counts.set(idx, counts.get(idx) - 1);
+      ans.add(true);
+      if (counts.get(idx) &#61;&#61; 0) {
+        counts.remove(idx);
+        sizes.remove(idx);
+      }
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+    for (Boolean an : ans) {
+      sj.add(an &#43; &#34;&#34;);
+    }
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+pools &#61; list(map(lambda x: list(map(int, x.split(&#34;:&#34;))), input().split(&#34;,&#34;)))
+applies &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+# 二分查找
+def binarySearch(arr, key):
+    low &#61; 0
+    high &#61; len(arr) - 1
+
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) // 2
+        midVal &#61; arr[mid]
+
+        if midVal &gt; key:
+            high &#61; mid - 1
+        elif midVal &lt; key:
+            low &#61; mid &#43; 1
+        else:
+            return mid
+
+    return -low - 1
+
+
+# 算法入口
+def getResult(pools, applies):
+    pools.sort(key&#61;lambda x: x[0])
+
+    sizes &#61; []
+    counts &#61; []
+
+    for size, count in pools:
+        sizes.append(size)
+        counts.append(count)
+
+    ans &#61; []
+    for apply in applies:
+        idx &#61; binarySearch(sizes, apply)
+
+        if idx &lt; 0:
+            idx &#61; -idx - 1
+
+        if idx &gt;&#61; len(sizes):
+            ans.append(&#34;false&#34;)
+            continue
+
+        counts[idx] -&#61; 1
+        ans.append(&#34;true&#34;)
+        if counts[idx] &#61;&#61; 0:
+            counts.pop(idx)
+            sizes.pop(idx)
+
+    return &#34;,&#34;.join(ans)
+
+
+# 算法调用
+print(getResult(pools, applies))
+</code></pre> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 1000000
+
+int cmp(const void *a, const void *b) {
+    return ((int *) a)[0] - ((int *) b)[0];
+}
+
+int binarySearch(const int nums[][2], int nums_size, int key) {
+    int low &#61; 0;
+    int high &#61; nums_size - 1;
+
+    while (low &lt;&#61; high) {
+        int mid &#61; (low &#43; high) &gt;&gt; 1;
+        int midVal &#61; nums[mid][0];
+
+        if (midVal &gt; key) {
+            high &#61; mid - 1;
+        } else if (midVal &lt; key) {
+            low &#61; mid &#43; 1;
+        } else {
+            return mid;
+        }
+    }
+
+    return -low - 1;
+}
+
+char res[1000000];
+
+int main() {
+    // 可用内存列表
+    int pools[MAX_SIZE][2];
+    int pools_size &#61; 0;
+
+    char tmp[100];
+    while (scanf(&#34;%[^,\n]&#34;, tmp)) {
+        sscanf(tmp, &#34;%d:%d&#34;, &amp;pools[pools_size][0], &amp;pools[pools_size][1]);
+        pools_size&#43;&#43;;
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    // 申请内存列表
+    int applies[MAX_SIZE];
+    int applies_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;applies[applies_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+
+    // 可用内存列表 按照 内存粒度大小&#xff08;冒号前的数值&#xff09; 升序
+    qsort(pools, pools_size, sizeof(int*), cmp);
+
+    // 遍历申请内存列表
+    for (int i &#61; 0; i &lt; applies_size; i&#43;&#43;) {
+        // 在 可用内存列表 中二分查找 申请内存大小
+        int idx &#61; binarySearch(pools, pools_size, applies[i]);
+
+        // 如果没有找到完全匹配的内存大小的位置&#xff0c;则找刚好大于 申请内存 中最小的可用内存的位置
+        if (idx &lt; 0) {
+            idx &#61; -idx - 1;
+        }
+
+        // 如果可用内存的位置越界&#xff0c;则没有比 申请内存 更大的可用内存&#xff0c;此时返回false
+        if (idx &gt;&#61; pools_size) {
+            strcat(res, &#34;false,&#34;);
+            continue;
+        }
+
+        // 如果可用内存位置没有越界&#xff0c;则对应 内存大小 的 可用内存 数量-1&#xff0c;并返回true
+        pools[idx][1] -&#61; 1;
+        strcat(res, &#34;true,&#34;);
+
+        // 如果对应可用内存粒度使用完了&#xff0c;则从可用内存列表中删除它
+        if (pools[idx][1] &#61;&#61; 0) {
+            for (int j &#61; idx &#43; 1; j &lt; pools_size; j&#43;&#43;) {
+                pools[j - 1][0] &#61; pools[j][0];
+                pools[j - 1][1] &#61; pools[j][1];
+            }
+            pools_size--;
+        }
+    }
+
+    // 上面字符串拼接逻辑会多产生一个尾部的逗号&#xff0c;此处删除
+    res[strlen(res)-1] &#61; &#39;\0&#39;;
+
+    puts(res);
+
+    return 0;
+}
+
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

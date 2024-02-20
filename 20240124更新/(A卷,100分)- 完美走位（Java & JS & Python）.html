@@ -1,0 +1,274 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 完美走位（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>在第一人称射击游戏中&#xff0c;玩家通过键盘的A、S、D、W四个按键控制游戏人物分别向左、向后、向右、向前进行移动&#xff0c;从而完成走位。</p> 
+<p>假设玩家每按动一次键盘&#xff0c;游戏任务会向某个方向移动一步&#xff0c;如果玩家在操作一定次数的键盘并且各个方向的步数相同时&#xff0c;此时游戏任务必定会回到原点&#xff0c;则称此次走位为完美走位。</p> 
+<p>现给定玩家的走位&#xff08;例如&#xff1a;ASDA&#xff09;&#xff0c;请通过更换其中<strong>一段连续走位的方式</strong>使得原走位能够变成一个完美走位。其中待更换的连续走位可以是相同长度的任何走位。</p> 
+<p>请返回待更换的连续走位的最小可能长度。</p> 
+<p>如果原走位本身是一个完美走位&#xff0c;则返回0。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为由键盘字母表示的走位s&#xff0c;例如&#xff1a;ASDA</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出为待更换的连续走位的最小可能长度。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">WASDAASD</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">将第二个A替换为W&#xff0c;即可得到完美走位</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">AAAA</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">将其中三个连续的A替换为WSD&#xff0c;即可得到完美走位</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>题目要求&#xff0c;保持W,A,S,D字母个数平衡&#xff0c;即相等&#xff0c;如果不相等&#xff0c;可以从字符串中选取一段连续子串替换&#xff0c;来让字符串平衡。</p> 
+<p>比如&#xff1a;WWWWAAAASSSS</p> 
+<p>字符串长度12&#xff0c;W,A,S,D平衡的话&#xff0c;则每个字母个数应该是3个&#xff0c;而现在W,A,S各有4个&#xff0c;也就是说各超了1个。</p> 
+<p>因此我们应该从字符串中&#xff0c;选取一段包含1个W&#xff0c;1个A&#xff0c;1个S的子串&#xff0c;来替换为D。</p> 
+<p><span style="color:#a2e043;">WWWWAAAASSSS</span></p> 
+<p>W<span style="color:#a2e043;">WWWAAAASSSS</span></p> 
+<p>WW<span style="color:#a2e043;">WWAAAASSSS</span></p> 
+<p><span style="color:#0d0016;">........</span></p> 
+<p>WWW<span style="color:#fe2c24;">WAAAAS</span>SSS</p> 
+<p>而符合这种要求的子串可能很多&#xff0c;我们需要找出其中最短的&#xff0c;即<span style="color:#fe2c24;">WAAAAS</span><span style="color:#0d0016;">。</span></p> 
+<p><span style="color:#0d0016;">本题其实就是求最小覆盖子串&#xff0c;同</span><a href="https://blog.csdn.net/qfc_128220/article/details/128092566?spm&#61;1001.2014.3001.5501" title="LeetCode - 76 最小覆盖子串_伏城之外的博客-CSDN博客">LeetCode - 76 最小覆盖子串_伏城之外的博客-CSDN博客</a></p> 
+<p>题目解析请看上面链接博客。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  // 此时count记录统计W,A,S,D字母的数量
+  const count &#61; {
+    W: 0,
+    A: 0,
+    S: 0,
+    D: 0,
+  };
+
+  for (let c of str) count[c]&#43;&#43;;
+
+  // 平衡状态时&#xff0c;W,A,S,D应该都是avg数量
+  const avg &#61; str.length / 4;
+
+  let total &#61; 0; // total用于记录多余字母个数
+
+  let flag &#61; true; // flag表示当前是否为平衡状态&#xff0c;默认是
+  for (let c in count) {
+    if (count[c] &gt; avg) {
+      flag &#61; false; // 如果有一个字母数量超标&#xff0c;则平衡打破
+      count[c] -&#61; avg; // 此时count记录每个字母超过avg的数量
+      total &#43;&#61; count[c];
+    } else {
+      delete count[c];
+    }
+  }
+
+  if (flag) return 0; // 如果平衡&#xff0c;则输出0
+
+  let i &#61; 0;
+  let j &#61; 0;
+  let minLen &#61; str.length &#43; 1;
+
+  while (j &lt; str.length) {
+    const jc &#61; str[j];
+
+    if (count[jc]-- &gt; 0) {
+      total--;
+    }
+
+    while (total &#61;&#61;&#61; 0) {
+      minLen &#61; Math.min(minLen, j - i &#43; 1);
+
+      const ic &#61; str[i];
+      if (count[ic]&#43;&#43; &gt;&#61; 0) {
+        total&#43;&#43;;
+      }
+
+      i&#43;&#43;;
+    }
+
+    j&#43;&#43;;
+  }
+
+  return minLen;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.next()));
+  }
+
+  public static int getResult(String str) {
+    // count用于记录W,A,S,D字母的数量
+    HashMap&lt;Character, Integer&gt; count &#61; new HashMap&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      Character c &#61; str.charAt(i);
+      count.put(c, count.getOrDefault(c, 0) &#43; 1);
+    }
+
+    // 平衡状态时&#xff0c;W,A,S,D应该都是avg数量
+    int avg &#61; str.length() / 4;
+
+    // total用于记录多余字母个数
+    int total &#61; 0;
+
+    // flag表示当前是否为平衡状态&#xff0c;默认是
+    boolean flag &#61; true;
+
+    for (Character c : count.keySet()) {
+      if (count.get(c) &gt; avg) {
+        // 如果有一个字母数量超标&#xff0c;则平衡打破
+        flag &#61; false;
+        // 此时count记录每个字母超过avg的数量
+        count.put(c, count.get(c) - avg);
+        total &#43;&#61; count.get(c);
+      } else {
+        count.put(c, 0); // 此时count统计的其实是多余字母&#xff0c;如果没有超过avg,则表示没有多余字母
+      }
+    }
+
+    // 如果平衡&#xff0c;则输出0
+    if (flag) return 0;
+
+    int i &#61; 0;
+    int j &#61; 0;
+    int minLen &#61; str.length() &#43; 1;
+
+    while (j &lt; str.length()) {
+      Character jc &#61; str.charAt(j);
+
+      if (count.get(jc) &gt; 0) {
+        total--;
+      }
+      count.put(jc, count.get(jc) - 1);
+
+      while (total &#61;&#61; 0) {
+        minLen &#61; Math.min(minLen, j - i &#43; 1);
+
+        Character ic &#61; str.charAt(i);
+        if (count.get(ic) &gt;&#61; 0) {
+          total&#43;&#43;;
+        }
+        count.put(ic, count.get(ic) &#43; 1);
+
+        i&#43;&#43;;
+      }
+      j&#43;&#43;;
+    }
+    return minLen;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    # 此时count记录统计W,A,S,D字母的数量
+    count &#61; {
+        &#34;W&#34;: 0,
+        &#34;A&#34;: 0,
+        &#34;S&#34;: 0,
+        &#34;D&#34;: 0
+    }
+
+    for c in s:
+        count[c] &#43;&#61; 1
+
+    avg &#61; len(s) / 4  # 平衡状态时&#xff0c;W,A,S,D应该都是avg数量
+    total &#61; 0  # total用于记录多余字母个数
+    flag &#61; True  # flag表示当前是否为平衡状态&#xff0c;默认是
+
+    for c in count.keys():
+        if count[c] &gt; avg:
+            flag &#61; False  # 如果有一个字母数量超标&#xff0c;则平衡打破
+            count[c] -&#61; avg  # 此时count记录每个字母超过avg的数量
+            total &#43;&#61; count[c]
+        else:
+            count[c] &#61; 0
+
+    if flag:
+        return 0  # 如果平衡&#xff0c;则输出0
+
+    i &#61; 0
+    j &#61; 0
+    minLen &#61; len(s) - 1
+
+    while j &lt; len(s):
+        jc &#61; s[j]
+
+        if count[jc] &gt; 0:
+            total -&#61; 1
+        count[jc] -&#61; 1
+
+        while total &#61;&#61; 0:
+            minLen &#61; min(minLen, j - i &#43; 1)
+
+            ic &#61; s[i]
+            if count[ic] &gt;&#61; 0:
+                total &#43;&#61; 1
+            count[ic] &#43;&#61; 1
+
+            i &#43;&#61; 1
+
+        j &#43;&#61; 1
+
+    return minLen
+
+
+print(getResult(s))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

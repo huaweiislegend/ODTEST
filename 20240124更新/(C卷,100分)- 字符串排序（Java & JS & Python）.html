@@ -1,0 +1,158 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 字符串排序（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>排序规则&#xff1a;</p> 
+<ol><li>单词中字母比较不区分大小写&#xff0c;两个单词先以第一个字母作为排序的基准&#xff0c;如果第一个字母相同&#xff0c;就用第二个字母为基准&#xff0c;如果第二个字母相同就以第三个字母为基准。依此类推&#xff0c;如果到某个字母不相同&#xff0c;字母顺序在前的那个单词顺序在前。</li><li>当一个短单词和一个长单词的开头部分都相同&#xff08;即短单词是长单词从首字母开始的一部分&#xff09;&#xff0c;短单词顺序在前。</li><li>字母大小写不同的相同单词&#xff0c;只输出一次。</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">Hello hello world</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">Hello world</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">i LOVE Cc I love CC Hello Hel Hellow</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">Cc Hel Hello Hellow i LOVE</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>这题有两部分逻辑&#xff0c;一个是排序&#xff0c;一个是去重。</p> 
+<p>我这里是先排序后去重&#xff0c;因为我想基于栈结构去重&#xff0c;即排序后&#xff0c;不区分大小写的两个字符串一定是紧挨着的&#xff0c;因此后入栈的字符串如果和栈顶字符串相同&#xff08;不区分大小写&#xff09;&#xff0c;则不入栈。</p> 
+<p>排序规则是其实就是字典序。但是需要注意的是&#xff0c;不区分大小写排序&#xff0c;因此我们不能直接使用Array.prototype.sort的原生字典序排序&#xff0c;而是需要自定义不区分大小写的字典序排序。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34; &#34;);
+
+  console.log(sortStr(arr));
+});
+
+function sortStr(arr) {
+  // 排序
+  arr.sort((a, b) &#61;&gt; {
+    a &#61; a.toLowerCase();
+    b &#61; b.toLowerCase();
+
+    return a &#61;&#61;&#61; b ? 0 : a &gt; b ? 1 : -1;
+  });
+
+  const stack &#61; [arr.shift()];
+
+  // 去重
+  for (let str of arr) {
+    const top &#61; stack.at(-1).toLowerCase();
+    const add &#61; str.toLowerCase();
+    if (top &#61;&#61;&#61; add) continue;
+    stack.push(str);
+  }
+
+  return stack.join(&#34; &#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  // 输入获取
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] arr &#61; sc.nextLine().split(&#34; &#34;);
+
+    System.out.println(getResult(arr));
+  }
+
+  // 算法入口
+  public static String getResult(String[] arr) {
+    Arrays.sort(arr, (a, b) -&gt; a.toLowerCase().compareTo(b.toLowerCase()));
+
+    LinkedList&lt;String&gt; stack &#61; new LinkedList&lt;&gt;();
+    stack.add(arr[0]);
+
+    for (int i &#61; 1; i &lt; arr.length; i&#43;&#43;) {
+      String s &#61; arr[i];
+      String top &#61; stack.getLast().toLowerCase();
+      String add &#61; s.toLowerCase();
+      if (top.equals(add)) continue;
+      stack.add(s);
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (String s : stack) sj.add(s);
+    return sj.toString();
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; input().split()
+
+
+# 算法入口
+def getResult():
+    arr.sort(key&#61;lambda x: x.lower())
+
+    stack &#61; [arr[0]]
+
+    for i in range(1, len(arr)):
+        s &#61; arr[i]
+        top &#61; stack[-1].lower()
+        add &#61; s.lower()
+        if top &#61;&#61; add:
+            continue
+        stack.append(s)
+
+    return &#34; &#34;.join(stack)
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

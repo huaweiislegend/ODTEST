@@ -1,0 +1,448 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 组装最大可靠性设备（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>一个设备由N种类型元器件组成(每种类型元器件只需要一个&#xff0c;类型type编号从0~N-1)&#xff0c;</p> 
+<p>每个元器件均有可靠性属性reliability&#xff0c;可靠性越高的器件其价格price越贵。</p> 
+<p>而设备的可靠性由组成设备的所有器件中可靠性最低的器件决定。</p> 
+<p>给定预算S&#xff0c;购买N种元器件( 每种类型元器件都需要购买一个)&#xff0c;在不超过预算的情况下&#xff0c;请给出能够组成的设备的最大可靠性。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>S N // S总的预算&#xff0c;N元器件的种类</p> 
+<p>total // 元器件的总数&#xff0c;每种型号的元器件可以有多种;</p> 
+<p>此后有total行具体器件的数据</p> 
+<p>type reliability price // type 整数类型&#xff0c;代表元器件的类型编号从0 ~ N-1; reliabilty 整数类型 &#xff0c;代表元器件的可靠性; price 整数类型 &#xff0c;代表元器件的价格</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>符合预算的设备的最大可靠性&#xff0c;如果预算无法买齐N种器件&#xff0c;则返回 -1</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>0 &lt;&#61; S,price &lt;&#61; 10000000</li><li>0 &lt;&#61; N &lt;&#61; 100</li><li>0 &lt;&#61; type &lt;&#61; N-1</li><li>0 &lt;&#61; total &lt;&#61; 100000</li><li>0 &lt; reliability &lt;&#61; 100000</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">500 3<br /> 6<br /> 0 80 100<br /> 0 90 200<br /> 1 50 50<br /> 1 70 210<br /> 2 50 100<br /> 2 60 150</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">60</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>预算500&#xff0c;设备需要3种元件组成&#xff0c;方案</p> <p>类型0的第一个(可靠性80),</p> <p>类型1的第二个(可靠性70),</p> <p>类型2的第二个(可靠性60),</p> <p>可以使设备的可靠性最大 60</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">100 1<br /> 1<br /> 0 90 200</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">组成设备需要1个元件&#xff0c;但是元件价格大于预算&#xff0c;因此无法组成设备&#xff0c;返回-1</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题很像是分组背包问题&#xff0c;但是细看却不是&#xff0c;因为题目描述中说&#xff1a;</p> 
+<blockquote> 
+ <p>每种类型元器件都需要购买一个</p> 
+</blockquote> 
+<p></p> 
+<p>我的解题思路是二分。</p> 
+<p>首先&#xff0c;不分种类&#xff0c;收集所有器件出现过的可靠性到一个Set集合中&#xff0c;收集完后&#xff0c;进行升序排序&#xff0c;升序后可靠性数组设为maybe&#xff0c;即maybe数组里面的可靠性都有可能是题解。</p> 
+<p>之后&#xff0c;将所有器件按类型统计&#xff0c;由于题目输入已经给出了种类数n&#xff0c;因此可以定义一个长度为n的数组kinds&#xff0c;即为种类数组&#xff0c;kinds[type]下记录对应类型的所有器件。统计完后&#xff0c;我们需要遍历每一个kinds[type]&#xff0c;然后将它按照器件的可靠性进行升序。</p> 
+<p>预备处理如上。</p> 
+<p></p> 
+<p>接下来我们需要在maybe中二分取中间值maybe[mid]&#xff0c;作为一个可能的题解&#xff0c;即设备最大可靠性。然后遍历kinds&#xff0c;在每一个种类的器件中&#xff0c;找到一个可靠性&gt;&#61;maybe[mid]&#xff0c;且最接近maybe[mid]的器件&#xff0c;这里需要想清楚两点&#xff1a;</p> 
+<ul><li>题目描述&#xff1a;而设备的可靠性由组成设备的所有器件中可靠性最低的器件决定。因此&#xff0c;maybe[mid]作为题解的话&#xff0c;则每一个种类中选取的器件的可靠性要大于等于maybe[mid]才行。</li><li>题目描述还说&#xff1a;可靠性越高的器件其价格price越贵。因此&#xff0c;按照贪心原则&#xff0c;我们选取一个大于等于且最接近maybe[mid]可靠性的器件&#xff0c;是花费最少的。这样省下来的钱就可以买其他器件。</li></ul> 
+<p>由于之前&#xff0c;已经对kinds[type]进行了升序&#xff0c;因此这里可以二分查找&#xff1a;可靠性&gt;&#61;maybe[mid]&#xff0c;且最接近maybe[mid]的器件</p> 
+<p>这里又涉及到二分查找的目标位置和有序插入位置的知识&#xff0c;具体可以看&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/130097676?spm&#61;1001.2014.3001.5501" title="算法设计 - 二分法和三分法&#xff0c;洛谷P3382_伏城之外的博客-CSDN博客">算法设计 - 二分法和三分法&#xff0c;洛谷P3382_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>当找到所有kinds[type]中可靠性&gt;&#61;maybe[mid]&#xff0c;且最接近maybe[mid]的器件后&#xff0c;对这些器件的price进行求和&#xff0c;得到sumPrice&#xff1a;</p> 
+<ul><li>如果sumPrice &lt;&#61; 总预算s&#xff0c;那么说明&#xff0c;当前maybe[mid]真的是一个可能解&#xff0c;但不一定是最优解&#xff0c;我们需要继续二分找到更小的maybe[mid]</li><li>如果sumPrice &gt; 总预算s&#xff0c;那么说明&#xff0c;当前maybe[mid]选大了&#xff0c;我们下次二分应该选更小一点的maybe[mid]来尝试</li></ul> 
+<p>按此二分逻辑&#xff0c;将最后一次符合要求的maybe[mid]可能解返回即可&#xff0c;如果没有符合要求的maybe[mid]&#xff0c;则返回-1。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.TreeSet;
+
+public class Main {
+  // 器件类
+  static class Device {
+    int reliability;
+    int price;
+
+    public Device(int reliability, int price) {
+      this.reliability &#61; reliability;
+      this.price &#61; price;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int s &#61; sc.nextInt(); // 总预算
+    int n &#61; sc.nextInt(); // 器件的种类数
+
+    // 收集器件的可靠性
+    TreeSet&lt;Integer&gt; reliabilities &#61; new TreeSet&lt;&gt;();
+
+    // 各种类集合
+    ArrayList&lt;ArrayList&lt;Device&gt;&gt; kinds &#61; new ArrayList&lt;&gt;();
+    // 为每个具体种类创建一个集合&#xff0c;用于装对应种类的器件
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) kinds.add(new ArrayList&lt;&gt;());
+
+    int total &#61; sc.nextInt(); // 之后输入total行具体器件的数据
+
+    for (int i &#61; 0; i &lt; total; i&#43;&#43;) {
+      // 器件种类
+      int type &#61; sc.nextInt();
+
+      // 器件可靠性
+      int reliability &#61; sc.nextInt();
+      reliabilities.add(reliability); // 收集器件的可靠性
+
+      // 器件价值
+      int price &#61; sc.nextInt();
+
+      // 将器件加入到对应的种类中
+      kinds.get(type).add(new Device(reliability, price));
+    }
+
+    System.out.println(getResult(s, kinds, reliabilities));
+  }
+
+  /**
+   * &#64;param s 总预算
+   * &#64;param kinds 种类集合
+   * &#64;param reliabilities 可靠性集合
+   * &#64;return 最大可靠性
+   */
+  public static int getResult(
+      int s, ArrayList&lt;ArrayList&lt;Device&gt;&gt; kinds, TreeSet&lt;Integer&gt; reliabilities) {
+
+    // ans记录题解
+    int ans &#61; -1;
+
+    // 将每个种类内的器件按照可靠性升序
+    for (ArrayList&lt;Device&gt; kind : kinds) {
+      kind.sort((a, b) -&gt; a.reliability - b.reliability);
+    }
+
+    // 将所有器件的可靠性集合&#xff0c;变为数组
+    Integer[] maybe &#61; reliabilities.toArray(new Integer[0]);
+
+    // 二分选取可能的最大可靠性maybe
+    int low &#61; 0;
+    int high &#61; maybe.length - 1;
+
+    while (low &lt;&#61; high) {
+      int mid &#61; (low &#43; high) &gt;&gt; 1;
+      // 如果maybe[mid]可靠性可以保证所有种类器件都能选到&#xff0c;且价格之和小于s
+      if (check(kinds, maybe[mid], s)) {
+        // 则maybe[mid]可靠性就是一个可能解
+        ans &#61; maybe[mid];
+        // 继续尝试更优解&#xff0c;即找更大的可靠性
+        low &#61; mid &#43; 1;
+      } else {
+        // 否则&#xff0c;说明可靠性选高了&#xff0c;我们应该继续尝试更低的可靠性
+        high &#61; mid - 1;
+      }
+    }
+
+    return ans;
+  }
+
+  public static boolean check(ArrayList&lt;ArrayList&lt;Device&gt;&gt; kinds, int maxReliability, int s) {
+    int sum &#61; 0;
+    for (ArrayList&lt;Device&gt; kind : kinds) {
+      // 注意kind内的器件已经按照可靠性升序了
+      // 我们需要在该kind种类内找到一个可靠性&gt;&#61;maxReliability的器件
+      int idx &#61; binarySearch(kind, maxReliability);
+
+      // 如果idx&lt;0&#xff0c;则说明idx是一个插入位置
+      if (idx &lt; 0) {
+        idx &#61; -idx - 1;
+      }
+
+      // 如果idx&#61;&#61;kind.size()则说明kind内所有器件的可靠性都低于maxReliability&#xff0c;因此此kind器件选取不到&#xff0c;可以直接返回false
+      if (idx &#61;&#61; kind.size()) return false;
+
+      // 否则&#xff0c;选取对应idx位置的器件&#xff0c;并计入价格到总价
+      sum &#43;&#61; kind.get(idx).price;
+    }
+
+    // 如果最终总价小于总预算s&#xff0c;则此maxReliability可行
+    return sum &lt;&#61; s;
+  }
+
+  public static int binarySearch(ArrayList&lt;Device&gt; kind, int target) {
+    int low &#61; 0;
+    int high &#61; kind.size() - 1;
+
+    while (low &lt;&#61; high) {
+      int mid &#61; (low &#43; high) &gt;&gt; 1;
+      Device device &#61; kind.get(mid);
+
+      if (device.reliability &gt; target) {
+        high &#61; mid - 1;
+      } else if (device.reliability &lt; target) {
+        low &#61; mid &#43; 1;
+      } else {
+        return mid;
+      }
+    }
+
+    return -low - 1;
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let s, n, total;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    [s, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+    total &#61; lines[1] - 0;
+  }
+
+  if (total !&#61;&#61; undefined &amp;&amp; lines.length &#61;&#61;&#61; total &#43; 2) {
+    lines.shift();
+    lines.shift();
+
+    // 记录各种类
+    const kinds &#61; new Array(n).fill(0).map(() &#61;&gt; new Array());
+
+    // 记录所有器件的可靠性
+    const reliabilities &#61; new Set();
+
+    lines
+      .map((s) &#61;&gt; s.split(&#34; &#34;).map(Number))
+      .forEach((arr) &#61;&gt; {
+        const [type, reliability, price] &#61; arr;
+        // 将器件加入到对应的种类下
+        kinds[type].push(new Device(reliability, price));
+        // 收集该器件的可靠性
+        reliabilities.add(reliability);
+      });
+
+    console.log(getResult(kinds, s, reliabilities));
+
+    lines.length &#61; 0;
+  }
+});
+
+// 器件类
+class Device {
+  constructor(reliability, price) {
+    this.reliability &#61; reliability;
+    this.price &#61; price;
+  }
+}
+
+/**
+ *
+ * &#64;param {*} kinds 种类集合&#xff0c;每个kind内包含多个器件
+ * &#64;param {*} s 总预算
+ * &#64;param {*} reliabilities 器件可靠性集合
+ */
+function getResult(kinds, s, reliabilities) {
+  // 记录题解
+  let ans &#61; -1;
+
+  // 将每个种类内的器件按照可靠性升序
+  for (let kind of kinds) {
+    kind.sort((a, b) &#61;&gt; a.reliability - b.reliability);
+  }
+
+  // 将所有器件的可靠性集合&#xff0c;变为数组&#xff0c;并将可靠性升序
+  const maybe &#61; [...reliabilities].sort((a, b) &#61;&gt; a - b);
+
+  // 在maybe中二分选取可能的题解
+  let low &#61; 0;
+  let high &#61; maybe.length - 1;
+
+  while (low &lt;&#61; high) {
+    const mid &#61; (low &#43; high) &gt;&gt; 1;
+
+    // 如果maybe[mid]可靠性可以保证所有种类器件都能选到&#xff0c;且价格之和小于s
+    if (check(kinds, maybe[mid], s)) {
+      // 则maybe[mid]可靠性就是一个可能解
+      ans &#61; maybe[mid];
+      // 继续尝试更优解&#xff0c;即找更大的可靠性
+      low &#61; mid &#43; 1;
+    } else {
+      // 否则&#xff0c;说明可靠性选高了&#xff0c;我们应该继续尝试更低的可靠性
+      high &#61; mid - 1;
+    }
+  }
+
+  return ans;
+}
+
+function check(kinds, reliability, s) {
+  let sumPrice &#61; 0;
+
+  for (let kind of kinds) {
+    // 注意kind内的器件已经按照可靠性升序了
+    // 我们需要在该kind种类内找到一个可靠性&gt;&#61;maxReliability的器件
+    let idx &#61; binarySearch(kind, reliability);
+
+    // 如果idx&lt;0&#xff0c;则说明idx是一个插入位置
+    if (idx &lt; 0) idx &#61; -idx - 1;
+
+    // 如果idx&#61;&#61;kind.size()则说明kind内所有器件的可靠性都低于maxReliability&#xff0c;因此此kind器件选取不到&#xff0c;可以直接返回false
+    if (idx &#61;&#61; kind.length) return false;
+
+    // 否则&#xff0c;选取对应idx位置的器件&#xff0c;并计入价格到总价
+    sumPrice &#43;&#61; kind[idx].price;
+  }
+
+  // 如果最终总价小于总预算s&#xff0c;则此maxReliability可行
+  return sumPrice &lt;&#61; s;
+}
+
+function binarySearch(kind, target) {
+  let low &#61; 0;
+  let high &#61; kind.length - 1;
+
+  while (low &lt;&#61; high) {
+    const mid &#61; (low &#43; high) &gt;&gt; 1;
+    const device &#61; kind[mid];
+
+    if (device.reliability &gt; target) {
+      high &#61; mid - 1;
+    } else if (device.reliability &lt; target) {
+      low &#61; mid &#43; 1;
+    } else {
+      return mid;
+    }
+  }
+
+  return -low - 1;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">class Device:
+    def __init__(self, reliability, price):
+        self.reliability &#61; reliability
+        self.price &#61; price
+
+
+# 输入获取
+s, n &#61; map(int, input().split())  # s总预算, n器件的种类数
+total &#61; int(input())  # 之后输入total行具体器件的数据
+arr &#61; [list(map(int, input().split())) for _ in range(total)]
+
+reliabilities &#61; set()  # 收集器件的可靠性
+
+kinds &#61; [[] for _ in range(n)]  # 各种类集合
+for ty, reliability, price in arr:
+    kinds[int(ty)].append(Device(reliability, price))
+    reliabilities.add(reliability)
+
+
+def binarySearch(kind, target):
+    low &#61; 0
+    high &#61; len(kind) - 1
+
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) &gt;&gt; 1
+        device &#61; kind[mid]
+
+        if device.reliability &gt; target:
+            high &#61; mid - 1
+        elif device.reliability &lt; target:
+            low &#61; mid &#43; 1
+        else:
+            return mid
+
+    return -low - 1;
+
+
+def check(reliability):
+    sumPrice &#61; 0
+
+    for kind in kinds:
+        # 注意kind内的器件已经按照可靠性升序了
+        # 我们需要在该kind种类内找到一个可靠性&gt;&#61;maxReliability的器件
+        idx &#61; binarySearch(kind, reliability)
+
+        # 如果idx&lt;0&#xff0c;则说明idx是一个插入位置
+        if idx &lt; 0:
+            idx &#61; -idx - 1
+
+        # 如果idx&#61;&#61;kind.size()则说明kind内所有器件的可靠性都低于maxReliability&#xff0c;因此此kind器件选取不到&#xff0c;可以直接返回false
+        if idx &#61;&#61; len(kind):
+            return False
+
+        # 否则&#xff0c;选取对应idx位置的器件&#xff0c;并计入价格到总价
+        sumPrice &#43;&#61; kind[idx].price
+
+    # 如果最终总价小于总预算s&#xff0c;则此maxReliability可行
+    return sumPrice &lt;&#61; s
+
+
+# 算法入口
+def getResult():
+    # ans记录题解
+    ans &#61; -1
+
+    # 将每个种类内的器件按照可靠性升序
+    for kind in kinds:
+        kind.sort(key&#61;lambda x: x.reliability)
+
+    # 将所有器件的可靠性集合&#xff0c;变为数组
+    maybe &#61; list(reliabilities)
+    maybe.sort()
+
+    # 二分选取可能的最大可靠性maybe
+    low &#61; 0
+    high &#61; len(maybe) - 1
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) &gt;&gt; 1
+
+        # 如果maybe[mid]可靠性可以保证所有种类器件都能选到&#xff0c;且价格之和小于s
+        if check(maybe[mid]):
+            # 则maybe[mid]可靠性就是一个可能解
+            ans &#61; maybe[mid]
+            # 继续尝试更优解&#xff0c;即找更大的可靠性
+            low &#61; mid &#43; 1
+        else:
+            # 否则&#xff0c;说明可靠性选高了&#xff0c;我们应该继续尝试更低的可靠性
+            high &#61; mid - 1
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,706 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 求幸存数之和（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给一个正整数数列 nums&#xff0c;一个跳数 jump&#xff0c;及幸存数量 left。</p> 
+<p>运算过程为&#xff1a;从索引0的位置开始向后跳&#xff0c;中间跳过 J 个数字&#xff0c;命中索引为 J&#43;1 的数字&#xff0c;该数被敲出&#xff0c;并从该点起跳&#xff0c;以此类推&#xff0c;直到幸存 left 个数为止&#xff0c;然后返回幸存数之和。</p> 
+<p></p> 
+<p>约束&#xff1a;</p> 
+<ol><li>0是第一个起跳点</li><li>起跳点和命中点之间间隔 jump 个数字&#xff0c;已被敲出的数字不计入在内。</li><li>跳到末尾时无缝从头开始&#xff08;循环查找&#xff09;&#xff0c;并可以多次循环。</li><li>若起始时 left &gt; len(nums) 则无需跳数处理过程。</li></ol> 
+<p></p> 
+<p>方法设计&#xff1a;</p> 
+<pre>/**
+ * &#64;param nums 正整数数列&#xff0c;长度范围 [1, 10000]
+ * &#64;param jump 跳数&#xff0c;范围 [1, 10000]
+ * &#64;param left 幸存数量&#xff0c;范围 [0, 10000]
+ * &#64;return 幸存数之和
+ */
+int sumOfLeft(int[] nums, int jump, int left)</pre> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入正整数数列</p> 
+<p>第二行输入跳数</p> 
+<p>第三行输入幸存数量</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出幸存数之和</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1,2,3,4,5,6,7,8,9<br /> 4<br /> 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">13</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">从1&#xff08;索引为0&#xff09;开始起跳&#xff0c;中间跳过 4 个数字&#xff0c;因此依次删除 6,2,8,5,4,7。剩余1,3,9&#xff0c;返回和为13</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题考试时为核心代码模式&#xff0c;非ACM模式&#xff0c;即无需自己解析输入数据。</p> 
+<p>本博客代码实现仍然以ACM模式处理&#xff0c;但是会将输入处理 与 算法逻辑 分开&#xff0c;大家只看算法逻辑即可。</p> 
+<p></p> 
+<p>题目用例删点过程如下&#xff1a;</p> 
+<p><img alt="" height="318" src="https://img-blog.csdnimg.cn/direct/cf3daf8b534e4d04a30880bd259b26d6.png" width="545" /></p> 
+<p><img alt="" height="310" src="https://img-blog.csdnimg.cn/direct/cd3d2cc48d264589bd987b8afcb9d91b.png" width="549" /></p> 
+<p><img alt="" height="304" src="https://img-blog.csdnimg.cn/direct/5bf2213258164772b107b86055cc6c56.png" width="577" /></p> 
+<p><img alt="" height="317" src="https://img-blog.csdnimg.cn/direct/508f0c341a974904a7ba79c891947829.png" width="519" /></p> 
+<p><img alt="" height="315" src="https://img-blog.csdnimg.cn/direct/6cdd42ac81c946aba268b789fe19cb3b.png" width="552" /></p> 
+<p><img alt="" height="321" src="https://img-blog.csdnimg.cn/direct/da939b14a1704a56b2e6363ea146e695.png" width="400" /></p> 
+<p></p> 
+<p>通过上面图示我们可以发现&#xff0c;被删除节点其实是作为起跳点&#xff0c;因此基于普通数组来操作的话&#xff0c;既要实现节点删除&#xff0c;又要实现基于删除点进行下次的起跳&#xff0c;这个逻辑是比较复杂的。</p> 
+<p>我的想法是构建一个循环链表来代替数组&#xff0c;关于循环链表的实现细节&#xff0c;请看代码实现以及注释。</p> 
+<hr /> 
+<p>2023.12.12</p> 
+<p>Python自定义循环链表的性能表现不佳&#xff0c;反而使用动态数组性能更好。</p> 
+<p>因此&#xff0c;加了一个动态数组解法。</p> 
+<p></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<h5>动态数组解法</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入处理
+void (async function () {
+  const nums &#61; (await readline()).split(&#34;,&#34;).map(Number);
+  const jump &#61; parseInt(await readline());
+  const left &#61; parseInt(await readline());
+  console.log(sumOfLeft(nums, jump, left));
+})();
+
+function sumOfLeft(nums, jump, left) {
+  // 从起跳点开始的话&#xff0c;需要跳jump&#43;1次&#xff0c;到达需要删除的节点
+  // 从起跳点下一个节点开始的话&#xff0c;需要跳jump次&#xff0c;到达需要删除的节点
+  // 这里我们从起跳点的下一个节点开始,初始时起跳点为索引0&#xff0c;因此下一个节点为索引1
+  let start &#61; 1;
+
+  // 如果剩余节点数 &gt; 幸存数量&#xff0c;则还需要继续删除节点
+  while (nums.length &gt; left) {
+    // 跳 jump 次
+    start &#43;&#61; jump;
+    // 为了避免越界&#xff0c;新起跳点索引位置对剩余节点数取余
+    start %&#61; nums.length;
+    nums.splice(start, 1);
+  }
+
+  return nums.reduce((a, b) &#61;&gt; a &#43; b, 0);
+}
+</code></pre> 
+<h5>循环链表解法</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入处理
+void (async function () {
+  const nums &#61; (await readline()).split(&#34;,&#34;).map(Number);
+  const jump &#61; parseInt(await readline());
+  const left &#61; parseInt(await readline());
+  console.log(sumOfLeft(nums, jump, left));
+})();
+
+// 循环链表的节点定义
+class Node {
+  constructor(val) {
+    this.val &#61; val;
+    this.prev &#61; null;
+    this.next &#61; null;
+  }
+}
+
+// 循环链表定义
+class CycleLink {
+  constructor(nums) {
+    this.head &#61; null; // 私有属性&#xff0c;仅用于链接tail&#xff0c;完成循环
+    this.tail &#61; null; // 私有属性&#xff0c;仅用于链接head&#xff0c;完成循环
+    this.cur &#61; null; // 循环链表遍历指针
+    this.size &#61; 0; // 循环链表的节点数
+    this.sum &#61; 0; // 循环链表中所有节点值之和
+
+    // 初始化循环链表
+    for (let num of nums) {
+      // 向循环链表中添加节点
+      this.add(num);
+    }
+
+    // 将普通链表头尾相连&#xff0c;形成循环链表
+    if (this.head !&#61; null) {
+      this.head.prev &#61; this.tail;
+      this.tail.next &#61; this.head;
+      // 初始时循环链表的遍历指针指向头位值
+      this.cur &#61; this.head;
+    }
+  }
+
+  add(val) {
+    const node &#61; new Node(val);
+
+    if (this.size &#61;&#61; 0) {
+      this.head &#61; node;
+      this.tail &#61; node;
+    } else {
+      this.tail.next &#61; node;
+      node.prev &#61; this.tail;
+      this.tail &#61; node;
+    }
+
+    this.sum &#43;&#61; val;
+    this.size&#43;&#43;;
+  }
+
+  // 删除循环链表cur指针指向的节点
+  remove() {
+    // 被删除节点的值从 循环链表和 中去除
+    this.sum -&#61; this.cur.val;
+    // 循环链表节点数量-1
+    this.size--;
+
+    // 完成删除节点动作
+    const prev &#61; this.cur.prev;
+    const next &#61; this.cur.next;
+
+    prev.next &#61; next;
+    next.prev &#61; prev;
+
+    this.cur.prev &#61; null;
+    this.cur.next &#61; null;
+
+    // 遍历指针指向被删除节点的下一个节点
+    this.cur &#61; next;
+  }
+
+  // 遍历下一个循环链表节点
+  next() {
+    this.cur &#61; this.cur.next;
+  }
+}
+
+function sumOfLeft(nums, jump, left) {
+  const link &#61; new CycleLink(nums);
+
+  // 从起跳点开始的话&#xff0c;需要跳jump&#43;1次&#xff0c;到达需要删除的节点
+  // 从起跳点下一个节点开始的话&#xff0c;需要跳jump次&#xff0c;到达需要删除的节点
+
+  // 这里我们从起跳点的下一个节点开始
+  link.next();
+
+  // 如果链表中剩余节点数 &gt; 幸存数量&#xff0c;则还需要继续删除节点
+  while (link.size &gt; left) {
+    // 跳 jump 次, 为了避免冗余转圈&#xff0c; 其实只需要跳 jump % link.size
+    const zip_jump &#61; jump % link.size;
+    for (let i &#61; 0; i &lt; zip_jump; i&#43;&#43;) {
+      link.next();
+    }
+    // 删除当前接节点&#xff08;被删除的节点其实是下一次的起跳点&#xff09;&#xff0c;这里link.remove方法删除节点后会自动跳到被删除节点的下一个节点&#xff0c;即&#xff1a;起跳点的下一个节点
+    link.remove();
+  }
+
+  return link.sum;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<h5>动态数组解法</h5> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class Main {
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int jump &#61; Integer.parseInt(sc.nextLine());
+    int left &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(new Main().sumOfLeft(nums, jump, left));
+  }
+
+  public int sumOfLeft(int[] nums, int jump, int left) {
+    ArrayList&lt;Integer&gt; list &#61;
+        (ArrayList&lt;Integer&gt;) Arrays.stream(nums).boxed().collect(Collectors.toList());
+
+    // 从起跳点开始的话&#xff0c;需要跳jump&#43;1次&#xff0c;到达需要删除的节点
+    // 从起跳点下一个节点开始的话&#xff0c;需要跳jump次&#xff0c;到达需要删除的节点
+    // 这里我们从起跳点的下一个节点开始,初始时起跳点为索引0&#xff0c;因此下一个节点为索引1
+    int start &#61; 1;
+
+    // 如果剩余节点数 &gt; 幸存数量&#xff0c;则还需要继续删除节点
+    while (list.size() &gt; left) {
+      // 跳 jump 次
+      start &#43;&#61; jump;
+      // 为了避免越界&#xff0c;新起跳点索引位置对剩余节点数取余
+      start %&#61; list.size();
+      list.remove(start);
+    }
+
+    return list.stream().reduce(Integer::sum).orElse(0);
+  }
+}
+</code></pre> 
+<p></p> 
+<h5>循环链表解法</h5> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34;,&#34;)).mapToInt(Integer::parseInt).toArray();
+    int jump &#61; Integer.parseInt(sc.nextLine());
+    int left &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(new Main().sumOfLeft(nums, jump, left));
+  }
+
+  // 循环链表的节点定义
+  static class Node {
+    int val;
+    Node prev;
+    Node next;
+
+    public Node(int val) {
+      this.val &#61; val;
+    }
+  }
+
+  // 循环链表定义
+  static class CycleLink {
+    private Node head; // 私有属性&#xff0c;仅用于链接tail&#xff0c;完成循环
+    private Node tail; // 私有属性&#xff0c;仅用于链接head&#xff0c;完成循环
+    public Node cur; // 循环链表遍历指针
+    public int size; // 循环链表的节点数
+    public int sum; // 循环链表中所有节点值之和
+
+    // 初始化循环链表
+    public CycleLink(int[] nums) {
+      // 向循环链表中添加节点
+      for (int num : nums) {
+        this.add(num);
+      }
+
+      // 将普通链表头尾相连&#xff0c;形成循环链表
+      if (this.head !&#61; null) {
+        this.head.prev &#61; this.tail;
+        this.tail.next &#61; this.head;
+        // 初始时循环链表的遍历指针指向头位值
+        this.cur &#61; this.head;
+      }
+    }
+
+    private void add(int val) {
+      Node node &#61; new Node(val);
+
+      if (this.size &#61;&#61; 0) {
+        this.head &#61; node;
+        this.tail &#61; node;
+      } else {
+        this.tail.next &#61; node;
+        node.prev &#61; this.tail;
+        this.tail &#61; node;
+      }
+
+      this.sum &#43;&#61; val;
+      this.size&#43;&#43;;
+    }
+
+    // 删除循环链表cur指针指向的节点
+    public void remove() {
+      // 被删除节点的值从 循环链表和 中去除
+      this.sum -&#61; this.cur.val;
+      // 循环链表节点数量-1
+      this.size--;
+
+      // 完成删除节点动作
+      Node prev &#61; this.cur.prev;
+      Node next &#61; this.cur.next;
+
+      prev.next &#61; next;
+      next.prev &#61; prev;
+
+      this.cur.prev &#61; null;
+      this.cur.next &#61; null;
+
+      // 遍历指针指向被删除节点的下一个节点
+      this.cur &#61; next;
+    }
+
+    // 遍历下一个循环链表节点
+    public void next() {
+      this.cur &#61; this.cur.next;
+    }
+  }
+
+  public int sumOfLeft(int[] nums, int jump, int left) {
+    CycleLink link &#61; new CycleLink(nums);
+
+    // 从起跳点开始的话&#xff0c;需要跳jump&#43;1次&#xff0c;到达需要删除的节点
+    // 从起跳点下一个节点开始的话&#xff0c;需要跳jump次&#xff0c;到达需要删除的节点
+
+    // 这里我们从起跳点的下一个节点开始
+    link.next();
+    // 如果链表中剩余节点数 &gt; 幸存数量&#xff0c;则还需要继续删除节点
+    while (link.size &gt; left) {
+      // 跳 jump 次&#xff0c;为了避免冗余转圈&#xff0c; 其实只需要跳 jump % link.size
+      int zip_jump &#61; jump % link.size;
+      for (int i &#61; 0; i &lt; zip_jump; i&#43;&#43;) {
+        link.next();
+      }
+      // 删除当前接节点&#xff08;被删除的节点其实是下一次的起跳点&#xff09;&#xff0c;这里link.remove方法删除节点后会自动跳到被删除节点的下一个节点&#xff0c;即&#xff1a;起跳点的下一个节点
+      link.remove();
+    }
+
+    return link.sum;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<h5>动态数组解法</h5> 
+<pre><code class="language-python"># 输入获取
+nums &#61; list(map(int, input().split(&#34;,&#34;)))
+jump &#61; int(input())
+left &#61; int(input())
+
+
+# 算法入口
+def sumOfLeft(nums, jump, left):
+    # 从起跳点开始的话&#xff0c;需要跳jump&#43;1次&#xff0c;到达需要删除的节点
+    # 从起跳点下一个节点开始的话&#xff0c;需要跳jump次&#xff0c;到达需要删除的节点
+    # 这里我们从起跳点的下一个节点开始,初始时起跳点为索引0&#xff0c;因此下一个节点为索引1
+    start &#61; 1
+
+    # 如果剩余节点数 &gt; 幸存数量&#xff0c;则还需要继续删除节点
+    while len(nums) &gt; left:
+        # 跳 jump 次
+        start &#43;&#61; jump
+        # 为了避免越界&#xff0c;新起跳点索引位置对剩余节点数取余
+        start %&#61; len(nums)
+        nums.pop(start)
+
+    return sum(nums)
+
+
+# 算法调用
+print(sumOfLeft(nums, jump, left))
+</code></pre> 
+<h5>循环链表解法</h5> 
+<pre><code class="language-python"># 循环链表的节点定义
+class Node:
+    def __init__(self, val):
+        self.val &#61; val
+        self.prev &#61; None
+        self.next &#61; None
+
+
+# 循环链表定义
+class CycleLink:
+    def __init__(self, nums):
+        self.head &#61; None  # 私有属性&#xff0c;仅用于链接tail&#xff0c;完成循环
+        self.tail &#61; None  # 私有属性&#xff0c;仅用于链接head&#xff0c;完成循环
+        self.cur &#61; None  # 循环链表遍历指针
+        self.size &#61; 0  # 循环链表的节点数
+        self.sum &#61; 0  # 循环链表中所有节点值之和
+
+        # 初始化循环链表
+        for num in nums:
+            # 向循环链表中添加节点
+            self.add(num)
+
+        # 将普通链表头尾相连&#xff0c;形成循环链表
+        if self.head is not None:
+            self.head.prev &#61; self.tail
+            self.tail.next &#61; self.head
+            # 初始时循环链表的遍历指针指向头位值
+            self.cur &#61; self.head
+
+    def add(self, val):
+        node &#61; Node(val)
+
+        if self.size &#61;&#61; 0:
+            self.head &#61; node
+            self.tail &#61; node
+        else:
+            self.tail.next &#61; node
+            node.prev &#61; self.tail
+            self.tail &#61; node
+
+        self.sum &#43;&#61; val
+        self.size &#43;&#61; 1
+
+    # 删除循环链表cur指针指向的节点
+    def remove(self):
+        # 被删除节点的值从 循环链表和 中去除
+        self.sum -&#61; self.cur.val
+        # 循环链表节点数量-1
+        self.size -&#61; 1
+
+        # 完成删除节点动作
+        prev &#61; self.cur.prev
+        next &#61; self.cur.next
+
+        prev.next &#61; next
+        next.prev &#61; prev
+
+        self.cur.prev &#61; None
+        self.cur.next &#61; None
+
+        # 遍历指针指向被删除节点的下一个节点
+        self.cur &#61; next
+
+    # 遍历下一个循环链表节点
+    def next(self):
+        self.cur &#61; self.cur.next
+
+
+# 输入获取
+nums &#61; list(map(int, input().split(&#34;,&#34;)))
+jump &#61; int(input())
+left &#61; int(input())
+
+
+# 算法入口
+def sumOfLeft(nums, jump, left):
+    link &#61; CycleLink(nums)
+
+    # 从起跳点开始的话&#xff0c;需要跳jump&#43;1次&#xff0c;到达需要删除的节点
+    # 从起跳点下一个节点开始的话&#xff0c;需要跳jump次&#xff0c;到达需要删除的节点
+
+    # 这里我们从起跳点的下一个节点开始
+    link.next()
+    # 如果链表中剩余节点数 &gt; 幸存数量&#xff0c;则还需要继续删除节点
+    while link.size &gt; left:
+        # 跳 jump 次&#xff0c;为了避免冗余转圈&#xff0c; 其实只需要跳 jump % link.size
+        zip_jump &#61; jump % link.size
+        for _ in range(zip_jump):
+            link.next()
+        # 删除当前接节点&#xff08;被删除的节点其实是下一次的起跳点&#xff09;&#xff0c;这里link.remove方法删除节点后会自动跳到被删除节点的下一个节点&#xff0c;即&#xff1a;起跳点的下一个节点
+        link.remove()
+
+    return link.sum
+
+
+# 算法调用
+print(sumOfLeft(nums, jump, left))
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<h5>动态数组解法</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 10000
+
+int sumOfLeft(int nums[], int nums_size, int jump, int left) {
+    // 从起跳点开始的话&#xff0c;需要跳jump&#43;1次&#xff0c;到达需要删除的节点
+    // 从起跳点下一个节点开始的话&#xff0c;需要跳jump次&#xff0c;到达需要删除的节点
+    // 这里我们从起跳点的下一个节点开始,初始时起跳点为索引0&#xff0c;因此下一个节点为索引1
+    int start &#61; 1;
+
+    // 如果剩余节点数 &gt; 幸存数量&#xff0c;则还需要继续删除节点
+    while (nums_size &gt; left) {
+        // 跳 jump 次
+        start &#43;&#61; jump;
+        // 为了避免越界&#xff0c;新起跳点索引位置对剩余节点数取余
+        start %&#61; nums_size;
+
+        for (int i &#61; start; i &lt; nums_size - 1; i&#43;&#43;) {
+            nums[i] &#61; nums[i &#43; 1];
+        }
+        nums_size--;
+    }
+
+    int sum &#61; 0;
+    for (int i &#61; 0; i &lt; nums_size; i&#43;&#43;) {
+        sum &#43;&#61; nums[i];
+    }
+
+    return sum;
+}
+
+int main() {
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    int jump;
+    scanf(&#34;%d&#34;, &amp;jump);
+
+    int left;
+    scanf(&#34;%d&#34;, &amp;left);
+
+    printf(&#34;%d\n&#34;, sumOfLeft(nums, nums_size, jump, left));
+
+    return 0;
+}</code></pre> 
+<h5 style="background-color:transparent;">循环链表解法</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 10000
+
+// 循环链表的节点定义
+typedef struct Node {
+    int val;
+    struct Node *prev;
+    struct Node *next;
+} Node;
+
+// 循环链表定义
+typedef struct CycleLink {
+    Node *head; // 私有属性&#xff0c;仅用于链接tail&#xff0c;完成循环
+    Node *tail; // 私有属性&#xff0c;仅用于链接head&#xff0c;完成循环
+    Node *cur; // 循环链表遍历指针
+    int size; // 循环链表的节点数
+    int sum; // 循环链表中所有节点值之和
+} CycleLink;
+
+void add_CycleLink(CycleLink *link, int val) {
+    Node *node &#61; (Node *) malloc(sizeof(Node));
+    node-&gt;val &#61; val;
+    node-&gt;prev &#61; NULL;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        node-&gt;prev &#61; link-&gt;tail;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+    link-&gt;sum &#43;&#61; val;
+}
+
+// 初始化循环链表
+CycleLink *new_CycleLink(int nums[], int nums_size) {
+    CycleLink *link &#61; (CycleLink *) malloc(sizeof(CycleLink));
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    link-&gt;cur &#61; NULL;
+    link-&gt;size &#61; 0;
+    link-&gt;sum &#61; 0;
+
+    // 向循环链表中添加节点
+    for (int i &#61; 0; i &lt; nums_size; i&#43;&#43;) {
+        add_CycleLink(link, nums[i]);
+    }
+
+    // 将普通链表头尾相连&#xff0c;形成循环链表
+    if (link-&gt;head !&#61; NULL) {
+        link-&gt;head-&gt;prev &#61; link-&gt;tail;
+        link-&gt;tail-&gt;next &#61; link-&gt;head;
+        // 初始时循环链表的遍历指针指向头位值
+        link-&gt;cur &#61; link-&gt;head;
+    }
+
+    return link;
+}
+
+// 删除循环链表cur指针指向的节点
+void remove_CycleLink(CycleLink *link) {
+    // 循环链表节点数量-1
+    link-&gt;size--;
+    // 被删除节点的值从 循环链表和 中去除
+    link-&gt;sum -&#61; link-&gt;cur-&gt;val;
+
+    // 完成删除节点动作
+    Node *prev &#61; link-&gt;cur-&gt;prev;
+    Node *next &#61; link-&gt;cur-&gt;next;
+
+    prev-&gt;next &#61; next;
+    next-&gt;prev &#61; prev;
+
+    link-&gt;cur-&gt;prev &#61; NULL;
+    link-&gt;cur-&gt;next &#61; NULL;
+
+    // 遍历指针指向被删除节点的下一个节点
+    link-&gt;cur &#61; next;
+}
+
+// 遍历下一个循环链表节点
+void next_CycleLink(CycleLink *link) {
+    link-&gt;cur &#61; link-&gt;cur-&gt;next;
+}
+
+
+int sumOfLeft(int nums[], int nums_size, int jump, int left) {
+    CycleLink *link &#61; new_CycleLink(nums, nums_size);
+
+    // 从起跳点开始的话&#xff0c;需要跳jump&#43;1次&#xff0c;到达需要删除的节点
+    // 从起跳点下一个节点开始的话&#xff0c;需要跳jump次&#xff0c;到达需要删除的节点
+
+    // 这里我们从起跳点的下一个节点开始
+    next_CycleLink(link);
+    // 如果链表中剩余节点数 &gt; 幸存数量&#xff0c;则还需要继续删除节点
+    while (link-&gt;size &gt; left) {
+        // 跳 jump 次&#xff0c;为了避免冗余转圈&#xff0c; 其实只需要跳 jump % link.size
+        int zip_jump &#61; jump % link-&gt;size;
+        for (int i &#61; 0; i &lt; zip_jump; i&#43;&#43;) {
+            next_CycleLink(link);
+        }
+        // 删除当前接节点&#xff08;被删除的节点其实是下一次的起跳点&#xff09;&#xff0c;这里link.remove方法删除节点后会自动跳到被删除节点的下一个节点&#xff0c;即&#xff1a;起跳点的下一个节点
+        remove_CycleLink(link);
+    }
+
+    return link-&gt;sum;
+}
+
+int main() {
+    int nums[MAX_SIZE];
+    int nums_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39;,&#39;) break;
+    }
+
+    int jump;
+    scanf(&#34;%d&#34;, &amp;jump);
+
+    int left;
+    scanf(&#34;%d&#34;, &amp;left);
+
+    printf(&#34;%d\n&#34;, sumOfLeft(nums, nums_size, jump, left));
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

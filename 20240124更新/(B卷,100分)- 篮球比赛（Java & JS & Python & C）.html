@@ -1,0 +1,345 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 篮球比赛（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>篮球(5V5)比赛中&#xff0c;每个球员拥有一个战斗力&#xff0c;每个队伍的所有球员战斗力之和为该队伍的总体战斗力。</p> 
+<p>现有10个球员准备分为两队进行训练赛&#xff0c;教练希望2个队伍的战斗力差值能够尽可能的小&#xff0c;以达到最佳训练效果。</p> 
+<p>给出10个球员的战斗力&#xff0c;如果你是教练&#xff0c;你该如何分队&#xff0c;才能达到最佳训练效果?请说出该分队方案下的<strong>最小战斗力差值。</strong></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>10个篮球队员的战斗力(整数&#xff0c;范围[1,10000]),战斗力之间用空格分隔&#xff0c;如:10987654321</p> 
+<p>不需要考虑异常输入的场景。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最小的战斗力差值&#xff0c;如:1</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;"><code>10 9 8 7 6 5 4 3 2 1</code></td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"><code>1</code></td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">1 2 5 9 10分为一队&#xff0c;3 4 6 7 8分为一队&#xff0c;两队战斗力之差最小&#xff0c;输出差值1。备注&#xff1a;球员分队方案不唯一&#xff0c;但最小战斗力差值固定是1</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题由于只有十个数&#xff0c;并且平均分为两队&#xff0c;即每队五个数&#xff0c;因此只需要在10个数中选5个数组合即可模拟一队能力值。</p> 
+<p>有了一队的能力值之和A&#xff0c;我们用十个数的总和减去A&#xff0c;即得到了另一队的能力值之和B&#xff0c;最后求解Math.abs(A-B)&#xff0c;即为两队能力值之差。</p> 
+<p>因此&#xff0c;有多少个10选5组合&#xff0c;就有多少组能力值之差&#xff0c;我们取其中最小的即为题解。</p> 
+<hr /> 
+<p>2023.08.21</p> 
+<p>组合问题的求解&#xff0c;可以想象成一颗树的遍历&#xff0c;比如原始数组array 为 [a,b,c,d]&#xff0c;我们需要从中任选3个值组合&#xff0c;则可以得到树结构如下</p> 
+<p><img alt="" height="314" src="https://img-blog.csdnimg.cn/a8ec0991040f444fbeb4dc5af024ca3e.png" width="1200" /></p> 
+<p>可以发现&#xff0c;组合内元素个数&#xff0c;其实就是树的层数。</p> 
+<p></p> 
+<p>树的每一层的元素选取规则如下&#xff1a;</p> 
+<p>如果第0层&#xff08;即组合内第一个元素&#xff09;的值选择a&#xff0c;那么第1层只能从原始数组的元素a后面的元素[b,c,d]中选取</p> 
+<p>如果第0层&#xff08;即组合内第一个元素&#xff09;的值选择b&#xff0c;那么第1层只能从原始数组的元素b后面的元素[c,d]中选取</p> 
+<blockquote> 
+ <p>注意如果第0层选择b&#xff0c;那么第1层再从原始数组中回头选元素b前面的a&#xff0c;否则会产生组合[b,a]</p> 
+ <p>组合和排列不同&#xff0c;排列是在乎顺序的&#xff0c;即[a,b]和[b,a]是不同的排列&#xff0c;但是&#xff0c;组合不在意顺序&#xff0c;即[a,b]和[b,a]是相同组合。</p> 
+</blockquote> 
+<p></p> 
+<p>找到树结构和组合的对应关系后&#xff0c;我们要求的组合&#xff0c;其实就是树的每一条分支&#xff0c;因此我们只要遍历树的每一个分支&#xff0c;其实就得到了每一个组合。</p> 
+<p>而树的分支遍历&#xff0c;最常用的方法其实就是回溯算法中的深度优先搜索。</p> 
+<p></p> 
+<p>但是&#xff0c;深度优先搜索遍历树&#xff0c;其实是一种纯暴力解法&#xff0c;遇到大数量级非常可能超时&#xff0c;或者Stack Overflow&#xff0c;因此我们需要进行剪枝优化。</p> 
+<p>所谓剪枝优化&#xff0c;其实就是将一些不必要的分支剪掉&#xff0c;比如上图中&#xff0c;我们可以看到某些分支的层数明显不足3层&#xff0c;因此对于这些分支&#xff0c;我们不需要进行遍历</p> 
+<p><img alt="" height="303" src="https://img-blog.csdnimg.cn/d33035cb42c64c38a248bc22851b5ff0.png" width="1200" /></p> 
+<p></p> 
+<p>组合求解&#xff0c;还有一个常用场景&#xff0c;那就是去重组合求解&#xff0c;比如原始数组为[a, a, b, b]&#xff0c;从中任选3个数形成组合&#xff0c;则得到树结构如下</p> 
+<p><img alt="" height="274" src="https://img-blog.csdnimg.cn/946ce843311c46e483e64382b71b80ca.png" width="1200" /></p> 
+<p>此时&#xff0c;我们可以发现&#xff0c;其中存在一些相同的组合</p> 
+<p><img alt="" height="310" src="https://img-blog.csdnimg.cn/3b569cbfe3e543b5b3941b56a79b0ac5.png" width="1200" /></p> 
+<p>比如组合[a,a,b]有两个&#xff0c;组合[a,b,b]有两个 </p> 
+<blockquote> 
+ <p> 注意&#xff0c;这里的重复组合&#xff0c;不是由于元素回头选产生的&#xff0c;我们可以将上图中元素值&#xff0c;换成元素索引来看&#xff0c;此时从索引形成的组合来看&#xff0c;是不相同的。</p> 
+ <p><img alt="" height="439" src="https://img-blog.csdnimg.cn/cba3a66db5604cc48acdee38dbd1292f.png" width="1171" /></p> 
+ <p></p> 
+</blockquote> 
+<p>那么如何高效的进行组合去重呢&#xff1f;</p> 
+<p>最高效的方式&#xff0c;是利用树中同一层的相邻元素关系&#xff0c;来进行剪枝</p> 
+<p><img alt="" height="309" src="https://img-blog.csdnimg.cn/e09158d875b14fd8998abc957821d063.png" width="1200" /></p> 
+<p>比如上图&#xff0c;第0层中&#xff0c;有两个相邻的a元素&#xff0c;那么就必然会产生重复的组合。</p> 
+<p>为什么呢&#xff1f;我们假设第一个a是a0&#xff0c;第二个a是a1&#xff0c;那么</p> 
+<ul><li>如果第0层选择a0&#xff0c;那么第1层可以选a1,<span style="color:#fe2c24;">b,b</span></li><li>如果第1层选择a1&#xff0c;那么第2层可以选<span style="color:#fe2c24;">b,b</span></li></ul> 
+<p>我们可以发现&#xff0c;“a0的下一层元素选取范围” 包含了 “a1的下一层元素选取范围”bi&#xff0c;因此必然会产生重复组合。</p> 
+<p>因此&#xff0c;如果我们当前要选取第level层的第i个元素时&#xff0c;可以检查它是否与第level层上一次选取的元素&#xff0c;即第i-1个元素&#xff08;和第i个元素相邻&#xff09;是否相同&#xff0c;如果相同&#xff0c;则可以剪枝。</p> 
+<blockquote> 
+ <p>这里需要特别注意的是&#xff0c;必须是<span style="color:#fe2c24;">同一层</span>的相邻元素。</p> 
+ <p>那么如何判断相邻元素是否处于同一层呢&#xff1f;</p> 
+ <p></p> 
+ <p>下图树中节点都是原始数组的元素的索引值</p> 
+ <p><img alt="" height="283" src="https://img-blog.csdnimg.cn/5dc401ae23994707a55e08f43353f831.png" width="1192" /></p> 
+ <p></p> 
+ <p>如上图所示&#xff0c;</p> 
+ <p>第0层&#xff0c;从array的第0个索引元素开始选取&#xff0c;也就是说0~3索引范围元素处于第0层</p> 
+ <p>第1层&#xff0c;从array的第1个索引元素开始选取&#xff0c;也就是说1~3索引范围元素处于第1层</p> 
+ <p>第2层&#xff0c;从array的第2个索引元素开始选取&#xff0c;也就是说2~3索引范围元素处于第2层</p> 
+ <p></p> 
+ <p>那么&#xff0c;我们是否可以认为&#xff1a;第level层&#xff0c;从array的第level个索引元素开始选取&#xff0c;level~array.length-1索引范围元素处于第level层呢&#xff1f;</p> 
+ <p>答案是不对的。</p> 
+ <p></p> 
+ <p>从上图的每一层来看&#xff0c;确实符合上面总结的规律&#xff0c;但是我们单看某个局部的话&#xff0c;如下图</p> 
+ <p><img alt="" height="321" src="https://img-blog.csdnimg.cn/834fa0e3ff2d422cac62de31108e78ea.png" width="1200" /></p> 
+ <p> 按照上面规律&#xff0c;第1层元素从array的第1个索引元素开始选取&#xff0c;也就是说1~3索引范围元素处于第1层&#xff0c;</p> 
+ <p>那么&#xff0c;符合上面红框处的情况吗&#xff1f;我们可以明显发现 索引1元素 和 索引2元素 处于不同层。</p> 
+ <p></p> 
+ <p>因此&#xff0c;更佳准确的规律是&#xff0c;假设某个组合的第level层&#xff0c;是从原数组的第index索引位置开始选取&#xff0c;那么对于 index ~ array.length-1 索引范围的元素 是处于同一层的。</p> 
+ <p></p> 
+ <p>那么&#xff0c;假设当前层的从原数组第index索引位置开始选取&#xff0c;因此 i 和 i-1 这两个相邻索引位置&#xff0c;想要处于同一层&#xff0c;则必须满足 i - 1 &gt;&#61; index &amp;&amp; i &gt;&#61; index&#xff0c;即 i &gt; index</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const arr &#61; line.split(&#34; &#34;).map(Number);
+  console.log(getResult(arr));
+});
+
+function getResult(arr) {
+  arr.sort((a, b) &#61;&gt; a - b);
+
+  const res &#61; [];
+  // dfs求10选5的去重组合&#xff0c;并将组合之和记录进res中&#xff0c;即res中记录的是所有可能性的5人小队实力值之和
+  dfs(arr, 0, 0, 0, res);
+
+  const sum &#61; arr.reduce((p, c) &#61;&gt; p &#43; c);
+
+  // 某队实力为subSum&#xff0c;则另一队实力为sum - subSum&#xff0c;则两队实力差为 abs((sum - subSum) - subSum)&#xff0c;先求最小实力差
+  return res
+    .map((subSum) &#61;&gt; Math.abs(sum - 2 * subSum))
+    .sort((a, b) &#61;&gt; a - b)[0];
+}
+
+// 求解去重组合
+function dfs(arr, index, level, sum, res) {
+  if (level &#61;&#61;&#61; 5) {
+    return res.push(sum);
+  }
+
+  for (let i &#61; index; i &lt; 10; i&#43;&#43;) {
+    if (i &gt; index &amp;&amp; arr[i] &#61;&#61; arr[i - 1]) continue; // arr已经升序&#xff0c;这里进行树层去重
+    dfs(arr, i &#43; 1, level &#43; 1, sum &#43; arr[i], res);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] arr &#61; new int[10];
+    for (int i &#61; 0; i &lt; 10; i&#43;&#43;) {
+      arr[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(arr));
+  }
+
+  public static int getResult(int[] arr) {
+    Arrays.sort(arr);
+
+    ArrayList&lt;Integer&gt; res &#61; new ArrayList&lt;&gt;();
+    // dfs求10选5的去重组合&#xff0c;并将组合之和记录进res中&#xff0c;即res中记录的是所有可能性的5人小队实力值之和
+    dfs(arr, 0, 0, 0, res);
+
+    int sum &#61; Arrays.stream(arr).reduce(Integer::sum).orElse(0);
+    // 某队实力为subSum&#xff0c;则另一队实力为sum - subSum&#xff0c;则两队实力差为 abs((sum - subSum) - subSum)&#xff0c;先求最小实力差
+    return res.stream().map(subSum -&gt; Math.abs(sum - 2 * subSum)).min((a, b) -&gt; a - b).orElse(0);
+  }
+
+  // 求解去重组合
+  public static void dfs(int[] arr, int index, int level, int sum, ArrayList&lt;Integer&gt; res) {
+    if (level &#61;&#61; 5) {
+      res.add(sum);
+      return;
+    }
+
+    for (int i &#61; index; i &lt; 10; i&#43;&#43;) {
+      if (i &gt; index &amp;&amp; arr[i] &#61;&#61; arr[i - 1]) continue; // arr已经升序&#xff0c;这里进行树层去重
+      dfs(arr, i &#43; 1, level &#43; 1, sum &#43; arr[i], res);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+arr &#61; list(map(int, input().split()))
+
+
+# 求解去重组合
+def dfs(arr, index, level, sumV, res):
+    if level &#61;&#61; 5:
+        res.append(sumV)
+        return
+
+    for i in range(index, 10):
+        if i &gt; index and arr[i] &#61;&#61; arr[i - 1]: # arr已经升序&#xff0c;这里进行树层去重
+            continue
+        dfs(arr, i &#43; 1, level &#43; 1, sumV &#43; arr[i], res)
+
+
+# 算法入口
+def getResult(arr):
+    arr.sort()
+
+    res &#61; []
+    # dfs求10选5的去重组合&#xff0c;并将组合之和记录进res中&#xff0c;即res中记录的是所有可能性的5人小队实力值之和
+    dfs(arr, 0, 0, 0, res)
+
+    sumV &#61; sum(arr)
+    #  某队实力为subSum&#xff0c;则另一队实力为sum - subSum&#xff0c;则两队实力差为 abs((sum - subSum) - subSum)&#xff0c;先求最小实力差
+    return min(map(lambda subSum: abs(sumV - 2 * subSum), res))
+
+
+# 算法调用
+print(getResult(arr))
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
+
+#define MIN(a,b) (a) &lt; (b) ? (a) : (b)
+
+typedef struct ListNode {
+    int ele;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList();
+void addLast_LinkedList(LinkedList *link, int ele);
+
+void dfs(int arr[], int index, int level, int sum, LinkedList *res);
+int getResult(int arr[]);
+
+int main() {
+    int arr[10];
+    for (int i &#61; 0; i &lt; 10; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;arr[i]);
+    }
+
+    printf(&#34;%d\n&#34;, getResult(arr));
+
+    return 0;
+}
+
+int cmp(const void *a, const void *b) {
+    return (*(int *) a) - (*(int *) b);
+}
+
+int getResult(int arr[]) {
+    qsort(arr, 10, sizeof(int), cmp);
+
+    LinkedList *res &#61; new_LinkedList();
+    // dfs求10选5的去重组合&#xff0c;并将组合之和记录进res中&#xff0c;即res中记录的是所有可能性的5人小队实力值之和
+    dfs(arr, 0, 0, 0, res);
+
+    int sum &#61; 0;
+    for (int i &#61; 0; i &lt; 10; i&#43;&#43;) sum &#43;&#61; arr[i];
+
+    int ans &#61; INT_MAX;
+
+    // 某队实力为subSum&#xff0c;则另一队实力为sum - subSum&#xff0c;则两队实力差为 abs((sum - subSum) - subSum)&#xff0c;先求最小实力差
+    ListNode *cur &#61; res-&gt;head;
+    while (cur !&#61; NULL) {
+        ans &#61; MIN(ans, abs(sum - 2 * cur-&gt;ele));
+        cur &#61; cur-&gt;next;
+    }
+
+    return ans;
+}
+
+// 求解去重组合
+void dfs(int arr[], int index, int level, int sum, LinkedList *res) {
+    if (level &#61;&#61; 5) {
+        addLast_LinkedList(res, sum);
+        return;
+    }
+
+    for (int i &#61; index; i &lt; 10; i&#43;&#43;) {
+        if (i &gt; index &amp;&amp; arr[i] &#61;&#61; arr[i - 1]) continue; // arr已经升序&#xff0c;这里进行树层去重
+        dfs(arr, i &#43; 1, level &#43; 1, sum &#43; arr[i], res);
+    }
+
+}
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, int ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+
+    node-&gt;ele &#61; ele;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}</code></pre> 
+<p> </p> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

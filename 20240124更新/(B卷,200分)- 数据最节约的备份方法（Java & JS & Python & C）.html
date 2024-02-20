@@ -1,0 +1,365 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 数据最节约的备份方法（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有若干个文件&#xff0c;使用刻录光盘的方式进行备份&#xff0c;假设每张光盘的容量是500MB&#xff0c;求使用光盘最少的文件分布方式</p> 
+<p>所有文件的大小都是整数的MB&#xff0c;且不超过500MB&#xff1b;文件不能分割、分卷打包</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>一组文件大小的数据</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>使用光盘的数量</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>不用考虑输入数据不合法的情况&#xff1b;假设最多100个输入文件。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">100,500,300,200,400</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>(100,400),(200,300),(500) 3张光盘即可。</p> <p>输入和输出内容都不含空格。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1,100,200,300</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以分为两步求解&#xff1a;</p> 
+<ol><li>求光盘数量</li><li>检查给定光盘数量&#xff08;每个光盘500M&#xff09;是否可以放下所有文件</li></ol> 
+<p>其中&#xff0c;第一步可以使用二分法求解</p> 
+<ul><li>要装入所有文件的至少光盘数量为1&#xff0c;即所有文件之和小于等于500M</li><li>要装入所有文件的至多光盘数量为文件数量&#xff0c;即每个文件都是500M</li></ul> 
+<p>我们只需要二分找中间值mid作为可能的解去带入第二步检查即可。</p> 
+<ul><li>如果第二步&#xff0c;检查mid个光盘可以装入所有文件&#xff0c;那么mid就是一个可能解&#xff0c;我们需要记录它&#xff0c;然后尝试更小更优解&#xff0c;即继续二分&#xff0c;二分右边界max &#61; mid - 1</li><li>如果第二步&#xff0c;检查mid个光盘无法装入所有文件&#xff0c;那么说明mid个光盘不够&#xff0c;我们需要尝试更多光盘&#xff0c;即下次二分是&#xff0c;左边界min &#61; mid &#43; 1</li></ul> 
+<p></p> 
+<p>关于第二步的实现&#xff0c;可以参考下面桶装球问题&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127761308?csdn_share_tail&#61;%7B%22type%22%3A%22blog%22%2C%22rType%22%3A%22article%22%2C%22rId%22%3A%22127761308%22%2C%22source%22%3A%22qfc_128220%22%7D" title="LeetCode - 698 划分为k个相等的子集_leetcode - 698 划分为k个相等的 集_伏城之外的博客_伏城之外的博客-CSDN博客">LeetCode - 698 划分为k个相等的子集_leetcode - 698 划分为k个相等的 集_伏城之外的博客_伏城之外的博客-CSDN博客</a></p> 
+<p>本题中的mid就相当于上面题目的k&#xff0c;而本题中光盘的500M相当于上题的子集和。</p> 
+<p>同时本题要比上面题更简单一点&#xff0c;因为本题不需要装满桶&#xff0c;只需要保证所有球都能放入桶即可。</p> 
+<p>因此第二步逻辑解析情况上面博客。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const nums &#61; line.split(&#34;,&#34;).map(Number);
+  console.log(getResult(nums));
+});
+
+function getResult(nums) {
+  // 将文件大小降序
+  nums.sort((a, b) &#61;&gt; b - a);
+
+  // 至少分组
+  let min &#61; 1;
+  // 至多分组
+  let max &#61; nums.length;
+
+  // 记录题解
+  let ans &#61; max;
+
+  // 二分
+  while (min &lt;&#61; max) {
+    const mid &#61; (min &#43; max) &gt;&gt; 1;
+
+    // 看nums是否可以分为mid组&#xff0c;每组之和小于等于500
+    if (check(mid, nums)) {
+      // 可以分成功&#xff0c;则mid就是一个可能解
+      ans &#61; mid;
+      // 继续尝试更小解
+      max &#61; mid - 1;
+    } else {
+      // 不可以分成功&#xff0c;则mid取消了&#xff0c;即分组少了&#xff0c;下次应该尝试更大分组数
+      min &#61; mid &#43; 1;
+    }
+  }
+
+  return ans;
+}
+
+function check(count, nums) {
+  // nums数组中的数是否可以分为count组&#xff0c;每组之和&lt;&#61;500
+  // 这个问题可以使用回溯算法&#xff0c;将count组想象成count个桶&#xff0c;每个桶容量500&#xff0c;nums数组元素就是小球&#xff0c;我们需要将所有小球放到count个桶中&#xff0c;保证每个桶容量不超
+  const buckets &#61; new Array(count).fill(0);
+  return partition(buckets, nums, 0);
+}
+
+function partition(buckets, nums, index) {
+  if (index &#61;&#61; nums.length) {
+    return true;
+  }
+
+  const select &#61; nums[index];
+  for (let i &#61; 0; i &lt; buckets.length; i&#43;&#43;) {
+    if (i &gt; 0 &amp;&amp; buckets[i] &#61;&#61; buckets[i - 1]) continue; // 此处判断会极大优化性能
+
+    if (buckets[i] &#43; select &lt;&#61; 500) {
+      buckets[i] &#43;&#61; select;
+      if (partition(buckets, nums, index &#43; 1)) return true;
+      buckets[i] -&#61; select;
+    }
+  }
+
+  return false;
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    Integer[] nums &#61;
+        Arrays.stream(sc.nextLine().split(&#34;,&#34;)).map(Integer::parseInt).toArray(Integer[]::new);
+
+    System.out.println(getResult(nums));
+  }
+
+  public static int getResult(Integer[] nums) {
+    // 将文件大小降序
+    Arrays.sort(nums, (a, b) -&gt; b - a);
+
+    // 至少分组
+    int min &#61; 1;
+    // 至多分组
+    int max &#61; nums.length;
+
+    // 记录题解
+    int ans &#61; max;
+
+    // 二分
+    while (min &lt;&#61; max) {
+      int mid &#61; (min &#43; max) &gt;&gt; 1;
+
+      // 看nums是否可以分为mid组&#xff0c;每组之和小于等于500
+      if (check(mid, nums)) {
+        // 可以分成功&#xff0c;则mid就是一个可能解
+        ans &#61; mid;
+        // 继续尝试更小解
+        max &#61; mid - 1;
+      } else {
+        // 不可以分成功&#xff0c;则mid取消了&#xff0c;即分组少了&#xff0c;下次应该尝试更大分组数
+        min &#61; mid &#43; 1;
+      }
+    }
+
+    return ans;
+  }
+
+  public static boolean check(int count, Integer[] nums) {
+    // nums数组中的数是否可以分为count组&#xff0c;每组之和&lt;&#61;500
+    // 这个问题可以使用回溯算法&#xff0c;将count组想象成count个桶&#xff0c;每个桶容量500&#xff0c;nums数组元素就是小球&#xff0c;我们需要将所有小球放到count个桶中&#xff0c;保证每个桶容量不超
+    int[] buckets &#61; new int[count];
+    return partition(buckets, nums, 0);
+  }
+
+  public static boolean partition(int[] buckets, Integer[] nums, int index) {
+    if (index &#61;&#61; nums.length) {
+      return true;
+    }
+
+    int select &#61; nums[index];
+    for (int i &#61; 0; i &lt; buckets.length; i&#43;&#43;) {
+      if (i &gt; 0 &amp;&amp; buckets[i] &#61;&#61; buckets[i - 1]) continue; // 此处判断会极大优化性能
+
+      if (buckets[i] &#43; select &lt;&#61; 500) {
+        buckets[i] &#43;&#61; select;
+        if (partition(buckets, nums, index &#43; 1)) return true;
+        buckets[i] -&#61; select;
+      }
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+nums &#61; list(map(int, input().split(&#34;,&#34;)))
+
+
+def partition(buckets, nums, index):
+    if index &#61;&#61; len(nums):
+        return True
+
+    select &#61; nums[index]
+    for i in range(len(buckets)):
+        if i &gt; 0 and buckets[i] &#61;&#61; buckets[i - 1]:  # 此处判断会极大优化性能
+            continue
+
+        if buckets[i] &#43; select &lt;&#61; 500:
+            buckets[i] &#43;&#61; select
+            if partition(buckets, nums, index &#43; 1):
+                return True
+            buckets[i] -&#61; select
+
+    return False
+
+
+def check(count, nums):
+    # nums数组中的数是否可以分为count组&#xff0c;每组之和&lt;&#61;500
+    # 这个问题可以使用回溯算法&#xff0c;将count组想象成count个桶&#xff0c;每个桶容量500&#xff0c;nums数组元素就是小球&#xff0c;我们需要将所有小球放到count个桶中&#xff0c;保证每个桶容量不超
+    buckets &#61; [0] * count
+    return partition(buckets, nums, 0)
+
+
+# 算法入口
+def getResult():
+    # 将文件大小降序
+    nums.sort(reverse&#61;True)
+
+    # 至少分组
+    low &#61; 1
+    # 至多分组
+    high &#61; len(nums)
+
+    # 记录题解
+    ans &#61; high
+
+    # 二分
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) &gt;&gt; 1
+
+        # 看nums是否可以分为mid组&#xff0c;每组之和小于等于500
+        if check(mid, nums):
+            # 可以分成功&#xff0c;则mid就是一个可能解
+            ans &#61; mid
+            # 继续尝试更小解
+            high &#61; mid - 1
+        else:
+            # 不可以分成功&#xff0c;则mid取消了&#xff0c;即分组少了&#xff0c;下次应该尝试更大分组数
+            low &#61; mid &#43; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 100
+
+int getResult(int* nums, int nums_size);
+int cmp(const void* a, const void* b);
+int check(int buckets_size, int* nums, int nums_size);
+int partition(int* buckets, int buckets_size, int* nums, int nums_size, int index);
+
+int main()
+{
+	int nums[MAX_SIZE];
+	int nums_size &#61; 0;
+	while(scanf(&#34;%d&#34;, &amp;nums[nums_size&#43;&#43;])) {
+		if(getchar() !&#61; &#39;,&#39;) break;
+	}
+	
+	printf(&#34;%d\n&#34;, getResult(nums, nums_size));
+	
+	return 0;
+}
+
+int getResult(int* nums, int nums_size)
+{
+	// 将文件大小降序
+	qsort(nums, nums_size, sizeof(int), cmp);
+	
+	// 至少分组
+	int min &#61; 1;
+	// 至多分组
+	int max &#61; nums_size;
+	
+	// 记录题解
+	int ans &#61; max;
+	
+	// 二分
+	while(min &lt;&#61; max) {
+		int mid &#61; (min &#43; max) &gt;&gt; 1;
+		
+		// 看nums是否可以分为mid组&#xff0c;每组之和小于等于500
+		if(check(mid, nums, nums_size)) {
+			// 可以分成功&#xff0c;则mid就是一个可能解
+			ans &#61; mid;
+			// 继续尝试更小解
+			max &#61; mid - 1;
+		} else {
+			// 不可以分成功&#xff0c;则mid取消了&#xff0c;即分组少了&#xff0c;下次应该尝试更大分组数
+			min &#61; mid &#43; 1;
+		}
+	}
+	
+	return ans;
+}
+
+int cmp(const void* a, const void* b)
+{
+	return *((int*) b) - *((int*) a);
+}
+
+int check(int buckets_size, int* nums, int nums_size)
+{
+	// nums数组中的数是否可以分为count组&#xff0c;每组之和&lt;&#61;500
+    // 这个问题可以使用回溯算法&#xff0c;将buckets_size组想象成buckets_size个桶&#xff0c;每个桶容量500&#xff0c;nums数组元素就是小球&#xff0c;我们需要将所有小球放到buckets_size个桶中&#xff0c;保证每个桶容量不超
+	int buckets[MAX_SIZE] &#61; {0};
+	return partition(buckets, buckets_size, nums, nums_size, 0);
+}
+
+int partition(int* buckets, int buckets_size, int* nums, int nums_size, int index)
+{
+	if(index &#61;&#61; nums_size) {
+		return 1;
+	}
+	
+	int select &#61; nums[index];
+	for(int i&#61;0; i&lt;buckets_size; i&#43;&#43;) {
+		if(i &gt; 0 &amp;&amp; buckets[i] &#61;&#61; buckets[i-1]) continue; // 此处判断会极大优化性能
+		
+		if(buckets[i] &#43; select &lt;&#61; 500) {
+			buckets[i] &#43;&#61; select;
+			if(partition(buckets, buckets_size, nums, nums_size, index&#43;1)) return 1;
+			buckets[i] -&#61; select;
+		}
+	}
+	
+	return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

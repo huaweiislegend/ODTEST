@@ -1,0 +1,243 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 农场施肥（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某农场主管理了一大片果园&#xff0c;fields[i]表示不同果林的面积&#xff0c;单位&#xff1a;m^2&#xff0c;现在要为所有的果林施肥且必须在n天之内完成&#xff0c;否则影响收成。小布是果林的工作人员&#xff0c;他每次选择一片果林进行施肥&#xff0c;且一片果林施肥完后当天不再进行施肥作业。</p> 
+<p>假设施肥机的能效为k&#xff0c;单位&#xff1a;m^2/day&#xff0c;请问至少租赁能效 k 为多少的施肥机才能确保不影响收成&#xff1f;如果无法完成施肥任务&#xff0c;则返回-1。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为m和n&#xff0c;m表示fields中的元素个数&#xff0c;n表示施肥任务必须在n天内&#xff08;含n天&#xff09;完成&#xff1b;</p> 
+<p>第二行输入为fields&#xff0c;fields[i]表示果林 i 的面积&#xff0c;单位&#xff1a;m^2</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>对于每组数据&#xff0c;输出最小施肥机的能效 k &#xff0c;无多余空格。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 ≤ fields.length ≤ 10^4</li><li>1 ≤ n ≤ 10^9</li><li>1 ≤ fields[i] ≤ 10^9</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 7<br /> 5 7 9 15 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">9</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">当能效k为9时&#xff0c;fields[0]需要1天&#xff0c;fields[1]需要1天&#xff0c;fields[2]需要1天&#xff0c;fields[3]需要2天&#xff0c;fields[4]需要2天&#xff0c;共需要7天&#xff0c;不会影响收成。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 1<br /> 2 3 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">由于一天最多完成一片果林的施肥&#xff0c;无论k为多少都至少需要3天才能完成施肥&#xff0c;因此返回-1。</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题中能效k其实和果林面积fields[i]是强相关的&#xff0c;比如用例1中fields &#61; [5,7,9,15,10]&#xff1a;</p> 
+<p>能效k取5的话&#xff0c;则面积5的果林只需要1天&#xff0c;其他大于面积5的果林需要Math.ceil(fields[i] / k)</p> 
+<p>能效k取7的话&#xff0c;则面积5、7的果林只需要1天&#xff0c;其他大于面积7的果林需要Math.ceil(fields[i] / k)</p> 
+<p>因此&#xff0c;k的取值范围其实就是果林最小面积min ~ 最大面积max之间&#xff0c;我们完全可以遍历min~max之间的所有可能给k&#xff0c;然后求出能效k施肥完所有果林需要的天数spend&#xff0c;然后求出spend&#61;&#61;&#61;n的所有情况中最小的k作为题解。</p> 
+<p>但是&#xff0c;本题min~max之间有1 ≤ fields[i] ≤ 10^9&#xff0c;并且求解每种k对应的spend都需要遍历1 ≤ fields.length ≤ 10^4次&#xff0c;因此上面算法的时间复杂度是10^9 * 10^4 &#61; 10^13&#xff0c;这是必然超时的。</p> 
+<p></p> 
+<p>因此&#xff0c;我们可以采用二分查找的方式来找k&#xff0c;即每次取min、max的中间值作为k&#xff0c;如果k能效需要的spend时间和指定天数n时间的关系&#xff1a;</p> 
+<ul><li>spend &gt; n&#xff1a;说明k能效太低了&#xff0c;花费的时间超过了n&#xff0c;因此要提高k&#xff0c;即min &#61; k&#xff0c;这样下次二分查找的值就会增大k</li><li><s>spend &lt; n&#xff1a;说明k能效太高了&#xff0c;花费的时间少于n&#xff0c;因此要降低k&#xff0c;即max &#61; k&#xff0c;这样下次二分查找的值就会减小k</s></li><li><s>spend &#61;&#61;&#61; n&#xff1a;说明k能效刚刚好&#xff0c;花费的时间等于n&#xff0c;但是此时可能并非最优解&#xff0c;我们还需继续找更小的k&#xff0c;即max &#61; k</s></li><li>2023.02.07 经网友指正&#xff0c;输入描述中说&#xff1a;施肥任务必须在n天内&#xff08;含n天&#xff09;&#xff0c;即施肥任务可以少于n天时间完成&#xff0c;因此spend &lt; n时的k也是符合要求的k。因此spend &lt; n和spend &#61;&#61; n的情况可以合并处理&#xff0c;即当 spend &lt;&#61; n时&#xff0c;说明k能效足够了&#xff0c;花费的时间小于等于n&#xff0c;但是此时可能并非最优解&#xff0c;我们还需继续找更小的k&#xff0c;即max &#61; k</li></ul> 
+<p></p> 
+<p>此时&#xff0c;算法时间复杂度为 log(10^9) * 10^4 &#61; 9 * 10^4&#xff0c;大大的优化了。</p> 
+<p></p> 
+<p>关于本题K的取小数还是取整数的思考&#xff0c;请大家先看下面的用例&#xff1a;</p> 
+<blockquote> 
+ <p>3 5<br /> 1 1 10</p> 
+</blockquote> 
+<p>如果取小数的话&#xff0c;上面用例K的最小取值是无穷小数3.33333....<br /> 因此&#xff0c;K值如果取小数的话&#xff0c;必然要说明精度&#xff0c;但是本题没有。<br /> 因此&#xff0c;个人认为本题K应该取整数。<br /> 当然考试的时候&#xff0c;还是要灵活应对。</p> 
+<p></p> 
+<p>补充一个用例&#xff0c;关于初始二分时&#xff0c;左边界的取值</p> 
+<blockquote> 
+ <p>1 10</p> 
+ <p>9</p> 
+</blockquote> 
+<p>即只有一个果林&#xff0c;面积为9&#xff0c;现在要求10天完成施肥&#xff0c;此时最低能效K应该为1。</p> 
+<p>因此&#xff0c;前面逻辑中&#xff0c;二分查找能效K时&#xff0c;应该从1~max中二分&#xff0c;而不是min~max&#xff0c;即能效K的最低值可能为1。</p> 
+<p></p> 
+<p>另外&#xff0c;本题已经找到原型题</p> 
+<p><a href="https://leetcode.cn/problems/koko-eating-bananas/" rel="nofollow" title="875. 爱吃香蕉的珂珂 - 力扣&#xff08;LeetCode&#xff09;">875. 爱吃香蕉的珂珂 - 力扣&#xff08;LeetCode&#xff09;</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [m, n] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const fields &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(n, fields));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, fields) {
+  let min &#61; 1; // 最小果林面积
+  let max &#61; Math.max(...fields); // 最大果林面积
+  let ans &#61; -1;
+
+  // 我们需要找min,max中间值作为k效率&#xff0c;如果min,max间距小于1&#xff0c;则没有中间值&#xff0c;循环结束
+  while (min &lt;&#61; max) {
+    let k &#61; Math.ceil((min &#43; max) / 2);
+    const res &#61; check(k, n, fields);
+
+    if (res &gt; 0)
+      min &#61; k &#43; 1; // k的效率太低&#xff0c;导致花费的时间超过了n天&#xff0c;因此要提高k效率
+    else {
+      ans &#61; k; // k的效率刚好&#xff0c;花费的时间就是n天&#xff0c;或者k的效率太高&#xff0c;导致花费的时间少于n天&#xff0c;而题目说&#xff1a;施肥任务必须在n天内&#xff08;含n天&#xff09;完成&#xff0c;因此花费时间少于n天的k也是符合要求的
+      max &#61; k - 1; // 继续尝试找更小的k
+    }
+  }
+
+  return ans;
+}
+
+// k效率施肥完fields所有果林需要的spend天数&#xff0c;和指定天数n的差距
+function check(k, n, fields) {
+  let spend &#61; 0;
+  for (let field of fields) {
+    if (k &gt;&#61; field) spend&#43;&#43;; // k效率比field果林面积大&#xff0c;则field果林只需要一天
+    else spend &#43;&#61; Math.ceil(field / k); // k效率比field果林面积小&#xff0c;则需要Math.ceil(field / k)天
+  }
+
+  return spend - n;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    int[] fields &#61; new int[m];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      fields[i] &#61; sc.nextInt();
+    }
+
+    System.out.println(getResult(n, fields));
+  }
+
+  /**
+   * &#64;param n 表示施肥任务必须在n天内&#xff08;含n天&#xff09;
+   * &#64;param fields fields[i]表示果林 i 的面积
+   * &#64;return 最小施肥机的能效 k
+   */
+  public static int getResult(int n, int[] fields) {
+    double min &#61; 1; // 最小果林面积
+    double max &#61; Arrays.stream(fields).max().orElse(0); // 最大果林面积
+
+    int ans &#61; -1;
+
+    // 我们需要找min,max中间值作为k效率&#xff0c;如果min,max间距小于1&#xff0c;则没有中间值&#xff0c;循环结束
+    while (min &lt;&#61; max) {
+      int k &#61; (int) Math.ceil((min &#43; max) / 2);
+
+      int res &#61; check(k, n, fields);
+
+      if (res &gt; 0) min &#61; k &#43; 1; // k的效率太低&#xff0c;导致花费的时间超过了n天&#xff0c;因此要提高k效率
+      else {
+        ans &#61; k; // k的效率太高或刚好&#xff0c;花费的时间&lt;&#61;n天&#xff0c;则此时k效率就是一个题解&#xff0c;但可能不是最优解
+        max &#61; k - 1; // 继续尝试找更小的k
+      }
+    }
+
+    return ans;
+  }
+
+  /**
+   * &#64;param k 能效k
+   * &#64;param n 指定天数
+   * &#64;param fields 所有果林面积
+   * &#64;return 基于能效k需要spend天施肥完所有果林&#xff0c;返回spend - n
+   */
+  public static int check(int k, int n, int[] fields) {
+    int spend &#61; 0;
+    for (int field : fields) {
+      if (k &gt;&#61; field) spend&#43;&#43;; // k效率比field果林面积大&#xff0c;则field果林只需要一天
+      else spend &#43;&#61; Math.ceil(field / (double) k); // k效率比field果林面积小&#xff0c;则需要Math.ceil(field / k)天
+    }
+
+    return spend - n;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import math
+
+m, n &#61; map(int, input().split())
+fields &#61; list(map(int, input().split()))
+
+minK &#61; 1  # 最小果林面积&#xff0c;即最小能效k
+maxK &#61; max(fields)  # 最大果林面积&#xff0c;即最大能效k
+
+ans &#61; -1
+
+
+# k效率施肥完fields所有果林需要的spend天数&#xff0c;和指定天数n的差距
+def check(k, n, fields):
+    spend &#61; 0
+    for field in fields:
+        if k &gt;&#61; field:
+            spend &#43;&#61; 1  # k效率比field果林面积大&#xff0c;则field果林只需要一天
+        else:
+            spend &#43;&#61; math.ceil(field / k)  # k效率比field果林面积小&#xff0c;则需要Math.ceil(field / k)天
+    return spend - n
+
+
+# 我们需要找minK,maxK中间值作为k效率&#xff0c;如果minK,maxK间距小于1&#xff0c;则没有中间值&#xff0c;循环结束
+while minK &lt;&#61; maxK:
+    k &#61; math.ceil((minK &#43; maxK) / 2)
+    res &#61; check(k, n, fields)
+
+    if res &gt; 0:
+        minK &#61; k &#43; 1  # k的效率太低&#xff0c;导致花费的时间超过了n天&#xff0c;因此要提高k效率
+    # 2023.02.07 网友指正&#xff1a;施肥任务必须在n天内&#xff08;含n天&#xff09;&#xff0c;表示不需要一定是n天完成&#xff0c;可以少于n天完成&#xff0c;因此res &lt; 0 时的k也是符合要求的k
+    # elif res &lt; 0:
+    #     maxK &#61; k  # k的效率太高&#xff0c;导致花费的时间少于n天&#xff0c;因此要降低k效率
+    else:
+        ans &#61; k  # k的效率刚好&#xff0c;花费的时间就是n天&#xff0c;则此时k效率就是一个题解&#xff0c;但可能不是最优解
+        maxK &#61; k - 1  # 继续尝试找更小的k
+
+print(int(ans))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,656 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 统一限载货物数最小值（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>火车站附近的货物中转站负责将到站货物运往仓库&#xff0c;小明在中转站负责调度2K辆中转车&#xff08;K辆干货中转车&#xff0c;K辆湿货中转车&#xff09;。</p> 
+<p>货物由不同供货商从各地发来&#xff0c;各地的货物是依次进站&#xff0c;然后小明按照卸货顺序依次装货到中转车&#xff0c;一个供货商的货只能装到一辆车上&#xff0c;不能拆装&#xff0c;但是一辆车可以装多家供货商的货&#xff1b;</p> 
+<p>中转车的限载货物量由小明统一指定&#xff0c;在完成货物中转的前提下&#xff0c;请问中转车的统一限载货物数最小值为多少。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<ul><li>第一行 length 表示供货商数量 1 &lt;&#61; length &lt;&#61; 10^4</li><li>第二行 goods 表示供货数数组 1 &lt;&#61; goods[i] &lt;&#61; 10^4</li><li>第三行 types表示对应货物类型&#xff0c;types[i]等于0或者1&#xff0c;其中0代表干货&#xff0c;1代表湿货</li><li>第四行 k表示单类中转车数量 1 &lt;&#61; k &lt;&#61; goods.length</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>运行结果输出一个整数&#xff0c;表示中转车统一限载货物数</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>中转车最多跑一趟仓库</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:531px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:441px;">4<br /> 3 2 6 3<br /> 0 1 1 0<br /> 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:441px;">6</td></tr><tr><td style="width:86px;">说明</td><td style="width:441px;"> <p>货物1和货物4为干货&#xff0c;由2辆干货中转车中转&#xff0c;每辆车运输一个货物&#xff0c;限载为3</p> <p>货物2和货物3为湿货&#xff0c;由2辆湿货中转车中转&#xff0c;每辆车运输一个货物&#xff0c;限载为6</p> <p>这样中转车统一限载货物数可以设置为6&#xff08;干货车和湿货车限载最大值&#xff09;&#xff0c;是最小的取值</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:534px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:444px;">4<br /> 3 2 6 8<br /> 0 1 1 1<br /> 1</td></tr><tr><td style="width:86px;">输出</td><td style="width:444px;">16</td></tr><tr><td style="width:86px;">说明</td><td style="width:444px;"> <p>货物1为干货&#xff0c;由1辆干货中转车中转&#xff0c;限载为3</p> <p>货物2、货物3、货物4为湿货&#xff0c;由1辆湿货中转车中转&#xff0c;限载为16</p> <p>这样中转车统一限载货物数可以设置为16&#xff08;干货车和湿货车限载最大值&#xff09;&#xff0c;是最小的取值</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题经过和考友沟通&#xff0c;还是需要考虑装货顺序&#xff0c;但是不同于前面考虑了顺序的解法</p> 
+<blockquote> 
+ <p>之前考虑装货顺序的逻辑是&#xff1a;</p> 
+ <p>每次只有一辆车在装货&#xff0c;如果按顺序装货时&#xff0c;当前货车遇到不同类型的货物&#xff0c;则当前货车必须走</p> 
+</blockquote> 
+<p>和考友沟通后&#xff0c;发现满分解法是这样设计装货逻辑的</p> 
+<blockquote> 
+ <p>每次都有<span style="color:#fe2c24;">干湿两辆货车同时等待</span>&#xff0c;并且我们还是要按顺序装货&#xff0c;且干货装入干货车&#xff0c;湿货装入湿货车&#xff0c;我们可以决定货车什么时候走&#xff0c;一旦货车走了&#xff0c;则下一辆同类型的货车继续补上&#xff0c;只要还有对应类型的货车还有剩余。</p> 
+</blockquote> 
+<p>因此本题的难度大大降低了。</p> 
+<p>我们完全可以将所有货物中&#xff0c;最重的货物作为所有货车的最低限载。然后尝试该限载&#xff0c;是否可以完成装货&#xff0c;如果不可以则在此最低限载基础上&#43;1&#xff0c;然后继续尝试&#xff0c;如果可以&#xff0c;则直接返回。</p> 
+<p></p> 
+<p>更优的做法是使用二分法&#xff0c;即minLimit &#61; max(goods)&#xff0c;maxLimit &#61; sum(goods)&#xff0c;然后取中间值limit作为可能的最低限载去尝试装货。</p> 
+<p>如果能完成运输&#xff0c;则此时limit就是一个可能的解&#xff0c;但是不一定是最优解&#xff0c;我们需要继续尝试更小的limit。</p> 
+<p>如果不能完成运输&#xff0c;则此时limit必然取小了&#xff0c;我们需要尝试更大的limit。</p> 
+<p></p> 
+<h3>考虑装货顺序&#xff08;可得100%通过率&#xff09;</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] goods &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      goods[i] &#61; sc.nextInt();
+    }
+
+    int[] types &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      types[i] &#61; sc.nextInt();
+    }
+
+    int k &#61; sc.nextInt();
+
+    System.out.println(getResult(n, goods, types, k));
+  }
+
+  /**
+   * &#64;param n 供货商数量
+   * &#64;param goods 供货数数组
+   * &#64;param types 表示对应货物类型&#xff0c;types[i]等于0或者1&#xff0c;其中0代表干货&#xff0c;1代表湿货
+   * &#64;param k 表示单类中转车数量
+   * &#64;return 中转车的统一限载货物数最小值为多少
+   */
+  public static int getResult(int n, int[] goods, int[] types, int k) {
+    // 最低限载最小取值
+    int minLimit &#61; 0;
+    // 最低限载最大取值
+    int maxLimit &#61; 0;
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 所有货物中重量最大的作为minLimit&#xff0c;即每辆车至多放一个货物时&#xff0c;则此时最低限载为重量最大的货物
+      minLimit &#61; Math.max(minLimit, goods[i]);
+      // 所有货物都放到一辆车上&#xff0c;则此时该车的载重就是maxLimit
+      maxLimit &#43;&#61; goods[i];
+    }
+
+    // 二分法尝试可能的最低限载limit
+    while (minLimit &lt;&#61; maxLimit) {
+      int limit &#61; (minLimit &#43; maxLimit) / 2;
+
+      // 如果当前limit可以完成所有货物的运输&#xff0c;则当前limit为一个可能解&#xff0c;但不一定时最优解&#xff0c;我们可以尝试更小的最低限载
+      if (canLimit(limit, n, goods, types, k)) {
+        maxLimit &#61; limit - 1;
+      } else {
+        // 如果当前limit不能完成所有货物的运输&#xff0c;则当前limit小了&#xff0c;我们应该尝试更大的limit
+        minLimit &#61; limit &#43; 1;
+      }
+    }
+
+    return minLimit;
+
+    //    int limit &#61; Arrays.stream(goods).max().orElse(0);
+    //
+    //    while (true) {
+    //      if (canLimit(limit, n, goods, types, k)) {
+    //        return limit;
+    //      } else {
+    //        limit&#43;&#43;;
+    //      }
+    //    }
+  }
+
+  // 判断当前的limit最低限载是否可以完成所有货物的运输
+  public static boolean canLimit(int limit, int n, int[] goods, int[] types, int k) {
+    // dryCarCount是已用掉的干货车数量
+    // wetCarCount是已用掉的湿货车数量
+    int dryCarCount &#61; 0, wetCarCount &#61; 0;
+
+    // dryCarSum是当前正在装货的干货车的载重
+    // wetCarSum是当前正在装货的湿货车的载重
+    int dryCarSum &#61; 0, wetCarSum &#61; 0;
+
+    // 遍历每一个货物
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      // 如果是干货
+      if (types[i] &#61;&#61; 0) {
+        // 尝试将当前干货goods[i]放到当前的干货车上&#xff0c;看看放上去后&#xff0c;当前干货车的载重是否超过了limit
+        if (dryCarSum &#43; goods[i] &lt;&#61; limit) {
+          // 没有超过limit&#xff0c;则装入
+          dryCarSum &#43;&#61; goods[i];
+        } else {
+          // 超过了limit&#xff0c;则继续看是否还有剩余可用的干货车
+          if (dryCarCount &#43; 1 &#61;&#61; k) {
+            // 没有可用的干货车了&#xff0c;则说明此limit无法完成所有货物的运输&#xff0c;直接返回false
+            return false;
+          } else {
+            // 有可用的干货车&#xff0c;则说明已用掉的干货车数量dryCarCount&#43;&#43;&#xff0c;新的干货车装入当前货物goods[i]
+            dryCarCount &#43;&#61; 1;
+            dryCarSum &#61; goods[i];
+          }
+        }
+      } else {
+        // 湿货逻辑同上
+        if (wetCarSum &#43; goods[i] &lt;&#61; limit) {
+          wetCarSum &#43;&#61; goods[i];
+        } else {
+          if (wetCarCount &#43; 1 &#61;&#61; k) {
+            return false;
+          } else {
+            wetCarCount &#43;&#61; 1;
+            wetCarSum &#61; goods[i];
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 4) {
+    const n &#61; lines[0] - 0;
+    const goods &#61; lines[1].split(&#34; &#34;).map(Number);
+    const types &#61; lines[2].split(&#34; &#34;).map(Number);
+    const k &#61; lines[3] - 0;
+
+    console.log(getResult(n, goods, types, k));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} n 供货商数量
+ * &#64;param {*} goods 供货数数组
+ * &#64;param {*} types 表示对应货物类型&#xff0c;types[i]等于0或者1&#xff0c;其中0代表干货&#xff0c;1代表湿货
+ * &#64;param {*} k 表示单类中转车数量
+ * &#64;returns 中转车的统一限载货物数最小值为多少
+ */
+function getResult(n, goods, types, k) {
+  // 最低限载最小取值
+  let minLimit &#61; 0;
+  // 最低限载最大取值
+  let maxLimit &#61; 0;
+  for (let good of goods) {
+    // 所有货物中重量最大的作为minLimit&#xff0c;即每辆车至多放一个货物时&#xff0c;则此时最低限载为重量最大的货物
+    minLimit &#61; Math.max(minLimit, good);
+    // 所有货物都放到一辆车上&#xff0c;则此时该车的载重就是maxLimit
+    maxLimit &#43;&#61; good;
+  }
+
+  // 二分法尝试可能的最低限载limit
+  while (minLimit &lt;&#61; maxLimit) {
+    const limit &#61; Math.floor((minLimit &#43; maxLimit) / 2);
+
+    // 如果当前limit可以完成所有货物的运输&#xff0c;则当前limit为一个可能解&#xff0c;但不一定时最优解&#xff0c;我们可以尝试更小的最低限载
+    if (canLimit(limit, n, goods, types, k)) {
+      maxLimit &#61; limit - 1;
+    } else {
+      // 如果当前limit不能完成所有货物的运输&#xff0c;则当前limit小了&#xff0c;我们应该尝试更大的limit
+      minLimit &#61; limit &#43; 1;
+    }
+  }
+  return minLimit;
+
+  // 暴力法
+  //   let limit &#61; Math.max(...goods);
+  //   while (true) {
+  //     if (canLimit(limit, n, goods, types, k)) {
+  //       return limit;
+  //     } else {
+  //       limit&#43;&#43;;
+  //     }
+  //   }
+}
+
+// 判断当前的limit最低限载是否可以完成所有货物的运输
+function canLimit(limit, n, goods, types, k) {
+  // dryCarCount是已用掉的干货车数量
+  // dryCarSum是当前正在装货的干货车的载重
+  let dryCarCount &#61; 0,
+    dryCarSum &#61; 0;
+
+  // wetCarCount是已用掉的湿货车数量
+  // wetCarSum是当前正在装货的湿货车的载重
+  let wetCarCount &#61; 0,
+    wetCarSum &#61; 0;
+
+  // 遍历每一个货物
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    // 如果是干货
+    if (types[i] &#61;&#61; 0) {
+      // 尝试将当前干货goods[i]放到当前的干货车上&#xff0c;看看放上去后&#xff0c;当前干货车的载重是否超过了limit
+      if (dryCarSum &#43; goods[i] &lt;&#61; limit) {
+        // 没有超过limit&#xff0c;则装入
+        dryCarSum &#43;&#61; goods[i];
+      } else {
+        // 超过了limit&#xff0c;则继续看是否还有剩余可用的干货车
+        if (dryCarCount &#43; 1 &#61;&#61; k) {
+          // 没有可用的干货车了&#xff0c;则说明此limit无法完成所有货物的运输&#xff0c;直接返回false
+          return false;
+        } else {
+          // 有可用的干货车&#xff0c;则说明已用掉的干货车数量dryCarCount&#43;&#43;&#xff0c;新的干货车装入当前货物goods[i]
+          dryCarCount &#43;&#61; 1;
+          dryCarSum &#61; goods[i];
+        }
+      }
+    } else {
+      // 湿货逻辑同上
+      if (wetCarSum &#43; goods[i] &lt;&#61; limit) {
+        wetCarSum &#43;&#61; goods[i];
+      } else {
+        if (wetCarCount &#43; 1 &#61;&#61; k) {
+          return false;
+        } else {
+          wetCarCount &#43;&#61; 1;
+          wetCarSum &#61; goods[i];
+        }
+      }
+    }
+  }
+
+  return true;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+goods &#61; list(map(int, input().split()))
+types &#61; list(map(int, input().split()))
+k &#61; int(input())
+
+
+# 判断当前的limit最低限载是否可以完成所有货物的运输
+def canLimit(limit, n, goods, types, k):
+    # dryCarCount是已用掉的干货车数量
+    dryCarCount &#61; 0
+    # dryCarSum是当前正在装货的干货车的载重
+    dryCarSum &#61; 0
+
+    # wetCarCount是已用掉的湿货车数量
+    wetCarCount &#61; 0
+    # wetCarSum是当前正在装货的湿货车的载重
+    wetCarSum &#61; 0
+
+    # 遍历每一个货物
+    for i in range(n):
+        # 如果是干货
+        if types[i] &#61;&#61; 0:
+            # 尝试将当前干货goods[i]放到当前的干货车上&#xff0c;看看放上去后&#xff0c;当前干货车的载重是否超过了limit
+            if dryCarSum &#43; goods[i] &lt;&#61; limit:
+                # 没有超过limit&#xff0c;则装入
+                dryCarSum &#43;&#61; goods[i]
+            else:
+                # 超过了limit&#xff0c;则继续看是否还有剩余可用的干货车
+                if dryCarCount &#43; 1 &#61;&#61; k:
+                    # 没有可用的干货车了&#xff0c;则说明此limit无法完成所有货物的运输&#xff0c;直接返回false
+                    return False
+                else:
+                    # 有可用的干货车&#xff0c;则说明已用掉的干货车数量dryCarCount&#43;&#43;&#xff0c;新的干货车装入当前货物goods[i]
+                    dryCarCount &#43;&#61; 1
+                    dryCarSum &#61; goods[i]
+        else:
+            # 湿货逻辑同上
+            if wetCarSum &#43; goods[i] &lt;&#61; limit:
+                wetCarSum &#43;&#61; goods[i]
+            else:
+                if wetCarCount &#43; 1 &#61;&#61; k:
+                    return False
+                else:
+                    wetCarCount &#43;&#61; 1
+                    wetCarSum &#61; goods[i]
+
+    return True
+
+
+# 算法入口
+def getResult(n, goods, types, k):
+    &#34;&#34;&#34;
+    :param n: 供货商数量
+    :param goods: 供货数数组
+    :param types: 表示对应货物类型&#xff0c;types[i]等于0或者1&#xff0c;其中0代表干货&#xff0c;1代表湿货
+    :param k: 表示单类中转车数量
+    :return: 中转车的统一限载货物数最小值为多少
+    &#34;&#34;&#34;
+    # 暴力法
+    # limit &#61; max(goods)
+    # while True:
+    #     if canLimit(limit, n, goods, types, k):
+    #         return limit
+    #     else:
+    #         limit &#43;&#61; 1
+
+    # 最低限载最小取值,所有货物中重量最大的作为minLimit&#xff0c;即每辆车至多放一个货物时&#xff0c;则此时最低限载为重量最大的货物
+    minLimit &#61; max(goods)
+    # 最低限载最大取值,所有货物都放到一辆车上&#xff0c;则此时该车的载重就是maxLimit
+    maxLimit &#61; sum(goods)
+
+    # 二分法尝试可能的最低限载limit
+    while minLimit &lt;&#61; maxLimit:
+        limit &#61; (minLimit &#43; maxLimit) // 2
+
+        # 如果当前limit可以完成所有货物的运输&#xff0c;则当前limit为一个可能解&#xff0c;但不一定时最优解&#xff0c;我们可以尝试更小的最低限载
+        if canLimit(limit, n, goods, types, k):
+            maxLimit &#61; limit - 1
+        else:
+            # 如果当前limit不能完成所有货物的运输&#xff0c;则当前limit小了&#xff0c;我们应该尝试更大的limit
+            minLimit &#61; limit &#43; 1
+
+    return minLimit
+
+
+# 算法调用
+print(getResult(n, goods, types, k))
+</code></pre> 
+<p></p> 
+<h3>不考虑装货顺序&#xff08;可得25%通过率&#xff09;</h3> 
+<p>如果本题不考虑装货顺序&#xff0c;其实就是<a href="https://fcqian.blog.csdn.net/article/details/129493021?spm&#61;1001.2014.3001.5502" rel="nofollow" title="LeetCode - 1723 完成所有工作的最短时间_伏城之外的博客-CSDN博客">LeetCode - 1723 完成所有工作的最短时间_伏城之外的博客-CSDN博客</a></p> 
+<p>的变种题。</p> 
+<p>解析大家可以看上面链接博客。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 4) {
+    const n &#61; lines[0] - 0;
+    const goods &#61; lines[1].split(&#34; &#34;).map(Number);
+    const types &#61; lines[2].split(&#34; &#34;).map(Number);
+    const k &#61; lines[3] - 0;
+
+    console.log(getResult(n, goods, types, k));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} n 供货商数量
+ * &#64;param {*} goods 供货数数组
+ * &#64;param {*} types 表示对应货物类型&#xff0c;types[i]等于0或者1&#xff0c;其中0代表干货&#xff0c;1代表湿货
+ * &#64;param {*} k 表示单类中转车数量
+ * &#64;returns 中转车的统一限载货物数最小值为多少
+ */
+function getResult(n, goods, types, k) {
+  const dry &#61; [];
+  const wet &#61; [];
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    if (types[i] &#61;&#61; 0) {
+      dry.push(goods[i]);
+    } else {
+      wet.push(goods[i]);
+    }
+  }
+
+  return Math.max(getMinMaxWeight(dry, k), getMinMaxWeight(wet, k));
+}
+
+function getMinMaxWeight(weights, k) {
+  const n &#61; weights.length;
+
+  if (n &lt;&#61; k) {
+    return Math.max(...weights);
+  }
+
+  weights.sort((a, b) &#61;&gt; b - a);
+
+  let min &#61; weights[0];
+  let max &#61; weights.reduce((p, c) &#61;&gt; p &#43; c);
+
+  while (min &lt; max) {
+    const mid &#61; (min &#43; max) &gt;&gt; 1;
+
+    const buckets &#61; new Array(k).fill(0);
+    if (check(0, weights, buckets, mid)) {
+      max &#61; mid;
+    } else {
+      min &#61; mid &#43; 1;
+    }
+  }
+
+  return min;
+}
+
+function check(index, weights, buckets, limit) {
+  if (index &#61;&#61; weights.length) {
+    return true;
+  }
+
+  const select &#61; weights[index];
+  for (let i &#61; 0; i &lt; buckets.length; i&#43;&#43;) {
+    if (buckets[i] &#43; select &lt;&#61; limit) {
+      buckets[i] &#43;&#61; select;
+      if (check(index &#43; 1, weights, buckets, limit)) return true;
+      buckets[i] -&#61; select;
+      if (buckets[i] &#61;&#61; 0) return false;
+    }
+  }
+
+  return false;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] goods &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      goods[i] &#61; sc.nextInt();
+    }
+
+    int[] types &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      types[i] &#61; sc.nextInt();
+    }
+
+    int k &#61; sc.nextInt();
+
+    System.out.println(getResult(n, goods, types, k));
+  }
+
+  /**
+   * &#64;param n 供货商数量
+   * &#64;param goods 供货数数组
+   * &#64;param types 表示对应货物类型&#xff0c;types[i]等于0或者1&#xff0c;其中0代表干货&#xff0c;1代表湿货
+   * &#64;param k 表示单类中转车数量
+   * &#64;return 中转车的统一限载货物数最小值为多少
+   */
+  public static int getResult(int n, int[] goods, int[] types, int k) {
+    ArrayList&lt;Integer&gt; dry &#61; new ArrayList&lt;&gt;();
+    ArrayList&lt;Integer&gt; wet &#61; new ArrayList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      if (types[i] &#61;&#61; 0) {
+        dry.add(goods[i]);
+      } else {
+        wet.add(goods[i]);
+      }
+    }
+
+    return Math.max(getMinMaxWeight(dry, k), getMinMaxWeight(wet, k));
+  }
+
+  public static int getMinMaxWeight(ArrayList&lt;Integer&gt; weights, int k) {
+    int n &#61; weights.size();
+
+    if (n &lt;&#61; k) {
+      return weights.stream().max((a, b) -&gt; a - b).orElse(0);
+    }
+
+    weights.sort((a, b) -&gt; b - a);
+
+    int min &#61; weights.get(0);
+    int max &#61; weights.stream().reduce(Integer::sum).get();
+
+    while (min &lt; max) {
+      int mid &#61; (min &#43; max) &gt;&gt; 1;
+
+      int[] buckets &#61; new int[k];
+      if (check(0, weights, buckets, mid)) {
+        max &#61; mid;
+      } else {
+        min &#61; mid &#43; 1;
+      }
+    }
+
+    return min;
+  }
+
+  public static boolean check(int index, ArrayList&lt;Integer&gt; weights, int[] buckets, int limit) {
+    if (index &#61;&#61; weights.size()) {
+      return true;
+    }
+
+    int select &#61; weights.get(index);
+    for (int i &#61; 0; i &lt; buckets.length; i&#43;&#43;) {
+      if (buckets[i] &#43; select &lt;&#61; limit) {
+        buckets[i] &#43;&#61; select;
+        if (check(index &#43; 1, weights, buckets, limit)) return true;
+        buckets[i] -&#61; select;
+        if (buckets[i] &#61;&#61; 0) return false;
+      }
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import queue
+
+# 输入获取
+n &#61; int(input())
+goods &#61; list(map(int, input().split()))
+types &#61; list(map(int, input().split()))
+k &#61; int(input())
+
+
+# 本方法用于验证当前limit是否符合要求
+def check(index, weights, buckets, limit):
+    if index &#61;&#61; len(weights):
+        return True
+
+    select &#61; weights[index]
+    for i in range(len(buckets)):
+        if buckets[i] &#43; select &lt;&#61; limit:
+            buckets[i] &#43;&#61; select
+            if check(index &#43; 1, weights, buckets, limit):
+                return True
+            buckets[i] -&#61; select
+            if buckets[0] &#61;&#61; 0:
+                return False
+    return False
+
+
+# 本方法用于求解干货或湿货的最小限载
+def getMaxMinWeight(weights, k):
+    n &#61; len(weights)
+
+    if n &lt;&#61; k:
+        return max(weights)
+
+    weights.sort(reverse&#61;True)
+
+    low &#61; weights[0]
+    high &#61; sum(weights)
+
+    while low &lt; high:
+        mid &#61; (low &#43; high) // 2
+        buckets &#61; [0] * k
+
+        if check(0, weights, buckets, mid):
+            high &#61; mid
+        else:
+            low &#61; mid &#43; 1
+
+    return low
+
+
+# 算法入口
+def getResult(n, goods, types, k):
+    dry &#61; []
+    wet &#61; []
+
+    for i in range(n):
+        if types[i] &#61;&#61; 0:
+            dry.append(goods[i])
+        else:
+            wet.append(goods[i])
+
+    return max(getMaxMinWeight(dry, k), getMaxMinWeight(wet, k))
+
+
+# 算法调用
+print(getResult(n, goods, types, k))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,349 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 围棋的气（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>围棋棋盘由纵横各19条线垂直相交组成&#xff0c;棋盘上一共19 x 19 &#61; 361 个交点&#xff0c;对弈双方一方执白棋&#xff0c;一方执黑棋&#xff0c;落子时只能将棋子置于交点上。</p> 
+<p>“气”是围棋中很重要的一个概念&#xff0c;某个棋子有几口气&#xff0c;是指其上下左右方向四个相邻的交叉点中&#xff0c;有几个交叉点没有棋子&#xff0c;由此可知&#xff1a;</p> 
+<ol><li>在棋盘的边缘上的棋子最多有 3 口气&#xff08;黑1&#xff09;&#xff0c;在棋盘角点的棋子最多有2口气&#xff08;黑2&#xff09;&#xff0c;其他情况最多有4口气&#xff08;白1&#xff09;</li><li>所有同色棋子的气之和叫做该色棋子的气&#xff0c;需要注意的是&#xff0c;同色棋子重合的气点&#xff0c;对于该颜色棋子来说&#xff0c;只能计算一次气&#xff0c;比如下图中&#xff0c;黑棋一共4口气&#xff0c;而不是5口气&#xff0c;因为黑1和黑2中间红色三角标出来的气是两个黑棋共有的&#xff0c;对于黑棋整体来说只能算一个气。</li><li>本题目只计算气&#xff0c;对于眼也按气计算&#xff0c;如果您不清楚“眼”的概念&#xff0c;可忽略&#xff0c;按照前面描述的规则计算即可。</li></ol> 
+<p><img alt="" height="475" src="https://img-blog.csdnimg.cn/22a598944edc44a4a72da4bb02c1ad54.png" width="530" /></p> 
+<p>现在&#xff0c;请根据输入的黑棋和白棋得到坐标位置&#xff0c;计算黑棋和白棋一共各有多少气&#xff1f;</p> 
+<p></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入包含两行数据&#xff0c;如&#xff1a;</p> 
+<blockquote> 
+ <p>0 5 8 9 9 10<br /> 5 0 9 9 9 8</p> 
+</blockquote> 
+<ul><li>每行数据以空格分隔&#xff0c;数据个数是2的整数倍&#xff0c;每两个数是一组&#xff0c;代表棋子在棋盘上的坐标&#xff1b;</li><li>坐标的原点在棋盘左上角点&#xff0c;第一个值是行号&#xff0c;范围从0到18&#xff1b;第二个值是列号&#xff0c;范围从0到18。</li><li>举例说明&#xff1a;第一行数据表示三个坐标&#xff08;0, 5&#xff09;、(8, 9)、(9, 10)</li><li>第一行表示黑棋的坐标&#xff0c;第二行表示白棋的坐标。</li><li>题目保证输入两行数据&#xff0c;无空行且每行按前文要求是偶数个&#xff0c;每个坐标不会超出棋盘范围。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<blockquote> 
+ <p>8 7</p> 
+</blockquote> 
+<p>两个数字以空格分隔&#xff0c;第一个数代表黑棋的气数&#xff0c;第二个数代表白棋的气数。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">0 5 8 9 9 10<br /> 5 0 9 9 9 8</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">8 7</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>如果将输入数据放到棋盘上</p> <p><img alt="" height="552" src="https://img-blog.csdnimg.cn/direct/000f4f03e481436887e745e0fe3db2ab.png" width="616" /></p> <p>数数黑棋一共8口气&#xff0c;数数白棋一共7口气。</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题棋盘中“气”的位置有如下特点&#xff1a;</p> 
+<ul><li>该位置没有棋子</li><li>该位置上下左右存在至少一个棋子&#xff08;若为黑棋&#xff0c;则当前位置就是黑棋的气&#xff0c;若为白棋&#xff0c;则当前位置就是白棋的气&#xff0c;若既有黑棋&#xff0c;也有白棋&#xff0c;则同时为两个颜色棋的气&#xff09;</li></ul> 
+<p>因此&#xff0c;我们只需要遍历19*19的棋盘中每一个位置&#xff0c;检查对应位置是否有棋子&#xff0c;若没有棋子&#xff0c;则检查其上下左右四个位置是否存在黑棋、白棋&#xff0c;若存在则对应颜色的棋子的气数&#43;1&#xff0c;需要注意的是&#xff0c;一个位置只能产生一个气&#xff0c;因此如果该位置的上下左右位置有多个黑棋&#xff0c;也只能为黑棋加一个气&#xff0c;白棋同理。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const black &#61; (await readline()).split(&#34; &#34;).map(Number);
+  const white &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 定义棋盘&#xff0c;没有棋子用0表示
+  const board &#61; new Array(19).fill(0).map(() &#61;&gt; new Array(19).fill(0));
+
+  for (let i &#61; 0; i &lt; black.length; i &#43;&#61; 2) {
+    const x &#61; black[i];
+    const y &#61; black[i &#43; 1];
+    board[x][y] &#61; 1; // 棋盘中黑棋用1表示
+  }
+
+  for (let i &#61; 0; i &lt; white.length; i &#43;&#61; 2) {
+    const x &#61; white[i];
+    const y &#61; white[i &#43; 1];
+    board[x][y] &#61; 2; // 棋盘中白棋用2表示
+  }
+
+  // 黑棋的气数
+  let black_liberty_count &#61; 0;
+  // 白棋的气数
+  let white_liberty_count &#61; 0;
+
+  // 上下左右四个方向的偏移量
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  for (let i &#61; 0; i &lt; 19; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; 19; j&#43;&#43;) {
+      // 如果当前位置没有棋子&#xff0c;则可能是黑棋或白棋的气
+      if (board[i][j] &#61;&#61; 0) {
+        // 当前位置是否为黑棋的气
+        let isBlackLiberty &#61; false;
+        // 当前位置是否白棋的气
+        let isWhiteLiberty &#61; false;
+
+        // 若为黑棋或者白棋的气&#xff0c;则当前位置的上下左右的位置上必有黑棋或白棋
+        for (let [offsetX, offsetY] of offsets) {
+          const newI &#61; i &#43; offsetX;
+          const newJ &#61; j &#43; offsetY;
+
+          // 若当前位置的上下左右的位置越界&#xff0c;则不考虑
+          if (newI &lt; 0 || newI &gt;&#61; 19 || newJ &lt; 0 || newJ &gt;&#61; 19) continue;
+
+          // 若当前位置的上下左右的位置存在黑棋&#xff0c;则当前位置为黑棋的气
+          isBlackLiberty &#61; isBlackLiberty || board[newI][newJ] &#61;&#61; 1;
+          // 若当前位置的上下左右的位置存在白棋&#xff0c;则当前位置为白棋的气
+          isWhiteLiberty &#61; isWhiteLiberty || board[newI][newJ] &#61;&#61; 2;
+        }
+
+        if (isBlackLiberty) black_liberty_count&#43;&#43;;
+        if (isWhiteLiberty) white_liberty_count&#43;&#43;;
+      }
+    }
+  }
+
+  console.log(&#96;${black_liberty_count} ${white_liberty_count}&#96;);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] black &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int[] white &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    // 定义棋盘&#xff0c;没有棋子用0表示
+    int[][] board &#61; new int[19][19];
+
+    for (int i &#61; 0; i &lt; black.length; i &#43;&#61; 2) {
+      int x &#61; black[i];
+      int y &#61; black[i &#43; 1];
+      board[x][y] &#61; 1; // 棋盘中黑棋用1表示
+    }
+
+    for (int i &#61; 0; i &lt; white.length; i &#43;&#61; 2) {
+      int x &#61; white[i];
+      int y &#61; white[i &#43; 1];
+      board[x][y] &#61; 2; // 棋盘中白棋用2表示
+    }
+
+    // 黑棋的气数
+    int black_liberty_count &#61; 0;
+    // 白棋的气数
+    int white_liberty_count &#61; 0;
+
+    // 上下左右四个方向的偏移量
+    int[][] offsets &#61; {<!-- -->{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    for (int i &#61; 0; i &lt; 19; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; 19; j&#43;&#43;) {
+        // 如果当前位置没有棋子&#xff0c;则可能是黑棋或白棋的气
+        if (board[i][j] &#61;&#61; 0) {
+          // 当前位置是否为黑棋的气
+          boolean isBlackLiberty &#61; false;
+          // 当前位置是否白棋的气
+          boolean isWhiteLiberty &#61; false;
+
+          // 若为黑棋或者白棋的气&#xff0c;则当前位置的上下左右的位置上必有黑棋或白棋
+          for (int[] offset : offsets) {
+            int newI &#61; i &#43; offset[0];
+            int newJ &#61; j &#43; offset[1];
+
+            // 若当前位置的上下左右的位置越界&#xff0c;则不考虑
+            if (newI &lt; 0 || newI &gt;&#61; 19 || newJ &lt; 0 || newJ &gt;&#61; 19) continue;
+
+            // 若当前位置的上下左右的位置存在黑棋&#xff0c;则当前位置为黑棋的气
+            isBlackLiberty &#61; isBlackLiberty || (board[newI][newJ] &#61;&#61; 1);
+            // 若当前位置的上下左右的位置存在白棋&#xff0c;则当前位置为白棋的气
+            isWhiteLiberty &#61; isWhiteLiberty || (board[newI][newJ] &#61;&#61; 2);
+          }
+
+          if (isBlackLiberty) black_liberty_count&#43;&#43;;
+          if (isWhiteLiberty) white_liberty_count&#43;&#43;;
+        }
+      }
+    }
+
+    System.out.println(black_liberty_count &#43; &#34; &#34; &#43; white_liberty_count);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+black &#61; list(map(int, input().split()))
+white &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    # 定义棋盘&#xff0c;没有棋子用0表示
+    board &#61; [[0] * 19 for _ in range(19)]
+
+    for i in range(0, len(black), 2):
+        x &#61; black[i]
+        y &#61; black[i &#43; 1]
+        board[x][y] &#61; 1  # 棋盘中黑棋用1表示
+
+    for i in range(0, len(white), 2):
+        x &#61; white[i]
+        y &#61; white[i &#43; 1]
+        board[x][y] &#61; 2  # 棋盘中白棋用2表示
+
+    # 黑棋的气数
+    black_liberty_count &#61; 0
+    # 白棋的气数
+    white_liberty_count &#61; 0
+
+    # 上下左右四个方向的偏移量
+    offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    for i in range(19):
+        for j in range(19):
+            # 如果当前位置没有棋子&#xff0c;则可能是黑棋或白棋的气
+            if board[i][j] &#61;&#61; 0:
+                # 当前位置是否为黑棋的气
+                isBlackLiberty &#61; False
+                # 当前位置是否白棋的气
+                isWhiteLiberty &#61; False
+
+                # 若为黑棋或者白棋的气&#xff0c;则当前位置的上下左右的位置上必有黑棋或白棋
+                for offsetX, offsetY in offsets:
+                    newI &#61; i &#43; offsetX
+                    newJ &#61; j &#43; offsetY
+
+                    # 若当前位置的上下左右的位置越界&#xff0c;则不考虑
+                    if newI &lt; 0 or newI &gt;&#61; 19 or newJ &lt; 0 or newJ &gt;&#61; 19:
+                        continue
+
+                    # 若当前位置的上下左右的位置存在黑棋&#xff0c;则当前位置为黑棋的气
+                    isBlackLiberty &#61; isBlackLiberty or (board[newI][newJ] &#61;&#61; 1)
+                    # 若当前位置的上下左右的位置存在白棋&#xff0c;则当前位置为白棋的气
+                    isWhiteLiberty &#61; isWhiteLiberty or (board[newI][newJ] &#61;&#61; 2)
+
+                if isBlackLiberty:
+                    black_liberty_count &#43;&#61; 1
+
+                if isWhiteLiberty:
+                    white_liberty_count &#43;&#61; 1
+
+    return f&#34;{black_liberty_count} {white_liberty_count}&#34;
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 722
+
+int main() {
+    int black[MAX_SIZE];
+    int black_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;black[black_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    int white[MAX_SIZE];
+    int white_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;white[white_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    // 定义棋盘&#xff0c;没有棋子用0表示
+    int board[19][19] &#61; {0};
+
+    for (int i &#61; 0; i &lt; black_size; i &#43;&#61; 2) {
+        int x &#61; black[i];
+        int y &#61; black[i &#43; 1];
+        board[x][y] &#61; 1; // 棋盘中黑棋用1表示
+    }
+
+    for (int i &#61; 0; i &lt; white_size; i &#43;&#61; 2) {
+        int x &#61; white[i];
+        int y &#61; white[i &#43; 1];
+        board[x][y] &#61; 2; // 棋盘中白棋用2表示
+    }
+
+    // 黑棋的气数
+    int black_liberty_count &#61; 0;
+    // 白棋的气数
+    int white_liberty_count &#61; 0;
+
+    // 上下左右四个方向的偏移量
+    int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                         {1,  0},
+                         {0,  -1},
+                         {0,  1}};
+
+    for (int i &#61; 0; i &lt; 19; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; 19; j&#43;&#43;) {
+            // 如果当前位置没有棋子&#xff0c;则可能是黑棋或白棋的气
+            if (board[i][j] &#61;&#61; 0) {
+                // 当前位置是否为黑棋的气
+                int isBlackLiberty &#61; 0;
+                // 当前位置是否白棋的气
+                int isWhiteLiberty &#61; 0;
+
+                // 若为黑棋或者白棋的气&#xff0c;则当前位置的上下左右的位置上必有黑棋或白棋
+                for (int k &#61; 0; k &lt; 4; k&#43;&#43;) {
+                    int newI &#61; i &#43; offsets[k][0];
+                    int newJ &#61; j &#43; offsets[k][1];
+
+                    // 若当前位置的上下左右的位置越界&#xff0c;则不考虑
+                    if (newI &lt; 0 || newI &gt;&#61; 19 || newJ &lt; 0 || newJ &gt;&#61; 19) continue;
+
+                    // 若当前位置的上下左右的位置存在黑棋&#xff0c;则当前位置为黑棋的气
+                    isBlackLiberty &#61; isBlackLiberty || (board[newI][newJ] &#61;&#61; 1);
+                    // 若当前位置的上下左右的位置存在白棋&#xff0c;则当前位置为白棋的气
+                    isWhiteLiberty &#61; isWhiteLiberty || (board[newI][newJ] &#61;&#61; 2);
+                }
+
+                if (isBlackLiberty) black_liberty_count&#43;&#43;;
+                if (isWhiteLiberty) white_liberty_count&#43;&#43;;
+            }
+        }
+    }
+
+    printf(&#34;%d %d&#34;, black_liberty_count, white_liberty_count);
+
+    return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

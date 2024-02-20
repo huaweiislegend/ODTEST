@@ -1,0 +1,315 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- MELON的难题（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>MELON有一堆精美的雨花石&#xff08;数量为n&#xff0c;重量各异&#xff09;&#xff0c;准备送给S和W。MELON希望送给俩人的雨花石重量一致&#xff0c;请你设计一个程序&#xff0c;帮MELON确认是否能将雨花石平均分配。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第1行输入为雨花石个数&#xff1a;n&#xff0c; 0 &lt; n &lt; 31。</p> 
+<p>第2行输入为空格分割的各雨花石重量&#xff1a;m[0] m[1] ….. m[n - 1]&#xff0c; 0 &lt; m[k] &lt; 1001。</p> 
+<p>不需要考虑异常输入的情况。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>如果可以均分&#xff0c;从当前雨花石中最少拿出几块&#xff0c;可以使两堆的重量相等&#xff1b;如果不能均分&#xff0c;则输出-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 1 1 2 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入第一行代表共4颗雨花石&#xff0c;</p> <p>第二行代表4颗雨花石重量分别为1、1、2、2。 </p> <p>均分时只能分别为1,2&#xff0c;需要拿出重量为1和2的两块雨花石&#xff0c;所以输出2。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">10<br /> 1 1 1 1 1 9 8 3 7 10</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入第一行代表共10颗雨花石&#xff0c;</p> <p>第二行代表4颗雨花石重量分别为1、1、1、1、1、9、8、3、7、10 。 </p> <p>均分时可以1,1,1,1,1,9,7和10,8,3&#xff0c;也可以1,1,1,1,9,8和10,7,3,1&#xff0c;或者其他均分方式&#xff0c;但第一种只需要拿出重量为10,8,3的3块雨花石&#xff0c;第二种需要拿出4块&#xff0c;所以输出3(块数最少)。</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先&#xff0c;将所有雨花石重量之和求出&#xff0c;设为sum&#xff0c;</p> 
+<ul><li>如果sum % 2 !&#61; 0&#xff0c;则说明无法平分&#xff0c;直接返回-1。</li><li>如果sum % 2 &#61;&#61; 0&#xff0c;则说明“可能”平分。</li></ul> 
+<p>如果“可能”平分&#xff0c;此时&#xff0c;我们可以将本问题转化为&#xff1a;01背包问题中“装满背包的最少物品数问题”。</p> 
+<p>其中&#xff1a;</p> 
+<ul><li>背包承重 &#61; sum / 2</li><li>物品 &#61; 所有雨花石</li><li>物品重量 &#61; 雨花石重量</li></ul> 
+<p>如果大家学习过01背包&#xff0c;其实状态转移方程非常容易推导&#xff1a;</p> 
+<p>&#xff08;ps&#xff1a;如果没有学习过&#xff0c;则可以先看下<a href="https://fcqian.blog.csdn.net/article/details/128307663" rel="nofollow" title="算法设计 - 01背包问题_01背包算法_伏城之外的博客-CSDN博客">算法设计 - 01背包问题_01背包算法_伏城之外的博客-CSDN博客</a>&#xff09;</p> 
+<p>我们假设dp[i][j] 表示从 0 ~ i 物品中选择&#xff0c;能装满背包承重 j 的最少物品数量。那么&#xff1a;</p> 
+<ul><li>如果第 i 个物品&#xff08;重量为w&#xff09;选择的话&#xff0c;则 dp[i][j] &#61; dp[i-1][j - w] &#43; 1&#xff1b;&#xff08;ps&#xff1a;&#43;1代表背包装入了第i个物品&#xff09;</li><li>如果第 i 个物品不选的话&#xff0c;则 dp[i][j] &#61; dp[i-1][j]&#xff1b;</li></ul> 
+<p>最终 dp[i][j] 取最小值即可&#xff0c;即&#xff1a;dp[i][j] &#61; min(dp[i-1][j]&#xff0c;dp[i-1][j - w] &#43; 1)</p> 
+<p></p> 
+<p>另外&#xff0c;我们需要注意dp的初始化&#xff0c;因为后面要求最少物品数量&#xff0c;因此如果将dp[0][0] ~ dp[0][bag] 初始化为0&#xff0c;则会影响后续取最小值&#xff08;ps&#xff1a;0必然是最少的数量&#xff09;。</p> 
+<p>因为我们应该将dp[0][0] ~ dp[0][bag]初始化为一个不可能的较大值&#xff0c;这里由于背包承重是sum/2&#xff0c;因此背包绝对不可能装入 n 个雨花石&#xff0c;因为n个雨花石的重量之和为sum。</p> 
+<p></p> 
+<hr /> 
+<p></p> 
+<p>2023.07.16</p> 
+<p>根据考友指正&#xff0c;上面逻辑中对于dp[0][0] ~ dp[0][bag]的初始化存在问题&#xff0c;比如下面用例</p> 
+<pre><code class="language-javascript">3
+3 1 2</code></pre> 
+<p>按照上面逻辑dp[0][0] ~ dp[0][bag]全部会被初始化为3&#xff0c;如下图所示</p> 
+<p><img alt="" height="363" src="https://img-blog.csdnimg.cn/4ec40865d784470cb30452f86d46cbba.png" width="602" /></p> 
+<p>这样的话计算 dp[1][3] 时&#xff0c;理论上dp[1][3] 应该等于1&#xff0c;但是实际上dp[1][3]值如下图结果为3&#xff1a;</p> 
+<p><img alt="" height="363" src="https://img-blog.csdnimg.cn/823a6f66f74642af8579dbea198b144a.png" width="657" /></p> 
+<p> 原因就是对dp[0][0]错误地初始化为了3&#xff0c;正确地初始化dp[0][0]应该为0。</p> 
+<p><img alt="" height="363" src="https://img-blog.csdnimg.cn/edab07e9661b41289601fe4dbb036578.png" width="602" /></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    const n &#61; parseInt(lines[0]);
+    const nums &#61; lines[1].split(&#34; &#34;).map(Number);
+    console.log(getResult(n, nums));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, nums) {
+  // 所有雨花石重量之和
+  const sum &#61; nums.reduce((a, b) &#61;&gt; a &#43; b);
+
+  // 如果重量之和不能整除2&#xff0c;则必然无法平分
+  if (sum % 2 !&#61; 0) return -1;
+
+  // 背包承重
+  const bag &#61; sum / 2;
+
+  // 二维数组
+  const dp &#61; new Array(n &#43; 1).fill(0).map(() &#61;&gt; new Array(bag &#43; 1).fill(0));
+
+  // 初始化第一行&#xff0c;n是一个不可能的装满背包的物品数量
+  for (let i &#61; 0; i &lt;&#61; bag; i&#43;&#43;) dp[0][i] &#61; n;
+  
+  dp[0][0] &#61; 0;
+
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+    const num &#61; nums[i - 1];
+    for (let j &#61; 1; j &lt;&#61; bag; j&#43;&#43;) {
+      if (j &lt; num) {
+        dp[i][j] &#61; dp[i - 1][j];
+      } else {
+        dp[i][j] &#61; Math.min(dp[i - 1][j], dp[i - 1][j - num] &#43; 1);
+      }
+    }
+  }
+
+  // 如果装满背包的最少物品数为n, 则说明没有平分方案&#xff0c;因为n个雨花石的重量之和为sumV&#xff0c;而背包的承重是bag &#61; sumV // 2
+  if (dp[n][bag] &#61;&#61; n) {
+    return -1;
+  } else {
+    return Math.min(n - dp[n][bag], dp[n][bag]);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; Integer.parseInt(sc.nextLine());
+    int[] nums &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(n, nums));
+  }
+
+  public static int getResult(int n, int[] nums) {
+    // 所有雨花石重量之和
+    int sum &#61; Arrays.stream(nums).sum();
+
+    // 如果重量之和不能整除2&#xff0c;则必然无法平分
+    if (sum % 2 !&#61; 0) return -1;
+
+    // 背包承重
+    int bag &#61; sum / 2;
+
+    // 二维数组
+    int[][] dp &#61; new int[n &#43; 1][bag &#43; 1];
+
+    // 初始化第一行&#xff0c;n是一个不可能的装满背包的物品数量
+    for (int i &#61; 0; i &lt;&#61; bag; i&#43;&#43;) {
+      dp[0][i] &#61; n;
+    }
+
+    // 2023.07.16 修改初始化问题
+    dp[0][0] &#61; 0;
+
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      int num &#61; nums[i - 1];
+      for (int j &#61; 1; j &lt;&#61; bag; j&#43;&#43;) {
+        if (j &lt; num) {
+          dp[i][j] &#61; dp[i - 1][j];
+        } else {
+          dp[i][j] &#61; Math.min(dp[i - 1][j], dp[i - 1][j - num] &#43; 1);
+        }
+      }
+    }
+
+    // 如果装满背包的最少物品数为n, 则说明没有平分方案&#xff0c;因为n个雨花石的重量之和为sumV&#xff0c;而背包的承重是bag &#61; sumV // 2
+    if (dp[n][bag] &#61;&#61; n) {
+      return -1;
+    } else {
+      return dp[n][bag];
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+nums &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    # 所有雨花石重量之和
+    sumV &#61; sum(nums)
+
+    # 如果重量之和不能整除2&#xff0c;则必然无法平分
+    if sumV % 2 !&#61; 0:
+        return -1
+
+    # 背包承重
+    bag &#61; sumV // 2
+
+    # 二维数组
+    dp &#61; [[0] * (bag &#43; 1) for _ in range(n &#43; 1)]
+
+    # 初始化第一行&#xff0c;n是一个不可能的装满背包的物品数量
+    for i in range(bag &#43; 1):
+        dp[0][i] &#61; n
+
+    dp[0][0] &#61; 0
+
+    for i in range(1, n &#43; 1):
+        num &#61; nums[i - 1]
+        for j in range(1, bag &#43; 1):
+            if j &lt; num:
+                dp[i][j] &#61; dp[i - 1][j]
+            else:
+                dp[i][j] &#61; min(dp[i - 1][j], dp[i - 1][j - num] &#43; 1)
+
+    # 如果装满背包的最少物品数为n, 则说明没有平分方案&#xff0c;因为n个雨花石的重量之和为sumV&#xff0c;而背包的承重是bag &#61; sumV // 2
+    if dp[n][bag] &#61;&#61; n:
+        return -1
+    else:
+        return min(n - dp[n][bag], dp[n][bag])
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 30
+#define MAX_ROWS 30 &#43; 1
+#define MAX_COLS 30 * 1000 &#43; 1
+
+#define MIN(a,b) a &lt; b ? a : b
+
+int getResult(int n, int* nums);
+
+int main()
+{
+	int n;
+	scanf(&#34;%d&#34;, &amp;n);
+	
+	int nums[MAX_SIZE];
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		scanf(&#34;%d&#34;, &amp;nums[i]);
+	}
+	
+	printf(&#34;%d\n&#34;, getResult(n, nums));
+	
+	return 0;
+}
+
+
+int dp[MAX_ROWS][MAX_COLS] &#61; {0};
+int getResult(int n, int* nums)
+{
+	// 所有雨花石重量之和
+	int sum &#61; 0;
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		sum &#43;&#61; nums[i];
+	}
+	
+	// 如果重量之和不能整除2&#xff0c;则必然无法平分
+	if(sum % 2 !&#61; 0) {
+		return -1;
+	}
+	
+	// 背包承重
+	int bag &#61; sum / 2;
+	
+	// 二维数组
+	// 由于此处dp申请的内存过大&#xff0c;会造成栈内存溢出&#xff0c;因此将dp定义到全局
+	//int dp[MAX_ROWS][MAX_COLS] &#61; {0};
+	
+	// 初始化第一行&#xff0c;n是一个不可能的装满背包的物品数量
+	// 注意dp[0][0]保持0
+	for(int i&#61;1; i&lt;&#61;bag; i&#43;&#43;) {
+		dp[0][i] &#61; n;
+	}
+	
+	for(int i&#61;1; i&lt;&#61;n; i&#43;&#43;) {
+		int num &#61; nums[i-1];
+		
+		for(int j&#61;1; j&lt;&#61;bag; j&#43;&#43;) {
+			if(j &lt; num) {
+				dp[i][j] &#61; dp[i-1][j];
+			} else {
+				dp[i][j] &#61; MIN(dp[i-1][j], dp[i-1][j-num] &#43; 1);
+			}
+		}
+	}
+	
+	// 如果装满背包的最少物品数为n, 则说明没有平分方案&#xff0c;因为n个雨花石的重量之和为sumV&#xff0c;而背包的承重是bag &#61; sumV // 2
+	if(dp[n][bag] &#61;&#61; n) {
+		return -1;
+	} else {
+		return dp[n][bag];
+	}
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

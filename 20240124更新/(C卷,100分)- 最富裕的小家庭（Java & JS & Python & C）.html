@@ -1,0 +1,193 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 最富裕的小家庭（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <p id="main-toc"><strong>目录</strong></p> 
+<p id="main-toc-toc" style="margin-left:80px;"><a href="#main-toc" rel="nofollow">题目描述</a></p> 
+<p id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0-toc" style="margin-left:80px;"><a href="#%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0" rel="nofollow">输入描述</a></p> 
+<p id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0-toc" style="margin-left:80px;"><a href="#%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0" rel="nofollow">输出描述</a></p> 
+<p id="%E7%94%A8%E4%BE%8B-toc" style="margin-left:80px;"><a href="#%E7%94%A8%E4%BE%8B" rel="nofollow">用例</a></p> 
+<p id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90-toc" style="margin-left:80px;"><a href="#%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90" rel="nofollow">题目解析</a></p> 
+<p id="JS%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#JS%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">JS算法源码</a></p> 
+<p id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">Java算法源码</a></p> 
+<p id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">Python算法源码</a></p> 
+<p id="C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81-toc" style="margin-left:80px;"><a href="#C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" rel="nofollow">C算法源码</a></p> 
+<hr id="hr-toc" /> 
+<p></p> 
+<h4 id="main-toc">题目描述</h4> 
+<p>在一颗树中&#xff0c;每个节点代表一个家庭成员&#xff0c;节点的数字表示其个人的财富值&#xff0c;一个节点及其直接相连的子节点被定义为一个小家庭。</p> 
+<p>现给你一颗树&#xff0c;请计算出最富裕的小家庭的财富和。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为一个数 N&#xff0c;表示成员总数&#xff0c;成员编号 1~N。1 ≤ N ≤ 1000</p> 
+<p>第二行为 N 个空格分隔的数&#xff0c;表示编号 1~N 的成员的财富值。0 ≤ 财富值 ≤ 1000000</p> 
+<p>接下来 N -1 行&#xff0c;每行两个空格分隔的整数&#xff08;N1, N2&#xff09;&#xff0c;表示 N1 是 N2 的父节点。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最富裕的小家庭的财富和</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 100 200 300 500<br /> 1 2<br /> 1 3<br /> 2 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">700</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p><img alt="" height="223" src="https://img-blog.csdnimg.cn/d42fa1105adb4ffa9d61f8504727b4a5.png" width="294" /></p> <p>成员1&#xff0c;2&#xff0c;3 组成的小家庭财富值为600</p> <p>成员2&#xff0c;4 组成的小家庭财富值为700</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的逻辑分析题。</p> 
+<p></p> 
+<p>由于题目输入会给出 树形结构 中&#xff0c;父节点-&gt;子节点 的信息&#xff0c;比如下面红色部分</p> 
+<blockquote> 
+ <p>4<br /> 100 200 300 500<br /><span style="color:#fe2c24;">1 2<br /> 1 3<br /> 2 4</span></p> 
+</blockquote> 
+<p>因此我们遍历这些信息时&#xff0c;就可以直接将子节点的财富&#xff0c;汇总到其父节点上。</p> 
+<p>具体实现是&#xff0c;由第二行输入解析得到每个节点的财富值数组 wealth。</p> 
+<p>然后根据第三行~最后一行的输入&#xff1a;fa ch&#xff0c;执行 wealth[fa] &#43;&#61; wealth[ch]&#xff0c;即将子节点的财富值汇总到父节点上。</p> 
+<p>这样最终wealth数组的最大值就是题解。</p> 
+<p></p> 
+<p>需要注意的是&#xff0c;题目规定成员编号 1~N&#xff0c;因此定义wealth数组时&#xff0c;我们应该将其长度定义为N&#43;1&#xff0c;且从索引1开始操作&#xff0c;来匹配成员编号1~N。</p> 
+<hr /> 
+<p>2023.11.26 上面逻辑中&#xff1a;</p> 
+<p>wealth[fa] &#43;&#61; wealth[ch]</p> 
+<p>存在问题。</p> 
+<p>比如下面用例&#xff1a;</p> 
+<blockquote> 
+ <p>5<br /> 100 200 300 400 500<br /> 3 4<br /> 3 5<br /> 1 3<br /> 1 2</p> 
+</blockquote> 
+<p>3是1的子节点&#xff0c;但是3的家庭关系先被定义出来了&#xff0c;因此如果将家庭的财富都汇总到父节点身上&#xff0c;上面逻辑会将节点3的财富值变为1200&#xff0c;从而影响后面父节点为1的家庭财富计算。</p> 
+<p></p> 
+<p>本题需要额外定义一个family数组&#xff0c;用于记录每个父节点对应家庭的财富值&#xff0c;这样就可以避免上面问题。</p> 
+<p></p> 
+<h4 id="JS%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+  const wealth &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 这里头插一个0&#xff0c;是为了让wealth数组索引对应成员编号 1~N
+  wealth.unshift(0);
+
+  const family &#61; [...wealth];
+
+  for (let i &#61; 0; i &lt; n - 1; i&#43;&#43;) {
+    const [fa, ch] &#61; (await readline()).split(&#34; &#34;).map(Number);
+    family[fa] &#43;&#61; wealth[ch];
+  }
+
+  console.log(Math.max(...family));
+})();
+</code></pre> 
+<p></p> 
+<h4 id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    // 这里wealth长度定义为n&#43;1&#xff0c;是为了让wealth数组索引对应成员编号 1~N
+    long[] wealth &#61; new long[n &#43; 1];
+    long[] family &#61; new long[n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      wealth[i] &#61; sc.nextInt();
+      family[i] &#61; wealth[i];
+    }
+
+    for (int i &#61; 0; i &lt; n - 1; i&#43;&#43;) {
+      int fa &#61; sc.nextInt();
+      int ch &#61; sc.nextInt();
+      family[fa] &#43;&#61; wealth[ch];
+    }
+
+    System.out.println(Arrays.stream(family).max().orElse(0));
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Python算法源码</h4> 
+<pre><code class="language-python">n &#61; int(input())
+wealth &#61; list(map(int, input().split()))
+
+# 这里头插一个0&#xff0c;是为了让wealth数组索引对应成员编号 1~N
+wealth.insert(0, 0)
+
+family &#61; []
+family.extend(wealth)
+
+for _ in range(n - 1):
+    fa, ch &#61; map(int, input().split())
+    family[fa] &#43;&#61; wealth[ch]
+
+print(max(family))
+</code></pre> 
+<p></p> 
+<h4 id="C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    // 这里wealth长度定义为n&#43;1&#xff0c;是为了让wealth数组索引对应成员编号 1~N
+    int wealth[n &#43; 1];
+    int family[n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;wealth[i]);
+        family[i] &#61; wealth[i];
+    }
+
+    for (int i &#61; 0; i &lt; n - 1; i&#43;&#43;) {
+        int fa, ch;
+        scanf(&#34;%d %d&#34;, &amp;fa, &amp;ch);
+        family[fa] &#43;&#61; wealth[ch];
+    }
+
+    int max &#61; family[1];
+    for (int i &#61; 2; i &lt;&#61; n; i&#43;&#43;) {
+        max &#61; MAX(max, family[i]);
+    }
+
+    printf(&#34;%d\n&#34;, max);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

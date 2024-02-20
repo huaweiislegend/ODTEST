@@ -1,0 +1,372 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 竖直四子棋（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>竖直四子棋的棋盘是竖立起来的&#xff0c;双方轮流选择棋盘的一列下子&#xff0c;棋子因重力落到棋盘底部或者其他棋子之上&#xff0c;当一列的棋子放满时&#xff0c;无法再在这列上下子。</p> 
+<p>一方的4个棋子横、竖或者斜方向连成一线时获胜。</p> 
+<p>现给定一个棋盘和红蓝对弈双方的下子步骤&#xff0c;判断红方或蓝方是否在某一步获胜。</p> 
+<p>下面以一个6×5的棋盘图示说明落子过程&#xff1a;</p> 
+<p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/ab53e952ffca4482b49eedf8e85bbc0c.png" /></p> 
+<p>下面给出横、竖和斜方向四子连线的图示&#xff1a; </p> 
+<p style="text-align:center;"><img alt="" src="https://img-blog.csdnimg.cn/3d486b7d91b44ce3ba58fc79299e7c21.png" /></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为2行&#xff0c;第一行指定棋盘的宽和高&#xff0c;为空格分隔的两个数字&#xff1b;</p> 
+<p>第二行依次间隔指定红蓝双方的落子步骤&#xff0c;第1步为红方的落子&#xff0c;第2步为蓝方的落子&#xff0c;第3步为红方的落子&#xff0c;以此类推。</p> 
+<p>步骤由空格分隔的一组数字表示&#xff0c;每个数字为落子的列的编号&#xff08;最左边的列编号为1&#xff0c;往右递增&#xff09;。用例保证数字均为32位有符号数。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>如果落子过程中红方获胜&#xff0c;输出 N,red &#xff1b;</p> 
+<p>如果落子过程中蓝方获胜&#xff0c;输出 N,blue &#xff1b;</p> 
+<p>如果出现非法的落子步骤&#xff0c;输出 N,error。</p> 
+<p>N为落子步骤的序号&#xff0c;从1开始。如果双方都没有获胜&#xff0c;输出 0,draw 。</p> 
+<p>非法落子步骤有两种&#xff0c;一是列的编号超过棋盘范围&#xff0c;二是在一个已经落满子的列上落子。</p> 
+<p>N和单词red、blue、draw、error之间是英文逗号连接。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 5<br /> 1 1 2 2 3 3 4 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">7,red</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">在第7步&#xff0c;红方在第4列落下一子后&#xff0c;红方的四个子在第一行连成一线&#xff0c;故红方获胜&#xff0c;输出 7,red。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 5<br /> 0 1 2 2 3 3 4 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1,error</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第1步的列序号为0&#xff0c;超出有效列编号的范围&#xff0c;故输出 1,error。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>纯逻辑题&#xff0c;我们只需要构造一个矩阵&#xff0c;并按照第二行输入来落子&#xff0c;需要注意的是&#xff0c;当第7个及以后的落子&#xff0c;才可能会产生四连击&#xff0c;因此四连击判断放在step&gt;&#61;7中判断。</p> 
+<p>另外&#xff0c;关于四连击的判断&#xff0c;要检查四个方向&#xff1a;</p> 
+<ul><li>水平方向</li><li>垂直方向</li><li>正斜边方向</li><li>反斜边方向</li></ul> 
+<p>同时&#xff0c;需要以落子位置为中心&#xff0c;向当前方向两端发散检查。</p> 
+<p><img alt="" height="464" src="https://img-blog.csdnimg.cn/082ffdace7e4413b994fe304ac2e812f.png" width="805" /></p> 
+<p>自测用例</p> 
+<p>5 5</p> 
+<p>1 2 1 3 1 1 2 4 5 3 3 4 4 2 5 1</p> 
+<p>输出&#xff1a;14,blue</p> 
+<hr /> 
+<p>2023.07.31</p> 
+<p>考虑到可能存在超过四子连珠的情况&#xff0c;因此isFour函数判断中&#xff0c;对应连续数量判断应该改为&gt;&#61;4更稳妥。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] tmp &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int n &#61; tmp[0];
+    int m &#61; tmp[1];
+
+    int[] cols &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(n, m, cols));
+  }
+
+  /**
+   * &#64;param n 宽 &#xff0c;矩阵列数
+   * &#64;param m 高&#xff0c;矩阵行数
+   * &#64;param cols 落子的列的编号
+   */
+  public static String getResult(int n, int m, int[] cols) {
+    int r &#61; m;
+    int c &#61; n;
+
+    // 构造棋盘&#xff0c;注意棋盘长宽都&#43;1了&#xff0c;方便后面棋子获取
+    int[][] matrix &#61; new int[r &#43; 1][c &#43; 1];
+
+    // 这里i对应第几步&#xff0c;由于题目是从第1步开始算&#xff0c;而这里 i 从0开始算&#xff0c;因此最终返回要i&#43;1
+    for (int i &#61; 0; i &lt; cols.length; i&#43;&#43;) {
+      // cols[i]代表第 i 步下在第几列
+      if (cols[i] &lt; 1 || cols[i] &gt; c) return i &#43; 1 &#43; &#34;,error&#34;;
+
+      // player落子颜色&#xff1a;1代表红色&#xff0c;2代表蓝色
+      int player &#61; i % 2 &#61;&#61; 0 ? 1 : 2;
+
+      // 落子逻辑
+      int x &#61; m;
+      int y &#61; cols[i];
+      while (matrix[x][y] &gt; 0) {
+        x--; // 如果当前列底部有棋子&#xff0c;则需要往上查找
+        if (x &lt; 1) return i &#43; 1 &#43; &#34;,error&#34;; // 如果当前列已经放满棋子&#xff0c;则报错
+      }
+      matrix[x][y] &#61; player; // 如果当前列底部没有棋子&#xff0c;则可以放入
+
+      // i &gt;&#61; 6&#xff0c;即第七步及之后落子时&#xff0c;才可能产生四连击
+      if (i &gt;&#61; 6 &amp;&amp; isFour(x, y, player, matrix, r, c)) {
+        return i &#43; 1 &#43; &#34;,&#34; &#43; (player &#61;&#61; 1 ? &#34;red&#34; : &#34;blue&#34;);
+      }
+    }
+
+    // 双方都没有获胜
+    return &#34;0,draw&#34;;
+  }
+
+  // 上&#xff0c;左&#xff0c;左上&#xff0c;左下
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {0, -1}, {-1, -1}, {-1, 1}};
+
+  public static boolean isFour(int x, int y, int player, int[][] matrix, int r, int c) {
+    for (int[] offset : offsets) {
+      int len &#61; 1;
+
+      // 向着某个方向延申判断是否存在相同子
+      int x1 &#61; x, y1 &#61; y;
+      while (true) {
+        x1 &#43;&#61; offset[0];
+        y1 &#43;&#61; offset[1];
+
+        if (x1 &gt;&#61; 1 &amp;&amp; x1 &lt;&#61; r &amp;&amp; y1 &gt;&#61; 1 &amp;&amp; y1 &lt;&#61; c &amp;&amp; matrix[x1][y1] &#61;&#61; player) {
+          len&#43;&#43;;
+        } else {
+          break;
+        }
+      }
+
+      // 向着上面方向的反方向延申判断是否存在相同子&#xff08;两个相反方向其实处于一条线上&#xff09;
+      int x2 &#61; x, y2 &#61; y;
+      while (true) {
+        x2 -&#61; offset[0];
+        y2 -&#61; offset[1];
+
+        if (x2 &gt;&#61; 1 &amp;&amp; x2 &lt;&#61; r &amp;&amp; y2 &gt;&#61; 1 &amp;&amp; y2 &lt;&#61; c &amp;&amp; matrix[x2][y2] &#61;&#61; player) {
+          len&#43;&#43;;
+        } else {
+          break;
+        }
+      }
+
+      // 如果此线可以形成四子连击&#xff0c;则直接返回true
+      if (len &gt;&#61; 4) return true;
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const [n, m] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const cols &#61; lines[1].split(&#34; &#34;).map(Number);
+
+    console.log(gameResult(n, m, cols));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} n 宽&#xff0c;矩阵列数
+ * &#64;param {*} m 高&#xff0c;矩阵行数
+ * &#64;param {*} cols
+ */
+function gameResult(n, m, cols) {
+  const r &#61; m; // 矩阵行数
+  const c &#61; n; // 矩阵列数
+
+  // 构造棋盘&#xff0c;注意棋盘长宽都&#43;1了&#xff0c;方便后面棋子获取
+  const matrix &#61; new Array(r &#43; 1).fill(0).map(() &#61;&gt; new Array(c &#43; 1).fill(0));
+
+  // 这里i对应第几步&#xff0c;由于题目是从第1步开始算&#xff0c;而这里 i 从0开始算&#xff0c;因此最终返回要i&#43;1
+  for (let i &#61; 0; i &lt; cols.length; i&#43;&#43;) {
+    // cols[i]代表第 i 步下在第几列
+    if (cols[i] &lt; 1 || cols[i] &gt; c) return &#96;${i &#43; 1},error&#96;;
+
+    // player落子颜色&#xff1a;1代表红色&#xff0c;2代表蓝色
+    let player &#61; i % 2 &#61;&#61;&#61; 0 ? 1 : 2;
+
+    // 落子逻辑
+    let x &#61; r;
+    let y &#61; cols[i];
+    while (matrix[x][y] &gt; 0) {
+      x--; // 如果当前列底部有棋子&#xff0c;则需要往上查找
+      if (x &lt; 1) return &#96;${i &#43; 1},error&#96;; // 如果当前列已经放满棋子&#xff0c;则报错
+    }
+    matrix[x][y] &#61; player; // 如果当前列底部没有棋子&#xff0c;则可以放入
+
+    // i &gt;&#61; 6&#xff0c;即第七步及之后落子时&#xff0c;才可能产生四连击
+    if (i &gt;&#61; 6 &amp;&amp; isFour(x, y, player, matrix, r, c)) {
+      return &#96;${i &#43; 1},${player &#61;&#61; 1 ? &#34;red&#34; : &#34;blue&#34;}&#96;;
+    }
+  }
+
+  // 双方都没有获胜
+  return &#34;0,draw&#34;;
+}
+
+// 上&#xff0c;左&#xff0c;左上&#xff0c;左下
+const offsets &#61; [
+  [-1, 0],
+  [0, -1],
+  [-1, -1],
+  [-1, 1],
+];
+
+function isFour(x, y, player, matrix, r, c) {
+  for (let [offsetX, offsetY] of offsets) {
+    let len &#61; 1;
+
+    // 向着某个方向延申判断是否存在相同子
+    let x1 &#61; x;
+    let y1 &#61; y;
+
+    while (true) {
+      x1 &#43;&#61; offsetX;
+      y1 &#43;&#61; offsetY;
+
+      if (
+        x1 &gt;&#61; 1 &amp;&amp;
+        x1 &lt;&#61; r &amp;&amp;
+        y1 &gt;&#61; 1 &amp;&amp;
+        y1 &lt;&#61; c &amp;&amp;
+        matrix[x1][y1] &#61;&#61;&#61; player
+      ) {
+        len&#43;&#43;;
+      } else {
+        break;
+      }
+    }
+
+    // 向着上面方向的反方向延申判断是否存在相同子&#xff08;两个相反方向其实处于一条线上&#xff09;
+    let x2 &#61; x;
+    let y2 &#61; y;
+
+    while (true) {
+      x2 -&#61; offsetX;
+      y2 -&#61; offsetY;
+
+      if (
+        x2 &gt;&#61; 1 &amp;&amp;
+        x2 &lt;&#61; r &amp;&amp;
+        y2 &gt;&#61; 1 &amp;&amp;
+        y2 &lt;&#61; c &amp;&amp;
+        matrix[x2][y2] &#61;&#61;&#61; player
+      ) {
+        len&#43;&#43;;
+      } else {
+        break;
+      }
+    }
+
+    // 如果此线可以形成四子连击&#xff0c;则直接返回true
+    if (len &gt;&#61; 4) return true;
+  }
+
+  return false;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+c, r &#61; map(int, input().split())
+cols &#61; list(map(int, input().split()))
+
+# 构造棋盘&#xff0c;注意棋盘长宽都&#43;1了&#xff0c;方便后面棋子获取
+matrix &#61; [[0] * (c &#43; 1) for _ in range(r &#43; 1)]
+# 上&#xff0c;左&#xff0c;左上&#xff0c;左下 偏移量
+offsets &#61; ((-1, 0), (0, -1), (-1, -1), (-1, 1))
+
+
+def isFour(x, y, player):
+    for offsetX, offsetY in offsets:
+        long &#61; 1
+
+        # 向着某个方向延申判断是否存在相同子
+        x1, y1 &#61; x, y
+        while True:
+            x1 &#43;&#61; offsetX
+            y1 &#43;&#61; offsetY
+            if r &gt;&#61; x1 &gt;&#61; 1 and c &gt;&#61; y1 &gt;&#61; 1 and matrix[x1][y1] &#61;&#61; player:
+                long &#43;&#61; 1
+            else:
+                break
+
+        # 向着上面方向的反方向延申判断是否存在相同子&#xff08;两个相反方向其实处于一条线上&#xff09;
+        x2, y2 &#61; x, y
+        while True:
+            x2 -&#61; offsetX
+            y2 -&#61; offsetY
+            if r &gt;&#61; x2 &gt;&#61; 1 and c &gt;&#61; y2 &gt;&#61; 1 and matrix[x2][y2] &#61;&#61; player:
+                long &#43;&#61; 1
+            else:
+                break
+
+        # 如果此线可以形成四子连击&#xff0c;则直接返回true
+        if long &gt;&#61; 4:
+            return True
+
+    return False
+
+
+# 算法入口
+def getResult():
+    # 这里i对应第几步&#xff0c;由于题目是从第1步开始算&#xff0c;而这里 i 从0开始算&#xff0c;因此最终返回要i&#43;1
+    for i in range(len(cols)):
+        #  cols[i]代表第 i 步下在第几列
+        if cols[i] &lt; 1 or cols[i] &gt; c:
+            return f&#34;{i &#43; 1},error&#34;
+
+        # player落子颜色&#xff1a;1代表红色&#xff0c;2代表蓝色
+        player &#61; 1 if i % 2 &#61;&#61; 0 else 2
+
+        # 落子逻辑
+        x, y &#61; r, cols[i]
+        while matrix[x][y] &gt; 0:
+            x -&#61; 1  # 如果当前列底部有棋子&#xff0c;则需要往上查找
+            if x &lt; 1:
+                return f&#34;{i &#43; 1},error&#34;  # 如果当前列已经放满棋子&#xff0c;则报错
+
+        matrix[x][y] &#61; player  # 如果当前列底部没有棋子&#xff0c;则可以放入
+
+        # i &gt;&#61; 6&#xff0c;即第七步及之后落子时&#xff0c;才可能产生四连击
+        if i &gt;&#61; 6 and isFour(x, y, player):
+            return f&#34;{i &#43; 1},{&#39;red&#39; if player &#61;&#61; 1 else &#39;blue&#39;}&#34;
+
+    # 双方都没有获胜
+    return &#34;0,draw&#34;
+
+
+# 调用算法
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

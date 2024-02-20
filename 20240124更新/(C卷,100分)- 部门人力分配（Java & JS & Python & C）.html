@@ -1,0 +1,370 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 部门人力分配（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>部门在进行需求开发时需要进行人力安排。</p> 
+<p>当前部门需要完成 N 个需求&#xff0c;需求用 requirements 表述&#xff0c;requirements[i] 表示第 i 个需求的工作量大小&#xff0c;单位&#xff1a;人月。</p> 
+<p>这部分需求需要在 M 个月内完成开发&#xff0c;进行人力安排后每个月人力时固定的。</p> 
+<p>目前要求每个月最多有2个需求开发&#xff0c;并且每个月需要完成的需求不能超过部门人力。</p> 
+<p>请帮助部门评估在满足需求开发进度的情况下&#xff0c;每个月需要的最小人力是多少&#xff1f;</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为 M 和 requirements&#xff0c;M 表示需求开发时间要求&#xff0c;requirements 表示每个需求工作量大小&#xff0c;N 为 requirements长度&#xff0c;</p> 
+<ul><li>1 ≤ N/2 ≤ M ≤ N ≤ 10000</li><li>1 ≤ requirements[i] ≤ 10^9</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>对于每一组测试数据&#xff0c;输出部门需要人力需求&#xff0c;行末无多余的空格</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3<br /> 3 5 3 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">6</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>输入数据两行&#xff0c;</p> <p>第一行输入数据3表示开发时间要求&#xff0c;</p> <p>第二行输入数据表示需求工作量大小&#xff0c;</p> <p></p> <p>输出数据一行&#xff0c;表示部门人力需求。</p> <p></p> <p>当选择人力为6时&#xff0c;2个需求量为3的工作可以在1个月里完成&#xff0c;其他2个工作各需要1个月完成。可以在3个月内完成所有需求。</p> <p></p> <p>当选择人力为5时&#xff0c;4个工作各需要1个月完成&#xff0c;一共需要4个月才能完成所有需求。</p> <p></p> <p>因此6是部门最小的人力需求。</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是将二分和双指针考点结合在了一起。</p> 
+<p></p> 
+<p>本题我们可以换个说法&#xff1a;</p> 
+<blockquote> 
+ <p>目前有 N 个人<span style="color:#fe2c24;">&#xff08;N个需求&#xff09;</span>&#xff0c;</p> 
+ <p>每个人的体重为requirements[i]&#xff0c;<span style="color:#fe2c24;">&#xff08;每个需求开发需要的人力为requirements[i]&#xff09;</span></p> 
+ <p>以及 M 辆自行车<span style="color:#fe2c24;">&#xff08;M个月开发&#xff09;</span>&#xff0c;</p> 
+ <p>每辆自行车至多坐两人<span style="color:#fe2c24;">&#xff08;每个月至多开发两个需求&#xff09;</span>&#xff0c;</p> 
+ <p>现在想要用 M 辆自行车带走 N 个人&#xff0c;问每辆自行车的限重至少是多少&#xff1f;<span style="color:#fe2c24;">&#xff08;M个月开发完N个需求&#xff0c;每个月至少需要多少人力&#xff09;</span></p> 
+</blockquote> 
+<p></p> 
+<p>每辆自行车载重&#xff1a;</p> 
+<ul><li>min 至少是 1st_max(requirements)&#xff0c;这样才能保证最重的人可以单独骑一辆自行车</li><li>max 至多是 1st_max(requirements) &#43; 2nd_max(requirements)&#xff0c;这样最重的两个人可以骑在一辆自行车商</li></ul> 
+<p>我们可以在该[min, max]范围内二分找中间值mid&#xff0c;作为每辆自行车的限重去尝试&#xff08;check&#xff09;,看对应限重下至少需要多少辆自行车。</p> 
+<p>比如二分取中间值mid作为每辆自行车的限重&#xff0c;并将体重数组requirements升序排序&#xff0c;定义两个指针L&#xff0c;R&#xff0c;初始化L &#61; 0&#xff0c;R&#61;requirements.length -1。</p> 
+<p>那么L指向的就是体重最轻的人&#xff0c;R指向的就是体重最重的人。</p> 
+<ul><li>如果 requirement[L] &#43; requirement[R] &lt;&#61; mid&#xff0c;则说明最轻的人和最重的人可以坐一辆自行车&#xff0c;然后L&#43;&#43;&#xff0c;R--&#xff0c;用车数量 need&#43;&#43;</li><li>如果 requirement[L] &#43; requirement[R] &gt; mid&#xff0c;则说明最重的人只能一个人坐一辆自行车&#xff0c;无法搭配其他人&#xff0c;然后仅 R-- &#xff0c;用车数量 need&#43;&#43;</li></ul> 
+<p>按上面逻辑继续进行&#xff0c;直到L &gt; R时&#xff0c;即所有人都坐上了自行车时停止&#xff0c;此时我们比较need和M&#xff0c;</p> 
+<ul><li>如果need &lt;&#61; M&#xff0c;则说明 mid 限重可以满足M辆车带走所有人&#xff0c;此时mid就是一个本题的一个可能解&#xff0c;但不一定时最优解&#xff0c;我们应该继续尝试更小的限重&#xff0c;即max &#61; mid - 1</li><li>如果need &gt; M&#xff0c;则说明 mid 限重无法满足M辆车带走所有人&#xff0c;因此我们需要更大的限重&#xff0c;即 min &#61; mid &#43; 1</li></ul> 
+<p>然后继续二分取中间值作为限重带入前面双指针逻辑check。</p> 
+<p></p> 
+<p>另外本题需要注意整型溢出问题。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81" style="background-color:transparent;">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入处理
+void (async function () {
+  const m &#61; parseInt(await readline());
+  const requirements &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  console.log(getResult(m, requirements));
+})();
+
+function getResult(m, requirements) {
+  requirements.sort((a, b) &#61;&gt; a - b);
+
+  const n &#61; requirements.length;
+
+  // 每辆自行车的限重 至少是 最重的那个人的体重
+  let min &#61; requirements[n - 1];
+  // 每辆自行车的限重 至多是 最重的和次重的那两个的体重
+  let max &#61; requirements[n - 2] &#43; requirements[n - 1];
+
+  let ans &#61; max;
+
+  // 二分取中间值
+  while (min &lt;&#61; max) {
+    const mid &#61; Math.floor((min &#43; max) / 2); // 注意这里不能使用 &gt;&gt; 1 运算&#xff0c;会出现整型溢出
+
+    if (check(mid, m, requirements)) {
+      // 如果mid限重&#xff0c;可以满足m辆车带走n个人&#xff0c;则mid就是一个可能解&#xff0c;但不一定是最优解
+      ans &#61; mid;
+      // 继续尝试更小的限重&#xff0c;即缩小右边界
+      max &#61; mid - 1;
+    } else {
+      // 如果mid限重&#xff0c;不能满足m辆车带走n个人&#xff0c;则mid限重小了&#xff0c;我们应该尝试更大的限重&#xff0c;即扩大左边界
+      min &#61; mid &#43; 1;
+    }
+  }
+
+  return ans;
+}
+
+/**
+ * &#64;param limit 每辆自行车的限重
+ * &#64;param m m辆自行车
+ * &#64;param requirements n个人的体重数组
+ * &#64;return m辆自行车&#xff0c;每辆限重limit的情况下&#xff0c;能否带走n个人
+ */
+function check(limit, m, requirements) {
+  let l &#61; 0; // 指向体重最轻的人
+  let r &#61; requirements.length - 1; // 指向体重最重的人
+
+  // 需要的自行车数量
+  let need &#61; 0;
+
+  while (l &lt;&#61; r) {
+    // 如果最轻的人和最重的人可以共享一辆车&#xff0c;则l&#43;&#43;,r--&#xff0c;
+    // 否则最重的人只能单独坐一辆车&#xff0c;即仅r--
+    if (requirements[l] &#43; requirements[r] &lt;&#61; limit) {
+      l&#43;&#43;;
+    }
+    r--;
+    // 用掉一辆车
+    need&#43;&#43;;
+  }
+
+  // 如果m &gt;&#61; need&#xff0c;当前有的自行车数量足够
+  return m &gt;&#61; need;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int m &#61; Integer.parseInt(sc.nextLine());
+    int[] requirements &#61;
+        Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+
+    System.out.println(getResult(m, requirements));
+  }
+
+  public static long getResult(int m, int[] requirements) {
+    Arrays.sort(requirements);
+
+    int n &#61; requirements.length;
+
+    // 每辆自行车的限重 至少是 最重的那个人的体重
+    long min &#61; requirements[n - 1];
+    // 每辆自行车的限重 至多是 最重的和次重的那两个的体重
+    long max &#61; requirements[n - 2] &#43; requirements[n - 1];
+
+    long ans &#61; max;
+
+    // 二分取中间值
+    while (min &lt;&#61; max) {
+      long mid &#61; (min &#43; max) &gt;&gt; 1; // 需要注意的是&#xff0c;min&#xff0c;max单独看都不超过int&#xff0c;但是二者相加会超过int&#xff0c;因此需要用long类型
+
+      if (check(mid, m, requirements)) {
+        // 如果mid限重&#xff0c;可以满足m辆车带走n个人&#xff0c;则mid就是一个可能解&#xff0c;但不一定是最优解
+        ans &#61; mid;
+        // 继续尝试更小的限重&#xff0c;即缩小右边界
+        max &#61; mid - 1;
+      } else {
+        // 如果mid限重&#xff0c;不能满足m辆车带走n个人&#xff0c;则mid限重小了&#xff0c;我们应该尝试更大的限重&#xff0c;即扩大左边界
+        min &#61; mid &#43; 1;
+      }
+    }
+
+    return ans;
+  }
+
+  /**
+   * &#64;param limit 每辆自行车的限重
+   * &#64;param m m辆自行车
+   * &#64;param requirements n个人的体重数组
+   * &#64;return m辆自行车&#xff0c;每辆限重limit的情况下&#xff0c;能否带走n个人
+   */
+  public static boolean check(long limit, int m, int[] requirements) {
+    int l &#61; 0; // 指向体重最轻的人
+    int r &#61; requirements.length - 1; // 指向体重最重的人
+
+    // 需要的自行车数量
+    int need &#61; 0;
+
+    while (l &lt;&#61; r) {
+      // 如果最轻的人和最重的人可以共享一辆车&#xff0c;则l&#43;&#43;,r--&#xff0c;
+      // 否则最重的人只能单独坐一辆车&#xff0c;即仅r--
+      if (requirements[l] &#43; requirements[r] &lt;&#61; limit) {
+        l&#43;&#43;;
+      }
+      r--;
+      // 用掉一辆车
+      need&#43;&#43;;
+    }
+
+    // 如果m &gt;&#61; need&#xff0c;当前有的自行车数量足够
+    return m &gt;&#61; need;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+m &#61; int(input())
+requirements &#61; list(map(int, input().split()))
+
+
+def check(limit):
+    &#34;&#34;&#34;
+    :param limit: 每辆自行车的限重
+    :return: m辆自行车&#xff0c;每辆限重limit的情况下&#xff0c;能否带走n个人
+    &#34;&#34;&#34;
+    l &#61; 0  # 指向体重最轻的人
+    r &#61; len(requirements) - 1  # 指向体重最重的人
+
+    # 需要的自行车数量
+    need &#61; 0
+
+    while l &lt;&#61; r:
+        # 如果最轻的人和最重的人可以共享一辆车&#xff0c;则l&#43;&#43;,r--&#xff0c;
+        # 否则最重的人只能单独坐一辆车&#xff0c;即仅r--
+        if requirements[l] &#43; requirements[r] &lt;&#61; limit:
+            l &#43;&#61; 1
+        r -&#61; 1
+        # 用掉一辆车
+        need &#43;&#61; 1
+
+    # 如果m &gt;&#61; need&#xff0c;当前有的自行车数量足够
+    return m &gt;&#61; need
+
+
+def getResult():
+    requirements.sort()
+
+    # 每辆自行车的限重 至少是 最重的那个人的体重
+    low &#61; requirements[-1]
+    # 每辆自行车的限重 至多是 最重的和次重的那两个的体重
+    high &#61; requirements[-2] &#43; requirements[-1]
+
+    ans &#61; high
+
+    # 二分取中间值
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) &gt;&gt; 1
+
+        if check(mid):
+            # 如果mid限重&#xff0c;可以满足m辆车带走n个人&#xff0c;则mid就是一个可能解&#xff0c;但不一定是最优解
+            ans &#61; mid
+            # 继续尝试更小的限重&#xff0c;即缩小右边界
+            high &#61; mid - 1
+        else:
+            # 如果mid限重&#xff0c;不能满足m辆车带走n个人&#xff0c;则mid限重小了&#xff0c;我们应该尝试更大的限重&#xff0c;即扩大左边界
+            low &#61; mid &#43; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 10000
+
+/*!
+ *
+ * &#64;param limit 每辆自行车的限重
+ * &#64;param m m辆自行车
+ * &#64;param requirements n个人的体重数组
+ * &#64;param requirements_size n个人
+ * &#64;return m辆自行车&#xff0c;每辆限重limit的情况下&#xff0c;能否带走n个人
+ */
+int check(long long limit, int m, const int requirements[], int requirements_size) {
+    int l &#61; 0; // 指向体重最轻的人
+    int r &#61; requirements_size - 1;  // 指向体重最重的人
+
+    // 需要的自行车数量
+    int need &#61; 0;
+    while (l &lt;&#61; r) {
+        // 如果最轻的人和最重的人可以共享一辆车&#xff0c;则l&#43;&#43;,r--&#xff0c;
+        // 否则最重的人只能单独坐一辆车&#xff0c;即仅r--
+        if (requirements[l] &#43; requirements[r] &lt;&#61; limit) {
+            l&#43;&#43;;
+        }
+        r--;
+        // 用掉一辆车
+        need&#43;&#43;;
+    }
+
+    // 如果m &gt;&#61; need&#xff0c;当前有的自行车数量足够
+    return m &gt;&#61; need;
+}
+
+int cmp(const void *a, const void *b) {
+    return *((int *) a) - *((int *) b);
+}
+
+long long getResult(int m, int requirements[], int requirements_size) {
+    qsort(requirements, requirements_size, sizeof(int), cmp);
+
+    // 每辆自行车的限重 至少是 最重的那个人的体重
+    long long min &#61; requirements[requirements_size - 1];
+    // 每辆自行车的限重 至多是 最重的和次重的那两个的体重
+    long long max &#61; requirements[requirements_size - 2] &#43; requirements[requirements_size - 1];
+
+    long long ans &#61; max;
+
+    // 二分取中间值
+    while (min &lt;&#61; max) {
+        long long mid &#61; (min &#43; max) &gt;&gt; 1; // 需要注意的是&#xff0c;min&#xff0c;max单独看都不超过int&#xff0c;但是二者相加会超过int&#xff0c;因此需要用long long类型
+
+        if (check(mid, m, requirements, requirements_size)) {
+            // 如果mid限重&#xff0c;可以满足m辆车带走n个人&#xff0c;则mid就是一个可能解&#xff0c;但不一定是最优解
+            ans &#61; mid;
+            // 继续尝试更小的限重&#xff0c;即缩小右边界
+            max &#61; mid - 1;
+        } else {
+            // 如果mid限重&#xff0c;不能满足m辆车带走n个人&#xff0c;则mid限重小了&#xff0c;我们应该尝试更大的限重&#xff0c;即扩大左边界
+            min &#61; mid &#43; 1;
+        }
+    }
+
+    return ans;
+}
+
+int main() {
+    int m;
+    scanf(&#34;%d&#34;, &amp;m);
+
+    int requirements[MAX_SIZE];
+    int requirements_size &#61; 0;
+
+    while (scanf(&#34;%d&#34;, &amp;requirements[requirements_size&#43;&#43;])) {
+        if (getchar() !&#61; &#39; &#39;) break;
+    }
+
+    printf(&#34;%lld\n&#34;, getResult(m, requirements, requirements_size));
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

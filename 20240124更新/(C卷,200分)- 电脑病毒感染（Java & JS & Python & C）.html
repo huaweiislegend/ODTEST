@@ -1,0 +1,453 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 电脑病毒感染（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>一个局域网内有很多台电脑&#xff0c;分别标注为 0 ~ N-1 的数字。相连接的电脑距离不一样&#xff0c;所以感染时间不一样&#xff0c;感染时间用 t 表示。</p> 
+<p>其中网络内一台电脑被病毒感染&#xff0c;求其感染网络内所有的电脑最少需要多长时间。如果最后有电脑不会感染&#xff0c;则返回-1。</p> 
+<p>给定一个数组 times 表示一台电脑把相邻电脑感染所用的时间。</p> 
+<p>如图&#xff1a;path[i] &#61; {i, j, t} 表示&#xff1a;电脑 i-&gt;j&#xff0c;电脑 i 上的病毒感染 j&#xff0c;需要时间 t。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<blockquote> 
+ <p>4<br /> 3<br /> 2 1 1<br /> 2 3 1<br /> 3 4 1<br /> 2</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<blockquote> 
+ <p>2</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 3<br /> 2 1 1<br /> 2 3 1<br /> 3 4 1<br /> 2</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>第一个参数&#xff1a;局域网内电脑个数N&#xff0c;1 ≤ N ≤ 200&#xff1b;</p> <p>第二个参数&#xff1a;总共多少条网络连接</p> <p>第三个 2 1 1 表示2-&gt;1时间为1</p> <p>第六行&#xff1a;表示病毒最开始所在电脑号2</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例图示如下</p> 
+<p><img alt="" height="209" src="https://img-blog.csdnimg.cn/869ec195294944f681244faefac3d63c.png" width="258" /></p> 
+<p>病毒源头是2&#xff0c;其中&#xff1a;</p> 
+<p>2-&gt;1需要时间1</p> 
+<p>2-&gt;3需要时间1&#xff0c;3-&gt;4需要时间1</p> 
+<p>因此最少需要时间2才能感染所有电脑。</p> 
+<p></p> 
+<p>本题考察的是单源最短路径求解&#xff0c;解析可以参考&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/127680161?spm&#61;1001.2014.3001.5501" title="【精选】LeetCode - 743 网络延迟时间_leetcode 网络延迟时间_伏城之外的博客-CSDN博客">【精选】LeetCode - 743 网络延迟时间_leetcode 网络延迟时间_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<p>另外&#xff0c;本题题目描述和用例不符。因为题目说&#xff1a;</p> 
+<blockquote> 
+ <p>一个局域网内有很多台电脑&#xff0c;分别标注为 <span style="color:#fe2c24;">0 ~ N-1</span> 的数字。</p> 
+</blockquote> 
+<p>但是题目用例&#xff0c;第一行给出N&#61;4&#xff0c;但是第五行出现了电脑编号也是4的情况。</p> 
+<p>这影响到了下面代码中dist、visited数组长度的定义。当前代码实现以用例数据为准&#xff0c;即认为电脑编号是 1~N。</p> 
+<p>具体考试时需要随机应变。</p> 
+<p></p> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const n &#61; parseInt(await readline());
+
+  // 邻接表
+  const graph &#61; {};
+
+  const m &#61; parseInt(await readline());
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    // [出发点, 目标点, 出发点到达目标点的耗时]
+    const [u, v, w] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+    if (graph[u]) {
+      graph[u].push([v, w]);
+    } else {
+      graph[u] &#61; [[v, w]];
+    }
+  }
+
+  // 记录源点到其他各点的最短耗时
+  // 初始时&#xff0c;假设源点不可达其他剩余点&#xff0c;即源点到达其他点的耗时无限大
+  const dist &#61; new Array(n &#43; 1).fill(Infinity);
+
+  // 源点
+  const src &#61; parseInt(await readline());
+  // 源点到达源点的耗时为0
+  dist[src] &#61; 0;
+
+  // needCheck中记录的其实是&#xff1a;已被探索过的路径的终点&#xff08;路径指的是源点-&gt;终点&#xff09;
+  // 排序规则是&#xff0c;路径终点的权重&#xff08;即源点-&gt;终点的耗时&#xff09;越小越靠后
+  const needCheck &#61; [];
+  // 初始被探索过的路径只有源点本身
+  needCheck.push(src);
+
+  // 记录对应点是否在needCheck中
+  const visited &#61; new Array(n &#43; 1).fill(false);
+  visited[src] &#61; true;
+
+  while (needCheck.length &gt; 0) {
+    // 取出最优路径的终点&#xff08;耗时最少的路径&#xff09;作为新的起点
+    const cur &#61; needCheck.pop();
+    visited[cur] &#61; false;
+
+    // 如果cur有可达的其他点
+    if (graph[cur]) {
+      // v是可达的其他店
+      // w是cur-&gt;v的耗时
+      for (let [v, w] of graph[cur]) {
+        // 那么如果从源点到cur点的耗时是dist[cur]&#xff0c;那么源点到v点的耗时就是dist[cur] &#43; w
+        const newDist &#61; dist[cur] &#43; w;
+
+        // 而源点到v的耗时之前是dist[v]&#xff0c;因此如果newDist &lt; dist[v]&#xff0c;则找到更少耗时的路径
+        if (dist[v] &gt; newDist) {
+          // 更新源点到v的路径&#xff0c;即更新v点权重
+          dist[v] &#61; newDist;
+
+          // 如果v点不在needCheck中&#xff0c;则加入&#xff0c;因为v作为终点的路径需要加入到下一次最优路径的评比中
+          if (!visited[v]) {
+            visited[v] &#61; true;
+            needCheck.push(v);
+            needCheck.sort((a, b) &#61;&gt; dist[b] - dist[a]);
+          }
+        }
+      }
+    }
+  }
+
+  // dist记录的是源点到达其他各点的最短耗时&#xff0c;我们取出其中最大的就是源点走完所有点的最短耗时
+  let ans &#61; 0;
+  for (let i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+    ans &#61; Math.max(ans, dist[i]);
+  }
+
+  // 如果存在某个点无法到达&#xff0c;则源点到该点的耗时为Integer.MAX_VALUE
+  console.log(ans &#61;&#61; Infinity ? -1 : ans);
+})();
+</code></pre> 
+<p></p> 
+<h4 id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.*;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    // 邻接表
+    HashMap&lt;Integer, ArrayList&lt;int[]&gt;&gt; graph &#61; new HashMap&lt;&gt;();
+
+    int m &#61; sc.nextInt();
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      int u &#61; sc.nextInt(); // 出发点
+      int v &#61; sc.nextInt(); // 目标点
+      int w &#61; sc.nextInt(); // 出发点到达目标点的耗时
+
+      graph.putIfAbsent(u, new ArrayList&lt;&gt;());
+      graph.get(u).add(new int[] {v, w});
+    }
+
+    // 记录源点到其他剩余的最短耗时
+    int[] dist &#61; new int[n &#43; 1];
+    // 初始时&#xff0c;假设源点不可达其他剩余点&#xff0c;即源点到达其他点的耗时无限大
+    Arrays.fill(dist, Integer.MAX_VALUE);
+
+    // 源点
+    int src &#61; sc.nextInt();
+    // 源点到达源点的耗时为0
+    dist[src] &#61; 0;
+
+    // 优先队列needCheck中记录的其实是&#xff1a;已被探索过的路径的终点&#xff08;路径指的是源点-&gt;终点&#xff09;
+    // 优先队列优先级规则是&#xff0c;路径终点的权重&#xff08;即源点-&gt;终点的耗时&#xff09;越小越优先
+    PriorityQueue&lt;Integer&gt; needCheck &#61; new PriorityQueue&lt;&gt;((a, b) -&gt; dist[a] - dist[b]);
+    // 初始被探索过的路径只有源点本身
+    needCheck.add(src);
+
+    // 记录对应点是否在needCheck中
+    boolean[] visited &#61; new boolean[n &#43; 1];
+    visited[src] &#61; true;
+
+    while (needCheck.size() &gt; 0) {
+      // 取出最优路径的终点&#xff08;耗时最少的路径&#xff09;作为新的起点
+      int cur &#61; needCheck.poll();
+      visited[cur] &#61; false;
+
+      // 如果cur有可达的其他点
+      if (graph.containsKey(cur)) {
+        for (int[] next : graph.get(cur)) {
+          // v是可达的其他店
+          // w是cur-&gt;v的耗时
+          int v &#61; next[0], w &#61; next[1];
+
+          // 那么如果从源点到cur点的耗时是dist[cur]&#xff0c;那么源点到v点的耗时就是dist[cur] &#43; w
+          int newDist &#61; dist[cur] &#43; w;
+          // 而源点到v的耗时之前是dist[v]&#xff0c;因此如果newDist &lt; dist[v]&#xff0c;则找到更少耗时的路径
+          if (dist[v] &gt; newDist) {
+            // 更新源点到v的路径&#xff0c;即更新v点权重
+            dist[v] &#61; newDist;
+            // 如果v点不在needCheck中&#xff0c;则加入&#xff0c;因为v作为终点的路径需要加入到下一次最优路径的评比中
+            if (!visited[v]) {
+              visited[v] &#61; true;
+              needCheck.add(v);
+            }
+          }
+        }
+      }
+    }
+
+    // dist记录的是源点到达其他各点的最短耗时&#xff0c;我们取出其中最大的就是源点走完所有点的最短耗时
+    int ans &#61; 0;
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+      ans &#61; Math.max(ans, dist[i]);
+    }
+
+    // 如果存在某个点无法到达&#xff0c;则源点到该点的耗时为Integer.MAX_VALUE
+    System.out.println(ans &#61;&#61; Integer.MAX_VALUE ? -1 : ans);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+n &#61; int(input())
+
+# 邻接表
+graph &#61; {}
+
+m &#61; int(input())
+for i in range(m):
+    # 出发点, 目标点, 出发点到达目标点的耗时
+    u, v, w &#61; map(int, input().split())
+    graph.setdefault(u, [])
+    graph[u].append([v, w])
+
+# 记录源点到其他各点的最短耗时
+# 初始时&#xff0c;假设源点不可达其他剩余点&#xff0c;即源点到达其他点的耗时无限大
+dist &#61; [sys.maxsize] * (n&#43;1)
+
+# 源点
+src &#61; int(input())
+# 源点到达源点的耗时为0
+dist[src] &#61; 0
+
+# needCheck中记录的其实是&#xff1a;已被探索过的路径的终点&#xff08;路径指的是源点-&gt;终点&#xff09;
+# 排序规则是&#xff0c;路径终点的权重&#xff08;即源点-&gt;终点的耗时&#xff09;越小越靠后
+# 初始被探索过的路径只有源点本身
+needCheck &#61; [src]
+
+# 记录对应点是否在needCheck中
+visited &#61; [False] * (n&#43;1)
+visited[src] &#61; True
+
+while len(needCheck) &gt; 0:
+    # 取出最优路径的终点&#xff08;耗时最少的路径&#xff09;作为新的起点
+    cur &#61; needCheck.pop()
+    visited[cur] &#61; False
+
+    # 如果cur有可达的其他点
+    if graph.get(cur) is not None:
+        # v是可达的其他店&#xff0c;w是cur-&gt;v的耗时
+        for v, w in graph[cur]:
+            # 那么如果从源点到cur点的耗时是dist[cur]&#xff0c;那么源点到v点的耗时就是dist[cur] &#43; w
+            newDist &#61; dist[cur] &#43; w
+
+            # 而源点到v的耗时之前是dist[v]&#xff0c;因此如果newDist &lt; dist[v]&#xff0c;则找到更少耗时的路径
+            if dist[v] &gt; newDist:
+                # 更新源点到v的路径&#xff0c;即更新v点权重
+                dist[v] &#61; newDist
+                # 如果v点不在needCheck中&#xff0c;则加入&#xff0c;因为v作为终点的路径需要加入到下一次最优路径的评比中
+                if not visited[v]:
+                    visited[v] &#61; True
+                    needCheck.append(v)
+                    needCheck.sort(key&#61;lambda x: -dist[x])
+
+ans &#61; max(dist[1:])
+
+print(-1 if ans &#61;&#61; sys.maxsize else ans)
+</code></pre> 
+<p></p> 
+<h4 id="C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
+
+#define MAX_SIZE 200
+
+#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
+
+/** 链表节点 **/
+typedef struct ListNode {
+    int v; // 目标点
+    int w; // 出发点到达目标点的耗时
+    struct ListNode *next;
+} ListNode;
+
+/** 链表 **/
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+/** 初始化链表 **/
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    link-&gt;size &#61; 0;
+    return link;
+}
+
+/** 链表尾插 **/
+void add_LinkedList(LinkedList *link, int v, int w) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+    node-&gt;v &#61; v;
+    node-&gt;w &#61; w;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+// 记录源点到其他各点的最短耗时
+int dist[MAX_SIZE];
+
+int cmp(const void* a, const void* b) {
+    int A &#61; *((int*) a);
+    int B &#61; *((int*) b);
+    return dist[B] - dist[A];
+}
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    LinkedList **graph &#61; (LinkedList **) calloc(n &#43; 1, sizeof(LinkedList *));
+
+    int m;
+    scanf(&#34;%d&#34;, &amp;m);
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        // 出发点, 目标点, 出发点到达目标点的耗时
+        int u, v, w;
+        scanf(&#34;%d %d %d&#34;, &amp;u, &amp;v, &amp;w);
+
+        if (graph[u] &#61;&#61; NULL) {
+            graph[u] &#61; new_LinkedList();
+        }
+
+        add_LinkedList(graph[u], v, w);
+    }
+
+    // 初始时&#xff0c;假设源点不可达其他剩余点&#xff0c;即源点到达其他点的耗时无限大
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        dist[i] &#61; INT_MAX;
+    }
+
+    // 源点
+    int src;
+    scanf(&#34;%d&#34;, &amp;src);
+
+    // 源点到达源点的耗时为0
+    dist[src] &#61; 0;
+
+    // needCheck中记录的其实是&#xff1a;已被探索过的路径的终点&#xff08;路径指的是源点-&gt;终点&#xff09;
+    // 排序规则是&#xff0c;路径终点的权重&#xff08;即源点-&gt;终点的耗时&#xff09;越小越靠后
+    int needCheck[MAX_SIZE];
+    int needCheck_size &#61; 0;
+
+    // 初始被探索过的路径只有源点本身
+    needCheck[0] &#61; src;
+    needCheck_size&#43;&#43;;
+
+    // 记录对应点是否在needCheck中
+    int visited[n &#43; 1];
+    for (int i &#61; 1; i &lt;&#61; n; i&#43;&#43;) {
+        visited[i] &#61; 0;
+    }
+    visited[src] &#61; 1;
+
+    while (needCheck_size &gt; 0) {
+        // 取出最优路径的终点&#xff08;耗时最少的路径&#xff09;作为新的起点
+        int cur &#61; needCheck[needCheck_size - 1];
+        needCheck_size--;
+        visited[cur] &#61; 0;
+
+        // 如果cur有可达的其他点
+        if(graph[cur] !&#61; NULL) {
+            ListNode* node &#61; graph[cur]-&gt;head;
+            while(node !&#61; NULL) {
+                int v &#61; node-&gt;v; // v是可达的其他店
+                int w &#61; node-&gt;w; // w是cur-&gt;v的耗时
+
+                // 那么如果从源点到cur点的耗时是dist[cur]&#xff0c;那么源点到v点的耗时就是dist[cur] &#43; w
+                int newDist &#61; dist[cur] &#43; w;
+
+                // 而源点到v的耗时之前是dist[v]&#xff0c;因此如果newDist &lt; dist[v]&#xff0c;则找到更少耗时的路径
+                if(dist[v] &gt; newDist) {
+                    // 更新源点到v的路径&#xff0c;即更新v点权重
+                    dist[v] &#61; newDist;
+                    // 如果v点不在needCheck中&#xff0c;则加入&#xff0c;因为v作为终点的路径需要加入到下一次最优路径的评比中
+                    if(!visited[v]) {
+                        visited[v] &#61; 1;
+                        needCheck[needCheck_size] &#61; v;
+                        needCheck_size&#43;&#43;;
+                        qsort(needCheck, needCheck_size, sizeof(int), cmp);
+                    }
+                }
+
+                node &#61; node-&gt;next;
+            }
+        }
+    }
+
+    int ans &#61; 0;
+    for(int i&#61;1; i&lt;&#61;n; i&#43;&#43;) {
+        ans &#61; MAX(ans, dist[i]);
+    }
+
+    printf(&#34;%d\n&#34;, ans &#61;&#61; INT_MAX ? -1 : ans);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

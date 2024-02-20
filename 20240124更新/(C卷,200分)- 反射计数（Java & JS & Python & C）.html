@@ -1,0 +1,277 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 反射计数（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个包含 0 和 1 的二维矩阵。</p> 
+<p>给定一个初始位置和速度&#xff0c;一个物体从给定的初始位置出发&#xff0c;在给定的速度下进行移动&#xff0c;遇到矩阵的边缘则发生镜面发射。</p> 
+<p>无论物体经过 0 还是 1&#xff0c;都不影响其速度。</p> 
+<p>请计算并给出经过 t 时间单位后&#xff0c;物体经过 1 点的次数。</p> 
+<p></p> 
+<p>矩阵以左上角位置为 [0, 0]&#xff08;列(x)&#xff0c;行(y)&#xff09;&#xff0c;例如下面A点坐标为 [2, 1]&#xff08;第二列&#xff0c;第一行&#xff09;</p> 
+<p><img alt="" height="319" src="https://img-blog.csdnimg.cn/direct/358414d77f8a49c69216eaaca8035385.png" width="538" /></p> 
+<p>注意&#xff1a;</p> 
+<ol><li>如果初始位置的点是 1&#xff0c;也计算在内</li><li>时间的最小单位为 1&#xff0c;不考虑小于 1 个时间单位内经过的点</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为初始信息</p> 
+<blockquote> 
+ <p>&lt;w&gt;&lt;h&gt;&lt;x&gt;&lt;y&gt;&lt;sx&gt;&lt;sy&gt;&lt;t&gt;</p> 
+</blockquote> 
+<p>第二行开始一共 h 行&#xff0c;为二维矩阵信息</p> 
+<p></p> 
+<p>其中&#xff1a;</p> 
+<ul><li>w&#xff0c;h 为矩阵的宽和高</li><li>x&#xff0c;y 为起始位置</li><li>sx&#xff0c;sy 为初始速度</li><li>t 为经过的时间</li></ul> 
+<p>所有输入都是有效的&#xff0c;数据范围如下&#xff1a;</p> 
+<ul><li>0 &lt; w &lt; 100</li><li>0 &lt; h &lt; 100</li><li>0 ≤ x &lt; w</li><li>0 ≤ y &lt; h</li><li>-1 ≤ sx ≤ 1</li><li>-1 ≤ sy ≤ 1</li><li>0 ≤ t &#xff1c;100</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>经过 1 的个数</p> 
+<p>注意初始位置也要计算在内</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">12 7 2 1 1 -1 13<br /> 001000010000<br /> 001000010000<br /> 001000010000<br /> 001000010000<br /> 001000010000<br /> 001000010000<br /> 001000010000</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>初始位置为&#xff08;2,1&#xff09;&#xff0c;速度为&#xff08;1,-1&#xff09;&#xff0c;那么13个时间单位后&#xff0c;经过点1的个数为3</p> <p><img alt="" height="430" src="https://img-blog.csdnimg.cn/direct/4d6dd6c002494207af47cc894afca4d9.png" width="678" /></p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>题目运动示意图如下&#xff1a;</p> 
+<p><img alt="" height="501" src="https://img-blog.csdnimg.cn/direct/2db05020f19e41629c00622debf8f788.png" width="926" /></p> 
+<p>如果当前位置 x,y 按照速度 sx,sy 运动后&#xff0c;新位置越界的话&#xff0c;比如新位置x,y&#xff1a;</p> 
+<ul><li>x &lt; 0<br /><br /><span style="color:#fe2c24;">注意 -1 ≤ sx, sy ≤ 1&#xff0c;因此 x &lt; 0 越界时必然 x &#61; -1, </span>则经过反射&#xff0c;x &#61; 1</li><li>x &gt;&#61; w<br /><br /><span style="color:#fe2c24;">注意 -1 ≤ sx, sy ≤ 1&#xff0c;因此 x &gt;&#61; w 越界时必然 x &#61; w, </span>则经过反射&#xff0c;x &#61; w - 2</li><li>y &lt; 0<br /><br /><span style="color:#fe2c24;">注意 -1 ≤ sx, sy ≤ 1&#xff0c;因此 y &lt; 0 越界时必然 y &#61; -1</span>&#xff0c;则经过反射&#xff0c;y &#61; 1</li><li>y &gt;&#61; h​​​​​​​<br /><br /><span style="color:#fe2c24;">注意 -1 ≤ sx, sy ≤ 1&#xff0c;因此 y &gt;&#61; h 越界时必然 y &#61; h</span>&#xff0c;则经过反射&#xff0c;y &#61; h - 2</li></ul> 
+<p></p> 
+<p>还需要注意的是&#xff0c;反射不仅会影响位置&#xff0c;而且会影响和后续的速度方向&#xff1a;</p> 
+<ul><li>一旦新位置x越界&#xff0c;则后续速度 sx &#61; -sx</li><li>一旦新位置y越界&#xff0c;则后续速度 sy &#61; -sy</li></ul> 
+<p></p> 
+<p>我们只要记录运动路径中遇到的元素1的个数即可。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 注意本题横纵坐标是反的&#xff0c;因此y其实是行号&#xff0c;x是列号
+  let [w, h, x, y, sx, sy, t] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  const matrix &#61; [];
+  for (let i &#61; 0; i &lt; h; i&#43;&#43;) {
+    matrix.push(await readline());
+  }
+
+  let ans &#61; 0;
+
+  while (t &gt;&#61; 0) {
+    if (matrix[y][x] &#61;&#61; &#34;1&#34;) {
+      ans&#43;&#43;;
+    }
+
+    y &#43;&#61; sy;
+    x &#43;&#61; sx;
+
+    if (x &lt; 0) {
+      x &#61; 1;
+      sx &#61; -sx;
+    } else if (x &gt;&#61; w) {
+      //  注意本题横纵坐标是反的&#xff0c;因此x是列号&#xff0c;w是矩阵列数
+      x &#61; w - 2;
+      sx &#61; -sx;
+    }
+
+    if (y &lt; 0) {
+      y &#61; 1;
+      sy &#61; -sy;
+    } else if (y &gt;&#61; h) {
+      //  注意本题横纵坐标是反的&#xff0c;因此y是行号&#xff0c;h是矩阵行数
+      y &#61; h - 2;
+      sy &#61; -sy;
+    }
+
+    t--;
+  }
+
+  console.log(ans);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int w &#61; sc.nextInt();
+    int h &#61; sc.nextInt();
+    int x &#61; sc.nextInt();
+    int y &#61; sc.nextInt();
+    int sx &#61; sc.nextInt();
+    int sy &#61; sc.nextInt();
+    int t &#61; sc.nextInt();
+
+    char[][] matrix &#61; new char[h][w];
+    for (int i &#61; 0; i &lt; h; i&#43;&#43;) {
+      matrix[i] &#61; sc.next().toCharArray();
+    }
+
+    int ans &#61; 0;
+
+    while (t &gt;&#61; 0) {
+      // 注意本题横纵坐标是反的&#xff0c;因此y其实是行号&#xff0c;x是列号
+      if (matrix[y][x] &#61;&#61; &#39;1&#39;) {
+        ans&#43;&#43;;
+      }
+
+      y &#43;&#61; sy;
+      x &#43;&#61; sx;
+
+      if (x &lt; 0) {
+        x &#61; 1;
+        sx &#61; -sx;
+      } else if (x &gt;&#61; w) { //  注意本题横纵坐标是反的&#xff0c;因此x是列号&#xff0c;w是矩阵列数
+        x &#61; w - 2;
+        sx &#61; -sx;
+      }
+
+      if (y &lt; 0) {
+        y &#61; 1;
+        sy &#61; -sy;
+      } else if (y &gt;&#61; h) { //  注意本题横纵坐标是反的&#xff0c;因此y是行号&#xff0c;h是矩阵行数
+        y &#61; h - 2;
+        sy &#61; -sy;
+      }
+
+      t--;
+    }
+
+    System.out.println(ans);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+w, h, x, y, sx, sy, t &#61; map(int, input().split())
+matrix &#61; [input() for _ in range(h)]
+
+
+# 算法入口
+def getResult():
+    global x, y, sx, sy, t
+    ans &#61; 0
+
+    while t &gt;&#61; 0:
+        # 注意本题横纵坐标是反的&#xff0c;因此y其实是行号&#xff0c;x是列号
+        if matrix[y][x] &#61;&#61; &#39;1&#39;:
+            ans &#43;&#61; 1
+
+        y &#43;&#61; sy
+        x &#43;&#61; sx
+
+        if x &lt; 0:
+            x &#61; 1
+            sx &#61; -sx
+        elif x &gt;&#61; w:  # 注意本题横纵坐标是反的&#xff0c;因此x是列号&#xff0c;w是矩阵列数
+            x &#61; w - 2
+            sx &#61; -sx
+
+        if y &lt; 0:
+            y &#61; 1
+            sy &#61; -sy
+        elif y &gt;&#61; h:  # 注意本题横纵坐标是反的&#xff0c;因此y是行号&#xff0c;h是矩阵行数
+            y &#61; h - 2
+            sy &#61; -sy
+
+        t -&#61; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 100
+
+int main() {
+    int w, h, x, y, sx, sy, t;
+    scanf(&#34;%d %d %d %d %d %d %d&#34;, &amp;w, &amp;h, &amp;x, &amp;y, &amp;sx, &amp;sy, &amp;t);
+    getchar();
+
+    char matrix[MAX_SIZE][MAX_SIZE];
+    for (int i &#61; 0; i &lt; h; i&#43;&#43;) {
+        gets(matrix[i]);
+    }
+
+    int ans &#61; 0;
+
+    while (t &gt;&#61; 0) {
+        // 注意本题横纵坐标是反的&#xff0c;因此y其实是行号&#xff0c;x是列号
+        if (matrix[y][x] &#61;&#61; &#39;1&#39;) {
+            ans&#43;&#43;;
+        }
+
+        y &#43;&#61; sy;
+        x &#43;&#61; sx;
+
+        if (x &lt; 0) {
+            x &#61; 1;
+            sx &#61; -sx;
+        } else if (x &gt;&#61; w) { //  注意本题横纵坐标是反的&#xff0c;因此x是列号&#xff0c;w是矩阵列数
+            x &#61; w - 2;
+            sx &#61; -sx;
+        }
+
+        if (y &lt; 0) {
+            y &#61; 1;
+            sy &#61; -sy;
+        } else if (y &gt;&#61; h) { //  注意本题横纵坐标是反的&#xff0c;因此y是行号&#xff0c;h是矩阵行数
+            y &#61; h - 2;
+            sy &#61; -sy;
+        }
+
+        t--;
+    }
+
+    printf(&#34;%d\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

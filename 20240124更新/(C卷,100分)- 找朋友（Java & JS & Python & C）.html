@@ -1,0 +1,313 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 找朋友（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>在学校中&#xff0c;N个小朋友站成一队&#xff0c; 第i个小朋友的身高为height[i]&#xff0c;</p> 
+<p>第i个小朋友可以看到的第一个比自己身高更高的小朋友j&#xff0c;那么j是i的好朋友(要求j &gt; i)。</p> 
+<p>请重新生成一个列表&#xff0c;对应位置的输出是每个小朋友的好朋友位置&#xff0c;如果没有看到好朋友&#xff0c;请在该位置用0代替。</p> 
+<p>小朋友人数范围是 [0, 40000]。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入N&#xff0c;N表示有N个小朋友</p> 
+<p>第二行输入N个小朋友的身高height[i]&#xff0c;都是整数</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出N个小朋友的好朋友的位置</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:49px;">输入</td><td style="width:449px;">2<br /> 100 95</td></tr><tr><td style="width:49px;">输出</td><td style="width:449px;">0 0</td></tr><tr><td style="width:49px;">说明</td><td style="width:449px;"> <p>第一个小朋友身高100&#xff0c;站在队尾位置&#xff0c;向队首看&#xff0c;没有比他身高高的小朋友&#xff0c;所以输出第一个值为0。</p> <p>第二个小朋友站在队首&#xff0c;前面也没有比他身高高的小朋友&#xff0c;所以输出第二个值为0。</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:49px;">输入</td><td style="width:449px;">8<br /> 123 124 125 121 119 122 126 123</td></tr><tr><td style="width:49px;">输出</td><td style="width:449px;">1 2 6 5 5 6 0 0</td></tr><tr><td style="width:49px;">说明</td><td style="width:449px;">123的好朋友是1位置上的124<br /> 124的好朋友是2位置上的125<br /> 125的好朋友是6位置上的126<br /> 以此类推</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>感觉很简单&#xff0c;直接双重for&#xff0c;逻辑如下</p> 
+<pre><code class="language-javascript">/* 记录前面出现的第一个比自己高的人的序号 */
+function getHigherIndex(arr) {
+  let higherIndex &#61; arr.slice().fill(0);
+  for (let i &#61; 0; i &lt; arr.length - 1; i&#43;&#43;) {
+    for (let j &#61; i &#43; 1; j &lt; arr.length; j&#43;&#43;) {
+      if (arr[j] &gt; arr[i]) {
+        higherIndex[i] &#61; j;
+        break;
+      }
+    }
+  }
+  return higherIndex;
+}
+</code></pre> 
+<p>但是时间复杂度是O(n^2)。那么是不是有优化的可能呢&#xff1f;</p> 
+<p>下面图示中&#xff0c;我们蓝色的是i指针&#xff0c;橙色的是j指针&#xff0c;我么们可以发现j指针的扫描过程存在重复&#xff0c;比如&#xff1a;</p> 
+<ul><li>i&#61;2时&#xff0c;j从121扫描到了126&#xff0c;将扫描过程中j指向的每一个数都和i指向的125进行了比较。</li><li>i&#61;3时&#xff0c;j又扫描了一遍119&#xff0c;122&#xff1b;</li><li>i&#61;4时&#xff0c;j又扫描了一遍122</li><li>i&#61;5时&#xff0c;j又扫描了一遍126</li></ul> 
+<p>那么如何才能避免重复扫描呢&#xff1f;</p> 
+<p><img alt="" height="625" src="https://img-blog.csdnimg.cn/4e900d0d038144039f51d5ce075be5d1.png" width="1110" /></p> 
+<p> 此时我们可以利用栈结构</p> 
+<p>for循环遍历输入数组的每一个元素&#xff0c;并将遍历出来的 [元素值,索引位置] 尝试压入stack栈中。</p> 
+<p>如果栈顶没有有元素&#xff0c;则直接压入。</p> 
+<p><img alt="" height="162" src="https://img-blog.csdnimg.cn/b22f0657b8c245a0a327f3b74ae55c31.png" width="1088" /></p> 
+<p>如果栈顶有元素&#xff0c;比如下面图示情况&#xff0c;则比较遍历出来的元素 124 和 stack栈顶元素 123的大小&#xff0c;如果遍历元素值较大&#xff0c;</p> 
+<p><img alt="" height="158" src="https://img-blog.csdnimg.cn/18df8985591b4a3f9f42028d7fd48ee1.png" width="1073" /> 则将124的索引位置录入 res[123的索引位置],并将栈顶123弹栈后&#xff0c;压入124<img alt="" height="158" src="https://img-blog.csdnimg.cn/45353979f7c0442ab4708b0106abae23.png" width="1090" /></p> 
+<p>下面操作同理 </p> 
+<p><img alt="" height="165" src="https://img-blog.csdnimg.cn/58db16c8eb6f4137b2370727aa182104.png" width="1070" /></p> 
+<p><img alt="" height="168" src="https://img-blog.csdnimg.cn/e0d66640917d4908b0b43b4491996ef7.png" width="1090" /> 如果遍历的元素值小于栈顶的元素值&#xff0c;则继续下次遍历&#xff0c;如下面例子121小于125&#xff0c;则正常压入后&#xff0c;继续下次遍历<img alt="" height="155" src="https://img-blog.csdnimg.cn/6c432c491ff34337a36da758109da240.png" width="1084" /></p> 
+<p><img alt="" height="190" src="https://img-blog.csdnimg.cn/ceee5c447a02439890643f0d5f58feb1.png" width="1073" /></p> 
+<p>如果遍历的元素122比栈顶元素119大&#xff0c;则栈顶元素119弹栈 </p> 
+<p><img alt="" height="254" src="https://img-blog.csdnimg.cn/3520c43f34534fe5a719233ca1ce6945.png" width="1063" /></p> 
+<p> 如果栈顶还有元素&#xff0c;如121<img alt="" height="204" src="https://img-blog.csdnimg.cn/0fbe49a6179a4dfa98c3286e16bec117.png" width="1074" /></p> 
+<p>则此时遍历的元素122不执行压入&#xff0c;而是继续和栈顶元素121比较</p> 
+<p><img alt="" height="191" src="https://img-blog.csdnimg.cn/696c97a8afb44670982032b5891a542c.png" width="1080" /></p> 
+<p>直到遍历的元素122遇到栈顶元素比自己大时&#xff0c;才执行压入 </p> 
+<p><img alt="" height="162" src="https://img-blog.csdnimg.cn/3e9e8c5f1e9c46948e7b11319e14ff86.png" width="1077" /> <img alt="" height="193" src="https://img-blog.csdnimg.cn/f4a55696025444ce91ef60d7fc075278.png" width="1081" /></p> 
+<p><img alt="" height="162" src="https://img-blog.csdnimg.cn/e4c7adc5ff84455a8c6cd238e06581bd.png" width="1077" /></p> 
+<p><img alt="" height="164" src="https://img-blog.csdnimg.cn/7e4ed77fb4c54151a38912399968943c.png" width="1095" /></p> 
+<p><img alt="" height="168" src="https://img-blog.csdnimg.cn/3f25e981c146485db81c7172a9df7b42.png" width="1078" /><img alt="" height="168" src="https://img-blog.csdnimg.cn/e1074642da0c4b6f8ba187b16ec8cb2c.png" width="1081" /></p> 
+<p> 这种栈操作的好处&#xff0c;可以避免重复的j指针扫描。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+
+    int[] arr &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) arr[i] &#61; sc.nextInt();
+
+    System.out.println(getResult(arr));
+  }
+
+  public static String getResult(int[] arr) {
+    LinkedList&lt;int[]&gt; stack &#61; new LinkedList&lt;&gt;();
+
+    int len &#61; arr.length;
+    int[] res &#61; new int[len];
+
+    for (int i &#61; 0; i &lt; len; i&#43;&#43;) {
+      int ele &#61; arr[i];
+
+      while (true) {
+        if (stack.size() &#61;&#61; 0) {
+          stack.add(new int[] {ele, i});
+          break;
+        }
+
+        int[] peek &#61; stack.getLast();
+        int peekEle &#61; peek[0];
+        int peekIndex &#61; peek[1];
+
+        if (ele &gt; peekEle) {
+          res[peekIndex] &#61; i;
+          stack.removeLast();
+        } else {
+          stack.add(new int[] {ele, i});
+          break;
+        }
+      }
+    }
+
+    StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+    for (int v : res) {
+      sj.add(v &#43; &#34;&#34;);
+    }
+
+    return sj.toString();
+  }
+}
+</code></pre> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    let n &#61; lines[0];
+    let arr &#61; lines[1]
+      .split(&#34; &#34;)
+      .slice(0, n)
+      .map((ele) &#61;&gt; parseInt(ele));
+
+    console.log(getHigherIndex(arr).join(&#34; &#34;));
+
+    lines.length &#61; 0;
+  }
+});
+
+/* 记录第一眼看到比自己高的的人的序号 */
+function getHigherIndex(arr) {
+  let stack &#61; [];
+
+  let len &#61; arr.length;
+  let res &#61; new Array(len).fill(0);
+
+  for (let i &#61; 0; i &lt; len; i&#43;&#43;) {
+    let ele &#61; arr[i];
+    let index &#61; i;
+
+    while (true) {
+      if (stack.length &#61;&#61;&#61; 0) {
+        stack.push([ele, index]);
+        break;
+      }
+
+      let [peekEle, peekIndex] &#61; stack[stack.length - 1];
+
+      if (ele &gt; peekEle) {
+        res[peekIndex] &#61; index;
+        stack.pop();
+      } else {
+        stack.push([ele, index]);
+        break;
+      }
+    }
+  }
+
+  return res;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+arr &#61; list(map(int, input().split()))
+
+
+# 算法入口
+def getResult():
+    stack &#61; []
+
+    res &#61; [0]*(len(arr))
+
+    for i in range(len(arr)):
+        ele &#61; arr[i]
+
+        while True:
+            if len(stack) &#61;&#61; 0:
+                stack.append([ele, i])
+                break
+
+            peekEle, peekIndex &#61; stack[-1]
+
+            if ele &gt; peekEle:
+                res[peekIndex] &#61; i
+                stack.pop()
+            else:
+                stack.append([ele, i])
+                break
+
+    return &#34; &#34;.join(map(str, res))
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_SIZE 40000
+
+int stack[MAX_SIZE][2];
+int stack_size &#61; 0;
+
+char res[MAX_SIZE * 2];
+
+int main() {
+    int n;
+    scanf(&#34;%d&#34;, &amp;n);
+
+    int heights[MAX_SIZE];
+    int heights_size &#61; 0;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;heights[heights_size&#43;&#43;]);
+    }
+
+    int nextHigher[MAX_SIZE] &#61; {0};
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        int h &#61; heights[i];
+
+        while (1) {
+            if (stack_size &#61;&#61; 0) {
+                stack[stack_size][0] &#61; h;
+                stack[stack_size][1] &#61; i;
+                stack_size&#43;&#43;;
+                break;
+            }
+
+            int peekH &#61; stack[stack_size - 1][0];
+            int peekI &#61; stack[stack_size - 1][1];
+
+            if (h &gt; peekH) {
+                nextHigher[peekI] &#61; i;
+                stack_size--;
+            } else {
+                stack[stack_size][0] &#61; h;
+                stack[stack_size][1] &#61; i;
+                stack_size&#43;&#43;;
+                break;
+            }
+        }
+    }
+
+    for (int i &#61; 0; i &lt; heights_size; i&#43;&#43;) {
+        char tmp[5];
+        sprintf(tmp, &#34;%d&#34;, nextHigher[i]);
+        strcat(res, tmp);
+        strcat(res, &#34; &#34;);
+    }
+
+    res[strlen(res) - 1] &#61; &#39;\0&#39;;
+
+    puts(res);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

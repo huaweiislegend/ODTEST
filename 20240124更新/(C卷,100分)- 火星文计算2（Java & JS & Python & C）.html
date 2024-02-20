@@ -1,0 +1,351 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 火星文计算2（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>已知火星人使用的运算符为#、$&#xff0c;其与地球人的等价公式如下&#xff1a;</p> 
+<ul><li>x#y &#61; 4*x&#43;3*y&#43;2</li><li>x$y &#61; 2*x&#43;y&#43;3</li></ul> 
+<ol><li>其中 x、y 是无符号整数</li><li>地球人公式按C语言规则计算</li><li>火星人公式中&#xff0c;#的优先级高于$&#xff0c;相同的运算符&#xff0c;按从左到右的顺序计算</li></ol> 
+<p>现有一段火星人的字符串报文&#xff0c;请你来翻译并计算结果。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>火星人字符串表达式&#xff08;结尾不带回车换行&#xff09;</p> 
+<p>输入的字符串说明&#xff1a;  字符串为仅由无符号整数和操作符&#xff08;#、$&#xff09;组成的计算表达式。例如&#xff1a;</p> 
+<blockquote> 
+ <p>123#4$5#67$78</p> 
+</blockquote> 
+<ol><li>用例保证字符串中&#xff0c;操作数与操作符之间没有任何分隔符。  </li><li>用例保证操作数取值范围为32位无符号整数。  </li><li>保证输入以及计算结果不会出现整型溢出。  </li><li>保证输入的字符串为合法的求值报文&#xff0c;例如&#xff1a;123#4$5#67$78  </li><li>保证不会出现非法的求值报文&#xff0c;例如类似这样字符串&#xff1a;  <br /><br /> #4$5                                             //缺少操作数  <br /><br /> 4$5#                                             //缺少操作数  <br /><br /> 4#$5                                             //缺少操作数  <br /><br /> 4 $5                                              //有空格  <br /><br /> 3&#43;4-5*6/7                                     //有其它操作符  <br /><br /> 12345678987654321$54321       //32位整数计算溢出</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>根据输入的火星人字符串输出计算结果&#xff08;结尾不带回车换行&#xff09;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">7#6$5#12</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">157</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">7#6$5#12  <br /> &#61;(4*7&#43;3*6&#43;2)$5#12<br /> &#61;48$5#12<br /> &#61;48$(4*5&#43;3*12&#43;2)<br /> &#61;48$58<br /> &#61;2*48&#43;58&#43;3<br /> &#61;157 </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题和下面题目基本一致</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127711533?ops_request_misc&#61;%257B%2522request%255Fid%2522%253A%2522170438476416800225588411%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id&#61;170438476416800225588411&amp;biz_id&#61;0&amp;utm_medium&#61;distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-1-127711533-null-null.nonecase&amp;utm_term&#61;%E7%81%AB%E6%98%9F%E6%96%87&amp;spm&#61;1018.2226.3001.4450" title="华为OD机试 - 火星文计算&#xff08;Java &amp; JS &amp; Python&#xff09;_华为机试火星文计算-CSDN博客">华为OD机试 - 火星文计算&#xff08;Java &amp; JS &amp; Python&#xff09;_华为机试火星文计算-CSDN博客</a></p> 
+<p>只是#和$的替换公式&#xff0c;以及优先级改变了。</p> 
+<p>Java、JS、Python语言的题解可以参考上面博客。</p> 
+<p></p> 
+<p>由于C语言的正则操作十分繁琐&#xff0c;以及没有内置的字符串替换操作&#xff0c;因此C语言建议使用栈解法&#xff1a;</p> 
+<ul><li>首先我们需要定义一个栈stack&#xff0c;用于记录操作数和操作符&#xff0c;</li><li>然后定义一个操作数容器operNum&#xff0c;由于收集操作数的数字字符&#xff0c;</li></ul> 
+<p>接下来开始遍历输入字符串的每一个字符c&#xff1a;</p> 
+<ul><li>如果 c 是数字&#xff0c;则收集进操作数容器operNum&#xff0c;如下图所示<br /><br /><img alt="" height="384" src="https://img-blog.csdnimg.cn/direct/24c183ae983d439b80f71dc6d6c7293d.png" width="725" /></li><li>如果 c 不是数字&#xff0c;即#或$&#xff0c;那么此时有两个信息&#xff1a;</li></ul> 
+<ol><li>我们完成了某个操作数所有字符的收集&#xff0c;比如<br /><br /><img alt="" height="417" src="https://img-blog.csdnimg.cn/direct/407ec1a43aff45d2aaf2138d505d7d29.png" width="772" /><br /><br /> 此时&#xff0c;我们应该检查stack是否为空&#xff0c;如果为空&#xff0c;则操作数直接入栈&#xff0c;然后清空操作数容器&#xff0c;方便接收下一个操作数。<br /><br /> 之后将操作符入栈<br /><br /><img alt="" height="395" src="https://img-blog.csdnimg.cn/direct/623834d3a53f41de999367fb2b8c2500.png" width="695" /></li><li>如果stack不为空且stack栈顶是#&#xff0c;比如&#xff1a;<br /><br /><img alt="" height="436" src="https://img-blog.csdnimg.cn/direct/7be1214f5295462fa88965bcc7597ef9.png" width="760" /><br /><br /> 则此时我们应该进行#运算&#xff0c;即取出栈顶的#后&#xff0c;再取出栈顶元素作为操作数 x&#xff0c;而当前操作数缓存容器operNum中的数值也完成了收集&#xff0c;且可以当作操作数y&#xff0c;然后带入#运算公式。<br /><br /> #运算完成后&#xff0c;我们需要将运算结果重新压入栈中。并且需要清空operNum容器&#xff0c;以及将当前扫描的操作符入栈<br /><br /><img alt="" height="415" src="https://img-blog.csdnimg.cn/direct/0e75db579fff428bb1d7876c4c3c0887.png" width="672" /></li><li>之后继续走逻辑<br /><br /><img alt="" height="392" src="https://img-blog.csdnimg.cn/direct/8862f87985de4ade8337fe8a931413e9.png" width="700" /></li></ol> 
+<p><img alt="" height="405" src="https://img-blog.csdnimg.cn/direct/bd8d7c79b80841ffbf5acc4d8592b5b5.png" width="682" /></p> 
+<p>如果扫描到运算符&#xff0c;则需要检查stack栈顶是否为#运算&#xff0c;若不是&#xff0c;则直接将operNum和当前扫描的操作符入栈</p> 
+<p>之后继续逻辑&#xff1a;</p> 
+<p><img alt="" height="433" src="https://img-blog.csdnimg.cn/direct/1f4bb6867c8843bc9fd1e2c986650ee9.png" width="704" /></p> 
+<p>此时扫描到了输入字符串的尾部&#xff0c;并且operNum完成了最后一个操作数的收集。此时我们需要将最后一个操作数入栈&#xff0c;入栈前还需要检查栈顶是否为#&#xff0c;若是&#xff0c;则取出栈顶两个元素&#xff0c;按照前面逻辑进行#运算&#xff0c;</p> 
+<p><img alt="" height="456" src="https://img-blog.csdnimg.cn/direct/eeb83e3df8c6499898160adfbae09ea2.png" width="774" /></p> 
+<p><img alt="" height="414" src="https://img-blog.csdnimg.cn/direct/bde16bb622964d3ba61f2637fd1800f5.png" width="654" /></p> 
+<p>完成#运算后&#xff1a;</p> 
+<ul><li>如果stack.size &#61;&#61; 1&#xff0c;则栈中只剩下一个操作&#xff0c;此时可以直接当成结果返回。</li><li>如果stack.size &gt; 1&#xff0c;则栈中至少有两个操作数以及一个$&#xff0c;接下里应该进行$运算逻辑&#xff1a;</li></ul> 
+<ol><li>首先我们应该从栈底取出一个元素作为x</li><li>之后循环逻辑&#xff1a;先取出栈底的操作符$&#xff0c;再取出栈底的操作数y&#xff0c;然后进行$运算&#xff0c;并将运算结果赋值给x&#xff0c;即运算结果作为新的操作数x&#xff0c;然后继续循环逻辑&#xff0c;直到stack为空时结束。</li></ol> 
+<p>最后x中记录的值即为结果。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const path &#61; require(&#34;path&#34;);
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  const regExp &#61; /(\d&#43;)#(\d&#43;)/;
+
+  while (str.indexOf(&#34;#&#34;) !&#61;&#61; -1) {
+    str &#61; str.replace(
+      regExp,
+      (_, x, y) &#61;&gt; 4 * parseInt(x) &#43; 3 * parseInt(y) &#43; 2
+    );
+  }
+
+  return str.split(&#34;$&#34;).reduce((x, y) &#61;&gt; 2 * parseInt(x) &#43; parseInt(y) &#43; 3);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    String str &#61; sc.next();
+    System.out.print(getResult(str));
+  }
+
+  public static long getResult(String str) {
+    Pattern p &#61; Pattern.compile(&#34;(\\d&#43;)#(\\d&#43;)&#34;);
+
+    while (true) {
+      Matcher m &#61; p.matcher(str);
+      if (!m.find()) break;
+
+      String subStr &#61; m.group(0);
+      long x &#61; Long.parseLong(m.group(1));
+      long y &#61; Long.parseLong(m.group(2));
+      str &#61; str.replaceFirst(subStr, 4 * x &#43; 3 * y &#43; 2 &#43; &#34;&#34;);
+    }
+
+    return Arrays.stream(str.split(&#34;\\$&#34;))
+        .map(Long::parseLong)
+        .reduce((x, y) -&gt; 2 * x &#43; y &#43; 3)
+        .orElse(0L);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    p &#61; re.compile(&#34;(\\d&#43;)#(\\d&#43;)&#34;)
+
+    while True:
+        m &#61; p.search(s)
+        if m:
+            subS &#61; m.group()
+            x &#61; int(m.group(1))
+            y &#61; int(m.group(2))
+            # 注意这里replace只能进行替换第一次出现的&#xff0c;不能替换多次&#xff0c;因此replace方法第三个参数为1&#xff0c;表示只替换首次匹配
+            s &#61; s.replace(subS, str(4 * x &#43; 3 * y &#43; 2), 1)
+        else:
+            break
+
+    arr &#61; list(map(int, s.split(&#34;$&#34;)))
+
+    x &#61; arr[0]
+    for y in arr[1:]:
+        x &#61; 2 * x &#43; y &#43; 3
+
+    return x
+
+
+# 算法调用
+print(getResult(s))
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_INPUT_LEN 10000
+#define MAX_NUM_LEN 100
+
+typedef struct ListNode {
+    char ele[MAX_NUM_LEN];
+    struct ListNode *prev;
+    struct ListNode *next;
+} ListNode;
+
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, char *ele) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+    strcpy(node-&gt;ele, ele);
+    node-&gt;prev &#61; NULL;
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        node-&gt;prev &#61; link-&gt;tail;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+char *removeFirst_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;head;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+        link-&gt;head-&gt;prev &#61; NULL;
+    }
+
+    link-&gt;size--;
+
+    char *res &#61; (char *) calloc(MAX_NUM_LEN, sizeof(char));
+    strcpy(res, removed-&gt;ele);
+
+    free(removed);
+
+    return res;
+}
+
+char *removeLast_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;tail;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;tail &#61; link-&gt;tail-&gt;prev;
+        link-&gt;tail-&gt;next &#61; NULL;
+    }
+
+    link-&gt;size--;
+
+    char *res &#61; (char *) calloc(MAX_NUM_LEN, sizeof(char));
+    strcpy(res, removed-&gt;ele);
+
+    free(removed);
+
+    return res;
+}
+
+// 尝试进行#运算
+void check(LinkedList *stack, char *operNum2) {
+    // 如果栈顶元素是&#34;#&#34;号, 则可以进行#运算
+    if (stack-&gt;size &gt; 0 &amp;&amp; strcmp(stack-&gt;tail-&gt;ele, &#34;#&#34;) &#61;&#61; 0) {
+        // 取出栈顶的&#34;#&#34;
+        removeLast_LinkedList(stack);
+        // 取出操作数x
+        char *operNum1 &#61; removeLast_LinkedList(stack);
+
+        long long x &#61; atoll(operNum1);
+        long long y &#61; atoll(operNum2);
+
+        // 将4 * x &#43; 3 * y &#43; 2包装为字符串
+        char res[MAX_NUM_LEN];
+        sprintf(res, &#34;%lld&#34;, 4 * x &#43; 3 * y &#43; 2);
+
+        // 将计算结果加入栈
+        addLast_LinkedList(stack, res);
+    } else {
+        // 如果栈顶元素不是#&#xff0c;那么操作数2直接入栈
+        addLast_LinkedList(stack, operNum2);
+    }
+}
+
+int main() {
+    char s[MAX_INPUT_LEN];
+    gets(s);
+
+    strcat(s, &#34;$&#34;); // 末尾加一个$方便后续收尾处理
+
+    LinkedList *stack &#61; new_LinkedList();
+
+    // 操作数缓存容器
+    char operNum[MAX_NUM_LEN] &#61; {&#39;\0&#39;};
+    int operNum_size &#61; 0;
+
+    int i &#61; 0;
+    while (s[i] !&#61; &#39;\0&#39;) {
+
+        if (s[i] &#61;&#61; &#39;#&#39; || s[i] &#61;&#61; &#39;$&#39;) {
+            // 遇到操作符&#xff0c;则尝试进行#运算
+            check(stack, operNum);
+
+            // 如果s[i]是最后一个字符&#xff0c;即我们手动加到尾部的$&#xff0c;则此时直接结束循环&#xff0c;避免之前添加的收尾$进入stack
+            if (s[i &#43; 1] &#61;&#61; &#39;\0&#39;) break;
+
+            // 否则&#xff0c;清空操作数缓存容器
+            memset(operNum, &#39;\0&#39;, MAX_NUM_LEN);
+            operNum_size &#61; 0;
+
+            // 将操作符加入栈
+            char operator[2];
+            sprintf(operator, &#34;%c&#34;, s[i]);
+            addLast_LinkedList(stack, operator);
+        } else {
+            // 收集操作数
+            operNum[operNum_size&#43;&#43;] &#61; s[i];
+        }
+
+        i&#43;&#43;;
+    }
+
+    // 此时&#xff0c;栈中只会剩下 操作数和$
+    // 取出栈底元素作为操作数x
+    long long x &#61; atoll(removeFirst_LinkedList(stack));
+
+    while (stack-&gt;size &gt; 1) {
+        // 取出操作符$
+        removeFirst_LinkedList(stack);
+        // 取出操作数y
+        long long y &#61; atoll(removeFirst_LinkedList(stack));
+        // 进行$运算&#xff0c;并将运算结果作为新的操作数x
+        x &#61; 2 * x &#43; y &#43; 3;
+    }
+
+    printf(&#34;%lld&#34;, x);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,433 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 在字符串中找出连续最长的数字串(含“+-”号)（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>请在一个字符串中找出连续最长的数字串&#xff0c;并返回这个数字串。</p> 
+<p>如果存在长度相同的连续数字串&#xff0c;返回最后一个。</p> 
+<p>如果没有符合条件的字符串&#xff0c;返回空字符串””。</p> 
+<p></p> 
+<p>注意&#xff1a;</p> 
+<ul><li>数字串可以由数字”0-9″、小数点”.”、正负号”±”组成&#xff0c;长度包括组成数字串的所有符号。</li><li>“.”、“±”仅能出现一次&#xff0c;”.”的两边必须是数字&#xff0c;”±”仅能出现在开头且其后必须要有数字。</li><li>长度不定&#xff0c;可能含有空格。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>无</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1234567890abcd9.&#43;12345.678.9ed</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">&#43;12345.678</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题我的思路是利用双指针。</p> 
+<p>定义两个指针变量L&#xff0c;R&#xff0c;其中L指向数字串的开头&#xff0c;R用于扫描。</p> 
+<p></p> 
+<p>首先&#xff0c;我们需要确定第一个数字串的开头位置&#xff0c;逻辑很简单&#xff0c;遍历输入字符串S的每一个字符c&#xff1a;</p> 
+<ul><li>如果c是数字&#xff0c;则c字符所在位置可以作为第一个数字串的开头位置&#xff0c;否则继续查找下一个c</li><li>如果c是加减号&#xff0c;则还需要进一步检查这个加减号的后面是不是跟着数字&#xff0c;如果跟着数字&#xff0c;则可以作为第一个数字串的开头&#xff0c;否则继续查找下一个c</li></ul> 
+<p>找到第一个数字串的开头后&#xff0c;即知道L位置后&#xff0c;我们可以初始化R &#61; L&#43;1&#xff0c;即R从L&#43;1位置开始扫描&#xff0c;假设扫描到的字符是c&#xff0c;则存在以下情况&#xff1a;</p> 
+<ul><li>c是数字&#xff0c;则不会中断数字串&#xff0c;可以继续R&#43;&#43;扫描</li><li>c是点&#xff0c;则需要先判断&#xff0c;这个点是否是合法的数字串点&#xff08;即点位置R前后都是数字&#xff09;&#xff1a;</li></ul> 
+<ol><li>如果点位置前后不都是数字&#xff0c;则说明&#xff0c;点位置 R 前面的内容无法复用到下一个数字串中&#xff0c;此时我们需要先将[L, R-1]范围的合法数字串记录下来&#xff0c;然后按照前面遍历S来找数字串开头位置的逻辑&#xff0c;来找下一个数字串开头位置</li><li>如果点位置前后都是数字&#xff0c;则此时我们进一步判断&#xff0c;当前数字串&#xff0c;即[L, R-1]部分是否还有其他点&#xff0c;如果有&#xff0c;则一个数字串中不能包含两个点&#xff0c;此时我们需要先记录[L, R-1]范围内的合法数字串&#xff0c;假设第一个点位置是dotIdx&#xff0c;则下一个数字开头位置L &#61; dotIdx &#43; 1&#xff0c;这样才能保证下一个数字串最长&#xff0c;然后更新dotIdx &#61; R&#xff0c;最后继续R&#43;&#43;扫描</li></ol> 
+<ul><li>c是加减号&#xff0c;此时会中断数字串&#xff0c;因此我们需要先记录[L, R-1]范围内的合法数字串&#xff0c;然后判断当前R位置的后面是否跟着数字&#xff0c;这将决定我们下一个数字的开头位置&#xff1a;</li></ul> 
+<ol><li>如果R&#43;1位置是数字&#xff0c;则下一个数字串的开头L&#61;R&#xff0c;因为数字串可以以加减号开头&#xff0c;只要加减号后面跟着数字&#xff0c;之后R&#43;&#43;继续扫描</li><li>如果R&#43;1位置不是数字&#xff0c;则我们应该按照前面遍历S来找数字串开头位置的逻辑&#xff0c;来找下一个数字串的开头位置。</li></ol> 
+<ul><li>c是其他字符&#xff0c;则会中断数字串&#xff0c;此时我们应该记录[L, R-1]部分合法数字串&#xff0c;然后按照前面遍历S来找数字串开头位置的逻辑&#xff0c;来找下一个数字串的开头位置。</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  // 记录题解
+  let ans &#61; &#34;&#34;;
+
+  // 记录数字串中“.”的位置&#xff0c;-1表示数字串中没有点
+  let dotIdx &#61; -1;
+
+  // l 指向数字串的开头
+  l &#61; findStartIdx(s, 0);
+
+  // r 用于扫描数字串
+  r &#61; l &#43; 1;
+  while (r &lt; s.length) {
+    // 当前扫描的到的字符
+    const c &#61; s[r];
+
+    if (isDigit(c)) {
+      // c是数字&#xff0c;则继续扫描下一个
+      r&#43;&#43;;
+    } else if (isSign(c)) {
+      // c是加减号&#xff0c;则数字串扫描中断&#xff0c;我们需要先记录[l, r-1]范围的数字串
+      ans &#61; getAns(s, l, r, ans);
+
+      if (isValidSign(r, s)) {
+        // 由于加减号可以作为数字串开头&#xff0c;如果r位置的加减号是一个合法数字串开头加减号&#xff0c;则可以当成下一个数字串的开头
+        l &#61; r;
+      } else {
+        // 否则&#xff0c;从r&#43;1开始继续找下一个数字的开头
+        l &#61; findStartIdx(s, r &#43; 1);
+      }
+
+      // 新数字串的开头找到后&#xff0c;从l&#43;1开始扫描
+      r &#61; l &#43; 1;
+      // 同时注意重置dotIdx记录
+      dotIdx &#61; -1;
+    } else if (isDot(c)) {
+      // 由于dot处理比较复杂&#xff0c;这里无论dot是否会中断数字串扫描&#xff0c;都先将[l, r-1]部分的数字串记录下来
+      ans &#61; getAns(s, l, r, ans);
+
+      if (isValidDot(r, s)) {
+        // 如果是合法数字串dot, 则判断当前数字串是否已存在”.“
+        if (dotIdx !&#61; -1) {
+          // 如果已存在&#34;.&#34;, 则当前数字串包含了两个&#34;.&#34;&#xff0c;肯定不合法&#xff0c;此时需要舍弃第一个&#34;.&#34;, 即新数字串开头位置设置在第一个&#34;.&#34;后面
+          l &#61; dotIdx &#43; 1;
+        }
+
+        // 更新dotIdx为第二个&#34;.&#34;的位置
+        dotIdx &#61; r;
+        // r继续扫描下一个
+        r&#43;&#43;;
+      } else {
+        // 如果不是合法数字串dot&#xff0c;即该dot前后不都是数字&#xff0c;则新数字串不能包含进当前dot位置&#xff0c;新数字串开头需要从r&#43;1开始找
+        l &#61; findStartIdx(s, r &#43; 1);
+        r &#61; l &#43; 1;
+        dotIdx &#61; -1;
+      }
+    } else {
+      // c是其他字符, 则数字串被打断&#xff0c;此时需要先记录[l, r-1]范围的当前数字串&#xff0c; 然后重新寻找下一个数字串的开头
+      ans &#61; getAns(s, l, r, ans);
+      l &#61; findStartIdx(s, r &#43; 1);
+      r &#61; l &#43; 1;
+      dotIdx &#61; -1;
+    }
+  }
+
+  return getAns(s, l, r, ans);
+}
+
+function isSign(c) {
+  return c &#61;&#61; &#34;&#43;&#34; || c &#61;&#61; &#34;-&#34;;
+}
+
+function isDot(c) {
+  return c &#61;&#61; &#34;.&#34;;
+}
+
+function isDigit(c) {
+  return c &gt;&#61; &#34;0&#34; &amp;&amp; c &lt;&#61; &#34;9&#34;;
+}
+
+// ”.”的两边必须是数字
+function isValidDot(dotIdx, s) {
+  const preIdx &#61; dotIdx - 1;
+  const nxtIdx &#61; dotIdx &#43; 1;
+
+  return (
+    preIdx &gt;&#61; 0 &amp;&amp; isDigit(s[preIdx]) &amp;&amp; nxtIdx &lt; s.length &amp;&amp; isDigit(s[nxtIdx])
+  );
+}
+
+// ”±”仅能出现在开头且其后必须要有数字
+function isValidSign(signIdx, s) {
+  const nxtIdx &#61; signIdx &#43; 1;
+  return nxtIdx &lt; s.length &amp;&amp; isDigit(s[nxtIdx]);
+}
+
+// 记录数字串时&#xff0c;只保留最长的数字串
+function getAns(s, l, r, ans) {
+  // 如果存在长度相同的连续数字串&#xff0c;返回最后一个。 因此下面判断是&gt;&#61;
+  return l &lt; s.length &amp;&amp; r - l &gt;&#61; ans.length ? s.slice(l, r) : ans;
+}
+
+// 从s字符串的start位置开始找数字串的开头字符&#xff0c;数字串的开头字符可以是数字&#xff0c;也可以是符号
+function findStartIdx(s, i) {
+  while (i &lt; s.length) {
+    const c &#61; s[i];
+    if (isDigit(c) || (isSign(c) &amp;&amp; isValidSign(i, s))) break;
+    i&#43;&#43;;
+  }
+
+  return i;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  public static String getResult(String s) {
+    // 记录题解
+    String ans &#61; &#34;&#34;;
+
+    // 记录数字串中“.”的位置&#xff0c;-1表示数字串中没有点
+    int dotIdx &#61; -1;
+
+    // l 指向数字串的开头
+    int l &#61; findStartIdx(s, 0);
+
+    // r 用于扫描数字串
+    int r &#61; l &#43; 1;
+    while (r &lt; s.length()) {
+      // 当前扫描的到的字符
+      char c &#61; s.charAt(r);
+
+      if (isDigit(c)) {
+        // c是数字&#xff0c;则继续扫描下一个
+        r&#43;&#43;;
+      } else if (isSign(c)) {
+        // c是加减号&#xff0c;则数字串扫描中断&#xff0c;我们需要先记录[l, r-1]范围的数字串
+        ans &#61; getAns(s, l, r, ans);
+
+        if (isValidSign(r, s)) {
+          // 由于加减号可以作为数字串开头&#xff0c;如果r位置的加减号是一个合法数字串开头加减号&#xff0c;则可以当成下一个数字串的开头
+          l &#61; r;
+        } else {
+          // 否则&#xff0c;从r&#43;1开始继续找下一个数字的开头
+          l &#61; findStartIdx(s, r &#43; 1);
+        }
+
+        // 新数字串的开头找到后&#xff0c;从l&#43;1开始扫描
+        r &#61; l &#43; 1;
+        // 同时注意重置dotIdx记录
+        dotIdx &#61; -1;
+
+      } else if (isDot(c)) {
+        // 由于dot处理比较复杂&#xff0c;这里无论dot是否会中断数字串扫描&#xff0c;都先将[l, r-1]部分的数字串记录下来
+        ans &#61; getAns(s, l, r, ans);
+
+        if (isValidDot(r, s)) {
+          // 如果是合法数字串dot, 则判断当前数字串是否已存在”.“
+          if (dotIdx !&#61; -1) {
+            // 如果已存在&#34;.&#34;, 则当前数字串包含了两个&#34;.&#34;&#xff0c;肯定不合法&#xff0c;此时需要舍弃第一个&#34;.&#34;, 即新数字串开头位置设置在第一个&#34;.&#34;后面
+            l &#61; dotIdx &#43; 1;
+          }
+
+          // 更新dotIdx为第二个&#34;.&#34;的位置
+          dotIdx &#61; r;
+          // r继续扫描下一个
+          r&#43;&#43;;
+        } else {
+          // 如果不是合法数字串dot&#xff0c;即该dot前后不都是数字&#xff0c;则新数字串不能包含进当前dot位置&#xff0c;新数字串开头需要从r&#43;1开始找
+          l &#61; findStartIdx(s, r &#43; 1);
+          r &#61; l &#43; 1;
+          dotIdx &#61; -1;
+        }
+      } else {
+        // c是其他字符, 则数字串被打断&#xff0c;此时需要先记录[l, r-1]范围的当前数字串&#xff0c; 然后重新寻找下一个数字串的开头
+        ans &#61; getAns(s, l, r, ans);
+        l &#61; findStartIdx(s, r &#43; 1);
+        r &#61; l &#43; 1;
+        dotIdx &#61; -1;
+      }
+    }
+
+    return getAns(s, l, r, ans);
+  }
+
+  public static boolean isDigit(char c) {
+    return c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;;
+  }
+
+  public static boolean isSign(char c) {
+    return c &#61;&#61; &#39;&#43;&#39; || c &#61;&#61; &#39;-&#39;;
+  }
+
+  public static boolean isDot(char c) {
+    return c &#61;&#61; &#39;.&#39;;
+  }
+
+  // ”.”的两边必须是数字
+  public static boolean isValidDot(int dotIdx, String s) {
+    int preIdx &#61; dotIdx - 1;
+    int nxtIdx &#61; dotIdx &#43; 1;
+    return preIdx &gt;&#61; 0
+        &amp;&amp; isDigit(s.charAt(preIdx))
+        &amp;&amp; nxtIdx &lt; s.length()
+        &amp;&amp; isDigit(s.charAt(nxtIdx));
+  }
+
+  // ”±”仅能出现在开头且其后必须要有数字
+  public static boolean isValidSign(int signIdx, String s) {
+    int nxtIdx &#61; signIdx &#43; 1;
+    return nxtIdx &lt; s.length() &amp;&amp; isDigit(s.charAt(nxtIdx));
+  }
+
+  // 从s字符串的i位置开始找数字串的开头字符&#xff0c;数字串的开头字符可以是数字&#xff0c;也可以是符号
+  public static int findStartIdx(String s, int i) {
+    while (i &lt; s.length()) {
+      char c &#61; s.charAt(i);
+      if (isDigit(c) || (isSign(c) &amp;&amp; isValidSign(i, s))) break;
+      i&#43;&#43;;
+    }
+
+    return i;
+  }
+
+  // 记录数字串时&#xff0c;只保留最长的数字串
+  public static String getAns(String s, int l, int r, String ans) {
+    // 如果存在长度相同的连续数字串&#xff0c;返回最后一个。 因此下面判断是&gt;&#61;
+    return l &lt; s.length() &amp;&amp; r - l &gt;&#61; ans.length() ? s.substring(l, r) : ans;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+def isSign(c):
+    return c &#61;&#61; &#39;&#43;&#39; or c &#61;&#61; &#39;-&#39;
+
+
+def isDot(c):
+    return c &#61;&#61; &#39;.&#39;
+
+
+# ”±”仅能出现在开头且其后必须要有数字
+def isValidSign(signIdx):
+    nxtIdx &#61; signIdx &#43; 1
+    return nxtIdx &lt; len(s) and s[nxtIdx].isdigit()
+
+
+# ”.”的两边必须是数字
+def isValidDot(dotIdx):
+    preIdx &#61; dotIdx - 1
+    nxtIdx &#61; dotIdx &#43; 1
+    return preIdx &gt;&#61; 0 and s[preIdx].isdigit() and nxtIdx &lt; len(s) and s[nxtIdx].isdigit()
+
+
+# 记录数字串时&#xff0c;只保留最长的数字串
+def getAns(l, r, ans):
+    # 如果存在长度相同的连续数字串&#xff0c;返回最后一个。 因此下面判断是&gt;&#61;
+    return s[l:r] if l &lt; len(s) and r - l &gt;&#61; len(ans) else ans
+
+
+# 从s字符串的start位置开始找数字串的开头字符&#xff0c;数字串的开头字符可以是数字&#xff0c;也可以是符号
+def findStartIdx(i):
+    while i &lt; len(s):
+        c &#61; s[i]
+
+        if c.isdigit() or (isSign(c) and isValidSign(i)):
+            break
+
+        i &#43;&#61; 1
+
+    return i
+
+
+# 算法入口
+def getResult():
+    # 记录题解
+    ans &#61; &#34;&#34;
+
+    # 记录数字串中“.”的位置&#xff0c;-1表示数字串中没有点
+    dotIdx &#61; -1
+
+    # l 指向数字串的开头
+    l &#61; findStartIdx(0)
+
+    # r 用于扫描数字串
+    r &#61; l &#43; 1
+    while r &lt; len(s):
+        # 当前扫描的到的字符
+        c &#61; s[r]
+
+        if c.isdigit():
+            # c是数字&#xff0c;则继续扫描下一个
+            r &#43;&#61; 1
+        elif isSign(c):
+            # c是加减号&#xff0c;则数字串扫描中断&#xff0c;我们需要先记录[l, r-1]范围的数字串
+            ans &#61; getAns(l, r, ans)
+
+            if isValidSign(r):
+                # 由于加减号可以作为数字串开头&#xff0c;如果r位置的加减号是一个合法数字串开头加减号&#xff0c;则可以当成下一个数字串的开头
+                l &#61; r
+            else:
+                # 否则&#xff0c;从r&#43;1开始继续找下一个数字的开头
+                l &#61; findStartIdx(r&#43;1)
+
+            # 新数字串的开头找到后&#xff0c;从l&#43;1开始扫描
+            r &#61; l &#43; 1
+            # 同时注意重置dotIdx记录
+            dotIdx &#61; -1
+        elif isDot(c):
+            # 由于dot处理比较复杂&#xff0c;这里无论dot是否会中断数字串扫描&#xff0c;都先将[l, r-1]部分的数字串记录下来
+            ans &#61; getAns(l, r, ans)
+
+            if isValidDot(r):
+                # 如果是合法数字串dot, 则判断当前数字串是否已存在”.“
+                if dotIdx !&#61; -1:
+                    # 如果已存在&#34;.&#34;, 则当前数字串包含了两个&#34;.&#34;&#xff0c;肯定不合法&#xff0c;此时需要舍弃第一个&#34;.&#34;, 即新数字串开头位置设置在第一个&#34;.&#34;后面
+                    l &#61; dotIdx &#43; 1
+
+                # 更新dotIdx为第二个&#34;.&#34;的位置
+                dotIdx &#61; r
+                # r继续扫描下一个
+                r &#43;&#61; 1
+            else:
+                # 如果不是合法数字串dot&#xff0c;即该dot前后不都是数字&#xff0c;则新数字串不能包含进当前dot位置&#xff0c;新数字串开头需要从r&#43;1开始找
+                l &#61; findStartIdx(r&#43;1)
+                r &#61; l &#43; 1
+                dotIdx &#61; -1
+        else:
+            # c是其他字符, 则数字串被打断&#xff0c;此时需要先记录[l, r-1]范围的当前数字串&#xff0c; 然后重新寻找下一个数字串的开头
+            ans &#61; getAns(l, r, ans)
+            l &#61; findStartIdx(r &#43; 1)
+            r &#61; l &#43; 1
+            dotIdx &#61; -1
+
+    return getAns(l, r, ans)
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

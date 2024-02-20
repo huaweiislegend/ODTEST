@@ -1,0 +1,215 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 单词接龙（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>单词接龙的规则是&#xff1a;</p> 
+<ul><li>可用于接龙的单词首字母必须要前一个单词的尾字母相同&#xff1b;</li><li>当存在多个首字母相同的单词时&#xff0c;取长度最长的单词&#xff0c;如果长度也相等&#xff0c;则取字典序最小的单词&#xff1b;已经参与接龙的单词不能重复使用。</li><li>现给定一组全部由小写字母组成单词数组&#xff0c;并指定其中的一个单词作为起始单词&#xff0c;进行单词接龙&#xff0c;</li><li>请输出最长的单词串&#xff0c;单词串是单词拼接而成&#xff0c;中间没有空格。</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<ul><li>输入的第一行为一个非负整数&#xff0c;表示起始单词在数组中的索引K&#xff0c;0 &lt;&#61; K &lt; N &#xff1b;</li><li>输入的第二行为一个非负整数&#xff0c;表示单词的个数N&#xff1b;</li><li>接下来的N行&#xff0c;分别表示单词数组中的单词。</li></ul> 
+<p>备注&#xff1a;</p> 
+<ul><li>单词个数N的取值范围为[1, 20]&#xff1b;</li><li>单个单词的长度的取值范围为[1, 30]&#xff1b;</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<ul><li>输出一个字符串&#xff0c;表示最终拼接的单词串。</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">0<br /> 6<br /> word<br /> dd<br /> da<br /> dc<br /> dword<br /> d</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">worddwordda</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">先确定起始单词word&#xff0c;再接以d开头的且长度最长的单词dword&#xff0c;剩余以d开头且长度最长的有dd、da、dc&#xff0c;则取字典序最小的da&#xff0c;所以最后输出worddwordda。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">4<br /> 6<br /> word<br /> dd<br /> da<br /> dc<br /> dword<br /> d</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">dwordda</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">先确定起始单词dword&#xff0c;剩余以d开头且长度最长的有dd、da、dc&#xff0c;则取字典序最小的da&#xff0c;所以最后输出dwordda。</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>逻辑题&#xff0c;主要考察数组操作&#xff0c;如数组元素删除&#xff0c;数组自定义排序。</p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>先用splice方法&#xff0c;将起始单词从输入数组中删除&#xff0c;splice会将删除的元素形成一个新数组&#xff0c;我刚好将该数组作为收集接龙单词的链条数组chain。</p> 
+<p>之后&#xff0c;遍历输入数组中剩下的单词&#xff0c;将它们根据首字母进行分类&#xff0c;同一个首字母的单词存放在一个数组中。存储容器选择对象prefix&#xff0c;首字母作为对象的属性&#xff0c;存放同首单词的数组为对象的属性值。</p> 
+<p>当统计完后&#xff0c;对每个分类数组进行排序&#xff0c;即优先按照单词长度降序&#xff0c;如果单词长度相同&#xff0c;再按照字典序升序。</p> 
+<p>之后&#xff0c;取出chain的尾巴元素&#xff0c;再取出尾巴元素单词的尾巴字符tail&#xff0c;如果存在prefix[tail]&#xff0c;则取出prefix[tail]数组的头部元素加入chain中&#xff0c;然后继续循环前面逻辑&#xff0c;如果不存在prefix[tail]&#xff0c;则结束循环&#xff0c;将chain.join(&#39;&#39;) 当成结果输出。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let k, n;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    [k, n] &#61; lines.map(Number);
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 2) {
+    lines.shift();
+    lines.shift();
+
+    console.log(getResult(lines, k));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(words, k) {
+  const chain &#61; words.splice(k, 1);
+
+  const prefix &#61; {};
+
+  for (let word of words) {
+    const w &#61; word[0];
+    prefix[w] ? prefix[w].push(word) : (prefix[w] &#61; [word]);
+  }
+
+  for (let key in prefix) {
+    prefix[key].sort((a, b) &#61;&gt;
+      a.length !&#61; b.length ? b.length - a.length : a &gt; b ? 1 : -1
+    );
+  }
+
+  while (true) {
+    let tail &#61; chain.at(-1).at(-1);
+
+    if (prefix[tail] &amp;&amp; prefix[tail].length &gt; 0) {
+      chain.push(prefix[tail].shift());
+    } else {
+      break;
+    }
+  }
+
+  return chain.join(&#34;&#34;);
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int k &#61; sc.nextInt();
+    int n &#61; sc.nextInt();
+
+    String[] words &#61; new String[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) words[i] &#61; sc.next();
+
+    System.out.println(getResult(k, n, words));
+  }
+
+  public static String getResult(int k, int n, String[] words) {
+    ArrayList&lt;String&gt; chain &#61; new ArrayList&lt;&gt;();
+    chain.add(words[k]);
+
+    words[k] &#61; null;
+
+    HashMap&lt;Character, LinkedList&lt;String&gt;&gt; prefix &#61; new HashMap&lt;&gt;();
+    for (String word : words) {
+      if (word !&#61; null) {
+        char c &#61; word.charAt(0);
+        prefix.putIfAbsent(c, new LinkedList&lt;&gt;());
+        prefix.get(c).add(word);
+      }
+    }
+
+    for (Character c : prefix.keySet()) {
+      prefix
+          .get(c)
+          .sort((a, b) -&gt; a.length() !&#61; b.length() ? b.length() - a.length() : a.compareTo(b));
+    }
+
+    while (true) {
+      String tail &#61; chain.get(chain.size() - 1);
+      char c &#61; tail.charAt(tail.length() - 1);
+
+      if (prefix.containsKey(c) &amp;&amp; prefix.get(c).size() &gt; 0) {
+        chain.add(prefix.get(c).removeFirst());
+      } else {
+        break;
+      }
+    }
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (String s : chain) sb.append(s);
+    return sb.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+k &#61; int(input())
+n &#61; int(input())
+words &#61; [input() for _ in range(n)]
+
+
+# 算法入口
+def getResult():
+    chain &#61; [words.pop(k)]
+
+    prefix &#61; {}
+    for word in words:
+        w &#61; word[0]
+        if prefix.get(w) is None:
+            prefix[w] &#61; []
+        prefix[w].append(word)
+
+    for w in prefix.keys():
+        prefix[w].sort(key&#61;lambda x: (-len(x), [ord(i) for i in x]))
+
+    while True:
+        tail &#61; chain[-1][-1]
+
+        if prefix.get(tail):
+            chain.append(prefix[tail].pop(0))
+        else:
+            break
+
+    return &#34;&#34;.join(chain)
+
+
+# 调用算法
+print(getResult())
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

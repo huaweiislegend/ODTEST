@@ -1,0 +1,209 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 字符串分割(二)（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个非空字符串S&#xff0c;其被N个‘-’分隔成N&#43;1的子串&#xff0c;给定正整数K&#xff0c;要求除第一个子串外&#xff0c;其余的子串每K个字符组成新的子串&#xff0c;并用‘-’分隔。<br /> 对于新组成的每一个子串&#xff0c;如果它含有的小写字母比大写字母多&#xff0c;则将这个子串的所有大写字母转换为小写字母&#xff1b;<br /> 反之&#xff0c;如果它含有的大写字母比小写字母多&#xff0c;则将这个子串的所有小写字母转换为大写字母&#xff1b;大小写字母的数量相等时&#xff0c;不做转换。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为两行&#xff0c;第一行为参数K&#xff0c;第二行为字符串S。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出转换后的字符串。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>3<br /> 12abc-abCABc-4aB&#64;</td></tr><tr><td>输出</td><td>12abc-abc-ABC-4aB-&#64;</td></tr><tr><td>说明</td><td> <p>子串为12abc、abCABc、4aB&#64;&#xff0c;第一个子串保留&#xff0c;</p> <p>后面的子串每3个字符一组为abC、ABc、4aB、&#64;&#xff0c;</p> <p>abC中小写字母较多&#xff0c;转换为abc&#xff0c;</p> <p>ABc中大写字母较多&#xff0c;转换为ABC&#xff0c;</p> <p>4aB中大小写字母都为1个&#xff0c;不做转换&#xff0c;</p> <p>&#64;中没有字母&#xff0c;连起来即12abc-abc-ABC-4aB-&#64;</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>12<br /> 12abc-abCABc-4aB&#64;</td></tr><tr><td>输出</td><td>12abc-abCABc4aB&#64;</td></tr><tr><td>说明</td><td> <p>子串为12abc、abCABc、4aB&#64;&#xff0c;第一个子串保留&#xff0c;</p> <p>后面的子串每12个字符一组为abCABc4aB&#64;&#xff0c;</p> <p>这个子串中大小写字母都为4个&#xff0c;不做转换&#xff0c;</p> <p>连起来即12abc-abCABc4aB&#64;</p> </td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>此题应该就是考察字符串的操作能力的&#xff0c;只要熟练掌握字符串操作即可。</p> 
+<p>本题比较困惑的是&#xff0c;第一个子串是否要做大小写转换&#xff1f;看用例说明的意思&#xff0c;应该是不用做的。</p> 
+<p>下面代码中&#xff0c;我把大小写转换抽出成一个方法&#xff0c;考试时可以根据自行使用。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  static int[] fact;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int k &#61; sc.nextInt();
+    String s &#61; sc.next();
+
+    System.out.println(getResult(k, s));
+  }
+
+  public static String getResult(int k, String s) {
+    String[] arr &#61; s.split(&#34;-&#34;);
+
+    // 第一个子串不做处理
+    StringJoiner sj &#61; new StringJoiner(&#34;-&#34;);
+    //    sj.add(convert(arr[0])); // 看用例说明&#xff0c;对应第一个子串是不需要做大小写转换的&#xff0c;但是也拿不准&#xff0c;考试时可以都试下
+    sj.add(arr[0]);
+
+    // 剩余子串重新合并为一个新字符串&#xff0c;每k个字符一组
+    StringBuilder sb &#61; new StringBuilder();
+    for (int i &#61; 1; i &lt; arr.length; i&#43;&#43;) sb.append(arr[i]);
+    String newStr &#61; sb.toString();
+
+    for (int i &#61; 0; i &lt; newStr.length(); i &#43;&#61; k) {
+      String subStr &#61; newStr.substring(i, Math.min(i &#43; k, newStr.length()));
+      // 子串中小写字母居多&#xff0c;则整体转为小写字母&#xff0c;大写字母居多&#xff0c;则整体转为大写字母
+      sj.add(convert(subStr));
+    }
+
+    return sj.toString();
+  }
+
+  public static String convert(String str) {
+    int lowerCount &#61; 0;
+    int upperCount &#61; 0;
+
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      char c &#61; str.charAt(i);
+      if (c &gt;&#61; &#39;a&#39; &amp;&amp; c &lt;&#61; &#39;z&#39;) lowerCount&#43;&#43;;
+      else if (c &gt;&#61; &#39;A&#39; &amp;&amp; c &lt;&#61; &#39;Z&#39;) upperCount&#43;&#43;;
+    }
+
+    if (lowerCount &gt; upperCount) return str.toLowerCase();
+    else if (lowerCount &lt; upperCount) return str.toUpperCase();
+    else return str;
+  }
+}
+</code></pre> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    let k &#61; parseInt(lines[0]);
+    let s &#61; lines[1];
+    console.log(getResult(s, k));
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(s, k) {
+  const arr &#61; s.split(&#34;-&#34;);
+
+  const ans &#61; [];
+  // ans.push(convert(arr[0]));// 看用例说明&#xff0c;对应第一个子串是不需要做大小写转换的&#xff0c;但是也拿不准&#xff0c;考试时可以都试下
+  ans.push(arr[0]);
+
+  // 剩余子串重新合并为一个新字符串&#xff0c;每k个字符一组
+  const newStr &#61; arr.slice(1).join(&#34;&#34;);
+  for (let i &#61; 0; i &lt; newStr.length; i &#43;&#61; k) {
+    const subStr &#61; newStr.slice(i, i &#43; k);
+    // 子串中小写字母居多&#xff0c;则整体转为小写字母&#xff0c;大写字母居多&#xff0c;则整体转为大写字母
+    ans.push(convert(subStr));
+  }
+
+  return ans.join(&#34;-&#34;);
+}
+
+function convert(s) {
+  let lowerCount &#61; 0;
+  let upperCount &#61; 0;
+
+  for (let i &#61; 0; i &lt; s.length; i&#43;&#43;) {
+    if (s[i] &gt;&#61; &#34;a&#34; &amp;&amp; s[i] &lt;&#61; &#34;z&#34;) lowerCount&#43;&#43;;
+    else if (s[i] &gt;&#61; &#34;A&#34; &amp;&amp; s[i] &lt;&#61; &#34;Z&#34;) upperCount&#43;&#43;;
+  }
+
+  if (lowerCount &gt; upperCount) return s.toLowerCase();
+  else if (lowerCount &lt; upperCount) return s.toUpperCase();
+  else return s;
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+k &#61; int(input())
+s &#61; input()
+
+
+def convert(s):
+    lowerCount &#61; 0
+    upperCount &#61; 0
+
+    for c in s:
+        if &#39;z&#39; &gt;&#61; c &gt;&#61; &#39;a&#39;:
+            lowerCount &#43;&#61; 1
+        elif &#39;Z&#39; &gt;&#61; c &gt;&#61; &#39;A&#39;:
+            upperCount &#43;&#61; 1
+
+    if lowerCount &gt; upperCount:
+        return s.lower()
+    elif lowerCount &lt; upperCount:
+        return s.upper()
+    else:
+        return s
+
+
+# 算法入口
+def getResult():
+    arr &#61; s.split(&#34;-&#34;)
+
+    ans &#61; []
+    # ans.append(convert(arr[0])) # 看用例说明&#xff0c;对应第一个子串是不需要做大小写转换的&#xff0c;但是也拿不准&#xff0c;考试时可以都试下
+    ans.append(arr[0])
+
+    # 剩余子串重新合并为一个新字符串&#xff0c;每k个字符一组
+    newStr &#61; &#34;&#34;.join(arr[1:])
+    for i in range(0, len(newStr), k):
+        subStr &#61; newStr[i:i &#43; k]
+        # 子串中小写字母居多&#xff0c;则整体转为小写字母&#xff0c;大写字母居多&#xff0c;则整体转为大写字母
+        ans.append(convert(subStr))
+
+    return &#34;-&#34;.join(ans)
+
+
+# 算法调用
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

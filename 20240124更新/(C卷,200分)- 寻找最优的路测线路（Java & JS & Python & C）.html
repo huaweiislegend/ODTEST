@@ -1,0 +1,419 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 寻找最优的路测线路（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>评估一个网络的信号质量&#xff0c;其中一个做法是将网络划分为栅格&#xff0c;然后对每个栅格的信号质量计算。</p> 
+<p>路测的时候&#xff0c;希望选择一条信号最好的路线&#xff08;彼此相连的栅格集合&#xff09;进行演示。</p> 
+<p>现给出 R 行 C 列的整数数组 Cov&#xff0c;每个单元格的数值 S 即为该栅格的信号质量&#xff08;已归一化&#xff0c;无单位&#xff0c;值越大信号越好&#xff09;。</p> 
+<p>要求从 [0, 0] 到 [R-1, C-1]设计一条最优路测路线。返回该路线得分。</p> 
+<p></p> 
+<p>规则&#xff1a;</p> 
+<ol><li>路测路线可以上下左右四个方向&#xff0c;不能对角</li><li>路线的评分是以路线上信号最差的栅格为准的&#xff0c;例如路径 8→4→5→9 的值为4&#xff0c;该线路评分为4。线路最优表示该条线路的评分最高。</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行表示栅格的行数 R</p> 
+<p>第二行表示栅格的列数 C</p> 
+<p>第三行开始&#xff0c;每一行表示栅格地图一行的信号值&#xff0c;如5 4 5</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>最优路线的得分</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>1 ≤ R&#xff0c;C ≤ 20</li><li>0 ≤ S ≤ 65535</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:59px;">输入</td><td style="width:439px;">3<br /> 3<br /> 5 4 5<br /> 1 2 6<br /> 7 4 6</td></tr><tr><td style="width:59px;">输出</td><td style="width:439px;">4</td></tr><tr><td style="width:59px;">说明</td><td style="width:439px;">路线为&#xff1a;5→4→5→6→6</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">6<br /> 5<br /> 3 4 6 3 4<br /> 0 2 1 1 7<br /> 8 8 3 2 7<br /> 3 2 4 9 8<br /> 4 1 2 0 0<br /> 4 6 5 4 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">路线为&#xff1a;3→4→6→3→4→7→7→8→9→4→3→8→8→3→4→4→6→5→4→3</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>用例1图示                                  用例2图示</p> 
+<p><img alt="" height="184" src="https://img-blog.csdnimg.cn/direct/12498fb0eed7436b904b9d65e87a8dc1.png" width="214" /> <img alt="" height="254" src="https://img-blog.csdnimg.cn/direct/c2803ef547ca49128c172acac1f5a59b.png" width="296" /></p> 
+<p></p> 
+<hr /> 
+<p>本题需要我们求解 起点(0,0) 到 终点(r-1, c-1) 的所有路径中 &#34;最大的&#34; 最小权值节点的权值。</p> 
+<p></p> 
+<blockquote> 
+ <p>注&#xff1a;每条路径都由至少一个点组成&#xff0c;而每个点都有权值&#xff0c;因此每条路径自身都有一个最小权值节点。比如路径&#xff1a;5→4→5→6→6&#xff0c;其中最小权值节点的权值就是4</p> 
+ <p></p> 
+ <p>本题需要我们找到起点-&gt;终点的所有路径各自的最小权值节点&#xff0c;并比较出其中最大的那个。</p> 
+</blockquote> 
+<p>其实这个问题就是单源最短路径的变形题&#xff0c;可以使用Dijkstra算法求解&#xff0c;如果不了解Dijistra算法&#xff0c;可以先看下&#xff1a;</p> 
+<p><a href="https://blog.csdn.net/qfc_128220/article/details/127680161?spm&#61;1001.2014.3001.5501" title="LeetCode - 743 网络延迟时间&#xff08;Java &amp; JS &amp; Python&#xff09;伏城之外 -CSDN博客">LeetCode - 743 网络延迟时间&#xff08;Java &amp; JS &amp; Python&#xff09;伏城之外 -CSDN博客</a></p> 
+<p></p> 
+<hr /> 
+<p>下面使用Dijistra算法模拟下用例1的解题过程&#xff1a;</p> 
+<p>首先&#xff0c;我们需要定义一个dist数组&#xff1a;</p> 
+<ul><li>dist[x][y]表示起点(0,0)到终点(x,y)的所有路径中“最大的”最小权值节点的权值</li></ul> 
+<p>由于dist[x][y]最终记录的是一个最大值&#xff0c;因此我们需要将dist[x][y]初始化为一个最小值&#xff0c;方便后面被更大值替换&#xff0c;由于本题节点&#xff08;栅格&#xff09;的权值&#xff08;信号强度&#xff09;最小为0&#xff0c;因此这里dist[x][y]可以初始化为0。</p> 
+<p>初始时&#xff0c;我们将dist数组所有元素都初始化为0&#xff0c;其中dist[0][0] &#61; matrix[0][0]&#xff0c;因为起点(0,0)到终点(0,0)的路径中只有一个节点(0,0)。</p> 
+<p></p> 
+<p>之后&#xff0c;我们需要定义一个优先队列pq&#xff0c;pq记录路径的终点&#xff08;x,y&#xff09;&#xff0c;各路径终点的优先级为&#xff1a;对应路径&#34;最大的&#34;最小权值节点的权值&#xff0c;即dist[x][y]&#xff0c;即dist[x][y]越大&#xff0c;则对应路径终点(x,y)在优先队列中的优先级越高。</p> 
+<p>初始时&#xff0c;将(0,0)加入优先队列。</p> 
+<p></p> 
+<p>下面开始从优先队列不停取出优先级最高的节点&#xff1a;</p> 
+<blockquote> 
+ <p>每当从优先队列中取出一个路径终点&#xff08;优先级最高&#xff09;&#xff0c;则可以获得如下信息&#xff1a;</p> 
+ <ul><li>路径终点的位置 (ux, uy)</li><li>路径的最小权值节点的权值&#xff1a;dist[ux][uy]</li></ul> 
+ <p>之后基于(ux, uy) 向上下左右四个方向探索&#xff0c;如果新位置(vx, vy)不越界&#xff0c;则进入新位置&#xff1a;</p> 
+ <ul><li>此时路径终点从(ux, uy)变更为(vx, vy)</li><li>此时路径的最小权值节点的权值w为&#xff1a;min(dist[ux][uy], matrix[vx][vy])</li></ul> 
+ <p>我们得到了一个新的路径&#xff0c;新路径的终点为(vx, vy)&#xff0c;新路径中最小权值节点的权值w为 min(dist[ux][uy], matrix[vx][vy])</p> 
+ <p></p> 
+ <p>另外&#xff0c;如果 w &gt; dist[vx][vy]&#xff0c;则说明我们找到了起点(0,0)到(vx, vy)的更优路径&#xff0c;即找到了更大的最小权值节点&#xff0c;因此需要更新 dist[vx][vy] &#61; w&#xff0c;然后将新路径加入到pq中重新排优先级。</p> 
+</blockquote> 
+<p>按此逻辑一直进行&#xff0c;直到pq为空时&#xff0c;我们就找完了起点(0,0)到所有节点的路径的&#34;最大的&#34;最小权值节点的权值。</p> 
+<p>最后返回 dist[r-1][c-1] 记录的 起点(0,0) 到 (r-1, c-1) 的所有路径中的&#34;最大的&#34;最小权值节点的权值即可。</p> 
+<p></p> 
+<hr /> 
+<p>2023.12.04</p> 
+<p>本题的优化思路&#xff0c;由于本题固定求(0,0)到(r-1,c-1)的解&#xff0c;即dist[r-1][c-1]&#xff0c;因此一旦dist[r-1][c-1]确定了&#xff0c;即可停止Dijkstra算法&#xff0c;即不需要找到(0,0)到其余点的dist解。</p> 
+<p>因此&#xff0c;当pq弹出的点是(r-1, c-1)时&#xff0c;即可提前结束&#xff0c;因为此时dist[r-1][c-1]已经被求解出来&#xff0c;且是最优解。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const r &#61; parseInt(await readline());
+  const c &#61; parseInt(await readline());
+
+  const matrix &#61; [];
+  for (let i &#61; 0; i &lt; r; i&#43;&#43;) {
+    matrix.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  // dist[i]记录的 起点0 到 终点i 的所有路径中“最大的”最小权值节点的权值
+  // 其中 i 是将二维坐标一维化后的值&#xff0c;比如(x,y)坐标一维化后为 x * c &#43; y; (c是列数)
+  // dist[i] 记录的 “最大的”最小权值节点的权值&#xff0c;因此需要初始化为一个 &#34;最小的&#34; 最小权值节点的权值&#xff0c;方便后面被更大者取代&#xff0c;由于本题节点的最小权值&gt;&#61;0&#xff0c;因此这里可以初始化为0
+  const dist &#61; new Array(r * c).fill(0);
+  // 起点0 到 终点0 路径的最小权值节点就是自身&#xff0c;即matrix[0][0]点的权重
+  dist[0] &#61; matrix[0][0];
+
+  // 优先队列记录路径&#xff08;终点&#xff09;&#xff0c;并且路径中的最小权值节点的权值越大&#xff0c;优先级越高
+  // 初始时将(0,0)入队
+  const pq &#61; [0];
+
+  // 上下左右的方向偏移量
+  const offsets &#61; [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  while (pq.length &gt; 0) {
+    // 取出优先队列中优先级最大的路径&#xff08;终点&#xff09;
+    const u &#61; pq.pop();
+
+    // 将一维化坐标u&#xff0c;解析为二维坐标(x,y)
+    const y &#61; u % c;
+    const x &#61; (u - y) / c;
+
+    // 已找到dist[r-1][c-1]最优解&#xff0c;则可以提前结束
+    if (x &#61;&#61; r - 1 &amp;&amp; y &#61;&#61; c - 1) break;
+
+    // 向上下左右四个方向探索
+    for (let [offsetX, offsetY] of offsets) {
+      // 新位置坐标
+      const newX &#61; x &#43; offsetX;
+      const newY &#61; y &#43; offsetY;
+
+      // 新位置越界则无法访问
+      if (newX &lt; 0 || newX &gt;&#61; r || newY &lt; 0 || newY &gt;&#61; c) continue;
+
+      // 新位置的一维化坐标
+      const v &#61; newX * c &#43; newY;
+      // 当前路径&#xff08;终点u&#xff09;的最小权值节点的权值为dist[u]
+      // 要加入当前路径的新位置的点的权值 matrix[newX][newY]
+      // 那么形成的新路径的最小权值节点的权值即为 w &#61; min(dist[u], matrix[newX][newY])
+      const w &#61; Math.min(dist[u], matrix[newX][newY]);
+
+      // 形成的新路径的终点为 v&#xff08;即新位置一维化坐标&#xff09;
+      // 而dist[v]记录的是起点到点v的所有路径中“最大的”最小权值节点
+      if (dist[v] &lt; w) {
+        // 因此如果dist[v] &lt; w的话&#xff0c;则更新dist[v]
+        dist[v] &#61; w;
+        // 并将新路径加入优先队列&#xff0c;参与下一轮比较
+        pq.push(v);
+        // 优先级排序&#xff0c;由于34行是pq.pop()&#xff0c;尾部优先级最大&#xff0c;因此这里升序
+        pq.sort((a, b) &#61;&gt; dist[a] - dist[b]);
+      }
+    }
+  }
+
+  // 返回起点&#xff08;0&#xff0c;0&#xff09;到终点(r-1, c-1)的所有路径中&#34;最大的&#34;最小权值节点的权值
+  console.log(dist[r * c - 1]);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int r &#61; sc.nextInt();
+    int c &#61; sc.nextInt();
+
+    int[][] matrix &#61; new int[r][c];
+    for (int i &#61; 0; i &lt; r; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; c; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    // dist[i]记录的 起点0 到 终点i 的所有路径中“最大的”最小权值节点的权值
+    // 其中 i 是将二维坐标一维化后的值&#xff0c;比如(x,y)坐标一维化后为 x * c &#43; y; (c是列数)
+    // dist[i] 记录的 “最大的”最小权值节点的权值&#xff0c;因此需要初始化为一个 &#34;最小的&#34; 最小权值节点的权值&#xff0c;方便后面被更大者取代&#xff0c;由于本题节点的最小权值&gt;&#61;0&#xff0c;因此这里可以初始化为0
+    int[] dist &#61; new int[r * c];
+    // 起点0 到 终点0 路径的最小权值节点就是自身&#xff0c;即matrix[0][0]点的权重
+    dist[0] &#61; matrix[0][0];
+
+    // 优先队列记录路径&#xff08;终点&#xff09;&#xff0c;并且路径中的最小权值节点的权值越大&#xff0c;优先级越高
+    PriorityQueue&lt;Integer&gt; pq &#61; new PriorityQueue&lt;&gt;((a, b) -&gt; dist[b] - dist[a]);
+    // 初始时将(0,0)入队
+    pq.add(0);
+
+    // 上下左右的方向偏移量
+    int[][] offsets &#61; {<!-- -->{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    while (pq.size() &gt; 0) {
+      // 取出优先队列中优先级最大的路径&#xff08;终点&#xff09;
+      int u &#61; pq.poll();
+
+      // 将一维化坐标u&#xff0c;解析为二维坐标(x,y)
+      int x &#61; u / c;
+      int y &#61; u % c;
+
+      // 已找到dist[r-1][c-1]最优解&#xff0c;则可以提前结束
+      if (x &#61;&#61; r - 1 &amp;&amp; y &#61;&#61; c - 1) break;
+
+      // 向上下左右四个方向探索
+      for (int[] offset : offsets) {
+        // 新位置坐标
+        int newX &#61; x &#43; offset[0];
+        int newY &#61; y &#43; offset[1];
+
+        // 新位置越界则无法访问
+        if (newX &lt; 0 || newX &gt;&#61; r || newY &lt; 0 || newY &gt;&#61; c) continue;
+
+        // 新位置的一维化坐标
+        int v &#61; newX * c &#43; newY;
+        // 当前路径&#xff08;终点u&#xff09;的最小权值节点的权值为dist[u]
+        // 要加入当前路径的新位置的点的权值 matrix[newX][newY]
+        // 那么形成的新路径的最小权值节点的权值即为 w &#61; min(dist[u], matrix[newX][newY])
+        int w &#61; Math.min(dist[u], matrix[newX][newY]);
+
+        // 形成的新路径的终点为 v&#xff08;即新位置一维化坐标&#xff09;
+        // 而dist[v]记录的是起点到点v的所有路径中“最大的”最小权值节点
+        if (dist[v] &lt; w) {
+          // 因此如果dist[v] &lt; w的话&#xff0c;则更新dist[v]
+          dist[v] &#61; w;
+          // 并将新路径加入优先队列&#xff0c;参与下一轮比较
+          pq.add(v);
+        }
+      }
+    }
+
+    // 返回起点&#xff08;0&#xff0c;0&#xff09;到终点(r-1, c-1)的所有路径中&#34;最大的&#34;最小权值节点的权值
+    System.out.println(dist[r * c - 1]);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+r &#61; int(input())
+c &#61; int(input())
+matrix &#61; [list(map(int, input().split())) for _ in range(r)]
+
+
+# 算法入口
+def getResult():
+    # dist[i]记录的 起点0 到 终点i 的所有路径中“最大的”最小权值节点的权值
+    # 其中 i 是将二维坐标一维化后的值&#xff0c;比如(x,y)坐标一维化后为 x * c &#43; y; (c是列数)
+    # dist[i] 记录的 “最大的”最小权值节点的权值&#xff0c;因此需要初始化为一个 &#34;最小的&#34; 最小权值节点的权值&#xff0c;方便后面被更大者取代&#xff0c;由于本题节点的最小权值&gt;&#61;0&#xff0c;因此这里可以初始化为0
+    dist &#61; [0] * (r * c)
+    # 起点0 到 终点0 路径的最小权值节点就是自身&#xff0c;即matrix[0][0]点的权重
+    dist[0] &#61; matrix[0][0]
+
+    # 优先队列记录路径&#xff08;终点&#xff09;&#xff0c;并且路径中的最小权值节点的权值越大&#xff0c;优先级越高
+    # 初始时将(0,0)入队
+    pq &#61; [0]
+
+    # 上下左右的方向偏移量
+    offsets &#61; ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    while len(pq) &gt; 0:
+        # 取出优先队列中优先级最大的路径&#xff08;终点&#xff09;
+        u &#61; pq.pop()
+
+        # 将一维化坐标u&#xff0c;解析为二维坐标(x,y)
+        x &#61; u // c
+        y &#61; u % c
+
+        # 已找到dist[r-1][c-1]最优解&#xff0c;则可以提前结束
+        if x &#61;&#61; r - 1 and y &#61;&#61; c - 1:
+            break
+
+        # 向上下左右四个方向探索
+        for offsetX, offsetY in offsets:
+            # 新位置坐标
+            newX &#61; x &#43; offsetX
+            newY &#61; y &#43; offsetY
+
+            # 新位置越界则无法访问
+            if newX &lt; 0 or newX &gt;&#61; r or newY &lt; 0 or newY &gt;&#61; c:
+                continue
+
+            # 新位置的一维化坐标
+            v &#61; newX * c &#43; newY
+            # 当前路径&#xff08;终点u&#xff09;的最小权值节点的权值为dist[u]
+            # 要加入当前路径的新位置的点的权值 matrix[newX][newY]
+            #  那么形成的新路径的最小权值节点的权值即为 w &#61; min(dist[u], matrix[newX][newY])
+            w &#61; min(dist[u], matrix[newX][newY])
+
+            # 形成的新路径的终点为 v&#xff08;即新位置一维化坐标&#xff09;
+            # 而dist[v]记录的是起点到点v的所有路径中“最大的”最小权值节点
+            if dist[v] &lt; w:
+                # 因此如果dist[v] &lt; w的话&#xff0c;则更新dist[v]
+                dist[v] &#61; w
+                # 并将新路径加入优先队列&#xff0c;参与下一轮比较
+                pq.append(v)
+                # 优先级排序&#xff0c;由于24行是pq.pop()&#xff0c;尾部优先级最大&#xff0c;因此这里升序
+                pq.sort(key&#61;lambda i: dist[i])
+
+    # 返回起点&#xff08;0&#xff0c;0&#xff09;到终点(r-1, c-1)的所有路径中&#34;最大的&#34;最小权值节点的权值
+    return dist[r * c - 1]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define MAX_SIZE 400
+
+int cmp(const void *a, const void *b) {
+    return *((int *) b) - *((int *) a);
+}
+
+int main() {
+    int r, c;
+    scanf(&#34;%d %d&#34;, &amp;r, &amp;c);
+
+    int matrix[r][c];
+    for (int i &#61; 0; i &lt; r; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; c; j&#43;&#43;) {
+            scanf(&#34;%d&#34;, &amp;matrix[i][j]);
+        }
+    }
+
+    // dist[i]记录的 起点0 到 终点i 的所有路径中“最大的”最小权值节点的权值
+    // 其中 i 是将二维坐标一维化后的值&#xff0c;比如(x,y)坐标一维化后为 x * c &#43; y; (c是列数)
+    // dist[i] 记录的 “最大的”最小权值节点的权值&#xff0c;因此需要初始化为一个 &#34;最小的&#34; 最小权值节点的权值&#xff0c;方便后面被更大者取代&#xff0c;由于本题节点的最小权值&gt;&#61;0&#xff0c;因此这里可以初始化为0
+    int dist[MAX_SIZE] &#61; {0};
+    // 起点0 到 终点0 路径的最小权值节点就是自身&#xff0c;即matrix[0][0]点的权重
+    dist[0] &#61; matrix[0][0];
+
+    // 优先队列记录路径&#xff08;终点&#xff09;&#xff0c;并且路径中的最小权值节点的权值越大&#xff0c;优先级越高
+    int pq[MAX_SIZE] &#61; {0};
+    int pq_size &#61; 0;
+
+    // 初始时将(0,0)入队
+    pq[pq_size&#43;&#43;] &#61; 0;
+
+    // 上下左右的方向偏移量
+    int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                         {1,  0},
+                         {0,  -1},
+                         {0,  1}};
+
+    while (pq_size &gt; 0) {
+        // 取出优先队列中优先级最大的路径&#xff08;终点&#xff09;
+        int u &#61; pq[--pq_size];
+
+        // 将一维化坐标u&#xff0c;解析为二维坐标(x,y)
+        int x &#61; u / c;
+        int y &#61; u % c;
+
+        // 已找到dist[r-1][c-1]最优解&#xff0c;则可以提前结束
+        if (x &#61;&#61; r - 1 &amp;&amp; y &#61;&#61; c - 1) break;
+
+        // 向上下左右四个方向探索
+        for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+            // 新位置坐标
+            int newX &#61; x &#43; offsets[i][0];
+            int newY &#61; y &#43; offsets[i][1];
+
+            // 新位置越界则无法访问
+            if (newX &lt; 0 || newX &gt;&#61; r || newY &lt; 0 || newY &gt;&#61; c) continue;
+
+            // 新位置的一维化坐标
+            int v &#61; newX * c &#43; newY;
+            // 当前路径&#xff08;终点u&#xff09;的最小权值节点的权值为dist[u]
+            // 要加入当前路径的新位置的点的权值 matrix[newX][newY]
+            // 那么形成的新路径的最小权值节点的权值即为 w &#61; min(dist[u], matrix[newX][newY])
+            int w &#61; (int) fmin(dist[u], matrix[newX][newY]);
+
+            // 形成的新路径的终点为 v&#xff08;即新位置一维化坐标&#xff09;
+            // 而dist[v]记录的是起点到点v的所有路径中“最大的”最小权值节点
+            if (dist[v] &lt; w) {
+                // 因此如果dist[v] &lt; w的话&#xff0c;则更新dist[v]
+                dist[v] &#61; w;
+                // 并将新路径加入优先队列&#xff0c;参与下一轮比较
+                pq[pq_size&#43;&#43;] &#61; v;
+                // 优先级排序&#xff0c;由于43行是pq尾删&#xff0c;即尾部优先级最大&#xff0c;因此这里升序
+                qsort(pq, pq_size, sizeof(int), cmp);
+            }
+        }
+    }
+
+    // 返回起点&#xff08;0&#xff0c;0&#xff09;到终点(r-1, c-1)的所有路径中&#34;最大的&#34;最小权值节点的权值
+    printf(&#34;%d\n&#34;, dist[r * c - 1]);
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

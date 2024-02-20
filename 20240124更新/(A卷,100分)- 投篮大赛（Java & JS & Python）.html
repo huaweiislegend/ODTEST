@@ -1,0 +1,217 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 投篮大赛（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>你现在是一场采用特殊赛制投篮大赛的记录员。这场比赛由若干回合组成&#xff0c;过去几回合的得分可能会影响以后几回合的得分。<br /> 比赛开始时&#xff0c;记录是空白的。<br /> 你会得到一个记录操作的字符串列表 ops&#xff0c;其中ops[i]是你需要记录的第i项操作&#xff0c;ops遵循下述规则&#xff1a;</p> 
+<ul><li>整数x-表示本回合新获得分数x</li><li>“&#43;” – 表示本回合新获得的得分是前两次得分的总和。</li><li>“D” – 表示本回合新获得的得分是前一次得分的两倍。</li><li>“C” – 表示本回合没有分数&#xff0c;并且前一次得分无效&#xff0c;将其从记录中移除。</li></ul> 
+<p>请你返回记录中所有得分的总和。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为一个字符串数组</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出为一个整形数字</p> 
+<p></p> 
+<h4>提示</h4> 
+<ol><li>1 &lt;&#61; ops.length &lt;&#61; 1000</li><li>ops[i] 为 “C”、“D”、“&#43;”&#xff0c;或者一个表示整数的字符串。整数范围是 [-3 * 10^4, 3 * 10^4]</li><li>需要考虑异常的存在&#xff0c;如有异常情况&#xff0c;请返回-1</li><li>对于“&#43;”操作&#xff0c;题目数据不保证记录此操作时前面总是存在两个有效的分数</li><li>对于“C”和“D”操作&#xff0c;题目数据不保证记录此操作时前面存在一个有效的分数</li><li>题目输出范围不会超过整型的最大范围&#xff0c;不超过2^63 - 1</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:48px;">输入</td><td style="width:450px;">5 2 C D &#43;</td></tr><tr><td style="width:48px;">输出</td><td style="width:450px;">30</td></tr><tr><td style="width:48px;">说明</td><td style="width:450px;">“5”-记录加5&#xff0c;记录现在是[5]<br /> “2”-记录加2&#xff0c;记录现在是[5,2]<br /> “C”-使前一次得分的记录无效并将其移除&#xff0c;记录现在是[5].<br /> “D”-记录加2*5&#61;10&#xff0c;记录现在是[5&#xff0c;10].<br /> “&#43;”-记录加5&#43;10&#61;15&#xff0c;记录现在是[5&#xff0c;10&#xff0c;15].<br /> 所有得分的总和5&#43;10&#43;15&#61;30</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>5 -2 4 C D 9 &#43; &#43;</td></tr><tr><td>输出</td><td>27</td></tr><tr><td>说明</td><td> <p>“5”-记录加5&#xff0c;记录现在是[5]<br /> “-2”-记录加-2&#xff0c;记录现在是[5,-2]</p> <p>“4”-记录加4&#xff0c;记录现在是[5,-2,4]</p> <p>“C”-使前一次得分的记录无效并将其移除&#xff0c;记录现在是[5,-2].</p> <p>“D”-记录加2*-2&#61;4&#xff0c;记录现在是[5&#xff0c;-2, -4].</p> <p>“9”-记录加9&#xff0c;记录现在是[5&#xff0c;-2, -4, 9].</p> <p>“&#43;”-记录加-4&#43;9&#61;5&#xff0c;记录现在是[5&#xff0c;-2, -4, 9, 5].</p> <p>“&#43;”-记录加-9&#43;5&#61;14&#xff0c;记录现在是[5&#xff0c;-2, -4, 9, 5, 14].</p> <p>所以得分的总和 5 - 2 - 4 &#43; 9 &#43; 5 &#43; 14 &#61; 27</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:51px;">输入</td><td style="width:447px;">1</td></tr><tr><td style="width:51px;">输出</td><td style="width:447px;">1</td></tr><tr><td style="width:51px;">说明</td><td style="width:447px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:49px;">输入</td><td style="width:449px;">&#43;</td></tr><tr><td style="width:49px;">输出</td><td style="width:449px;">-1</td></tr><tr><td style="width:49px;">说明</td><td style="width:449px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的逻辑题&#xff0c;按照题目意思写就行。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const ops &#61; line.split(&#34; &#34;);
+  console.log(getResult(ops));
+});
+
+function getResult(ops) {
+  // ans用于保存每轮的得分
+  const ans &#61; [];
+
+  const reg &#61; /^\-?\d&#43;$/;
+  for (let op of ops) {
+    // 如果op是整数&#xff0c;则表示本轮得分&#xff0c;直接加入ans
+    if (reg.test(op)) {
+      ans.push(op - 0);
+    } else {
+      switch (op) {
+        // 如果op是&#43;&#xff0c;则表示本轮得分是前两轮得分之和&#xff0c;注意越界处理
+        case &#34;&#43;&#34;:
+          if (ans.length &lt; 2) return -1;
+          ans.push(ans.at(-1) &#43; ans.at(-2));
+          break;
+        // 如果op是D&#xff0c;表示本轮得分是前一轮得分的双倍&#xff0c;注意越界处理
+        case &#34;D&#34;:
+          if (ans.length &lt; 1) return -1;
+          ans.push(ans.at(-1) * 2);
+          break;
+        // 如果op是C&#xff0c;则表示本轮无得分&#xff0c;且上一轮得分无效&#xff0c;需要去除
+        case &#34;C&#34;:
+          if (ans.length &lt; 1) return -1;
+          ans.pop();
+          break;
+      }
+    }
+  }
+
+  // 感谢网友m0_71826536提示&#xff0c;如果用例输入为&#xff1a;2 C&#xff0c;则此处会报错
+  // return ans.reduce((p, c) &#61;&gt; p &#43; c);
+
+  if (ans.length) return ans.reduce((p, c) &#61;&gt; p &#43; c);
+  else return 0;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61; sc.nextLine();
+
+    String[] ops &#61; str.split(&#34; &#34;);
+
+    System.out.println(getResult(ops));
+  }
+
+  public static int getResult(String[] ops) {
+    // ans用于保存每轮的得分
+    LinkedList&lt;Integer&gt; ans &#61; new LinkedList&lt;&gt;();
+    String reg &#61; &#34;^\\-?\\d&#43;$&#34;;
+
+    for (String op : ops) {
+      // 如果op是整数&#xff0c;则表示本轮得分&#xff0c;直接加入ans
+      if (op.matches(reg)) {
+        ans.addLast(Integer.parseInt(op));
+      } else {
+        switch (op) {
+            // 如果op是&#43;&#xff0c;则表示本轮得分是前两轮得分之和&#xff0c;注意越界处理
+          case &#34;&#43;&#34;:
+            if (ans.size() &lt; 2) return -1;
+            ans.addLast(ans.getLast() &#43; ans.get(ans.size() - 2));
+            break;
+            // 如果op是D&#xff0c;表示本轮得分是前一轮得分的双倍&#xff0c;注意越界处理
+          case &#34;D&#34;:
+            if (ans.size() &lt; 1) return -1;
+            ans.addLast(ans.getLast() * 2);
+            break;
+            // 如果op是C&#xff0c;则表示本轮无得分&#xff0c;且上一轮得分无效&#xff0c;需要去除
+          case &#34;C&#34;:
+            // 感谢网友m0_71826536的提示&#xff0c;由于题目说&#xff1a;对于“C”和“D”操作&#xff0c;题目数据不保证记录此操作时前面存在一个有效的分数&#xff0c;因此这里C操作&#xff0c;不能直接removeLast&#xff0c;需要先判断ans是否有数据
+            if (ans.size() &lt; 1) return -1;
+            ans.removeLast();
+            break;
+        }
+      }
+    }
+
+    int sum &#61; 0;
+    for (Integer an : ans) {
+      sum &#43;&#61; an;
+    }
+    return sum;
+  }
+}
+</code></pre> 
+<h4></h4> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+ops &#61; input().split()
+
+
+# 算法入口
+def getResult(ops):
+    # ans用于保存每轮的得分
+    ans &#61; []
+
+    # 改正则用于判断op是否为一个整数&#xff0c;包括负数
+    pattern &#61; r&#34;^\-?\d&#43;$&#34;
+
+    for op in ops:
+        # 如果op是整数&#xff0c;则表示本轮得分&#xff0c;直接加入ans
+        if re.match(pattern, op):
+            ans.append(int(op))
+        else:
+            # 如果op是&#43;&#xff0c;则表示本轮得分是前两轮得分之和&#xff0c;注意越界处理
+            if op &#61;&#61; &#34;&#43;&#34;:
+                if len(ans) &lt; 2:
+                    return -1
+                else:
+                    ans.append(ans[-1] &#43; ans[-2])
+            # 如果op是D&#xff0c;表示本轮得分是前一轮得分的双倍&#xff0c;注意越界处理
+            elif op &#61;&#61; &#34;D&#34;:
+                if len(ans) &lt; 1:
+                    return -1
+                else:
+                    ans.append(ans[-1] * 2)
+            # 如果op是C&#xff0c;则表示本轮无得分&#xff0c;且上一轮得分无效&#xff0c;需要去除
+            elif op &#61;&#61; &#34;C&#34;:
+                if len(ans) &lt; 1:
+                    return -1
+                else:
+                    ans.pop()
+            else:
+                return -1
+
+    ans.append(0)
+
+    return sum(ans)
+
+
+# 调用算法
+print(getResult(ops))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

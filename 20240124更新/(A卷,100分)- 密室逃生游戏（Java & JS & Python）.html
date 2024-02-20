@@ -1,0 +1,160 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 密室逃生游戏（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>小强正在参加《密室逃生》游戏&#xff0c;当前关卡要求找到符合给定 密码K&#xff08;升序的不重复小写字母组成&#xff09; 的箱子&#xff0c;并给出箱子编号&#xff0c;箱子编号为 1~N 。<br /> 每个箱子中都有一个 字符串s &#xff0c;字符串由大写字母、小写字母、数字、<span style="color:#0d0016;">标点符号</span>、<s><span style="color:#fe2c24;">空格</span></s>组成&#xff0c;需要在这些字符串中找到所有的字母&#xff0c;忽略大小写后排列出对应的密码串&#xff0c;并返回匹配密码的箱子序号。</p> 
+<p>提示&#xff1a;满足条件的箱子不超过1个。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为 key 的字符串&#xff0c;<br /> 第二行为箱子 boxes&#xff0c;为数组样式&#xff0c;以<span style="color:#fe2c24;">空格</span>分隔</p> 
+<ul><li>箱子 N 数量满足 1 ≤ N ≤ 10000,</li><li>s 长度满足 0 ≤ s.length ≤ 50&#xff0c;</li><li>密码为仅包含小写字母的升序字符串&#xff0c;且不存在重复字母&#xff0c;</li><li>密码 K 长度1 ≤ K.length ≤ 26</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>返回对应箱子编号<br /> 如不存在符合要求的密码箱&#xff0c;则返回 -1。</p> 
+<p></p> 
+<h4>备注</h4> 
+<p>箱子中字符拼出的字符串与密码的匹配忽略大小写&#xff0c;且要求与密码完全匹配&#xff0c;如密码abc匹配aBc&#xff0c;但是密码abc不匹配abcd</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc<br /> s,sdf134 A2c4b</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第 2 个箱子中的 Abc &#xff0c;符合密码 abc。</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">abc<br /> s,sdf134 A2c4bd 523[]</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">第2个箱子中的Abcd&#xff0c;与密码不完全匹配&#xff0c;不符合要求</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>2023.03.26 本题更新了题目描述&#xff0c;增加备注&#xff0c;增加了一个新用例。</p> 
+<p></p> 
+<p>新的题目信息&#xff0c;依旧是存在问题的&#xff0c;即第二行输入的箱子字符串中可能包含空格&#xff0c;但是输入描述中又说让我们按照空格分割&#xff0c;这里我的解法默认第二行输入的每个箱子字符串中不包含空格。</p> 
+<p></p> 
+<p>其次&#xff0c;本题用例2中&#xff0c;第二个箱子只保留字母后&#xff0c;变为字符串Abcd&#xff0c;从用例说明可知&#xff0c;该字符串机试转为小写升序后的abcd和依旧不能密码abc完全匹配&#xff0c;因此题目的完全匹配意思应该是和密码要完全相同。</p> 
+<p></p> 
+<p>但是如果箱子字符串是aabbcc这种&#xff0c;能否和密码abc完全匹配呢&#xff1f;</p> 
+<p>看了满分答案后&#xff0c;这种情况也是不能完全匹配&#xff0c;即不能对箱子字符串做去重处理。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    const key &#61; lines[0];
+    const boxes &#61; lines[1].split(&#34; &#34;);
+    console.log(getResult(key, boxes));
+
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * &#64;param {*} key 升序的不重复小写字母组成的密码K
+ * &#64;param {*} boxes 数组&#xff0c;元素box为字符串
+ * &#64;returns 包含key的忽略大小写的所有字母的box
+ */
+function getResult(key, boxes) {
+  for (let i &#61; 0; i &lt; boxes.length; i&#43;&#43;) {
+    const box &#61; boxes[i];
+    const tmp &#61; [...box.replace(/[^a-zA-Z]/g, &#34;&#34;).toLowerCase()]
+      .sort()
+      .join(&#34;&#34;);
+
+    if (key &#61;&#61; tmp) {
+      return i &#43; 1;
+    }
+  }
+  return -1;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String key &#61; sc.nextLine();
+    String[] boxes &#61; sc.nextLine().split(&#34; &#34;);
+
+    System.out.println(getResult(key, boxes));
+  }
+
+  public static int getResult(String key, String[] boxes) {
+    for (int i &#61; 0; i &lt; boxes.length; i&#43;&#43;) {
+      String box &#61; boxes[i];
+      char[] tmp &#61; box.replaceAll(&#34;[^a-zA-Z]&#34;, &#34;&#34;).toLowerCase().toCharArray();
+
+      Arrays.sort(tmp);
+      if (key.equals(new String(tmp))) {
+        return i &#43; 1;
+      }
+    }
+
+    return -1;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+key &#61; input()
+boxes &#61; input().split()
+
+
+# 算法入口
+def getResult(key, boxes):
+    for i in range(len(boxes)):
+        box &#61; boxes[i]
+        tmp &#61; list(&#34;&#34;.join(list(filter(lambda c: &#39;a&#39; &lt;&#61; c &lt;&#61; &#39;z&#39; or &#39;A&#39; &lt;&#61; c &lt;&#61; &#39;Z&#39;, list(box)))).lower())
+        tmp.sort()
+
+        if key &#61;&#61; &#34;&#34;.join(tmp):
+            return i&#43;1
+
+    return -1
+
+
+# 算法调用
+print(getResult(key, boxes))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

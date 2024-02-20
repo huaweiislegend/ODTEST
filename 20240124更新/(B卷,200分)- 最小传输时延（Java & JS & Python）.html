@@ -1,0 +1,256 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 最小传输时延（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某通信网络中有N个网络结点&#xff0c;用1到N进行标识。网络通过一个有向无环图表示&#xff0c;其中图的边的值表示结点之间的消息传递时延。</p> 
+<p>现给定相连节点之间的时延列表times[i]&#61;{u&#xff0c;v&#xff0c;w}&#xff0c;其中u表示源结点&#xff0c;v表示目的结点&#xff0c;w表示u和v之间的消息传递时延。</p> 
+<p>请计算给定源结点到目的结点的最小传输时延&#xff0c;如果目的结点不可达&#xff0c;返回<strong>-1</strong><strong>。</strong></p> 
+<p></p> 
+<p>注&#xff1a;</p> 
+<ul><li>N的取值范围为[1&#xff0c;100];</li><li>时延列表times的长度不超过6000&#xff0c;且 1 &lt;&#61; u,v &lt;&#61; N&#xff0c;0 &lt;&#61; w &lt;&#61; 100;</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入的第一行为两个正整数&#xff0c;分别表示网络结点的个数N&#xff0c;以及时延列表的长度M&#xff0c;用空格分隔&#xff1b;</p> 
+<p>接下来的M行为两个结点间的时延列表[u v w];</p> 
+<p>输入的最后一行为两个正整数&#xff0c;分别表示源结点和目的结点。</p> 
+<p><img alt="" height="369" src="https://img-blog.csdnimg.cn/8a1b684898e641b19b833f07f8f00593.png" width="485" /></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>起点到终点得最小时延&#xff0c;不可达则返回-1</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 3<br /> 1 2 11<br /> 2 3 13<br /> 1 3 50<br /> 1 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">24</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题是<a href="https://blog.csdn.net/qfc_128220/article/details/127680161?spm&#61;1001.2014.3001.5501" title="LeetCode - 743 网络延迟时间_伏城之外的博客-CSDN博客">LeetCode - 743 网络延迟时间_伏城之外的博客-CSDN博客</a></p> 
+<p>的变种题&#xff0c;逻辑几乎一致&#xff0c;题目解析请参考链接博客。</p> 
+<p>本题采用的是dijkstra算法&#xff0c;即迪杰斯特拉算法求解。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int m &#61; sc.nextInt();
+
+    int[][] times &#61; new int[m][3];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      times[i][0] &#61; sc.nextInt();
+      times[i][1] &#61; sc.nextInt();
+      times[i][2] &#61; sc.nextInt();
+    }
+
+    int src &#61; sc.nextInt();
+    int dist &#61; sc.nextInt();
+
+    System.out.println(getResult(n, times, src, dist));
+  }
+
+  public static int getResult(int n, int[][] times, int src, int tar) {
+    HashMap&lt;Integer, ArrayList&lt;int[]&gt;&gt; graph &#61; new HashMap&lt;&gt;();
+
+    for (int[] time : times) {
+      int u &#61; time[0], v &#61; time[1], w &#61; time[2];
+      graph.putIfAbsent(u, new ArrayList&lt;&gt;());
+      graph.get(u).add(new int[] {v, w});
+    }
+
+    int[] dist &#61; new int[n &#43; 1];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[src] &#61; 0;
+
+    ArrayList&lt;Integer&gt; needCheck &#61; new ArrayList&lt;&gt;();
+    while (true) {
+      boolean flag &#61; false;
+
+      if (graph.containsKey(src)) {
+        for (int[] next : graph.get(src)) {
+          int v &#61; next[0], w &#61; next[1];
+          int newDist &#61; dist[src] &#43; w;
+
+          if (newDist &gt;&#61; dist[v]) continue;
+
+          dist[v] &#61; newDist;
+
+          if (!needCheck.contains(v)) {
+            needCheck.add(v);
+            flag &#61; true;
+          }
+        }
+      }
+
+      if (needCheck.size() &#61;&#61; 0) break;
+
+      if (flag) {
+        needCheck.sort((a, b) -&gt; dist[a] - dist[b]);
+      }
+
+      src &#61; needCheck.remove(0);
+    }
+
+    return dist[tar] &#61;&#61; Integer.MAX_VALUE ? -1 : dist[tar];
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, m;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [n, m] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (m &amp;&amp; lines.length &#61;&#61;&#61; m &#43; 2) {
+    lines.shift();
+    let [src, dist] &#61; lines.pop().split(&#34; &#34;).map(Number);
+    let times &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;).map(Number));
+
+    console.log(getMinTransDelay(n, times, src, dist));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getMinTransDelay(n, times, src, tar) {
+  const graph &#61; {};
+
+  times.forEach((time) &#61;&gt; {
+    const [u, v, w] &#61; time;
+    graph[u] ? graph[u].push([v, w]) : (graph[u] &#61; [[v, w]]);
+  });
+
+  const dist &#61; new Array(n &#43; 1).fill(Infinity);
+  dist[src] &#61; 0;
+
+  const needCheck &#61; [];
+
+  while (true) {
+    let flag &#61; false;
+    graph[src]?.forEach((next) &#61;&gt; {
+      const [v, w] &#61; next;
+      const newDist &#61; dist[src] &#43; w;
+
+      if (newDist &gt;&#61; dist[v]) return;
+      dist[v] &#61; newDist;
+
+      if (needCheck.indexOf(v) &#61;&#61;&#61; -1) {
+        needCheck.push(v);
+        flag &#61; true;
+      }
+    });
+
+    if (!needCheck.length) break;
+
+    if (flag) needCheck.sort((a, b) &#61;&gt; dist[a] - dist[b]);
+
+    src &#61; needCheck.shift();
+  }
+
+  return dist[tar] &#61;&#61; Infinity ? -1 : dist[tar];
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+import sys
+
+n, m &#61; map(int, input().split())
+times &#61; [list(map(int, input().split())) for _ in range(m)]
+src, dist &#61; map(int, input().split())
+
+
+# 算法入口
+def getResult(n, times, src, tar):
+    graph &#61; {}
+
+    for u, v, w in times:
+        if graph.get(u) is None:
+            graph[u] &#61; []
+        graph[u].append([v, w])
+
+    dist &#61; [sys.maxsize for _ in range(n &#43; 1)]
+    dist[src] &#61; 0
+
+    needCheck &#61; []
+    while True:
+        flag &#61; False
+
+        if graph.get(src) is not None:
+            for v, w in graph[src]:
+                newDist &#61; dist[src] &#43; w
+
+                if newDist &gt;&#61; dist[v]:
+                    continue
+
+                dist[v] &#61; newDist
+
+                if v not in needCheck:
+                    needCheck.append(v)
+                    flag &#61; True
+
+        if len(needCheck) &#61;&#61; 0:
+            break
+
+        if flag:
+            needCheck.sort(key&#61;lambda x: dist[x])
+
+        src &#61; needCheck.pop(0)
+
+    return -1 if dist[tar] &#61;&#61; sys.maxsize else dist[tar]
+
+
+# 算法调用
+print(getResult(n, times, src, dist))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

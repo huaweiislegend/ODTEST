@@ -1,0 +1,340 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,100分)- 食堂供餐（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>某公司员工食堂以盒饭方式供餐。</p> 
+<p>为将员工取餐排队时间降低为0&#xff0c;食堂的供餐速度必须要足够快。</p> 
+<p>现在需要根据以往员工取餐的统计信息&#xff0c;计算出一个刚好能达成排队时间为0的最低供餐速度。即&#xff0c;食堂在每个单位时间内必须至少做出多少价盒饭才能满足要求。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第1行为一个正整数N&#xff0c;表示食堂开餐时长。</p> 
+<ul><li>1 ≤ N ≤ 1000</li></ul> 
+<p>第2行为一个正整数M&#xff0c;表示开餐前食堂已经准备好的盒饭份数。</p> 
+<ul><li>P1 ≤ M ≤ 1000</li></ul> 
+<p>第3行为N个正整数&#xff0c;用空格分隔&#xff0c;依次表示开餐时间内按时间顺序每个单位时间进入食堂取餐的人数Pi。</p> 
+<ul><li>1 ≤ i ≤ N</li><li>0 ≤ Pi ≤ 100</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>一个整数&#xff0c;能满足题目要求的最低供餐速度&#xff08;每个单位时间需要做出多少份盒饭&#xff09;。</p> 
+<p></p> 
+<h4>备注</h4> 
+<ul><li>每人只取一份盒饭。</li><li>需要满足排队时间为0&#xff0c;必须保证取餐员工到达食堂时&#xff0c;食堂库存盒饭数量不少于本次来取餐的人数。</li><li>第一个单位时间来取餐的员工只能取开餐前食堂准备好的盒饭。</li><li>每个单位时间里制作的盒饭只能供应给后续单位时间来的取餐的员工。</li><li>食堂在每个单位时间里制作的盒饭数量是相同的。</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:638px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:548px;">3<br /> 14<br /> 10 4 5</td></tr><tr><td style="width:86px;">输出</td><td style="width:548px;">3</td></tr><tr><td style="width:86px;">说明</td><td style="width:548px;"> <p>本样例中&#xff0c;总共有3批员工就餐&#xff0c;每批人数分别为10、4、5。</p> <p><br /> 开餐前食堂库存14份。</p> <p></p> <p>食堂每个单位时间至少要做出3份餐饭才能达成排队时间为0的目标。具体情况如下:</p> 
+    <ol><li>第一个单位时间来的10位员工直接从库存取餐。取餐后库存剩余4份盒饭&#xff0c;加上第一个单位时间做出的3份&#xff0c;库存有7份</li><li>第二个单位时间来的4员工从库存的7份中取4份。取餐后库存剩余3份盒饭&#xff0c;加上第二个单位时间做出的3份&#xff0c;库存有6份。</li><li>第三个单位时间来的员工从库存的6份中取5份&#xff0c;库存足够。</li></ol><p>如果食堂在单位时间只能做出2份餐饭&#xff0c;则情况如下:</p> 
+    <ol><li>第一个单位时间来的10位员工直接从库存取餐。取餐后库存剩余4份盒饭&#xff0c;加上第一个单位时间做出的2份&#xff0c;库存有6份</li><li>第二个单位时间来的4员工从库存的6份中取4份。取餐后库存剩余2份盒饭&#xff0c;加上第二个单位时间做出的2份&#xff0c;库存有4份.</li><li>第三个单位时间来的员工需要取5份&#xff0c;但库存只有4份&#xff0c;库存不够。</li></ol></td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题主要考察二分法。</p> 
+<p></p> 
+<p>排队前的初始盒饭数为m&#xff0c;假设每单位时间新增盒饭数add个</p> 
+<p>对于第一批到来的食客p[0]&#xff0c;由于题目已将说了m &gt;&#61; p[0]&#xff0c;因此盒饭数是足够的&#xff0c;剩余盒饭数 m -&#61; p[0]</p> 
+<p>第二批食客到来前&#xff0c;新增了add个盒饭&#xff0c;因此盒饭数变为 m &#43;&#61; add</p> 
+<p>第二批食客p[1]到来后&#xff0c;需要检查m &gt;&#61; p[1]是否成立&#xff0c;如果成立&#xff0c;则当前add满足第一批食客要求&#xff0c;做到0等待。如果不满足&#xff0c;则add不是一个符合要求。</p> 
+<p>按此逻辑&#xff0c;只要add保证&#xff0c;所有批次的食客都能0等待&#xff0c;那么add就是一个符合要求的解。</p> 
+<p>这种符合要求的add有很多个&#xff0c;我们需要取其中最小的add作为题解。</p> 
+<p></p> 
+<p>我们可以思考下&#xff1a;</p> 
+<p>add的最小值可以取多少&#xff1f;</p> 
+<blockquote> 
+ <p>比如当初始盒饭数m超级大&#xff0c;即每个单位不用新增盒饭数&#xff0c;都可以满足所有批次食客0等待&#xff0c;那么add可以取0。而0就是add能取得得最小值。</p> 
+</blockquote> 
+<p>add的最大值可以取多少&#xff1f;</p> 
+<blockquote> 
+ <p>是否存在一个add&#xff0c;必然能满足所有批次食客0等待呢&#xff1f;答案是有的&#xff0c;即add取max(p)&#xff0c;这样必然能够保证每个批次的食客都0等待。</p> 
+</blockquote> 
+<p>我们可以二分取0~max(p)之间的值mid&#xff0c;作为add去尝试发饭&#xff0c;如果&#xff1a;</p> 
+<ul><li>mid可以让所有批次的食客都能0等待&#xff0c;则mid就是一个可能解&#xff0c;但不一定是最优解&#xff0c;因此我们需要记录ans &#61;mid&#xff0c;并且继续尝试更小的mid&#xff0c;即让max &#61; mid - 1</li><li>mid不可以让所有批次的食客0等待&#xff0c;则mid取小了&#xff0c;因此下一轮二分&#xff0c;我们应该让mid取大一点&#xff0c;即min &#61; max &#43; 1</li></ul> 
+<p>最后返回ans即可。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int m &#61; sc.nextInt();
+
+    int[] p &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) p[i] &#61; sc.nextInt();
+
+    System.out.println(getResult(n, m, p));
+  }
+
+  public static long getResult(int n, int m, int[] p) {
+    int min &#61; 0; // 每个单位时间最少增加盒饭数量
+    int max &#61; Arrays.stream(p).max().orElse(0); // 每个单位时间最多增加盒饭数量
+
+    // 记录题解
+    int ans &#61; 0;
+
+    // 二分
+    while (min &lt;&#61; max) {
+      int mid &#61; (min &#43; max) &gt;&gt; 1;
+
+      // 检查每个单位时间增加mid份盒饭&#xff0c;是否可以满足0等待
+      if (check(m, mid, p)) {
+        // 可以满足的话&#xff0c;则mid就是一个可能解
+        ans &#61; mid;
+        // 继续查找更优解
+        max &#61; mid - 1;
+      } else {
+        // 不满足的话&#xff0c;则说明mid取小了&#xff0c;下一轮应该取更大的mid
+        min &#61; mid &#43; 1;
+      }
+    }
+
+    return ans;
+  }
+
+  public static boolean check(int m, int add, int[] p) {
+    m -&#61; p[0]; // P1 ≤ M ≤ 1000&#xff0c;因此这里 m - p[0] 必然大于等于 0
+
+    for (int i &#61; 1; i &lt; p.length; i&#43;&#43;) {
+      m &#43;&#61; add;
+      if (m &gt;&#61; p[i]) m -&#61; p[i];
+      else return false;
+    }
+
+    return true;
+  }
+}
+</code></pre> 
+<h4>JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 3) {
+    const n &#61; parseInt(lines[0]);
+    const m &#61; parseInt(lines[1]);
+    const p &#61; lines[2].split(&#34; &#34;).map(Number);
+
+    console.log(getResult(n, m, p));
+
+    lines.length &#61; 0;
+  }
+});
+
+function getResult(n, m, p) {
+  let min &#61; 0; // 每个单位时间最少增加盒饭数量
+  let max &#61; Math.max(...p); // 每个单位时间最多增加盒饭数量
+
+  // 记录题解
+  let ans &#61; 0;
+
+  // 二分
+  while (min &lt;&#61; max) {
+    const mid &#61; (min &#43; max) &gt;&gt; 1;
+
+    // 检查每个单位时间增加mid份盒饭&#xff0c;是否可以满足0等待
+    if (check(m, mid, p)) {
+      // 可以满足的话&#xff0c;则mid就是一个可能解
+      ans &#61; mid;
+      // 继续查找更优解
+      max &#61; mid - 1;
+    } else {
+      // 不满足的话&#xff0c;则说明mid取小了&#xff0c;下一轮应该取更大的mid
+      min &#61; mid &#43; 1;
+    }
+  }
+
+  return ans;
+}
+
+function check(m, add, p) {
+  m -&#61; p[0]; // P1 ≤ M ≤ 1000&#xff0c;因此这里 m - p[0] 必然大于等于 0
+
+  for (let i &#61; 1; i &lt; p.length; i&#43;&#43;) {
+    m &#43;&#61; add;
+    if (m &gt;&#61; p[i]) m -&#61; p[i];
+    else return false;
+  }
+
+  return true;
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())
+m &#61; int(input())
+p &#61; list(map(int, input().split()))
+
+
+def check(m, add, p):
+    m -&#61; p[0]  # P1 ≤ M ≤ 1000&#xff0c;因此这里 m - p[0] 必然大于等于 0
+
+    for i in range(1, len(p)):
+        m &#43;&#61; add
+        if m &gt;&#61; p[i]:
+            m -&#61; p[i]
+        else:
+            return False
+
+    return True
+
+
+# 算法入口
+def getResult():
+    # 每个单位时间最少增加盒饭数量
+    low &#61; 0
+    # 每个单位时间最多增加盒饭数量
+    high &#61; max(p)
+
+    # 记录题解
+    ans &#61; 0
+
+    # 二分
+    while low &lt;&#61; high:
+        mid &#61; (low &#43; high) &gt;&gt; 1
+
+        # 检查每个单位时间增加mid份盒饭&#xff0c;是否可以满足0等待
+        if check(m, mid, p):
+            # 可以满足的话&#xff0c;则mid就是一个可能解
+            ans &#61; mid
+            # 继续查找更优解
+            high &#61; mid - 1
+        else:
+            # 不满足的话&#xff0c;则说明mid取小了&#xff0c;下一轮应该取更大的mid
+            low &#61; mid &#43; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 1000
+#define MAX(a,b) a &gt; b ? a : b
+
+int getResult(int n, int m, int* p);
+int check(int m, int add, int* p, int p_size);
+int arr_max(int* arr, int arr_size);
+
+int main()
+{
+	int n;
+	scanf(&#34;%d&#34;, &amp;n);
+	
+	int m;
+	scanf(&#34;%d&#34;, &amp;m);
+	
+	int p[MAX_SIZE];
+	for(int i&#61;0; i&lt;n; i&#43;&#43;) {
+		scanf(&#34;%d&#34;, &amp;p[i]);
+	}
+	
+	printf(&#34;%d\n&#34;, getResult(n, m, p));
+	
+	return 0;
+}
+
+int getResult(int n, int m, int* p)
+{
+	// 每个单位时间最少增加盒饭数量
+	int min &#61; 0;
+	// 每个单位时间最多增加盒饭数量
+	int max &#61; arr_max(p, n);
+	
+	// 记录题解
+	int ans &#61; 0;
+	
+	// 二分
+	while(min &lt;&#61; max) {
+		int mid &#61; (min &#43; max) &gt;&gt; 1;
+		
+		// 检查每个单位时间增加mid份盒饭&#xff0c;是否可以满足0等待
+		if(check(m, mid, p, n)) {
+			// 可以满足的话&#xff0c;则mid就是一个可能解
+			ans &#61; mid;
+			// 继续查找更优解
+			max &#61; mid - 1;
+		} else {
+			// 不满足的话&#xff0c;则说明mid取小了&#xff0c;下一轮应该取更大的mid
+			min &#61; mid &#43; 1;
+		}
+	}
+	
+	return ans;
+}
+
+int check(int m, int add, int* p, int p_size) {
+	 // P1 ≤ M ≤ 1000&#xff0c;因此这里 m - p[0] 必然大于等于 0
+	m -&#61; p[0];
+	
+	for(int i&#61;1; i&lt;p_size; i&#43;&#43;) {
+		m &#43;&#61; add;
+		
+		if(m &gt;&#61; p[i]) {
+			m -&#61; p[i];
+		} else {
+			return 0;
+		}
+	}
+	
+	return 1;
+}
+
+int arr_max(int* arr, int arr_size)
+{
+	int ans &#61; arr[0];
+	
+	for(int i&#61;1; i&lt;arr_size; i&#43;&#43;) {
+		ans &#61; MAX(ans, arr[i]);
+	}
+	
+	return ans;
+}</code></pre> 
+<p> </p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

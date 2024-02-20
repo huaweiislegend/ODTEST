@@ -1,0 +1,356 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 爱吃蟠桃的孙悟空（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>孙悟空爱吃蟠桃&#xff0c;有一天趁着蟠桃园守卫不在来偷吃。已知蟠桃园有 N 棵桃树&#xff0c;每颗树上都有桃子&#xff0c;守卫将在 H 小时后回来。</p> 
+<p>孙悟空可以决定他吃蟠桃的速度K&#xff08;个/小时&#xff09;&#xff0c;每个小时选一颗桃树&#xff0c;并从树上吃掉 K 个&#xff0c;如果树上的桃子少于 K 个&#xff0c;则全部吃掉&#xff0c;并且这一小时剩余的时间里不再吃桃。</p> 
+<p>孙悟空喜欢慢慢吃&#xff0c;但又想在守卫回来前吃完桃子。</p> 
+<p>请返回孙悟空可以在 H 小时内吃掉所有桃子的最小速度 K&#xff08;K为整数&#xff09;。如果以任何速度都吃不完所有桃子&#xff0c;则返回0。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入为 N 个数字&#xff0c;N 表示桃树的数量&#xff0c;这 N 个数字表示每颗桃树上蟠桃的数量。</p> 
+<p>第二行输入为一个数字&#xff0c;表示守卫离开的时间 H。</p> 
+<p>其中数字通过空格分割&#xff0c;N、H为正整数&#xff0c;每颗树上都有蟠桃&#xff0c;且 0 &lt; N &lt; 10000&#xff0c;0 &lt; H &lt; 10000。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>吃掉所有蟠桃的最小速度 K&#xff0c;无解或输入异常时输出 0。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 3 4 5<br /> 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2 3 4 5<br /> 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">30 11 23 4 20<br /> 6</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">23</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用二分法解题。</p> 
+<p></p> 
+<p>本题和<a href="https://fcqian.blog.csdn.net/article/details/134454058?spm&#61;1001.2014.3001.5502" rel="nofollow" title="华为OD机试 - 机器人搬砖&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;-CSDN博客">华为OD机试 - 机器人搬砖&#xff08;Java &amp; JS &amp; Python &amp; C&#xff09;-CSDN博客</a></p> 
+<p>类似。具体解析可以参照上面博客。或者直接看当前博客代码注释&#xff0c;已加入详细注释说明。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const cnts &#61; (await readline()).split(&#34; &#34;).map(Number);
+  const h &#61; parseInt(await readline());
+
+  console.log(getResult(cnts, h));
+})();
+
+function getResult(cnts, h) {
+  // 每个小时只能选一颗桃树&#xff0c;因此 h 小时最多只能选 h 棵树&#xff0c;如果桃树数量cnts.length &gt; h&#xff0c;那么h小时肯定吃不完
+  if (cnts.length &gt; h) {
+    return 0;
+  }
+
+  // 拥有最多桃子的那颗桃树上的桃子数量
+  let max &#61; Math.max(...cnts);
+
+  // 如果桃树数量就是h棵&#xff0c;那么只能一小时吃完一颗树&#xff0c;才能保证h小时内吃完。此时&#xff0c;吃桃速度至少是max
+  if (cnts.length &#61;&#61; h) {
+    return max;
+  }
+
+  // 如果只有1棵桃树&#xff0c;且这颗树上只有1个桃&#xff0c;那么吃桃速度可以是1
+  let min &#61; 1;
+
+  // 当桃树数量少于h棵时&#xff0c;以max速度吃桃肯定可以吃完&#xff0c;但是不一定是最优解
+  let ans &#61; max;
+
+  // 二分法
+  while (min &lt;&#61; max) {
+    // 取中间值作为吃桃速度进行尝试
+    const mid &#61; (min &#43; max) &gt;&gt; 1;
+
+    // 如果以mid速度&#xff0c;可以在h小时内吃完cnts所有桃&#xff0c;那么mid就是一个可能解
+    if (check(mid, h, cnts)) {
+      ans &#61; mid;
+      // 继续尝试更小的速度
+      max &#61; mid - 1;
+    } else {
+      // 以mid速度无法在h小时内吃完cnts所有桃&#xff0c;那么mid就取小了&#xff0c;下次应该取更大的吃桃速度
+      min &#61; mid &#43; 1;
+    }
+  }
+
+  return ans;
+}
+
+function check(speed, limit, cnts) {
+  // 已花费时间
+  let cost &#61; 0;
+
+  for (const cnt of cnts) {
+    // 以speed速度吃完一颗桃树需要的时间&#xff0c;累加进cost
+    cost &#43;&#61; Math.ceil(cnt / speed);
+
+    // 如果已花费时间超过了limit限制&#xff0c;那么说明无法以speed速度在limit时间内吃完所有桃树&#xff0c;此时可以直接返回false
+    if (cost &gt; limit) {
+      return false;
+    }
+  }
+
+  // 可以以speed速度&#xff0c;在limit小时内吃完所有cnts桃树
+  return true;
+}
+</code></pre> 
+<p></p> 
+<h4 id="Java%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int[] cnts &#61; Arrays.stream(sc.nextLine().split(&#34; &#34;)).mapToInt(Integer::parseInt).toArray();
+    int h &#61; Integer.parseInt(sc.nextLine());
+
+    System.out.println(getResult(cnts, h));
+  }
+
+  public static int getResult(int[] cnts, int h) {
+    // 每个小时只能选一颗桃树&#xff0c;因此 h 小时最多只能选 h 棵树&#xff0c;如果桃树数量cnts.length &gt; h&#xff0c;那么h小时肯定吃不完
+    if (cnts.length &gt; h) {
+      return 0;
+    }
+
+    // 拥有最多桃子的那颗桃树上的桃子数量
+    int max &#61; Arrays.stream(cnts).max().orElse(0);
+
+    // 如果桃树数量就是h棵&#xff0c;那么只能一小时吃完一颗树&#xff0c;才能保证h小时内吃完。此时&#xff0c;吃桃速度至少是max
+    if (cnts.length &#61;&#61; h) {
+      return max;
+    }
+
+    // 如果只有1棵桃树&#xff0c;且这颗树上只有1个桃&#xff0c;那么吃桃速度可以是1
+    int min &#61; 1;
+
+    // 当桃树数量少于h棵时&#xff0c;以max速度吃桃肯定可以吃完&#xff0c;但是不一定是最优解
+    int ans &#61; max;
+
+    // 二分法
+    while (min &lt;&#61; max) {
+      // 取中间值作为吃桃速度进行尝试
+      int mid &#61; (min &#43; max) &gt;&gt; 1;
+
+      // 如果以mid速度&#xff0c;可以在h小时内吃完cnts所有桃&#xff0c;那么mid就是一个可能解
+      if (check(mid, h, cnts)) {
+        ans &#61; mid;
+        // 继续尝试更小的速度
+        max &#61; mid - 1;
+      } else {
+        // 以mid速度无法在h小时内吃完cnts所有桃&#xff0c;那么mid就取小了&#xff0c;下次应该取更大的吃桃速度
+        min &#61; mid &#43; 1;
+      }
+    }
+
+    return ans;
+  }
+
+  public static boolean check(int speed, int limit, int[] cnts) {
+    // 已花费时间
+    int cost &#61; 0;
+
+    for (int cnt : cnts) {
+      // 以speed速度吃完一颗桃树需要的时间&#xff0c;累加进cost
+      cost &#43;&#61; cnt / speed &#43; (cnt % speed &gt; 0 ? 1 : 0);
+
+      // 如果已花费时间超过了limit限制&#xff0c;那么说明无法以speed速度在limit时间内吃完所有桃树&#xff0c;此时可以直接返回false
+      if (cost &gt; limit) {
+        return false;
+      }
+    }
+
+    // 可以以speed速度&#xff0c;在limit小时内吃完所有cnts桃树
+    return true;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="Python%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">Python算法源码</h4> 
+<pre><code class="language-python">import math
+
+# 输入获取
+cnts &#61; list(map(int, input().split()))
+h &#61; int(input())
+
+
+def check(speed):
+    # 已花费时间
+    cost &#61; 0
+
+    for cnt in cnts:
+        # 以speed速度吃完一颗桃树需要的时间&#xff0c;累加进cost
+        cost &#43;&#61; math.ceil(cnt / speed)
+
+        # 如果已花费时间超过了limit限制&#xff0c;那么说明无法以speed速度在limit时间内吃完所有桃树&#xff0c;此时可以直接返回false
+        if cost &gt; h:
+            return False
+
+    # 可以以speed速度&#xff0c;在limit小时内吃完所有cnts桃树
+    return True
+
+
+def getResult():
+    n &#61; len(cnts)
+
+    # 每个小时只能选一颗桃树&#xff0c;因此 h 小时最多只能选 h 棵树&#xff0c;如果桃树数量cnts.length &gt; h&#xff0c;那么h小时肯定吃不完
+    if n &gt; h:
+        return 0
+
+    # 拥有最多桃子的那颗桃树上的桃子数量
+    maxSpeed &#61; max(cnts)
+
+    # 如果桃树数量就是h棵&#xff0c;那么只能一小时吃完一颗树&#xff0c;才能保证h小时内吃完。此时&#xff0c;吃桃速度至少是max
+    if n &#61;&#61; h:
+        return maxSpeed
+
+    # 如果只有1棵桃树&#xff0c;且这颗树上只有1个桃&#xff0c;那么吃桃速度可以是1
+    minSpeed &#61; 1
+
+    # 当桃树数量少于h棵时&#xff0c;以max速度吃桃肯定可以吃完&#xff0c;但是不一定是最优解
+    ans &#61; maxSpeed
+
+    # 二分法
+    while minSpeed &lt;&#61; maxSpeed:
+        # 取中间值作为吃桃速度进行尝试
+        mid &#61; (minSpeed &#43; maxSpeed) &gt;&gt; 1
+
+        # 如果以mid速度&#xff0c;可以在h小时内吃完cnts所有桃&#xff0c;那么mid就是一个可能解
+        if check(mid):
+            ans &#61; mid
+            # 继续尝试更小的速度
+            maxSpeed &#61; mid - 1
+        else:
+            # 以mid速度无法在h小时内吃完cnts所有桃&#xff0c;那么mid就取小了&#xff0c;下次应该取更大的吃桃速度
+            minSpeed &#61; mid &#43; 1
+
+    return ans
+
+
+# 算法调用
+print(getResult())</code></pre> 
+<p></p> 
+<h4 id="C%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
+
+#define MAX_SIZE 10000
+
+int check(int speed, int limit, const int cnts[], int cnts_size) {
+    // 已花费时间
+    int cost &#61; 0;
+
+    for(int i&#61;0; i&lt;cnts_size; i&#43;&#43;) {
+        int cnt &#61; cnts[i];
+
+        // 以speed速度吃完一颗桃树需要的时间&#xff0c;累加进cost
+        cost &#43;&#61; cnt / speed &#43; (cnt % speed &gt; 0 ? 1 : 0);
+
+        // 如果已花费时间超过了limit限制&#xff0c;那么说明无法以speed速度在limit时间内吃完所有桃树&#xff0c;此时可以直接返回false
+        if(cost &gt; limit) {
+            return 0;
+        }
+    }
+
+    // 可以以speed速度&#xff0c;在limit小时内吃完所有cnts桃树
+    return 1;
+}
+
+int getResult(int cnts[], int cnts_size, int h) {
+    // 每个小时只能选一颗桃树&#xff0c;因此 h 小时最多只能选 h 棵树&#xff0c;如果桃树数量cnts.length &gt; h&#xff0c;那么h小时肯定吃不完
+    if(cnts_size &gt; h) {
+        return 0;
+    }
+
+    // 拥有最多桃子的那颗桃树上的桃子数量
+    int maxSpeed &#61; INT_MIN;
+    for(int i&#61;0; i&lt;cnts_size; i&#43;&#43;) {
+        maxSpeed &#61; MAX(maxSpeed, cnts[i]);
+    }
+
+    // 如果桃树数量就是h棵&#xff0c;那么只能一小时吃完一颗树&#xff0c;才能保证h小时内吃完。此时&#xff0c;吃桃速度至少是max
+    if(cnts_size &#61;&#61; h) {
+        return maxSpeed;
+    }
+
+    // 如果只有1棵桃树&#xff0c;且这颗树上只有1个桃&#xff0c;那么吃桃速度可以是1
+    int minSpeed &#61; 1;
+
+    // 当桃树数量少于h棵时&#xff0c;以max速度吃桃肯定可以吃完&#xff0c;但是不一定是最优解
+    int ans &#61; maxSpeed;
+
+    // 二分法
+    while(minSpeed &lt;&#61; maxSpeed) {
+        // 取中间值作为吃桃速度进行尝试
+        int mid &#61; (minSpeed &#43; maxSpeed) &gt;&gt; 1;
+
+        // 如果以mid速度&#xff0c;可以在h小时内吃完cnts所有桃&#xff0c;那么mid就是一个可能解
+        if(check(mid, h, cnts, cnts_size)) {
+            ans &#61; mid;
+            // 继续尝试更小的速度
+            maxSpeed &#61; mid - 1;
+        } else {
+            // 以mid速度无法在h小时内吃完cnts所有桃&#xff0c;那么mid就取小了&#xff0c;下次应该取更大的吃桃速度
+            minSpeed &#61; mid &#43; 1;
+        }
+    }
+
+    return ans;
+}
+
+int main() {
+    int cnts[MAX_SIZE];
+    int cnts_size &#61; 0;
+
+    while(scanf(&#34;%d&#34;, &amp;cnts[cnts_size&#43;&#43;])) {
+        if(getchar() !&#61; &#39; &#39;) break;
+    }
+
+    int h;
+    scanf(&#34;%d&#34;, &amp;h);
+
+    printf(&#34;%d\n&#34;, getResult(cnts, cnts_size, h));
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

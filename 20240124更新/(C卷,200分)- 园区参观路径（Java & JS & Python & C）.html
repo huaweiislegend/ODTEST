@@ -1,0 +1,693 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 园区参观路径（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>园区某部门举办了Family Day&#xff0c;邀请员工及其家属参加&#xff1b;</p> 
+<p>将公司园区视为一个矩形&#xff0c;起始园区设置在左上角&#xff0c;终点园区设置在右下角&#xff1b;</p> 
+<p>家属参观园区时&#xff0c;只能向右和向下园区前进&#xff0c;求从起始园区到终点园区会有多少条不同的参观路径。</p> 
+<p><img alt="" height="218" src="https://img-blog.csdnimg.cn/26cbfe74353c4698b8ae699b28c7f745.png" width="409" /></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为园区的长和宽&#xff1b;</p> 
+<p>后面每一行表示该园区是否可以参观&#xff0c;0表示可以参观&#xff0c;1表示不能参观</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出为不同的路径数量</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 3<br /> 0 0 0<br /> 0 1 0<br /> 0 0 0</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题可以使用深度优先搜索解题。</p> 
+<p>因为深度优先搜索DFS的每一条递归分支都对应一条路径&#xff0c;如果某个递归分支可以走到终点位置&#xff0c;那么说明该递归分支对应的路径可达终点。</p> 
+<p>本题递归进入下一个位置的条件是&#xff1a;</p> 
+<ul><li>下一个位置在上一个位置的下边或右边</li><li>下一个位置不越界</li><li>下一个位置可以参观&#xff08;矩阵元素值为0&#xff09;</li></ul> 
+<p>并且&#xff0c;本题限定只能从当前位置&#xff0c;向下或者向右进入下一个位置&#xff0c;因此不用担心走回头路的问题&#xff0c;即不用建立visited表记录走过的位置。</p> 
+<p></p> 
+<p>注意&#xff1a;本题没有数量级信息&#xff0c;因此如果存在大数量级的话&#xff0c;基于递归实现的深搜可能会发生StackOverFlow异常&#xff0c;<strong>因此更推荐使用基于栈结构实现的深搜</strong>。</p> 
+<hr /> 
+<p></p> 
+<p>本题如果地图矩阵数量级过大的话&#xff0c;深搜解题会超时。因此&#xff0c;更优解法是利用动态规划&#xff0c;我们可以定义一个dp二维数组&#xff0c;dp[i][j]的含义是&#xff1a;从坐标(0,0)到达坐标(i, j)的路径数</p> 
+<p>而本题说只能向下或者向右运动&#xff0c;因此到达一个坐标点&#xff0c;可能来自其上方&#xff0c;亦可能来自其左方</p> 
+<p>因此 dp[i][j] &#61; dp[i-1][j] &#43; dp[i][j-1]</p> 
+<p>即&#xff1a;</p> 
+<p>如果到达(i-1,j)的路径有dp[i-1][j]条&#xff0c;那么到达(i,j)的路径也有dp[i-1][j]条</p> 
+<p>同理到达(i, j-1)的路径有dp[i][j-1]&#xff0c;那么到达(i,j)的路径也有dp[i][j-1]条</p> 
+<p>因此&#xff1a;dp[i][j] &#61; dp[i-1][j] &#43; dp[i][j-1]</p> 
+<p></p> 
+<p>需要注意的是&#xff0c;dp[0][0] 初始化时&#xff0c;需要注意(0,0)坐标位置是否可以参观&#xff0c;如果不可以参观&#xff0c;则道道(0,0)的路径为0条&#xff0c;否则为1条。</p> 
+<p></p> 
+<p>其他点套用公式时&#xff0c;注意索引越界问题&#xff0c;具体请看代码实现。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<h5>动态规划</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 长n -&gt; 行数, 宽m -&gt; 列数
+  const [n, m] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 地图矩阵
+  const matrix &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    matrix.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  // 如果起点和终点不能参观&#xff0c;则没有路径
+  if (matrix[0][0] &#61;&#61; 1 || matrix[n - 1][m - 1] &#61;&#61; 1) {
+    console.log(0);
+    return;
+  }
+
+  const dp &#61; new Array(n).fill(0).map(() &#61;&gt; new Array(m).fill(0));
+  dp[0][0] &#61; 1;
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; m; j&#43;&#43;) {
+      if (matrix[i][j] &#61;&#61; 1) continue;
+
+      if (i &gt; 0) {
+        dp[i][j] &#43;&#61; dp[i - 1][j];
+      }
+
+      if (j &gt; 0) {
+        dp[i][j] &#43;&#61; dp[i][j - 1];
+      }
+    }
+  }
+
+  console.log(dp[n - 1][m - 1]);
+})();
+</code></pre> 
+<h5 style="background-color:transparent;">基于递归实现的深搜</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 长n -&gt; 行数, 宽m -&gt; 列数
+  const [n, m] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 地图矩阵
+  const matrix &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    matrix.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  // 向下、向右的偏移量
+  const offsets &#61; [
+    [1, 0],
+    [0, 1],
+  ];
+
+  // 记录题解
+  let ans &#61; 0;
+
+  function dfs(x, y) {
+    if (x &#61;&#61; n - 1 &amp;&amp; y &#61;&#61; m - 1) {
+      // 如果当前分支可以走到终点&#xff0c;则对应分支路径可行
+      ans&#43;&#43;;
+      return;
+    }
+
+    // 从当前位置(x, y)向下或者向右走
+    for (let [offsetX, offsetY] of offsets) {
+      // 新位置(newX, newY)
+      const newX &#61; x &#43; offsetX;
+      const newY &#61; y &#43; offsetY;
+
+      // 如果新位置没有越界且新位置可以参观&#xff0c;则进入
+      if (
+        newX &gt;&#61; 0 &amp;&amp;
+        newX &lt; n &amp;&amp;
+        newY &gt;&#61; 0 &amp;&amp;
+        newY &lt; m &amp;&amp;
+        matrix[newX][newY] &#61;&#61; 0
+      ) {
+        dfs(newX, newY);
+      }
+    }
+  }
+
+  // 从(0,0)位置开始深搜&#xff0c;深搜对应的每条分支都对应一条路径
+  if (matrix[0][0] &#61;&#61; 0) {
+    dfs(0, 0);
+  }
+
+  console.log(ans);
+})();
+</code></pre> 
+<h5> 基于栈实现的深搜</h5> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 长n -&gt; 行数, 宽m -&gt; 列数
+  const [n, m] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 地图矩阵
+  const matrix &#61; [];
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    matrix.push((await readline()).split(&#34; &#34;).map(Number));
+  }
+
+  // 向下、向右的偏移量
+  const offsets &#61; [
+    [1, 0],
+    [0, 1],
+  ];
+
+  // 记录题解
+  let ans &#61; 0;
+
+  function dfs() {
+    const stack &#61; [];
+
+    if (matrix[0][0] &#61;&#61; 0) {
+      stack.push(0);
+    }
+
+    while (stack.length &gt; 0) {
+      const pos &#61; stack.pop();
+
+      const y &#61; pos % m;
+      const x &#61; (pos - y) / m;
+
+      if (x &#61;&#61; n - 1 &amp;&amp; y &#61;&#61; m - 1) {
+        ans&#43;&#43;;
+        continue;
+      }
+
+      for (let [offsetX, offsetY] of offsets) {
+        const newX &#61; x &#43; offsetX;
+        const newY &#61; y &#43; offsetY;
+
+        if (
+          newX &gt;&#61; 0 &amp;&amp;
+          newX &lt; n &amp;&amp;
+          newY &gt;&#61; 0 &amp;&amp;
+          newY &lt; m &amp;&amp;
+          matrix[newX][newY] &#61;&#61; 0
+        ) {
+          stack.push(newX * m &#43; newY);
+        }
+      }
+    }
+  }
+
+  // 从(0,0)位置开始深搜&#xff0c;深搜对应的每条分支都对应一条路径
+  dfs();
+
+  console.log(ans);
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<h5 style="background-color:transparent;">动态规划</h5> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt(); // 长 -&gt; 行数
+    int m &#61; sc.nextInt(); // 宽 -&gt; 列数
+
+    int[][] matrix &#61; new int[n][m]; // 地图矩阵
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    // 如果起点和终点不能参观&#xff0c;则没有路径
+    if (matrix[0][0] &#61;&#61; 1 || matrix[n - 1][m - 1] &#61;&#61; 1) {
+      System.out.println(0);
+      return;
+    }
+
+    long[][] dp &#61; new long[n][m];
+    dp[0][0] &#61; 1;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        if (matrix[i][j] &#61;&#61; 1) continue;
+
+        if (i &gt; 0) {
+          dp[i][j] &#43;&#61; dp[i - 1][j];
+        }
+
+        if (j &gt; 0) {
+          dp[i][j] &#43;&#61; dp[i][j - 1];
+        }
+      }
+    }
+
+    System.out.println(dp[n - 1][m - 1]);
+  }
+}
+</code></pre> 
+<h5>基于递归实现的深搜</h5> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  static int n;
+  static int m;
+  static int[][] matrix;
+  static int[][] offsets &#61; {<!-- -->{1, 0}, {0, 1}};
+
+  static int ans &#61; 0;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    n &#61; sc.nextInt(); // 长 -&gt; 行数
+    m &#61; sc.nextInt(); // 宽 -&gt; 列数
+
+    matrix &#61; new int[n][m]; // 地图矩阵
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    // 从(0,0)位置开始深搜&#xff0c;深搜对应的每条分支都对应一条路径
+    if (matrix[0][0] &#61;&#61; 0) {
+      dfs(0, 0);
+    }
+
+    System.out.println(ans);
+  }
+
+  public static void dfs(int x, int y) {
+    if (x &#61;&#61; n - 1 &amp;&amp; y &#61;&#61; m - 1) {
+      // 如果当前分支可以走到终点&#xff0c;则对应分支路径可行
+      ans&#43;&#43;;
+      return;
+    }
+
+    // 从当前位置(x, y)向下或者向右走
+    for (int[] offset : offsets) {
+      // 新位置(newX, newY)
+      int newX &#61; x &#43; offset[0];
+      int newY &#61; y &#43; offset[1];
+
+      // 如果新位置越界了&#xff0c;或者新位置不能参观&#xff0c;则无法进入
+      if (newX &lt; 0 || newX &gt;&#61; n || newY &lt; 0 || newY &gt;&#61; m || matrix[newX][newY] &#61;&#61; 1) continue;
+
+      // 否则进入新位置&#xff0c;继续深搜
+      dfs(newX, newY);
+    }
+  }
+}
+</code></pre> 
+<h5>基于栈实现的深搜</h5> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  static int n;
+  static int m;
+  static int[][] matrix;
+  static int[][] offsets &#61; {<!-- -->{1, 0}, {0, 1}};
+
+  static int ans &#61; 0;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    n &#61; sc.nextInt(); // 长 -&gt; 行数
+    m &#61; sc.nextInt(); // 宽 -&gt; 列数
+
+    matrix &#61; new int[n][m]; // 地图矩阵
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.nextInt();
+      }
+    }
+
+    dfs();
+
+    System.out.println(ans);
+  }
+
+  public static void dfs() {
+    LinkedList&lt;Integer&gt; stack &#61; new LinkedList&lt;&gt;();
+
+    if (matrix[0][0] &#61;&#61; 0) {
+      stack.addLast(0);
+    }
+
+    while (stack.size() &gt; 0) {
+      int pos &#61; stack.removeLast();
+
+      int x &#61; pos / m;
+      int y &#61; pos % m;
+
+      if (x &#61;&#61; n - 1 &amp;&amp; y &#61;&#61; m - 1) {
+        ans&#43;&#43;;
+        continue;
+      }
+
+      for (int[] offset : offsets) {
+        int newX &#61; x &#43; offset[0];
+        int newY &#61; y &#43; offset[1];
+
+        if (newX &gt;&#61; 0 &amp;&amp; newX &lt; n &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; m &amp;&amp; matrix[newX][newY] &#61;&#61; 0) {
+          stack.addLast(newX * m &#43; newY);
+        }
+      }
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<p></p> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<h5>动态规划</h5> 
+<pre><code class="language-python"># 输入获取
+n, m &#61; map(int, input().split())  # // 长n -&gt; 行数, 宽m -&gt; 列数
+matrix &#61; [list(map(int, input().split())) for _ in range(n)]  # 地图矩阵
+
+
+# 算法入口
+def getResult():
+    # 如果起点和终点不能参观&#xff0c;则没有路径
+    if matrix[0][0] &#61;&#61; 1 or matrix[n - 1][m - 1] &#61;&#61; 1:
+        return 0
+
+    dp &#61; [[0 for _ in range(m)] for _ in range(n)]
+    dp[0][0] &#61; 1
+
+    for i in range(n):
+        for j in range(m):
+            if matrix[i][j] &#61;&#61; 1:
+                continue
+
+            if i &gt; 0:
+                dp[i][j] &#43;&#61; dp[i - 1][j]
+
+            if j &gt; 0:
+                dp[i][j] &#43;&#61; dp[i][j - 1]
+
+    return dp[n - 1][m - 1]
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<h5 style="background-color:transparent;">基于递归实现的深搜</h5> 
+<pre><code class="language-python"># 输入获取
+n, m &#61; map(int, input().split())  # // 长n -&gt; 行数, 宽m -&gt; 列数
+matrix &#61; [list(map(int, input().split())) for _ in range(n)]  # 地图矩阵
+
+# 向下、向右的偏移量
+offsets &#61; ((1, 0), (0, 1))
+
+# 记录题解
+ans &#61; 0
+
+
+# 深搜
+def dfs(x, y):
+    global ans
+
+    if x &#61;&#61; n - 1 and y &#61;&#61; m - 1:
+        # 如果当前分支可以走到终点&#xff0c;则对应分支路径可行
+        ans &#43;&#61; 1
+        return
+
+    # 从当前位置(x, y)向下或者向右走
+    for offsetX, offsetY in offsets:
+        # 新位置(newX, newY)
+        newX &#61; x &#43; offsetX
+        newY &#61; y &#43; offsetY
+
+        # 如果新位置没有越界且新位置可以参观&#xff0c;则进入
+        if n &gt; newX &gt;&#61; 0 and m &gt; newY &gt;&#61; 0 and matrix[newX][newY] &#61;&#61; 0:
+            dfs(newX, newY)
+
+
+# 算法调用
+if matrix[0][0] &#61;&#61; 0:
+    dfs(0, 0)  # 从(0,0)位置开始深搜&#xff0c;深搜对应的每条分支都对应一条路径
+print(ans)
+</code></pre> 
+<h5>基于栈实现的深搜</h5> 
+<pre><code class="language-python"># 输入获取
+n, m &#61; map(int, input().split())  # // 长n -&gt; 行数, 宽m -&gt; 列数
+matrix &#61; [list(map(int, input().split())) for _ in range(n)]  # 地图矩阵
+
+# 向下、向右的偏移量
+offsets &#61; ((1, 0), (0, 1))
+
+# 记录题解
+ans &#61; 0
+
+
+# 深搜
+def dfs():
+    global ans
+
+    stack &#61; []
+
+    if matrix[0][0] &#61;&#61; 0:
+        stack.append(0)
+
+    while len(stack) &gt; 0:
+        pos &#61; stack.pop()
+
+        x &#61; pos // m
+        y &#61; pos % m
+
+        if x &#61;&#61; n - 1 and y &#61;&#61; m - 1:
+            ans &#43;&#61; 1
+            continue
+
+        for offsetX, offsetY in offsets:
+            newX &#61; x &#43; offsetX
+            newY &#61; y &#43; offsetY
+
+            if n &gt; newX &gt;&#61; 0 and m &gt; newY &gt;&#61; 0 and matrix[newX][newY] &#61;&#61; 0:
+                stack.append(newX * m &#43; newY)
+
+
+# 算法调用
+dfs()
+print(ans)
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<h5>动态规划</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+int main() {
+    // 长n -&gt; 行数, 宽m -&gt; 列数
+    int n, m;
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    // 地图矩阵&#xff0c;这里把二维压缩为了一维
+    int matrix[n][m];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            // 由于matrix是一维数组&#xff0c;所以这里(i, j)二维坐标也要转成一维坐标
+            scanf(&#34;%d&#34;, &amp;matrix[i][j]);
+        }
+    }
+
+    if (matrix[0][0] &#61;&#61; 1 || matrix[n - 1][m - 1] &#61;&#61; 1) {
+        puts(&#34;0&#34;);
+        return 0;
+    }
+
+    long dp[n][m];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            dp[i][j] &#61; 0;
+        }
+    }
+
+    dp[0][0] &#61; 1;
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            if (matrix[i][j] &#61;&#61; 1) continue;
+
+            if (i &gt; 0) {
+                dp[i][j] &#43;&#61; dp[i - 1][j];
+            }
+
+            if (j &gt; 0) {
+                dp[i][j] &#43;&#61; dp[i][j - 1];
+            }
+        }
+    }
+
+    printf(&#34;%ld\n&#34;, dp[n - 1][m - 1]);
+
+    return 0;
+}</code></pre> 
+<h5 style="background-color:transparent;">基于递归实现的深搜</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// 长n -&gt; 行数, 宽m -&gt; 列数
+int n, m;
+
+// 地图矩阵&#xff0c;这里把二维压缩为了一维
+int *matrix;
+
+// 向下、向右的偏移量
+int offsets[2][2] &#61; {<!-- -->{1, 0},
+                     {0, 1}};
+
+// 记录题解
+int ans &#61; 0;
+
+void dfs(int x, int y) {
+    if (x &#61;&#61; n - 1 &amp;&amp; y &#61;&#61; m - 1) {
+        // 如果当前分支可以走到终点&#xff0c;则对应分支路径可行
+        ans &#43;&#61; 1;
+        return;
+    }
+
+    // 从当前位置(x, y)向下或者向右走
+    for (int i &#61; 0; i &lt; 2; i&#43;&#43;) {
+        // 新位置(newX, newY)
+        int newX &#61; x &#43; offsets[i][0];
+        int newY &#61; y &#43; offsets[i][1];
+
+        // 如果新位置没有越界且新位置可以参观&#xff0c;则进入
+        if (newX &gt;&#61; 0 &amp;&amp; newX &lt; n &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; m &amp;&amp; matrix[newX * m &#43; newY] &#61;&#61; 0) {
+            dfs(newX, newY);
+        }
+    }
+}
+
+int main() {
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    matrix &#61; (int *) calloc(n * m, sizeof(int));
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            // 由于matrix是一维数组&#xff0c;所以这里(i, j)二维坐标也要转成一维坐标
+            scanf(&#34;%d&#34;, &amp;matrix[i * m &#43; j]);
+        }
+    }
+
+    // 从(0,0)位置开始深搜&#xff0c;深搜对应的每条分支都对应一条路径
+    if(matrix[0] &#61;&#61; 0) {
+        dfs(0, 0);
+    }
+
+    printf(&#34;%d\n&#34;, ans);
+
+    return 0;
+}</code></pre> 
+<h5>基于栈实现的深搜</h5> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// 自定义栈结构&#xff08;数组&#xff09;的容量&#xff0c;不够再加
+#define MAX_SIZE 10000
+
+// 长n -&gt; 行数, 宽m -&gt; 列数
+int n, m;
+
+// 地图矩阵&#xff0c;这里把二维压缩为了一维
+int *matrix;
+
+// 向下、向右的偏移量
+int offsets[2][2] &#61; {<!-- -->{1, 0},
+                     {0, 1}};
+
+// 记录题解
+int ans &#61; 0;
+
+void dfs() {
+    int stack[MAX_SIZE];
+    int stack_size &#61; 0;
+
+    if(matrix[0] &#61;&#61; 0) {
+        stack[stack_size&#43;&#43;] &#61; 0;
+    }
+
+    while(stack_size &gt; 0) {
+        int pos &#61; stack[--stack_size];
+
+        int x &#61; pos / m;
+        int y &#61; pos % m;
+
+        if(x &#61;&#61; n - 1 &amp;&amp; y &#61;&#61; m - 1) {
+            ans&#43;&#43;;
+            continue;
+        }
+
+        for(int i&#61;0; i&lt;2; i&#43;&#43;) {
+            int newX &#61; x &#43; offsets[i][0];
+            int newY &#61; y &#43; offsets[i][1];
+
+            if(newX &gt;&#61; 0 &amp;&amp; newX &lt; n &amp;&amp; newY &gt;&#61; 0 &amp;&amp; newY &lt; m &amp;&amp; matrix[newX * m &#43; newY] &#61;&#61; 0) {
+                stack[stack_size&#43;&#43;] &#61; newX * m &#43; newY;
+            }
+        }
+    }
+}
+
+int main() {
+    scanf(&#34;%d %d&#34;, &amp;n, &amp;m);
+
+    matrix &#61; (int *) calloc(n * m, sizeof(int));
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            // 由于matrix是一维数组&#xff0c;所以这里(i, j)二维坐标也要转成一维坐标
+            scanf(&#34;%d&#34;, &amp;matrix[i * m &#43; j]);
+        }
+    }
+
+    dfs();
+
+    printf(&#34;%d\n&#34;, ans);
+
+    return 0;
+}</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

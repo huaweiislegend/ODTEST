@@ -1,0 +1,226 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,100分)- 箱子之字形摆放（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一批箱子&#xff08;形式为字符串&#xff0c;设为str&#xff09;&#xff0c;<br /> 要求将这批箱子按从上到下以之字形的顺序摆放在宽度为 n 的空地&#xff0c;请输出箱子的摆放位置。<br /> 例如&#xff1a;箱子ABCDEFG&#xff0c;空地宽度为3&#xff0c;摆放结果如图&#xff1a;</p> 
+<p><img alt="" height="173" src="https://img-blog.csdnimg.cn/dd7e2e486ea34417b756d674ed5bdb77.png" width="174" /></p> 
+<p>则输出结果为&#xff1a;<br /><code>AFG</code><br /><code>BE</code><br /><code>CD</code></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入一行字符串&#xff0c;通过空格分隔&#xff0c;前面部分为字母或数字组成的字符串str&#xff0c;表示箱子&#xff1b;<br /> 后面部分为数字n&#xff0c;表示空地的宽度。例如&#xff1a;<br /><code>ABCDEFG 3</code></p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>箱子摆放结果&#xff0c;如题目示例所示</p> 
+<p><code>AFG</code><br /><code>BE</code><br /><code>CD</code></p> 
+<p></p> 
+<h4>备注</h4> 
+<ol><li>请不要在最后一行输出额外的空行</li><li>str只包含字母和数字&#xff0c;1 &lt;&#61; len(str) &lt;&#61; 1000</li><li>1 &lt;&#61; n &lt;&#61; 1000</li></ol> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">ABCDEFG 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;"><code>AFG</code><br /><code>BE</code><br /><code>CD</code></td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"></td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先定义一个不定宽的二维矩阵&#xff0c;JS的话很简单&#xff0c;Java的话需要定义为List&lt;List&gt;结构&#xff0c;这个二维矩阵的高度就是给定的空地的n大小&#xff0c;即用例对应的初始二维矩阵应该如下</p> 
+<blockquote> 
+ <p>{<!-- --></p> 
+ <p>        {},</p> 
+ <p>        {},</p> 
+ <p>        {}</p> 
+ <p>}</p> 
+</blockquote> 
+<p>然后&#xff0c;遍历字符串的每一个字符&#xff0c;比如用例中ABCDEFG&#xff0c;首先A被插入二维矩阵的第0行&#xff0c;即字符A在字符串中的索引 i % n 的值&#xff0c;比如A字符索引为i&#61;0&#xff0c;n&#61;3, 因此插入行为 i % n &#61; 0</p> 
+<blockquote> 
+ <p>{<!-- --></p> 
+ <p>        {A},</p> 
+ <p>        {},</p> 
+ <p>        {}</p> 
+ <p>}</p> 
+</blockquote> 
+<p>遍历B&#xff0c;插入二维矩阵第1行&#xff0c;即 i&#61;1 , n &#61;3, i % n &#61; 1</p> 
+<blockquote> 
+ <p>{<!-- --></p> 
+ <p>        {A},</p> 
+ <p>        {B},</p> 
+ <p>        {}</p> 
+ <p>}</p> 
+</blockquote> 
+<p>遍历C&#xff0c;插入二维矩阵的第2行&#xff0c;即 i&#61;2, n&#61;3, i%n&#61;2</p> 
+<blockquote> 
+ <p>{<!-- --></p> 
+ <p>        {A},</p> 
+ <p>        {B},</p> 
+ <p>        {C}</p> 
+ <p>}</p> 
+</blockquote> 
+<p>下面到关键点了&#xff0c;遍历D&#xff0c;应该插入二维矩阵的第几行呢&#xff1f;按照前面公式 i&#61;3&#xff0c;n&#61;3&#xff0c;插入行应该是第 i % n &#61; 0 行。</p> 
+<p>但是实际上&#xff0c;应该要是第2行&#xff0c;如下面所示</p> 
+<blockquote> 
+ <p>{<!-- --></p> 
+ <p>        {A},</p> 
+ <p>        {B},</p> 
+ <p>        {C&#xff0c;D}</p> 
+ <p>}</p> 
+</blockquote> 
+<p>因此&#xff0c;此时插入行的公式应该变为  插入行 &#61; n - 1 - (i%n) &#61; 3-1-0 &#61; 2</p> 
+<p>后面E、F的插入都遵循该公式</p> 
+<blockquote> 
+ <p>{<!-- --></p> 
+ <p>        {A&#xff0c;F},</p> 
+ <p>        {B&#xff0c;E},</p> 
+ <p>        {C&#xff0c;D}</p> 
+ <p>}</p> 
+</blockquote> 
+<p>但是遍历到G时&#xff0c;G的索引i &#61; 6&#xff0c;n&#61;3, i % n &#61; 0&#xff0c;那么此时G应该插入哪一行呢&#xff1f;按照前面的公式&#xff0c;应该插入n - 1 - (i%n) &#61; 3-1-0 &#61; 2&#xff0c;但是实际上应该插入第0行&#xff0c;如下所示</p> 
+<blockquote> 
+ <p>{<!-- --></p> 
+ <p>        {A&#xff0c;F&#xff0c;G},</p> 
+ <p>        {B&#xff0c;E},</p> 
+ <p>        {C&#xff0c;D}</p> 
+ <p>}</p> 
+</blockquote> 
+<p>此时&#xff0c;我们可以总结出&#xff0c;遍历的字符插入到二维矩阵的行数和其索引有关&#xff0c;索引和行数的转换方程有两个&#xff1a;</p> 
+<ul><li>行数 &#61; n - 1 - (i%n)</li><li>行数 &#61; i % n</li></ul> 
+<p>初始时&#xff0c;用公式&#xff1a;行数 &#61; i % n&#xff0c;</p> 
+<p>当遇到 i % n &#61;&#61;0时&#xff0c;变换公式为&#xff1a;行数 &#61; n - 1 - (i%n)&#xff0c;</p> 
+<p>当遇到 i%n&#61;&#61;0时&#xff0c;再变换公式为&#xff1a;行数 &#61; i % n&#xff0c;</p> 
+<p>当遇到 i % n &#61;&#61;0时&#xff0c;变换公式为&#xff1a;行数 &#61; n - 1 - (i%n)&#xff0c;</p> 
+<p>当遇到 i%n&#61;&#61;0时&#xff0c;再变换公式为&#xff1a;行数 &#61; i % n&#xff0c;</p> 
+<p>.......</p> 
+<p></p> 
+<p>因此我们可以用一个reverse来标记&#xff0c;</p> 
+<p>当reverse&#61;true&#xff0c;用公式&#xff1a;行数 &#61; i % n</p> 
+<p>当reverse&#61;false&#xff0c;用公式&#xff1a;行数 &#61; n - 1 - (i%n)</p> 
+<p>而reverse变化的条件就是i % n &#61;&#61;0&#xff0c;每遇到i % n &#61;&#61;0&#xff0c;reverse &#61; !reverse</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [str, n] &#61; line.split(&#34; &#34;);
+  getResult(str, n - 0);
+});
+
+function getResult(str, n) {
+  const len &#61; str.length;
+
+  const matrix &#61; new Array(n).fill(0).map(() &#61;&gt; new Array());
+
+  let reverse &#61; true;
+  for (let i &#61; 0; i &lt; len; i&#43;&#43;) {
+    k &#61; i % n;
+    if (k &#61;&#61;&#61; 0) reverse &#61; !reverse;
+    if (reverse) k &#61; n - 1 - k;
+    matrix[k].push(str[i]);
+  }
+
+  matrix.forEach((arr) &#61;&gt; console.log(arr.join(&#34;&#34;)));
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61; sc.next();
+    int n &#61; sc.nextInt();
+
+    getResult(str, n);
+  }
+
+  public static void getResult(String str, int n) {
+    ArrayList&lt;ArrayList&lt;Character&gt;&gt; matrix &#61; new ArrayList&lt;&gt;();
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) matrix.add(new ArrayList&lt;&gt;());
+
+    boolean reverse &#61; true;
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      int k &#61; i % n;
+      if (k &#61;&#61; 0) reverse &#61; !reverse;
+      if (reverse) k &#61; n - 1 - k;
+      matrix.get(k).add(str.charAt(i));
+    }
+
+    for (ArrayList&lt;Character&gt; list : matrix) {
+      StringBuilder sb &#61; new StringBuilder();
+      for (Character character : list) {
+        sb.append(character);
+      }
+      System.out.println(sb);
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<p>Python算法源码</p> 
+<pre><code class="language-python"># 输入获取
+s, n &#61; input().split()
+
+
+# 算法入口
+def getResult(s, n):
+    n &#61; int(n)
+
+    matrix &#61; [[] for i in range(n)]
+
+    reverse &#61; True
+    for i in range(len(s)):
+        k &#61; i % n
+        if k &#61;&#61; 0:
+            reverse &#61; not reverse
+        if reverse:
+            k &#61; n - 1 - k
+        matrix[k].append(s[i])
+
+    for arr in matrix:
+        print(&#34;&#34;.join(arr))
+
+
+# 算法调用
+getResult(s, n)
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

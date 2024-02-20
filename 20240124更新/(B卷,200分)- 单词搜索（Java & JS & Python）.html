@@ -1,0 +1,237 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 单词搜索（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>找到它是一个小游戏&#xff0c;你需要在一个矩阵中找到给定的单词。</p> 
+<p>假设给定单词 HELLOWORD&#xff0c;在矩阵中只要能找到 H-&gt;E-&gt;L-&gt;L-&gt;O-&gt;W-&gt;O-&gt;R-&gt;L-&gt;D连成的单词&#xff0c;就算通过。</p> 
+<p>注意区分英文字母大小写&#xff0c;并且您只能上下左右行走&#xff0c;不能走回头路。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入第 1 行包含两个整数 n、m (0 &lt; n,m &lt; 21) 分别表示 n 行 m 列的矩阵&#xff0c;</p> 
+<p>第 2 行是长度不超过100的单词 W (在整个矩阵中给定单词 W 只会出现一次)&#xff0c;</p> 
+<p>从第 3 行到第 n&#43;2 行是指包含大小写英文字母的长度为 m 的字符串矩阵。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>如果能在矩阵中连成给定的单词&#xff0c;则输出给定单词首字母在矩阵中的位置(第几行 第几列)&#xff0c;</p> 
+<p>否则输出“NO”。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 5<br /> HELLOWORLD<br /> CPUCY<br /> EKLQH<br /> CHELL<br /> LROWO<br /> DGRBC</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3 2</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 5<br /> HELLOWORLD<br /> CPUCY<br /> EKLQH<br /> CHELL<br /> LROWO<br /> AGRBC</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">NO</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题就是<a href="https://blog.csdn.net/qfc_128220/article/details/127820957?spm&#61;1001.2014.3001.5501" title="LeetCode - 79 单词搜索_伏城之外的博客-CSDN博客">LeetCode - 79 单词搜索_伏城之外的博客-CSDN博客</a></p> 
+<p>的变种题&#xff0c;具体解析请看上面的博客。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let n, m;
+let word;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 2) {
+    [n, m] &#61; lines[0].split(&#34; &#34;).map(Number);
+    word &#61; lines[1];
+  }
+
+  if (n &amp;&amp; lines.length &#61;&#61;&#61; n &#43; 2) {
+    lines.shift();
+    lines.shift();
+
+    console.log(canFind(lines, n, m, word));
+
+    lines.length &#61; 0;
+  }
+});
+
+function canFind(matrix, n, m, word) {
+  const len &#61; word.length;
+  const visited &#61; new Array(n).fill(0).map(() &#61;&gt; new Array(m).fill(false));
+
+  const backTracking &#61; (i, j, k) &#61;&gt; {
+    if (k &#61;&#61;&#61; len) return true;
+
+    if (
+      i &lt; 0 ||
+      i &gt;&#61; n ||
+      j &lt; 0 ||
+      j &gt;&#61; m ||
+      visited[i][j] ||
+      matrix[i][j] !&#61;&#61; word[k]
+    )
+      return false;
+
+    visited[i][j] &#61; true;
+
+    const newK &#61; k &#43; 1;
+    const res &#61;
+      backTracking(i - 1, j, newK) ||
+      backTracking(i &#43; 1, j, newK) ||
+      backTracking(i, j - 1, newK) ||
+      backTracking(i, j &#43; 1, newK);
+
+    visited[i][j] &#61; false;
+    return res;
+  }
+
+  for (let i &#61; 0; i &lt; n; i&#43;&#43;) {
+    for (let j &#61; 0; j &lt; m; j&#43;&#43;) {
+      if (backTracking(i, j, 0)) {
+        return &#96;${i &#43; 1} ${j &#43; 1}&#96;;
+      }
+    }
+  }
+
+  return &#34;NO&#34;;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  static String[] matrix;
+  static String word;
+  static int n;
+  static int m;
+  static boolean[][] visited;
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    n &#61; sc.nextInt();
+    m &#61; sc.nextInt();
+
+    word &#61; sc.next();
+
+    matrix &#61; new String[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      matrix[i] &#61; sc.next();
+    }
+
+    System.out.println(getResult());
+  }
+
+  public static String getResult() {
+    visited &#61; new boolean[n][m];
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        if (backTracking(i, j, 0)) {
+          return (i &#43; 1) &#43; &#34; &#34; &#43; (j &#43; 1);
+        }
+      }
+    }
+
+    return &#34;NO&#34;;
+  }
+
+  public static boolean backTracking(int i, int j, int k) {
+    if (k &#61;&#61; word.length()) return true;
+
+    if (i &lt; 0
+        || i &gt;&#61; n
+        || j &lt; 0
+        || j &gt;&#61; m
+        || visited[i][j]
+        || matrix[i].charAt(j) !&#61; word.charAt(k)) {
+      return false;
+    }
+
+    visited[i][j] &#61; true;
+
+    int newK &#61; k &#43; 1;
+    boolean res &#61;
+        backTracking(i - 1, j, newK)
+            || backTracking(i &#43; 1, j, newK)
+            || backTracking(i, j - 1, newK)
+            || backTracking(i, j &#43; 1, newK);
+
+    visited[i][j] &#61; false;
+    return res;
+  }
+}
+</code></pre> 
+<p> </p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n, m &#61; map(int, input().split())
+word &#61; input()
+matrix &#61; [input() for _ in range(n)]
+visited &#61; [[False for _ in range(m)] for _ in range(n)]
+
+
+def backTracking(i, j, k):
+    if k &#61;&#61; len(word):
+        return True
+
+    if i &lt; 0 or i &gt;&#61; n or j &lt; 0 or j &gt;&#61; m or visited[i][j] or matrix[i][j] !&#61; word[k]:
+        return False
+
+    visited[i][j] &#61; True
+
+    newK &#61; k &#43; 1
+    res &#61; backTracking(i - 1, j, newK) or backTracking(i &#43; 1, j, newK) or backTracking(i, j - 1, newK) or backTracking(
+        i, j &#43; 1, newK)
+    visited[i][j] &#61; False
+    return res
+
+
+# 算法入口
+def getResult():
+    for i in range(n):
+        for j in range(m):
+            if backTracking(i, j, 0):
+                return f&#34;{i &#43; 1} {j &#43; 1}&#34;
+
+    return &#34;NO&#34;
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

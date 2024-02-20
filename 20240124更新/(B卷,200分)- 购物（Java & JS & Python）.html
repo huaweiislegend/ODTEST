@@ -1,0 +1,333 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 购物（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>商店里有N件唯一性商品&#xff0c;每件商品有一个价格&#xff0c;第 i 件商品的价格是 ai。</p> 
+<p>一个购买方案可以是从N件商品种选择任意件进行购买&#xff08;至少一件&#xff09;&#xff0c;花费即价格之和。</p> 
+<p>现在你需要求出所有购买方案中花费前K小的方案&#xff0c;输出这些方案的花费。</p> 
+<p>当两个方案选择的商品集合至少有一件不同&#xff0c;视为不同方案&#xff0c;因此可能存在两个方案花费相同。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入数据含两行&#xff1a;</p> 
+<ul><li>第一行包含两个整数N&#xff0c;K&#xff0c;整数之间通过空格隔开。分别表示商品的个数&#xff0c;以及需要求得的花费个数。1 ≤ N ≤ 10000&#xff0c;1 ≤ K ≤ min(2^N - 1&#xff0c;100000)</li><li>第二行包含N个整数a1&#xff0c;a2&#xff0c;...&#xff0c;an&#xff0c;整数之间通过空格隔开。表示N件商品的价格。1 ≤ a1 ≤ a2 ≤ ... ≤ an ≤ 10000</li></ul> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>按花费从小到大的顺序依次输出K行&#xff0c;一行一个整数。表示花费前K小的购买方案的花费。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5 6<br /> 1 1 2 3 3</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">1<br /> 1<br /> 2<br /> 2<br /> 3<br /> 3</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>无</p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:87px;">输入</td><td style="width:411px;">3 5<br /> 1 100 101</td></tr><tr><td style="width:87px;">输出</td><td style="width:411px;">1<br /> 100<br /> 101<br /> 101<br /> 102</td></tr><tr><td style="width:87px;">说明</td><td style="width:411px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题其实就是要我们求解&#xff1a;全组合中前k小组合&#xff08;按照组合之和大小排序&#xff09;。</p> 
+<p>具体解析可以参考&#xff1a;<a href="https://blog.csdn.net/qfc_128220/article/details/131965981?csdn_share_tail&#61;%7B%22type%22%3A%22blog%22%2C%22rType%22%3A%22article%22%2C%22rId%22%3A%22131965981%22%2C%22source%22%3A%22qfc_128220%22%7D" title="HDU - 4546 比赛难度&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客">HDU - 4546 比赛难度&#xff08;Java &amp; JS &amp; Python&#xff09;_伏城之外的博客-CSDN博客</a></p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61; 2) {
+    const [n, k] &#61; lines[0].split(&#34; &#34;).map(Number);
+    const nums &#61; lines[1].split(&#34; &#34;).map(Number);
+    getResult(n, k, nums);
+    lines.length &#61; 0;
+  }
+});
+
+// 算法入口
+function getResult(n, m, nums) {
+  nums.sort((a, b) &#61;&gt; a - b);
+
+  // 对于一个组合模型&#xff0c;其”将要产生的新组合“之和越小&#xff0c;则优先级越高
+  // curSum &#43; nums[nextIdx] 为 ”将要产生的新组合“之和
+  const pq &#61; new PriorityQueue(
+    (a, b) &#61;&gt; a.curSum &#43; nums[a.nextIdx] - (b.curSum &#43; nums[b.nextIdx])
+  );
+
+  // 空组合的和为0, 将要加入的新元素是nums[0], 即索引0的元素&#xff0c;其将要产生的新组合之和为 0 &#43; nums[0]
+  let c &#61; new CombineModel(0, 0);
+
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    // 打印第 i 小组合
+    console.log(c.curSum &#43; nums[c.nextIdx]);
+
+    // c是当前最小组合模型&#xff0c;最小的组合模型指的是将要产生的新组合之和在对应轮次中最小
+    // 如果当前组合模型c还有可合入的下一个元素&#xff0c;即c.nextIdx &#43; 1 &lt; n, 则说明可以基于当前组合模型产生一个新组合
+    if (c.nextIdx &#43; 1 &lt; n) {
+      // 基于当前组合模型产生的新组合&#xff0c;也是本轮最小的组合&#xff0c;即第 i 小组合
+      pq.offer(new CombineModel(c.curSum &#43; nums[c.nextIdx], c.nextIdx &#43; 1));
+
+      // 当前组合需要更新nextIdx后&#xff0c;重新加入优先队列
+      c.nextIdx &#43;&#61; 1;
+      pq.offer(c);
+    }
+
+    // 取出优先队列中最小组合&#xff08;注意这里的最小&#xff0c;指的是基于当前组合&#xff0c;将要产生的新组合之和最小&#xff09;
+    c &#61; pq.poll();
+  }
+}
+
+// 组合模型
+class CombineModel {
+  constructor(curSum, nextIdx) {
+    this.curSum &#61; curSum; // 当前组合之和
+    this.nextIdx &#61; nextIdx; // 将要被加入当前组合的新元素索引位置
+  }
+}
+
+// 基于堆实现优先队列
+class PriorityQueue {
+  constructor(cpr) {
+    this.queue &#61; [];
+    this.size &#61; 0;
+    this.cpr &#61; cpr;
+  }
+
+  swap(i, j) {
+    let tmp &#61; this.queue[i];
+    this.queue[i] &#61; this.queue[j];
+    this.queue[j] &#61; tmp;
+  }
+
+  // 上浮
+  swim() {
+    let ch &#61; this.queue.length - 1;
+
+    while (ch !&#61;&#61; 0) {
+      let fa &#61; Math.floor((ch - 1) / 2);
+
+      const ch_node &#61; this.queue[ch];
+      const fa_node &#61; this.queue[fa];
+
+      if (this.cpr(ch_node, fa_node) &lt; 0) {
+        this.swap(ch, fa);
+        ch &#61; fa;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 下沉
+  sink() {
+    let fa &#61; 0;
+
+    while (true) {
+      let ch_left &#61; 2 * fa &#43; 1;
+      let ch_right &#61; 2 * fa &#43; 2;
+
+      let ch_max;
+      let ch_max_node;
+
+      const fa_node &#61; this.queue[fa];
+      const ch_left_node &#61; this.queue[ch_left];
+      const ch_right_node &#61; this.queue[ch_right];
+
+      if (ch_left_node &amp;&amp; ch_right_node) {
+        // 注意这里应该要&gt;&#61;0&#xff0c;因为左边优先级高
+        if (this.cpr(ch_left_node, ch_right_node) &lt;&#61; 0) {
+          ch_max &#61; ch_left;
+          ch_max_node &#61; ch_left_node;
+        } else {
+          ch_max &#61; ch_right;
+          ch_max_node &#61; ch_right_node;
+        }
+      } else if (ch_left_node &amp;&amp; !ch_right_node) {
+        ch_max &#61; ch_left;
+        ch_max_node &#61; ch_left_node;
+      } else if (!ch_left_node &amp;&amp; ch_right_node) {
+        ch_max &#61; ch_right;
+        ch_max_node &#61; ch_right_node;
+      } else {
+        break;
+      }
+
+      // 注意这里应该要&gt;0&#xff0c;因为父优先级高
+      if (this.cpr(ch_max_node, fa_node) &lt; 0) {
+        this.swap(ch_max, fa);
+        fa &#61; ch_max;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 向优先队列中加入元素
+  offer(ele) {
+    this.queue.push(ele);
+    this.size&#43;&#43;;
+    this.swim();
+  }
+
+  // 取出最高优先级元素
+  poll() {
+    this.swap(0, this.queue.length - 1);
+    this.size--;
+    const ans &#61; this.queue.pop();
+    this.sink();
+    return ans;
+  }
+}
+</code></pre> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int n &#61; sc.nextInt();
+    int k &#61; sc.nextInt();
+
+    int[] nums &#61; new int[n];
+    for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+      nums[j] &#61; sc.nextInt();
+    }
+
+    getResult(n, k, nums);
+  }
+
+  static class CombineModel {
+    int curSum; // 当前组合之和
+    int nextIdx; // 将要被加入当前组合的新元素索引位置
+
+    public CombineModel(int curSum, int nextIdx) {
+      this.curSum &#61; curSum;
+      this.nextIdx &#61; nextIdx;
+    }
+  }
+
+  public static void getResult(int n, int m, int[] nums) {
+    Arrays.sort(nums);
+
+    // 对于一个组合模型&#xff0c;其”将要产生的新组合“之和越小&#xff0c;则优先级越高
+    // curSum &#43; nums[nextIdx] 为 ”将要产生的新组合“之和
+    PriorityQueue&lt;CombineModel&gt; pq &#61;
+        new PriorityQueue&lt;&gt;((a, b) -&gt; a.curSum &#43; nums[a.nextIdx] - (b.curSum &#43; nums[b.nextIdx]));
+
+    // 空组合的和为0, 将要加入的新元素是nums[0], 即索引0的元素&#xff0c;其将要产生的新组合之和为 0 &#43; nums[0]
+    CombineModel c &#61; new CombineModel(0, 0);
+
+    for (int i &#61; 1; i &lt;&#61; m; i&#43;&#43;) {
+      // 打印第 i 小组合
+      System.out.println(c.curSum &#43; nums[c.nextIdx]);
+
+      // c是当前最小组合模型&#xff0c;最小的组合模型指的是将要产生的新组合之和在对应轮次中最小
+      // 如果当前组合模型c还有可合入的下一个元素&#xff0c;即c.nextIdx &#43; 1 &lt; n, 则说明可以基于当前组合模型产生一个新组合
+      if (c.nextIdx &#43; 1 &lt; n) {
+        // 基于当前组合模型产生的新组合&#xff0c;也是本轮最小的组合&#xff0c;即第 i 小组合
+        pq.offer(new CombineModel(c.curSum &#43; nums[c.nextIdx], c.nextIdx &#43; 1));
+
+        // 当前组合需要更新nextIdx后&#xff0c;重新加入优先队列
+        c.nextIdx &#43;&#61; 1;
+        pq.offer(c);
+      }
+
+      // 取出优先队列中最小组合&#xff08;注意这里的最小&#xff0c;指的是基于当前组合&#xff0c;将要产生的新组合之和最小&#xff09;
+      c &#61; pq.poll();
+    }
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import heapq
+import queue
+
+# 输入获取
+n, m &#61; map(int, input().split())
+nums &#61; list(map(int, input().split()))
+
+
+# 组合模型
+class CombineModel:
+    def __init__(self, curSum, nextIdx):
+        self.curSum &#61; curSum  # 当前组合之和
+        self.nextIdx &#61; nextIdx  # 将要被加入当前组合的新元素索引位置
+
+    def __lt__(self, other):
+        # 对于一个组合模型&#xff0c;其”将要产生的新组合“之和越小&#xff0c;则优先级越高
+        # curSum &#43; nums[nextIdx] 为 ”将要产生的新组合“之和
+        return self.curSum &#43; nums[self.nextIdx] &lt; (other.curSum &#43; nums[other.nextIdx])
+
+
+# 算法入口
+def getResult():
+    nums.sort()
+
+    # pq &#61; queue.PriorityQueue()
+    pq &#61; []
+
+    # 空组合的和为0, 将要加入的新元素是nums[0], 即索引0的元素&#xff0c;其将要产生的新组合之和为 0 &#43; nums[0]
+    c &#61; CombineModel(0, 0)
+
+    for _ in range(0, m):
+        # 打印第 i 小组合
+        print(c.curSum &#43; nums[c.nextIdx])
+
+        # c是当前最小组合模型&#xff0c;最小的组合模型指的是将要产生的新组合之和在对应轮次中最小
+        # 如果当前组合模型c还有可合入的下一个元素&#xff0c;即c.nextIdx &#43; 1 &lt; n, 则说明可以基于当前组合模型产生一个新组合
+        if c.nextIdx &#43; 1 &lt; n:
+            # 基于当前组合模型产生的新组合&#xff0c;也是本轮最小的组合&#xff0c;即第 i 小组合
+            # pq.put(CombineModel(c.curSum &#43; nums[c.nextIdx], c.nextIdx &#43; 1))
+            heapq.heappush(pq, CombineModel(c.curSum &#43; nums[c.nextIdx], c.nextIdx &#43; 1))
+
+            # 当前组合需要更新nextIdx后&#xff0c;重新加入优先队列
+            c.nextIdx &#43;&#61; 1
+            # pq.put(c)
+            heapq.heappush(pq, c)
+
+        # 取出优先队列中最小组合&#xff08;注意这里的最小&#xff0c;指的是基于当前组合&#xff0c;将要产生的新组合之和最小&#xff09;
+        # c &#61; pq.get()
+        if len(pq) &gt; 0:
+            c &#61; heapq.heappop(pq)
+
+
+# 算法调用
+getResult()</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

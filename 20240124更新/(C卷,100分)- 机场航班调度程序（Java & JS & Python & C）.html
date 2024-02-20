@@ -1,0 +1,199 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,100分)- 机场航班调度程序（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>XX市机场停放了多架飞机&#xff0c;每架飞机都有自己的航班号CA3385&#xff0c;CZ6678&#xff0c;SC6508等&#xff0c;航班号的前2个大写字母&#xff08;或数字&#xff09;代表航空公司的缩写&#xff0c;后面4个数字代表航班信息。</p> 
+<p>但是XX市机场只有一条起飞跑道&#xff0c;调度人员需要安排目前停留在机场的航班有序起飞。</p> 
+<p>为保障航班的有序起飞&#xff0c;调度员首先按照航空公司的缩写&#xff08;航班号前2个字母&#xff09;对所有航班进行排序&#xff0c;同一航空公司的航班再按照航班号的后4个数字进行排序&#xff0c;最终获得安排好的航班的起飞顺序。</p> 
+<p>请编写一段代码根据输入的航班号信息帮助调度员输出航班的起飞顺序。</p> 
+<p></p> 
+<p>说明&#xff1a;</p> 
+<blockquote> 
+ <p>航空公司缩写排序按照从特殊符号$ &amp; *&#xff0c;0~9&#xff0c;A~Z排序&#xff1b;</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入航班信息&#xff0c;多个航班号之间用逗号 &#34;,&#34; 分隔&#xff0c;输入的航班号不超过100个。</p> 
+<p>例如&#xff1a;</p> 
+<blockquote> 
+ <p>CA3385,CZ6678,SC6508,DU7523,HK4456,MK0987</p> 
+</blockquote> 
+<p></p> 
+<p>备注&#xff1a;</p> 
+<blockquote> 
+ <p>航班号为6为长度&#xff0c;后4位位纯数字&#xff0c;不考虑存在后4位重复的场景。</p> 
+</blockquote> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>CA3385,CZ6678,DU7523,HK4456,MK0987,SC6508</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">CA3385,CZ6678,SC6508,DU7523,HK4456,MK0987</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">CA3385,CZ6678,DU7523,HK4456,MK0987,SC6508</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">输入为目前停留在该机场的航班号&#xff0c;输出为按照调度排序后输出的有序的航班号</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">MU1087,CA9908,3U0045,FM1703</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">3U0045,CA9908,FM1703,MU1087</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>简单的字符串操作&#xff0c;以及排序问题。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  const flights &#61; (await readline()).split(&#34;,&#34;);
+
+  flights.sort((a, b) &#61;&gt; {
+    const abbr1 &#61; a.slice(0, 2);
+    const num1 &#61; a.slice(2);
+
+    const abbr2 &#61; b.slice(0, 2);
+    const num2 &#61; b.slice(2);
+
+    if (abbr1 &#61;&#61; abbr2) {
+      return strcmp(num1, num2);
+    } else {
+      return strcmp(abbr1, abbr2);
+    }
+  });
+
+  console.log(flights.join(&#34;,&#34;));
+})();
+
+function strcmp(a, b) {
+  if (a &gt; b) {
+    return 1;
+  } else if (a &lt; b) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String[] flights &#61; sc.nextLine().split(&#34;,&#34;);
+
+    StringJoiner sj &#61; new StringJoiner(&#34;,&#34;);
+    Arrays.stream(flights)
+        .sorted(
+            (a, b) -&gt; {
+              String abbr1 &#61; a.substring(0, 2);
+              String num1 &#61; a.substring(2);
+
+              String abbr2 &#61; b.substring(0, 2);
+              String num2 &#61; b.substring(2);
+
+              if (abbr1.equals(abbr2)) {
+                return num1.compareTo(num2);
+              } else {
+                return abbr1.compareTo(abbr2);
+              }
+            })
+        .forEach(sj::add);
+
+    System.out.println(sj);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-cpp">flights &#61; input().split(&#34;,&#34;)
+
+flights.sort(key&#61;lambda x: (x[0:2], x[2:]))
+
+print(&#34;,&#34;.join(flights))</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+int cmp(const void *a, const void *b) {
+    char *A &#61; (char *) a;
+    char *B &#61; (char *) b;
+
+    char abbr1[3];
+    strncpy(abbr1, A, 2);
+    char num1[5];
+    strncpy(num1, A&#43;2, 4);
+
+    char abbr2[3];
+    strncpy(abbr2, B, 2);
+    char num2[5];
+    strncpy(num2, B&#43;2, 4);
+
+    int res &#61; strcmp(abbr1, abbr2);
+    if(res &#61;&#61; 0) {
+        return strcmp(num1, num2);
+    } else {
+        return res;
+    }
+}
+
+int main() {
+    char s[1000];
+    gets(s);
+
+    char flights[100][7];
+    int flights_size &#61; 0;
+
+    char *token &#61; strtok(s, &#34;,&#34;);
+    while (token !&#61; NULL) {
+        strcpy(flights[flights_size&#43;&#43;], token);
+        token &#61; strtok(NULL, &#34;,&#34;);
+    }
+
+    qsort(flights, flights_size, sizeof(flights[0]), cmp);
+
+    for (int i &#61; 0; i &lt; flights_size; i&#43;&#43;) {
+        printf(&#34;%s&#34;, flights[i]);
+        if (i !&#61; flights_size - 1) {
+            printf(&#34;,&#34;);
+        }
+    }
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,240 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(B卷,200分)- 仿LISP运算（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>LISP 语言唯一的语法就是括号要配对。</p> 
+<p>形如 (OP P1 P2 …)&#xff0c;括号内元素由单个空格分割。</p> 
+<p>其中第一个元素 OP 为操作符&#xff0c;后续元素均为其参数&#xff0c;参数个数取决于操作符类型。</p> 
+<p>注意&#xff1a;</p> 
+<p>参数 P1, P2 也有可能是另外一个嵌套的 (OP P1 P2 …) &#xff0c;当前 OP 类型为 add / sub / mul / div&#xff08;全小写&#xff09;&#xff0c;分别代表整数的加减乘除法&#xff0c;简单起见&#xff0c;所有 OP 参数个数均为 2 。</p> 
+<p>举例&#xff1a;</p> 
+<ul><li>输入&#xff1a;(mul 3 -7)输出&#xff1a;-21</li><li>输入&#xff1a;(add 1 2) 输出&#xff1a;3</li><li>输入&#xff1a;(sub (mul 2 4) (div 9 3)) 输出 &#xff1a;5</li><li>输入&#xff1a;(div 1 0) 输出&#xff1a;error</li></ul> 
+<p>题目涉及数字均为整数&#xff0c;可能为负&#xff1b;</p> 
+<p>不考虑 32 位溢出翻转&#xff0c;计算过程中也不会发生 32 位溢出翻转&#xff0c;</p> 
+<p>除零错误时&#xff0c;输出 “error”&#xff0c;</p> 
+<p>除法遇除不尽&#xff0c;向下取整&#xff0c;即 3/2 &#61; 1</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>输入为长度不超过512的字符串&#xff0c;用例保证了无语法错误</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出计算结果或者“error”</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:84px;">输入</td><td style="width:414px;"> <p>(div 12 (sub 45 45))</p> </td></tr><tr><td style="width:84px;">输出</td><td style="width:414px;">error</td></tr><tr><td style="width:84px;">说明</td><td style="width:414px;">45减45得0&#xff0c;12除以0为除零错误&#xff0c;输出error</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>输入</td><td>(add 1 (div -7 3))</td></tr><tr><td>输出</td><td>-2</td></tr><tr><td>说明</td><td>-7除以3向下取整得-3&#xff0c;1加-3得-2</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>纯逻辑题&#xff0c;难点在于将括号中的片段截取出来&#xff0c;我的处理方案是&#xff0c;遍历输入的每一个字符&#xff0c;当遇到&#34;)&#34;时&#xff0c;则在其前面必然存在一个“(”&#xff0c;找到其前面第一个“(”&#xff0c;然后截取“(”和&#34;)&#34;之间的内容&#xff08;从栈中截取走&#xff09;&#xff0c;进行计算&#xff0c;将结果回填如栈中。</p> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  public static String getResult(String s) {
+    LinkedList&lt;Character&gt; stack &#61; new LinkedList&lt;&gt;();
+    LinkedList&lt;Integer&gt; leftIdx &#61; new LinkedList&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; s.length(); i&#43;&#43;) {
+      char c &#61; s.charAt(i);
+
+      if (c &#61;&#61; &#39;)&#39;) {
+        List&lt;Character&gt; fragment &#61; stack.subList(leftIdx.removeLast(), stack.size());
+
+        StringBuilder sb &#61; new StringBuilder();
+        for (int j &#61; 1; j &lt; fragment.size(); j&#43;&#43;) sb.append(fragment.get(j));
+
+        fragment.clear();
+
+        String[] tmp &#61; sb.toString().split(&#34; &#34;);
+
+        String op &#61; tmp[0];
+        int p1 &#61; Integer.parseInt(tmp[1]);
+        int p2 &#61; Integer.parseInt(tmp[2]);
+
+        String res &#61; operate(op, p1, p2);
+        if (&#34;error&#34;.equals(res)) {
+          return &#34;error&#34;;
+        } else {
+          for (int k &#61; 0; k &lt; res.length(); k&#43;&#43;) stack.add(res.charAt(k));
+        }
+      } else if (c &#61;&#61; &#39;(&#39;) {
+        leftIdx.add(stack.size());
+        stack.add(c);
+      } else {
+        stack.add(c);
+      }
+    }
+
+    StringBuilder ans &#61; new StringBuilder();
+    for (Character c : stack) ans.append(c);
+    return ans.toString();
+  }
+
+  public static String operate(String op, int p1, int p2) {
+    switch (op) {
+      case &#34;add&#34;:
+        return p1 &#43; p2 &#43; &#34;&#34;;
+      case &#34;sub&#34;:
+        return p1 - p2 &#43; &#34;&#34;;
+      case &#34;mul&#34;:
+        return p1 * p2 &#43; &#34;&#34;;
+      case &#34;div&#34;:
+        return p2 &#61;&#61; 0 ? &#34;error&#34; : (int) Math.floor(p1 / (p2 &#43; 0.0)) &#43; &#34;&#34;;
+      default:
+        return &#34;error&#34;;
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(s) {
+  const stack &#61; [];
+  const leftIdx &#61; [];
+
+  for (let i &#61; 0; i &lt; s.length; i&#43;&#43;) {
+    if (s[i] &#61;&#61;&#61; &#34;)&#34;) {
+      const fragment &#61; stack.splice(leftIdx.pop());
+
+      const [op, p1, p2] &#61; fragment.slice(1).join(&#34;&#34;).split(&#34; &#34;);
+      const res &#61; operate(op, p1 - 0, p2 - 0);
+
+      if (res &#61;&#61;&#61; &#34;error&#34;) return &#34;error&#34;;
+      else stack.push(...String(res));
+    } else if (s[i] &#61;&#61;&#61; &#34;(&#34;) {
+      leftIdx.push(stack.length);
+      stack.push(s[i]);
+    } else {
+      stack.push(s[i]);
+    }
+  }
+
+  return stack.join(&#34;&#34;);
+}
+
+function operate(op, p1, p2) {
+  switch (op) {
+    case &#34;add&#34;:
+      return p1 &#43; p2;
+    case &#34;sub&#34;:
+      return p1 - p2;
+    case &#34;mul&#34;:
+      return p1 * p2;
+    case &#34;div&#34;:
+      return p2 &#61;&#61;&#61; 0 ? &#34;error&#34; : Math.floor(p1 / p2);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import math
+
+# 输入获取
+s &#61; input()
+
+
+def operate(op, p1, p2):
+    p1 &#61; int(p1)
+    p2 &#61; int(p2)
+    if op &#61;&#61; &#34;add&#34;:
+        return str(p1 &#43; p2)
+    elif op &#61;&#61; &#34;sub&#34;:
+        return str(p1 - p2)
+    elif op &#61;&#61; &#34;mul&#34;:
+        return str(p1 * p2)
+    elif op &#61;&#61; &#34;div&#34;:
+        if p2 &#61;&#61; 0:
+            return &#34;error&#34;
+        else:
+            return str(int(math.floor(p1 / p2)))
+    else:
+        return &#34;error&#34;
+
+
+# 算法入口
+def getResult():
+    stack &#61; []
+    leftIdx &#61; []
+
+    for i in range(len(s)):
+        if s[i] &#61;&#61; &#39;)&#39;:
+            l &#61; leftIdx.pop()
+            fragment &#61; stack[l:]
+            del stack[l:]
+
+            op, p1, p2 &#61; &#34;&#34;.join(fragment[1:]).split(&#34; &#34;)
+
+            res &#61; operate(op, p1, p2)
+
+            if res &#61;&#61; &#34;error&#34;:
+                return &#34;error&#34;
+            else:
+                stack.extend(list(res))
+        elif s[i] &#61;&#61; &#39;(&#39;:
+            leftIdx.append(len(stack))
+            stack.append(s[i])
+        else:
+            stack.append(s[i])
+
+    return &#34;&#34;.join(stack)
+
+
+# 调用算法
+print(getResult())
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

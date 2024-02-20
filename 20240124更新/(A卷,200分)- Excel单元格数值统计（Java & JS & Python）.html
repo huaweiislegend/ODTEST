@@ -1,0 +1,778 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- Excel单元格数值统计（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>Excel工作表中对选定区域的数值进行统计的功能非常实用。</p> 
+<p>仿照Excel的这个功能&#xff0c;请对给定表格中选中区域中的单元格进行求和统计&#xff0c;并输出统计结果。</p> 
+<p>为简化计算&#xff0c;假设当前输入中每个单元格内容仅为数字或公式两种。</p> 
+<p>如果为数字&#xff0c;则是一个非负整数&#xff0c;形如3、77</p> 
+<p>如果为公式&#xff0c;则固定以&#61;开头&#xff0c;且仅包含下面三种情况&#xff1a;</p> 
+<ul><li>等于某单元格的值&#xff0c;例如&#61;B12</li><li>两个单元格的双目运算&#xff08;仅为&#43;或-&#xff09;&#xff0c;形如&#61;C1-C2、C3&#43;B2</li><li>单元格和数字的双目运算&#xff08;仅为&#43;或-&#xff09;&#xff0c;形如&#61;B1&#43;1、100-B2</li></ul> 
+<p>注意&#xff1a;</p> 
+<ol><li>公式内容都是合法的&#xff0c;例如不存在&#xff0c;&#61;C&#43;1、&#61;C1-C2&#43;B3,&#61;5、&#61;3&#43;5</li><li>不存在循环引用&#xff0c;例如A1&#61;B1&#43;C1、C1&#61;A1&#43;B2</li><li>内容中不存在空格、括号</li></ol> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行两个整数rows cols&#xff0c;表示给定表格区域的行数和列数&#xff0c;1&lt;&#61;rows&lt;&#61;20&#xff0c;1&lt;&#61;cols&lt;&#61;26。<br /> 接下来rows行&#xff0c;每行cols个以空格分隔的字符串&#xff0c;表示给定表格values的单元格内容。<br /> 最后一行输入的字符串&#xff0c;表示给定的选中区域&#xff0c;形如A1:C2。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>一个整数&#xff0c;表示给定选中区域各单元格中数字的累加总和&#xff0c;范围-2,147,483,648 ~ 2,147,483,647</p> 
+<p></p> 
+<h4><strong>备注</strong></h4> 
+<ul><li>表格的行号1~20&#xff0c;列号A~Z&#xff0c;例如单元格B3对应values[2][1]。</li><li>输入的单元格内容&#xff08;含公式&#xff09;中数字均为十进制&#xff0c;值范围[0, 100]。</li><li>选中区域&#xff1a;冒号左侧单元格表示选中区域的左上角&#xff0c;右侧表示右下角&#xff0c;如可以为B2:C10、B2:B5、B2:Y2、B2:B2,无类似C2:B2、C2:A1的输入。</li></ul> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 3<br /> 1 &#61;A1&#43;C1 3<br /> A1:C1</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">8</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p><img alt="" height="138" src="https://img-blog.csdnimg.cn/6afdcd5f02414e0c80523d3b59d74f75.png" width="649" /></p> </td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:85px;">输入</td><td style="width:413px;">5 3<br /> 10 12 &#61;C5<br /> 15 5 6<br /> 7 8 &#61;3&#43;C2<br /> 6 &#61;B2-A1 &#61;C2<br /> 7 5 3<br /> B2:C4</td></tr><tr><td style="width:85px;">输出</td><td style="width:413px;">29</td></tr><tr><td style="width:85px;">说明</td><td style="width:413px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题逻辑不难&#xff0c;但是实现起来比较麻烦。</p> 
+<p>我的解题思路如下&#xff1a;</p> 
+<p>首先&#xff0c;要搞清楚Excel表格坐标和matrix输入矩阵的索引的对应关系&#xff0c;比如上面用例中&#xff0c;输入的matrix矩阵为&#xff1a;[ [&#34;1&#34;, &#34;&#61;A1&#43;C1&#34;, &#34;3&#34;] ]</p> 
+<p>其中“1”值&#xff0c;对应矩阵 martix[0][0]&#xff0c;而对应的Excel表格坐标是A1&#xff0c;其中A代表列号&#xff0c;1代表行号。</p> 
+<p>因此&#xff0c;我们容易得到Excel表格坐标和matrix输入矩阵的索引的对应关系&#xff1a;</p> 
+<ul><li>列对应关系&#xff1a;String(&#39;A&#39;).charCodeAt() - 65 &#61; 0  <span style="color:#fe2c24;">&#xff08;PS&#xff1a;&#39;A&#39;的ASCII码值为65&#xff09;</span></li><li>行对应关系&#xff1a;1 - 1 &#61; 0</li></ul> 
+<p></p> 
+<p>解下来&#xff0c;我们需要弄清楚&#xff0c;如何将Excel坐标&#xff0c;如A1&#xff0c;B2&#xff0c;C3中的列号和行号解析出来&#xff0c;因为只有解析出来&#xff0c;才能方便处理&#xff0c;之后才能对应到matrix的索引。</p> 
+<p>这里我们使用了正则表达式的捕获组&#xff0c;正则为&#xff1a;/^(A-Z)(\d&#43;)$/</p> 
+<p><img alt="" height="189" src="https://img-blog.csdnimg.cn/9759f28d459f44768fed26556eed1541.png" width="530" /></p> 
+<p></p> 
+<p>接下来&#xff0c;我们就可以实现根据Excel坐标&#xff0c;获取到matrix矩阵元素的逻辑了&#xff0c;我们定义一个方法getCell&#xff0c;入参Excel坐标&#xff0c;然后通过上面的正则解析出来对应列号、行号&#xff0c;然后再根据Excel列号、行号转化求得matrix矩阵的行索引、列索引&#xff0c;进而求得matrix矩阵对应索引的值。</p> 
+<p></p> 
+<p>此时&#xff0c;取得的值有两类&#xff1a;</p> 
+<p>1、非公式的值&#xff0c;比如1</p> 
+<p>2、公式&#xff0c;以&#61;开头</p> 
+<p></p> 
+<p>对于非公式的值&#xff0c;直接将其转为数值后返回&#xff1b;</p> 
+<p>对于公式&#xff0c;又分为三种情况&#xff1a;</p> 
+<ul><li>&#61;A1&#43;B1&#xff0c;即Excel坐标之间的运算</li><li>&#61;A1-2&#xff0c;即Excel坐标和数值之间的运算</li><li>&#61;A1&#xff0c;即Excel坐标</li></ul> 
+<p>我们可以通过getCell方法获取到Excel坐标对应的值&#xff0c;然后再来运算</p> 
+<p></p> 
+<h3>非正则解法</h3> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+
+public class Main {
+  static String[][] table; // 给定表格区域
+  static int rows; // 给定表格区域的行数
+  static int cols; // 给定表格区域的列数
+  static String start; // 选中区域的左上角位置
+  static String end; // 选中区域的右下角位置
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    rows &#61; sc.nextInt();
+    cols &#61; sc.nextInt();
+
+    table &#61; new String[rows][cols];
+    for (int i &#61; 0; i &lt; rows; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; cols; j&#43;&#43;) {
+        table[i][j] &#61; sc.next();
+      }
+    }
+
+    String[] range &#61; sc.next().split(&#34;:&#34;);
+    start &#61; range[0];
+    end &#61; range[1];
+
+    System.out.println(getResult());
+  }
+
+  public static int getResult() {
+    int[] s &#61; getPos(start);
+    int[] e &#61; getPos(end);
+
+    int r1 &#61; s[0], c1 &#61; s[1];
+    int r2 &#61; e[0], c2 &#61; e[1];
+
+    int ans &#61; 0;
+    for (int i &#61; r1; i &lt;&#61; r2; i&#43;&#43;) {
+      for (int j &#61; c1; j &lt;&#61; c2; j&#43;&#43;) {
+        ans &#43;&#61; getCellVal(table[i][j]);
+      }
+    }
+
+    return ans;
+  }
+
+  // 获取单元格的值
+  public static int getCellVal(String cell) {
+    /*
+     * 单元格内容cell如果以&#39;&#61;&#39;开头&#xff0c;则必然是公式
+     * */
+    if (cell.charAt(0) &#61;&#61; &#39;&#61;&#39;) {
+      // fn是公式内容
+      String fn &#61; cell.substring(1);
+
+      // 如果公式内容fn包含“&#43;”&#xff0c;则可能是两个单元格的双目运算&#xff0c;也可能是单元格和数字的双目运算
+      if (fn.contains(&#34;&#43;&#34;)) {
+        return operate(fn.split(&#34;\\&#43;&#34;), true);
+      }
+      // 如果公式内容fn包含“-”&#xff0c;则可能是两个单元格的双目运算&#xff0c;也可能是单元格和数字的双目运算
+      else if (fn.contains(&#34;-&#34;)) {
+        return operate(fn.split(&#34;-&#34;), false);
+      }
+      // 如果公式内容fn不包含“&#43;”和“-”&#xff0c;则必然等于某单元格的值&#xff0c;例如&#61;B12
+      else {
+        return getPosVal(getPos(fn));
+      }
+    }
+    /*
+     * 单元格内容cell如果不以&#39;&#61;&#39;开头&#xff0c;则必然是数字&#xff0c;且是非负正数
+     * */
+    else {
+      return Integer.parseInt(cell);
+    }
+  }
+
+  // 双目运算
+  public static int operate(String[] ops, boolean isAdd) {
+    int op1, op2;
+
+    if (isPos(ops[0])) {
+      // 如果操作数1是单元格
+      op1 &#61; getPosVal(getPos(ops[0]));
+    } else {
+      // 如果操作数1是数字
+      op1 &#61; Integer.parseInt(ops[0]);
+    }
+
+    if (isPos(ops[1])) {
+      // 如果操作数2是单元格
+      op2 &#61; getPosVal(getPos(ops[1]));
+    } else {
+      // 如果操作数2是数字
+      op2 &#61; Integer.parseInt(ops[1]);
+    }
+
+    if (isAdd) {
+      // 加法运算
+      return op1 &#43; op2;
+    } else {
+      // 减法运算
+      return op1 - op2;
+    }
+  }
+
+  // 解析单元格坐标  为  矩阵坐标
+  public static int[] getPos(String pos) {
+    int c &#61; pos.charAt(0) - 65;
+    int r &#61; Integer.parseInt(pos.substring(1)) - 1;
+    return new int[] {r, c};
+  }
+
+  // 获取矩阵对应坐标的值&#xff0c;并且更新矩阵对应单元格的内容
+  public static int getPosVal(int[] pos) {
+    int r &#61; pos[0], c &#61; pos[1];
+    int val &#61; getCellVal(table[r][c]);
+    table[r][c] &#61; val &#43; &#34;&#34;;
+    return val;
+  }
+
+  // 判断一个内容是否为单元格坐标
+  public static boolean isPos(String str) {
+    char c &#61; str.charAt(0);
+    return c &lt;&#61; &#39;Z&#39; &amp;&amp; c &gt;&#61; &#39;A&#39;;
+  }
+}
+</code></pre> 
+<h4>JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const { get } &#61; require(&#34;http&#34;);
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+
+let table, rows, cols, start, end;
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [rows, cols] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (rows &amp;&amp; lines.length &#61;&#61;&#61; rows &#43; 2) {
+    lines.shift();
+    [start, end] &#61; lines.pop().split(&#34;:&#34;);
+    table &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;));
+    console.log(getResult());
+    lines.length &#61; 0;
+  }
+});
+
+function getResult() {
+  const [r1, c1] &#61; getPos(start);
+  const [r2, c2] &#61; getPos(end);
+
+  let ans &#61; 0;
+  for (let i &#61; r1; i &lt;&#61; r2; i&#43;&#43;) {
+    for (let j &#61; c1; j &lt;&#61; c2; j&#43;&#43;) {
+      ans &#43;&#61; getCellVal(table[i][j]);
+    }
+  }
+
+  return ans;
+}
+
+// 判断一个内容是否为单元格坐标
+function isPos(s) {
+  return s[0] &lt;&#61; &#34;Z&#34; &amp;&amp; s[0] &gt;&#61; &#34;A&#34;;
+}
+
+// 解析单元格坐标  为  矩阵坐标
+function getPos(pos) {
+  const c &#61; pos[0].charCodeAt() - 65;
+  const r &#61; pos.slice(1) - 1;
+  return [r, c];
+}
+
+// 获取矩阵对应坐标的值&#xff0c;并且更新矩阵对应单元格的内容
+function getPosVal(pos) {
+  const [r, c] &#61; pos;
+  table[r][c] &#61; getCellVal(table[r][c]);
+  return table[r][c];
+}
+
+// 双目运算
+function operate(ops, isAdd) {
+  let op1, op2;
+
+  if (isPos(ops[0])) {
+    // 如果操作数1是单元格
+    op1 &#61; getPosVal(getPos(ops[0]));
+  } else {
+    // 如果操作数1是数字
+    op1 &#61; parseInt(ops[0]);
+  }
+
+  if (isPos(ops[1])) {
+    // 如果操作数2是单元格
+    op2 &#61; getPosVal(getPos(ops[1]));
+  } else {
+    // 如果操作数2是数字
+    op2 &#61; parseInt(ops[1]);
+  }
+
+  if (isAdd) {
+    // 加法运算
+    return op1 &#43; op2;
+  } else {
+    // 减法运算
+    return op1 - op2;
+  }
+}
+
+// 获取单元格的值
+function getCellVal(cell) {
+  /*
+   * 单元格内容cell如果以&#39;&#61;&#39;开头&#xff0c;则必然是公式
+   * */
+  if (cell[0] &#61;&#61; &#34;&#61;&#34;) {
+    // fn是公式内容
+    const fn &#61; cell.slice(1);
+
+    // 如果公式内容fn包含“&#43;”&#xff0c;则可能是两个单元格的双目运算&#xff0c;也可能是单元格和数字的双目运算
+    if (fn.indexOf(&#34;&#43;&#34;) !&#61; -1) {
+      return operate(fn.split(&#34;&#43;&#34;), true);
+    } else if (fn.indexOf(&#34;-&#34;) !&#61; -1) {
+      // 如果公式内容fn包含“-”&#xff0c;则可能是两个单元格的双目运算&#xff0c;也可能是单元格和数字的双目运算
+      return operate(fn.split(&#34;-&#34;), false);
+    } else {
+      // 如果公式内容fn不包含“&#43;”和“-”&#xff0c;则必然等于某单元格的值&#xff0c;例如&#61;B12
+      return getPosVal(getPos(fn));
+    }
+  } else {
+    /*
+     * 单元格内容cell如果不以&#39;&#61;&#39;开头&#xff0c;则必然是数字&#xff0c;且是非负正数
+     * */
+    return parseInt(cell);
+  }
+}
+</code></pre> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+rows, cols &#61; list(map(int, input().split()))
+table &#61; [input().split() for _ in range(rows)]
+start, end &#61; input().split(&#34;:&#34;)
+
+
+# 判断一个内容是否为单元格坐标
+def isPos(pos):
+    return &#34;Z&#34; &gt;&#61; pos[0] &gt;&#61; &#39;A&#39;
+
+
+# 解析单元格坐标  为  矩阵坐标
+def getPos(pos):
+    c &#61; ord(pos[0]) - 65
+    r &#61; int(pos[1:]) - 1
+    return r, c
+
+
+# 获取矩阵对应坐标的值&#xff0c;并且更新矩阵对应单元格的内容
+def getPosVal(pos):
+    r, c &#61; pos
+    table[r][c] &#61; getCellVal(table[r][c])
+    return table[r][c]
+
+
+# 双目运算
+def operate(ops, isAdd):
+    op1 &#61; 0
+    op2 &#61; 0
+
+    if isPos(ops[0]):
+        # 如果操作数1是单元格
+        op1 &#61; getPosVal(getPos(ops[0]))
+    else:
+        # 如果操作数1是数字
+        op1 &#61; int(ops[0])
+
+    if isPos(ops[1]):
+        op2 &#61; getPosVal(getPos(ops[1]))
+    else:
+        op2 &#61; int(ops[1])
+
+    if isAdd:
+        return op1 &#43; op2
+    else:
+        return op1 - op2
+
+
+# 获取单元格的值
+def getCellVal(cell):
+    cell &#61; str(cell)
+    # 单元格内容cell如果以&#39;&#61;&#39;开头&#xff0c;则必然是公式
+    if cell[0] &#61;&#61; &#34;&#61;&#34;:
+        # fn是公式内容
+        fn &#61; cell[1:]
+
+        # 如果公式内容fn包含“&#43;”&#xff0c;则可能是两个单元格的双目运算&#xff0c;也可能是单元格和数字的双目运算
+        if fn.find(&#34;&#43;&#34;) !&#61; -1:
+            return operate(fn.split(&#34;&#43;&#34;), True)
+        # 如果公式内容fn包含“-”&#xff0c;则可能是两个单元格的双目运算&#xff0c;也可能是单元格和数字的双目运算
+        elif fn.find(&#34;-&#34;) !&#61; -1:
+            return operate(fn.split(&#34;-&#34;), False)
+        # 如果公式内容fn不包含“&#43;”和“-”&#xff0c;则必然等于某单元格的值&#xff0c;例如&#61;B12
+        else:
+            return getPosVal(getPos(fn))
+    # 单元格内容cell如果不以&#39;&#61;&#39;开头&#xff0c;则必然是数字&#xff0c;且是非负正数
+    else:
+        return int(cell)
+
+
+# 算法入口
+def getResult():
+    r1, c1 &#61; getPos(start)
+    r2, c2 &#61; getPos(end)
+
+    ans &#61; 0
+    for i in range(r1, r2 &#43; 1):
+        for j in range(c1, c2 &#43; 1):
+            ans &#43;&#61; getCellVal(table[i][j])
+
+    return ans
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p> </p> 
+<h3>正则解法</h3> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const lines &#61; [];
+let rows, cols;
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  lines.push(line);
+
+  if (lines.length &#61;&#61;&#61; 1) {
+    [rows, cols] &#61; lines[0].split(&#34; &#34;).map(Number);
+  }
+
+  if (rows &amp;&amp; lines.length &#61;&#61;&#61; rows &#43; 2) {
+    lines.shift();
+    const [start, end] &#61; lines.pop().split(&#34;:&#34;);
+    const matrix &#61; lines.map((line) &#61;&gt; line.split(&#34; &#34;));
+    console.log(getResult(matrix, rows, cols, start, end));
+    lines.length &#61; 0;
+  }
+});
+
+/**
+ * 求和选中区域所有数的和
+ * &#64;param {*} matrix 给定表格区域
+ * &#64;param {*} rows 给定表格区域的行数
+ * &#64;param {*} cols 给定表格区域的列数
+ * &#64;param {*} start 选中区域的左上角位置
+ * &#64;param {*} end 选中区域的右下角位置
+ */
+function getResult(matrix, rows, cols, start, end) {
+  // 该正则用于分解出Excel单元格位置坐标&#xff08;形式如A1&#xff0c;B2&#xff0c;C3&#xff09;的列和行&#xff0c;注意字母是列号&#xff0c;数字是行号
+  const regExp &#61; /^([A-Z])(\d&#43;)$/;
+
+  // 获取指定坐标pos的单元格内的值&#xff0c;pos形式如A1&#xff0c;B2&#xff0c;C3
+  function getCell(pos) {
+    let [_, col, row] &#61; regExp.exec(pos);
+    col &#61; String(col).charCodeAt() - 65; // 题目说列号取值A~Z&#xff0c;起始列A对应的码值65&#xff0c;A列等价于matrix矩阵的第0行
+    row -&#61; 1; // 起始行1&#xff0c;等价于matrix矩阵的第0行
+
+    // 如果单元格内容以&#61;开头&#xff0c;则为公式
+    if (String(matrix[row][col]).startsWith(&#34;&#61;&#34;)) {
+      // 公式有三种情况
+      // 等于某单元格的值&#xff0c;例如&#61;B12
+      // 两个单元格的双目运算&#xff08;仅为&#43;或-&#xff09;&#xff0c;形如&#61;C1-C2、C3&#43;B2
+      // 单元格和数字的双目运算&#xff08;仅为&#43;或-&#xff09;&#xff0c;形如&#61;B1&#43;1、100-B2
+      let [_, cell1, cell2] &#61; matrix[row][col].split(/[\&#61;\&#43;\-]/);
+      if (!cell2) cell2 &#61; 0; // 对于 &#61;A1 这种情况&#xff0c;cell2结构出来是undefined&#xff0c;我们需要考虑这种情况将其置为0
+
+      // 如果cell解析出来是值&#xff0c;则直接使用
+      if (/^\d&#43;$/.test(cell1)) {
+        cell1 -&#61; 0;
+      }
+      // 如果cell解析出来不是值&#xff0c;那就是Excel坐标
+      else {
+        cell1 &#61; getCell(cell1);
+      }
+
+      // 同上
+      if (/^\d&#43;$/.test(cell2)) {
+        cell2 -&#61; 0;
+      } else {
+        cell2 &#61; getCell(cell2);
+      }
+
+      // 如果cell1和cell2是相加
+      if (matrix[row][col].includes(&#34;&#43;&#34;)) {
+        matrix[row][col] &#61; cell1 &#43; cell2;
+      }
+      // 如果cell1和cell2是相减
+      else if (matrix[row][col].includes(&#34;-&#34;)) {
+        matrix[row][col] &#61; cell1 - cell2;
+      }
+      // 如果没有运算&#xff0c;那就只可能是单值&#xff0c;直接使用
+      else {
+        matrix[row][col] &#61; cell1;
+      }
+    }
+    // 如果单元格内容不以&#61;开头&#xff0c;则为可以直接使用的数值
+    else {
+      matrix[row][col] -&#61; 0;
+    }
+
+    return matrix[row][col];
+  }
+
+  // 选中区域左上角坐标的解析
+  let [_1, col_start, row_start] &#61; regExp.exec(start);
+  // 选中区域右下角坐标的解析
+  let [_2, col_end, row_end] &#61; regExp.exec(end);
+
+  // 列坐标处理
+  col_start &#61; String(col_start).charCodeAt();
+  col_end &#61; String(col_end).charCodeAt();
+  // 行坐标处理
+  row_start -&#61; 0;
+  row_end -&#61; 0;
+
+  let ans &#61; 0;
+  for (let j &#61; col_start; j &lt;&#61; col_end; j&#43;&#43;) {
+    for (let i &#61; row_start; i &lt;&#61; row_end; i&#43;&#43;) {
+      ans &#43;&#61; getCell(&#96;${String.fromCharCode(j)}${i}&#96;);
+    }
+  }
+
+  return ans;
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+  static Pattern p &#61; Pattern.compile(&#34;^([A-Z])(\\d&#43;)$&#34;);
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    int rows &#61; sc.nextInt();
+    int cols &#61; sc.nextInt();
+
+    String[][] matrix &#61; new String[rows][cols];
+    for (int i &#61; 0; i &lt; rows; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; cols; j&#43;&#43;) {
+        matrix[i][j] &#61; sc.next();
+      }
+    }
+
+    String[] range &#61; sc.next().split(&#34;:&#34;);
+
+    System.out.println(getResult(matrix, rows, cols, range[0], range[1]));
+  }
+
+  /**
+   * &#64;param matrix 给定表格区域
+   * &#64;param rows 给定表格区域的行数
+   * &#64;param cols 给定表格区域的列数
+   * &#64;param start 选中区域的左上角位置
+   * &#64;param end 选中区域的右下角位置
+   * &#64;return 求和选中区域所有数的和
+   */
+  public static int getResult(String[][] matrix, int rows, int cols, String start, String end) {
+    // 正则p于分解出Excel单元格位置坐标&#xff08;形式如A1&#xff0c;B2&#xff0c;C3&#xff09;的列和行&#xff0c;注意字母是列号&#xff0c;数字是行号
+    Matcher m1 &#61; p.matcher(start);
+    Matcher m2 &#61; p.matcher(end);
+
+    if (m1.find() &amp;&amp; m2.find()) {
+      // 选中区域左上角坐标的解析
+      int col_start &#61; m1.group(1).charAt(0);
+      int row_start &#61; Integer.parseInt(m1.group(2));
+
+      // 选中区域右下角坐标的解析
+      int col_end &#61; m2.group(1).charAt(0);
+      int row_end &#61; Integer.parseInt(m2.group(2));
+
+      // ans保存选中区域所有数的和
+      int ans &#61; 0;
+      // 从左上角坐标遍历到右下角坐标
+      for (int j &#61; col_start; j &lt;&#61; col_end; j&#43;&#43;) {
+        for (int i &#61; row_start; i &lt;&#61; row_end; i&#43;&#43;) {
+          char c &#61; (char) j;
+          ans &#43;&#61; getCell(c &#43; &#34;&#34; &#43; i, matrix);
+        }
+      }
+      return ans;
+    }
+
+    // 异常情况&#xff0c;应该不会走到这步
+    return 0;
+  }
+
+  /**
+   * &#64;param pos 指定Excel表格坐标&#xff0c;pos形式如A1&#xff0c;B2&#xff0c;C3
+   * &#64;param matrix Excel给定表格区域
+   * &#64;return 指定坐标pos的单元格内的值
+   */
+  public static int getCell(String pos, String[][] matrix) {
+    Matcher m &#61; p.matcher(pos);
+    if (m.find()) {
+      // 题目说列号取值A~Z&#xff0c;起始列A对应的码值65&#xff0c;A列等价于matrix矩阵的第0列
+      int col &#61; m.group(1).charAt(0) - 65;
+      // 起始行1&#xff0c;等价于matrix矩阵的第0行
+      int row &#61; Integer.parseInt(m.group(2)) - 1;
+
+      String cell &#61; matrix[row][col];
+      // 如果单元格内容以&#61;开头&#xff0c;则为公式
+      if (cell.startsWith(&#34;&#61;&#34;)) {
+        // 公式有三种情况
+        // 等于某单元格的值&#xff0c;例如&#61;B12
+        // 两个单元格的双目运算&#xff08;仅为&#43;或-&#xff09;&#xff0c;形如&#61;C1-C2、C3&#43;B2
+        String[] combine &#61; cell.split(&#34;[\\&#61;\\&#43;\\-]&#34;);
+
+        String cell1 &#61; combine[1];
+
+        // 对于 &#61;A1 这种情况&#xff0c;cell2没有值
+        String cell2 &#61; null;
+        if (combine.length &gt; 2) {
+          cell2 &#61; combine[2];
+        }
+
+        int cell1_val;
+        if (cell1.matches(&#34;^-?\\d&#43;$&#34;)) {
+          // 如果cell解析出来是值&#xff0c;则直接使用
+          cell1_val &#61; Integer.parseInt(cell1);
+        } else {
+          // 如果cell解析出来不是值&#xff0c;那就是Excel坐标
+          cell1_val &#61; getCell(cell1, matrix);
+        }
+
+        // 同上
+        int cell2_val;
+        if (cell2 !&#61; null) {
+          if (cell2.matches(&#34;^-?\\d&#43;$&#34;)) {
+            cell2_val &#61; Integer.parseInt(cell2);
+          } else {
+            cell2_val &#61; getCell(cell2, matrix);
+          }
+        } else {
+          cell2_val &#61; 0;
+        }
+
+        // 如果cell1和cell2是相加
+        if (cell.contains(&#34;&#43;&#34;)) {
+          matrix[row][col] &#61; cell1_val &#43; cell2_val &#43; &#34;&#34;;
+        }
+        // 如果cell1和cell2是相减
+        else if (cell.contains(&#34;-&#34;)) {
+          matrix[row][col] &#61; cell1_val - cell2_val &#43; &#34;&#34;;
+        }
+        // 如果没有运算&#xff0c;那就只可能是单值&#xff0c;直接使用
+        else {
+          matrix[row][col] &#61; cell1_val &#43; &#34;&#34;;
+        }
+      }
+
+      // 如果单元格内容以&#61;开头&#xff0c;则以上逻辑会将单元格内容更新为数值
+      // 如果单元格内容不以&#61;开头&#xff0c;则为可以直接使用的数值
+      return Integer.parseInt(matrix[row][col]);
+    }
+
+    // 异常情况&#xff0c;应该不会走到这步
+    return 0;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import re
+
+# 输入获取
+rows, cols &#61; list(map(int, input().split()))
+matrix &#61; [input().split() for i in range(rows)]
+start, end &#61; input().split(&#34;:&#34;)
+
+# 全局变量&#xff0c;该正则于分解出Excel单元格位置坐标&#xff08;形式如A1&#xff0c;B2&#xff0c;C3&#xff09;的列和行&#xff0c;注意字母是列号&#xff0c;数字是行号
+pattern &#61; r&#34;^([A-Z])(\d&#43;)$&#34;
+
+
+# 算法入口
+def getResult(start, end):
+    &#34;&#34;&#34;
+    :param start: 选中区域的左上角位置
+    :param end: 选中区域的右下角位置
+    :return: 求和选中区域所有数的和
+    &#34;&#34;&#34;
+
+    # 选中区域左上角坐标的解析
+    col_start, row_start &#61; re.findall(pattern, start)[0]
+    col_start &#61; ord(col_start)
+    row_start &#61; int(row_start)
+
+    # 选中区域右下角坐标的解析
+    col_end, row_end &#61; re.findall(pattern, end)[0]
+    col_end &#61; ord(col_end)
+    row_end &#61; int(row_end)
+
+    # ans保存选中区域所有数的和
+    ans &#61; 0
+    # 从左上角坐标遍历到右下角坐标
+    for j in range(col_start, col_end &#43; 1):
+        for i in range(row_start, row_end &#43; 1):
+            ans &#43;&#61; getCell(f&#34;{chr(j)}{i}&#34;)
+
+    return ans
+
+
+def getCell(pos):
+    &#34;&#34;&#34;
+    :param pos: 指定Excel表格坐标&#xff0c;pos形式如A1&#xff0c;B2&#xff0c;C3
+    :return: 指定坐标pos的单元格内的值
+    &#34;&#34;&#34;
+    col, row &#61; re.findall(pattern, pos)[0]
+
+    # 题目说列号取值A~Z&#xff0c;起始列A对应的码值65&#xff0c;A列等价于matrix矩阵的第0列
+    col &#61; ord(col) - 65
+    # 起始行1&#xff0c;等价于matrix矩阵的第0行
+    row &#61; int(row) - 1
+
+    tmp &#61; str(matrix[row][col])
+
+    # 如果单元格内容以&#61;开头&#xff0c;则为公式
+    if tmp.startswith(&#34;&#61;&#34;):
+        # 公式有三种情况
+        # 等于某单元格的值&#xff0c;例如&#61;B12
+        # 两个单元格的双目运算&#xff08;仅为&#43;或-&#xff09;&#xff0c;形如&#61;C1-C2、C3&#43;B2
+        combine &#61; re.split(&#34;[\\&#61;\\&#43;\\-]&#34;, tmp)
+
+        cell1 &#61; combine[1]
+
+        # 对于 &#61;A1 这种情况&#xff0c;cell2没有值
+        cell2 &#61; None
+        if len(combine) &gt; 2:
+            cell2 &#61; combine[2]
+
+        if str(cell1).isdigit():
+            # 如果cell解析出来是值&#xff0c;则直接使用
+            cell1 &#61; int(cell1)
+        else:
+            # 如果cell解析出来不是值&#xff0c;那就是Excel坐标
+            cell1 &#61; getCell(cell1)
+
+        # cell2处理基本和cell1相同&#xff0c;但是cell2是None时&#xff0c;取默认值0
+        if cell2 is None:
+            cell2 &#61; 0
+        elif str(cell2).isdigit():
+            cell2 &#61; int(cell2)
+        else:
+            cell2 &#61; getCell(cell2)
+
+        # 如果cell1和cell2是相加
+        if tmp.find(&#34;&#43;&#34;) !&#61; -1:
+            matrix[row][col] &#61; cell1 &#43; cell2
+        # 如果cell1和cell2是相减
+        elif tmp.find(&#34;-&#34;) !&#61; -1:
+            matrix[row][col] &#61; cell1 - cell2
+        # 如果没有运算&#xff0c;那就只可能是单值&#xff0c;直接使用
+        else:
+            matrix[row][col] &#61; cell1
+    else:
+        matrix[row][col] &#61; int(tmp)
+
+    # 如果单元格内容以&#61;开头&#xff0c;则以上逻辑会将单元格内容更新为数值
+    # 如果单元格内容不以&#61;开头&#xff0c;则为可以直接使用的数值
+    return matrix[row][col]
+
+
+# 算法调用
+print(getResult(start, end))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

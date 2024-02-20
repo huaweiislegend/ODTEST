@@ -1,0 +1,571 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 特殊的加密算法（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一种特殊的加密算法&#xff0c;明文为一段数字串&#xff0c;经过密码本查找转换&#xff0c;生成另一段密文数字串。</p> 
+<p>规则如下&#xff1a;</p> 
+<ol><li>明文为一段数字串由 0~9 组成</li><li>密码本为数字 0~9 组成的二维数组</li><li>需要按明文串的数字顺序在密码本里找到同样的数字串&#xff0c;密码本里的数字串是由相邻的单元格数字组成&#xff0c;上下和左右是相邻的&#xff0c;注意&#xff1a;对角线不相邻&#xff0c;同一个单元格的数字不能重复使用。</li><li>每一位明文对应密文即为密码本中找到的单元格所在的行和列序号&#xff08;序号从0开始&#xff09;组成的两个数宇。<br /><br /> 如明文第 i 位 Data[i] 对应密码本单元格为 Book[x][y]&#xff0c;则明文第 i 位对应的密文为X Y&#xff0c;X和Y之间用空格隔开。</li></ol> 
+<p>如果有多条密文&#xff0c;返回字符序最小的密文。</p> 
+<p>如果密码本无法匹配&#xff0c;返回&#34;error&#34;。</p> 
+<p>请你设计这个加密程序。</p> 
+<p></p> 
+<p>示例1&#xff1a;</p> 
+<p>密码本&#xff1a;</p> 
+<blockquote> 
+ <p><span style="color:#0d0016;">0 0 2</span></p> 
+ <p><span style="color:#0d0016;">1 3 4</span></p> 
+ <p><span style="color:#0d0016;">6 6 4</span></p> 
+</blockquote> 
+<p>明文&#xff1a;&#34;3&#34;&#xff0c;密文&#xff1a;&#34;1 1&#34;</p> 
+<p></p> 
+<p>示例2&#xff1a;</p> 
+<p>密码本&#xff1a;</p> 
+<blockquote> 
+ <p><span style="color:#0d0016;">0 0 2</span></p> 
+ <p><span style="color:#0d0016;">1 3 4</span></p> 
+ <p><span style="color:#0d0016;">6 6 4</span></p> 
+</blockquote> 
+<p>明文&#xff1a;&#34;0 3&#34;&#xff0c;密文&#xff1a;&#34;0 1 1 1&#34;</p> 
+<p></p> 
+<p>示例3&#xff1a;</p> 
+<p>密码本&#xff1a;</p> 
+<blockquote> 
+ <p>0 0 2 4</p> 
+ <p>1 3 4 6</p> 
+ <p>3 4 1 5</p> 
+ <p>6 6 6 5</p> 
+</blockquote> 
+<p>明文&#xff1a;&#34;0 0 2 4&#34;&#xff0c;密文&#xff1a;&#34;0 0 0 1 0 2 0 3&#34; 和 &#34;0 0 0 1 0 2 1 2&#34;&#xff0c;返回字典序最小的&#34;0 0 0 1 0 2 0 3&#34;</p> 
+<p>明文&#xff1a;&#34;8 2 2 3&#34;&#xff0c;密文&#xff1a;&#34;error&#34;&#xff0c;密码本中无法匹配</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入 1 个正整数 N&#xff0c;代表明文的长度&#xff08;1 ≤ N ≤ 200&#xff09;</p> 
+<p>第二行输入 N 个明文组成的序列 Data[i]&#xff08;0 ≤ Data[i] ≤ 9&#xff09;</p> 
+<p>第三行输入 1 个正整数 M&#xff0c;代表密文的长度</p> 
+<p>接下来 M 行&#xff0c;每行 M 个数&#xff0c;代表密文矩阵</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出字典序最小密文&#xff0c;如果无法匹配&#xff0c;输出&#34;error&#34;</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 0 3<br /> 3<br /> 0 0 2<br /> 1 3 4<br /> 6 6 4 </td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0 1 1 1</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">2<br /> 0 5<br /> 3<br /> 0 0 2<br /> 1 3 4<br /> 6 6 4</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">error</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">找不到 0 5 的序列&#xff0c;返回error</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>题目关键说明如下&#xff1a;</p> 
+<blockquote> 
+ <p>需要按明文串的数字顺序在密码本里找到同样的数字串&#xff0c;密码本里的数字串是由相邻的单元格数字组成&#xff0c;上下和左右是相邻的</p> 
+</blockquote> 
+<blockquote> 
+ <p>明文第 i 位 Data[i] 对应密码本单元格为 Book[x][y]&#xff0c;则明文第 i 位对应的密文为X Y</p> 
+</blockquote> 
+<p>题目示例3图示</p> 
+<p><img alt="" height="359" src="https://img-blog.csdnimg.cn/direct/90beb8d567654939a6cdf25a4c6ec393.png" width="607" /></p> 
+<p>此时密码本多个路径可以对应为明文&#xff0c;分别为&#xff1a;</p> 
+<ul><li>(0,0) -&gt; (0,1) -&gt; (0,2) -&gt; (0,3)</li><li>(0,0) -&gt; (0,1) -&gt; (0,2) -&gt; (1,2)</li></ul> 
+<p>其中0 0 0 1 0 2 0 3字典序更小。</p> 
+<hr /> 
+<p></p> 
+<p>本题可以使用深度优先搜索DFS解题&#xff0c;思路如下&#xff1a;</p> 
+<p>首先&#xff0c;在密码本矩阵中找到<span style="color:#fe2c24;">元素值&#61;明文第一个数字</span>的所有元素位置&#xff0c;记录到集合starts中。</p> 
+<p>然后&#xff0c;遍历starts每一个位置&#xff0c;作为路径探索的起始位置&#xff1a;</p> 
+<p>此时&#xff0c;深搜方向顺序是有讲究的&#xff0c;需要按照上、左、右、下的顺序依次深搜&#xff0c;因为题目说&#xff1a;</p> 
+<blockquote> 
+ <p>如果有多条密文&#xff0c;返回字符序最小的密文</p> 
+</blockquote> 
+<p>比如当前位置是 &#xff08;x,y&#xff09;&#xff0c;而当前位置的上下左右位置的元素值均符合下一个明文数字&#xff0c;那么此时应该选择向哪个方向深搜最优呢&#xff1f;</p> 
+<p>由于题目要返回字符序最小的密文&#xff0c;对于&#xff1a;</p> 
+<ul><li>上&#xff1a;x-1, y</li><li>左&#xff1a;x, y-1</li><li>右&#xff1a;x, y&#43;1</li><li>下&#xff1a;x&#43;1, y</li></ul> 
+<p>可以发现&#xff0c;“上”位置的字符序是最小的&#xff0c;因此深搜的优先级应该是&#xff1a;上 &gt; 左 &gt; 右 &gt; 下</p> 
+<p>这样的话&#xff0c;一旦深搜过程发现符合要求的路径&#xff0c;则必为最优解。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 明文数字个数
+  const n &#61; parseInt(await readline());
+  // 明文
+  const datas &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 密码本矩阵大小
+  const m &#61; parseInt(await readline());
+  // 密码本
+  const secrets &#61; [];
+
+  // 记录密码本中元素值等于“明文第一个数字”的所有元素的位置
+  const starts &#61; [];
+
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    secrets.push((await readline()).split(&#34; &#34;).map(Number));
+
+    for (let j &#61; 0; j &lt; m; j&#43;&#43;) {
+      // 如果密码本(i,j)位置元素指等于明文第一个数字值&#xff0c;则记录(i,j)作为一个出发位置
+      if (secrets[i][j] &#61;&#61; datas[0]) {
+        starts.push([i, j]);
+      }
+    }
+  }
+
+  function getResult() {
+    // 出发位置(x,y)
+    for (let [x, y] of starts) {
+      // used[i][j]用于记录密码本(i,j)元素是否已使用
+      const used &#61; new Array(m).fill(0).map(() &#61;&gt; new Array(m).fill(false));
+      // 出发点位置元素已使用
+      used[x][y] &#61; true;
+
+      // 记录结果路径各节点位置
+      const path &#61; [];
+      // 出发点位置记录
+      path.push(&#96;${x} ${y}&#96;);
+
+      // 开始深搜
+      if (dfs(x, y, 1, path, used)) {
+        return path.join(&#34; &#34;);
+      }
+    }
+
+    return &#34;error&#34;;
+  }
+
+  // 上&#xff0c;左&#xff0c;右&#xff0c;下偏移量&#xff0c;注意这里的顺序是有影响的&#xff0c;即下一步偏移后产生的密文的字符序必然是&#xff1a;上 &lt; 左 &lt; 右 &lt; 下
+  const offsets &#61; [
+    [-1, 0],
+    [0, -1],
+    [0, 1],
+    [1, 0],
+  ];
+
+  /**
+   *
+   * &#64;param {*} x 当前位置横坐标
+   * &#64;param {*} y 当前位置纵坐标
+   * &#64;param {*} index datas[index]是将要匹配的明文数字
+   * &#64;param {*} path 路径
+   * &#64;param {*} used 密码本各元素使用情况
+   * &#64;returns 是否找到符合要求的路径
+   */
+  function dfs(x, y, index, path, used) {
+    // 已找到明文最后一个数字&#xff0c;则找到符合要求的路径
+    if (index &#61;&#61; n) {
+      return true;
+    }
+
+    // 否则&#xff0c;进行上、左、右、下四个方向偏移&#xff0c;注意这里的顺序是有影响的&#xff0c;即下一步偏移后产生的密文的字符序必然是&#xff1a;上 &lt; 左 &lt; 右 &lt; 下
+    for (let [offsetX, offsetY] of offsets) {
+      // 新位置
+      const newX &#61; x &#43; offsetX;
+      const newY &#61; y &#43; offsetY;
+
+      // 新位置越界&#xff0c;或者新位置已使用&#xff0c;或者新位置不是目标值&#xff0c;则跳过
+      if (
+        newX &lt; 0 ||
+        newX &gt;&#61; m ||
+        newY &lt; 0 ||
+        newY &gt;&#61; m ||
+        used[newX][newY] ||
+        secrets[newX][newY] !&#61; datas[index]
+      ) {
+        continue;
+      }
+
+      // 递归进入新位置
+      path.push(&#96;${newX} ${newY}&#96;);
+      used[newX][newY] &#61; true;
+
+      // 如果当前分支可以找到符合要求的路径&#xff0c;则返回
+      if (dfs(newX, newY, index &#43; 1, path, used)) {
+        return true;
+      }
+
+      // 否则&#xff0c;回溯
+      used[newX][newY] &#61; false;
+      path.pop();
+    }
+
+    return false;
+  }
+
+  console.log(getResult());
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+public class Main {
+  // 明文数字个数
+  static int n;
+  // 明文
+  static int[] datas;
+
+  // 密码本矩阵大小
+  static int m;
+  // 密码本
+  static int[][] secrets;
+
+  // 上&#xff0c;左&#xff0c;右&#xff0c;下偏移量&#xff0c;注意这里的顺序是有影响的&#xff0c;即下一步偏移后产生的密文的字符序必然是&#xff1a;上 &lt; 左 &lt; 右 &lt; 下
+  static int[][] offsets &#61; {<!-- -->{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    n &#61; sc.nextInt();
+
+    datas &#61; new int[n];
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+      datas[i] &#61; sc.nextInt();
+    }
+
+    // 记录密码本中元素值等于“明文第一个数字”的所有元素的位置
+    ArrayList&lt;Integer&gt; starts &#61; new ArrayList&lt;&gt;();
+
+    m &#61; sc.nextInt();
+
+    secrets &#61; new int[m][m];
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+        secrets[i][j] &#61; sc.nextInt();
+
+        // 如果密码本(i,j)位置元素指等于明文第一个数字值&#xff0c;则记录(i,j)作为一个出发位置
+        if (datas[0] &#61;&#61; secrets[i][j]) {
+          starts.add(i * m &#43; j);
+        }
+      }
+    }
+
+    System.out.println(getResult(starts));
+  }
+
+  public static String getResult(ArrayList&lt;Integer&gt; starts) {
+    for (int start : starts) {
+      // 出发位置
+      int x &#61; start / m;
+      int y &#61; start % m;
+
+      // used[i][j]用于记录密码本(i,j)元素是否已使用
+      boolean[][] used &#61; new boolean[m][m];
+      // 出发点位置元素已使用
+      used[x][y] &#61; true;
+
+      // 记录结果路径各节点位置
+      LinkedList&lt;String&gt; path &#61; new LinkedList&lt;&gt;();
+      // 出发点位置记录
+      path.add(x &#43; &#34; &#34; &#43; y);
+
+      // 开始深搜
+      if (dfs(x, y, 1, path, used)) {
+        StringJoiner sj &#61; new StringJoiner(&#34; &#34;);
+        for (String pos : path) sj.add(pos);
+        return sj.toString();
+      }
+    }
+
+    return &#34;error&#34;;
+  }
+
+  /**
+   * &#64;param x 当前位置横坐标
+   * &#64;param y 当前位置纵坐标
+   * &#64;param index datas[index]是将要匹配的明文数字
+   * &#64;param path 路径
+   * &#64;param used 密码本各元素使用情况
+   * &#64;return 是否找到符合要求的路径
+   */
+  public static boolean dfs(int x, int y, int index, LinkedList&lt;String&gt; path, boolean[][] used) {
+    // 已找到明文最后一个数字&#xff0c;则找到符合要求的路径
+    if (index &#61;&#61; n) {
+      return true;
+    }
+
+    // 否则&#xff0c;进行上、左、右、下四个方向偏移&#xff0c;注意这里的顺序是有影响的&#xff0c;即下一步偏移后产生的密文的字符序必然是&#xff1a;上 &lt; 左 &lt; 右 &lt; 下
+    for (int[] offset : offsets) {
+      // 新位置
+      int newX &#61; x &#43; offset[0];
+      int newY &#61; y &#43; offset[1];
+
+      // 新位置越界&#xff0c;或者新位置已使用&#xff0c;或者新位置不是目标值&#xff0c;则跳过
+      if (newX &lt; 0
+          || newX &gt;&#61; m
+          || newY &lt; 0
+          || newY &gt;&#61; m
+          || used[newX][newY]
+          || secrets[newX][newY] !&#61; datas[index]) {
+        continue;
+      }
+
+      // 递归进入新位置
+      path.add(newX &#43; &#34; &#34; &#43; newY);
+      used[newX][newY] &#61; true;
+
+      // 如果当前分支可以找到符合要求的路径&#xff0c;则返回
+      if (dfs(newX, newY, index &#43; 1, path, used)) {
+        return true;
+      }
+
+      // 否则&#xff0c;回溯
+      used[newX][newY] &#61; false;
+      path.removeLast();
+    }
+
+    return false;
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+n &#61; int(input())  # 明文数字个数
+datas &#61; list(map(int, input().split()))  # 明文
+
+m &#61; int(input())  # 密码本矩阵大小
+secrets &#61; []  # 密码本
+
+# 记录密码本中元素值等于“明文第一个数字”的所有元素的位置
+starts &#61; []
+
+for i in range(m):
+    secrets.append(list(map(int, input().split())))
+    for j in range(m):
+        # 如果密码本(i,j)位置元素指等于明文第一个数字值&#xff0c;则记录(i,j)作为一个出发位置
+        if secrets[i][j] &#61;&#61; datas[0]:
+            starts.append((i, j))
+
+# 上&#xff0c;左&#xff0c;右&#xff0c;下偏移量&#xff0c;注意这里的顺序是有影响的&#xff0c;即下一步偏移后产生的密文的字符序必然是&#xff1a;上 &lt; 左 &lt; 右 &lt; 下
+offsets &#61; ((-1, 0), (0, -1), (0, 1), (1, 0))
+
+
+def dfs(x, y, index, path, used):
+    &#34;&#34;&#34;
+    :param x: 当前位置横坐标
+    :param y: 当前位置纵坐标
+    :param index: datas[index]是将要匹配的明文数字
+    :param path: 路径
+    :param used: 密码本各元素使用情况
+    :return: 是否找到符合要求的路径
+    &#34;&#34;&#34;
+    if index &#61;&#61; n:
+        # 已找到明文最后一个数字&#xff0c;则找到符合要求的路径
+        return True
+
+    # 否则&#xff0c;进行上、左、右、下四个方向偏移&#xff0c;注意这里的顺序是有影响的&#xff0c;即下一步偏移后产生的密文的字符序必然是&#xff1a;上 &lt; 左 &lt; 右 &lt; 下
+    for offsetX, offsetY in offsets:
+        # 新位置
+        newX &#61; x &#43; offsetX
+        newY &#61; y &#43; offsetY
+
+        # 新位置越界&#xff0c;或者新位置已使用&#xff0c;或者新位置不是目标值&#xff0c;则跳过
+        if newX &lt; 0 or newX &gt;&#61; m or newY &lt; 0 or newY &gt;&#61; m or used[newX][newY] or secrets[newX][newY] !&#61; datas[index]:
+            continue
+
+        # 递归进入新位置
+        path.append(f&#34;{newX} {newY}&#34;)
+        used[newX][newY] &#61; True
+
+        # 如果当前分支可以找到符合要求的路径&#xff0c;则返回
+        if dfs(newX, newY, index &#43; 1, path, used):
+            return True
+
+        # 否则&#xff0c;回溯
+        used[newX][newY] &#61; False
+        path.pop()
+
+    return False
+
+
+# 算法入口
+def getResult():
+    # 出发位置(x,y)
+    for x, y in starts:
+        # used[i][j]用于记录密码本(i,j)元素是否已使用
+        used &#61; [[False] * m for _ in range(m)]
+        # 出发点位置元素已使用
+        used[x][y] &#61; True
+
+        # 记录结果路径各节点位置
+        # 出发点位置记录
+        path &#61; [f&#34;{x} {y}&#34;]
+
+        # 开始深搜
+        if dfs(x, y, 1, path, used):
+            return &#34; &#34;.join(path)
+
+    return &#34;error&#34;
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MAX_SIZE 201
+
+// 明文数字个数
+int n;
+// 明文
+int datas[MAX_SIZE];
+
+// 密码本矩阵大小
+int m;
+// 密码本
+int secrets[MAX_SIZE][MAX_SIZE];
+
+// 记录密码本中元素值等于“明文第一个数字”的所有元素的位置
+int starts[MAX_SIZE] &#61; {0};
+int starts_size &#61; 0;
+
+// 上&#xff0c;左&#xff0c;右&#xff0c;下偏移量&#xff0c;注意这里的顺序是有影响的&#xff0c;即下一步偏移后产生的密文的字符序必然是&#xff1a;上 &lt; 左 &lt; 右 &lt; 下
+int offsets[4][2] &#61; {<!-- -->{-1, 0},
+                     {0,  -1},
+                     {0,  1},
+                     {1,  0}};
+
+/*!
+ *
+ * &#64;param x 当前位置横坐标
+ * &#64;param y 当前位置纵坐标
+ * &#64;param index datas[index]是将要匹配的明文数字
+ * &#64;return 是否找到符合要求的路径
+ */
+int dfs(int x, int y, int index, int path[], int *path_size, int used[][MAX_SIZE]) {
+    // 已找到明文最后一个数字&#xff0c;则找到符合要求的路径
+    if (index &#61;&#61; n) {
+        return 1;
+    }
+
+    // 否则&#xff0c;进行上、左、右、下四个方向偏移&#xff0c;注意这里的顺序是有影响的&#xff0c;即下一步偏移后产生的密文的字符序必然是&#xff1a;上 &lt; 左 &lt; 右 &lt; 下
+    for (int i &#61; 0; i &lt; 4; i&#43;&#43;) {
+        // 新位置
+        int newX &#61; x &#43; offsets[i][0];
+        int newY &#61; y &#43; offsets[i][1];
+
+        // 新位置越界&#xff0c;或者新位置已使用&#xff0c;或者新位置不是目标值&#xff0c;则跳过
+        if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; m || used[newX][newY] ||
+            secrets[newX][newY] !&#61; datas[index]) {
+            continue;
+        }
+
+        // 递归进入新位置
+        path[(*path_size)&#43;&#43;] &#61; newX * m &#43; newY;
+        used[newX][newY] &#61; 1;
+
+        // 如果当前分支可以找到符合要求的路径&#xff0c;则返回
+        if (dfs(newX, newY, index &#43; 1, path, path_size, used)) {
+            return 1;
+        }
+
+        // 否则&#xff0c;回溯
+        used[newX][newY] &#61; 0;
+        (*path_size)--;
+    }
+
+    return 0;
+}
+
+void getResult() {
+    for (int i &#61; 0; i &lt; starts_size; i&#43;&#43;) {
+        // 出发位置
+        int x &#61; starts[i] / m;
+        int y &#61; starts[i] % m;
+
+        // used[i][j]用于记录密码本(i,j)元素是否已使用
+        int used[MAX_SIZE][MAX_SIZE] &#61; {0};
+        // 出发点位置元素已使用
+        used[x][y] &#61; 1;
+
+
+        // 记录结果路径各节点位置
+        int path[MAX_SIZE] &#61; {0};
+        int path_size &#61; 0;
+        // 出发点位置记录
+        path[path_size&#43;&#43;] &#61; starts[i];
+
+        // 开始深搜
+        if (dfs(x, y, 1, path, &amp;path_size, used)) {
+            // 找到符合要求的路径&#xff0c;则打印
+            for (int j &#61; 0; j &lt; path_size; j&#43;&#43;) {
+                int pos &#61; path[j];
+                printf(&#34;%d %d&#34;, pos / m, pos % m);
+
+                if (j &lt; path_size - 1) {
+                    printf(&#34; &#34;);
+                }
+            }
+
+            return;
+        }
+    }
+
+    // 找不到符合要求的路径&#xff0c;则打印error
+    puts(&#34;error&#34;);
+}
+
+int main() {
+    scanf(&#34;%d&#34;, &amp;n);
+
+    for (int i &#61; 0; i &lt; n; i&#43;&#43;) {
+        scanf(&#34;%d&#34;, &amp;datas[i]);
+    }
+
+
+    scanf(&#34;%d&#34;, &amp;m);
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; m; j&#43;&#43;) {
+            scanf(&#34;%d&#34;, &amp;secrets[i][j]);
+
+            // 如果密码本(i,j)位置元素指等于明文第一个数字值&#xff0c;则记录(i,j)作为一个出发位置
+            if (secrets[i][j] &#61;&#61; datas[0]) {
+                starts[starts_size&#43;&#43;] &#61; i * m &#43; j;
+            }
+        }
+    }
+
+    getResult();
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

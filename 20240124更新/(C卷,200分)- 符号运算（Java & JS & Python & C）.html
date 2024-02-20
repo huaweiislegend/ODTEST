@@ -1,0 +1,778 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 符号运算（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h3 id="main-toc">题目描述</h3> 
+<p>给定一个表达式&#xff0c;求其分数计算结果。</p> 
+<p></p> 
+<p>表达式的限制如下&#xff1a;</p> 
+<ol><li>所有的输入数字皆为正整数&#xff08;包括0&#xff09;</li><li>仅支持四则运算&#xff08;&#43;-*/&#xff09;和括号</li><li>结果为整数或分数&#xff0c;分数必须化为最简格式&#xff08;比如6&#xff0c;3/4&#xff0c;7/8&#xff0c;90/7&#xff09;</li><li>除数可能为0&#xff0c;如果遇到这种情况&#xff0c;直接输出&#34;ERROR&#34;</li><li>输入和最终计算结果中的数字都不会超出整型范围</li></ol> 
+<p>用例输入一定合法&#xff0c;不会出现括号匹配的情况</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h3> 
+<p>字符串格式的表达式&#xff0c;仅支持&#43;-*/&#xff0c;数字可能超过两位&#xff0c;可能带有空格&#xff0c;没有负数</p> 
+<p>长度小于200个字符</p> 
+<p></p> 
+<h3 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h3> 
+<p>表达式结果&#xff0c;以最简格式表达</p> 
+<ul><li>如果结果为整数&#xff0c;那么直接输出整数</li><li>如果结果为负数&#xff0c;那么分子分母不可再约分&#xff0c;可以为假分数&#xff0c;不可表达为带分数</li><li>结果可能是负数&#xff0c;符号放在前面</li></ul> 
+<p></p> 
+<h3 id="%E7%94%A8%E4%BE%8B">用例</h3> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 &#43; 5 * 7 / 8</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">43/8</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 / (0 - 5)</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">-1/5</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">符号需要提到最前面</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">1 * (3*4/(8-(7&#43;0)))</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">12</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">注意括号可以多重嵌套</td></tr></tbody></table> 
+<p></p> 
+<h3 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h3> 
+<p>本题是经典的中缀表达式计算问题。</p> 
+<p></p> 
+<h4>双栈实现中缀表达式计算</h4> 
+<p>关于中缀表达式计算&#xff0c;通常是定义两个栈结构&#xff1a;</p> 
+<ul><li>一个栈用于记录操作数&#xff1a;假设为oper_num_stack</li><li>一个栈用于记录操作符&#xff1a;假设为oper_sign_stack</li></ul> 
+<p>下面我们通过几个例子来说明两个栈的工作原理&#xff1a;</p> 
+<p></p> 
+<p><img alt="" height="635" src="https://img-blog.csdnimg.cn/direct/119d4c26d2b24576b259da31fc31eb46.png" width="944" /></p> 
+<p><img alt="" height="637" src="https://img-blog.csdnimg.cn/direct/ad82aced2e684a4c92f32eacb4b1c55e.png" width="903" /></p> 
+<p><img alt="" height="647" src="https://img-blog.csdnimg.cn/direct/32ee2977c2844a7e9694704ac16a4b20.png" width="1065" /></p> 
+<p><img alt="" height="650" src="https://img-blog.csdnimg.cn/direct/6427d0f6c669422f9f0e95b7539a414a.png" width="891" /></p> 
+<p><img alt="" height="656" src="https://img-blog.csdnimg.cn/direct/2f33956140654530a61c2a2bcdf971a8.png" width="921" /></p> 
+<p><img alt="" height="714" src="https://img-blog.csdnimg.cn/direct/00f196e43cd24835b5a549e3ee53eceb.png" width="961" /></p> 
+<p><img alt="" height="641" src="https://img-blog.csdnimg.cn/direct/76a1b8ec273041b6b935738a60b3bfd7.png" width="1076" /></p> 
+<hr /> 
+<p></p> 
+<p>通过上面流程&#xff0c;我们可以发现&#xff0c;每次出栈oper_sign_stack一个运算符&#xff0c;那么就要出栈oper_num_stack两个操作数。</p> 
+<p>那么如果存在下面这种情况&#xff0c;是否支持这样的出栈运算逻辑呢&#xff1f;</p> 
+<p><img alt="" height="609" src="https://img-blog.csdnimg.cn/direct/8e82f1ed98c2476d9df2807a2e95c513.png" width="904" /></p> 
+<p>上面运算出错的问题就在于&#xff0c;当&#43;入栈oper_sign_stack前&#xff0c;我们应该比较要入栈的&#39;&#43;&#39;运算&#xff0c;和栈顶的&#39;*&#39;运算&#xff0c;哪个优先级更高&#xff0c;如果栈顶运算符优先级更高&#xff0c;此时我们应该先将栈顶运算符出栈运算&#xff0c;即如下&#xff1a;</p> 
+<p><img alt="" height="614" src="https://img-blog.csdnimg.cn/direct/ab56619784494d38b55d6e9a5a0ac1ab.png" width="1028" /></p> 
+<p><img alt="" height="607" src="https://img-blog.csdnimg.cn/direct/d1d92a46c2654dc1b857f714ad4b4b16.png" width="968" /></p> 
+<p></p> 
+<p><img alt="" height="661" src="https://img-blog.csdnimg.cn/direct/216c8b72af8d48c0b3fb33718135300d.png" width="916" /></p> 
+<p><img alt="" height="677" src="https://img-blog.csdnimg.cn/direct/262326eee1f54d248e1ddeb4cd98af10.png" width="1007" /></p> 
+<hr /> 
+<p>另外&#xff0c;对于运算符入栈时&#xff0c;对比oper_sign_stack栈顶的运算符&#xff0c;如果二者优先级一样&#xff0c;则也需要将oper_sign_stack栈顶运算先出栈运算。</p> 
+<p>且只要oper_sign_stack栈顶的运算符 的优先级&gt;&#61; 需要入栈的运算符&#xff0c;则oper_sign_stack就需要不停的出栈运算。</p> 
+<p></p> 
+<p></p> 
+<p></p> 
+<blockquote> 
+ <p><strong>因此&#xff0c;总结一下就是&#xff0c;如果扫描到了运算符&#xff0c;此时需要和oper_sign_stack栈顶的运算符比较优先级&#xff0c;如果栈顶运算符优先级 <span style="color:#fe2c24;">&gt;&#61;</span> 当前扫描运算符&#xff0c;则栈顶运算符需要出栈运算&#xff0c;直到oper_sign_stack栈顶运算符优先级小于当前扫描运算符。</strong></p> 
+</blockquote> 
+<p></p> 
+<p>另外&#xff0c;本题表达式中还可能出现()&#xff0c;那么遇到括号该怎么处理呢&#xff1f;</p> 
+<p><img alt="" height="621" src="https://img-blog.csdnimg.cn/direct/07b16b931b41421693dd872328aaac16.png" width="991" /></p> 
+<p><img alt="" height="659" src="https://img-blog.csdnimg.cn/direct/5759ce13fe4e4562a0b0feadb26c9476.png" width="912" /></p> 
+<p><img alt="" height="693" src="https://img-blog.csdnimg.cn/direct/9f8d88907ed94c6aa31e11d4176408df.png" width="938" /></p> 
+<p>也就是说&#xff1a;</p> 
+<blockquote> 
+ <p><strong>&#39;(&#39; 对于 &#43;-*/ 运算的入栈oper_sign_stack的逻辑不产生影响&#xff0c;仅用于扫描到&#39;)&#39;时oper_sign_stack的出栈结束界定。</strong></p> 
+ <p><strong>需要注意的时&#xff0c;()内的&#43;-*/运算依旧按照之前的逻辑入栈oper_sign_stack。</strong></p> 
+</blockquote> 
+<p></p> 
+<p>以上就是中缀表达式的基于双栈的解题思路。更具体的逻辑&#xff0c;请看代码实现。</p> 
+<p></p> 
+<h4>分数的四则运算</h4> 
+<p>本题还对中缀表达式计算做了一些改动&#xff0c;即要求的除法不是整除&#xff0c;而是保留最简分数结果。</p> 
+<p>比如 1 / 2 &#43; 3 / 4 的结果不是0&#xff0c;而是 5 / 4。</p> 
+<p></p> 
+<p>解决方案很简单&#xff0c;我们之前在 oper_num_stack 中记录的都是整数操作数&#xff0c;现在我们只要改为分数操作数即可。</p> 
+<p>但是编程语言中并不支持分数&#xff0c;因此我们可以将分数拆分为分子和分母两部分&#xff0c;进行记录。即可以定义一个类&#xff0c;有如下属性&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />     ch:, // 分子<br />     fa:, // 分母<br /> }</p> 
+</blockquote> 
+<p>分数的分子和分母必然是整数。</p> 
+<p></p> 
+<p>如果入栈的元素是一个整数num&#xff0c;则将其转化为如下分数后入栈oper_num_stack</p> 
+<blockquote> 
+ <p>{<!-- --><br />     ch: num, <br />     fa: 1, <br /> }</p> 
+</blockquote> 
+<p></p> 
+<p>当我们需要进行出栈运算时&#xff0c;取出的oper_num_stack栈顶的两个操作数&#xff0c;假设分别为a,b&#xff0c;则&#xff1a;</p> 
+<p>对于加法运算的结果为&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />     ch: a.ch * b.fa &#43; b.ch * a.fa,<br />     fa: a.fa * b.fa,<br /> }</p> 
+</blockquote> 
+<p>比如 a &#61; 1 / 3&#xff0c; b &#61; 3 / 4&#xff0c;进行加法运算时&#xff0c;我们应该将他们的分母变为一样&#xff0c;即同时转为 3 * 4</p> 
+<p>则 a &#61; (1 * <span style="color:#fe2c24;">4</span>) / (3 * <span style="color:#fe2c24;">4</span>)&#xff0c; b &#61; &#xff08;3 * <span style="color:#fe2c24;">3</span>&#xff09;/  (4 *<span style="color:#fe2c24;"> 3</span>)</p> 
+<p></p> 
+<p>按照此逻辑&#xff0c;减法运算结果为&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />     ch: a.ch * b.fa - b.ch * a.fa,<br />     fa: a.fa * b.fa,<br /> }</p> 
+</blockquote> 
+<p></p> 
+<p>而乘法运算结果&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />     ch: a.ch * b.ch,<br />     fa: a.fa * b.fa,<br /> }</p> 
+</blockquote> 
+<p></p> 
+<p>除法运算结果为&#xff1a;</p> 
+<blockquote> 
+ <p>{<!-- --><br />     ch: a.ch * b.fa,<br />     fa: a.fa * b.ch,<br /> }</p> 
+</blockquote> 
+<p></p> 
+<p>这样的话&#xff0c;我们就完成了分数的四则运算。</p> 
+<p></p> 
+<h4>分数的最简格式转化</h4> 
+<p>最后就是关于&#xff0c;分数的最简格式转化了&#xff0c;其实也很简单&#xff0c;就是将分子、分母的最大公约数求解出来&#xff0c;然后分子、分母同时除以最大公约数&#xff0c;即可得到最简格式的分数。</p> 
+<p>而两个数的最大公约数的求解&#xff0c;可以使用辗转相除法。如果不熟悉辗转相除法&#xff0c;可以去网上搜索相关资料。</p> 
+<p></p> 
+<p></p> 
+<p></p> 
+<h3 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h3> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+// 输入输出处理
+void (async function () {
+  console.log(getResult(await readline()));
+})();
+
+// 分数
+class Fractions {
+  constructor(fa, ch) {
+    this.fa &#61; fa; // 分母
+    this.ch &#61; ch; // 分子
+  }
+}
+
+// 操作数栈
+const oper_num &#61; [];
+// 操作符栈
+const oper_sign &#61; [];
+
+function getResult(s) {
+  // &#43;,-,*,/ 运算符优先级
+  const priority &#61; {
+    &#34;&#43;&#34;: 1,
+    &#34;-&#34;: 1,
+    &#34;*&#34;: 2,
+    &#34;/&#34;: 2,
+  };
+
+  // 操作数的字符缓存容器
+  let numStr &#61; [];
+
+  let i &#61; 0;
+  while (i &lt; s.length) {
+    let c &#61; s[i];
+
+    // 遇到数字字符
+    if (c &gt;&#61; &#34;0&#34; &amp;&amp; c &lt;&#61; &#34;9&#34;) {
+      // 则将该数字所在操作数的剩余数字字符一次性探索完
+      while (c &gt;&#61; &#34;0&#34; &amp;&amp; c &lt;&#61; &#34;9&#34;) {
+        numStr.push(c);
+        if (i &#43; 1 &gt;&#61; s.length) break;
+        i&#43;&#43;;
+        c &#61; s[i];
+      }
+
+      // 探索完后&#xff0c;将操作数缓存容器中记录的字符&#xff0c;变为分数后&#xff0c;压入操作数栈
+      oper_num.push(new Fractions(1, parseInt(numStr.join(&#34;&#34;))));
+      // 注意清空操作数缓存容器
+      numStr.length &#61; 0;
+    }
+
+    // 遇到运算符
+    if (c &#61;&#61; &#34;&#43;&#34; || c &#61;&#61; &#34;-&#34; || c &#61;&#61; &#34;*&#34; || c &#61;&#61; &#34;/&#34;) {
+      // 只要栈顶运算符的优先级 &gt;&#61; 当前运算符&#xff0c;就需要不停出栈运算
+      while (
+        oper_sign.length &gt; 0 &amp;&amp;
+        oper_sign.at(-1) !&#61; &#34;(&#34; &amp;&amp;
+        priority[c] &lt;&#61; priority[oper_sign.at(-1)]
+      ) {
+        calc();
+      }
+      oper_sign.push(c);
+    } else if (c &#61;&#61; &#34;)&#34;) {
+      // 遇到&#39;)&#39;, 需要将操作符栈中靠近栈顶的&#39;(&#39;后面的运算都出栈做了
+      while (oper_sign.at(-1) !&#61; &#34;(&#34;) {
+        calc();
+      }
+      // 最后将&#39;)&#39;对应的&#39;(&#39;出栈
+      oper_sign.pop();
+    } else if (c &#61;&#61; &#34;(&#34;) {
+      // 遇到&#39;(&#39;&#xff0c;则直接压倒操作符栈
+      oper_sign.push(c);
+    }
+
+    i&#43;&#43;;
+  }
+
+  // oper_num栈中还有2个以上的数&#xff0c;则还需要进行运算
+  while (oper_num.length &gt; 1) {
+    calc();
+  }
+
+  // oper_num栈中只剩一个数时&#xff0c;该数就是表达式结果
+  const result &#61; oper_num.pop();
+
+  // 如果结果的分母为0&#xff08;除数为0&#xff09;&#xff0c;则不合法
+  if (result.fa &#61;&#61; 0) {
+    return &#34;ERROR&#34;;
+  }
+
+  // 求分子、分母的最大公约数&#xff0c;并进行约份&#xff0c;求得最简格式的分子&#xff0c;分母
+  const k &#61; getMaxCommonDivisor(result.fa, result.ch);
+  result.fa /&#61; k;
+  result.ch /&#61; k;
+
+  // 求计算结果的符号&#xff0c;这里用乘法是为了避免 分母小&#xff0c;分子大&#xff0c;除法结果为0的情况&#xff0c;这样会丢失符号信息
+  const sign &#61; result.fa * result.ch &lt; 0 ? &#34;-&#34; : &#34;&#34;;
+
+  const fa &#61; Math.abs(result.fa);
+  const ch &#61; Math.abs(result.ch);
+
+  if (fa &#61;&#61; 1) {
+    // 如果分母为1&#xff0c;则直接输出分子
+    return sign &#43; ch;
+  } else {
+    // 如果分母不为1&#xff0c;则输出 分子 / 分母
+    return sign &#43; ch &#43; &#34;/&#34; &#43; fa;
+  }
+}
+
+// 取出oper_num栈顶两个操作数进行运算
+function calc() {
+  // 操作数顺序会对运算产生影响
+  const b &#61; oper_num.pop(); // 栈顶元素是运算符右边的操作数
+  const a &#61; oper_num.pop(); // 栈顶倒数第二个元素是运算符左边的操作数
+
+  // 运算符
+  const op &#61; oper_sign.pop();
+
+  // 记录运算结果
+  const result &#61; new Fractions();
+
+  switch (op) {
+    case &#34;&#43;&#34;:
+      result.fa &#61; a.fa * b.fa;
+      result.ch &#61; a.ch * b.fa &#43; b.ch * a.fa;
+      break;
+    case &#34;-&#34;:
+      result.fa &#61; a.fa * b.fa;
+      result.ch &#61; a.ch * b.fa - b.ch * a.fa;
+      break;
+    case &#34;*&#34;:
+      result.fa &#61; a.fa * b.fa;
+      result.ch &#61; a.ch * b.ch;
+      break;
+    case &#34;/&#34;:
+      result.fa &#61; a.fa * b.ch;
+      result.ch &#61; a.ch * b.fa;
+      break;
+  }
+
+  oper_num.push(result);
+}
+
+// 辗转相除法&#xff0c;求两个数的最大公约数
+function getMaxCommonDivisor(x, y) {
+  while (y !&#61; 0) {
+    let tmp &#61; y;
+    y &#61; x % y;
+    x &#61; tmp;
+  }
+
+  return x;
+}
+</code></pre> 
+<p></p> 
+<h3>Java算法源码</h3> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  // 分数
+  static class Fractions {
+    int fa; // 分母
+    int ch; // 分子
+
+    public Fractions() {}
+
+    public Fractions(int fa, int ch) {
+      this.fa &#61; fa;
+      this.ch &#61; ch;
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+    System.out.println(getResult(sc.nextLine()));
+  }
+
+  // 操作数栈
+  static LinkedList&lt;Fractions&gt; oper_num &#61; new LinkedList&lt;&gt;();
+  // 操作符栈
+  static LinkedList&lt;Character&gt; oper_sign &#61; new LinkedList&lt;&gt;();
+
+  public static String getResult(String s) {
+    // &#43;,-,*,/ 运算符优先级
+    HashMap&lt;Character, Integer&gt; priority &#61; new HashMap&lt;&gt;();
+    priority.put(&#39;&#43;&#39;, 1);
+    priority.put(&#39;-&#39;, 1);
+    priority.put(&#39;*&#39;, 2);
+    priority.put(&#39;/&#39;, 2);
+
+    // 操作数的字符缓存容器
+    StringBuilder numStr &#61; new StringBuilder();
+
+    int i &#61; 0;
+    while (i &lt; s.length()) {
+      char c &#61; s.charAt(i);
+
+      // 遇到数字字符
+      if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+        // 则将该数字所在操作数的剩余数字字符一次性探索完
+        while (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+          numStr.append(c);
+          if (i &#43; 1 &gt;&#61; s.length()) break;
+          i&#43;&#43;;
+          c &#61; s.charAt(i);
+        }
+        // 探索完后&#xff0c;将操作数缓存容器中记录的字符&#xff0c;变为分数后&#xff0c;压入操作数栈
+        oper_num.addLast(new Fractions(1, Integer.parseInt(numStr.toString())));
+        // 注意清空操作数缓存容器
+        numStr &#61; new StringBuilder();
+      }
+
+      // 遇到运算符
+      if (c &#61;&#61; &#39;&#43;&#39; || c &#61;&#61; &#39;-&#39; || c &#61;&#61; &#39;*&#39; || c &#61;&#61; &#39;/&#39;) {
+        // 只要栈顶运算符的优先级 &gt;&#61; 当前运算符&#xff0c;就需要不停出栈运算
+        while (oper_sign.size() &gt; 0
+            &amp;&amp; oper_sign.getLast() !&#61; &#39;(&#39;
+            &amp;&amp; priority.get(c) &lt;&#61; priority.get(oper_sign.getLast())) {
+          calc();
+        }
+        oper_sign.addLast(c);
+      } else if (c &#61;&#61; &#39;)&#39;) {
+        // 遇到&#39;)&#39;, 需要将操作符栈中靠近栈顶的&#39;(&#39;后面的运算都出栈做了
+        while (oper_sign.getLast() !&#61; &#39;(&#39;) {
+          calc();
+        }
+        // 最后将&#39;)&#39;对应的&#39;(&#39;出栈
+        oper_sign.removeLast();
+      } else if (c &#61;&#61; &#39;(&#39;) {
+        // 遇到&#39;(&#39;&#xff0c;则直接压倒操作符栈
+        oper_sign.add(c);
+      }
+
+      i&#43;&#43;;
+    }
+
+    // oper_num栈中还有2个以上的数&#xff0c;则还需要进行运算
+    while (oper_num.size() &gt; 1) {
+      calc();
+    }
+
+    // oper_num栈中只剩一个数时&#xff0c;该数就是表达式结果
+    Fractions result &#61; oper_num.removeLast();
+
+    // 如果结果的分母为0&#xff08;除数为0&#xff09;&#xff0c;则不合法
+    if (result.fa &#61;&#61; 0) {
+      return &#34;ERROR&#34;;
+    }
+
+    // 求分子、分母的最大公约数&#xff0c;并进行约份&#xff0c;求得最简格式的分子&#xff0c;分母
+    int k &#61; getMaxCommonDivisor(result.fa, result.ch);
+    result.fa /&#61; k;
+    result.ch /&#61; k;
+
+    // 求计算结果的符号&#xff0c;这里用乘法是为了避免 分母小&#xff0c;分子大&#xff0c;除法结果为0的情况&#xff0c;这样会丢失符号信息
+    String sign &#61; result.fa * result.ch &lt; 0 ? &#34;-&#34; : &#34;&#34;;
+
+    int fa &#61; Math.abs(result.fa);
+    int ch &#61; Math.abs(result.ch);
+
+    if (fa &#61;&#61; 1) {
+      // 如果分母为1&#xff0c;则直接输出分子
+      return sign &#43; ch;
+    } else {
+      // 如果分母不为1&#xff0c;则输出 分子 / 分母
+      return sign &#43; ch &#43; &#34;/&#34; &#43; fa;
+    }
+  }
+
+  // 取出oper_num栈顶两个操作数进行运算
+  public static void calc() {
+    // 操作数顺序会对运算产生影响
+    Fractions b &#61; oper_num.removeLast(); // 栈顶元素是运算符右边的操作数
+    Fractions a &#61; oper_num.removeLast(); // 栈顶倒数第二个元素是运算符左边的操作数
+
+    // 运算符
+    char op &#61; oper_sign.removeLast();
+
+    // 记录运算结果
+    Fractions result &#61; new Fractions();
+
+    switch (op) {
+      case &#39;&#43;&#39;:
+        result.fa &#61; a.fa * b.fa;
+        result.ch &#61; a.ch * b.fa &#43; b.ch * a.fa;
+        break;
+      case &#39;-&#39;:
+        result.fa &#61; a.fa * b.fa;
+        result.ch &#61; a.ch * b.fa - b.ch * a.fa;
+        break;
+      case &#39;*&#39;:
+        result.fa &#61; a.fa * b.fa;
+        result.ch &#61; a.ch * b.ch;
+        break;
+      case &#39;/&#39;:
+        result.fa &#61; a.fa * b.ch;
+        result.ch &#61; a.ch * b.fa;
+        break;
+    }
+
+    oper_num.add(result);
+  }
+
+  // 辗转相除法&#xff0c;求两个数的最大公约数
+  public static int getMaxCommonDivisor(int x, int y) {
+    while (y !&#61; 0) {
+      int tmp &#61; y;
+      y &#61; x % y;
+      x &#61; tmp;
+    }
+    return x;
+  }
+}
+</code></pre> 
+<p></p> 
+<h3>Python算法源码</h3> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+# 操作数栈
+oper_num &#61; []
+# 操作符栈
+oper_sign &#61; []
+
+
+# 分数类
+class Fractions:
+    def __init__(self, fa, ch):
+        self.fa &#61; fa  # 分母
+        self.ch &#61; ch  # 分子
+
+
+# 辗转相除法&#xff0c;求两个数的最大公约数
+def getMaxCommonDivisor(x, y):
+    while y !&#61; 0:
+        tmp &#61; y
+        y &#61; x % y
+        x &#61; tmp
+
+    return x
+
+
+# 取出oper_num栈顶两个操作数进行运算
+def calc():
+    # 操作数顺序会对运算产生影响
+    b &#61; oper_num.pop()  # 栈顶元素是运算符右边的操作数
+    a &#61; oper_num.pop()  # 栈顶倒数第二个元素是运算符左边的操作数
+
+    # 运算符
+    op &#61; oper_sign.pop()
+
+    # 记录运算结果
+    result &#61; Fractions(None, None)
+
+    if op &#61;&#61; &#39;&#43;&#39;:
+        result.fa &#61; a.fa * b.fa
+        result.ch &#61; a.ch * b.fa &#43; b.ch * a.fa
+    elif op &#61;&#61; &#39;-&#39;:
+        result.fa &#61; a.fa * b.fa
+        result.ch &#61; a.ch * b.fa - b.ch * a.fa
+    elif op &#61;&#61; &#39;*&#39;:
+        result.fa &#61; a.fa * b.fa
+        result.ch &#61; a.ch * b.ch
+    elif op &#61;&#61; &#39;/&#39;:
+        result.fa &#61; a.fa * b.ch
+        result.ch &#61; a.ch * b.fa
+
+    oper_num.append(result)
+
+
+def getResult():
+    # &#43;,-,*,/ 运算符优先级
+    priority &#61; {
+        &#34;&#43;&#34;: 1,
+        &#34;-&#34;: 1,
+        &#34;*&#34;: 2,
+        &#34;/&#34;: 2
+    }
+
+    # 操作数的字符缓存容器
+    numStr &#61; []
+
+    i &#61; 0
+    while i &lt; len(s):
+        c &#61; s[i]
+
+        # 遇到数字字符
+        if &#39;9&#39; &gt;&#61; c &gt;&#61; &#39;0&#39;:
+            # 则将该数字所在操作数的剩余数字字符一次性探索完
+            while &#39;9&#39; &gt;&#61; c &gt;&#61; &#39;0&#39;:
+                numStr.append(c)
+                if i &#43; 1 &gt;&#61; len(s):
+                    break
+                i &#43;&#61; 1
+                c &#61; s[i]
+
+            # 探索完后&#xff0c;将操作数缓存容器中记录的字符&#xff0c;变为分数后&#xff0c;压入操作数栈
+            oper_num.append(Fractions(1, int(&#34;&#34;.join(numStr))))
+            # 注意清空操作数缓存容器
+            numStr.clear()
+
+        # 遇到运算符
+        if c &#61;&#61; &#39;&#43;&#39; or c &#61;&#61; &#39;-&#39; or c &#61;&#61; &#39;*&#39; or c &#61;&#61; &#39;/&#39;:
+            # 只要栈顶运算符的优先级 &gt;&#61; 当前运算符&#xff0c;就需要不停出栈运算
+            while len(oper_sign) &gt; 0 and oper_sign[-1] !&#61; &#39;(&#39; and priority[c] &lt;&#61; priority[oper_sign[-1]]:
+                calc()
+            oper_sign.append(c)
+        elif c &#61;&#61; &#39;)&#39;:
+            # 遇到&#39;)&#39;, 需要将操作符栈中靠近栈顶的&#39;(&#39;后面的运算都出栈做了
+            while oper_sign[-1] !&#61; &#39;(&#39;:
+                calc()
+            # 最后将&#39;)&#39;对应的&#39;(&#39;出栈
+            oper_sign.pop()
+        elif c &#61;&#61; &#39;(&#39;:
+            # 遇到&#39;(&#39;&#xff0c;则直接压倒操作符栈
+            oper_sign.append(c)
+
+        i &#43;&#61; 1
+
+    # oper_num栈中还有2个以上的数&#xff0c;则还需要进行运算
+    while len(oper_num) &gt; 1:
+        calc()
+
+    # oper_num栈中只剩一个数时&#xff0c;该数就是表达式结果
+    result &#61; oper_num.pop()
+
+    # 如果结果的分母为0&#xff08;除数为0&#xff09;&#xff0c;则不合法
+    if result.fa &#61;&#61; 0:
+        return &#34;ERROR&#34;
+
+    # 求分子、分母的最大公约数&#xff0c;并进行约份&#xff0c;求得最简格式的分子&#xff0c;分母
+    k &#61; getMaxCommonDivisor(result.fa, result.ch)
+    result.fa //&#61; k
+    result.ch //&#61; k
+
+    # 求计算结果的符号&#xff0c;这里用乘法是为了避免 分母小&#xff0c;分子大&#xff0c;除法结果为0的情况&#xff0c;这样会丢失符号信息
+    sign &#61; &#34;-&#34; if result.fa * result.ch &lt; 0 else &#34;&#34;
+
+    fa &#61; abs(result.fa)
+    ch &#61; abs(result.ch)
+
+    if fa &#61;&#61; 1:
+        #  如果分母为1&#xff0c;则直接输出分子
+        return f&#34;{sign}{ch}&#34;
+    else:
+        # 如果分母不为1&#xff0c;则输出 分子 / 分母
+        return f&#34;{sign}{ch}/{fa}&#34;
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h3 style="background-color:transparent;">C算法源码</h3> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define MAX_LENGTH 200
+
+// 分数结构
+typedef struct Fractions {
+    int fa; // 分母
+    int ch; // 分子
+} Fractions;
+
+Fractions *new_Fractions(int fa, int ch) {
+    Fractions *fra &#61; (Fractions *) malloc(sizeof(Fractions));
+    fra-&gt;fa &#61; fa;
+    fra-&gt;ch &#61; ch;
+    return fra;
+}
+
+// 操作数栈
+Fractions *oper_num[MAX_LENGTH];
+int oper_num_size &#61; 0;
+
+// 操作符栈
+char oper_sign[MAX_LENGTH];
+int oper_sign_size &#61; 0;
+
+// 辗转相除法&#xff0c;求两个数的最大公约数
+int getMaxCommonDivisor(int x, int y) {
+    while (y !&#61; 0) {
+        int tmp &#61; y;
+        y &#61; x % y;
+        x &#61; tmp;
+    }
+    return x;
+}
+
+// 取出oper_num栈顶两个操作数进行运算
+void calc() {
+    // 操作数顺序会对运算产生影响
+    Fractions *b &#61; oper_num[--oper_num_size]; // 栈顶元素是运算符右边的操作数
+    Fractions *a &#61; oper_num[--oper_num_size]; // 栈顶倒数第二个元素是运算符左边的操作数
+
+    // 运算符
+    char op &#61; oper_sign[--oper_sign_size];
+
+    // 记录运算结果
+    Fractions *result &#61; new_Fractions(1, 0);
+
+    if (op &#61;&#61; &#39;&#43;&#39;) {
+        result-&gt;fa &#61; a-&gt;fa * b-&gt;fa;
+        result-&gt;ch &#61; a-&gt;ch * b-&gt;fa &#43; b-&gt;ch * a-&gt;fa;
+    } else if (op &#61;&#61; &#39;-&#39;) {
+        result-&gt;fa &#61; a-&gt;fa * b-&gt;fa;
+        result-&gt;ch &#61; a-&gt;ch * b-&gt;fa - b-&gt;ch * a-&gt;fa;
+    } else if (op &#61;&#61; &#39;*&#39;) {
+        result-&gt;fa &#61; a-&gt;fa * b-&gt;fa;
+        result-&gt;ch &#61; a-&gt;ch * b-&gt;ch;
+    } else if (op &#61;&#61; &#39;/&#39;) {
+        result-&gt;fa &#61; a-&gt;fa * b-&gt;ch;
+        result-&gt;ch &#61; a-&gt;ch * b-&gt;fa;
+    }
+
+    oper_num[oper_num_size&#43;&#43;] &#61; result;
+}
+
+int main() {
+    char s[MAX_LENGTH];
+    gets(s);
+
+    // &#43;,-,*,/ 运算符优先级
+    int priority[128] &#61; {0};
+    priority[&#39;&#43;&#39;] &#61; 1;
+    priority[&#39;-&#39;] &#61; 1;
+    priority[&#39;*&#39;] &#61; 2;
+    priority[&#39;/&#39;] &#61; 2;
+
+    // 操作数的字符缓存容器
+    char numStr[MAX_LENGTH] &#61; {&#39;\0&#39;};
+    int numStr_size &#61; 0;
+
+    int i &#61; 0;
+    while (s[i] !&#61; &#39;\0&#39;) {
+        char c &#61; s[i];
+
+        // 遇到数字字符
+        if (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+            // 则将该数字所在操作数的剩余数字字符一次性探索完
+            while (c &gt;&#61; &#39;0&#39; &amp;&amp; c &lt;&#61; &#39;9&#39;) {
+                numStr[numStr_size&#43;&#43;] &#61; c;
+                if (s[i &#43; 1] &#61;&#61; &#39;\0&#39;) break;
+                i&#43;&#43;;
+                c &#61; s[i];
+            }
+
+            // 探索完后&#xff0c;将操作数缓存容器中记录的字符&#xff0c;变为分数后&#xff0c;压入操作数栈
+            oper_num[oper_num_size&#43;&#43;] &#61; new_Fractions(1, atoi(numStr));
+            // 注意清空操作数缓存容器
+            memset(numStr, &#39;\0&#39;, MAX_LENGTH);
+            numStr_size &#61; 0;
+        }
+
+        // 遇到运算符
+        if (c &#61;&#61; &#39;&#43;&#39; || c &#61;&#61; &#39;-&#39; || c &#61;&#61; &#39;*&#39; || c &#61;&#61; &#39;/&#39;) {
+            // 只要栈顶运算符的优先级 &gt;&#61; 当前运算符&#xff0c;就需要不停出栈运算
+            while (oper_sign_size &gt; 0 &amp;&amp; oper_sign[oper_sign_size - 1] !&#61; &#39;(&#39; &amp;&amp;
+                   priority[c] &lt;&#61; priority[oper_sign[oper_sign_size - 1]]) {
+                calc();
+            }
+            oper_sign[oper_sign_size&#43;&#43;] &#61; c;
+        } else if (c &#61;&#61; &#39;)&#39;) {
+            // 遇到&#39;)&#39;, 需要将操作符栈中靠近栈顶的&#39;(&#39;后面的运算都出栈做了
+            while (oper_sign[oper_sign_size - 1] !&#61; &#39;(&#39;) {
+                calc();
+            }
+            // 最后将&#39;)&#39;对应的&#39;(&#39;出栈
+            oper_sign_size--;
+        } else if (c &#61;&#61; &#39;(&#39;) {
+            // 遇到&#39;(&#39;&#xff0c;则直接压倒操作符栈
+            oper_sign[oper_sign_size&#43;&#43;] &#61; c;
+        }
+
+        i&#43;&#43;;
+    }
+
+    // oper_num栈中还有2个以上的数&#xff0c;则还需要进行运算
+    while (oper_num_size &gt; 1) {
+        calc();
+    }
+
+    // oper_num栈中只剩一个数时&#xff0c;该数就是表达式结果
+    Fractions *result &#61; oper_num[--oper_num_size];
+
+    // 如果结果的分母为0&#xff08;除数为0&#xff09;&#xff0c;则不合法
+    if (result-&gt;fa &#61;&#61; 0) {
+        puts(&#34;ERROR&#34;);
+        return 0;
+    }
+
+    // 求分子、分母的最大公约数&#xff0c;并进行约份&#xff0c;求得最简格式的分子&#xff0c;分母
+    int k &#61; getMaxCommonDivisor(result-&gt;fa, result-&gt;ch);
+    result-&gt;fa /&#61; k;
+    result-&gt;ch /&#61; k;
+
+    // 求计算结果的符号&#xff0c;这里用乘法是为了避免 分母小&#xff0c;分子大&#xff0c;除法结果为0的情况&#xff0c;这样会丢失符号信息
+    if ((result-&gt;fa &gt; 0 &amp;&amp; result-&gt;ch &lt; 0) || (result-&gt;ch &gt; 0 &amp;&amp; result-&gt;fa &lt; 0)) {
+        printf(&#34;-&#34;);
+    }
+
+    int fa &#61; abs(result-&gt;fa);
+    int ch &#61; abs(result-&gt;ch);
+
+    if (fa &#61;&#61; 1) {
+        // 如果分母为1&#xff0c;则直接输出分子
+        printf(&#34;%d\n&#34;, ch);
+    } else {
+        // 如果分母不为1&#xff0c;则输出 分子 / 分母
+        printf(&#34;%d/%d\n&#34;, ch, fa);
+    }
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

@@ -1,0 +1,578 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 跳马（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>马是象棋&#xff08;包括中国象棋和国际象棋&#xff09;中的棋子&#xff0c;走法是每步直一格再斜一格&#xff0c;即先横着或者直者走一格&#xff0c;然后再斜着走一个对角线&#xff0c;可进可退&#xff0c;可越过河界&#xff0c;俗称&#34;马走日&#34;字。</p> 
+<p>给定 m 行 n 列的棋盘&#xff08;网格图&#xff09;&#xff0c;棋盘上只有棋子象棋中的棋子“马”&#xff0c;并且每个棋子有等级之分&#xff0c;等级为 k 的马可以跳 1~k 步&#xff08;走的方式与象棋中“马”的规则一样&#xff0c;不可以超出棋盘位置&#xff09;&#xff0c;问是否能将所有马跳到同一位置&#xff0c;如果存在&#xff0c;输出最少需要的总步数&#xff08;每匹马的步数相加&#xff09;&#xff0c;不存在则输出-1。</p> 
+<p></p> 
+<p>注&#xff1a;允许不同的马在跳的过程中跳到同一位置&#xff0c;坐标为&#xff08;x,y&#xff09;的马跳一次可以跳到的坐标为&#xff1a;(x&#43;1, y&#43;2)&#xff0c;(x&#43;1, y-2)&#xff0c;(x&#43;2, y&#43;1)&#xff0c;(x&#43;2, y-1)&#xff0c;(x-1, y&#43;2)&#xff0c;(x-1, y-2)&#xff0c;(x-2, y&#43;1)&#xff0c;(x-2, y-1)&#xff0c;的格点上&#xff0c;但是不可以超出棋盘范围。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行输入m&#xff0c;n&#xff0c;代表 m 行 n 列的网格图棋盘&#xff08;1 ≤ m, n ≤ 25&#xff09;</p> 
+<p>接下来输入 m 行 n 列的网格图棋盘&#xff0c;如果第 i 行&#xff0c;第 j 列的元素为 &#34;.&#34; &#xff0c;代表此格点没有棋子&#xff0c;如果为数字 k&#xff08;1 ≤ k ≤ 9&#xff09;&#xff0c;代表此格点存在等级为 k 的“马”</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出最少需要的总步数&#xff08;每匹马的步数相加&#xff09;&#xff0c;不存在则输出-1。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 2<br /> ..<br /> 2.<br /> ..</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">0</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">只有一匹马&#xff0c;不需要跳动</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">3 5<br /> 47.48<br /> 4744.<br /> 7....</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">17</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题需要我们找到一个位置&#xff1a;</p> 
+<ul><li>所有马都能跳到该位置</li><li>所有马跳到该位置的步数之和最小</li></ul> 
+<p>返回该位置的最小步数和。</p> 
+<p></p> 
+<p>另外&#xff0c;每个马还有等级K&#xff0c;决定了该马能跳的步数。</p> 
+<p>因此&#xff0c;我们只需要遍历每一匹马&#xff0c;并基于BFS策略&#xff0c;让该马跳K步&#xff0c;在跳的过程中&#xff0c;我们记录下该马跳过的位置&#xff0c;马第一次跳到某位置&#xff0c;即为该马到达该位置的最小步数&#xff0c;后续该马再次跳到该位置&#xff0c;则非到达该位置的最小步数。</p> 
+<p></p> 
+<p>具体解题时&#xff0c;我们可以定义&#xff1a;</p> 
+<ul><li>stepMap&#xff1a;一个m行n列整型矩阵&#xff0c;矩阵每个元素初始值为0&#xff0c;stepMap[i][j]表示所有能跳到(i, j)位置的马所花费的最小步数之和</li><li>reach&#xff1a;一个Set集合&#xff0c;用于记录所有马都能跳到的公共位置&#xff0c;初始时该集合记录棋盘所有位置&#xff0c;即认为所有马可以跳到所有位置&#xff0c;所有位置都是公共位置</li></ul> 
+<p>然后&#xff0c;基于每一匹马进行BFS&#xff0c;在BFS前定义&#xff1a;</p> 
+<ul><li>一个Set集合vis&#xff0c;用于记录当前马能跳到的位置</li><li>马的位置信息 [x, y, step]&#xff0c;表示马到达棋盘&#xff08;x,y&#xff09;位置&#xff0c;花费了step步&#xff0c;初始时&#xff0c;(x,y)即为马所在位置&#xff0c;step&#61;0</li></ul> 
+<p>之后从初始位置开始按层BFS跳到新位置(newX, newY)&#xff0c;如果新位置&#xff1a;</p> 
+<ol><li>越界</li><li>已经跳过&#xff08;新位置在vis集合中&#xff09;</li></ol> 
+<p>则新位置不可进入&#xff0c;其余情况可以进入新位置&#xff0c;进入新位置后&#xff0c;意味着新位置需要花费step&#43;1步&#xff0c;此时该马到达新位置的最小步数即为step&#43;1&#xff0c;之后&#xff1a;</p> 
+<ul><li>stepMap[newX][newY] &#43;&#61; step &#43; 1</li><li>vis.add(newX * n &#43; newY)</li></ul> 
+<p>对马进行按层BFS&#xff0c;主要是为了记步&#xff0c;即走了几步&#xff0c;每一层都代表一步&#xff0c;因此当BFS进行了K层后&#xff0c;该马走了K步。</p> 
+<p>当马走完所有步数后&#xff0c;我们对 reach 和 vis 两个集合取交集&#xff08;位置&#xff09;&#xff0c;将交集重新赋值给reach&#xff0c;这样就能保证reach记录的位置是所有马都能到达的公共位置。</p> 
+<p></p> 
+<p>如果最后reach集合的元素个数为0&#xff0c;则代表没有公共位置&#xff0c;此时返回-1。</p> 
+<p>否则&#xff0c;遍历reach中记录的公共位置&#xff0c;结合stepMap找到所有公共位置中的最小步数和。</p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JS算法源码</h4> 
+<pre><code class="language-javascript">const rl &#61; require(&#34;readline&#34;).createInterface({ input: process.stdin });
+var iter &#61; rl[Symbol.asyncIterator]();
+const readline &#61; async () &#61;&gt; (await iter.next()).value;
+
+void (async function () {
+  // 棋盘行数, 棋盘列数
+  const [m, n] &#61; (await readline()).split(&#34; &#34;).map(Number);
+
+  // 记录所有马都可达的公共位置坐标
+  const reach &#61; new Set();
+
+  // 棋盘矩阵
+  const map &#61; [];
+  for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+    map.push(await readline());
+
+    // 初始时假设所有位置都是各个马可达的
+    for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+      reach.add(i * n &#43; j); // 二维坐标一维化
+    }
+  }
+
+  // 最小步数和矩阵&#xff0c;stepMap[i][j]记录各个马走到棋盘(i,j)位置的最小步数之和
+  const stepMap &#61; new Array(m).fill(0).map(() &#61;&gt; new Array(n).fill(0));
+
+  function getResult() {
+    // 遍历棋盘
+    for (let i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (let j &#61; 0; j &lt; n; j&#43;&#43;) {
+        // 如果棋盘(i,j)位置是马
+        if (map[i][j] !&#61; &#34;.&#34;) {
+          // 马的等级
+          const k &#61; parseInt(map[i][j]);
+          // 对该马进行BFS走日
+          bfs(i, j, k);
+        }
+      }
+    }
+
+    // 如果所有马走完&#xff0c;发现没有公共可达位置
+    if (reach.size &#61;&#61; 0) {
+      return -1;
+    }
+
+    // 记录所有马都可达位置的最小步数和
+    let minStep &#61; Infinity;
+    for (let pos of reach) {
+      const y &#61; pos % n;
+      const x &#61; (pos - y) / n;
+      // (x,y)是所有马都可达的位置&#xff0c;stepMap[x][y]记录所有马到达此位置的步数和
+      minStep &#61; Math.min(minStep, stepMap[x][y]);
+    }
+
+    return minStep;
+  }
+
+  // 马走日的偏移量
+  const offsets &#61; [
+    [1, 2],
+    [1, -2],
+    [2, 1],
+    [2, -1],
+    [-1, 2],
+    [-1, -2],
+    [-2, 1],
+    [-2, -1],
+  ];
+
+  // 广搜
+  function bfs(sx, sy, k) {
+    // 广搜队列
+    // (sx,sy)为马所在初始位置&#xff0c;马到达初始位置需要0步
+    let queue &#61; [[sx, sy, 0]];
+
+    // 记录该马可以访问(sx,sy)位置
+    const vis &#61; new Set();
+    vis.add(sx * n &#43; sy); // 二维坐标一维化
+
+    // k记录该马剩余可走步数
+    while (queue.length &gt; 0 &amp;&amp; k &gt; 0) {
+      // newQueue记录该马花费相同步数的可达的位置&#xff08;即BFS按层遍历的层&#xff09;
+      const newQueue &#61; [];
+
+      // 按层BFS
+      for (let [x, y, step] of queue) {
+        for (let [offsetX, offsetY] of offsets) {
+          // 马走日到达的新位置
+          const newX &#61; x &#43; offsetX;
+          const newY &#61; y &#43; offsetY;
+
+          const pos &#61; newX * n &#43; newY;
+
+          // 如果新位置越界或者已访问过&#xff0c;则不能访问
+          if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n || vis.has(pos))
+            continue;
+
+          // 将新位置加入新层
+          newQueue.push([newX, newY, step &#43; 1]);
+
+          // 该马到达(newX, newY)位置最小步数为step&#43;1, 由于该马首次到达(newX, newY)位置&#xff0c;因此step&#43;1就是最小步数
+          stepMap[newX][newY] &#43;&#61; step &#43; 1;
+
+          // 记录该马访问过该位置&#xff0c;后续如果该马再次访问该位置&#xff0c;则不是最小步数
+          vis.add(pos);
+        }
+      }
+
+      queue &#61; newQueue;
+      k--; // 剩余步数减1
+    }
+
+    // BFS完后&#xff0c;将公共可达位置reach和当前马可达位置取交集&#xff0c;交集部分就是新的公共可达位置
+    reach.forEach((pos) &#61;&gt; {
+      if (!vis.has(pos)) {
+        reach.delete(pos);
+      }
+    });
+  }
+
+  console.log(getResult());
+})();
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  // 棋盘行数
+  static int m;
+  // 棋盘列数
+  static int n;
+  // 棋盘矩阵
+  static char[][] map;
+  // 最小步数和矩阵&#xff0c;stepMap[i][j]记录各个马走到棋盘(i,j)位置的最小步数之和
+  static int[][] stepMap;
+  // 记录所有马都可达的公共位置坐标
+  static HashSet&lt;Integer&gt; reach;
+
+  // 马走日的偏移量
+  static int[][] offsets &#61; {<!-- -->{1, 2}, {1, -2}, {2, 1}, {2, -1}, {-1, 2}, {-1, -2}, {-2, 1}, {-2, -1}};
+
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    m &#61; sc.nextInt();
+    n &#61; sc.nextInt();
+
+    map &#61; new char[m][n];
+    stepMap &#61; new int[m][n];
+    reach &#61; new HashSet&lt;&gt;();
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      map[i] &#61; sc.next().toCharArray();
+
+      // 初始时假设所有位置都是各个马可达的
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        reach.add(i * n &#43; j);
+      }
+    }
+
+    System.out.println(getResult());
+  }
+
+  public static int getResult() {
+    // 遍历棋盘
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+      for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+        // 如果棋盘(i,j)位置是马
+        if (map[i][j] !&#61; &#39;.&#39;) {
+          // 马的等级
+          int k &#61; map[i][j] - &#39;0&#39;;
+          // 对该马进行BFS走日
+          bfs(i, j, k);
+        }
+      }
+    }
+
+    // 如果所有马走完&#xff0c;发现没有公共可达位置
+    if (reach.size() &#61;&#61; 0) {
+      return -1;
+    }
+
+    // 记录所有马都可达位置的最小步数和
+    int minStep &#61; Integer.MAX_VALUE;
+
+    for (int pos : reach) {
+      int x &#61; pos / n;
+      int y &#61; pos % n;
+      // (x,y)是所有马都可达的位置&#xff0c;stepMap[x][y]记录所有马到达此位置的步数和
+      minStep &#61; Math.min(minStep, stepMap[x][y]);
+    }
+
+    return minStep;
+  }
+
+  // 广搜
+  public static void bfs(int sx, int sy, int k) {
+    // 广搜队列
+    LinkedList&lt;int[]&gt; queue &#61; new LinkedList&lt;&gt;();
+    // (sx,sy)为马所在初始位置&#xff0c;马到达初始位置需要0步
+    queue.add(new int[] {sx, sy, 0});
+
+    // 记录该马可以访问(sx,sy)位置
+    HashSet&lt;Integer&gt; vis &#61; new HashSet&lt;&gt;();
+    vis.add(sx * n &#43; sy); // 二维坐标一维化
+
+    // k记录该马剩余可走步数
+    while (queue.size() &gt; 0 &amp;&amp; k &gt; 0) {
+      // newQueue记录该马花费相同步数的可达的位置&#xff08;即BFS按层遍历的层&#xff09;
+      LinkedList&lt;int[]&gt; newQueue &#61; new LinkedList&lt;&gt;();
+
+      // 按层BFS
+      for (int[] tmp : queue) {
+        // 当前马所在位置(x,y)&#xff0c;以及马到达该位置的步数step
+        int x &#61; tmp[0];
+        int y &#61; tmp[1];
+        int step &#61; tmp[2];
+
+        for (int[] offset : offsets) {
+          // 马走日到达的新位置
+          int newX &#61; x &#43; offset[0];
+          int newY &#61; y &#43; offset[1];
+
+          int pos &#61; newX * n &#43; newY;
+
+          // 如果新位置越界或者已访问过&#xff0c;则不能访问
+          if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n || vis.contains(pos)) continue;
+
+          // 将新位置加入新层
+          newQueue.add(new int[] {newX, newY, step &#43; 1});
+          // 该马到达(newX, newY)位置最小步数为step&#43;1, 由于该马首次到达(newX, newY)位置&#xff0c;因此step&#43;1就是最小步数
+          stepMap[newX][newY] &#43;&#61; step &#43; 1;
+          // 记录该马访问过该位置&#xff0c;后续如果该马再次访问该位置&#xff0c;则不是最小步数
+          vis.add(pos);
+        }
+      }
+
+      queue &#61; newQueue;
+      k--; // 剩余步数减1
+    }
+
+    // BFS完后&#xff0c;将公共可达位置reach和当前马可达位置取交集&#xff0c;交集部分就是新的公共可达位置
+    reach.retainAll(vis);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python">import sys
+
+# 输入获取
+m, n &#61; map(int, input().split())  # 棋盘行数, 棋盘列数
+grid &#61; [input() for _ in range(m)]  # 棋盘矩阵
+stepGrid &#61; [[0] * n for _ in range(m)]  # 最小步数和矩阵&#xff0c;stepMap[i][j]记录各个马走到棋盘(i,j)位置的最小步数之和
+
+# 记录所有马都可达的公共位置坐标
+reach &#61; set()
+for i in range(m):
+    for j in range(n):
+        reach.add(i * n &#43; j)
+
+# 马走日的偏移量
+offsets &#61; ((1, 2), (1, -2), (2, 1), (2, -1), (-1, 2), (-1, -2), (-2, 1), (-2, -1))
+
+
+# 广搜
+def bfs(sx, sy, k):
+    global reach
+
+    # 广搜队列
+    # (sx,sy)为马所在初始位置&#xff0c;马到达初始位置需要0步
+    queue &#61; [(sx, sy, 0)]
+
+    # 记录该马可以访问(sx,sy)位置
+    vis &#61; set()
+    vis.add(sx * n &#43; sy)  # 二维坐标一维化
+
+    # k记录该马剩余可走步数
+    while len(queue) &gt; 0 and k &gt; 0:
+        # newQueue记录该马花费相同步数的可达的位置&#xff08;即BFS按层遍历的层&#xff09;
+        newQueue &#61; []
+
+        # 按层BFS
+        for x, y, step in queue:
+            for offsetX, offsetY in offsets:
+                # 马走日到达的新位置
+                newX &#61; x &#43; offsetX
+                newY &#61; y &#43; offsetY
+
+                pos &#61; newX * n &#43; newY
+
+                # 如果新位置越界或者已访问过&#xff0c;则不能访问
+                if newX &lt; 0 or newX &gt;&#61; m or newY &lt; 0 or newY &gt;&#61; n or (pos in vis):
+                    continue
+
+                # 将新位置加入新层
+                newQueue.append((newX, newY, step &#43; 1))
+
+                # 该马到达(newX, newY)位置最小步数为step&#43;1, 由于该马首次到达(newX, newY)位置&#xff0c;因此step&#43;1就是最小步数
+                stepGrid[newX][newY] &#43;&#61; step &#43; 1
+
+                # 记录该马访问过该位置&#xff0c;后续如果该马再次访问该位置&#xff0c;则不是最小步数
+                vis.add(pos)
+
+        queue &#61; newQueue
+        k -&#61; 1  # 剩余步数减1
+
+    # BFS完后&#xff0c;将公共可达位置reach和当前马可达位置vis取交集&#xff0c;交集部分就是新的公共可达位置
+    reach &amp;&#61; vis
+
+
+# 算法入口
+def getResult():
+    # 遍历棋盘
+    for i in range(m):
+        for j in range(n):
+            # 如果棋盘(i,j)位置是马
+            if grid[i][j] !&#61; &#39;.&#39;:
+                # 马的等级
+                k &#61; int(grid[i][j])
+                # 对该马进行BFS走日
+                bfs(i, j, k)
+
+    # 如果所有马走完&#xff0c;发现没有公共可达位置
+    if len(reach) &#61;&#61; 0:
+        return -1
+
+    # 记录所有马都可达位置的最小步数和
+    minStep &#61; sys.maxsize
+
+    for pos in reach:
+        x &#61; pos // n
+        y &#61; pos % n
+        # (x,y)是所有马都可达的位置&#xff0c;stepMap[x][y]记录所有马到达此位置的步数和
+        minStep &#61; min(minStep, stepGrid[x][y])
+
+    return minStep
+
+
+# 算法调用
+print(getResult())
+</code></pre> 
+<p></p> 
+<h4 style="background-color:transparent;">C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;math.h&gt;
+
+#define MAX_SIZE 26
+
+// 棋盘行数, 棋盘列数
+int m, n;
+// 棋盘矩阵
+char map[MAX_SIZE][MAX_SIZE];
+// 最小步数和矩阵&#xff0c;stepMap[i][j]记录各个马走到棋盘(i,j)位置的最小步数之和
+int stepMap[MAX_SIZE][MAX_SIZE] &#61; {0};
+
+// 记录所有马都可达的公共位置坐标
+int reach[MAX_SIZE * MAX_SIZE] &#61; {0};
+int reach_size &#61; 0;
+
+// 马走日的偏移量
+int offsets[8][2] &#61; {<!-- -->{1,  2},
+                     {1,  -2},
+                     {2,  1},
+                     {2,  -1},
+                     {-1, 2},
+                     {-1, -2},
+                     {-2, 1},
+                     {-2, -1}};
+
+// 广搜
+void bfs(int sx, int sy, int k) {
+    // 广搜队列
+    int queue[m * n][3];
+    int queue_size &#61; 0;
+
+    // (sx,sy)为马所在初始位置&#xff0c;马到达初始位置需要0步
+    queue[queue_size][0] &#61; sx;
+    queue[queue_size][1] &#61; sy;
+    queue[queue_size][2] &#61; 0;
+
+    queue_size&#43;&#43;;
+
+    // 记录该马可以访问(sx,sy)位置
+    int vis[MAX_SIZE * MAX_SIZE] &#61; {0};
+    vis[sx * n &#43; sy] &#61; 1;
+
+    // k记录该马剩余可走步数
+    while (queue_size &gt; 0 &amp;&amp; k &gt; 0) {
+        // newQueue记录该马花费相同步数的可达的位置&#xff08;即BFS按层遍历的层&#xff09;
+        int newQueue[m * n][3];
+        int newQueue_size &#61; 0;
+
+        // 按层BFS
+        for (int i &#61; 0; i &lt; queue_size; i&#43;&#43;) {
+            // 当前马所在位置(x,y)&#xff0c;以及马到达该位置的步数step
+            int x &#61; queue[i][0];
+            int y &#61; queue[i][1];
+            int step &#61; queue[i][2];
+
+            for (int j &#61; 0; j &lt; 8; j&#43;&#43;) {
+                // 马走日到达的新位置
+                int newX &#61; x &#43; offsets[j][0];
+                int newY &#61; y &#43; offsets[j][1];
+
+                int pos &#61; newX * n &#43; newY;
+
+                // 如果新位置越界或者已访问过&#xff0c;则不能访问
+                if (newX &lt; 0 || newX &gt;&#61; m || newY &lt; 0 || newY &gt;&#61; n || vis[pos]) continue;
+
+                // 将新位置加入新层
+                newQueue[newQueue_size][0] &#61; newX;
+                newQueue[newQueue_size][1] &#61; newY;
+                newQueue[newQueue_size][2] &#61; step &#43; 1;
+
+                newQueue_size&#43;&#43;;
+
+                // 该马到达(newX, newY)位置最小步数为step&#43;1, 由于该马首次到达(newX, newY)位置&#xff0c;因此step&#43;1就是最小步数
+                stepMap[newX][newY] &#43;&#61; step &#43; 1;
+
+                // 记录该马访问过该位置&#xff0c;后续如果该马再次访问该位置&#xff0c;则不是最小步数
+                vis[pos] &#61; 1;
+            }
+        }
+
+        for (int i &#61; 0; i &lt; newQueue_size; i&#43;&#43;) {
+            queue[i][0] &#61; newQueue[i][0];
+            queue[i][1] &#61; newQueue[i][1];
+            queue[i][2] &#61; newQueue[i][2];
+        }
+        queue_size &#61; newQueue_size;
+
+        k--; // 剩余步数减1
+    }
+
+    // BFS完后&#xff0c;将公共可达位置reach和当前马可达位置取交集&#xff0c;交集部分就是新的公共可达位置
+    for (int i &#61; 0; i &lt; m * n; i&#43;&#43;) {
+        if (reach[i] &#61;&#61; 1 &amp;&amp; vis[i] &#61;&#61; 0) {
+            reach[i] &#61; 0;
+            reach_size--;
+        }
+    }
+}
+
+int getResult() {
+    // 遍历棋盘
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            // 如果棋盘(i,j)位置是马
+            if (map[i][j] !&#61; &#39;.&#39;) {
+                // 马的等级
+                int k &#61; map[i][j] - &#39;0&#39;;
+                // 对该马进行BFS走日
+                bfs(i, j, k);
+            }
+        }
+    }
+
+    // 如果所有马走完&#xff0c;发现没有公共可达位置
+    if (reach_size &#61;&#61; 0) {
+        return -1;
+    }
+
+    // 记录所有马都可达位置的最小步数和
+    int minStep &#61; INT_MAX;
+
+    for (int i &#61; 0; i &lt; m * n; i&#43;&#43;) {
+        if(reach[i] !&#61; 1) continue;
+        
+        int x &#61; i / n;
+        int y &#61; i % n;
+        // (x,y)是所有马都可达的位置&#xff0c;stepMap[x][y]记录所有马到达此位置的步数和
+        minStep &#61; (int) fmin(minStep, stepMap[x][y]);
+    }
+
+    return minStep;
+}
+
+int main() {
+    scanf(&#34;%d %d&#34;, &amp;m, &amp;n);
+
+    for (int i &#61; 0; i &lt; m; i&#43;&#43;) {
+        scanf(&#34;%s&#34;, map[i]);
+
+        for (int j &#61; 0; j &lt; n; j&#43;&#43;) {
+            reach[i * n &#43; j] &#61; 1;
+        }
+    }
+
+    reach_size &#61; m * n;
+
+    printf(&#34;%d\n&#34;, getResult());
+
+    return 0;
+}</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

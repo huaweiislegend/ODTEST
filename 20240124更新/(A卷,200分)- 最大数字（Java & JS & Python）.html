@@ -1,0 +1,257 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(A卷,200分)- 最大数字（Java & JS & Python）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>给定一个由纯数字组成以字符串表示的数值&#xff0c;现要求字符串中的每个数字最多只能出现2次&#xff0c;超过的需要进行删除&#xff1b;</p> 
+<p>删除某个重复的数字后&#xff0c;其它数字相对位置保持不变。</p> 
+<p>如”34533″&#xff0c;数字3重复超过2次&#xff0c;需要删除其中一个3&#xff0c;删除第一个3后获得最大数值”4533″</p> 
+<p>请返回经过删除操作后的最大的数值&#xff0c;以字符串表示。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>第一行为一个纯数字组成的字符串&#xff0c;长度范围&#xff1a;[1,100000]</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出经过删除操作后的最大的数值</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">34533</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">4533</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">5445795045</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">5479504</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;">无</td></tr></tbody></table> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>本题最优解题思路是利用栈结构。</p> 
+<p></p> 
+<p>首先&#xff0c;我们需要定义两个map&#xff0c;分别是unused和reserve&#xff0c;其中&#xff1a;</p> 
+<ul><li>unused含义是&#xff1a;每个数字剩余可用个数</li><li>reserve含义是&#xff1a;每个数字已保留的个数</li></ul> 
+<p>然后对他们进行初始化&#xff0c;初始时unused就是统计输入字符串中各数字字符的出现次数&#xff0c;而reserve每个数字字符的个数都初始化为0。</p> 
+<p></p> 
+<p>接下来&#xff0c;遍历出输入字符串的每个字符c&#xff1a;</p> 
+<p>如果此时stack栈顶没有元素&#xff0c;则将遍历的c直接压入栈&#xff0c;然后unused[c]--&#xff0c;reserve[c]&#43;&#43;</p> 
+<p>如果此时stack栈顶有元素&#xff0c;假设为top&#xff0c;则&#xff1a;</p> 
+<ul><li>c &lt;&#61; top 的话&#xff0c;则直接压入栈&#xff0c;然后unused[c]--&#xff0c;reserve[c]&#43;&#43;</li><li>c &gt; top的话&#xff0c;则需要考虑将栈顶top弹出&#xff0c;而弹出是有条件的&#xff0c;因为题目说&#xff0c;每个数字最多出现两次&#xff0c;那么表示每个数字出现次数&gt;&#61;2的话&#xff0c;我们就保留该数字2个&#xff0c;此时整体数值才会最长&#xff0c;最长才有可能最大。如果此时我们将top弹出&#xff0c;那么需要看 unused[top] &#43; reserve[top] - 1是不是 &gt;&#61; 2&#xff0c;只有成立时&#xff0c;我们才能弹出top&#xff0c;否则对应数字字符的数量将不足2个&#xff0c;最终影响整体数值的长度&#xff0c;进而影响大小。</li></ul> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  console.log(getResult(line));
+});
+
+function getResult(str) {
+  // 每个数字字符的可用个数
+  const unused &#61; {};
+  // 每个数字字符的保留个数
+  const reserve &#61; {};
+
+  // 初始时&#xff0c;每个数字有多少个&#xff0c;就可用多少个&#xff0c;由于还未使用&#xff0c;因此保留个数为0
+  for (let c of str) {
+    unused[c] ? unused[c]&#43;&#43; : (unused[c] &#61; 1);
+    reserve[c] &#61; 0;
+  }
+
+  // 定义一个栈
+  const stack &#61; [];
+
+  // 遍历输入字符串的每个数字字符c
+  for (let c of str) {
+    // 如果该字符已经保留了2个了&#xff0c;则后续再出现该数字字符可以不保留
+    if (reserve[c] &#61;&#61; 2) {
+      // 则可用c数字个数--
+      unused[c]--;
+      continue;
+    }
+
+    // 比较当前数字c和栈顶数字top&#xff0c;如果c&gt;top&#xff0c;那么需要考虑将栈顶数字弹出
+    while (stack.length) {
+      const top &#61; stack.at(-1);
+
+      // 如果栈顶数字被弹出后&#xff0c;已保留的top字符数量和未使用的top字符数量之和大于等于2&#xff0c;则可以弹出&#xff0c;否则不可以
+      if (top &lt; c &amp;&amp; unused[top] &#43; reserve[top] - 1 &gt;&#61; 2) {
+        stack.pop();
+        reserve[top]--;
+      } else {
+        break;
+      }
+    }
+
+    // 选择保留当前遍历的数字c
+    stack.push(c);
+    // 则可用c数字个数--
+    unused[c]--;
+    // 已保留c数字个数&#43;&#43;
+    reserve[c]&#43;&#43;;
+  }
+
+  return stack.join(&#34;&#34;);
+}
+1;
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String str &#61; sc.next();
+
+    System.out.println(getResult(str));
+  }
+
+  public static String getResult(String str) {
+    // 每个数字字符的可用个数
+    HashMap&lt;Character, Integer&gt; unused &#61; new HashMap&lt;&gt;();
+    // 每个数字字符的保留个数
+    HashMap&lt;Character, Integer&gt; reserve &#61; new HashMap&lt;&gt;();
+
+    // 初始时&#xff0c;每个数字有多少个&#xff0c;就可用多少个&#xff0c;由于还未使用&#xff0c;因此保留个数为0
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      char c &#61; str.charAt(i);
+      unused.put(c, unused.getOrDefault(c, 0) &#43; 1);
+      reserve.putIfAbsent(c, 0);
+    }
+
+    // 定义一个栈
+    LinkedList&lt;Character&gt; stack &#61; new LinkedList&lt;&gt;();
+
+    // 遍历输入字符串的每个数字字符c
+    for (int i &#61; 0; i &lt; str.length(); i&#43;&#43;) {
+      char c &#61; str.charAt(i);
+
+      // 如果该字符已经保留了2个了&#xff0c;则后续再出现该数字字符可以不保留
+      if (reserve.get(c) &#61;&#61; 2) {
+        // 则可用c数字个数--
+        unused.put(c, unused.get(c) - 1);
+        continue;
+      }
+
+      // 比较当前数字c和栈顶数字top&#xff0c;如果c&gt;top&#xff0c;那么需要考虑将栈顶数字弹出
+      while (stack.size() &gt; 0) {
+        char top &#61; stack.getLast();
+
+        // 如果栈顶数字被弹出后&#xff0c;已保留的top字符数量和未使用的top字符数量之和大于等于2&#xff0c;则可以弹出&#xff0c;否则不可以
+        if (top &lt; c &amp;&amp; unused.get(top) &#43; reserve.get(top) - 1 &gt;&#61; 2) {
+          stack.removeLast();
+          reserve.put(top, reserve.get(top) - 1);
+        } else {
+          break;
+        }
+      }
+
+      // 选择保留当前遍历的数字c
+      stack.add(c);
+      // 则可用c数字个数--
+      unused.put(c, unused.get(c) - 1);
+      // 已保留c数字个数&#43;&#43;
+      reserve.put(c, reserve.get(c) &#43; 1);
+    }
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (Character c : stack) {
+      sb.append(c);
+    }
+    return sb.toString();
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+s &#61; input()
+
+
+# 算法入口
+def getResult(s):
+    # 每个数字字符的可用个数
+    unused &#61; {}
+    # 每个数字字符的保留个数
+    reserve &#61; {}
+
+    # 初始时&#xff0c;每个数字有多少个&#xff0c;就可用多少个&#xff0c;由于还未使用&#xff0c;因此保留个数为0
+    for c in s:
+        if unused.get(c) is None:
+            unused[c] &#61; 0
+
+        if reserve.get(c) is None:
+            reserve[c] &#61; 0
+
+        unused[c] &#43;&#61; 1
+
+    # 定义一个栈
+    stack &#61; []
+
+    # 遍历输入字符串的每个数字字符c
+    for c in s:
+        # 如果该字符已经保留了2个了&#xff0c;则后续再出现该数字字符可以不保留
+        if reserve[c] &#61;&#61; 2:
+            # 则可用c数字个数--
+            unused[c] -&#61; 1
+            continue
+
+        # 比较当前数字c和栈顶数字top&#xff0c;如果c&gt;top&#xff0c;那么需要考虑将栈顶数字弹出
+        while len(stack) &gt; 0:
+            top &#61; stack[-1]
+
+            # 如果栈顶数字被弹出后&#xff0c;已保留的top字符数量和未使用的top字符数量之和大于等于2&#xff0c;则可以弹出&#xff0c;否则不可以
+            if top &lt; c and unused[top] &#43; reserve[top] - 1 &gt;&#61; 2:
+                stack.pop()
+                reserve[top] -&#61; 1
+            else:
+                break
+
+        # 选择保留当前遍历的数字c
+        stack.append(c)
+        # 则可用c数字个数--
+        unused[c] -&#61; 1
+        # 已保留c数字个数&#43;&#43;
+        reserve[c] &#43;&#61; 1
+
+    return &#34;&#34;.join(stack)
+
+
+# 算法调用
+print(getResult(s))
+</code></pre>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>

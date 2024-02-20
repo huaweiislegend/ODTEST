@@ -1,0 +1,441 @@
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>.nodata  main {width:1000px;margin: auto;}</style></head><body class="nodata " style=""><div class="main_father clearfix d-flex justify-content-center " style="height:100%;"> <div class="container clearfix " id="mainBox"><main><div class="blog-content-box">
+<div class="article-header-box">
+<div class="article-header">
+<div class="article-title-box">
+<h1 class="title-article" id="articleContentId">(C卷,200分)- 二叉树的广度优先遍历（Java & JS & Python & C）</h1>
+</div>
+</div>
+</div>
+<div id="blogHuaweiyunAdvert"></div>
+
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-044f2cf1dc.css">
+                <div id="content_views" class="htmledit_views">
+                    <h4 id="main-toc">题目描述</h4> 
+<p>有一棵二叉树&#xff0c;每个节点由一个大写字母标识(最多26个节点&#xff09;。</p> 
+<p>现有两组字母&#xff0c;分别表示后序遍历&#xff08;左孩子-&gt;右孩子-&gt;父节点&#xff09;和中序遍历&#xff08;左孩子-&gt;父节点-&gt;右孩子&#xff09;的结果&#xff0c;请你输出层序遍历的结果。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%85%A5%E6%8F%8F%E8%BF%B0">输入描述</h4> 
+<p>每个输入文件一行&#xff0c;第一个字符串表示后序遍历结果&#xff0c;第二个字符串表示中序遍历结果。&#xff08;每串只包含大写字母&#xff09;</p> 
+<p>中间用单空格分隔。</p> 
+<p></p> 
+<h4 id="%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0">输出描述</h4> 
+<p>输出仅一行&#xff0c;表示层序遍历的结果&#xff0c;结尾换行。</p> 
+<p></p> 
+<h4 id="%E7%94%A8%E4%BE%8B">用例</h4> 
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td style="width:86px;">输入</td><td style="width:412px;">CBEFDA CBAEDF</td></tr><tr><td style="width:86px;">输出</td><td style="width:412px;">ABDCEF</td></tr><tr><td style="width:86px;">说明</td><td style="width:412px;"> <p>二叉树为&#xff1a;</p> <p>     A<br />     /   \<br />   B    D<br />  /      /  \<br /> C    E   F</p> </td></tr></tbody></table> 
+<p></p> 
+<h4 id="%E9%A2%98%E7%9B%AE%E8%A7%A3%E6%9E%90">题目解析</h4> 
+<p>二叉树的三种遍历方式&#xff1a;</p> 
+<ul><li>前&#xff08;根&#xff09;序遍历&#xff1a;<span style="color:#fe2c24;">根</span>左右</li><li>中&#xff08;根&#xff09;序遍历&#xff1a;左<span style="color:#fe2c24;">根</span>右</li><li>后&#xff08;根&#xff09;序遍历&#xff1a;左右<span style="color:#fe2c24;">根</span></li></ul> 
+<p>可以发现&#xff0c;其实前、中、后指的是<span style="color:#fe2c24;">根</span>的位置&#xff0c;而左右的顺序是不变的&#xff0c;即总是先左后右。</p> 
+<p>比如&#xff0c;下面是一个最简单的二叉树结构</p> 
+<p><img alt="" height="199" src="https://img-blog.csdnimg.cn/18a36f1af0bd420eb406e6ec94530950.png" width="225" /></p> 
+<p>其前序遍历结果为&#xff1a;ABC&#xff0c;中序遍历结果为BAC&#xff0c;后序遍历结果为BCA。</p> 
+<p>而层序遍历&#xff0c;指的是&#xff0c;从树的顶层开始向下&#xff0c;每层中按照从左向右的顺序遍历节点&#xff0c;因此上图层序遍历结果为ABC。</p> 
+<p>可能有人会将层序遍历和前序遍历混淆&#xff0c;但是二者是不同的&#xff0c;比如&#xff1a;</p> 
+<p><img alt="" height="231" src="https://img-blog.csdnimg.cn/4d56f5d35d9b4395b8a16bcb49180816.png" width="297" /></p> 
+<p>前序遍历结果为&#xff1a;ABDC</p> 
+<p>层序遍历结果为&#xff1a;ABCD </p> 
+<p></p> 
+<p>有了以上关于二叉树遍历的知识后&#xff0c;我们就可以进行用例分析了&#xff0c;用例输入提供了一个二叉树的</p> 
+<p>后序遍历CBEFDA&#xff0c;以及中序遍历CBAEDF的结果。</p> 
+<p></p> 
+<p>首先&#xff0c;我们可以根据后序遍历&#xff0c;快速找到树根&#xff0c;即CBEFD<span style="color:#fe2c24;">A</span>中的A&#xff0c;因为根据<span style="color:#fe2c24;">左右根</span>遍历顺序&#xff0c;最后一个遍历元素肯定是这颗树的根节点。</p> 
+<p>而找到根节点A后&#xff0c;我们又可以在中序遍历的<span style="color:#fe2c24;">左根右</span>遍历顺序&#xff0c;找到A根的左、右子树&#xff0c;即中序遍历中A节点的左边就是A根的左子树&#xff0c;右边就是A根的右子树。</p> 
+<p>而找到左右子树后&#xff0c;我们可以根据后序遍历&#xff0c;再分别找到左、右子树的根&#xff0c;然后再根据中序遍历结果&#xff0c;再找出左子树根的左右子树&#xff0c;以及右子树的左右子树。</p> 
+<p>过程如下图所示&#xff1a;</p> 
+<p><img alt="" height="237" src="https://img-blog.csdnimg.cn/d48e438625844798ac56bd500e6b6b7a.png" width="717" /></p> 
+<p><img alt="" height="359" src="https://img-blog.csdnimg.cn/2d927f09e8874f8695d2321283386a18.png" width="722" /> <img alt="" height="359" src="https://img-blog.csdnimg.cn/36d3dd7b5c9847cdad0a2d5845e40204.png" width="765" /></p> 
+<p>当我们找到的根的左右子树只有1个节点&#xff0c;或没有节点时&#xff0c;则可以停止递归。</p> 
+<p>当递归完成后&#xff0c;就还原出了一颗树&#xff0c;接下来根据层序遍历规则&#xff0c;即可以得到结果&#xff1a;ABDCEF。</p> 
+<p></p> 
+<p>本题解题&#xff0c;貌似需要深度优先搜索DFS来生成树结构&#xff0c;其实不然&#xff0c;我们完全可以改变策略&#xff0c;使用广度优先搜索BFS&#xff0c;来实现层序遍历效果&#xff0c;避免构造树结构&#xff0c;进行二次搜索。</p> 
+<p>BFS实现层序遍历的逻辑如下&#xff1a;</p> 
+<p>首先&#xff0c;根据后序遍历结果&#xff0c;找到根A&#xff0c;然后根据中序遍历结果找到根A的左、右子树。</p> 
+<p>然后&#xff0c;我们就得到了根A左、右子树各自的长度</p> 
+<p><img alt="" height="181" src="https://img-blog.csdnimg.cn/7e5a6d20654743b2b4c2226081634b74.png" width="735" /></p> 
+<p>根据左右子树的长度&#xff0c;我们就可以从后序遍历结果中&#xff0c;截取出左、右子树&#xff0c;然后又可以得到左、右子树各自的根&#xff08;即最后一个元素&#xff09;。</p> 
+<p>我们&#xff0c;每次优先遍历子树的根&#xff0c;然后再遍历子树的左右子树。 </p> 
+<p></p> 
+<h4 id="%E7%AE%97%E6%B3%95%E6%BA%90%E7%A0%81">JavaScript算法源码</h4> 
+<pre><code class="language-javascript">/* JavaScript Node ACM模式 控制台输入获取 */
+const readline &#61; require(&#34;readline&#34;);
+
+const rl &#61; readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on(&#34;line&#34;, (line) &#61;&gt; {
+  const [post, mid] &#61; line.split(&#34; &#34;);
+  console.log(getResult(post, mid));
+});
+
+function getResult(post, mid) {
+  // 广度优先搜索的执行队列&#xff0c;先加入左子树&#xff0c;再加入右子树
+  const queue &#61; [];
+  // 层序遍历出来的元素存放在ans中
+  const ans &#61; [];
+
+  devideLR(post, mid, queue, ans);
+
+  while (queue.length) {
+    const [post, mid] &#61; queue.shift();
+    devideLR(post, mid, queue, ans);
+  }
+
+  return ans.join(&#34;&#34;);
+}
+
+/**
+ * 本方法用于从后序遍历、中序遍历序列中分离出&#xff1a;根&#xff0c;以及其左、右子树的后序、中序遍历序列
+ * &#64;param {*} post 后序遍历结果
+ * &#64;param {*} mid 中序遍历结果
+ * &#64;param {*} queue BFS的执行队列
+ * &#64;param {*} ans 题解
+ */
+function devideLR(post, mid, queue, ans) {
+  // 后序遍历的最后一个元素就是根
+  let rootEle &#61; post.at(-1);
+  // 将根加入题解
+  ans.push(rootEle);
+
+  // 在中序遍历中找到根的位置rootIdx&#xff0c;那么该位置左边就是左子树&#xff0c;右边就是右子树
+  let rootIdx &#61; mid.indexOf(rootEle);
+
+  // 左子树长度&#xff0c;左子树是中序遍历的0~rootIdx-1范围&#xff0c;长度为rootIdx
+  let leftLen &#61; rootIdx;
+
+  // 如果存在左子树&#xff0c;即左子树长度大于0
+  if (leftLen &gt; 0) {
+    // 则从后序遍历中&#xff0c;截取出左子树的后序遍历
+    let leftPost &#61; post.slice(0, leftLen);
+    // 从中序遍历中&#xff0c;截取出左子树的中序遍历
+    let leftMid &#61; mid.slice(0, rootIdx);
+    // 将左子树的后、中遍历序列加入执行队列
+    queue.push([leftPost, leftMid]);
+  }
+
+  // 如果存在右子树&#xff0c;即右子树长度大于0
+  if (post.length - 1 - leftLen &gt; 0) {
+    // 则从后序遍历中&#xff0c;截取出右子树的后序遍历
+    let rightPost &#61; post.slice(leftLen, post.length - 1);
+    // 从中序遍历中&#xff0c;截取出右子树的中序遍历
+    let rightMid &#61; mid.slice(rootIdx &#43; 1);
+    // 将右子树的后、中遍历序列加入执行队列
+    queue.push([rightPost, rightMid]);
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Java算法源码</h4> 
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    Scanner sc &#61; new Scanner(System.in);
+
+    String post &#61; sc.next();
+    String mid &#61; sc.next();
+
+    System.out.println(getResult(post, mid));
+  }
+
+  /**
+   * &#64;param post 后序遍历结果
+   * &#64;param mid 中序遍历结果
+   * &#64;return 层序遍历结果
+   */
+  public static String getResult(String post, String mid) {
+    // 广度优先搜索的执行队列&#xff0c;先加入左子树&#xff0c;再加入右子树
+    LinkedList&lt;String[]&gt; queue &#61; new LinkedList&lt;&gt;();
+    // 层序遍历出来的元素存放在ans中
+    ArrayList&lt;Character&gt; ans &#61; new ArrayList&lt;&gt;();
+
+    devideLR(post, mid, queue, ans);
+
+    while (queue.size() &gt; 0) {
+      String[] tmp &#61; queue.removeFirst();
+      devideLR(tmp[0], tmp[1], queue, ans);
+    }
+
+    StringBuilder sb &#61; new StringBuilder();
+    for (Character c : ans) {
+      sb.append(c);
+    }
+    return sb.toString();
+  }
+
+  /**
+   * 本方法用于从后序遍历、中序遍历序列中分离出&#xff1a;根&#xff0c;以及其左、右子树的后序、中序遍历序列
+   *
+   * &#64;param post 后序遍历结果
+   * &#64;param mid 中序遍历结果
+   * &#64;param queue BFS的执行队列
+   * &#64;param ans 题解
+   */
+  public static void devideLR(
+      String post, String mid, LinkedList&lt;String[]&gt; queue, ArrayList&lt;Character&gt; ans) {
+    // 后序遍历的最后一个元素就是根
+    char rootEle &#61; post.charAt(post.length() - 1);
+    // 将根加入题解
+    ans.add(rootEle);
+
+    // 在中序遍历中找到根的位置rootIdx&#xff0c;那么该位置左边就是左子树&#xff0c;右边就是右子树
+    int rootIdx &#61; mid.indexOf(rootEle);
+
+    // 左子树长度&#xff0c;左子树是中序遍历的0~rootIdx-1范围&#xff0c;长度为rootIdx
+    int leftLen &#61; rootIdx;
+
+    // 如果存在左子树&#xff0c;即左子树长度大于0
+    if (leftLen &gt; 0) {
+      // 则从后序遍历中&#xff0c;截取出左子树的后序遍历
+      String leftPost &#61; post.substring(0, leftLen);
+      // 从中序遍历中&#xff0c;截取出左子树的中序遍历
+      String leftMid &#61; mid.substring(0, rootIdx);
+      // 将左子树的后、中遍历序列加入执行队列
+      queue.addLast(new String[] {leftPost, leftMid});
+    }
+
+    // 如果存在右子树&#xff0c;即右子树长度大于0
+    if (post.length() - 1 - leftLen &gt; 0) {
+      // 则从后序遍历中&#xff0c;截取出右子树的后序遍历
+      String rightPost &#61; post.substring(leftLen, post.length() - 1);
+      // 从中序遍历中&#xff0c;截取出右子树的中序遍历
+      String rightMid &#61; mid.substring(rootIdx &#43; 1);
+      // 将右子树的后、中遍历序列加入执行队列
+      queue.addLast(new String[] {rightPost, rightMid});
+    }
+  }
+}
+</code></pre> 
+<p></p> 
+<h4>Python算法源码</h4> 
+<pre><code class="language-python"># 输入获取
+post, mid &#61; input().split()
+
+
+def devideLR(post, mid, queue, ans):
+    &#34;&#34;&#34;
+    本方法用于从后序遍历、中序遍历序列中分离出&#xff1a;根&#xff0c;以及其左、右子树的后序、中序遍历序列
+    :param post: 后序遍历结果
+    :param mid: 中序遍历结果
+    :param queue: BFS的执行队列
+    :param ans: 题解
+    &#34;&#34;&#34;
+    # 后序遍历的最后一个元素就是根
+    rootEle &#61; post[-1]
+    # 将根加入题解
+    ans.append(rootEle)
+
+    # 在中序遍历中找到根的位置rootIdx&#xff0c;那么该位置左边就是左子树&#xff0c;右边就是右子树
+    rootIdx &#61; mid.find(rootEle)
+
+    # 左子树长度&#xff0c;左子树是中序遍历的0~rootIdx-1范围&#xff0c;长度为rootIdx
+    leftLen &#61; rootIdx
+
+    # 如果存在左子树&#xff0c;即左子树长度大于0
+    if leftLen &gt; 0:
+        leftPost &#61; post[:leftLen]  # 则从后序遍历中&#xff0c;截取出左子树的后序遍历
+        leftMid &#61; mid[:rootIdx]  # 从中序遍历中&#xff0c;截取出左子树的中序遍历
+        queue.append([leftPost, leftMid])  # 将左子树的后、中遍历序列加入执行队列
+
+    # 如果存在右子树&#xff0c;即右子树长度大于0
+    if len(post) - 1 - leftLen &gt; 0:
+        rightPost &#61; post[leftLen:-1]  # 则从后序遍历中&#xff0c;截取出右子树的后序遍历
+        rightMid &#61; mid[rootIdx &#43; 1:]  # 从中序遍历中&#xff0c;截取出右子树的中序遍历
+        queue.append([rightPost, rightMid])  # 将右子树的后、中遍历序列加入执行队列
+
+
+# 算法入口
+def getResult(post, mid):
+    # 广度优先搜索的执行队列&#xff0c;先加入左子树&#xff0c;再加入右子树
+    queue &#61; []
+    # 层序遍历出来的元素存放在ans中
+    ans &#61; []
+
+    devideLR(post, mid, queue, ans)
+
+    while len(queue) &gt; 0:
+        post, mid &#61; queue.pop(0)
+        devideLR(post, mid, queue, ans)
+
+    return &#34;&#34;.join(ans)
+
+
+# 算法调用
+print(getResult(post, mid))
+</code></pre> 
+<p></p> 
+<h4>C算法源码</h4> 
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+/** 链表定义 **/
+typedef struct ListNode {
+    char post[27];
+    char mid[27];
+    struct ListNode *next;
+} ListNode;
+
+typedef struct LinkedList {
+    int size;
+    ListNode *head;
+    ListNode *tail;
+} LinkedList;
+
+LinkedList *new_LinkedList() {
+    LinkedList *link &#61; (LinkedList *) malloc(sizeof(LinkedList));
+    link-&gt;size &#61; 0;
+    link-&gt;head &#61; NULL;
+    link-&gt;tail &#61; NULL;
+    return link;
+}
+
+void addLast_LinkedList(LinkedList *link, char *post, char *mid) {
+    ListNode *node &#61; (ListNode *) malloc(sizeof(ListNode));
+    strcpy(node-&gt;post, post);
+    strcpy(node-&gt;mid, mid);
+    node-&gt;next &#61; NULL;
+
+    if (link-&gt;size &#61;&#61; 0) {
+        link-&gt;head &#61; node;
+        link-&gt;tail &#61; node;
+    } else {
+        link-&gt;tail-&gt;next &#61; node;
+        link-&gt;tail &#61; node;
+    }
+
+    link-&gt;size&#43;&#43;;
+}
+
+ListNode *removeFirst_LinkedList(LinkedList *link) {
+    if (link-&gt;size &#61;&#61; 0) exit(-1);
+
+    ListNode *removed &#61; link-&gt;head;
+
+    if (link-&gt;size &#61;&#61; 1) {
+        link-&gt;head &#61; NULL;
+        link-&gt;tail &#61; NULL;
+    } else {
+        link-&gt;head &#61; link-&gt;head-&gt;next;
+    }
+
+    link-&gt;size--;
+
+    return removed;
+}
+
+// res记录题解
+char res[27];
+int res_size &#61; 0;
+
+/*!
+ * 字符串截取&#xff08;左闭右开&#xff09;
+ * &#64;param s 字符串
+ * &#64;param start 起始位置&#xff08;包含&#xff09;
+ * &#64;param end 结束位置&#xff08;不包含&#xff09;
+ * &#64;return 指定区间的子串
+ */
+char *subString(char *s, int start, int end) {
+    int len &#61; end - start;
+
+    char *tmp &#61; (char *) calloc(len &#43; 1, sizeof(char));
+    strncat(tmp, s &#43; start, len);
+
+    return tmp;
+}
+
+/*!
+ * 本方法用于从后序遍历、中序遍历序列中分离出&#xff1a;根&#xff0c;以及其左、右子树的后序、中序遍历序列
+ * &#64;param post 后序遍历结果
+ * &#64;param mid 中序遍历结果
+ * &#64;param queue BFS的执行队列
+ */
+void devideLR(char *post, char *mid, LinkedList *queue) {
+    // 后序遍历的最后一个元素就是根
+    char rootEle &#61; post[strlen(post) - 1];
+    // 将根加入题解
+    res[res_size&#43;&#43;] &#61; rootEle;
+
+    // 在中序遍历中找到根的位置rootIdx&#xff0c;那么该位置左边就是左子树&#xff0c;右边就是右子树
+    int rootIdx &#61; strchr(mid, rootEle) - mid;
+
+    // 左子树长度&#xff0c;左子树是中序遍历的0~rootIdx-1范围&#xff0c;长度为rootIdx
+    // 如果存在左子树&#xff0c;即左子树长度大于0
+    if (rootIdx &gt; 0) {
+        // 则从后序遍历中&#xff0c;截取出左子树的后序遍历
+        char* leftPost &#61; subString(post, 0, rootIdx);
+        // 从中序遍历中&#xff0c;截取出左子树的中序遍历
+        char* leftMid &#61; subString(mid, 0, rootIdx);
+        // 将左子树的后、中遍历序列加入执行队列
+        addLast_LinkedList(queue, leftPost, leftMid);
+    }
+
+    // 如果存在右子树&#xff0c;即右子树长度大于0
+    if (strlen(post) - 1 - rootIdx &gt; 0) {
+        // 则从后序遍历中&#xff0c;截取出右子树的后序遍历
+        char* rightPost &#61; subString(post, rootIdx, strlen(post) - 1);
+        // 从中序遍历中&#xff0c;截取出右子树的中序遍历
+        char* rightMid &#61; subString(mid, rootIdx &#43; 1, strlen(mid));
+        // 将右子树的后、中遍历序列加入执行队列
+        addLast_LinkedList(queue, rightPost, rightMid);
+    }
+}
+
+int main() {
+    char post[27];
+    char mid[27];
+
+    scanf(&#34;%s %s&#34;, post, mid);
+
+    // 广度优先搜索的执行队列&#xff0c;先加入左子树&#xff0c;再加入右子树
+    LinkedList *queue &#61; new_LinkedList();
+
+    // 层序遍历出来的元素存放在res中
+    devideLR(post, mid, queue);
+
+    while (queue-&gt;size &gt; 0) {
+        ListNode* node &#61; removeFirst_LinkedList(queue);
+        devideLR(node-&gt;post, node-&gt;mid, queue);
+    }
+
+    puts(res);
+
+    return 0;
+}
+
+
+
+</code></pre> 
+<p></p>
+                </div>
+        </div>
+        <div id="treeSkill"></div>
+        <div id="blogExtensionBox" style="width:400px;margin:auto;margin-top:12px" class="blog-extension-box"></div>
+    <script>
+  $(function() {
+    setTimeout(function () {
+      var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+      if (mathcodeList.length > 0) {
+        for (let i = 0; i < mathcodeList.length; i++) {
+          if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+            var alt = mathcodeList[i].alt;
+            alt = '\\(' + alt + '\\)';
+            var curSpan = $('<span class="img-codecogs"></span>');
+            curSpan.text(alt);
+            $(mathcodeList[i]).before(curSpan);
+            $(mathcodeList[i]).remove();
+          }
+        }
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      }
+    }, 1000)
+  });
+</script>
+</div></html>
